@@ -1,0 +1,136 @@
+import React from "react";
+import Image from "next/image";
+import { Heart, Star, Clock } from "lucide-react";
+
+interface BaseProduct {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+}
+
+interface RegularProduct extends BaseProduct {
+  rating: number;
+  reviews: number;
+  type: "regular";
+}
+
+interface DealProduct extends BaseProduct {
+  discount: number;
+  timer: string;
+  stock: number;
+  type: "deal";
+}
+
+type ProductProps = {
+  product: RegularProduct | DealProduct;
+};
+
+const ProductCard: React.FC<ProductProps> = ({ product }) => {
+  const isRegularProduct = product.type === "regular";
+  const isDealProduct = product.type === "deal";
+
+  return (
+    <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
+      <div
+        className={`relative ${
+          isRegularProduct ? "mb-4" : "aspect-square mb-4"
+        }`}
+      >
+        <Image
+          src={product.image}
+          alt={product.name}
+          {...(isRegularProduct
+            ? {
+                width: 400,
+                height: 300,
+                className: "w-full h-48 object-cover rounded-lg",
+              }
+            : {
+                fill: true,
+                sizes:
+                  "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
+                className: "object-cover rounded-lg",
+              })}
+        />
+
+        {isRegularProduct && (
+          <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">
+            <Heart className="h-4 w-4" />
+          </button>
+        )}
+
+        {isDealProduct && (
+          <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
+            {product.discount}% OFF
+          </span>
+        )}
+      </div>
+
+      <h3 className={`font-medium ${isRegularProduct ? "mb-1" : "mb-2"}`}>
+        {product.name}
+      </h3>
+
+      {isRegularProduct && (
+        <div className="flex items-center mb-2">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              key={i}
+              className={`h-4 w-4 ${
+                i < Math.floor((product as RegularProduct).rating)
+                  ? "fill-yellow-400 text-yellow-400"
+                  : "text-gray-300"
+              }`}
+            />
+          ))}
+          <span className="text-sm text-gray-500 ml-1">
+            ({(product as RegularProduct).reviews})
+          </span>
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-lg font-bold text-primary">
+          S/ {product.price}
+        </span>
+        {product.originalPrice && (
+          <span className="text-sm text-gray-500 line-through">
+            S/ {product.originalPrice}
+          </span>
+        )}
+      </div>
+
+      {isDealProduct && (
+        <>
+          <div className="mb-3">
+            <div className="flex justify-between text-sm text-gray-600 mb-1">
+              <span>Vendidos: {30 - (product as DealProduct).stock}</span>
+              <span>Disponible: {(product as DealProduct).stock}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-secondary h-2 rounded-full"
+                style={{
+                  width: `${
+                    ((30 - (product as DealProduct).stock) / 30) * 100
+                  }%`,
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-sm font-medium text-gray-600 mb-3">
+            <Clock className="h-4 w-4" />
+            <span>Oferta termina en: {(product as DealProduct).timer}</span>
+          </div>
+        </>
+      )}
+
+      <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors">
+        Agregar al carrito
+      </button>
+    </div>
+  );
+};
+
+export default ProductCard;

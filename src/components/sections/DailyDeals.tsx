@@ -1,6 +1,7 @@
 import React from "react";
-import { ChevronRight, Clock } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import ProductCard from "@/components/ui/ProductCard";
 
 interface Deal {
   id: string;
@@ -69,51 +70,13 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
         <div className="md:col-span-9">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {deals.map((deal) => (
-              <div
+              <ProductCard
                 key={deal.id}
-                className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200"
-              >
-                <div className="relative aspect-square mb-4">
-                  <Image
-                    src={deal.image}
-                    alt={deal.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover rounded-lg"
-                  />
-                  <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-                    {deal.discount}% OFF
-                  </span>
-                </div>
-                <h3 className="font-medium mb-2">{deal.name}</h3>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg font-bold text-primary">
-                    S/ {deal.price}
-                  </span>
-                  <span className="text-sm text-gray-500 line-through">
-                    S/ {deal.originalPrice}
-                  </span>
-                </div>
-                <div className="mb-3">
-                  <div className="flex justify-between text-sm text-gray-600 mb-1">
-                    <span>Vendidos: {30 - deal.stock}</span>
-                    <span>Disponible: {deal.stock}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-secondary h-2 rounded-full"
-                      style={{ width: `${((30 - deal.stock) / 30) * 100}%` }}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-sm font-medium text-gray-600 mb-3">
-                  <Clock className="h-4 w-4" />
-                  <span>Oferta termina en: {deal.timer}</span>
-                </div>
-                <button className="w-full bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors">
-                  Agregar al carrito
-                </button>
-              </div>
+                product={{
+                  ...deal,
+                  type: "deal",
+                }}
+              />
             ))}
           </div>
         </div>
