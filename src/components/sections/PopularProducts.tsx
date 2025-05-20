@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight, Heart, Star } from "lucide-react";
 
 interface Product {
@@ -23,7 +24,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
         <h2 className="text-2xl font-bold">Productos Populares</h2>
         <Link
           href="/populares"
-          className="text-[#5B4AE8] hover:text-[#4A3AD7] flex items-center gap-1"
+          className="text-primary hover:text-secondary flex items-center gap-1"
         >
           Ver todos
           <ChevronRight className="h-4 w-4" />
@@ -36,9 +37,11 @@ const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
             className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200"
           >
             <div className="relative mb-4">
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
+                width={400}
+                height={300}
                 className="w-full h-48 object-cover rounded-lg"
               />
               <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">
@@ -62,7 +65,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-[#5B4AE8]">
+              <span className="text-lg font-bold text-primary">
                 S/ {product.price}
               </span>
               {product.originalPrice && (
@@ -71,7 +74,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
                 </span>
               )}
             </div>
-            <button className="w-full mt-3 bg-slate-700 text-white py-2 rounded-lg hover:bg-[#4A3AD7] transition-colors">
+            <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors">
               Agregar al carrito
             </button>
           </div>

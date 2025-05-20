@@ -19,7 +19,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
         <div className="flex items-center">
           <div className="relative">
             <button
-              className="bg-slate-700 text-white px-6 py-3 flex items-center gap-2"
+              className="bg-primary text-white px-6 py-3 flex items-center gap-2"
               onMouseEnter={() => setIsMenuOpen(true)}
               onMouseLeave={() => setIsMenuOpen(false)}
             >
@@ -40,7 +40,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                         key={category}
                         className={`w-full text-left px-4 py-2 rounded-lg mb-1 flex items-center justify-between ${
                           activeCategory === category
-                            ? "bg-slate-700 text-white"
+                            ? "bg-primary text-white"
                             : "hover:bg-gray-100"
                         }`}
                         onMouseEnter={() => setActiveCategory(category)}
@@ -63,7 +63,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                                 <li key={sub.name}>
                                   <Link
                                     href={sub.link}
-                                    className="text-gray-600 hover:text-[#5B4AE8]"
+                                    className="text-gray-600 hover:text-primary transition-colors duration-300"
                                   >
                                     {sub.name}
                                   </Link>
@@ -96,7 +96,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                                     <div className="font-medium">
                                       {product.name}
                                     </div>
-                                    <div className="text-[#5B4AE8] font-bold">
+                                    <div className="font-bold text-primary">
                                       S/ {product.price}
                                     </div>
                                   </div>
@@ -137,29 +137,38 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
           <nav className="flex items-center gap-8 px-6">
             <Link
               href="/"
-              className="text-gray-700 hover:text-[#5B4AE8] flex items-center gap-2"
+              className="text-gray-700 hover:text-primary transition-colors duration-300 flex items-center gap-2"
             >
               <Percent className="h-4 w-4" />
               Ofertas
             </Link>
-            <Link href="/nuevos" className="text-gray-700 hover:text-[#5B4AE8]">
+            <Link
+              href="/nuevos"
+              className="text-gray-700 hover:text-primary transition-colors duration-300"
+            >
               Nuevos Productos
             </Link>
-            <Link href="/marcas" className="text-gray-700 hover:text-[#5B4AE8]">
+            <Link
+              href="/marcas"
+              className="text-gray-700 hover:text-primary transition-colors duration-300"
+            >
               Marcas
             </Link>
             <Link
               href="/vendedores"
-              className="text-gray-700 hover:text-[#5B4AE8]"
+              className="text-gray-700 hover:text-primary transition-colors duration-300"
             >
               Vendedores
             </Link>
-            <Link href="/blog" className="text-gray-700 hover:text-[#5B4AE8]">
+            <Link
+              href="/blog"
+              className="text-gray-700 hover:text-primary transition-colors duration-300"
+            >
               Blog
             </Link>
             <Link
               href="/contacto"
-              className="text-gray-700 hover:text-[#5B4AE8]"
+              className="text-gray-700 hover:text-primary transition-colors duration-300"
             >
               Contacto
             </Link>

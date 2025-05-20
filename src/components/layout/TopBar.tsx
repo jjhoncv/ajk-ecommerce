@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config";
+
 export default function TopBar() {
   return (
     <div className="bg-slate-700 text-white py-2">
@@ -17,7 +19,7 @@ export default function TopBar() {
           </a>
         </div>
         <div className="flex items-center gap-4">
-          <span>Necesitas ayuda? Llama: +1 1800 900</span>
+          <span>Necesitas ayuda? Llama: {siteConfig.contact.phone}</span>
           <select className="bg-transparent border-none text-white">
             <option>Español</option>
             <option>English</option>

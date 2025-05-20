@@ -5,6 +5,7 @@ import Logo from "../ui/Logo";
 import SearchBar from "../ui/SearchBar";
 import Navigation from "../ui/Navigation";
 import type { MegaMenuCategories } from "@/types/navigation";
+import { siteConfig } from "@/config";
 
 interface HeaderProps {
   megaMenuCategories: MegaMenuCategories;
@@ -25,7 +26,7 @@ const Header = async ({ megaMenuCategories }: HeaderProps) => {
             <MapPin className="h-5 w-5 text-gray-600" />
             <div>
               <div className="text-xs text-gray-600">Entregar en</div>
-              <div className="font-semibold">Lima, Perú</div>
+              <div className="font-semibold">Los Olivos</div>
             </div>
           </div>
 
@@ -41,7 +42,7 @@ const Header = async ({ megaMenuCategories }: HeaderProps) => {
             <button className="flex flex-col items-center relative">
               <ShoppingCart className="h-6 w-6" />
               <span className="text-xs mt-1">Carrito</span>
-              <span className="absolute -top-2 -right-2 bg-slate-700 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                 3
               </span>
             </button>

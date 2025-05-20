@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { siteConfig } from "@/config";
 
 const Logo = () => {
   return (
@@ -10,11 +11,11 @@ const Logo = () => {
           height={32}
           alt="logo"
           src={"/Logo.svg"}
-          style={{ width: "auto", height: "auto" }}
+          className="w-auto h-auto"
         />
       </div>
       <span className="ml-2 text-2xl font-extralight text-black md:text-4xl">
-        TechStore
+        {siteConfig.name}
       </span>
     </div>
   );

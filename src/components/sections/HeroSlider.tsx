@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Slide {
@@ -51,10 +52,13 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                   index === currentSlide ? "opacity-100" : "opacity-0"
                 }`}
               >
-                <img
+                <Image
                   src={slide.image}
                   alt={slide.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 66vw"
+                  priority={index === 0}
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
                   <div className="h-full flex items-center px-12">
@@ -68,7 +72,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                       <p className="text-gray-200 mb-6">{slide.description}</p>
                       <Link
                         href={slide.ctaLink}
-                        className="inline-block bg-slate-700 text-white px-8 py-3 rounded-lg hover:bg-[#4A3AD7] transition-colors"
+                        className="inline-block  bg-secondary border border-secondary text-white px-8 py-3 rounded-lg hover:bg-transparent hover:border-secondary hover:border transition-colors"
                       >
                         {slide.cta}
                       </Link>
@@ -114,10 +118,12 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                   key={index}
                   className="relative rounded-lg overflow-hidden h-[192px]"
                 >
-                  <img
+                  <Image
                     src={banner.image}
                     alt={banner.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent p-6">
                     <div className="text-yellow-400 font-medium mb-1">

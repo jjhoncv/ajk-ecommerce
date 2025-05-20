@@ -18,7 +18,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
       case "shipping":
         return (
           <svg
-            className="w-6 h-6 text-[#5B4AE8]"
+            className="w-6 h-6 text-primary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -32,13 +32,13 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
           </svg>
         );
       case "discount":
-        return <Percent className="w-6 h-6 text-[#5B4AE8]" />;
+        return <Percent className="w-6 h-6 text-primary" />;
       case "delivery":
-        return <Clock className="w-6 h-6 text-[#5B4AE8]" />;
+        return <Clock className="w-6 h-6 text-primary" />;
       case "secure":
         return (
           <svg
-            className="w-6 h-6 text-[#5B4AE8]"
+            className="w-6 h-6 text-primary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -64,7 +64,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
             key={index}
             className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg"
           >
-            <div className="w-12 h-12 bg-slate-700/10 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
               {renderIcon(feature.icon)}
             </div>
             <div>

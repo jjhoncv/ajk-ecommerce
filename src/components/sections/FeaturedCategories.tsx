@@ -1,11 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 
 interface FeaturedCategory {
   title: string;
   subtitle: string;
-  color: string;
+  color?: string; // Opcional
   image: string;
   link?: string;
 }
@@ -20,16 +21,19 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold mb-6">Categorías Destacadas</h2>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {categories.map((category, index) => (
           <div
             key={index}
-            className="relative rounded-lg overflow-hidden group"
+            className="relative rounded-lg overflow-hidden group h-48"
           >
-            <img
+            <Image
               src={category.image}
               alt={category.title}
-              className="w-full h-48 object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
+              priority={index < 2}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent p-6 flex flex-col justify-end">
               <h3 className="text-white text-xl font-bold mb-1">
@@ -43,7 +47,8 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
                     .toLowerCase()
                     .replace(/\s+/g, "-")}`
                 }
-                className="mt-4 px-4 py-2 text-white border border-white rounded-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2 w-fit"
+                className="mt-4 px-4 py-2 text-white border border-white rounded-lg 
+                  hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2 w-fit"
               >
                 Comprar ahora
                 <ChevronRight className="h-4 w-4" />

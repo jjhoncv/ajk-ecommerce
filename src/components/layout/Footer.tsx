@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { MapPin, Clock, Monitor } from "lucide-react";
+import { siteConfig } from "@/config";
 
 interface FooterSection {
   title: string;
@@ -32,18 +33,16 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
           {/* Company Info */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Monitor className="h-8 w-8 text-[#5B4AE8]" />
-              <span className="text-2xl font-bold text-[#5B4AE8]">
-                TechStore
+              <Monitor className="h-8 w-8 text-primary" />
+              <span className="text-2xl font-bold text-primary">
+                {siteConfig.name}
               </span>
             </Link>
-            <p className="text-gray-600 mb-4">
-              Tu tienda de tecnología y zapatillas
-            </p>
+            <p className="text-gray-600 mb-4">{siteConfig.description}</p>
             <div className="space-y-2 mb-6">
               <p className="flex items-center gap-2 text-gray-600">
                 <MapPin className="h-4 w-4" />
-                Av. Javier Prado Este 123, Lima, Perú
+                {siteConfig.contact.address}
               </p>
               <p className="flex items-center gap-2 text-gray-600">
                 <Clock className="h-4 w-4" />
@@ -55,7 +54,7 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center hover:bg-[#4A3AD7]"
+                  className="w-10 h-10 text-white rounded-full flex items-center justify-center bg-secondary hover:bg-opacity-90"
                   aria-label={link.name}
                   dangerouslySetInnerHTML={{ __html: link.icon }}
                 />
@@ -72,7 +71,7 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 hover:text-[#5B4AE8]"
+                      className="text-gray-600 hover:text-primary transition-colors duration-300"
                     >
                       {link.name}
                     </Link>
@@ -128,10 +127,13 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-600 mb-4 md:mb-0">
-              © 2024 TechStore. Todos los derechos reservados
+              © {new Date().getFullYear()} {siteConfig.name}. Todos los derechos
+              reservados
             </p>
             <div className="flex items-center gap-4">
-              <p className="text-gray-600">Línea de atención: 1900-6666</p>
+              <p className="text-gray-600">
+                Línea de atención: {siteConfig.contact.phone}
+              </p>
               <p className="text-gray-600">Soporte 24/7</p>
             </div>
           </div>

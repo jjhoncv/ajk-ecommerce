@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 export default function SearchBar() {
   return (
     <div className="flex-1 max-w-xl mx-8">
-      <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+      <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden relative">
         <select className="bg-gray-50 border-r border-gray-300 px-4 py-3 text-sm focus:outline-none">
           <option>Todas las categorías</option>
           <option>Zapatillas</option>
@@ -15,9 +15,9 @@ export default function SearchBar() {
         <input
           type="text"
           placeholder="Buscar productos..."
-          className="flex-1 px-4 py-3 focus:outline-none"
+          className="flex-1 px-4 py-3 pr-14 focus:outline-none"
         />
-        <button className="bg-[#5B4AE8] text-white px-6 py-3 hover:bg-[#4A3AD7] transition-colors">
+        <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors flex items-center justify-center w-10 h-10">
           <Search className="h-5 w-5" />
         </button>
       </div>
