@@ -21,22 +21,22 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
     {
       icon: <User className="h-5 w-5" />,
       label: "Mi cuenta",
-      href: "/cuenta",
+      href: "/account",
     },
     {
       icon: <ShoppingBag className="h-5 w-5" />,
       label: "Mis pedidos",
-      href: "/pedidos",
+      href: "/orders",
     },
     {
       icon: <Heart className="h-5 w-5" />,
       label: "Mis favoritos",
-      href: "/favoritos",
+      href: "/favorites",
     },
     {
       icon: <MapPin className="h-5 w-5" />,
       label: "Mis direcciones",
-      href: "/direcciones",
+      href: "/addresses",
     },
   ];
 
