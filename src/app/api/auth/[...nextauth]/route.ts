@@ -1,9 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-// Credenciales demo
-const DEMO_EMAIL = "usuario@ejemplo.com";
-const DEMO_PASSWORD = "password123";
+import { CustomerService } from "@/services/customerService";
 
 const handler = NextAuth({
   providers: [
@@ -18,16 +15,23 @@ const handler = NextAuth({
           return null;
         }
 
-        // Verificar las credenciales demo
-        if (
-          credentials.email === DEMO_EMAIL &&
-          credentials.password === DEMO_PASSWORD
-        ) {
-          return {
-            id: "1",
-            email: DEMO_EMAIL,
-            name: "Usuario Demo",
-          };
+        try {
+          // Usar el servicio de cliente para autenticar
+          const customerService = new CustomerService();
+          const customer = await customerService.login(
+            credentials.email,
+            credentials.password
+          );
+
+          if (customer) {
+            return {
+              id: customer.id,
+              email: customer.email,
+              name: customer.name,
+            };
+          }
+        } catch (error) {
+          console.error("Error en authorize:", error);
         }
 
         // Credenciales inválidas

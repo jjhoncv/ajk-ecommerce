@@ -4,11 +4,13 @@ import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Modal from "./Modal";
 import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import UserMenu from "./UserMenu";
 
 const AuthButton: React.FC = () => {
   const { data: session, status } = useSession();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const isAuthenticated = status === "authenticated";
@@ -46,6 +48,28 @@ const AuthButton: React.FC = () => {
             setIsLoginModalOpen(false);
           }}
           onClose={() => setIsLoginModalOpen(false)}
+          onSwitchToRegister={() => {
+            setIsLoginModalOpen(false);
+            setIsRegisterModalOpen(true);
+          }}
+        />
+      </Modal>
+
+      {/* Modal de registro */}
+      <Modal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        title="Crear cuenta"
+      >
+        <RegisterForm
+          onSuccess={() => {
+            setIsRegisterModalOpen(false);
+          }}
+          onClose={() => setIsRegisterModalOpen(false)}
+          onSwitchToLogin={() => {
+            setIsRegisterModalOpen(false);
+            setIsLoginModalOpen(true);
+          }}
         />
       </Modal>
 

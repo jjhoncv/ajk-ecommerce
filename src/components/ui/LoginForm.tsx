@@ -6,9 +6,14 @@ import { Loader2 } from "lucide-react";
 interface LoginFormProps {
   onSuccess?: () => void;
   onClose?: () => void;
+  onSwitchToRegister?: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onClose }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  onSuccess,
+  onClose,
+  onSwitchToRegister,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -131,12 +136,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onClose }) => {
       <div className="mt-6">
         <p className="text-center text-sm text-gray-600">
           ¿No tienes una cuenta?{" "}
-          <a
-            href="#"
+          <button
+            onClick={onSwitchToRegister}
             className="text-primary hover:text-primary/80 font-medium"
           >
             Regístrate
-          </a>
+          </button>
         </p>
       </div>
 

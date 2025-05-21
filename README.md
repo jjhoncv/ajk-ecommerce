@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AJK E-commerce
 
-## Getting Started
+Este proyecto es una aplicación de comercio electrónico desarrollada con Next.js, que incluye funcionalidades de autenticación, carrito de compras y más.
 
-First, run the development server:
+## Estructura del Proyecto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+ajk-ecommerce/
+├── public/                  # Archivos estáticos
+├── src/
+│   ├── app/                 # Rutas de la aplicación (Next.js App Router)
+│   │   ├── api/             # API endpoints
+│   │   │   ├── auth/        # Autenticación con NextAuth.js
+│   │   │   └── register/    # Registro de usuarios
+│   ├── components/          # Componentes React
+│   │   ├── layout/          # Componentes de layout
+│   │   ├── sections/        # Secciones de página
+│   │   └── ui/              # Componentes de UI reutilizables
+│   ├── config/              # Configuraciones
+│   ├── db/                  # Esquemas de base de datos
+│   ├── helpers/             # Funciones auxiliares
+│   ├── hooks/               # Hooks personalizados
+│   ├── interfaces/          # Interfaces TypeScript
+│   ├── lib/                 # Bibliotecas y utilidades
+│   ├── models/              # Modelos de datos
+│   ├── providers/           # Proveedores de contexto
+│   ├── services/            # Servicios
+│   ├── store/               # Estado global
+│   └── types/               # Tipos TypeScript
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Características
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Autenticación**: Sistema de autenticación completo con NextAuth.js
+- **Base de datos**: Conexión a MySQL para almacenar usuarios y roles
+- **Carrito de compras**: Funcionalidad de carrito de compras
+- **Interfaz de usuario**: Componentes UI reutilizables con Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Requisitos
 
-## Learn More
+- Node.js 18.x o superior
+- MySQL 8.0 o superior
 
-To learn more about Next.js, take a look at the following resources:
+## Configuración
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clona el repositorio:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/tu-usuario/ajk-ecommerce.git
+   cd ajk-ecommerce
+   ```
 
-## Deploy on Vercel
+2. Instala las dependencias:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Configura las variables de entorno:
+
+   - Copia el archivo `.env.local.example` a `.env.local`
+   - Actualiza las variables con tus propios valores
+
+4. Configura la base de datos:
+
+   - Crea una base de datos MySQL
+   - Ejecuta el script SQL en `src/db/schema.sql`
+
+5. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+## Autenticación
+
+El sistema de autenticación utiliza NextAuth.js con un proveedor de credenciales personalizado que se conecta a MySQL. Los usuarios pueden:
+
+- Registrarse con nombre de usuario, nombre, apellido, correo electrónico y contraseña
+- Iniciar sesión con correo electrónico y contraseña
+- Cerrar sesión
+
+## Modelos de Datos
+
+### Usuario
+
+```typescript
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  name: string;
+  lastname: string;
+  role_id: string;
+  role?: Role;
+  created_at?: Date;
+  updated_at?: Date;
+  emailVerified?: Date;
+}
+```
+
+### Rol
+
+```typescript
+interface Role {
+  id: string;
+  name: string;
+  description?: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+```
+
+## Servicios
+
+### UserService
+
+Proporciona métodos para:
+
+- `login`: Autenticar un usuario con email y contraseña
+- `register`: Registrar un nuevo usuario
+- `getUserById`: Obtener un usuario por su ID
+- `getUserByEmail`: Obtener un usuario por su email
+
+## Contribución
+
+1. Haz un fork del repositorio
+2. Crea una rama para tu característica (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+4. Haz push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
