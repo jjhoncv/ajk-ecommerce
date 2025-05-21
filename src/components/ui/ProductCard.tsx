@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import { Heart, Star, Clock } from "lucide-react";
+import ButtonAddToCart from "./ButtonAddToCart";
 
-interface BaseProduct {
+export interface BaseProduct {
   id: string;
   name: string;
   price: number;
@@ -125,10 +126,7 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           </div>
         </>
       )}
-
-      <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors">
-        Agregar al carrito
-      </button>
+      <ButtonAddToCart {...product} />
     </div>
   );
 };

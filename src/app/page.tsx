@@ -5,11 +5,11 @@ import HeroSlider from "@/components/sections/HeroSlider";
 import Features from "@/components/sections/Features";
 import Categories from "@/components/sections/Categories";
 import FeaturedCategories from "@/components/sections/FeaturedCategories";
-import PopularProducts from "@/components/sections/PopularProducts";
-import DailyDeals from "@/components/sections/DailyDeals";
 import Newsletter from "@/components/sections/Newsletter";
 import Footer from "@/components/layout/Footer";
 import { getHomeData } from "@/services/homeService";
+import PopularProducts from "@/components/sections/PopularProducts";
+import DailyDeals from "@/components/sections/DailyDeals";
 
 export const metadata: Metadata = {
   title: "TechStore - Tu tienda de tecnología y zapatillas",

@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { MapPin, ShoppingCart, Heart, User } from "lucide-react";
+import { MapPin, Heart, User } from "lucide-react";
+import CartButton from "../ui/CartButton";
 import Logo from "../ui/Logo";
 import SearchBar from "../ui/SearchBar";
 import Navigation from "../ui/Navigation";
 import type { MegaMenuCategories } from "@/types/navigation";
-import { siteConfig } from "@/config";
 
 interface HeaderProps {
   megaMenuCategories: MegaMenuCategories;
@@ -39,13 +39,7 @@ const Header = async ({ megaMenuCategories }: HeaderProps) => {
               <Heart className="h-6 w-6" />
               <span className="text-xs mt-1">Wishlist</span>
             </button>
-            <button className="flex flex-col items-center relative">
-              <ShoppingCart className="h-6 w-6" />
-              <span className="text-xs mt-1">Carrito</span>
-              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                3
-              </span>
-            </button>
+            <CartButton />
             <Link href="/login" className="flex flex-col items-center">
               <User className="h-6 w-6" />
               <span className="text-xs mt-1">Cuenta</span>
