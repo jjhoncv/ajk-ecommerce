@@ -79,6 +79,13 @@ El sistema de autenticación utiliza NextAuth.js con un proveedor de credenciale
 - Iniciar sesión con correo electrónico y contraseña
 - Cerrar sesión
 
+La autenticación está implementada siguiendo las mejores prácticas de Next.js:
+
+- **Componentes de servidor**: Obtienen la sesión del usuario desde el servidor
+- **Componentes de cliente**: Manejan la interacción del usuario y los modales
+- **Middleware**: Protege las rutas privadas y redirige a usuarios no autenticados
+- **Hidratación**: El estado de autenticación se obtiene desde el servidor y se hidrata al cliente
+
 ## Modelos de Datos
 
 ### Usuario

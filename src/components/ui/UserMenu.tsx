@@ -15,6 +15,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
   const handleSignOut = async () => {
     await signOut({ redirect: false });
     onClose();
+    // Recargar la página para actualizar la interfaz
+    window.location.reload();
   };
 
   const menuItems = [
