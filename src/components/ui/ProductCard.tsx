@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Heart, Star, Clock } from "lucide-react";
+import { Heart, Star, Clock, ShoppingCart } from "lucide-react";
 import ButtonAddToCart from "./ButtonAddToCart";
+import { ProductDTO } from "@/interfaces/dtos";
+import Link from "next/link";
 
 export interface BaseProduct {
   id: string;
@@ -24,13 +27,163 @@ interface DealProduct extends BaseProduct {
   type: "deal";
 }
 
+interface VariantProduct {
+  product: ProductDTO;
+  type: "variant";
+}
+
 type ProductProps = {
-  product: RegularProduct | DealProduct;
+  product: RegularProduct | DealProduct | VariantProduct;
 };
 
 const ProductCard: React.FC<ProductProps> = ({ product }) => {
   const isRegularProduct = product.type === "regular";
   const isDealProduct = product.type === "deal";
+  const isVariantProduct = product.type === "variant";
+
+  // Estado para la variante seleccionada (solo para productos con variantes)
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Renderizar producto con variantes
+  if (isVariantProduct) {
+    const variantProduct = product.product;
+    const selectedVariant = variantProduct.variants[selectedVariantIndex];
+
+    // Encontrar la imagen principal de la variante seleccionada
+    const mainImage =
+      selectedVariant.images.find((img) => img.isPrimary)?.imageUrl ||
+      variantProduct.mainImage ||
+      "https://placehold.co/600x400/e2e8f0/1e293b?text=No+Image";
+
+    // Obtener el precio mínimo y máximo de las variantes
+    const minPrice = Math.min(...variantProduct.variants.map((v) => v.price));
+    const maxPrice = Math.max(...variantProduct.variants.map((v) => v.price));
+
+    // Determinar si mostrar un rango de precios
+    const showPriceRange = minPrice !== maxPrice;
+
+    // Agrupar atributos por nombre para mostrar opciones
+    const attributeGroups: { [key: string]: Set<string> } = {};
+
+    variantProduct.variants.forEach((variant) => {
+      variant.attributes.forEach((attr) => {
+        if (!attributeGroups[attr.name]) {
+          attributeGroups[attr.name] = new Set();
+        }
+        attributeGroups[attr.name].add(attr.value);
+      });
+    });
+
+    return (
+      <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
+        <Link href={`/productos/${variantProduct.id}`} className="block">
+          <div className="relative mb-4">
+            <Image
+              src={mainImage}
+              alt={variantProduct.name}
+              width={400}
+              height={300}
+              className="w-full h-48 object-cover rounded-lg"
+            />
+
+            {/* Etiqueta de marca */}
+            <div className="absolute top-2 left-2">
+              <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                {variantProduct.brandName}
+              </span>
+            </div>
+
+            {/* Botón de favoritos */}
+            <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">
+              <Heart className="h-4 w-4" />
+            </button>
+          </div>
+        </Link>
+
+        {/* Categorías */}
+        <div className="flex flex-wrap gap-1 mb-1">
+          {variantProduct.categories.slice(0, 2).map((category) => (
+            <span
+              key={category.id}
+              className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
+            >
+              {category.name}
+            </span>
+          ))}
+        </div>
+
+        {/* Nombre del producto */}
+        <Link href={`/productos/${variantProduct.id}`}>
+          <h3 className="font-medium mb-1 hover:text-primary transition-colors">
+            {variantProduct.name}
+          </h3>
+        </Link>
+
+        {/* Atributos con selección */}
+        <div className="space-y-2 mb-3">
+          {Object.entries(attributeGroups).map(([attrName, values]) => (
+            <div key={attrName} className="flex items-center text-sm">
+              <span className="text-gray-500 mr-2">{attrName}:</span>
+              <div className="flex flex-wrap gap-1">
+                {Array.from(values).map((value) => {
+                  // Verificar si la variante seleccionada tiene este atributo con este valor
+                  const isSelected = selectedVariant.attributes.some(
+                    (attr) => attr.name === attrName && attr.value === value
+                  );
+
+                  // Encontrar variantes con este atributo
+                  const variantWithAttr = variantProduct.variants.findIndex(
+                    (variant) =>
+                      variant.attributes.some(
+                        (attr) => attr.name === attrName && attr.value === value
+                      )
+                  );
+
+                  return (
+                    <button
+                      key={value}
+                      className={`text-xs px-2 py-0.5 rounded cursor-pointer ${
+                        isSelected
+                          ? "bg-primary/10 text-primary border border-primary"
+                          : "bg-gray-100 text-gray-700 border border-transparent"
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (variantWithAttr >= 0) {
+                          setSelectedVariantIndex(variantWithAttr);
+                        }
+                      }}
+                    >
+                      {value}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Precio */}
+        <div className="flex items-center gap-2 mb-3">
+          {showPriceRange ? (
+            <span className="text-lg font-bold text-primary">
+              S/ {minPrice.toFixed(2)} - S/ {maxPrice.toFixed(2)}
+            </span>
+          ) : (
+            <span className="text-lg font-bold text-primary">
+              S/ {selectedVariant.price.toFixed(2)}
+            </span>
+          )}
+        </div>
+
+        {/* Botón de agregar al carrito */}
+        <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors flex items-center justify-center gap-2">
+          <ShoppingCart className="h-4 w-4" />
+          Agregar al carrito
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
