@@ -1,11 +1,17 @@
 import React from "react";
-import Link from "next/link";
-import { MapPin, Heart, User } from "lucide-react";
+import { MapPin, Heart } from "lucide-react";
 import CartButton from "../ui/CartButton";
+// import dynamic from "next/dynamic";
+
+// // Importar AuthButton como un componente de cliente sin SSR
+// const ClientAuthButton = dynamic(() => import("../ui/AuthButton"), {
+//   ssr: false,
+// });
 import Logo from "../ui/Logo";
 import SearchBar from "../ui/SearchBar";
 import Navigation from "../ui/Navigation";
 import type { MegaMenuCategories } from "@/types/navigation";
+import AuthButton from "../ui/AuthButton";
 
 interface HeaderProps {
   megaMenuCategories: MegaMenuCategories;
@@ -40,10 +46,7 @@ const Header = async ({ megaMenuCategories }: HeaderProps) => {
               <span className="text-xs mt-1">Wishlist</span>
             </button>
             <CartButton />
-            <Link href="/login" className="flex flex-col items-center">
-              <User className="h-6 w-6" />
-              <span className="text-xs mt-1">Cuenta</span>
-            </Link>
+            <AuthButton />
           </div>
         </div>
       </div>
