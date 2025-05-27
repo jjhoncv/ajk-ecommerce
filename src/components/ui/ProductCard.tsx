@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Heart, Star, Clock, ShoppingCart } from "lucide-react";
 import ButtonAddToCart from "./ButtonAddToCart";
-import { ProductDTO } from "@/interfaces/dtos";
+import { ProductDTO } from "@/dto";
+import { hydrateProductDTO } from "@/utils/hydrators/product-card.hydrator";
 import Link from "next/link";
 
 export interface BaseProduct {
@@ -46,7 +47,9 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
 
   // Renderizar producto con variantes
   if (isVariantProduct) {
-    const variantProduct = product.product;
+    // Hidratar el producto para asegurar que los tipos sean correctos
+    const hydratedProduct = hydrateProductDTO(product.product);
+    const variantProduct = hydratedProduct.product;
     const selectedVariant = variantProduct.variants[selectedVariantIndex];
 
     // Encontrar la imagen principal de la variante seleccionada
@@ -78,13 +81,24 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
       <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
         <Link href={`/productos/${variantProduct.id}`} className="block">
           <div className="relative mb-4">
-            <Image
-              src={mainImage}
-              alt={variantProduct.name}
-              width={400}
-              height={300}
-              className="w-full h-48 object-cover rounded-lg"
-            />
+            {/* Usar una imagen estática o una imagen optimizada según la URL */}
+            {mainImage.includes("?") ? (
+              // Para URLs con parámetros de consulta, usar img en lugar de Image
+              <img
+                src={mainImage}
+                alt={variantProduct.name}
+                className="w-full h-48 object-cover rounded-lg"
+              />
+            ) : (
+              // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
+              <Image
+                src={mainImage}
+                alt={variantProduct.name}
+                width={400}
+                height={300}
+                className="w-full h-48 object-cover rounded-lg"
+              />
+            )}
 
             {/* Etiqueta de marca */}
             <div className="absolute top-2 left-2">
@@ -192,22 +206,37 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           isRegularProduct ? "mb-4" : "aspect-square mb-4"
         }`}
       >
-        <Image
-          src={product.image}
-          alt={product.name}
-          {...(isRegularProduct
-            ? {
-                width: 400,
-                height: 300,
-                className: "w-full h-48 object-cover rounded-lg",
-              }
-            : {
-                fill: true,
-                sizes:
-                  "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
-                className: "object-cover rounded-lg",
-              })}
-        />
+        {/* Usar una imagen estática o una imagen optimizada según la URL */}
+        {product.image.includes("?") ? (
+          // Para URLs con parámetros de consulta, usar img en lugar de Image
+          <img
+            src={product.image}
+            alt={product.name}
+            className={`${
+              isRegularProduct
+                ? "w-full h-48 object-cover rounded-lg"
+                : "w-full h-full object-cover rounded-lg"
+            }`}
+          />
+        ) : (
+          // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
+          <Image
+            src={product.image}
+            alt={product.name}
+            {...(isRegularProduct
+              ? {
+                  width: 400,
+                  height: 300,
+                  className: "w-full h-48 object-cover rounded-lg",
+                }
+              : {
+                  fill: true,
+                  sizes:
+                    "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
+                  className: "object-cover rounded-lg",
+                })}
+          />
+        )}
 
         {isRegularProduct && (
           <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">

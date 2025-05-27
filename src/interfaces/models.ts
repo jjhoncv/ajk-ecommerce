@@ -60,9 +60,9 @@ export interface ProductVariant {
 // Imagen de variante
 export interface VariantImage {
   id: number;
-  variantId: number;
-  imageUrl: string;
-  isPrimary: boolean;
+  variant_id: number;
+  image_url: string;
+  is_primary: boolean;
 }
 
 // Relación producto-categoría

@@ -4,11 +4,16 @@ import ProductService from "@/services/productService";
 import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
 import SearchSorting from "@/components/search/SearchSorting";
-import { ProductSearchFiltersDTO } from "@/interfaces/dtos";
+import { ProductSearchFiltersDTO } from "@/dto";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getHomeData } from "@/services/homeService";
+import {
+  hydrateSearchFiltersProps,
+  hydrateSearchResultsProps,
+  hydrateSearchSortingProps,
+} from "@/utils/hydrators/search.hydrator";
 
 export const metadata: Metadata = {
   title: "Búsqueda de Productos | AJK E-commerce",
@@ -31,23 +36,21 @@ interface SearchPageProps {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   // Obtener datos para el header y footer
   const homeData = await getHomeData();
+
+  // Esperar a searchParams antes de usar sus propiedades
+  const params = await searchParams;
+
   // Convertir parámetros de búsqueda a filtros
   const filters: ProductSearchFiltersDTO = {
-    query: searchParams.q,
-    categoryId: searchParams.category
-      ? parseInt(searchParams.category)
-      : undefined,
-    brandId: searchParams.brand ? parseInt(searchParams.brand) : undefined,
-    minPrice: searchParams.minPrice
-      ? parseFloat(searchParams.minPrice)
-      : undefined,
-    maxPrice: searchParams.maxPrice
-      ? parseFloat(searchParams.maxPrice)
-      : undefined,
-    page: searchParams.page ? parseInt(searchParams.page) : 1,
+    query: params.q,
+    categoryId: params.category ? parseInt(params.category) : undefined,
+    brandId: params.brand ? parseInt(params.brand) : undefined,
+    minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
+    page: params.page ? parseInt(params.page) : 1,
     limit: 12,
     sort:
-      (searchParams.sort as
+      (params.sort as
         | "price_asc"
         | "price_desc"
         | "name_asc"
@@ -59,10 +62,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   // Formato esperado: attr_1=2,3&attr_2=5
   const attributeFilters: { [attributeId: number]: number[] } = {};
 
-  Object.keys(searchParams).forEach((key) => {
+  Object.keys(params).forEach((key) => {
     if (key.startsWith("attr_")) {
       const attributeId = parseInt(key.replace("attr_", ""));
-      const optionIds = (searchParams[key] as string)
+      const optionIds = (params[key] as string)
         .split(",")
         .map((id) => parseInt(id));
       attributeFilters[attributeId] = optionIds;
@@ -87,20 +90,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <Header megaMenuCategories={homeData.megaMenuCategories} />
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">
-          {searchParams.q
-            ? `Resultados para "${searchParams.q}"`
-            : "Todos los productos"}
+          {params.q ? `Resultados para "${params.q}"` : "Todos los productos"}
         </h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filtros laterales */}
           <div className="w-full lg:w-1/4">
             <SearchFilters
-              categories={categories}
-              brands={brands}
-              attributes={attributes}
-              availableFilters={searchResults.filters}
-              currentFilters={filters}
+              {...hydrateSearchFiltersProps(
+                categories,
+                brands,
+                attributes,
+                searchResults,
+                filters
+              )}
             />
           </div>
 
@@ -111,17 +114,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {searchResults.totalCount} productos encontrados
               </p>
 
-              <SearchSorting currentSort={filters.sort} />
+              <SearchSorting {...hydrateSearchSortingProps(filters)} />
             </div>
 
             <SearchResults
-              products={searchResults.products.map((product) => ({
-                product,
-                type: "variant",
-              }))}
-              totalPages={searchResults.totalPages}
-              currentPage={searchResults.page}
-              currentFilters={filters}
+              {...hydrateSearchResultsProps(searchResults, filters)}
             />
           </div>
         </div>

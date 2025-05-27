@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ui/ProductCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ProductDTO, ProductSearchFiltersDTO } from "@/interfaces/dtos";
+import { ProductDTO, ProductSearchFiltersDTO } from "@/dto";
+import { hydrateProductDTOs } from "@/utils/hydrators/product-card.hydrator";
 
 interface SearchResultsProps {
   products: {
@@ -21,6 +22,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   totalPages,
   currentPage,
 }) => {
+  // Hidratar los productos para asegurar que los tipos sean correctos
+  const hydratedProducts = hydrateProductDTOs(products.map((p) => p.product));
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -72,7 +75,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
       {products.length > 0 ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product, index) => (
+            {hydratedProducts.map((product, index) => (
               <ProductCard key={index} product={product} />
             ))}
           </div>
