@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ui/ProductCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutGrid, List } from "lucide-react";
 import { ProductDTO, ProductSearchFiltersDTO } from "@/dto";
 import { hydrateProductDTOs } from "@/utils/hydrators/product-card.hydrator";
 
@@ -15,13 +15,17 @@ interface SearchResultsProps {
   totalPages: number;
   currentPage: number;
   currentFilters: ProductSearchFiltersDTO; // Mantenemos este parámetro para futuras extensiones
+  defaultView?: "grid" | "list"; // Modo de visualización por defecto
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   products,
   totalPages,
   currentPage,
+  defaultView = "grid",
 }) => {
+  // Estado para controlar el modo de visualización (grid o list)
+  const [viewMode, setViewMode] = React.useState<"grid" | "list">(defaultView);
   // Hidratar los productos para asegurar que los tipos sean correctos
   const hydratedProducts = hydrateProductDTOs(products.map((p) => p.product));
   const pathname = usePathname();
@@ -74,9 +78,50 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     <div>
       {products.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Selector de vista grid/list */}
+          <div className="flex justify-end mb-4">
+            <div className="flex items-center border rounded-lg overflow-hidden">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`px-3 py-2 flex items-center ${
+                  viewMode === "grid"
+                    ? "bg-primary text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Ver como cuadrícula"
+              >
+                <LayoutGrid className="h-4 w-4 mr-1" />
+                <span className="text-sm">Cuadrícula</span>
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`px-3 py-2 flex items-center ${
+                  viewMode === "list"
+                    ? "bg-primary text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Ver como lista"
+              >
+                <List className="h-4 w-4 mr-1" />
+                <span className="text-sm">Lista</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Productos en modo grid o list */}
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                : "flex flex-col space-y-4"
+            }
+          >
             {hydratedProducts.map((product, index) => (
-              <ProductCard key={index} product={product} />
+              <ProductCard
+                key={index}
+                product={product}
+                layout={viewMode === "list" ? "list" : "grid"}
+              />
             ))}
           </div>
 

@@ -114,11 +114,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {searchResults.totalCount} productos encontrados
               </p>
 
-              <SearchSorting {...hydrateSearchSortingProps(filters)} />
+              <div className="flex items-center gap-4">
+                <SearchSorting {...hydrateSearchSortingProps(filters)} />
+              </div>
             </div>
 
             <SearchResults
               {...hydrateSearchResultsProps(searchResults, filters)}
+              defaultView="grid"
             />
           </div>
         </div>

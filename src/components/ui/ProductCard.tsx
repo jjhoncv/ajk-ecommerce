@@ -35,9 +35,17 @@ interface VariantProduct {
 
 type ProductProps = {
   product: RegularProduct | DealProduct | VariantProduct;
+  layout?: "grid" | "list";
+  showCategories?: boolean;
+  className?: string;
 };
 
-const ProductCard: React.FC<ProductProps> = ({ product }) => {
+const ProductCard: React.FC<ProductProps> = ({
+  product,
+  layout = "grid",
+  showCategories = true,
+  className = "",
+}) => {
   const isRegularProduct = product.type === "regular";
   const isDealProduct = product.type === "deal";
   const isVariantProduct = product.type === "variant";
@@ -51,6 +59,8 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
     const hydratedProduct = hydrateProductDTO(product.product);
     const variantProduct = hydratedProduct.product;
     const selectedVariant = variantProduct.variants[selectedVariantIndex];
+
+    console.log("variantProduct", JSON.stringify(variantProduct));
 
     // Encontrar la imagen principal de la variante seleccionada
     const mainImage =
@@ -78,8 +88,17 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
     });
 
     return (
-      <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
-        <Link href={`/productos/${variantProduct.id}`} className="block">
+      <div
+        className={`bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200 ${className} ${
+          layout === "list"
+            ? "flex flex-col md:flex-row md:items-center md:gap-6"
+            : ""
+        }`}
+      >
+        <Link
+          href={`/productos/${variantProduct.id}`}
+          className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
+        >
           <div className="relative mb-4">
             {/* Usar una imagen estática o una imagen optimizada según la URL */}
             {mainImage.includes("?") ? (
@@ -114,104 +133,118 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
           </div>
         </Link>
 
-        {/* Categorías */}
-        <div className="flex flex-wrap gap-1 mb-1">
-          {variantProduct.categories.slice(0, 2).map((category) => (
-            <span
-              key={category.id}
-              className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
-            >
-              {category.name}
-            </span>
-          ))}
-        </div>
-
-        {/* Nombre del producto */}
-        <Link href={`/productos/${variantProduct.id}`}>
-          <h3 className="font-medium mb-1 hover:text-primary transition-colors">
-            {variantProduct.name}
-          </h3>
-        </Link>
-
-        {/* Atributos con selección */}
-        <div className="space-y-2 mb-3">
-          {Object.entries(attributeGroups).map(([attrName, values]) => (
-            <div key={attrName} className="flex items-center text-sm">
-              <span className="text-gray-500 mr-2">{attrName}:</span>
-              <div className="flex flex-wrap gap-1">
-                {Array.from(values).map((value) => {
-                  // Verificar si la variante seleccionada tiene este atributo con este valor
-                  const isSelected = selectedVariant.attributes.some(
-                    (attr) => attr.name === attrName && attr.value === value
-                  );
-
-                  // Encontrar variantes con este atributo
-                  const variantWithAttr = variantProduct.variants.findIndex(
-                    (variant) =>
-                      variant.attributes.some(
-                        (attr) => attr.name === attrName && attr.value === value
-                      )
-                  );
-
-                  return (
-                    <button
-                      key={value}
-                      className={`text-xs px-2 py-0.5 rounded cursor-pointer ${
-                        isSelected
-                          ? "bg-primary/10 text-primary border border-primary"
-                          : "bg-gray-100 text-gray-700 border border-transparent"
-                      }`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (variantWithAttr >= 0) {
-                          setSelectedVariantIndex(variantWithAttr);
-                        }
-                      }}
-                    >
-                      {value}
-                    </button>
-                  );
-                })}
-              </div>
+        <div className={layout === "list" ? "md:w-2/3" : ""}>
+          {/* Categorías */}
+          {showCategories && (
+            <div className="flex flex-wrap gap-1 mb-1">
+              {variantProduct.categories.slice(0, 2).map((category) => (
+                <span
+                  key={category.id}
+                  className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
+                >
+                  {category.name}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* Precio */}
-        <div className="flex items-center gap-2 mb-3">
-          {showPriceRange ? (
-            <span className="text-lg font-bold text-primary">
-              S/ {minPrice.toFixed(2)} - S/ {maxPrice.toFixed(2)}
-            </span>
-          ) : (
-            <span className="text-lg font-bold text-primary">
-              S/ {selectedVariant.price.toFixed(2)}
-            </span>
           )}
-        </div>
 
-        {/* Botón de agregar al carrito */}
-        <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors flex items-center justify-center gap-2">
-          <ShoppingCart className="h-4 w-4" />
-          Agregar al carrito
-        </button>
+          {/* Nombre del producto */}
+          <Link href={`/productos/${variantProduct.id}`}>
+            <h3 className="font-medium mb-1 hover:text-primary transition-colors">
+              {variantProduct.name}
+            </h3>
+          </Link>
+
+          {/* Atributos con selección */}
+          <div className="space-y-2 mb-3">
+            {Object.entries(attributeGroups).map(([attrName, values]) => (
+              <div key={attrName} className="flex items-center text-sm">
+                <span className="text-gray-500 mr-2">{attrName}:</span>
+                <div className="flex flex-wrap gap-1">
+                  {Array.from(values).map((value) => {
+                    // Verificar si la variante seleccionada tiene este atributo con este valor
+                    const isSelected = selectedVariant.attributes.some(
+                      (attr) => attr.name === attrName && attr.value === value
+                    );
+
+                    // Encontrar variantes con este atributo
+                    const variantWithAttr = variantProduct.variants.findIndex(
+                      (variant) =>
+                        variant.attributes.some(
+                          (attr) =>
+                            attr.name === attrName && attr.value === value
+                        )
+                    );
+
+                    return (
+                      <button
+                        key={value}
+                        className={`text-xs px-2 py-0.5 rounded cursor-pointer ${
+                          isSelected
+                            ? "bg-primary/10 text-primary border border-primary"
+                            : "bg-gray-100 text-gray-700 border border-transparent"
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (variantWithAttr >= 0) {
+                            setSelectedVariantIndex(variantWithAttr);
+                          }
+                        }}
+                      >
+                        {value}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Precio */}
+          <div className="flex items-center gap-2 mb-3">
+            {showPriceRange ? (
+              <span className="text-lg font-bold text-primary">
+                S/ {minPrice.toFixed(2)} - S/ {maxPrice.toFixed(2)}
+              </span>
+            ) : (
+              <span className="text-lg font-bold text-primary">
+                S/ {selectedVariant.price.toFixed(2)}
+              </span>
+            )}
+          </div>
+
+          {/* Botón de agregar al carrito */}
+          <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors flex items-center justify-center gap-2">
+            <ShoppingCart className="h-4 w-4" />
+            Agregar al carrito
+          </button>
+        </div>
       </div>
     );
   }
 
+  // Para productos regulares y ofertas
+  const regularOrDealProduct = product as RegularProduct | DealProduct;
+
   return (
-    <div className="bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200">
+    <div
+      className={`bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200 ${className} ${
+        layout === "list"
+          ? "flex flex-col md:flex-row md:items-center md:gap-6"
+          : ""
+      }`}
+    >
       <div
         className={`relative ${
           isRegularProduct ? "mb-4" : "aspect-square mb-4"
-        }`}
+        } ${layout === "list" ? "md:w-1/3" : ""}`}
       >
         {/* Usar una imagen estática o una imagen optimizada según la URL */}
-        {product.image.includes("?") ? (
+        {regularOrDealProduct.image.includes("?") ? (
           // Para URLs con parámetros de consulta, usar img en lugar de Image
           <img
-            src={product.image}
-            alt={product.name}
+            src={regularOrDealProduct.image}
+            alt={regularOrDealProduct.name}
             className={`${
               isRegularProduct
                 ? "w-full h-48 object-cover rounded-lg"
@@ -221,8 +254,8 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
         ) : (
           // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
           <Image
-            src={product.image}
-            alt={product.name}
+            src={regularOrDealProduct.image}
+            alt={regularOrDealProduct.name}
             {...(isRegularProduct
               ? {
                   width: 400,
@@ -246,69 +279,71 @@ const ProductCard: React.FC<ProductProps> = ({ product }) => {
 
         {isDealProduct && (
           <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-            {product.discount}% OFF
+            {(product as DealProduct).discount}% OFF
           </span>
         )}
       </div>
 
-      <h3 className={`font-medium ${isRegularProduct ? "mb-1" : "mb-2"}`}>
-        {product.name}
-      </h3>
+      <div className={layout === "list" ? "md:w-2/3" : ""}>
+        <h3 className={`font-medium ${isRegularProduct ? "mb-1" : "mb-2"}`}>
+          {regularOrDealProduct.name}
+        </h3>
 
-      {isRegularProduct && (
-        <div className="flex items-center mb-2">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              className={`h-4 w-4 ${
-                i < Math.floor((product as RegularProduct).rating)
-                  ? "fill-yellow-400 text-yellow-400"
-                  : "text-gray-300"
-              }`}
-            />
-          ))}
-          <span className="text-sm text-gray-500 ml-1">
-            ({(product as RegularProduct).reviews})
-          </span>
-        </div>
-      )}
-
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-lg font-bold text-primary">
-          S/ {product.price}
-        </span>
-        {product.originalPrice && (
-          <span className="text-sm text-gray-500 line-through">
-            S/ {product.originalPrice}
-          </span>
-        )}
-      </div>
-
-      {isDealProduct && (
-        <>
-          <div className="mb-3">
-            <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Vendidos: {30 - (product as DealProduct).stock}</span>
-              <span>Disponible: {(product as DealProduct).stock}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-secondary h-2 rounded-full"
-                style={{
-                  width: `${
-                    ((30 - (product as DealProduct).stock) / 30) * 100
-                  }%`,
-                }}
+        {isRegularProduct && (
+          <div className="flex items-center mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+                  i < Math.floor((product as RegularProduct).rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
+                }`}
               />
+            ))}
+            <span className="text-sm text-gray-500 ml-1">
+              ({(product as RegularProduct).reviews})
+            </span>
+          </div>
+        )}
+
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-lg font-bold text-primary">
+            S/ {regularOrDealProduct.price}
+          </span>
+          {regularOrDealProduct.originalPrice && (
+            <span className="text-sm text-gray-500 line-through">
+              S/ {regularOrDealProduct.originalPrice}
+            </span>
+          )}
+        </div>
+
+        {isDealProduct && (
+          <>
+            <div className="mb-3">
+              <div className="flex justify-between text-sm text-gray-600 mb-1">
+                <span>Vendidos: {30 - (product as DealProduct).stock}</span>
+                <span>Disponible: {(product as DealProduct).stock}</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-secondary h-2 rounded-full"
+                  style={{
+                    width: `${
+                      ((30 - (product as DealProduct).stock) / 30) * 100
+                    }%`,
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center gap-2 text-sm font-medium text-gray-600 mb-3">
-            <Clock className="h-4 w-4" />
-            <span>Oferta termina en: {(product as DealProduct).timer}</span>
-          </div>
-        </>
-      )}
-      <ButtonAddToCart {...product} />
+            <div className="flex items-center justify-center gap-2 text-sm font-medium text-gray-600 mb-3">
+              <Clock className="h-4 w-4" />
+              <span>Oferta termina en: {(product as DealProduct).timer}</span>
+            </div>
+          </>
+        )}
+        <ButtonAddToCart {...regularOrDealProduct} />
+      </div>
     </div>
   );
 };
