@@ -35,9 +35,9 @@ export interface Product {
   id: number;
   name: string;
   description: string | null;
-  brandId: number;
+  brand_id: number;
   brand?: Brand;
-  basePrice: number;
+  base_price: number;
   categories?: Category[];
   variants?: ProductVariant[];
   createdAt: Date;

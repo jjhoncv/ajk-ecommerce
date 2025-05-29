@@ -6,10 +6,10 @@ import useCart, { CartItem } from "@/hooks/useCart";
 interface CartContextType {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  incrementQuantity: (id: string) => void;
-  decrementQuantity: (id: string) => void;
+  removeItem: (id: number) => void;
+  updateQuantity: (id: number, quantity: number) => void;
+  incrementQuantity: (id: number) => void;
+  decrementQuantity: (id: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;

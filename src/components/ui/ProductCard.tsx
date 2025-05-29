@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Heart, Star, Clock, ShoppingCart } from "lucide-react";
+import { Heart, Star, Clock } from "lucide-react";
 import ButtonAddToCart from "./ButtonAddToCart";
 import { ProductDTO } from "@/dto";
 import { hydrateProductDTO } from "@/utils/hydrators/product-card.hydrator";
 import Link from "next/link";
 
 export interface BaseProduct {
-  id: string;
+  id: number;
   name: string;
   price: number;
   originalPrice?: number;
@@ -59,8 +59,6 @@ const ProductCard: React.FC<ProductProps> = ({
     const hydratedProduct = hydrateProductDTO(product.product);
     const variantProduct = hydratedProduct.product;
     const selectedVariant = variantProduct.variants[selectedVariantIndex];
-
-    console.log("variantProduct", JSON.stringify(variantProduct));
 
     // Encontrar la imagen principal de la variante seleccionada
     const mainImage =
@@ -214,10 +212,12 @@ const ProductCard: React.FC<ProductProps> = ({
           </div>
 
           {/* Botón de agregar al carrito */}
-          <button className="w-full mt-3 bg-secondary border-secondary border text-white py-2 rounded-lg hover:bg-transparent hover:border-secondary hover:border hover:text-secondary transition-colors flex items-center justify-center gap-2">
-            <ShoppingCart className="h-4 w-4" />
-            Agregar al carrito
-          </button>
+          <ButtonAddToCart
+            id={selectedVariant.id}
+            image={selectedVariant.images[0].imageUrl}
+            name={variantProduct.name}
+            price={selectedVariant.price}
+          />
         </div>
       </div>
     );

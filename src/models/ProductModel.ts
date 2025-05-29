@@ -160,6 +160,8 @@ export class ProductModel {
     // Calcular filtros disponibles
     const availableFilters = await this.calculateAvailableFilters(filters);
 
+    console.log("productDTOs", productDTOs);
+
     return {
       products: productDTOs,
       totalCount,
@@ -171,7 +173,7 @@ export class ProductModel {
 
   private async mapProductToDTO(product: Product): Promise<ProductDTO> {
     // Obtener la marca
-    const brand = await this.brandModel.getBrandById(product.brandId);
+    const brand = await this.brandModel.getBrandById(product.brand_id);
 
     // Obtener las categorías
     const categories = await this.categoryModel.getCategoriesByProductId(
@@ -194,9 +196,9 @@ export class ProductModel {
       id: product.id,
       name: product.name,
       description: product.description,
-      brandId: product.brandId,
+      brandId: product.brand_id,
       brandName: brand?.name || "",
-      basePrice: product.basePrice,
+      basePrice: product.base_price,
       categories: categories.map((cat) => ({
         id: cat.id,
         name: cat.name,

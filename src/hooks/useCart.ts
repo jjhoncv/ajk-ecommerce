@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 export interface CartItem {
-  id: string;
+  id: number;
   name: string;
   price: number;
   image: string;
@@ -76,7 +76,7 @@ export function useCart() {
   };
 
   // Eliminar un item del carrito
-  const removeItem = (id: string) => {
+  const removeItem = (id: number) => {
     const itemToRemove = items.find((item) => item.id === id);
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
 
@@ -86,7 +86,7 @@ export function useCart() {
   };
 
   // Actualizar la cantidad de un item
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = (id: number, quantity: number) => {
     if (quantity <= 0) {
       removeItem(id);
       return;
@@ -98,7 +98,7 @@ export function useCart() {
   };
 
   // Incrementar cantidad
-  const incrementQuantity = (id: string) => {
+  const incrementQuantity = (id: number) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
@@ -107,7 +107,7 @@ export function useCart() {
   };
 
   // Decrementar cantidad
-  const decrementQuantity = (id: string) => {
+  const decrementQuantity = (id: number) => {
     setItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === id) {
