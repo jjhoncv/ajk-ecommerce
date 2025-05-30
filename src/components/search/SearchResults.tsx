@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ui/ProductCard";
+// Nota: La importación no cambia, pero ahora usa el componente refactorizado
 import { ChevronLeft, ChevronRight, LayoutGrid, List } from "lucide-react";
 import { ProductDTO, ProductSearchFiltersDTO } from "@/dto";
 import { hydrateProductDTOs } from "@/utils/hydrators/product-card.hydrator";
