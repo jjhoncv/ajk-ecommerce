@@ -1,6 +1,7 @@
 import { ProductVariant, VariantImage } from "@/interfaces/models";
 import { ProductVariantDTO } from "@/dto";
 import { executeQuery } from "@/lib/db";
+import PromotionModel from "./PromotionModel";
 
 export class ProductVariantModel {
   public async getVariants(): Promise<ProductVariantDTO[]> {
@@ -137,7 +138,9 @@ export class ProductVariantModel {
           vao.attribute_option_id,
           a.id as attribute_id,
           a.name as attribute_name,
-          ao.value as attribute_value
+          a.display_type,
+          ao.value as attribute_value,
+          ao.additional_cost
         FROM 
           variant_attribute_options vao
         JOIN 
@@ -156,9 +159,20 @@ export class ProductVariantModel {
       name: option.attribute_name,
       value: option.attribute_value,
       optionId: option.attribute_option_id,
+      display_type: option.display_type,
+      additional_cost: option.additional_cost
+        ? Number(option.additional_cost)
+        : undefined,
     }));
 
-    return {
+    // Obtener la mejor promoción para esta variante
+    const bestPromotion = await PromotionModel.getBestPromotionForVariant(
+      variant.id,
+      Number(variant.price)
+    );
+
+    // Crear el DTO de la variante
+    const variantDTO: ProductVariantDTO = {
       id: variant.id,
       productId: variant.productId,
       sku: variant.sku,
@@ -171,6 +185,38 @@ export class ProductVariantModel {
       })),
       attributes,
     };
+
+    // Añadir información de promoción si existe
+    if (bestPromotion && bestPromotion.promotion) {
+      // Calcular el precio promocional si no está explícitamente definido
+      let promotionPrice = bestPromotion.promotionPrice;
+
+      if (promotionPrice === null && bestPromotion.promotion) {
+        if (bestPromotion.promotion.discountType === "percentage") {
+          promotionPrice =
+            Number(variant.price) *
+            (1 - bestPromotion.promotion.discountValue / 100);
+        } else {
+          promotionPrice =
+            Number(variant.price) - bestPromotion.promotion.discountValue;
+        }
+        // Asegurar que el precio no sea negativo
+        promotionPrice = Math.max(promotionPrice, 0);
+      }
+
+      variantDTO.promotion = {
+        id: bestPromotion.promotion.id,
+        name: bestPromotion.promotion.name,
+        discountType: bestPromotion.promotion.discountType,
+        discountValue: bestPromotion.promotion.discountValue,
+        promotionPrice: promotionPrice,
+        startDate: bestPromotion.promotion.startDate,
+        endDate: bestPromotion.promotion.endDate,
+        stockLimit: bestPromotion.stockLimit,
+      };
+    }
+
+    return variantDTO;
   }
 }
 

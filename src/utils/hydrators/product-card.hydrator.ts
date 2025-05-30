@@ -1,12 +1,13 @@
 import { ProductDTO } from "@/dto";
-import { VariantProductProps } from "@/interfaces/components/product-card.interface";
 
 /**
  * Hidratador para convertir un ProductDTO a un objeto compatible con el componente ProductCard
  * @param productDTO El DTO del producto que viene de la base de datos
  * @returns Un objeto que cumple con la interfaz ProductProps para el componente ProductCard
  */
-export function hydrateProductDTO(productDTO: ProductDTO): VariantProductProps {
+export function hydrateProductDTO(productDTO: ProductDTO): {
+  product: ProductDTO;
+} {
   return {
     product: {
       id: Number(productDTO.id),
@@ -30,6 +31,8 @@ export function hydrateProductDTO(productDTO: ProductDTO): VariantProductProps {
           name: attr.name,
           value: attr.value,
           optionId: Number(attr.optionId),
+          display_type: attr.display_type,
+          additional_cost: attr.additional_cost,
         })),
         images: variant.images.map((img) => ({
           id: Number(img.id),
@@ -39,10 +42,28 @@ export function hydrateProductDTO(productDTO: ProductDTO): VariantProductProps {
               ? img.isPrimary === "1" || img.isPrimary === "true"
               : Boolean(img.isPrimary),
         })),
+        // Incluir información de promoción si existe
+        promotion: variant.promotion
+          ? {
+              id: Number(variant.promotion.id),
+              name: variant.promotion.name,
+              discountType: variant.promotion.discountType,
+              discountValue: Number(variant.promotion.discountValue),
+              promotionPrice:
+                variant.promotion.promotionPrice !== null
+                  ? Number(variant.promotion.promotionPrice)
+                  : null,
+              startDate: new Date(variant.promotion.startDate),
+              endDate: new Date(variant.promotion.endDate),
+              stockLimit:
+                variant.promotion.stockLimit !== null
+                  ? Number(variant.promotion.stockLimit)
+                  : null,
+            }
+          : undefined,
       })),
       mainImage: productDTO.mainImage,
     },
-    type: "variant",
   };
 }
 
@@ -53,6 +74,6 @@ export function hydrateProductDTO(productDTO: ProductDTO): VariantProductProps {
  */
 export function hydrateProductDTOs(
   productDTOs: ProductDTO[]
-): VariantProductProps[] {
+): { product: ProductDTO }[] {
   return productDTOs.map((productDTO) => hydrateProductDTO(productDTO));
 }

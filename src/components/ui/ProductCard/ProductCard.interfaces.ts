@@ -1,49 +1,11 @@
 import { ProductDTO } from "@/dto";
 
-// Interfaces base para los productos
-export interface BaseProduct {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-}
-
-// Producto regular con rating y reviews
-export interface RegularProduct extends BaseProduct {
-  rating: number;
-  reviews: number;
-  type: "regular";
-}
-
-// Producto en oferta con descuento, timer y stock
-export interface DealProduct extends BaseProduct {
-  discount: number;
-  timer: string;
-  stock: number;
-  type: "deal";
-}
-
-// Producto con variantes
-export interface VariantProduct {
-  product: ProductDTO;
-  type: "variant";
-  id?: number;
-  price?: number;
-  sku?: string;
-  stock?: number;
-  // Propiedades adicionales para variantes individuales en resultados de búsqueda
-  variantId?: number;
-  variantSku?: string;
-  variantPrice?: number;
-  variantStock?: number;
-  minVariantPrice?: number;
-  basePrice?: number;
-}
-
 // Props para el componente ProductCard
 export interface ProductCardProps {
-  product: RegularProduct | DealProduct | VariantProduct;
+  product: {
+    product: ProductDTO;
+    type?: "variant"; // Hacemos el tipo opcional ya que todos los productos son variantes
+  };
   layout?: "grid" | "list";
   showCategories?: boolean;
   className?: string;
@@ -70,8 +32,8 @@ export interface ProductCardVariantsProps {
   showCategories?: boolean;
 }
 
-// Props para el componente ProductCardDeal
-export interface ProductCardDealProps {
-  product: DealProduct;
+// Props para el componente ProductCardPromotion
+export interface ProductCardPromotionProps {
+  variant: ProductDTO["variants"][0];
   layout?: "grid" | "list";
 }

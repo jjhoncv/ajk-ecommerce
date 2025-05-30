@@ -4,11 +4,13 @@ import {
   ProductSearchResultDTO,
   ProductVariantDTO,
 } from "@/dto";
+import { PromotionVariantDTO } from "@/dto/promotion.dto";
 import { Product } from "@/interfaces/models";
 import { executeQuery } from "@/lib/db";
 import { BrandModel } from "./BrandModel";
 import { CategoryModel } from "./CategoryModel";
 import { ProductVariantModel } from "./ProductVariantModel";
+import PromotionModel from "./PromotionModel";
 
 export class ProductModel {
   private brandModel = new BrandModel();
@@ -266,7 +268,51 @@ export class ProductModel {
     );
 
     // Obtener las variantes
-    const variants = await this.variantModel.getVariantsByProductId(product.id);
+    let variants = await this.variantModel.getVariantsByProductId(product.id);
+
+    // Obtener promociones para cada variante
+    variants = await Promise.all(
+      variants.map(async (variant) => {
+        const bestPromotion = await PromotionModel.getBestPromotionForVariant(
+          variant.id,
+          Number(variant.price)
+        );
+
+        if (bestPromotion && bestPromotion.promotion) {
+          // Calcular el precio promocional si no está explícitamente definido
+          let promotionPrice = bestPromotion.promotionPrice;
+
+          if (promotionPrice === null && bestPromotion.promotion) {
+            if (bestPromotion.promotion.discountType === "percentage") {
+              promotionPrice =
+                Number(variant.price) *
+                (1 - bestPromotion.promotion.discountValue / 100);
+            } else {
+              promotionPrice =
+                Number(variant.price) - bestPromotion.promotion.discountValue;
+            }
+            // Asegurar que el precio no sea negativo
+            promotionPrice = Math.max(promotionPrice, 0);
+          }
+
+          return {
+            ...variant,
+            promotion: {
+              id: bestPromotion.promotion.id,
+              name: bestPromotion.promotion.name,
+              discountType: bestPromotion.promotion.discountType,
+              discountValue: bestPromotion.promotion.discountValue,
+              promotionPrice: promotionPrice,
+              startDate: bestPromotion.promotion.startDate,
+              endDate: bestPromotion.promotion.endDate,
+              stockLimit: bestPromotion.stockLimit,
+            },
+          };
+        }
+
+        return variant;
+      })
+    );
 
     // Encontrar la imagen principal (primera imagen de la primera variante)
     let mainImage = null;
@@ -277,8 +323,15 @@ export class ProductModel {
         : variants[0].images[0].imageUrl;
     }
 
-    // Calcular el precio mínimo de las variantes
-    const prices = variants.map((variant) => Number(variant.price));
+    // Calcular el precio mínimo de las variantes (considerando promociones)
+    const prices = variants.map((variant) => {
+      // Si hay promoción, usar el precio promocional
+      if (variant.promotion && variant.promotion.promotionPrice !== null) {
+        return Number(variant.promotion.promotionPrice);
+      }
+      return Number(variant.price);
+    });
+
     const minVariantPrice =
       prices.length > 0 ? Math.min(...prices) : Number(product.base_price);
 

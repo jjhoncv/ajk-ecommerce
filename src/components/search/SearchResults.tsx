@@ -6,12 +6,11 @@ import ProductCard from "@/components/ui/ProductCard";
 // Nota: La importación no cambia, pero ahora usa el componente refactorizado
 import { ChevronLeft, ChevronRight, LayoutGrid, List } from "lucide-react";
 import { ProductDTO, ProductSearchFiltersDTO } from "@/dto";
-import { hydrateProductDTOs } from "@/utils/hydrators/product-card.hydrator";
 
 interface SearchResultsProps {
   products: {
     product: ProductDTO;
-    type: "variant";
+    type?: "variant"; // Hacemos el tipo opcional ya que todos los productos son variantes
   }[];
   totalPages: number;
   currentPage: number;
@@ -27,8 +26,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 }) => {
   // Estado para controlar el modo de visualización (grid o list)
   const [viewMode, setViewMode] = React.useState<"grid" | "list">(defaultView);
-  // Hidratar los productos para asegurar que los tipos sean correctos
-  const hydratedProducts = hydrateProductDTOs(products.map((p) => p.product));
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -117,22 +114,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 : "flex flex-col space-y-4"
             }
           >
-            {hydratedProducts.map((product, index) => (
+            {products.map((product, index) => (
               <ProductCard
-                key={`${product.id}-${product.variantId || index}`}
-                product={{
-                  ...product,
-                  // Si es una variante individual, usar los datos específicos de la variante
-                  ...(product.variantId && {
-                    id: product.variantId,
-                    price:
-                      product.variantPrice ||
-                      product.minVariantPrice ||
-                      product.basePrice,
-                    sku: product.variantSku,
-                    stock: product.variantStock,
-                  }),
-                }}
+                key={`${product.product.id}-${index}`}
+                product={product}
                 layout={viewMode === "list" ? "list" : "grid"}
               />
             ))}

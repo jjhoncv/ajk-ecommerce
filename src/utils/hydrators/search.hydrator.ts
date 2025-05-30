@@ -127,6 +127,8 @@ export function hydrateSearchResultsProps(
             name: attr.name,
             value: attr.value,
             optionId: Number(attr.optionId),
+            display_type: attr.display_type,
+            additional_cost: attr.additional_cost,
           })),
           images: variant.images.map((img) => ({
             id: Number(img.id),
@@ -136,10 +138,28 @@ export function hydrateSearchResultsProps(
                 ? img.isPrimary === "1" || img.isPrimary === "true"
                 : Boolean(img.isPrimary),
           })),
+          // Incluir información de promoción si existe
+          promotion: variant.promotion
+            ? {
+                id: Number(variant.promotion.id),
+                name: variant.promotion.name,
+                discountType: variant.promotion.discountType,
+                discountValue: Number(variant.promotion.discountValue),
+                promotionPrice:
+                  variant.promotion.promotionPrice !== null
+                    ? Number(variant.promotion.promotionPrice)
+                    : null,
+                startDate: new Date(variant.promotion.startDate),
+                endDate: new Date(variant.promotion.endDate),
+                stockLimit:
+                  variant.promotion.stockLimit !== null
+                    ? Number(variant.promotion.stockLimit)
+                    : null,
+              }
+            : undefined,
         })),
         mainImage: product.mainImage,
       },
-      type: "variant",
     })),
     totalPages: Number(searchResult.totalPages),
     currentPage: Number(searchResult.page),

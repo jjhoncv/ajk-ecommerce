@@ -1,124 +1,129 @@
 "use client";
 import React from "react";
-import Link from "next/link";
-import ButtonAddToCart from "../ButtonAddToCart";
 import { ProductCardVariantsProps } from "./ProductCard.interfaces";
+import { groupAttributesByName } from "./ProductCard.helpers";
 
 const ProductCardVariants: React.FC<ProductCardVariantsProps> = ({
   variantProduct,
   selectedVariantIndex,
   setSelectedVariantIndex,
-  layout = "grid",
-  showCategories = true,
 }) => {
   const selectedVariant = variantProduct.variants[selectedVariantIndex];
 
-  // Obtener el precio mínimo y máximo de las variantes
-  const minPrice = Math.min(...variantProduct.variants.map((v) => v.price));
-  const maxPrice = Math.max(...variantProduct.variants.map((v) => v.price));
-
-  // Determinar si mostrar un rango de precios
-  const showPriceRange = minPrice !== maxPrice;
-
   // Agrupar atributos por nombre para mostrar opciones
-  const attributeGroups: { [key: string]: Set<string> } = {};
-
-  variantProduct.variants.forEach((variant) => {
-    variant.attributes.forEach((attr) => {
-      if (!attributeGroups[attr.name]) {
-        attributeGroups[attr.name] = new Set();
-      }
-      attributeGroups[attr.name].add(attr.value);
-    });
-  });
+  const attributeGroups = groupAttributesByName(variantProduct.variants);
 
   return (
-    <div className={layout === "list" ? "md:w-2/3" : ""}>
-      {/* Categorías */}
-      {showCategories && (
-        <div className="flex flex-wrap gap-1 mb-1">
-          {variantProduct.categories.slice(0, 2).map((category) => (
-            <span
-              key={category.id}
-              className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
-            >
-              {category.name}
-            </span>
-          ))}
-        </div>
-      )}
+    <div className="space-y-2">
+      {Object.entries(attributeGroups).map(([attrName, values]) => (
+        <div key={attrName} className="flex items-center text-sm">
+          <span className="text-gray-500 mr-2">{attrName}:</span>
+          <div className="flex flex-wrap gap-1">
+            {Array.from(values).map((value) => {
+              // Verificar si la variante seleccionada tiene este atributo con este valor
+              const isSelected = selectedVariant.attributes.some(
+                (attr) => attr.name === attrName && attr.value === value
+              );
 
-      {/* Nombre del producto */}
-      <Link href={`/productos/${variantProduct.id}`}>
-        <h3 className="font-medium mb-1 hover:text-primary transition-colors">
-          {variantProduct.name}
-        </h3>
-      </Link>
+              // Encontrar variantes con este atributo
+              const variantWithAttr = variantProduct.variants.findIndex(
+                (variant) =>
+                  variant.attributes.some(
+                    (attr) => attr.name === attrName && attr.value === value
+                  )
+              );
 
-      {/* Atributos con selección */}
-      <div className="space-y-2 mb-3">
-        {Object.entries(attributeGroups).map(([attrName, values]) => (
-          <div key={attrName} className="flex items-center text-sm">
-            <span className="text-gray-500 mr-2">{attrName}:</span>
-            <div className="flex flex-wrap gap-1">
-              {Array.from(values).map((value) => {
-                // Verificar si la variante seleccionada tiene este atributo con este valor
-                const isSelected = selectedVariant.attributes.some(
-                  (attr) => attr.name === attrName && attr.value === value
-                );
+              // Determinar el tipo de visualización para este atributo
+              const attribute = selectedVariant.attributes.find(
+                (attr) => attr.name === attrName
+              );
+              const displayType = attribute?.display_type || "pills";
 
-                // Encontrar variantes con este atributo
-                const variantWithAttr = variantProduct.variants.findIndex(
-                  (variant) =>
-                    variant.attributes.some(
-                      (attr) => attr.name === attrName && attr.value === value
-                    )
-                );
+              // Clases según el tipo de visualización
+              let buttonClasses = "text-xs px-2 py-0.5 rounded cursor-pointer ";
 
-                return (
-                  <button
-                    key={value}
-                    className={`text-xs px-2 py-0.5 rounded cursor-pointer ${
-                      isSelected
-                        ? "bg-primary/10 text-primary border border-primary"
-                        : "bg-gray-100 text-gray-700 border border-transparent"
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (variantWithAttr >= 0) {
-                        setSelectedVariantIndex(variantWithAttr);
-                      }
-                    }}
-                  >
-                    {value}
-                  </button>
-                );
-              })}
-            </div>
+              if (displayType === "color") {
+                // Para atributos de tipo color
+                buttonClasses += isSelected
+                  ? "ring-2 ring-primary border border-white"
+                  : "ring-1 ring-gray-300 border border-white";
+
+                // Intentar interpretar el valor como un color
+                const isColorValue =
+                  /^#([0-9A-F]{3}){1,2}$/i.test(value) ||
+                  [
+                    "black",
+                    "white",
+                    "red",
+                    "blue",
+                    "green",
+                    "yellow",
+                    "purple",
+                    "gray",
+                    "silver",
+                  ].includes(value.toLowerCase());
+
+                if (isColorValue) {
+                  return (
+                    <button
+                      key={value}
+                      title={value}
+                      className={buttonClasses}
+                      style={{
+                        backgroundColor: value.toLowerCase(),
+                        width: "24px",
+                        height: "24px",
+                        borderRadius: "50%",
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (variantWithAttr >= 0) {
+                          setSelectedVariantIndex(variantWithAttr);
+                        }
+                      }}
+                    />
+                  );
+                }
+              }
+
+              // Para otros tipos de atributos (pills, radio, select, custom)
+              buttonClasses += isSelected
+                ? "bg-primary/10 text-primary border border-primary"
+                : "bg-gray-100 text-gray-700 border border-transparent";
+
+              return (
+                <button
+                  key={value}
+                  className={buttonClasses}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (variantWithAttr >= 0) {
+                      setSelectedVariantIndex(variantWithAttr);
+                    }
+                  }}
+                >
+                  {value}
+                </button>
+              );
+            })}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
 
       {/* Precio */}
-      <div className="flex items-center gap-2 mb-3">
-        {showPriceRange ? (
-          <span className="text-lg font-bold text-primary">
-            Desde S/ {minPrice.toFixed(2)}
-          </span>
-        ) : (
-          <span className="text-lg font-bold text-primary">
-            S/ {selectedVariant.price.toFixed(2)}
+      <div className="flex items-center gap-2 mt-3">
+        <span className="text-lg font-bold text-primary">
+          S/{" "}
+          {selectedVariant.promotion?.promotionPrice || selectedVariant.price}
+        </span>
+
+        {/* Mostrar precio original si hay promoción */}
+        {selectedVariant.promotion && (
+          <span className="text-sm text-gray-500 line-through">
+            S/ {selectedVariant.price}
           </span>
         )}
       </div>
-
-      {/* Botón de agregar al carrito */}
-      <ButtonAddToCart
-        id={selectedVariant.id}
-        image={selectedVariant.images[0]?.imageUrl || ""}
-        name={variantProduct.name}
-        price={selectedVariant.price}
-      />
     </div>
   );
 };

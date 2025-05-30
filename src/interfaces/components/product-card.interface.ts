@@ -44,12 +44,25 @@ export interface VariantProductProps {
         name: string;
         value: string;
         optionId: number;
+        display_type?: string;
+        additional_cost?: number;
       }[];
       images: {
         id: number;
         imageUrl: string;
         isPrimary: boolean;
       }[];
+      // Información de promoción
+      promotion?: {
+        id: number;
+        name: string;
+        discountType: "percentage" | "fixed_amount";
+        discountValue: number;
+        promotionPrice: number | null;
+        startDate: Date;
+        endDate: Date;
+        stockLimit: number | null;
+      };
     }[];
     mainImage: string | null;
   };

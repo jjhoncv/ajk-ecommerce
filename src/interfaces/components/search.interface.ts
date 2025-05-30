@@ -81,16 +81,28 @@ export interface SearchResultsProps {
           name: string;
           value: string;
           optionId: number;
+          display_type?: string;
+          additional_cost?: number;
         }[];
         images: {
           id: number;
           imageUrl: string;
           isPrimary: boolean;
         }[];
+        promotion?: {
+          id: number;
+          name: string;
+          discountType: "percentage" | "fixed_amount";
+          discountValue: number;
+          promotionPrice: number | null;
+          startDate: Date;
+          endDate: Date;
+          stockLimit: number | null;
+        };
       }[];
       mainImage: string | null;
     };
-    type: "variant";
+    type?: "variant"; // Hacemos el tipo opcional ya que todos los productos son variantes
   }[];
   totalPages: number;
   currentPage: number;

@@ -42,6 +42,17 @@ export interface ProductVariantDTO {
     imageUrl: string;
     isPrimary: boolean;
   }[];
+  // Información de promoción
+  promotion?: {
+    id: number;
+    name: string;
+    discountType: "percentage" | "fixed_amount";
+    discountValue: number;
+    promotionPrice: number | null;
+    startDate: Date;
+    endDate: Date;
+    stockLimit: number | null;
+  };
 }
 
 // DTO para filtros de búsqueda

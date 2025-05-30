@@ -4,7 +4,7 @@ export { default } from "./ProductCard";
 // Exportar los componentes individuales
 export { default as ProductCardSlider } from "./ProductCardSlider";
 export { default as ProductCardVariants } from "./ProductCardVariants";
-export { default as ProductCardDeal } from "./ProductCardDeal";
+export { default as ProductCardPromotion } from "./ProductCardPromotion";
 
 // Exportar las interfaces
 export * from "./ProductCard.interfaces";

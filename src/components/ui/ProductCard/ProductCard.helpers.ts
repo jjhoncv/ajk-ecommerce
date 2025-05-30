@@ -1,9 +1,4 @@
 import { ProductDTO } from "@/dto";
-import {
-  RegularProduct,
-  DealProduct,
-  VariantProduct,
-} from "./ProductCard.interfaces";
 
 /**
  * Calcula el precio mínimo de las variantes de un producto
@@ -17,7 +12,14 @@ export const calculateMinVariantPrice = (
 ): number => {
   if (!variants || variants.length === 0) return basePrice;
 
-  const prices = variants.map((variant) => Number(variant.price));
+  const prices = variants.map((variant) => {
+    // Si hay promoción, usar el precio promocional
+    if (variant.promotion && variant.promotion.promotionPrice !== null) {
+      return Number(variant.promotion.promotionPrice);
+    }
+    return Number(variant.price);
+  });
+
   return Math.min(...prices);
 };
 
@@ -81,34 +83,46 @@ export const findMainImage = (
 };
 
 /**
- * Verifica si un producto es de tipo variante
- * @param product Producto a verificar
- * @returns true si el producto es de tipo variante
+ * Verifica si una variante tiene promoción
+ * @param variant Variante a verificar
+ * @returns true si la variante tiene promoción
  */
-export const isVariantProduct = (
-  product: RegularProduct | DealProduct | VariantProduct
-): product is VariantProduct => {
-  return product.type === "variant";
+export const hasPromotion = (variant: ProductDTO["variants"][0]): boolean => {
+  return !!variant.promotion;
 };
 
 /**
- * Verifica si un producto es de tipo oferta
- * @param product Producto a verificar
- * @returns true si el producto es de tipo oferta
+ * Calcula el precio final de una variante considerando promociones
+ * @param variant Variante a calcular
+ * @returns El precio final de la variante
  */
-export const isDealProduct = (
-  product: RegularProduct | DealProduct | VariantProduct
-): product is DealProduct => {
-  return product.type === "deal";
+export const calculateFinalPrice = (
+  variant: ProductDTO["variants"][0]
+): number => {
+  if (variant.promotion && variant.promotion.promotionPrice !== null) {
+    return Number(variant.promotion.promotionPrice);
+  }
+  return Number(variant.price);
 };
 
 /**
- * Verifica si un producto es de tipo regular
- * @param product Producto a verificar
- * @returns true si el producto es de tipo regular
+ * Calcula el porcentaje de descuento de una variante
+ * @param variant Variante a calcular
+ * @returns El porcentaje de descuento o 0 si no hay promoción
  */
-export const isRegularProduct = (
-  product: RegularProduct | DealProduct | VariantProduct
-): product is RegularProduct => {
-  return product.type === "regular";
+export const calculateDiscountPercentage = (
+  variant: ProductDTO["variants"][0]
+): number => {
+  if (!variant.promotion) return 0;
+
+  if (variant.promotion.discountType === "percentage") {
+    return variant.promotion.discountValue;
+  }
+
+  const originalPrice = Number(variant.price);
+  const promotionPrice =
+    variant.promotion.promotionPrice ||
+    originalPrice - variant.promotion.discountValue;
+
+  return Math.round(((originalPrice - promotionPrice) / originalPrice) * 100);
 };

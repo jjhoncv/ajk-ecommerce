@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: ajk_ecommerce
--- Generation Time: 2025-05-29 17:10:13.5260
+-- Generation Time: 2025-05-30 12:32:27.8870
 -- -------------------------------------------------------------
 
 
@@ -23,16 +23,18 @@ CREATE TABLE `attribute_options` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
+  `additional_cost` decimal(10,2) DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `idx_attribute` (`attribute_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE `attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `display_type` enum('radio','pills','select','color','custom') NOT NULL DEFAULT 'select',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `banner`;
 CREATE TABLE `banner` (
@@ -244,26 +246,30 @@ CREATE TABLE `variant_images` (
   CONSTRAINT `fk_vi_variant` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
-INSERT INTO `attribute_options` (`id`, `attribute_id`, `value`) VALUES
-(1, 1, 'Negro'),
-(2, 1, 'Blanco'),
-(3, 1, 'Plata'),
-(4, 1, 'Azul'),
-(5, 2, '13 pulgadas'),
-(6, 2, '15 pulgadas'),
-(7, 2, '17 pulgadas'),
-(8, 3, '128GB'),
-(9, 3, '256GB'),
-(10, 3, '512GB'),
-(11, 3, '1TB'),
-(12, 3, '8GB RAM'),
-(13, 3, '16GB RAM'),
-(14, 3, '32GB RAM');
+INSERT INTO `attribute_options` (`id`, `attribute_id`, `value`, `additional_cost`) VALUES
+(1, 1, 'Negro', 0.00),
+(2, 1, 'Blanco', 0.00),
+(3, 1, 'Plata', 0.00),
+(4, 1, 'Azul', 0.00),
+(5, 2, '13 pulgadas', 0.00),
+(6, 2, '15 pulgadas', 0.00),
+(7, 2, '17 pulgadas', 0.00),
+(8, 3, '128GB', 0.00),
+(9, 3, '256GB', 0.00),
+(10, 3, '512GB', 0.00),
+(11, 3, '1TB', 0.00),
+(12, 3, '8GB RAM', 0.00),
+(13, 3, '16GB RAM', 0.00),
+(14, 3, '32GB RAM', 0.00),
+(25, 4, 'Plástico', 0.00),
+(26, 4, 'Aluminio', 500.00),
+(27, 4, 'Fibra de Carbono', 1000.00);
 
-INSERT INTO `attributes` (`id`, `name`) VALUES
-(1, 'Color'),
-(2, 'Tamaño'),
-(3, 'Almacenamiento');
+INSERT INTO `attributes` (`id`, `name`, `display_type`) VALUES
+(1, 'Color', 'color'),
+(2, 'Tamaño', 'radio'),
+(3, 'Almacenamiento', 'pills'),
+(4, 'Material', 'pills');
 
 INSERT INTO `brands` (`id`, `name`) VALUES
 (1, 'TechPro'),
