@@ -8,12 +8,18 @@ export interface ProductDTO {
   brandId: number;
   brandName: string;
   basePrice: number;
+  minVariantPrice?: number; // Precio mínimo de las variantes
   categories: {
     id: number;
     name: string;
   }[];
   variants: ProductVariantDTO[];
   mainImage: string | null;
+  // Campos adicionales para variantes individuales en resultados de búsqueda
+  variantId?: number;
+  variantSku?: string;
+  variantPrice?: number;
+  variantStock?: number;
 }
 
 // DTO para variantes de productos
@@ -28,6 +34,8 @@ export interface ProductVariantDTO {
     name: string;
     value: string;
     optionId: number;
+    display_type?: string;
+    additional_cost?: number;
   }[];
   images: {
     id: number;
@@ -75,9 +83,11 @@ export interface ProductSearchResultDTO {
     attributes: {
       id: number;
       name: string;
+      display_type?: string;
       options: {
         id: number;
         value: string;
+        additional_cost?: number;
         count: number;
       }[];
     }[];

@@ -2,6 +2,7 @@ import {
   ProductDTO,
   ProductSearchFiltersDTO,
   ProductSearchResultDTO,
+  ProductVariantDTO,
 } from "@/dto";
 import { Product } from "@/interfaces/models";
 import { executeQuery } from "@/lib/db";
@@ -38,12 +39,29 @@ export class ProductModel {
   public async searchProducts(
     filters: ProductSearchFiltersDTO
   ): Promise<ProductSearchResultDTO> {
-    // Construir la consulta base
+    // Modificamos la búsqueda para devolver variantes en lugar de productos
+    return await this.searchProductVariants(filters);
+  }
+
+  public async searchProductVariants(
+    filters: ProductSearchFiltersDTO
+  ): Promise<ProductSearchResultDTO> {
+    // Construir la consulta base para variantes
     let query = `
       SELECT 
-        p.id, p.name, p.description, p.brand_id, p.base_price, p.created_at, p.updated_at
+        pv.id as variant_id, 
+        pv.product_id, 
+        pv.sku, 
+        pv.price, 
+        pv.stock,
+        p.name as product_name, 
+        p.description as product_description, 
+        p.brand_id, 
+        p.base_price
       FROM 
-        products p
+        product_variants pv
+      JOIN 
+        products p ON pv.product_id = p.id
     `;
 
     // Construir las condiciones WHERE
@@ -52,9 +70,11 @@ export class ProductModel {
 
     // Filtrar por texto de búsqueda
     if (filters.query) {
-      whereConditions.push("(p.name LIKE ? OR p.description LIKE ?)");
+      whereConditions.push(
+        "(p.name LIKE ? OR p.description LIKE ? OR pv.sku LIKE ?)"
+      );
       const searchTerm = `%${filters.query}%`;
-      queryParams.push(searchTerm, searchTerm);
+      queryParams.push(searchTerm, searchTerm, searchTerm);
     }
 
     // Filtrar por categoría
@@ -70,6 +90,17 @@ export class ProductModel {
       queryParams.push(filters.brandId);
     }
 
+    // Filtrar por rango de precios
+    if (filters.minPrice !== undefined) {
+      whereConditions.push("pv.price >= ?");
+      queryParams.push(filters.minPrice);
+    }
+
+    if (filters.maxPrice !== undefined) {
+      whereConditions.push("pv.price <= ?");
+      queryParams.push(filters.maxPrice);
+    }
+
     // Filtrar por atributos
     if (filters.attributes && Object.keys(filters.attributes).length > 0) {
       // Para cada atributo, añadir una condición
@@ -77,12 +108,10 @@ export class ProductModel {
         ([attributeId, optionIds], index) => {
           if (optionIds.length > 0) {
             // Añadir un JOIN para cada atributo
-            const variantAlias = `v${index}`;
             const vaoAlias = `vao${index}`;
 
             query += `
-            JOIN product_variants ${variantAlias} ON p.id = ${variantAlias}.product_id
-            JOIN variant_attribute_options ${vaoAlias} ON ${variantAlias}.id = ${vaoAlias}.variant_id
+            JOIN variant_attribute_options ${vaoAlias} ON pv.id = ${vaoAlias}.variant_id
           `;
 
             // Añadir la condición para las opciones de atributo
@@ -102,16 +131,16 @@ export class ProductModel {
     }
 
     // Añadir GROUP BY para evitar duplicados
-    query += " GROUP BY p.id";
+    query += " GROUP BY pv.id";
 
     // Añadir ORDER BY
     if (filters.sort) {
       switch (filters.sort) {
         case "price_asc":
-          query += " ORDER BY p.base_price ASC";
+          query += " ORDER BY pv.price ASC";
           break;
         case "price_desc":
-          query += " ORDER BY p.base_price DESC";
+          query += " ORDER BY pv.price DESC";
           break;
         case "name_asc":
           query += " ORDER BY p.name ASC";
@@ -129,7 +158,7 @@ export class ProductModel {
     }
 
     // Consulta para contar el total de resultados
-    const countQuery = `SELECT COUNT(DISTINCT p.id) as total FROM ${
+    const countQuery = `SELECT COUNT(DISTINCT pv.id) as total FROM ${
       query.split("FROM")[1].split("GROUP BY")[0]
     }`;
     const countResult = await executeQuery<[{ total: number }]>({
@@ -147,23 +176,79 @@ export class ProductModel {
     queryParams.push(limit, offset);
 
     // Ejecutar la consulta
-    const products = await executeQuery<Product[]>({
+    const variantResults = await executeQuery<any[]>({
       query,
       values: queryParams,
     });
 
-    // Mapear los productos a DTOs
+    // Procesar cada variante como un producto individual
     const productDTOs = await Promise.all(
-      products.map((product) => this.mapProductToDTO(product))
+      variantResults.map(async (variant) => {
+        // Obtener detalles completos de la variante
+        const variantDetail = await this.variantModel.getVariantById(
+          variant.variant_id
+        );
+
+        if (!variantDetail) {
+          return null;
+        }
+
+        // Obtener la marca
+        const brand = await this.brandModel.getBrandById(variant.brand_id);
+
+        // Obtener las categorías
+        const categories = await this.categoryModel.getCategoriesByProductId(
+          variant.product_id
+        );
+
+        // Encontrar la imagen principal de la variante
+        let mainImage = null;
+        if (variantDetail.images.length > 0) {
+          const primaryImage = variantDetail.images.find(
+            (img) => img.isPrimary
+          );
+          mainImage = primaryImage
+            ? primaryImage.imageUrl
+            : variantDetail.images[0].imageUrl;
+        }
+
+        // Crear un ProductDTO para esta variante
+        return {
+          id: Number(variant.product_id),
+          name: variant.product_name,
+          description: variant.product_description,
+          brandId: Number(variant.brand_id),
+          brandName: brand?.name || "",
+          basePrice: Number(variant.base_price),
+          minVariantPrice: Number(variant.price),
+          categories: categories.map((cat) => ({
+            id: Number(cat.id),
+            name: cat.name,
+          })),
+          variants: [variantDetail], // Solo incluimos esta variante
+          mainImage,
+          // Añadir información específica de la variante
+          variantId: Number(variant.variant_id),
+          variantSku: variant.sku,
+          variantPrice: Number(variant.price),
+          variantStock: Number(variant.stock),
+        };
+      })
     );
+
+    // Filtrar posibles nulos y asegurar que los tipos sean correctos
+    const filteredProductDTOs = productDTOs
+      .filter((dto): dto is NonNullable<typeof dto> => dto !== null)
+      .map((dto) => ({
+        ...dto,
+        minVariantPrice: dto.minVariantPrice || dto.basePrice,
+      }));
 
     // Calcular filtros disponibles
     const availableFilters = await this.calculateAvailableFilters(filters);
 
-    console.log("productDTOs", productDTOs);
-
     return {
-      products: productDTOs,
+      products: filteredProductDTOs,
       totalCount,
       page,
       totalPages: Math.ceil(totalCount / limit),
@@ -192,15 +277,21 @@ export class ProductModel {
         : variants[0].images[0].imageUrl;
     }
 
+    // Calcular el precio mínimo de las variantes
+    const prices = variants.map((variant) => Number(variant.price));
+    const minVariantPrice =
+      prices.length > 0 ? Math.min(...prices) : Number(product.base_price);
+
     return {
-      id: product.id,
+      id: Number(product.id),
       name: product.name,
       description: product.description,
-      brandId: product.brand_id,
+      brandId: Number(product.brand_id),
       brandName: brand?.name || "",
-      basePrice: product.base_price,
+      basePrice: Number(product.base_price),
+      minVariantPrice,
       categories: categories.map((cat) => ({
-        id: cat.id,
+        id: Number(cat.id),
         name: cat.name,
       })),
       variants,
@@ -213,10 +304,11 @@ export class ProductModel {
   ): Promise<ProductSearchResultDTO["filters"]> {
     // Obtener categorías disponibles
     const categoriesQuery = `
-      SELECT c.id, c.name, COUNT(DISTINCT p.id) as count
+      SELECT c.id, c.name, COUNT(DISTINCT pv.id) as count
       FROM categories c
       JOIN product_categories pc ON c.id = pc.category_id
       JOIN products p ON pc.product_id = p.id
+      JOIN product_variants pv ON p.id = pv.product_id
       GROUP BY c.id
       ORDER BY count DESC
     `;
@@ -228,9 +320,10 @@ export class ProductModel {
 
     // Obtener marcas disponibles
     const brandsQuery = `
-      SELECT b.id, b.name, COUNT(p.id) as count
+      SELECT b.id, b.name, COUNT(DISTINCT pv.id) as count
       FROM brands b
       JOIN products p ON b.id = p.brand_id
+      JOIN product_variants pv ON p.id = pv.product_id
       GROUP BY b.id
       ORDER BY count DESC
     `;
@@ -252,9 +345,9 @@ export class ProductModel {
     // Obtener atributos y opciones disponibles
     const attributesQuery = `
       SELECT 
-        a.id, a.name, 
-        ao.id as option_id, ao.value as option_value,
-        COUNT(DISTINCT pv.product_id) as count
+        a.id, a.name, a.display_type,
+        ao.id as option_id, ao.value as option_value, ao.additional_cost,
+        COUNT(DISTINCT pv.id) as count
       FROM attributes a
       JOIN attribute_options ao ON a.id = ao.attribute_id
       JOIN variant_attribute_options vao ON ao.id = vao.attribute_option_id
@@ -266,8 +359,10 @@ export class ProductModel {
       {
         id: number;
         name: string;
+        display_type: string;
         option_id: number;
         option_value: string;
+        additional_cost: number;
         count: number;
       }[]
     >({
@@ -280,9 +375,11 @@ export class ProductModel {
       {
         id: number;
         name: string;
+        display_type: string;
         options: {
           id: number;
           value: string;
+          additional_cost: number;
           count: number;
         }[];
       }
@@ -293,6 +390,7 @@ export class ProductModel {
         attributesMap.set(option.id, {
           id: option.id,
           name: option.name,
+          display_type: option.display_type,
           options: [],
         });
       }
@@ -300,6 +398,7 @@ export class ProductModel {
       attributesMap.get(option.id)?.options.push({
         id: option.option_id,
         value: option.option_value,
+        additional_cost: option.additional_cost,
         count: option.count,
       });
     });

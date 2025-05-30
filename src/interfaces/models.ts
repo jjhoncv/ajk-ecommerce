@@ -1,4 +1,5 @@
 // Interfaces para los modelos de datos
+import { AttributeDisplayType } from "@/dto/attribute.dto";
 
 // Marca
 export interface Brand {
@@ -20,6 +21,7 @@ export interface Category {
 export interface Attribute {
   id: number;
   name: string;
+  display_type?: AttributeDisplayType;
   options?: AttributeOption[];
 }
 
@@ -28,6 +30,7 @@ export interface AttributeOption {
   id: number;
   attributeId: number;
   value: string;
+  additional_cost?: number;
 }
 
 // Producto

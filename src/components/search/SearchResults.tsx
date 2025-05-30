@@ -118,8 +118,20 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           >
             {hydratedProducts.map((product, index) => (
               <ProductCard
-                key={index}
-                product={product}
+                key={`${product.id}-${product.variantId || index}`}
+                product={{
+                  ...product,
+                  // Si es una variante individual, usar los datos específicos de la variante
+                  ...(product.variantId && {
+                    id: product.variantId,
+                    price:
+                      product.variantPrice ||
+                      product.minVariantPrice ||
+                      product.basePrice,
+                    sku: product.variantSku,
+                    stock: product.variantStock,
+                  }),
+                }}
                 layout={viewMode === "list" ? "list" : "grid"}
               />
             ))}

@@ -23,6 +23,7 @@ export class AttributeModel {
     return attributesWithOptions.map((attr) => ({
       id: attr.id,
       name: attr.name,
+      display_type: attr.display_type,
       options: attr.options || [],
     }));
   }
@@ -48,7 +49,8 @@ export class AttributeModel {
     attributeId: number
   ): Promise<AttributeOption[]> {
     const options = await executeQuery<AttributeOption[]>({
-      query: "SELECT * FROM attribute_options WHERE attribute_id = ?",
+      query:
+        "SELECT id, attribute_id as attributeId, value, additional_cost FROM attribute_options WHERE attribute_id = ?",
       values: [attributeId],
     });
 

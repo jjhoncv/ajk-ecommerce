@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Heart, Star, Clock } from "lucide-react";
 import ButtonAddToCart from "./ButtonAddToCart";
@@ -31,6 +31,10 @@ interface DealProduct extends BaseProduct {
 interface VariantProduct {
   product: ProductDTO;
   type: "variant";
+  id?: number;
+  price?: number;
+  sku?: string;
+  stock?: number;
 }
 
 type ProductProps = {
@@ -50,8 +54,33 @@ const ProductCard: React.FC<ProductProps> = ({
   const isDealProduct = product.type === "deal";
   const isVariantProduct = product.type === "variant";
 
-  // Estado para la variante seleccionada (solo para productos con variantes)
+  // Estados para el componente
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSliderActive, setIsSliderActive] = useState(false);
+
+  // Efecto para cambiar automáticamente las imágenes cuando el slider está activo
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isSliderActive && isVariantProduct) {
+      const hydratedProduct = hydrateProductDTO(product.product);
+      const variantProduct = hydratedProduct.product;
+      const selectedVariant = variantProduct.variants[selectedVariantIndex];
+
+      if (selectedVariant.images.length > 1) {
+        interval = setInterval(() => {
+          setCurrentImageIndex(
+            (prevIndex) => (prevIndex + 1) % selectedVariant.images.length
+          );
+        }, 2000); // Cambiar imagen cada 2 segundos
+      }
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isSliderActive, selectedVariantIndex, isVariantProduct, product]);
 
   // Renderizar producto con variantes
   if (isVariantProduct) {
@@ -97,35 +126,73 @@ const ProductCard: React.FC<ProductProps> = ({
           href={`/productos/${variantProduct.id}`}
           className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
         >
-          <div className="relative mb-4">
-            {/* Usar una imagen estática o una imagen optimizada según la URL */}
-            {mainImage.includes("?") ? (
-              // Para URLs con parámetros de consulta, usar img en lugar de Image
-              <img
-                src={mainImage}
-                alt={variantProduct.name}
-                className="w-full h-48 object-cover rounded-lg"
-              />
-            ) : (
-              // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
-              <Image
-                src={mainImage}
-                alt={variantProduct.name}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover rounded-lg"
-              />
-            )}
+          <div
+            className="relative mb-4 group"
+            onMouseEnter={() => setIsSliderActive(true)}
+            onMouseLeave={() => setIsSliderActive(false)}
+          >
+            {/* Slider de imágenes */}
+            <div className="w-full h-48 overflow-hidden rounded-lg relative">
+              {selectedVariant.images.map((image, idx) => {
+                const imageUrl = image.imageUrl;
+                return (
+                  <div
+                    key={image.id}
+                    className={`absolute inset-0 transition-opacity duration-500 ${
+                      currentImageIndex === idx ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    {imageUrl.includes("?") ? (
+                      // Para URLs con parámetros de consulta, usar img en lugar de Image
+                      <img
+                        src={imageUrl}
+                        alt={`${variantProduct.name} - Imagen ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
+                      <Image
+                        src={imageUrl}
+                        alt={`${variantProduct.name} - Imagen ${idx + 1}`}
+                        width={400}
+                        height={300}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Indicadores de imágenes */}
+              {selectedVariant.images.length > 1 && (
+                <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+                  {selectedVariant.images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        currentImageIndex === idx
+                          ? "bg-primary"
+                          : "bg-white bg-opacity-60"
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentImageIndex(idx);
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Etiqueta de marca */}
-            <div className="absolute top-2 left-2">
+            <div className="absolute top-2 left-2 z-10">
               <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">
                 {variantProduct.brandName}
               </span>
             </div>
 
             {/* Botón de favoritos */}
-            <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">
+            <button className="absolute top-2 right-2 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-100">
               <Heart className="h-4 w-4" />
             </button>
           </div>
@@ -202,7 +269,7 @@ const ProductCard: React.FC<ProductProps> = ({
           <div className="flex items-center gap-2 mb-3">
             {showPriceRange ? (
               <span className="text-lg font-bold text-primary">
-                S/ {minPrice.toFixed(2)} - S/ {maxPrice.toFixed(2)}
+                Desde S/ {minPrice.toFixed(2)}
               </span>
             ) : (
               <span className="text-lg font-bold text-primary">
