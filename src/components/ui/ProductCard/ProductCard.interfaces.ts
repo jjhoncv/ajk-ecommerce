@@ -26,10 +26,7 @@ export interface ProductCardSliderProps {
 // Props para el componente ProductCardVariants
 export interface ProductCardVariantsProps {
   variantProduct: ProductDTO;
-  selectedVariantIndex: number;
-  setSelectedVariantIndex: (index: number) => void;
   layout?: "grid" | "list";
-  showCategories?: boolean;
 }
 
 // Props para el componente ProductCardPromotion

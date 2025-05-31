@@ -99,6 +99,16 @@ export interface SearchResultsProps {
           endDate: Date;
           stockLimit: number | null;
         };
+        ratings?: {
+          totalRatings: number;
+          averageRating: number;
+          fiveStar: number;
+          fourStar: number;
+          threeStar: number;
+          twoStar: number;
+          oneStar: number;
+          verifiedPurchases: number;
+        };
       }[];
       mainImage: string | null;
     };

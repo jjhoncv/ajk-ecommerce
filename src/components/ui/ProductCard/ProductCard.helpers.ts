@@ -1,4 +1,4 @@
-import { ProductDTO } from "@/dto";
+import { ProductDTO, ProductVariantDTO } from "@/dto";
 
 /**
  * Calcula el precio mínimo de las variantes de un producto
@@ -125,4 +125,42 @@ export const calculateDiscountPercentage = (
     originalPrice - variant.promotion.discountValue;
 
   return Math.round(((originalPrice - promotionPrice) / originalPrice) * 100);
+};
+
+export const getVariantTitle = (
+  variantProduct: ProductDTO,
+  selectedVariant: ProductVariantDTO
+) => {
+  const baseTitle = variantProduct.name;
+  const variantAttributes = selectedVariant.attributes
+    .filter((attr) => attr.name.toLowerCase() !== "sku") // Excluir SKU
+    .map((attr) => attr.value)
+    .join(" - ");
+
+  if (variantAttributes && variantProduct.variants.length > 0) {
+    return `${baseTitle} - ${variantAttributes}`;
+  }
+
+  return baseTitle;
+};
+
+export const getPromotionDiscount = (
+  variant: ProductVariantDTO
+): null | number => {
+  // Si no hay promoción, no mostrar nada
+  if (!variant.promotion) {
+    return null;
+  }
+
+  const promotion = variant.promotion;
+  const originalPrice = variant.price;
+  const promotionPrice = promotion.promotionPrice || 0;
+
+  // Calcular el porcentaje de descuento
+  const discountPercentage =
+    promotion.discountType === "percentage"
+      ? promotion.discountValue
+      : Math.round(((originalPrice - promotionPrice) / originalPrice) * 100);
+
+  return discountPercentage;
 };

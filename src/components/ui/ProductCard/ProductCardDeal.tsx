@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import { Clock } from "lucide-react";
 import Image from "next/image";
-import { Heart, Clock } from "lucide-react";
+import React from "react";
 import ButtonAddToCart from "../ButtonAddToCart";
 import { ProductCardDealProps } from "./ProductCard.interfaces";
 

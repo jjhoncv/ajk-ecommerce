@@ -157,6 +157,19 @@ export function hydrateSearchResultsProps(
                     : null,
               }
             : undefined,
+          // Incluir información de valoraciones si existe
+          ratings: variant.ratings
+            ? {
+                totalRatings: Number(variant.ratings.totalRatings),
+                averageRating: Number(variant.ratings.averageRating),
+                fiveStar: Number(variant.ratings.fiveStar),
+                fourStar: Number(variant.ratings.fourStar),
+                threeStar: Number(variant.ratings.threeStar),
+                twoStar: Number(variant.ratings.twoStar),
+                oneStar: Number(variant.ratings.oneStar),
+                verifiedPurchases: Number(variant.ratings.verifiedPurchases),
+              }
+            : undefined,
         })),
         mainImage: product.mainImage,
       },

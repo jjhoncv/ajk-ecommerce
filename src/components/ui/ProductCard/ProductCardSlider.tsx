@@ -7,8 +7,6 @@ import { ProductCardSliderProps } from "./ProductCard.interfaces";
 const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
   images,
   productName,
-  brandName,
-  layout = "grid",
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSliderActive, setIsSliderActive] = useState(false);
@@ -98,13 +96,6 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Etiqueta de marca */}
-      <div className="absolute top-2 left-2 z-10">
-        <span className="bg-gray-800 text-white text-xs px-2 py-1 rounded">
-          {brandName}
-        </span>
       </div>
 
       {/* Botón de favoritos */}

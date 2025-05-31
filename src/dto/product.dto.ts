@@ -53,6 +53,17 @@ export interface ProductVariantDTO {
     endDate: Date;
     stockLimit: number | null;
   };
+  // Información de valoraciones
+  ratings?: {
+    totalRatings: number;
+    averageRating: number;
+    fiveStar: number;
+    fourStar: number;
+    threeStar: number;
+    twoStar: number;
+    oneStar: number;
+    verifiedPurchases: number;
+  };
 }
 
 // DTO para filtros de búsqueda

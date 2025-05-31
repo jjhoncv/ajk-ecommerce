@@ -1,29 +1,24 @@
 "use client";
-import React, { useState } from "react";
 import Link from "next/link";
+import React from "react";
 import ButtonAddToCart from "../ButtonAddToCart";
-import ProductCardSlider from "./ProductCardSlider";
-import ProductCardVariants from "./ProductCardVariants";
-import ProductCardPromotion from "./ProductCardPromotion";
+import { getVariantTitle } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
-import { hasPromotion } from "./ProductCard.helpers";
+import ProductCardPrice from "./ProductCardPrice";
+import ProductCardSlider from "./ProductCardSlider";
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   layout = "grid",
-  showCategories = true,
   className = "",
 }) => {
-  // Estado para la variante seleccionada
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-
   // Obtener el producto directamente
   const variantProduct = product.product;
-  const selectedVariant = variantProduct.variants[selectedVariantIndex];
+  const selectedVariant = variantProduct.variants[0];
 
   return (
     <div
-      className={`bg-white border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200 ${className} ${
+      className={`bg-white relative border rounded-lg p-4 hover:shadow-lg transition-shadow border-gray-200 ${className} ${
         layout === "list"
           ? "flex flex-col md:flex-row md:items-center md:gap-6"
           : ""
@@ -42,40 +37,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </Link>
 
       <div className={layout === "list" ? "md:w-2/3" : ""}>
-        {/* Categorías y nombre del producto */}
-        {showCategories && (
-          <div className="flex flex-wrap gap-1 mb-1">
-            {variantProduct.categories.slice(0, 2).map((category) => (
-              <span
-                key={category.id}
-                className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded"
-              >
-                {category.name}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Etiqueta de marca */}
+        <div className="inline-block text-gray-600 font-bold text-xs rounded mb-2 text-[13px] leading-[13px]">
+          {variantProduct.brandName.toUpperCase()}
+        </div>
 
         <Link href={`/productos/${variantProduct.id}`}>
-          <h3 className="font-medium mb-1 hover:text-primary transition-colors">
-            {variantProduct.name}
+          <h3 className="font-medium mb-1 text-[16px] leading-[16px] hover:text-primary transition-colors">
+            {getVariantTitle(variantProduct, selectedVariant)}
           </h3>
         </Link>
 
-        {/* Mostrar promoción si existe */}
-        {hasPromotion(selectedVariant) && (
-          <ProductCardPromotion variant={selectedVariant} layout={layout} />
-        )}
-
         {/* Atributos con selección */}
-        <div className="space-y-2 mb-3">
-          <ProductCardVariants
-            variantProduct={variantProduct}
-            selectedVariantIndex={selectedVariantIndex}
-            setSelectedVariantIndex={setSelectedVariantIndex}
-            layout={layout}
-            showCategories={false} // Ya mostramos las categorías arriba
-          />
+        <div className="space-y-2">
+          <ProductCardPrice variantProduct={variantProduct} />
         </div>
 
         {/* Botón de agregar al carrito */}

@@ -2,6 +2,7 @@ import { ProductVariant, VariantImage } from "@/interfaces/models";
 import { ProductVariantDTO } from "@/dto";
 import { executeQuery } from "@/lib/db";
 import PromotionModel from "./PromotionModel";
+import RatingModel from "./RatingModel";
 
 export class ProductVariantModel {
   public async getVariants(): Promise<ProductVariantDTO[]> {
@@ -185,6 +186,23 @@ export class ProductVariantModel {
       })),
       attributes,
     };
+
+    // Obtener el resumen de valoraciones para esta variante
+    const ratingSummary = await RatingModel.getVariantRatingSummary(variant.id);
+
+    // Añadir información de valoraciones si existen
+    if (ratingSummary.totalRatings > 0) {
+      variantDTO.ratings = {
+        totalRatings: ratingSummary.totalRatings,
+        averageRating: ratingSummary.averageRating,
+        fiveStar: ratingSummary.fiveStar,
+        fourStar: ratingSummary.fourStar,
+        threeStar: ratingSummary.threeStar,
+        twoStar: ratingSummary.twoStar,
+        oneStar: ratingSummary.oneStar,
+        verifiedPurchases: ratingSummary.verifiedPurchases,
+      };
+    }
 
     // Añadir información de promoción si existe
     if (bestPromotion && bestPromotion.promotion) {
