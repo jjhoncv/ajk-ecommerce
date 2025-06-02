@@ -1,6 +1,6 @@
 // DTO para productos
+import { VariantImageDTO, AttributeOptionImageDTO } from "./image.dto";
 
-// DTO para productos
 export interface ProductDTO {
   id: number;
   name: string;
@@ -37,11 +37,9 @@ export interface ProductVariantDTO {
     display_type?: string;
     additional_cost?: number;
   }[];
-  images: {
-    id: number;
-    imageUrl: string;
-    isPrimary: boolean;
-  }[];
+  images: VariantImageDTO[];
+  // Imágenes de atributos (para selectores de color, etc.)
+  attributeImages: AttributeOptionImageDTO[];
   // Información de promoción
   promotion?: {
     id: number;

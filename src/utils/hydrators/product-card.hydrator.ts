@@ -34,13 +34,40 @@ export function hydrateProductDTO(productDTO: ProductDTO): {
           display_type: attr.display_type,
           additional_cost: attr.additional_cost,
         })),
+        // Usar el nuevo sistema de imágenes
         images: variant.images.map((img) => ({
           id: Number(img.id),
-          imageUrl: img.imageUrl,
-          isPrimary:
-            typeof img.isPrimary === "string"
-              ? img.isPrimary === "1" || img.isPrimary === "true"
-              : Boolean(img.isPrimary),
+          variantId: Number(img.variantId),
+          imageType: img.imageType,
+          imageUrlThumb: img.imageUrlThumb,
+          imageUrlNormal: img.imageUrlNormal,
+          imageUrlZoom: img.imageUrlZoom,
+          isPrimary: Boolean(img.isPrimary),
+          displayOrder: Number(img.displayOrder),
+          altText: img.altText,
+          createdAt: img.createdAt,
+          updatedAt: img.updatedAt,
+        })),
+        // Incluir imágenes de atributos
+        attributeImages: variant.attributeImages.map((img) => ({
+          id: Number(img.id),
+          attributeOptionId: Number(img.attributeOptionId),
+          imageUrlThumb: img.imageUrlThumb,
+          imageUrlNormal: img.imageUrlNormal,
+          imageUrlZoom: img.imageUrlZoom,
+          altText: img.altText,
+          createdAt: img.createdAt,
+          updatedAt: img.updatedAt,
+          attribute: {
+            id: Number(img.attribute.id),
+            name: img.attribute.name,
+            displayType: img.attribute.displayType,
+          },
+          option: {
+            id: Number(img.option.id),
+            value: img.option.value,
+            additionalCost: Number(img.option.additionalCost),
+          },
         })),
         // Incluir información de promoción si existe
         promotion: variant.promotion
@@ -61,8 +88,24 @@ export function hydrateProductDTO(productDTO: ProductDTO): {
                   : null,
             }
           : undefined,
+        // Incluir información de ratings si existe
+        ratings: variant.ratings
+          ? {
+              totalRatings: Number(variant.ratings.totalRatings),
+              averageRating: Number(variant.ratings.averageRating),
+              fiveStar: Number(variant.ratings.fiveStar),
+              fourStar: Number(variant.ratings.fourStar),
+              threeStar: Number(variant.ratings.threeStar),
+              twoStar: Number(variant.ratings.twoStar),
+              oneStar: Number(variant.ratings.oneStar),
+              verifiedPurchases: Number(variant.ratings.verifiedPurchases),
+            }
+          : undefined,
       })),
       mainImage: productDTO.mainImage,
+      minVariantPrice: Number(
+        productDTO.minVariantPrice || productDTO.basePrice
+      ),
     },
   };
 }

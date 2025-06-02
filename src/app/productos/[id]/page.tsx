@@ -17,7 +17,10 @@ interface ProductPageProps {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = await ProductService.getProductById(parseInt(params.id));
+  const resolvedParams = await params;
+  const product = await ProductService.getProductById(
+    parseInt(resolvedParams.id)
+  );
 
   if (!product) {
     return {
@@ -34,7 +37,8 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const productId = parseInt(params.id);
+  const resolvedParams = await params;
+  const productId = parseInt(resolvedParams.id);
   const product = await ProductService.getProductById(productId);
   const homeData = await getHomeData();
 

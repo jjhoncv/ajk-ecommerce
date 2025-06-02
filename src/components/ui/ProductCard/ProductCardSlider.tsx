@@ -48,7 +48,27 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
       {/* Slider de imágenes */}
       <div className="w-full h-48 overflow-hidden rounded-lg relative">
         {images.map((image, idx) => {
-          const imageUrl = image.imageUrl;
+          // Usar imageUrlNormal del nuevo sistema
+          const imageUrl = image.imageUrlNormal;
+
+          // Validar que imageUrl existe
+          if (!imageUrl) {
+            return (
+              <div
+                key={image.id}
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  currentImageIndex === idx ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <img
+                  src="https://placehold.co/600x400/e2e8f0/1e293b?text=No+Image"
+                  alt={`${productName} - Imagen ${idx + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          }
+
           return (
             <div
               key={image.id}
@@ -60,14 +80,14 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
                 // Para URLs con parámetros de consulta, usar img en lugar de Image
                 <img
                   src={imageUrl}
-                  alt={`${productName} - Imagen ${idx + 1}`}
+                  alt={image.altText || `${productName} - Imagen ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
                 <Image
                   src={imageUrl}
-                  alt={`${productName} - Imagen ${idx + 1}`}
+                  alt={image.altText || `${productName} - Imagen ${idx + 1}`}
                   width={400}
                   height={300}
                   className="w-full h-full object-cover"

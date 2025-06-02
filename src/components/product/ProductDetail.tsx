@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Minus, Plus, Heart, Share2 } from "lucide-react";
+import ImageZoomModal from "@/components/ui/ImageZoomModal";
 import { ProductDTO } from "@/dto";
 import ProductImageSlider from "./ProductImageSlider";
 import ProductAttributes from "./ProductAttributes";
@@ -20,10 +21,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [zoomImageUrl, setZoomImageUrl] = useState<string>("");
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex];
 
-  // console.log("selectedVariant", selectedVariant);
+  console.log("selectedVariant", selectedVariant);
 
   const finalPrice = calculateFinalPrice(selectedVariant);
   const originalPrice = Number(selectedVariant.price);
@@ -50,6 +53,16 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     // Aquí iría la lógica para agregar al carrito
   };
 
+  const handleImageZoom = (imageUrl: string) => {
+    setZoomImageUrl(imageUrl);
+    setIsZoomModalOpen(true);
+  };
+
+  const closeZoomModal = () => {
+    setIsZoomModalOpen(false);
+    setZoomImageUrl("");
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Columna izquierda: Imágenes */}
@@ -57,6 +70,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <ProductImageSlider
           images={selectedVariant.images}
           productName={product.name}
+          onImageZoom={handleImageZoom}
         />
       </div>
 
@@ -223,6 +237,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         {/* Valoraciones y reseñas */}
         <ProductRatings variantId={selectedVariant.id} productId={product.id} />
       </div>
+
+      {/* Modal de zoom de imagen */}
+      <ImageZoomModal
+        isOpen={isZoomModalOpen}
+        imageUrl={zoomImageUrl}
+        altText={product.name}
+        onClose={closeZoomModal}
+      />
     </div>
   );
 };

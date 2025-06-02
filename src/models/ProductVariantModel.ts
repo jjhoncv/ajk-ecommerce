@@ -1,5 +1,6 @@
-import { ProductVariant, VariantImage } from "@/interfaces/models";
+import { ProductVariant } from "@/interfaces/models";
 import { ProductVariantDTO } from "@/dto";
+import { VariantImageDTO } from "@/dto/image.dto";
 import { executeQuery } from "@/lib/db";
 import PromotionModel from "./PromotionModel";
 import RatingModel from "./RatingModel";
@@ -91,49 +92,56 @@ export class ProductVariantModel {
     });
   }
 
-  public async addImageToVariant(
-    variantId: number,
-    imageUrl: string,
-    isPrimary: boolean = false
-  ): Promise<void> {
-    await executeQuery({
-      query:
-        "INSERT INTO variant_images (variant_id, image_url, is_primary) VALUES (?, ?, ?)",
-      values: [variantId, imageUrl, isPrimary],
-    });
-
-    // Si es la imagen principal, actualizar las demás imágenes para que no sean principales
-    if (isPrimary) {
-      await executeQuery({
-        query:
-          "UPDATE variant_images SET is_primary = 0 WHERE variant_id = ? AND image_url != ?",
-        values: [variantId, imageUrl],
-      });
-    }
-  }
-
-  public async removeImageFromVariant(
-    variantId: number,
-    imageUrl: string
-  ): Promise<void> {
-    await executeQuery({
-      query:
-        "DELETE FROM variant_images WHERE variant_id = ? AND image_url = ?",
-      values: [variantId, imageUrl],
-    });
-  }
-
   private async mapVariantToDTO(
     variant: ProductVariant
   ): Promise<ProductVariantDTO> {
-    // Obtener las imágenes de la variante
-    const images = await executeQuery<VariantImage[]>({
-      query: "SELECT * FROM variant_images WHERE variant_id = ?",
+    // Obtener las imágenes de la variante (SOLO nuevo sistema)
+    const images = await executeQuery<
+      {
+        id: number;
+        variant_id: number;
+        image_type: string;
+        image_url_thumb: string;
+        image_url_normal: string;
+        image_url_zoom: string;
+        is_primary: number;
+        display_order: number;
+        alt_text: string | null;
+        created_at: string;
+        updated_at: string;
+      }[]
+    >({
+      query:
+        "SELECT * FROM variant_images WHERE variant_id = ? ORDER BY display_order ASC, is_primary DESC",
       values: [variant.id],
     });
 
+    // Convertir imágenes al formato DTO
+    const variantImages: VariantImageDTO[] = images.map((img) => ({
+      id: img.id,
+      variantId: img.variant_id,
+      imageType: img.image_type as VariantImageDTO["imageType"],
+      imageUrlThumb: img.image_url_thumb,
+      imageUrlNormal: img.image_url_normal,
+      imageUrlZoom: img.image_url_zoom,
+      isPrimary: Boolean(img.is_primary),
+      displayOrder: img.display_order,
+      altText: img.alt_text || undefined,
+      createdAt: new Date(img.created_at),
+      updatedAt: new Date(img.updated_at),
+    }));
+
     // Obtener los atributos de la variante
-    const attributeOptions = await executeQuery<any[]>({
+    const attributeOptions = await executeQuery<
+      {
+        attribute_option_id: number;
+        attribute_id: number;
+        attribute_name: string;
+        display_type: string;
+        attribute_value: string;
+        additional_cost: number | null;
+      }[]
+    >({
       query: `
         SELECT 
           vao.attribute_option_id,
@@ -166,6 +174,53 @@ export class ProductVariantModel {
         : undefined,
     }));
 
+    // Obtener imágenes de atributos (para selectores de color)
+    const attributeImages = await executeQuery<
+      {
+        id: number;
+        attribute_option_id: number;
+        image_url_thumb: string;
+        image_url_normal: string | null;
+        image_url_zoom: string | null;
+        alt_text: string | null;
+        created_at: string;
+        updated_at: string;
+        attribute_id: number;
+        attribute_name: string;
+        display_type: string;
+        option_value: string;
+        additional_cost: number | null;
+      }[]
+    >({
+      query: `
+        SELECT 
+          aoi.id,
+          aoi.attribute_option_id,
+          aoi.image_url_thumb,
+          aoi.image_url_normal,
+          aoi.image_url_zoom,
+          aoi.alt_text,
+          aoi.created_at,
+          aoi.updated_at,
+          a.id as attribute_id,
+          a.name as attribute_name,
+          a.display_type,
+          ao.value as option_value,
+          ao.additional_cost
+        FROM 
+          attribute_option_images aoi
+        JOIN 
+          attribute_options ao ON aoi.attribute_option_id = ao.id
+        JOIN 
+          attributes a ON ao.attribute_id = a.id
+        JOIN 
+          variant_attribute_options vao ON aoi.attribute_option_id = vao.attribute_option_id
+        WHERE 
+          vao.variant_id = ?
+      `,
+      values: [variant.id],
+    });
+
     // Obtener la mejor promoción para esta variante
     const bestPromotion = await PromotionModel.getBestPromotionForVariant(
       variant.id,
@@ -179,10 +234,26 @@ export class ProductVariantModel {
       sku: variant.sku,
       price: variant.price,
       stock: variant.stock,
-      images: images.map((img) => ({
+      images: variantImages,
+      attributeImages: attributeImages.map((img) => ({
         id: img.id,
-        imageUrl: img.image_url,
-        isPrimary: Boolean(img.is_primary),
+        attributeOptionId: img.attribute_option_id,
+        imageUrlThumb: img.image_url_thumb,
+        imageUrlNormal: img.image_url_normal || undefined,
+        imageUrlZoom: img.image_url_zoom || undefined,
+        altText: img.alt_text || undefined,
+        createdAt: new Date(img.created_at),
+        updatedAt: new Date(img.updated_at),
+        attribute: {
+          id: img.attribute_id,
+          name: img.attribute_name,
+          displayType: img.display_type,
+        },
+        option: {
+          id: img.attribute_option_id,
+          value: img.option_value,
+          additionalCost: img.additional_cost ? Number(img.additional_cost) : 0,
+        },
       })),
       attributes,
     };

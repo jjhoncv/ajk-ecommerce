@@ -2,9 +2,7 @@ import {
   ProductDTO,
   ProductSearchFiltersDTO,
   ProductSearchResultDTO,
-  ProductVariantDTO,
 } from "@/dto";
-import { PromotionVariantDTO } from "@/dto/promotion.dto";
 import { Product } from "@/interfaces/models";
 import { executeQuery } from "@/lib/db";
 import { BrandModel } from "./BrandModel";
@@ -68,7 +66,7 @@ export class ProductModel {
 
     // Construir las condiciones WHERE
     const whereConditions: string[] = [];
-    const queryParams: any[] = [];
+    const queryParams: (string | number)[] = [];
 
     // Filtrar por texto de búsqueda
     if (filters.query) {
@@ -106,25 +104,23 @@ export class ProductModel {
     // Filtrar por atributos
     if (filters.attributes && Object.keys(filters.attributes).length > 0) {
       // Para cada atributo, añadir una condición
-      Object.entries(filters.attributes).forEach(
-        ([attributeId, optionIds], index) => {
-          if (optionIds.length > 0) {
-            // Añadir un JOIN para cada atributo
-            const vaoAlias = `vao${index}`;
+      Object.entries(filters.attributes).forEach(([, optionIds], index) => {
+        if (optionIds.length > 0) {
+          // Añadir un JOIN para cada atributo
+          const vaoAlias = `vao${index}`;
 
-            query += `
+          query += `
             JOIN variant_attribute_options ${vaoAlias} ON pv.id = ${vaoAlias}.variant_id
           `;
 
-            // Añadir la condición para las opciones de atributo
-            const placeholders = optionIds.map(() => "?").join(", ");
-            whereConditions.push(
-              `${vaoAlias}.attribute_option_id IN (${placeholders})`
-            );
-            queryParams.push(...optionIds);
-          }
+          // Añadir la condición para las opciones de atributo
+          const placeholders = optionIds.map(() => "?").join(", ");
+          whereConditions.push(
+            `${vaoAlias}.attribute_option_id IN (${placeholders})`
+          );
+          queryParams.push(...optionIds);
         }
-      );
+      });
     }
 
     // Añadir las condiciones WHERE a la consulta
@@ -178,7 +174,19 @@ export class ProductModel {
     queryParams.push(limit, offset);
 
     // Ejecutar la consulta
-    const variantResults = await executeQuery<any[]>({
+    const variantResults = await executeQuery<
+      {
+        variant_id: number;
+        product_id: number;
+        sku: string;
+        price: number;
+        stock: number;
+        product_name: string;
+        product_description: string;
+        brand_id: number;
+        base_price: number;
+      }[]
+    >({
       query,
       values: queryParams,
     });
@@ -210,8 +218,8 @@ export class ProductModel {
             (img) => img.isPrimary
           );
           mainImage = primaryImage
-            ? primaryImage.imageUrl
-            : variantDetail.images[0].imageUrl;
+            ? primaryImage.imageUrlNormal
+            : variantDetail.images[0].imageUrlNormal;
         }
 
         // Crear un ProductDTO para esta variante
@@ -247,7 +255,7 @@ export class ProductModel {
       }));
 
     // Calcular filtros disponibles
-    const availableFilters = await this.calculateAvailableFilters(filters);
+    const availableFilters = await this.calculateAvailableFilters();
 
     return {
       products: filteredProductDTOs,
@@ -319,8 +327,8 @@ export class ProductModel {
     if (variants.length > 0 && variants[0].images.length > 0) {
       const primaryImage = variants[0].images.find((img) => img.isPrimary);
       mainImage = primaryImage
-        ? primaryImage.imageUrl
-        : variants[0].images[0].imageUrl;
+        ? primaryImage.imageUrlNormal
+        : variants[0].images[0].imageUrlNormal;
     }
 
     // Calcular el precio mínimo de las variantes (considerando promociones)
@@ -352,9 +360,9 @@ export class ProductModel {
     };
   }
 
-  private async calculateAvailableFilters(
-    filters: ProductSearchFiltersDTO
-  ): Promise<ProductSearchResultDTO["filters"]> {
+  private async calculateAvailableFilters(): Promise<
+    ProductSearchResultDTO["filters"]
+  > {
     // Obtener categorías disponibles
     const categoriesQuery = `
       SELECT c.id, c.name, COUNT(DISTINCT pv.id) as count

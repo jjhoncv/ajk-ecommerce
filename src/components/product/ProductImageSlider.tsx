@@ -1,22 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
-interface ProductImage {
-  id: number;
-  imageUrl: string;
-  isPrimary: boolean;
-}
+import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { VariantImageDTO } from "@/dto/image.dto";
 
 interface ProductImageSliderProps {
-  images: ProductImage[];
+  images: VariantImageDTO[];
   productName: string;
+  onImageZoom?: (imageUrl: string) => void;
 }
 
 const ProductImageSlider: React.FC<ProductImageSliderProps> = ({
   images,
   productName,
+  onImageZoom,
 }) => {
   // Encontrar la imagen principal o usar la primera
   const primaryImageIndex = images.findIndex((img) => img.isPrimary);
@@ -52,14 +48,37 @@ const ProductImageSlider: React.FC<ProductImageSliderProps> = ({
     <div className="space-y-4">
       {/* Imagen principal */}
       <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
-        <Image
-          src={images[currentImageIndex].imageUrl}
-          alt={`${productName} - Imagen ${currentImageIndex + 1}`}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-contain"
-          priority
+        <img
+          src={images[currentImageIndex].imageUrlNormal}
+          alt={
+            images[currentImageIndex].altText ||
+            `${productName} - Imagen ${currentImageIndex + 1}`
+          }
+          className="w-full h-full object-contain cursor-zoom-in"
+          onClick={() => onImageZoom?.(images[currentImageIndex].imageUrlZoom)}
         />
+
+        {/* Botón de zoom */}
+        <button
+          onClick={() => onImageZoom?.(images[currentImageIndex].imageUrlZoom)}
+          className="absolute top-2 left-2 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center shadow-md hover:bg-white"
+          aria-label="Ampliar imagen"
+        >
+          <ZoomIn className="h-5 w-5" />
+        </button>
+
+        {/* Badge del tipo de imagen */}
+        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+          {images[currentImageIndex].imageType === "front" && "Frontal"}
+          {images[currentImageIndex].imageType === "back" && "Trasera"}
+          {images[currentImageIndex].imageType === "left" && "Lateral Izq."}
+          {images[currentImageIndex].imageType === "right" && "Lateral Der."}
+          {images[currentImageIndex].imageType === "top" && "Superior"}
+          {images[currentImageIndex].imageType === "bottom" && "Inferior"}
+          {images[currentImageIndex].imageType === "detail" && "Detalle"}
+          {images[currentImageIndex].imageType === "lifestyle" && "Lifestyle"}
+          {images[currentImageIndex].imageType === "packaging" && "Empaque"}
+        </div>
 
         {/* Botones de navegación */}
         {images.length > 1 && (
@@ -96,12 +115,10 @@ const ProductImageSlider: React.FC<ProductImageSliderProps> = ({
               }`}
               aria-label={`Ver imagen ${index + 1}`}
             >
-              <Image
-                src={image.imageUrl}
-                alt={`${productName} - Thumbnail ${index + 1}`}
-                fill
-                sizes="64px"
-                className="object-cover"
+              <img
+                src={image.imageUrlThumb}
+                alt={image.altText || `${productName} - Thumbnail ${index + 1}`}
+                className="w-full h-full object-cover"
               />
             </button>
           ))}

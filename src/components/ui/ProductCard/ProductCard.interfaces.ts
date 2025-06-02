@@ -15,11 +15,19 @@ export interface ProductCardProps {
 export interface ProductCardSliderProps {
   images: {
     id: number;
-    imageUrl: string;
+    variantId: number;
+    imageType: string;
+    imageUrlThumb: string;
+    imageUrlNormal: string;
+    imageUrlZoom: string;
     isPrimary: boolean;
+    displayOrder: number;
+    altText?: string;
+    createdAt: Date;
+    updatedAt: Date;
   }[];
   productName: string;
-  brandName: string;
+  brandName?: string;
   layout?: "grid" | "list";
 }
 

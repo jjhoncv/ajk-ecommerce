@@ -19,7 +19,15 @@ const nextConfig: NextConfig = {
         hostname: "via.placeholder.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "store.storeimages.cdn-apple.com",
+        port: "",
+      },
     ],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { ProductDTO } from "@/dto";
 
 interface ProductAttributesProps {
@@ -101,22 +102,54 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
                 const isSelected = selectedAttributes[name] === value;
                 const isAvailable = isAttributeValueAvailable(name, value);
 
+                // Buscar imagen del atributo para este color
+                const attributeImage = selectedVariant.attributeImages?.find(
+                  (img) =>
+                    img.option.value === value && img.attribute.name === name
+                );
+
                 return (
                   <button
                     key={value}
                     onClick={() =>
                       isAvailable && handleAttributeChange(name, value)
                     }
-                    className={`w-8 h-8 rounded-full ${
+                    className={`relative w-12 h-12 rounded-lg overflow-hidden ${
                       isSelected
                         ? "ring-2 ring-indigo-600 ring-offset-2"
-                        : "ring-1 ring-gray-300"
+                        : "ring-1 ring-gray-300 hover:ring-gray-400"
                     } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""}`}
-                    style={{ backgroundColor: value.toLowerCase() }}
                     disabled={!isAvailable}
                     title={value}
                     aria-label={`${name}: ${value}`}
-                  />
+                  >
+                    {attributeImage ? (
+                      <Image
+                        src={attributeImage.imageUrlThumb}
+                        alt={attributeImage.altText || `${name}: ${value}`}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full rounded-lg"
+                        style={{ backgroundColor: value.toLowerCase() }}
+                      />
+                    )}
+
+                    {/* Indicador de selección */}
+                    {isSelected && (
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full" />
+                      </div>
+                    )}
+
+                    {/* Nombre del color */}
+                    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 whitespace-nowrap">
+                      {value}
+                    </div>
+                  </button>
                 );
               })}
             </div>
