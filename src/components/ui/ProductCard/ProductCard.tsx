@@ -14,6 +14,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   // Obtener el producto directamente
   const variantProduct = product.product;
+
+  // Verificar que el producto y sus variantes existan
+  if (
+    !variantProduct ||
+    !variantProduct.variants ||
+    variantProduct.variants.length === 0
+  ) {
+    console.error("ProductCard: Producto o variantes no válidos:", product);
+    return null;
+  }
+
   const selectedVariant = variantProduct.variants[0];
 
   return (

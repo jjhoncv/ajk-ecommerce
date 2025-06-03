@@ -73,8 +73,56 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
               <ProductCard
                 key={deal.id}
                 product={{
-                  ...deal,
-                  type: "deal",
+                  product: {
+                    id: Number(deal.id),
+                    name: deal.name,
+                    description: "",
+                    brandId: 1,
+                    brandName: "TechStore",
+                    basePrice: deal.originalPrice,
+                    minVariantPrice: deal.price,
+                    categories: [],
+                    variants: [
+                      {
+                        id: Number(deal.id),
+                        productId: Number(deal.id),
+                        sku: `SKU-${deal.id}`,
+                        price: deal.price,
+                        stock: deal.stock,
+                        attributes: [],
+                        images: [
+                          {
+                            id: 1,
+                            variantId: Number(deal.id),
+                            imageType: "front" as const,
+                            imageUrlThumb: deal.image,
+                            imageUrlNormal: deal.image,
+                            imageUrlZoom: deal.image,
+                            isPrimary: true,
+                            displayOrder: 0,
+                            altText: deal.name,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                          },
+                        ],
+                        attributeImages: [],
+                        promotion:
+                          deal.discount > 0
+                            ? {
+                                id: 1,
+                                name: "Oferta del día",
+                                discountType: "percentage" as const,
+                                discountValue: deal.discount,
+                                promotionPrice: deal.price,
+                                startDate: new Date(),
+                                endDate: new Date(),
+                                stockLimit: null,
+                              }
+                            : undefined,
+                      },
+                    ],
+                    mainImage: deal.image,
+                  },
                 }}
               />
             ))}
