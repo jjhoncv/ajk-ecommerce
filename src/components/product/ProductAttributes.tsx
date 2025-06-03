@@ -102,11 +102,15 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
                 const isSelected = selectedAttributes[name] === value;
                 const isAvailable = isAttributeValueAvailable(name, value);
 
-                // Buscar imagen del atributo para este color
-                const attributeImage = selectedVariant.attributeImages?.find(
-                  (img) =>
-                    img.option.value === value && img.attribute.name === name
-                );
+                // Buscar imagen del atributo para este color en todas las variantes
+                let attributeImage = null;
+                for (const variant of variants) {
+                  attributeImage = variant.attributeImages?.find(
+                    (img) =>
+                      img.option.value === value && img.attribute.name === name
+                  );
+                  if (attributeImage) break;
+                }
 
                 return (
                   <button
@@ -132,9 +136,12 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
                         className="object-cover"
                       />
                     ) : (
-                      <div
-                        className="w-full h-full rounded-lg"
-                        style={{ backgroundColor: value.toLowerCase() }}
+                      <Image
+                        src="/no-image.webp"
+                        alt={`${name}: ${value}`}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
                       />
                     )}
 

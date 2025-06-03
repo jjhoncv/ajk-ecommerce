@@ -93,7 +93,7 @@ export class ProductVariantModel {
   }
 
   private async mapVariantToDTO(
-    variant: ProductVariant
+    variant: ProductVariant & { product_id?: number }
   ): Promise<ProductVariantDTO> {
     // Obtener las imágenes de la variante (SOLO nuevo sistema)
     const images = await executeQuery<
@@ -174,7 +174,6 @@ export class ProductVariantModel {
         : undefined,
     }));
 
-    // Obtener imágenes de atributos (para selectores de color)
     const attributeImages = await executeQuery<
       {
         id: number;
@@ -193,7 +192,7 @@ export class ProductVariantModel {
       }[]
     >({
       query: `
-        SELECT 
+        SELECT DISTINCT
           aoi.id,
           aoi.attribute_option_id,
           aoi.image_url_thumb,
@@ -213,12 +212,15 @@ export class ProductVariantModel {
           attribute_options ao ON aoi.attribute_option_id = ao.id
         JOIN 
           attributes a ON ao.attribute_id = a.id
-        JOIN 
-          variant_attribute_options vao ON aoi.attribute_option_id = vao.attribute_option_id
         WHERE 
-          vao.variant_id = ?
+          aoi.attribute_option_id IN (
+            SELECT DISTINCT vao.attribute_option_id 
+            FROM variant_attribute_options vao 
+            JOIN product_variants pv ON vao.variant_id = pv.id 
+            WHERE pv.product_id = ?
+          )
       `,
-      values: [variant.id],
+      values: [variant.productId || variant.product_id],
     });
 
     // Obtener la mejor promoción para esta variante
