@@ -42,12 +42,12 @@ export async function GET(
             {
               id: 1,
               ratingId: 1,
-              imageUrl: "https://via.placeholder.com/150",
+              imageUrl: "/no-image.webp",
             },
             {
               id: 2,
               ratingId: 1,
-              imageUrl: "https://via.placeholder.com/150",
+              imageUrl: "/no-image.webp",
             },
           ],
         },
@@ -81,7 +81,7 @@ export async function GET(
             {
               id: 3,
               ratingId: 3,
-              imageUrl: "https://via.placeholder.com/150",
+              imageUrl: "/no-image.webp",
             },
           ],
         },

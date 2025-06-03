@@ -97,8 +97,8 @@ export class ProductVariantModel {
   private async mapVariantToDTO(
     variant: ProductVariant & { product_id?: number }
   ): Promise<ProductVariantDTO> {
-    // Obtener las imágenes de la variante (SOLO nuevo sistema)
-    const images = await executeQuery<
+    // Obtener las imágenes de la variante (sistema híbrido optimizado)
+    let images = await executeQuery<
       {
         id: number;
         variant_id: number;
@@ -117,6 +117,84 @@ export class ProductVariantModel {
         "SELECT * FROM variant_images WHERE variant_id = ? ORDER BY display_order ASC, is_primary DESC",
       values: [variant.id],
     });
+
+    // Si no hay imágenes específicas de variante, buscar imágenes de atributos visuales
+    if (images.length === 0) {
+      const attributeImages = await executeQuery<
+        {
+          id: number;
+          image_url_thumb: string;
+          image_url_normal: string | null;
+          image_url_zoom: string | null;
+          alt_text: string | null;
+          created_at: string;
+          updated_at: string;
+          attribute_name: string;
+          option_value: string;
+          image_type: string;
+          display_order: number;
+        }[]
+      >({
+        query: `
+          SELECT 
+            aoi.id,
+            aoi.image_url_thumb,
+            aoi.image_url_normal,
+            aoi.image_url_zoom,
+            aoi.alt_text,
+            aoi.created_at,
+            aoi.updated_at,
+            a.name as attribute_name,
+            ao.value as option_value,
+            aoi.image_type,
+            aoi.display_order
+          FROM 
+            attribute_option_images aoi
+          JOIN 
+            attribute_options ao ON aoi.attribute_option_id = ao.id
+          JOIN 
+            attributes a ON ao.attribute_id = a.id
+          JOIN 
+            variant_attribute_options vao ON ao.id = vao.attribute_option_id
+          WHERE 
+            vao.variant_id = ? 
+            AND a.display_type = 'color'
+          ORDER BY aoi.display_order ASC, aoi.image_type ASC
+        `,
+        values: [variant.id],
+      });
+
+      // Convertir imágenes de atributos al formato de variant_images
+      images = attributeImages.map((img, index) => ({
+        id: img.id + 10000, // Offset para evitar conflictos de ID
+        variant_id: variant.id,
+        image_type: img.image_type as
+          | "front"
+          | "back"
+          | "left"
+          | "right"
+          | "top"
+          | "bottom"
+          | "detail"
+          | "lifestyle"
+          | "packaging", // Usar el tipo de imagen real
+        image_url_thumb: img.image_url_thumb || "/no-image.webp",
+        image_url_normal:
+          img.image_url_normal || img.image_url_thumb || "/no-image.webp",
+        image_url_zoom:
+          img.image_url_zoom ||
+          img.image_url_normal ||
+          img.image_url_thumb ||
+          "/no-image.webp",
+        is_primary: index === 0 ? 1 : 0, // La primera imagen es primaria
+        display_order: img.display_order,
+        alt_text:
+          img.alt_text ||
+          `${img.option_value} - ${img.attribute_name} - ${img.image_type}`,
+        created_at: img.created_at,
+        updated_at: img.updated_at,
+      }));
+    }
 
     // Convertir imágenes al formato DTO
     const variantImages: VariantImageDTO[] = images.map((img) => ({

@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: ajk_ecommerce
--- Generation Time: 2025-06-03 00:27:23.4920
+-- Generation Time: 2025-06-03 02:21:10.3760
 -- -------------------------------------------------------------
 
 
@@ -32,7 +32,7 @@ CREATE TABLE `attribute_option_images` (
   UNIQUE KEY `unique_attribute_option` (`attribute_option_id`),
   KEY `idx_attribute_option` (`attribute_option_id`),
   CONSTRAINT `fk_aoi_attribute_option` FOREIGN KEY (`attribute_option_id`) REFERENCES `attribute_options` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Imágenes para opciones de atributos (colores, materiales, etc.)';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='Imágenes para opciones de atributos (colores, materiales, etc.)';
 
 DROP TABLE IF EXISTS `attribute_options`;
 CREATE TABLE `attribute_options` (
@@ -337,7 +337,7 @@ CREATE TABLE `variant_ratings` (
 
 INSERT INTO `attribute_option_images` (`id`, `attribute_option_id`, `image_url_thumb`, `image_url_normal`, `image_url_zoom`, `alt_text`, `created_at`, `updated_at`) VALUES
 (1, 28, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Blanco', '2025-06-02 22:33:23', '2025-06-03 05:00:05'),
-(2, 29, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Negro', '2025-06-02 22:33:23', '2025-06-02 23:45:24'),
+(2, 29, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-zoom.webp', 'iPhone 16 Pro Max Titanio Negro', '2025-06-02 22:33:23', '2025-06-03 07:16:14'),
 (3, 30, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-natural-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Natural', '2025-06-02 22:33:23', '2025-06-02 23:45:24'),
 (4, 31, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-desierto-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Desierto', '2025-06-02 22:33:23', '2025-06-02 23:45:24');
 
@@ -501,17 +501,6 @@ INSERT INTO `variant_attribute_options` (`variant_id`, `attribute_option_id`) VA
 (11, 2),
 (11, 6),
 (11, 12);
-
-INSERT INTO `variant_images` (`id`, `variant_id`, `image_type`, `image_url_thumb`, `image_url_normal`, `image_url_zoom`, `is_primary`, `display_order`, `alt_text`, `created_at`, `updated_at`) VALUES
-(33, 4, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 1, 1, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista frontal', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(34, 4, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', 0, 2, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista trasera', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(35, 4, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', 0, 3, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista lateral', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(39, 6, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 1, 1, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista frontal', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(40, 6, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', 0, 2, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista trasera', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(41, 6, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', 0, 3, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista lateral', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(42, 3, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-zoom.webp', 1, 1, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista frontal', '2025-06-03 04:56:00', '2025-06-03 04:56:00'),
-(43, 3, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-zoom.webp', 0, 2, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista trasera', '2025-06-03 04:56:00', '2025-06-03 04:56:00'),
-(44, 3, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-zoom.webp', 0, 3, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista lateral izquierda', '2025-06-03 04:56:00', '2025-06-03 04:56:00');
 
 INSERT INTO `variant_ratings` (`id`, `variant_id`, `customer_id`, `rating`, `review`, `title`, `verified_purchase`, `created_at`, `updated_at`) VALUES
 (1, 1, 3, 5, 'Excelente laptop, muy rápida y con buena duración de batería.', 'Compra perfecta', 1, '2025-05-30 18:56:20', '2025-05-30 18:56:20'),
