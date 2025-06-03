@@ -73,11 +73,9 @@ export interface HomeData {
   features: Feature[];
   productCategories: Category[];
   featuredCategories: FeaturedCategory[];
-  popularProducts: Product[];
-  dealsOfTheDay: Deal[];
   footerSections: FooterSection[];
   socialLinks: SocialLink[];
-  // Productos hidratados para usar con ProductCard
-  hydratedPopularProducts?: { product: ProductDTO }[];
-  hydratedDealsOfTheDay?: { product: ProductDTO }[];
+  // Solo productos hidratados (eliminamos duplicación)
+  popularProducts: { product: ProductDTO }[];
+  dealsProducts: { product: ProductDTO }[];
 }

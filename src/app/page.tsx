@@ -28,14 +28,8 @@ export default async function HomePage() {
       <Features features={data.features} />
       <Categories categories={data.productCategories} />
       <FeaturedCategories categories={data.featuredCategories} />
-      <PopularProducts
-        products={data.popularProducts}
-        hydratedProducts={data.hydratedPopularProducts}
-      />
-      <DailyDeals
-        deals={data.dealsOfTheDay}
-        hydratedDeals={data.hydratedDealsOfTheDay}
-      />
+      <PopularProducts hydratedProducts={data.popularProducts} />
+      <DailyDeals hydratedDeals={data.dealsProducts} />
       <Newsletter />
       <Footer sections={data.footerSections} socialLinks={data.socialLinks} />
     </div>

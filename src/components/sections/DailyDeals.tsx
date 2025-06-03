@@ -4,27 +4,14 @@ import Image from "next/image";
 import ProductCard from "@/components/ui/ProductCard";
 import { ProductDTO } from "@/dto";
 
-interface Deal {
-  id: string;
-  name: string;
-  originalPrice: number;
-  price: number;
-  discount: number;
-  image: string;
-  timer: string;
-  stock: number;
-}
-
 interface DailyDealsProps {
-  deals: Deal[];
   bannerImage?: string;
   bannerTitle?: string;
-  // Agregar prop para productos hidratados
-  hydratedDeals?: { product: ProductDTO }[];
+  // Solo necesitamos productos hidratados
+  hydratedDeals: { product: ProductDTO }[];
 }
 
 const DailyDeals: React.FC<DailyDealsProps> = ({
-  deals,
   bannerImage = "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
   bannerTitle = "Trae la naturaleza a tu hogar",
   hydratedDeals,
@@ -73,72 +60,12 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
         {/* Products Grid */}
         <div className="md:col-span-9">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hydratedDeals
-              ? // Usar productos hidratados si están disponibles
-                hydratedDeals.map((item) => (
-                  <ProductCard
-                    key={item.product.variants[0]?.id || item.product.id}
-                    product={item}
-                  />
-                ))
-              : // Fallback a productos simples
-                deals.map((deal) => (
-                  <ProductCard
-                    key={deal.id}
-                    product={{
-                      product: {
-                        id: Number(deal.id),
-                        name: deal.name,
-                        description: "",
-                        brandId: 1,
-                        brandName: "TechStore",
-                        basePrice: deal.originalPrice,
-                        minVariantPrice: deal.price,
-                        categories: [],
-                        variants: [
-                          {
-                            id: Number(deal.id),
-                            productId: Number(deal.id),
-                            sku: `SKU-${deal.id}`,
-                            price: deal.price,
-                            stock: deal.stock,
-                            attributes: [],
-                            images: [
-                              {
-                                id: 1,
-                                variantId: Number(deal.id),
-                                imageType: "front" as const,
-                                imageUrlThumb: deal.image,
-                                imageUrlNormal: deal.image,
-                                imageUrlZoom: deal.image,
-                                isPrimary: true,
-                                displayOrder: 0,
-                                altText: deal.name,
-                                createdAt: new Date(),
-                                updatedAt: new Date(),
-                              },
-                            ],
-                            attributeImages: [],
-                            promotion:
-                              deal.discount > 0
-                                ? {
-                                    id: 1,
-                                    name: "Oferta del día",
-                                    discountType: "percentage" as const,
-                                    discountValue: deal.discount,
-                                    promotionPrice: deal.price,
-                                    startDate: new Date(),
-                                    endDate: new Date(),
-                                    stockLimit: null,
-                                  }
-                                : undefined,
-                          },
-                        ],
-                        mainImage: deal.image,
-                      },
-                    }}
-                  />
-                ))}
+            {hydratedDeals.map((item) => (
+              <ProductCard
+                key={item.product.variants[0]?.id || item.product.id}
+                product={item}
+              />
+            ))}
           </div>
         </div>
       </div>

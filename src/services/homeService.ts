@@ -119,48 +119,9 @@ export async function getHomeData(): Promise<HomeData> {
         image: getCategoryImage(category.name),
       })),
 
-      // Productos populares reales
-      popularProducts: popularProducts.map((item) => ({
-        id: item.product.id.toString(),
-        name: item.product.name,
-        price:
-          item.product.variants[0]?.promotion?.promotionPrice ||
-          item.product.variants[0]?.price ||
-          item.product.basePrice,
-        originalPrice:
-          item.product.variants[0]?.price || item.product.basePrice,
-        image: getProductImage(item.product),
-        rating: item.product.variants[0]?.ratings?.averageRating || 4.5,
-        reviews: item.product.variants[0]?.ratings?.totalRatings || 0,
-      })),
-
-      // Productos populares hidratados
-      hydratedPopularProducts: popularProducts,
-
-      // Ofertas del día reales
-      dealsOfTheDay: dealsProducts.map((item) => {
-        const variant = item.product.variants[0];
-        const originalPrice = variant?.price || item.product.basePrice;
-        const currentPrice =
-          variant?.promotion?.promotionPrice || originalPrice;
-        const discount = Math.round(
-          ((originalPrice - currentPrice) / originalPrice) * 100
-        );
-
-        return {
-          id: item.product.id.toString(),
-          name: item.product.name,
-          originalPrice: originalPrice,
-          price: currentPrice,
-          discount: discount,
-          image: getProductImage(item.product),
-          timer: "02:15:30", // Tiempo estático por ahora
-          stock: variant?.stock || 0,
-        };
-      }),
-
-      // Ofertas del día hidratadas
-      hydratedDealsOfTheDay: dealsProducts,
+      // Solo productos hidratados (eliminamos duplicación)
+      popularProducts,
+      dealsProducts,
 
       // Footer (mantenemos estático)
       footerSections: [
@@ -335,9 +296,10 @@ function getBasicHomeData(): HomeData {
     features: [],
     productCategories: [],
     featuredCategories: [],
-    popularProducts: [],
-    dealsOfTheDay: [],
     footerSections: [],
     socialLinks: [],
+    // Solo propiedades hidratadas
+    hydratedPopularProducts: [],
+    hydratedDealsOfTheDay: [],
   };
 }
