@@ -2,8 +2,65 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, ChevronRight, Percent } from "lucide-react";
+import { Menu, ChevronRight, Percent, ChevronDown } from "lucide-react";
 import type { MegaMenuCategories } from "@/types/navigation";
+
+// Interfaz para el item de categoría
+interface CategoryItem {
+  name: string;
+  link: string;
+  children?: CategoryItem[];
+}
+
+// Componente para mostrar el árbol de categorías
+interface CategoryTreeItemProps {
+  category: CategoryItem;
+  level: number;
+}
+
+const CategoryTreeItem: React.FC<CategoryTreeItemProps> = ({
+  category,
+  level,
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const hasChildren = category.children && category.children.length > 0;
+
+  return (
+    <div className={`${level > 0 ? "ml-4" : ""}`}>
+      <div className="flex items-center justify-between py-1">
+        <Link
+          href={category.link}
+          className="text-gray-600 hover:text-primary transition-colors duration-300 flex-1"
+        >
+          {category.name}
+        </Link>
+        {hasChildren && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-1 hover:bg-gray-100 rounded"
+          >
+            <ChevronDown
+              className={`h-3 w-3 transition-transform ${
+                isExpanded ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        )}
+      </div>
+      {hasChildren && isExpanded && (
+        <div className="ml-2 border-l border-gray-200 pl-2">
+          {category.children!.map((child, index) => (
+            <CategoryTreeItem
+              key={`${category.name}-${child.name}-${index}`}
+              category={child}
+              level={level + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface NavigationProps {
   categories: MegaMenuCategories;
@@ -57,20 +114,17 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                         {/* Subcategories */}
                         <div>
                           <h3 className="font-bold mb-4">Subcategorías</h3>
-                          <ul className="space-y-2">
+                          <div className="space-y-2">
                             {categories[activeCategory].subcategories.map(
-                              (sub) => (
-                                <li key={sub.name}>
-                                  <Link
-                                    href={sub.link}
-                                    className="text-gray-600 hover:text-primary transition-colors duration-300"
-                                  >
-                                    {sub.name}
-                                  </Link>
-                                </li>
+                              (sub, index) => (
+                                <CategoryTreeItem
+                                  key={`${activeCategory}-${sub.name}-${index}`}
+                                  category={sub}
+                                  level={0}
+                                />
                               )
                             )}
-                          </ul>
+                          </div>
                         </div>
 
                         {/* Featured Products */}
@@ -80,9 +134,9 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                           </h3>
                           <div className="space-y-3">
                             {categories[activeCategory].featuredProducts.map(
-                              (product) => (
+                              (product, index) => (
                                 <div
-                                  key={product.name}
+                                  key={`${activeCategory}-${product.name}-${index}`}
                                   className="flex items-center gap-3"
                                 >
                                   <Image

@@ -23,20 +23,41 @@ export async function getHomeData(): Promise<HomeData> {
     });
     const dealsProducts = hydrateProductDTOs(dealsVariantsResult.products);
 
-    // Obtener categorías principales
+    // Obtener todas las categorías
     const categoriesData = await CategoryModel.getCategories();
+
+    // Debug: Ver qué categorías se están obteniendo
+    console.log(
+      "[DEBUG] Categorías obtenidas de la base de datos:",
+      categoriesData.map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        parentId: cat.parentId,
+      }))
+    );
+
+    // Filtrar categorías principales para la sección de categorías
     const mainCategories = categoriesData
       .filter((cat) => !cat.parentId)
       .slice(0, 8);
 
-    // Usar las mismas categorías para el mega menú
+    console.log(
+      "[DEBUG] Categorías principales filtradas:",
+      mainCategories.map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        parentId: cat.parentId,
+      }))
+    );
+
+    // Usar todas las categorías para construir el mega menú jerárquico
     const megaMenuData = categoriesData;
 
     return {
-      // Mega menú con categorías reales
+      // Mega menú con categorías reales y productos destacados con imágenes
       megaMenuCategories: buildMegaMenuCategories(
         megaMenuData,
-        popularVariantsResult.products
+        popularProducts
       ),
 
       // Slides del hero (mantenemos algunos datos estáticos por ahora)
@@ -120,8 +141,8 @@ export async function getHomeData(): Promise<HomeData> {
       })),
 
       // Solo productos hidratados (eliminamos duplicación)
-      popularProducts,
-      dealsProducts,
+      hydratedPopularProducts: popularProducts,
+      hydratedDealsOfTheDay: dealsProducts,
 
       // Footer (mantenemos estático)
       footerSections: [
@@ -178,7 +199,7 @@ export async function getHomeData(): Promise<HomeData> {
 // Función auxiliar para construir el mega menú con categorías reales
 function buildMegaMenuCategories(
   categories: CategoryDTO[],
-  products: ProductDTO[]
+  hydratedProducts: { product: ProductDTO }[]
 ): Record<
   string,
   {
@@ -193,17 +214,33 @@ function buildMegaMenuCategories(
 > {
   const megaMenu: Record<string, any> = {};
 
+  // Crear un mapa de categorías por ID para fácil acceso
+  const categoryMap = new Map<number, CategoryDTO>();
+  categories.forEach((cat) => categoryMap.set(cat.id, cat));
+
+  // Función para construir subcategorías recursivamente
+  const buildSubcategories = (parentId: number): any[] => {
+    return categories
+      .filter((cat) => cat.parentId === parentId)
+      .map((cat) => ({
+        name: cat.name,
+        link: `/categoria/${cat.name.toLowerCase().replace(/\s+/g, "-")}`,
+        children: buildSubcategories(cat.id), // Recursión para subcategorías anidadas
+      }));
+  };
+
+  // Construir el mega menú solo para categorías principales (parentId = null)
   categories.forEach((category) => {
     if (!category.parentId) {
-      // Solo categorías principales
       megaMenu[category.name] = {
-        subcategories: [
-          // Por ahora subcategorías vacías, se pueden agregar después
-        ],
-        featuredProducts: products.slice(0, 2).map((product) => ({
-          name: product.name,
-          price: product.variants[0]?.price || product.basePrice,
-          image: getProductImage(product),
+        subcategories: buildSubcategories(category.id),
+        featuredProducts: hydratedProducts.slice(0, 2).map((item) => ({
+          name: item.product.name,
+          price:
+            item.product.variants[0]?.promotion?.promotionPrice ||
+            item.product.variants[0]?.price ||
+            item.product.basePrice,
+          image: getProductImage(item.product),
         })),
         banner: {
           title: `Ofertas en ${category.name}`,

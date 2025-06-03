@@ -5,7 +5,8 @@ import { executeQuery } from "@/lib/db";
 export class CategoryModel {
   public async getCategories(): Promise<CategoryDTO[]> {
     const categories = await executeQuery<Category[]>({
-      query: "SELECT * FROM categories",
+      query:
+        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories",
     });
 
     return categories;
@@ -13,7 +14,8 @@ export class CategoryModel {
 
   public async getCategoryById(id: number): Promise<CategoryDTO | null> {
     const categories = await executeQuery<Category[]>({
-      query: "SELECT * FROM categories WHERE id = ?",
+      query:
+        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories WHERE id = ?",
       values: [id],
     });
 
@@ -26,7 +28,7 @@ export class CategoryModel {
   ): Promise<CategoryDTO[]> {
     const categories = await executeQuery<Category[]>({
       query: `
-        SELECT c.* 
+        SELECT c.id, c.name, c.description, c.parent_id as parentId, c.image_url as imageUrl
         FROM categories c
         JOIN product_categories pc ON c.id = pc.category_id
         WHERE pc.product_id = ?

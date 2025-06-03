@@ -76,6 +76,6 @@ export interface HomeData {
   footerSections: FooterSection[];
   socialLinks: SocialLink[];
   // Solo productos hidratados (eliminamos duplicación)
-  popularProducts: { product: ProductDTO }[];
-  dealsProducts: { product: ProductDTO }[];
+  hydratedPopularProducts: { product: ProductDTO }[];
+  hydratedDealsOfTheDay: { product: ProductDTO }[];
 }

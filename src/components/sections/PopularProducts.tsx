@@ -25,12 +25,16 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
         </Link>
       </div>
       <div className="grid grid-cols-5 gap-6">
-        {hydratedProducts.map((item) => (
+        {hydratedProducts?.map((item) => (
           <ProductCard
             key={item.product.variants[0]?.id || item.product.id}
             product={item}
           />
-        ))}
+        )) || (
+          <div className="col-span-5 text-center py-8 text-gray-500">
+            No hay productos disponibles
+          </div>
+        )}
       </div>
     </section>
   );
