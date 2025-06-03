@@ -1,4 +1,5 @@
 import { MegaMenuCategories, Category } from "./navigation";
+import { ProductDTO } from "@/dto";
 
 export interface Slide {
   title: string;
@@ -76,4 +77,7 @@ export interface HomeData {
   dealsOfTheDay: Deal[];
   footerSections: FooterSection[];
   socialLinks: SocialLink[];
+  // Productos hidratados para usar con ProductCard
+  hydratedPopularProducts?: { product: ProductDTO }[];
+  hydratedDealsOfTheDay?: { product: ProductDTO }[];
 }

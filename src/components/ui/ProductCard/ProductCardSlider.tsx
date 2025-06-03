@@ -50,8 +50,9 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
       {/* Slider de imágenes */}
       <div className="w-full h-48 overflow-hidden rounded-lg relative bg-gray-50">
         {images.map((image, idx) => {
-          // Usar imageUrl del hidratador
-          const imageUrl = image.imageUrl;
+          // Usar las propiedades correctas del hidratador
+          const imageUrl =
+            image.imageUrlNormal || image.imageUrlThumb || image.imageUrl;
 
           return (
             <div

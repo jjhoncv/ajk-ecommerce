@@ -15,8 +15,12 @@ export interface ProductCardProps {
 export interface ProductCardSliderProps {
   images: {
     id: number;
-    imageUrl: string;
+    imageUrl?: string; // Para compatibilidad con versiones anteriores
+    imageUrlThumb?: string;
+    imageUrlNormal?: string;
+    imageUrlZoom?: string;
     isPrimary: boolean;
+    altText?: string;
   }[];
   productName: string;
   brandName?: string;

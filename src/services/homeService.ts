@@ -7,12 +7,21 @@ import { ProductDTO, CategoryDTO } from "@/dto";
 // Esta función obtiene datos reales desde la base de datos
 export async function getHomeData(): Promise<HomeData> {
   try {
-    // Obtener todos los productos disponibles
-    const allProductsData = await ProductModel.getProducts();
-    const popularProducts = hydrateProductDTOs(allProductsData.slice(0, 5));
+    // Obtener variantes populares usando el método de búsqueda
+    const popularVariantsResult = await ProductModel.searchProductVariants({
+      page: 1,
+      limit: 5,
+      sort: "newest",
+    });
+    const popularProducts = hydrateProductDTOs(popularVariantsResult.products);
 
-    // Obtener productos para ofertas del día (mismos productos por ahora)
-    const dealsProducts = hydrateProductDTOs(allProductsData.slice(0, 4));
+    // Obtener variantes para ofertas del día (diferentes variantes)
+    const dealsVariantsResult = await ProductModel.searchProductVariants({
+      page: 1,
+      limit: 4,
+      sort: "price_desc",
+    });
+    const dealsProducts = hydrateProductDTOs(dealsVariantsResult.products);
 
     // Obtener categorías principales
     const categoriesData = await CategoryModel.getCategories();
@@ -27,7 +36,7 @@ export async function getHomeData(): Promise<HomeData> {
       // Mega menú con categorías reales
       megaMenuCategories: buildMegaMenuCategories(
         megaMenuData,
-        allProductsData
+        popularVariantsResult.products
       ),
 
       // Slides del hero (mantenemos algunos datos estáticos por ahora)
@@ -125,6 +134,9 @@ export async function getHomeData(): Promise<HomeData> {
         reviews: item.product.variants[0]?.ratings?.totalRatings || 0,
       })),
 
+      // Productos populares hidratados
+      hydratedPopularProducts: popularProducts,
+
       // Ofertas del día reales
       dealsOfTheDay: dealsProducts.map((item) => {
         const variant = item.product.variants[0];
@@ -146,6 +158,9 @@ export async function getHomeData(): Promise<HomeData> {
           stock: variant?.stock || 0,
         };
       }),
+
+      // Ofertas del día hidratadas
+      hydratedDealsOfTheDay: dealsProducts,
 
       // Footer (mantenemos estático)
       footerSections: [
