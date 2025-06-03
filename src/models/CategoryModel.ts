@@ -6,10 +6,42 @@ export class CategoryModel {
   public async getCategories(): Promise<CategoryDTO[]> {
     const categories = await executeQuery<Category[]>({
       query:
-        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories",
+        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories ORDER BY name",
     });
 
     return categories;
+  }
+
+  public async getCategoriesHierarchy(): Promise<CategoryDTO[]> {
+    const categories = await this.getCategories();
+
+    // Construir la jerarquía
+    const categoryMap = new Map<number, CategoryDTO>();
+    const rootCategories: CategoryDTO[] = [];
+
+    // Crear el mapa de categorías
+    categories.forEach((category) => {
+      categoryMap.set(category.id, { ...category, children: [] });
+    });
+
+    // Construir la jerarquía
+    categories.forEach((category) => {
+      const categoryWithChildren = categoryMap.get(category.id)!;
+
+      if (category.parentId === null) {
+        rootCategories.push(categoryWithChildren);
+      } else {
+        const parent = categoryMap.get(category.parentId);
+        if (parent) {
+          if (!parent.children) {
+            parent.children = [];
+          }
+          parent.children.push(categoryWithChildren);
+        }
+      }
+    });
+
+    return rootCategories;
   }
 
   public async getCategoryById(id: number): Promise<CategoryDTO | null> {

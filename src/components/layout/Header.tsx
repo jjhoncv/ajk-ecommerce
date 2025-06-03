@@ -4,14 +4,14 @@ import CartButton from "../ui/CartButton";
 import Logo from "../ui/Logo";
 import SearchBar from "../ui/SearchBar";
 import Navigation from "../ui/Navigation";
-import type { MegaMenuCategories } from "@/types/navigation";
+import { CategoryDTO } from "@/dto/category.dto";
 import ServerAuthButton from "../ui/ServerAuthButton";
 
 interface HeaderProps {
-  megaMenuCategories: MegaMenuCategories;
+  categories: CategoryDTO[];
 }
 
-const Header = async ({ megaMenuCategories }: HeaderProps) => {
+const Header = async ({ categories }: HeaderProps) => {
   // Aquí podrías hacer fetch de datos adicionales si fuera necesario
   // const additionalData = await fetchAdditionalData();
 
@@ -45,7 +45,7 @@ const Header = async ({ megaMenuCategories }: HeaderProps) => {
         </div>
       </div>
 
-      <Navigation categories={megaMenuCategories} />
+      <Navigation categories={categories} />
     </header>
   );
 };
