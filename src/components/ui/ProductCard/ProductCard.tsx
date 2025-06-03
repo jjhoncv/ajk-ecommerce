@@ -25,11 +25,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
       }`}
     >
       <Link
-        href={`/productos/${variantProduct.id}`}
+        href={`/productos/variante/${selectedVariant.id}`}
         className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
       >
         <ProductCardSlider
-          images={selectedVariant.images}
+          images={selectedVariant.images as any}
           productName={variantProduct.name}
           brandName={variantProduct.brandName}
           layout={layout}
@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {variantProduct.brandName.toUpperCase()}
         </div>
 
-        <Link href={`/productos/${variantProduct.id}`}>
+        <Link href={`/productos/variante/${selectedVariant.id}`}>
           <h3 className="font-medium mb-1 text-[16px] leading-[16px] hover:text-primary transition-colors">
             {getVariantTitle(variantProduct, selectedVariant)}
           </h3>
@@ -56,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Botón de agregar al carrito */}
         <ButtonAddToCart
           id={selectedVariant.id}
-          image={selectedVariant.images[0]?.imageUrl || ""}
+          image={(selectedVariant.images[0] as any)?.imageUrl || ""}
           name={variantProduct.name}
           price={
             selectedVariant.promotion?.promotionPrice || selectedVariant.price

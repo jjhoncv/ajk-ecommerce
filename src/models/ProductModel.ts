@@ -213,6 +213,7 @@ export class ProductModel {
 
         // Encontrar la imagen principal de la variante
         let mainImage = null;
+
         if (variantDetail.images.length > 0) {
           const primaryImage = variantDetail.images.find(
             (img) => img.isPrimary
@@ -220,10 +221,14 @@ export class ProductModel {
           mainImage = primaryImage
             ? primaryImage.imageUrlNormal
             : variantDetail.images[0].imageUrlNormal;
+        } else {
+          console.log(
+            `[DEBUG] No hay imágenes para variante ${variant.variant_id}`
+          );
         }
 
         // Crear un ProductDTO para esta variante
-        return {
+        const productDTO = {
           id: Number(variant.product_id),
           name: variant.product_name,
           description: variant.product_description,
@@ -243,16 +248,22 @@ export class ProductModel {
           variantPrice: Number(variant.price),
           variantStock: Number(variant.stock),
         };
+
+        return productDTO;
       })
     );
 
     // Filtrar posibles nulos y asegurar que los tipos sean correctos
     const filteredProductDTOs = productDTOs
       .filter((dto): dto is NonNullable<typeof dto> => dto !== null)
-      .map((dto) => ({
-        ...dto,
-        minVariantPrice: dto.minVariantPrice || dto.basePrice,
-      }));
+      .map((dto) => {
+        const result = {
+          ...dto,
+          minVariantPrice: dto.minVariantPrice || dto.basePrice,
+        };
+
+        return result;
+      });
 
     // Calcular filtros disponibles
     const availableFilters = await this.calculateAvailableFilters();

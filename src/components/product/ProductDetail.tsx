@@ -15,10 +15,16 @@ import {
 
 interface ProductDetailProps {
   product: ProductDTO;
+  initialSelectedVariantIndex?: number;
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+const ProductDetail: React.FC<ProductDetailProps> = ({
+  product,
+  initialSelectedVariantIndex = 0,
+}) => {
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(
+    initialSelectedVariantIndex
+  );
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
   const [zoomImageUrl, setZoomImageUrl] = useState<string>("");
@@ -91,7 +97,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         </div>
 
         {/* Nombre del producto */}
-        <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+        <h1 className="text-2xl font-bold mb-2">
+          {product.brandName} {product.name}
+          {selectedVariant.attributes.length > 0 && (
+            <span className="text-gray-700">
+              {" "}
+              {selectedVariant.attributes.map((attr) => attr.value).join(" ")}
+            </span>
+          )}
+        </h1>
 
         {/* Valoraciones */}
         {selectedVariant.ratings && (

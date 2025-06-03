@@ -132,7 +132,8 @@ export function hydrateSearchResultsProps(
           })),
           images: variant.images.map((img) => ({
             id: Number(img.id),
-            imageUrl: img.imageUrl,
+            imageUrl:
+              img.imageUrlNormal || img.imageUrlThumb || "/no-image.webp",
             isPrimary:
               typeof img.isPrimary === "string"
                 ? img.isPrimary === "1" || img.isPrimary === "true"

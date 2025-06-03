@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ProductDTO } from "@/dto";
 
 interface ProductAttributesProps {
@@ -14,6 +15,7 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
   selectedVariantIndex,
   setSelectedVariantIndex,
 }) => {
+  const router = useRouter();
   const variants = product.variants;
   const selectedVariant = variants[selectedVariantIndex];
 
@@ -66,7 +68,11 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
     const variantIndex = findVariantByAttributes(newAttributes);
 
     if (variantIndex !== -1) {
+      const newVariant = variants[variantIndex];
       setSelectedVariantIndex(variantIndex);
+
+      // Actualizar la URL para reflejar la nueva variante
+      router.push(`/productos/variante/${newVariant.id}`, { scroll: false });
     }
   };
 

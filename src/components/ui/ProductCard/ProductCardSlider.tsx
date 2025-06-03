@@ -48,8 +48,8 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
       {/* Slider de imágenes */}
       <div className="w-full h-48 overflow-hidden rounded-lg relative">
         {images.map((image, idx) => {
-          // Usar imageUrlNormal del nuevo sistema
-          const imageUrl = image.imageUrlNormal;
+          // Usar imageUrl del hidratador
+          const imageUrl = image.imageUrl;
 
           // Validar que imageUrl existe
           if (!imageUrl) {
@@ -80,14 +80,14 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
                 // Para URLs con parámetros de consulta, usar img en lugar de Image
                 <img
                   src={imageUrl}
-                  alt={image.altText || `${productName} - Imagen ${idx + 1}`}
+                  alt={`${productName} - Imagen ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 // Para URLs sin parámetros de consulta, usar el componente Image de Next.js
                 <Image
                   src={imageUrl}
-                  alt={image.altText || `${productName} - Imagen ${idx + 1}`}
+                  alt={`${productName} - Imagen ${idx + 1}`}
                   width={400}
                   height={300}
                   className="w-full h-full object-cover"

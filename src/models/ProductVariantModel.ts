@@ -22,7 +22,9 @@ export class ProductVariantModel {
       values: [id],
     });
 
-    if (variants.length === 0) return null;
+    if (variants.length === 0) {
+      return null;
+    }
 
     return await this.mapVariantToDTO(variants[0]);
   }
@@ -232,7 +234,7 @@ export class ProductVariantModel {
     // Crear el DTO de la variante
     const variantDTO: ProductVariantDTO = {
       id: variant.id,
-      productId: variant.productId,
+      productId: variant.productId || variant.product_id!,
       sku: variant.sku,
       price: variant.price,
       stock: variant.stock,
