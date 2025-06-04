@@ -2,6 +2,7 @@ export interface Category {
   name: string;
   icon: string;
   bg: string;
+  image: string | null;
 }
 
 export interface SubCategory {

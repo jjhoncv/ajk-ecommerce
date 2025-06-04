@@ -1,14 +1,10 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import Link from "next/link";
 import ProductDetail from "@/components/product/ProductDetail";
 import ProductVariantModel from "@/models/ProductVariantModel";
 import ProductModel from "@/models/ProductModel";
 import { hydrateProductDTO } from "@/utils/hydrators/product-card.hydrator";
-import TopBar from "@/components/layout/TopBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { getHomeData } from "@/services/homeService";
-import CategoryModel from "@/models/CategoryModel";
+import Layout from "@/components/layout/Layout";
 
 interface ProductVariantPageProps {
   params: Promise<{
@@ -78,7 +74,26 @@ export default async function ProductVariantPage({
   const variantId = parseInt(id);
 
   if (isNaN(variantId)) {
-    notFound();
+    return (
+      <Layout>
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+              ID de variante inválido
+            </h1>
+            <p className="text-gray-600 mb-6">
+              El ID de la variante proporcionado no es válido.
+            </p>
+            <Link
+              href="/"
+              className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors"
+            >
+              Volver al inicio
+            </Link>
+          </div>
+        </main>
+      </Layout>
+    );
   }
 
   try {
@@ -86,7 +101,35 @@ export default async function ProductVariantPage({
     const variant = await ProductVariantModel.getVariantById(variantId);
 
     if (!variant) {
-      notFound();
+      return (
+        <Layout>
+          <main className="max-w-7xl mx-auto px-4 py-8">
+            <div className="text-center py-12">
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                Variante no encontrada
+              </h1>
+              <p className="text-gray-600 mb-6">
+                La variante del producto que estás buscando no existe o ha sido
+                eliminada.
+              </p>
+              <div className="space-x-4">
+                <Link
+                  href="/"
+                  className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  Volver al inicio
+                </Link>
+                <Link
+                  href="/search"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+                >
+                  Buscar productos
+                </Link>
+              </div>
+            </div>
+          </main>
+        </Layout>
+      );
     }
 
     // Obtener el producto completo con todas sus variantes
@@ -96,7 +139,35 @@ export default async function ProductVariantPage({
     const productDTO = await ProductModel.getProductById(productId!);
 
     if (!productDTO) {
-      notFound();
+      return (
+        <Layout>
+          <main className="max-w-7xl mx-auto px-4 py-8">
+            <div className="text-center py-12">
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                Producto no encontrado
+              </h1>
+              <p className="text-gray-600 mb-6">
+                El producto asociado a esta variante no existe o ha sido
+                eliminado.
+              </p>
+              <div className="space-x-4">
+                <Link
+                  href="/"
+                  className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  Volver al inicio
+                </Link>
+                <Link
+                  href="/search"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+                >
+                  Buscar productos
+                </Link>
+              </div>
+            </div>
+          </main>
+        </Layout>
+      );
     }
 
     // Hidratar el producto
@@ -108,31 +179,76 @@ export default async function ProductVariantPage({
     );
 
     if (selectedVariantIndex === -1) {
-      notFound();
+      return (
+        <Layout>
+          <main className="max-w-7xl mx-auto px-4 py-8">
+            <div className="text-center py-12">
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                Variante no disponible
+              </h1>
+              <p className="text-gray-600 mb-6">
+                Esta variante específica no está disponible en este momento.
+              </p>
+              <div className="space-x-4">
+                <Link
+                  href={`/productos/${productDTO.id}`}
+                  className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors"
+                >
+                  Ver producto principal
+                </Link>
+                <Link
+                  href="/search"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+                >
+                  Buscar productos
+                </Link>
+              </div>
+            </div>
+          </main>
+        </Layout>
+      );
     }
 
-    // Obtener datos para el layout
-    const homeData = await getHomeData();
-    const categories = await CategoryModel.getCategories();
-
     return (
-      <div className="min-h-screen bg-white">
-        <TopBar />
-        <Header categories={categories} />
+      <Layout>
         <main className="max-w-7xl mx-auto px-4 py-8">
           <ProductDetail
             product={product}
             initialSelectedVariantIndex={selectedVariantIndex}
           />
         </main>
-        <Footer
-          sections={homeData.footerSections}
-          socialLinks={homeData.socialLinks}
-        />
-      </div>
+      </Layout>
     );
   } catch (error) {
     console.error("Error loading product variant:", error);
-    notFound();
+    return (
+      <Layout>
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+              Error al cargar el producto
+            </h1>
+            <p className="text-gray-600 mb-6">
+              Ocurrió un error al intentar cargar la información del producto.
+              Por favor, inténtalo de nuevo más tarde.
+            </p>
+            <div className="space-x-4">
+              <Link
+                href="/"
+                className="bg-primary hover:bg-primary/90 text-white py-2 px-4 rounded-lg transition-colors"
+              >
+                Volver al inicio
+              </Link>
+              <Link
+                href="/search"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+              >
+                Buscar productos
+              </Link>
+            </div>
+          </div>
+        </main>
+      </Layout>
+    );
   }
 }

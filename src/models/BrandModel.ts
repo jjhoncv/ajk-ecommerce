@@ -50,4 +50,5 @@ export class BrandModel {
   }
 }
 
-export default new BrandModel();
+const brandModel = new BrandModel();
+export default brandModel;

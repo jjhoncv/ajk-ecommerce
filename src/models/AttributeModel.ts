@@ -128,4 +128,5 @@ export class AttributeModel {
   }
 }
 
-export default new AttributeModel();
+const attributeModel = new AttributeModel();
+export default attributeModel;

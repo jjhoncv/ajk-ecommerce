@@ -1,4 +1,9 @@
-import { PromotionDTO, PromotionVariantDTO } from "@/dto/promotion.dto";
+import {
+  PromotionDTO,
+  PromotionVariantDTO,
+  PromotionDBRecord,
+  PromotionVariantDBRecord,
+} from "@/dto/promotion.dto";
 import { executeQuery } from "@/lib/db";
 
 export class PromotionModel {
@@ -8,7 +13,7 @@ export class PromotionModel {
   public async getActivePromotions(): Promise<PromotionDTO[]> {
     const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    const promotions = await executeQuery<any[]>({
+    const promotions = await executeQuery<PromotionDBRecord[]>({
       query: `
         SELECT * FROM promotions 
         WHERE is_active = 1 
@@ -25,7 +30,7 @@ export class PromotionModel {
    * Obtiene una promoción por su ID
    */
   public async getPromotionById(id: number): Promise<PromotionDTO | null> {
-    const promotions = await executeQuery<any[]>({
+    const promotions = await executeQuery<PromotionDBRecord[]>({
       query: "SELECT * FROM promotions WHERE id = ?",
       values: [id],
     });
@@ -43,7 +48,7 @@ export class PromotionModel {
   ): Promise<PromotionVariantDTO[]> {
     const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    const promotionVariants = await executeQuery<any[]>({
+    const promotionVariants = await executeQuery<PromotionVariantDBRecord[]>({
       query: `
         SELECT pv.*, p.* FROM promotion_variants pv
         JOIN promotions p ON pv.promotion_id = p.id
@@ -58,7 +63,7 @@ export class PromotionModel {
     return promotionVariants.map((pv) => ({
       promotionId: pv.promotion_id,
       variantId: pv.variant_id,
-      promotionPrice: pv.promotion_price,
+      promotionPrice: pv.promotion_price ? Number(pv.promotion_price) : null,
       stockLimit: pv.stock_limit,
       promotion: this.mapPromotionToDTO(pv),
     }));
@@ -113,7 +118,7 @@ export class PromotionModel {
   /**
    * Mapea un registro de la base de datos a un DTO de promoción
    */
-  private mapPromotionToDTO(promotion: any): PromotionDTO {
+  private mapPromotionToDTO(promotion: PromotionDBRecord): PromotionDTO {
     return {
       id: promotion.id,
       name: promotion.name,
@@ -195,4 +200,5 @@ export class PromotionModel {
   }
 }
 
-export default new PromotionModel();
+const promotionModel = new PromotionModel();
+export default promotionModel;

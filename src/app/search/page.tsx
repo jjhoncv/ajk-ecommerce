@@ -5,11 +5,7 @@ import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
 import SearchSorting from "@/components/search/SearchSorting";
 import { ProductSearchFiltersDTO } from "@/dto";
-import TopBar from "@/components/layout/TopBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { getHomeData } from "@/services/homeService";
-import CategoryModel from "@/models/CategoryModel";
+import Layout from "@/components/layout/Layout";
 import {
   hydrateSearchFiltersProps,
   hydrateSearchResultsProps,
@@ -35,10 +31,6 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  // Obtener datos para el header y footer
-  const homeData = await getHomeData();
-  const headerCategories = await CategoryModel.getCategories();
-
   // Esperar a searchParams antes de usar sus propiedades
   const params = await searchParams;
 
@@ -87,9 +79,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const attributes = await ProductService.getAttributes();
 
   return (
-    <div className="min-h-screen bg-white">
-      <TopBar />
-      <Header categories={headerCategories} />
+    <Layout>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">
           {params.q ? `Resultados para "${params.q}"` : "Todos los productos"}
@@ -128,10 +118,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
         </div>
       </div>
-      <Footer
-        sections={homeData.footerSections}
-        socialLinks={homeData.socialLinks}
-      />
-    </div>
+    </Layout>
   );
 }

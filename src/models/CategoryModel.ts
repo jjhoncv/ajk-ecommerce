@@ -124,4 +124,5 @@ export class CategoryModel {
   }
 }
 
-export default new CategoryModel();
+const categoryModel = new CategoryModel();
+export default categoryModel;

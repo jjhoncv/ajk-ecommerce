@@ -391,4 +391,5 @@ export class ProductVariantModel {
   }
 }
 
-export default new ProductVariantModel();
+const productVariantModel = new ProductVariantModel();
+export default productVariantModel;

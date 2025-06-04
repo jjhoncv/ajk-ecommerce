@@ -79,3 +79,54 @@ export interface VariantAttributeOption {
   variantId: number;
   attributeOptionId: number;
 }
+
+// Valoración de variante (datos de la base de datos)
+export interface VariantRating {
+  id: number;
+  variant_id: number;
+  customer_id: number;
+  rating: number;
+  review: string | null;
+  title: string | null;
+  verified_purchase: number; // 0 o 1 en la BD
+  created_at: string;
+}
+
+// Valoración con datos del cliente (para consultas con JOIN)
+export interface VariantRatingWithCustomer extends VariantRating {
+  customer_name: string;
+  customer_photo: string | null;
+}
+
+// Imagen de valoración
+export interface RatingImage {
+  id: number;
+  rating_id: number;
+  image_url: string;
+}
+
+// Resumen de valoraciones de variante (datos de la base de datos)
+export interface VariantRatingSummary {
+  variant_id: number;
+  total_ratings: number;
+  average_rating: number;
+  five_star: number;
+  four_star: number;
+  three_star: number;
+  two_star: number;
+  one_star: number;
+  verified_purchases: number;
+}
+
+// Resumen de valoraciones de producto (datos de la base de datos)
+export interface ProductRatingSummary {
+  product_id: number;
+  total_ratings: number;
+  average_rating: number;
+  five_star: number;
+  four_star: number;
+  three_star: number;
+  two_star: number;
+  one_star: number;
+  verified_purchases: number;
+}

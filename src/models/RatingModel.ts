@@ -5,6 +5,12 @@ import {
   ProductRatingSummaryDTO,
   RatingSearchResultDTO,
 } from "@/dto/rating.dto";
+import {
+  VariantRatingWithCustomer,
+  RatingImage,
+  VariantRatingSummary,
+  ProductRatingSummary,
+} from "@/interfaces/models";
 import { executeQuery } from "@/lib/db";
 
 export class RatingModel {
@@ -19,7 +25,7 @@ export class RatingModel {
     const offset = (page - 1) * limit;
 
     // Obtener las valoraciones
-    const ratings = await executeQuery<any[]>({
+    const ratings = await executeQuery<VariantRatingWithCustomer[]>({
       query: `
         SELECT 
           vr.*, 
@@ -78,7 +84,7 @@ export class RatingModel {
     const offset = (page - 1) * limit;
 
     // Obtener las valoraciones
-    const ratings = await executeQuery<any[]>({
+    const ratings = await executeQuery<VariantRatingWithCustomer[]>({
       query: `
         SELECT 
           vr.*, 
@@ -140,7 +146,7 @@ export class RatingModel {
    * Obtiene una valoración por su ID
    */
   public async getRatingById(id: number): Promise<RatingDTO | null> {
-    const ratings = await executeQuery<any[]>({
+    const ratings = await executeQuery<VariantRatingWithCustomer[]>({
       query: `
         SELECT 
           vr.*, 
@@ -166,7 +172,7 @@ export class RatingModel {
    * Obtiene las imágenes de una valoración
    */
   private async getRatingImages(ratingId: number): Promise<RatingImageDTO[]> {
-    const images = await executeQuery<any[]>({
+    const images = await executeQuery<RatingImage[]>({
       query: "SELECT * FROM rating_images WHERE rating_id = ?",
       values: [ratingId],
     });
@@ -184,7 +190,7 @@ export class RatingModel {
   public async getVariantRatingSummary(
     variantId: number
   ): Promise<VariantRatingSummaryDTO> {
-    const summary = await executeQuery<any[]>({
+    const summary = await executeQuery<VariantRatingSummary[]>({
       query: "SELECT * FROM variant_rating_summary WHERE variant_id = ?",
       values: [variantId],
     });
@@ -222,7 +228,7 @@ export class RatingModel {
   public async getProductRatingSummary(
     productId: number
   ): Promise<ProductRatingSummaryDTO> {
-    const summary = await executeQuery<any[]>({
+    const summary = await executeQuery<ProductRatingSummary[]>({
       query: "SELECT * FROM product_rating_summary WHERE product_id = ?",
       values: [productId],
     });
@@ -316,16 +322,19 @@ export class RatingModel {
   /**
    * Mapea un registro de la base de datos a un DTO de valoración
    */
-  private mapRatingToDTO(rating: any, images: RatingImageDTO[]): RatingDTO {
+  private mapRatingToDTO(
+    rating: VariantRatingWithCustomer,
+    images: RatingImageDTO[]
+  ): RatingDTO {
     return {
       id: rating.id,
       variantId: rating.variant_id,
       customerId: rating.customer_id,
       customerName: rating.customer_name,
-      customerPhoto: rating.customer_photo,
+      customerPhoto: rating.customer_photo || undefined,
       rating: rating.rating,
-      review: rating.review,
-      title: rating.title,
+      review: rating.review || undefined,
+      title: rating.title || undefined,
       verifiedPurchase: Boolean(rating.verified_purchase),
       createdAt: new Date(rating.created_at),
       images,
@@ -333,4 +342,5 @@ export class RatingModel {
   }
 }
 
-export default new RatingModel();
+const ratingModel = new RatingModel();
+export default ratingModel;

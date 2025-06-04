@@ -26,29 +26,10 @@ export async function getHomeData(): Promise<HomeData> {
     // Obtener todas las categorías
     const categoriesData = await CategoryModel.getCategories();
 
-    // Debug: Ver qué categorías se están obteniendo
-    console.log(
-      "[DEBUG] Categorías obtenidas de la base de datos:",
-      categoriesData.map((cat) => ({
-        id: cat.id,
-        name: cat.name,
-        parentId: cat.parentId,
-      }))
-    );
-
     // Filtrar categorías principales para la sección de categorías
     const mainCategories = categoriesData
       .filter((cat) => !cat.parentId)
       .slice(0, 8);
-
-    console.log(
-      "[DEBUG] Categorías principales filtradas:",
-      mainCategories.map((cat) => ({
-        id: cat.id,
-        name: cat.name,
-        parentId: cat.parentId,
-      }))
-    );
 
     // Usar todas las categorías para construir el mega menú jerárquico
     const megaMenuData = categoriesData;
@@ -130,6 +111,7 @@ export async function getHomeData(): Promise<HomeData> {
         name: category.name,
         icon: getCategoryIcon(category.name),
         bg: getCategoryColor(index),
+        image: category.imageUrl,
       })),
 
       // Categorías destacadas

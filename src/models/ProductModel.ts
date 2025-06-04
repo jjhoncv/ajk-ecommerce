@@ -484,4 +484,5 @@ export class ProductModel {
   }
 }
 
-export default new ProductModel();
+const productModel = new ProductModel();
+export default productModel;

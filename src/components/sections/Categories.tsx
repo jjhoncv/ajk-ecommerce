@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Category } from "@/types/navigation";
-
+import Image from "next/image";
 interface CategoriesProps {
   categories: Category[];
 }
@@ -32,13 +32,25 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
             href={`/categoria/${category.name.toLowerCase()}`}
             className="flex flex-col items-center p-4 rounded-lg hover:shadow-md transition-shadow group"
           >
-            <div
+            <div>
+              {category.image === null ? (
+                <Image src="/not-image.webp" />
+              ) : (
+                <Image
+                  src={category.image}
+                  width={80}
+                  height={80}
+                  alt={category.name}
+                />
+              )}
+            </div>
+            {/* <div
               className={`w-20 h-20 rounded-lg flex items-center justify-center text-3xl mb-3 ${getBgColorClass(
                 index
               )}`}
             >
               {category.icon}
-            </div>
+            </div> */}
             <span className="text-sm font-medium text-center">
               {category.name}
             </span>

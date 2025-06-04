@@ -32,8 +32,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
   const selectedVariant = product.variants[selectedVariantIndex];
 
-  console.log({ selectedVariant });
-
   const finalPrice = calculateFinalPrice(selectedVariant);
   const originalPrice = Number(selectedVariant.price);
   const hasDiscount = hasPromotion(selectedVariant);

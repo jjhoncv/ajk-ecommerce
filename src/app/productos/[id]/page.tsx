@@ -3,11 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import ProductDetail from "@/components/product/ProductDetail";
 import ProductService from "@/services/productService";
-import TopBar from "@/components/layout/TopBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { getHomeData } from "@/services/homeService";
-import CategoryModel from "@/models/CategoryModel";
+import Layout from "@/components/layout/Layout";
 
 interface ProductPageProps {
   params: {
@@ -41,13 +37,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const resolvedParams = await params;
   const productId = parseInt(resolvedParams.id);
   const product = await ProductService.getProductById(productId);
-  const homeData = await getHomeData();
-  const categories = await CategoryModel.getCategories();
 
   return (
-    <div className="min-h-screen bg-white">
-      <TopBar />
-      <Header categories={categories} />
+    <Layout>
       <main className="max-w-7xl mx-auto px-4 py-8">
         {product ? (
           <ProductDetail product={product} />
@@ -68,10 +60,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         )}
       </main>
-      <Footer
-        sections={homeData.footerSections}
-        socialLinks={homeData.socialLinks}
-      />
-    </div>
+    </Layout>
   );
 }
