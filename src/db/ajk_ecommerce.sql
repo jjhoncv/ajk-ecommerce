@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: ajk_ecommerce
--- Generation Time: 2025-06-03 00:27:23.4920
+-- Generation Time: 2025-06-03 19:21:51.4060
 -- -------------------------------------------------------------
 
 
@@ -22,6 +22,8 @@ DROP TABLE IF EXISTS `attribute_option_images`;
 CREATE TABLE `attribute_option_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_option_id` int(11) NOT NULL,
+  `image_type` enum('front','back','left','right','top','bottom','detail','lifestyle','packaging') NOT NULL DEFAULT 'front',
+  `display_order` int(11) DEFAULT '0',
   `image_url_thumb` varchar(255) NOT NULL COMMENT 'Imagen thumbnail 140x140 para selector de atributo',
   `image_url_normal` varchar(255) DEFAULT NULL COMMENT 'Imagen normal 600x800 (opcional)',
   `image_url_zoom` varchar(255) DEFAULT NULL COMMENT 'Imagen zoom 1200x1200 (opcional)',
@@ -29,10 +31,10 @@ CREATE TABLE `attribute_option_images` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_attribute_option` (`attribute_option_id`),
+  UNIQUE KEY `unique_attribute_option_type` (`attribute_option_id`,`image_type`),
   KEY `idx_attribute_option` (`attribute_option_id`),
   CONSTRAINT `fk_aoi_attribute_option` FOREIGN KEY (`attribute_option_id`) REFERENCES `attribute_options` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Imágenes para opciones de atributos (colores, materiales, etc.)';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='Imágenes para opciones de atributos (colores, materiales, etc.)';
 
 DROP TABLE IF EXISTS `attribute_options`;
 CREATE TABLE `attribute_options` (
@@ -42,7 +44,7 @@ CREATE TABLE `attribute_options` (
   `additional_cost` decimal(10,2) DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `idx_attribute` (`attribute_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE `attributes` (
@@ -82,7 +84,7 @@ CREATE TABLE `categories` (
   `image_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_parent` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
@@ -335,11 +337,17 @@ CREATE TABLE `variant_ratings` (
   CONSTRAINT `fk_rating_variant` FOREIGN KEY (`variant_id`) REFERENCES `product_variants` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
-INSERT INTO `attribute_option_images` (`id`, `attribute_option_id`, `image_url_thumb`, `image_url_normal`, `image_url_zoom`, `alt_text`, `created_at`, `updated_at`) VALUES
-(1, 28, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Blanco', '2025-06-02 22:33:23', '2025-06-03 05:00:05'),
-(2, 29, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Negro', '2025-06-02 22:33:23', '2025-06-02 23:45:24'),
-(3, 30, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-natural-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Natural', '2025-06-02 22:33:23', '2025-06-02 23:45:24'),
-(4, 31, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-desierto-attribute-option-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Desierto', '2025-06-02 22:33:23', '2025-06-02 23:45:24');
+INSERT INTO `attribute_option_images` (`id`, `attribute_option_id`, `image_type`, `display_order`, `image_url_thumb`, `image_url_normal`, `image_url_zoom`, `alt_text`, `created_at`, `updated_at`) VALUES
+(1, 28, 'front', 0, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 'iPhone 16 Pro Max Titanio Blanco', '2025-06-02 22:33:23', '2025-06-03 08:14:20'),
+(2, 29, 'front', 0, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-default.webp', 'iPhone 16 Pro Max Titanio Negro', '2025-06-02 22:33:23', '2025-06-03 08:07:13'),
+(3, 30, 'back', 0, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-natural-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-natural-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-natural-back-default.webp', 'iPhone 16 Pro Max Titanio Natural', '2025-06-02 22:33:23', '2025-06-03 08:21:09'),
+(4, 31, 'back', 0, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-desierto-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-desierto-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-desierto-back-default.webp', 'iPhone 16 Pro Max Titanio Desierto', '2025-06-02 22:33:23', '2025-06-03 08:20:21'),
+(8, 28, 'back', 1, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', 'iPhone 16 Pro Max Titanio Blanco - Vista Trasera', '2025-06-03 07:56:37', '2025-06-03 07:56:37'),
+(9, 28, 'left', 2, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', 'iPhone 16 Pro Max Titanio Blanco - Vista Lateral', '2025-06-03 07:56:37', '2025-06-03 07:56:37'),
+(10, 29, 'back', 1, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-default.webp', 'iPhone 16 Pro Max Titanio Negro - Vista Trasera', '2025-06-03 07:56:37', '2025-06-03 07:56:37'),
+(11, 29, 'left', 2, '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-default.webp', 'iPhone 16 Pro Max Titanio Negro - Vista Lateral', '2025-06-03 07:56:37', '2025-06-03 07:56:37'),
+(12, 35, 'front', 0, '/images/products/smartwatch/smartwatch-negro-front-thumb.webp', '/images/products/smartwatch/smartwatch-negro-front-default.webp', '/images/products/smartwatch/smartwatch-negro-front-default.webp', 'Smartwatch Huawei Watch FIT 3 Sport 1.82\" AMOLED - Vista Frontal', '2025-06-03 23:36:05', '2025-06-04 00:01:24'),
+(13, 36, 'front', 0, '/images/products/smartwatch/smartwatch-blanco-front-thumb.webp', '/images/products/smartwatch/smartwatch-blanco-front-default.webp', '/images/products/smartwatch/smartwatch-blanco-front-default.webp', 'Smartwatch Huawei Watch FIT 3 Sport 1.82\" AMOLED - Vista Frontal', '2025-06-04 00:03:36', '2025-06-04 00:07:46');
 
 INSERT INTO `attribute_options` (`id`, `attribute_id`, `value`, `additional_cost`) VALUES
 (1, 1, 'Negro', 0.00),
@@ -365,7 +373,9 @@ INSERT INTO `attribute_options` (`id`, `attribute_id`, `value`, `additional_cost
 (31, 1, 'Titanio Desierto', 0.00),
 (32, 3, '256GB', 0.00),
 (33, 3, '512GB', 200.00),
-(34, 3, '1TB', 500.00);
+(34, 3, '1TB', 500.00),
+(35, 1, 'Negro', 0.00),
+(36, 1, 'Blanco', 0.00);
 
 INSERT INTO `attributes` (`id`, `name`, `display_type`) VALUES
 (1, 'Color', 'color'),
@@ -380,15 +390,26 @@ INSERT INTO `brands` (`id`, `name`) VALUES
 (4, 'SmartLife');
 
 INSERT INTO `categories` (`id`, `name`, `description`, `parent_id`, `image_url`) VALUES
-(1, 'Electrónicos', 'Productos electrónicos de alta calidad', NULL, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Electrónicos'),
-(2, 'Computadoras', 'Laptops y computadoras de escritorio', 1, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Computadoras'),
-(3, 'Laptops', 'Computadoras portátiles', 2, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Laptops'),
-(4, 'Smartphones', 'Teléfonos inteligentes', 1, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Smartphones'),
-(5, 'Audio', 'Dispositivos de audio', 1, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Audio'),
-(6, 'Auriculares', 'Auriculares y audífonos', 5, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Auriculares'),
-(7, 'Wearables', 'Dispositivos vestibles', 1, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Wearables'),
-(8, 'Smartwatches', 'Relojes inteligentes', 7, 'https://placehold.co/600x400/e2e8f0/1e293b?text=Smartwatches'),
-(21, 'iPhone', 'Smartphones iPhone de Apple', 4, 'https://placehold.co/600x400/e2e8f0/1e293b?text=iPhone');
+(1, 'Electrónicos', 'Dispositivos electrónicos y tecnología', NULL, 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=200&fit=crop'),
+(2, 'Ropa y Moda', 'Vestimenta y accesorios de moda', NULL, 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop'),
+(3, 'Hogar y Jardín', 'Artículos para el hogar y jardín', NULL, 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=200&fit=crop'),
+(4, 'Deportes', 'Equipos y accesorios deportivos', NULL, 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop'),
+(5, 'Salud y Belleza', 'Productos de cuidado personal', NULL, 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=200&fit=crop'),
+(6, 'Smartphones', 'Teléfonos inteligentes y accesorios', 1, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=200&fit=crop'),
+(7, 'Computadoras', 'Laptops, PCs y accesorios', 1, 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&h=200&fit=crop'),
+(8, 'Audio', 'Auriculares, parlantes y equipos de audio', 1, 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&h=200&fit=crop'),
+(9, 'Gaming', 'Consolas, videojuegos y accesorios', 1, 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=200&fit=crop'),
+(10, 'Wearables', 'Smartwatches y dispositivos vestibles', 1, 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&h=200&fit=crop'),
+(11, 'iPhone', 'Smartphones Apple iPhone', 6, 'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=400&h=200&fit=crop'),
+(12, 'Samsung Galaxy', 'Smartphones Samsung Galaxy', 6, 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=200&fit=crop'),
+(13, 'Xiaomi', 'Smartphones Xiaomi', 6, 'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&h=200&fit=crop'),
+(14, 'Accesorios Móviles', 'Fundas, cargadores y accesorios', 6, 'https://images.unsplash.com/photo-1601593346740-925612772716?w=400&h=200&fit=crop'),
+(15, 'Laptops', 'Computadoras portátiles', 7, 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=200&fit=crop'),
+(16, 'PCs de Escritorio', 'Computadoras de escritorio', 7, 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=400&h=200&fit=crop'),
+(17, 'Componentes PC', 'Procesadores, RAM, tarjetas gráficas', 7, 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=200&fit=crop'),
+(18, 'Periféricos', 'Teclados, ratones, monitores', 7, 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=200&fit=crop'),
+(19, 'Ropa Hombre', 'Vestimenta masculina', 2, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop'),
+(20, 'Ropa Mujer', 'Vestimenta femenina', 2, 'https://images.unsplash.com/photo-1494790108755-2616c9c0e4b5?w=400&h=200&fit=crop');
 
 INSERT INTO `customers` (`id`, `username`, `email`, `password`, `address_id`, `is_active`, `created_at`, `updated_at`, `lastname`, `photo`, `name`) VALUES
 (3, 'Jhonnatan', 'user@example.com', '$2a$10$vk7kb/OC.HsSXps.x3DbwuJrn5GjmCbkto43TX9S8G0SyUU/ofzvq', 1, 1, '2024-08-16 02:41:34', '2024-11-30 00:05:34', 'Castro', '/uploads/1732925134811-802344022.jpeg', NULL),
@@ -496,22 +517,11 @@ INSERT INTO `variant_attribute_options` (`variant_id`, `attribute_option_id`) VA
 (6, 28),
 (7, 1),
 (8, 2),
-(9, 1),
-(10, 3),
+(9, 35),
+(10, 36),
 (11, 2),
 (11, 6),
 (11, 12);
-
-INSERT INTO `variant_images` (`id`, `variant_id`, `image_type`, `image_url_thumb`, `image_url_normal`, `image_url_zoom`, `is_primary`, `display_order`, `alt_text`, `created_at`, `updated_at`) VALUES
-(33, 4, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 1, 1, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista frontal', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(34, 4, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', 0, 2, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista trasera', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(35, 4, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', 0, 3, 'iPhone 16 Pro Max Titanio Blanco 128GB - Vista lateral', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(39, 6, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-front-default.webp', 1, 1, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista frontal', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(40, 6, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-back-default.webp', 0, 2, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista trasera', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(41, 6, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-blanco-left-default.webp', 0, 3, 'iPhone 16 Pro Max Titanio Blanco 256GB - Vista lateral', '2025-06-02 23:45:24', '2025-06-02 23:45:24'),
-(42, 3, 'front', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-front-zoom.webp', 1, 1, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista frontal', '2025-06-03 04:56:00', '2025-06-03 04:56:00'),
-(43, 3, 'back', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-back-zoom.webp', 0, 2, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista trasera', '2025-06-03 04:56:00', '2025-06-03 04:56:00'),
-(44, 3, 'left', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-thumb.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-default.webp', '/images/products/iphone-16/pro-max/iphone-16-prox-max-titanio-negro-left-zoom.webp', 0, 3, 'iPhone 16 Pro Max Titanio Negro 128GB - Vista lateral izquierda', '2025-06-03 04:56:00', '2025-06-03 04:56:00');
 
 INSERT INTO `variant_ratings` (`id`, `variant_id`, `customer_id`, `rating`, `review`, `title`, `verified_purchase`, `created_at`, `updated_at`) VALUES
 (1, 1, 3, 5, 'Excelente laptop, muy rápida y con buena duración de batería.', 'Compra perfecta', 1, '2025-05-30 18:56:20', '2025-05-30 18:56:20'),
