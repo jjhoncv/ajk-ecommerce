@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
 
   return (
     <div className="min-h-screen bg-white">
-      <TopBar />
+      {/* <TopBar /> */}
       <Header categories={categories} />
       {children}
       <Footer

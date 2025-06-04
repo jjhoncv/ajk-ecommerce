@@ -1,4 +1,4 @@
-import { ProductDTO } from "@/dto";
+import { ProductDTO, ProductVariantDTO } from "@/dto";
 
 // Props para el componente ProductCard
 export interface ProductCardProps {
@@ -13,7 +13,7 @@ export interface ProductCardProps {
 
 // Props para el componente ProductCardSlider
 export interface ProductCardSliderProps {
-  images: {
+  images?: {
     id: number;
     imageUrl?: string; // Para compatibilidad con versiones anteriores
     imageUrlThumb?: string;
@@ -22,9 +22,11 @@ export interface ProductCardSliderProps {
     isPrimary: boolean;
     altText?: string;
   }[];
-  productName: string;
+  // productName: string;
   brandName?: string;
   layout?: "grid" | "list";
+  selectedVariant: ProductVariantDTO;
+  variantProduct: ProductDTO;
 }
 
 // Props para el componente ProductCardVariants

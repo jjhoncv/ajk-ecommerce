@@ -99,6 +99,7 @@ export function hydrateSearchFiltersProps(
 /**
  * Hidratador para convertir DTOs a props para el componente SearchResults
  */
+
 export function hydrateSearchResultsProps(
   searchResult: ProductSearchResultDTO,
   filters: ProductSearchFiltersDTO
@@ -131,13 +132,8 @@ export function hydrateSearchResultsProps(
             additional_cost: attr.additional_cost,
           })),
           images: variant.images.map((img) => ({
+            ...img,
             id: Number(img.id),
-            imageUrl:
-              img.imageUrlNormal || img.imageUrlThumb || "/no-image.webp",
-            isPrimary:
-              typeof img.isPrimary === "string"
-                ? img.isPrimary === "1" || img.isPrimary === "true"
-                : Boolean(img.isPrimary),
           })),
           // Incluir información de promoción si existe
           promotion: variant.promotion

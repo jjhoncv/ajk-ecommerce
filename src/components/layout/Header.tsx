@@ -1,10 +1,9 @@
-import React from "react";
-import { MapPin, Heart } from "lucide-react";
+import { CategoryDTO } from "@/dto/category.dto";
+import { Heart } from "lucide-react";
 import CartButton from "../ui/CartButton";
 import Logo from "../ui/Logo";
-import SearchBar from "../ui/SearchBar";
 import Navigation from "../ui/Navigation";
-import { CategoryDTO } from "@/dto/category.dto";
+import SearchBar from "../ui/SearchBar";
 import ServerAuthButton from "../ui/ServerAuthButton";
 
 interface HeaderProps {
@@ -20,15 +19,6 @@ const Header = async ({ categories }: HeaderProps) => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Logo />
-
-          {/* Location */}
-          <div className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg">
-            <MapPin className="h-5 w-5 text-gray-600" />
-            <div>
-              <div className="text-xs text-gray-600">Entregar en</div>
-              <div className="font-semibold">Los Olivos</div>
-            </div>
-          </div>
 
           {/* Search */}
           <SearchBar />

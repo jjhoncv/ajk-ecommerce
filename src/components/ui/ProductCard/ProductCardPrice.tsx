@@ -12,17 +12,17 @@ const ProductCardPrice: React.FC<ProductCardVariantsProps> = ({
     const promotionDiscount = getPromotionDiscount(selectedVariant);
     if (promotionDiscount === null) return null;
     return (
-      <div className="bg-red-500 px-1 py-0.5 font-bold text-white text-xs rounded-sm">
+      <div className="text-red-500 font-bold -tracking-widest text-sm rounded-sm">
         -{promotionDiscount}%
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col gap-1 mt-4">
+    <div className="flex flex-col gap-1 mt-2">
       {/* Mostrar precio original si hay promoción */}
       <div className="flex gap-1 items-center">
-        <div className="text-[18px] leading-[18px] font-bold text-primary">
+        <div className="text-[20px] leading-[20px] font-bold text-primary">
           S/{" "}
           {selectedVariant.promotion?.promotionPrice || selectedVariant.price}
         </div>

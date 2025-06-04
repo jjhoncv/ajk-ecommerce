@@ -113,7 +113,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             <SearchResults
               {...hydrateSearchResultsProps(searchResults, filters)}
-              defaultView="list"
+              defaultView="grid"
             />
           </div>
         </div>

@@ -30,7 +30,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
 
           {/* Main Navigation */}
           <nav className="flex items-center gap-8 px-6">
-            <Link
+            {/* <Link
               href="/search"
               className="text-gray-700 hover:text-primary transition-colors duration-300 flex items-center gap-2"
             >
@@ -49,7 +49,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
                 />
               </svg>
               Buscar
-            </Link>
+            </Link> */}
             <Link
               href="/ofertas"
               className="text-gray-700 hover:text-primary transition-colors duration-300 flex items-center gap-2"
@@ -57,7 +57,19 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
               <Percent className="h-4 w-4" />
               Ofertas
             </Link>
-            <Link
+            {categories
+              .filter((categorie) => categorie.parentId === null)
+              .map((categorie, index) => (
+                <Link
+                  key={index}
+                  href={`/categoria/${categorie.id}`}
+                  className="text-gray-700 hover:text-primary transition-colors duration-300"
+                >
+                  {categorie.name}
+                </Link>
+              ))}
+
+            {/* <Link
               href="/nuevos"
               className="text-gray-700 hover:text-primary transition-colors duration-300"
             >
@@ -86,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
               className="text-gray-700 hover:text-primary transition-colors duration-300"
             >
               Contacto
-            </Link>
+            </Link> */}
           </nav>
         </div>
       </div>

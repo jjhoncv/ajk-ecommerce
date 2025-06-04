@@ -1,5 +1,6 @@
 // Interfaces para los componentes de búsqueda
 import { AttributeDTO, BrandDTO, CategoryDTO } from "@/dto";
+import { VariantImageDTO } from "@/dto/image.dto";
 
 // Interfaces para SearchFilters
 export interface FilterCategory {
@@ -84,11 +85,7 @@ export interface SearchResultsProps {
           display_type?: string;
           additional_cost?: number;
         }[];
-        images: {
-          id: number;
-          imageUrl: string;
-          isPrimary: boolean;
-        }[];
+        images: VariantImageDTO[];
         promotion?: {
           id: number;
           name: string;
