@@ -1,0 +1,1551 @@
+schema @transport(subgraph: "Database", kind: "mysql", location: "mysql://root:12345678@localhost:3306/ajkecommerce") {
+  query: Query
+  mutation: Mutation
+}
+
+directive @transport(subgraph: String, kind: String, location: String) repeatable on SCHEMA
+
+directive @mysqlSelect(subgraph: String, table: String, columnMap: [[String]]) on FIELD_DEFINITION
+
+directive @mysqlInsert(subgraph: String, table: String, primaryKeys: [String]) on FIELD_DEFINITION
+
+directive @mysqlUpdate(subgraph: String, table: String, columnMap: [[String]]) on FIELD_DEFINITION
+
+directive @mysqlDelete(subgraph: String, table: String) on FIELD_DEFINITION
+
+directive @mysqlTableForeign(subgraph: String, columnName: String) on FIELD_DEFINITION
+
+directive @mysqlCount(subgraph: String, table: String) on FIELD_DEFINITION
+
+type Query {
+  attribute_option_images(limit: Int, offset: Int, where: attribute_option_images_WhereInput, orderBy: attribute_option_images_OrderByInput): [attribute_option_images] @mysqlSelect(subgraph: "Database", table: "attribute_option_images")
+  count_attribute_option_images(where: attribute_option_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "attribute_option_images")
+  attribute_options(limit: Int, offset: Int, where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options")
+  count_attribute_options(where: attribute_options_WhereInput): Int @mysqlCount(subgraph: "Database", table: "attribute_options")
+  attributes(limit: Int, offset: Int, where: attributes_WhereInput, orderBy: attributes_OrderByInput): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes")
+  count_attributes(where: attributes_WhereInput): Int @mysqlCount(subgraph: "Database", table: "attributes")
+  banner(limit: Int, offset: Int, where: banner_WhereInput, orderBy: banner_OrderByInput): [banner] @mysqlSelect(subgraph: "Database", table: "banner")
+  count_banner(where: banner_WhereInput): Int @mysqlCount(subgraph: "Database", table: "banner")
+  brands(limit: Int, offset: Int, where: brands_WhereInput, orderBy: brands_OrderByInput): [brands] @mysqlSelect(subgraph: "Database", table: "brands")
+  count_brands(where: brands_WhereInput): Int @mysqlCount(subgraph: "Database", table: "brands")
+  categories(limit: Int, offset: Int, where: categories_WhereInput, orderBy: categories_OrderByInput): [categories] @mysqlSelect(subgraph: "Database", table: "categories")
+  count_categories(where: categories_WhereInput): Int @mysqlCount(subgraph: "Database", table: "categories")
+  customers(limit: Int, offset: Int, where: customers_WhereInput, orderBy: customers_OrderByInput): [customers] @mysqlSelect(subgraph: "Database", table: "customers")
+  count_customers(where: customers_WhereInput): Int @mysqlCount(subgraph: "Database", table: "customers")
+  customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses")
+  count_customers_addresses(where: customers_addresses_WhereInput): Int @mysqlCount(subgraph: "Database", table: "customers_addresses")
+  permissions(limit: Int, offset: Int, where: permissions_WhereInput, orderBy: permissions_OrderByInput): [permissions] @mysqlSelect(subgraph: "Database", table: "permissions")
+  count_permissions(where: permissions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
+  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories")
+  count_product_categories(where: product_categories_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_categories")
+  product_rating_summary(limit: Int, offset: Int, where: product_rating_summary_WhereInput, orderBy: product_rating_summary_OrderByInput): [product_rating_summary] @mysqlSelect(subgraph: "Database", table: "product_rating_summary")
+  count_product_rating_summary(where: product_rating_summary_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_rating_summary")
+  product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants")
+  count_product_variants(where: product_variants_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_variants")
+  products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products")
+  count_products(where: products_WhereInput): Int @mysqlCount(subgraph: "Database", table: "products")
+  promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants")
+  count_promotion_variants(where: promotion_variants_WhereInput): Int @mysqlCount(subgraph: "Database", table: "promotion_variants")
+  promotions(limit: Int, offset: Int, where: promotions_WhereInput, orderBy: promotions_OrderByInput): [promotions] @mysqlSelect(subgraph: "Database", table: "promotions")
+  count_promotions(where: promotions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "promotions")
+  rating_images(limit: Int, offset: Int, where: rating_images_WhereInput, orderBy: rating_images_OrderByInput): [rating_images] @mysqlSelect(subgraph: "Database", table: "rating_images")
+  count_rating_images(where: rating_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "rating_images")
+  roles(limit: Int, offset: Int, where: roles_WhereInput, orderBy: roles_OrderByInput): [roles] @mysqlSelect(subgraph: "Database", table: "roles")
+  count_roles(where: roles_WhereInput): Int @mysqlCount(subgraph: "Database", table: "roles")
+  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections")
+  count_roles_sections(where: roles_sections_WhereInput): Int @mysqlCount(subgraph: "Database", table: "roles_sections")
+  sections(limit: Int, offset: Int, where: sections_WhereInput, orderBy: sections_OrderByInput): [sections] @mysqlSelect(subgraph: "Database", table: "sections")
+  count_sections(where: sections_WhereInput): Int @mysqlCount(subgraph: "Database", table: "sections")
+  services(limit: Int, offset: Int, where: services_WhereInput, orderBy: services_OrderByInput): [services] @mysqlSelect(subgraph: "Database", table: "services")
+  count_services(where: services_WhereInput): Int @mysqlCount(subgraph: "Database", table: "services")
+  services_images(limit: Int, offset: Int, where: services_images_WhereInput, orderBy: services_images_OrderByInput): [services_images] @mysqlSelect(subgraph: "Database", table: "services_images")
+  count_services_images(where: services_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "services_images")
+  users(limit: Int, offset: Int, where: users_WhereInput, orderBy: users_OrderByInput): [users] @mysqlSelect(subgraph: "Database", table: "users")
+  count_users(where: users_WhereInput): Int @mysqlCount(subgraph: "Database", table: "users")
+  variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options")
+  count_variant_attribute_options(where: variant_attribute_options_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_attribute_options")
+  variant_images(limit: Int, offset: Int, where: variant_images_WhereInput, orderBy: variant_images_OrderByInput): [variant_images] @mysqlSelect(subgraph: "Database", table: "variant_images")
+  count_variant_images(where: variant_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_images")
+  variant_rating_summary(limit: Int, offset: Int, where: variant_rating_summary_WhereInput, orderBy: variant_rating_summary_OrderByInput): [variant_rating_summary] @mysqlSelect(subgraph: "Database", table: "variant_rating_summary")
+  count_variant_rating_summary(where: variant_rating_summary_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_rating_summary")
+  variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings")
+  count_variant_ratings(where: variant_ratings_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_ratings")
+}
+
+"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
+type attribute_option_images {
+  id: Int!
+  attribute_option_id: Int!
+  image_type: attribute_option_images_image_type!
+  display_order: Int
+  """Imagen thumbnail 140x140 para selector de atributo"""
+  image_url_thumb: String!
+  """Imagen normal 600x800 (opcional)"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200 (opcional)"""
+  image_url_zoom: String
+  """Texto alternativo"""
+  alt_text: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
+}
+
+enum attribute_option_images_image_type {
+  front
+  back
+  left
+  right
+  top
+  bottom
+  detail
+  lifestyle
+  packaging
+}
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type attribute_options {
+  id: Int!
+  attribute_id: Int!
+  value: String!
+  additional_cost: Float
+  attribute_option_images(limit: Int, offset: Int, where: attribute_option_images_WhereInput, orderBy: attribute_option_images_OrderByInput): [attribute_option_images] @mysqlSelect(subgraph: "Database", table: "attribute_option_images", columnMap: [["attribute_option_id", "id"]])
+  variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["attribute_option_id", "id"]])
+}
+
+"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
+input attribute_option_images_WhereInput {
+  id: String
+  attribute_option_id: String
+  image_type: String
+  display_order: String
+  """Imagen thumbnail 140x140 para selector de atributo"""
+  image_url_thumb: String
+  """Imagen normal 600x800 (opcional)"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200 (opcional)"""
+  image_url_zoom: String
+  """Texto alternativo"""
+  alt_text: String
+  created_at: String
+  updated_at: String
+}
+
+"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
+input attribute_option_images_OrderByInput {
+  id: OrderBy
+  attribute_option_id: OrderBy
+  image_type: OrderBy
+  display_order: OrderBy
+  """Imagen thumbnail 140x140 para selector de atributo"""
+  image_url_thumb: OrderBy
+  """Imagen normal 600x800 (opcional)"""
+  image_url_normal: OrderBy
+  """Imagen zoom 1200x1200 (opcional)"""
+  image_url_zoom: OrderBy
+  """Texto alternativo"""
+  alt_text: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+enum OrderBy {
+  asc
+  desc
+}
+
+type variant_attribute_options {
+  variant_id: Int!
+  attribute_option_id: Int!
+  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
+  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+}
+
+input attribute_options_WhereInput {
+  id: String
+  attribute_id: String
+  value: String
+  additional_cost: String
+}
+
+input attribute_options_OrderByInput {
+  id: OrderBy
+  attribute_id: OrderBy
+  value: OrderBy
+  additional_cost: OrderBy
+}
+
+type product_variants {
+  id: Int!
+  product_id: Int!
+  sku: String!
+  price: Float!
+  stock: Int!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
+  promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["variant_id", "id"]])
+  variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["variant_id", "id"]])
+  variant_images(limit: Int, offset: Int, where: variant_images_WhereInput, orderBy: variant_images_OrderByInput): [variant_images] @mysqlSelect(subgraph: "Database", table: "variant_images", columnMap: [["variant_id", "id"]])
+  variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["variant_id", "id"]])
+}
+
+type products {
+  id: Int!
+  name: String!
+  description: String
+  brand_id: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  base_price: Float
+  product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["product_id", "id"]])
+}
+
+input product_variants_WhereInput {
+  id: String
+  product_id: String
+  sku: String
+  price: String
+  stock: String
+  created_at: String
+  updated_at: String
+}
+
+input product_variants_OrderByInput {
+  id: OrderBy
+  product_id: OrderBy
+  sku: OrderBy
+  price: OrderBy
+  stock: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+input products_WhereInput {
+  id: String
+  name: String
+  description: String
+  brand_id: String
+  created_at: String
+  updated_at: String
+  base_price: String
+}
+
+input products_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  brand_id: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  base_price: OrderBy
+}
+
+type promotion_variants {
+  promotion_id: Int!
+  variant_id: Int!
+  promotion_price: Float
+  stock_limit: Int
+  created_at: Timestamp!
+  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+  promotions(where: promotions_WhereInput, orderBy: promotions_OrderByInput, limit: Int, offset: Int): [promotions] @mysqlSelect(subgraph: "Database", table: "promotions", columnMap: [["id", "promotion_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "promotion_id")
+}
+
+type promotions {
+  id: Int!
+  name: String!
+  description: String
+  start_date: DateTime!
+  end_date: DateTime!
+  discount_type: promotions_discount_type!
+  discount_value: Float!
+  min_purchase_amount: Float
+  is_active: Int!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum promotions_discount_type {
+  percentage
+  fixed_amount
+}
+
+input promotion_variants_WhereInput {
+  promotion_id: String
+  variant_id: String
+  promotion_price: String
+  stock_limit: String
+  created_at: String
+}
+
+input promotion_variants_OrderByInput {
+  promotion_id: OrderBy
+  variant_id: OrderBy
+  promotion_price: OrderBy
+  stock_limit: OrderBy
+  created_at: OrderBy
+}
+
+input promotions_WhereInput {
+  id: String
+  name: String
+  description: String
+  start_date: String
+  end_date: String
+  discount_type: String
+  discount_value: String
+  min_purchase_amount: String
+  is_active: String
+  created_at: String
+  updated_at: String
+}
+
+input promotions_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  start_date: OrderBy
+  end_date: OrderBy
+  discount_type: OrderBy
+  discount_value: OrderBy
+  min_purchase_amount: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+input variant_attribute_options_WhereInput {
+  variant_id: String
+  attribute_option_id: String
+}
+
+input variant_attribute_options_OrderByInput {
+  variant_id: OrderBy
+  attribute_option_id: OrderBy
+}
+
+"""Imágenes de variantes con múltiples tamaños y tipos"""
+type variant_images {
+  id: Int!
+  variant_id: Int!
+  image_type: variant_images_image_type!
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String!
+  """Imagen normal 600x800"""
+  image_url_normal: String!
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String!
+  """Imagen principal de la variante"""
+  is_primary: Int
+  """Orden de visualización"""
+  display_order: Int
+  """Texto alternativo para SEO"""
+  alt_text: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+}
+
+enum variant_images_image_type {
+  front
+  back
+  left
+  right
+  top
+  bottom
+  detail
+  lifestyle
+  packaging
+}
+
+"""Imágenes de variantes con múltiples tamaños y tipos"""
+input variant_images_WhereInput {
+  id: String
+  variant_id: String
+  image_type: String
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String
+  """Imagen normal 600x800"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String
+  """Imagen principal de la variante"""
+  is_primary: String
+  """Orden de visualización"""
+  display_order: String
+  """Texto alternativo para SEO"""
+  alt_text: String
+  created_at: String
+  updated_at: String
+}
+
+"""Imágenes de variantes con múltiples tamaños y tipos"""
+input variant_images_OrderByInput {
+  id: OrderBy
+  variant_id: OrderBy
+  image_type: OrderBy
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: OrderBy
+  """Imagen normal 600x800"""
+  image_url_normal: OrderBy
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: OrderBy
+  """Imagen principal de la variante"""
+  is_primary: OrderBy
+  """Orden de visualización"""
+  display_order: OrderBy
+  """Texto alternativo para SEO"""
+  alt_text: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type variant_ratings {
+  id: Int!
+  variant_id: Int!
+  customer_id: Int!
+  rating: Int!
+  review: String
+  title: String
+  verified_purchase: Int!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  rating_images(limit: Int, offset: Int, where: rating_images_WhereInput, orderBy: rating_images_OrderByInput): [rating_images] @mysqlSelect(subgraph: "Database", table: "rating_images", columnMap: [["rating_id", "id"]])
+  customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
+  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+}
+
+type rating_images {
+  id: Int!
+  rating_id: Int!
+  image_url: String!
+  created_at: Timestamp!
+  variant_ratings(where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput, limit: Int, offset: Int): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["id", "rating_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "rating_id")
+}
+
+input variant_ratings_WhereInput {
+  id: String
+  variant_id: String
+  customer_id: String
+  rating: String
+  review: String
+  title: String
+  verified_purchase: String
+  created_at: String
+  updated_at: String
+}
+
+input variant_ratings_OrderByInput {
+  id: OrderBy
+  variant_id: OrderBy
+  customer_id: OrderBy
+  rating: OrderBy
+  review: OrderBy
+  title: OrderBy
+  verified_purchase: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+input rating_images_WhereInput {
+  id: String
+  rating_id: String
+  image_url: String
+  created_at: String
+}
+
+input rating_images_OrderByInput {
+  id: OrderBy
+  rating_id: OrderBy
+  image_url: OrderBy
+  created_at: OrderBy
+}
+
+type customers {
+  id: Int!
+  username: String!
+  email: String!
+  password: String!
+  address_id: Int
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  lastname: String!
+  photo: String
+  name: String
+  customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
+  variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
+}
+
+type customers_addresses {
+  id: Int!
+  name: String
+  description: String
+  id_customer: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
+}
+
+input customers_WhereInput {
+  id: String
+  username: String
+  email: String
+  password: String
+  address_id: String
+  is_active: String
+  created_at: String
+  updated_at: String
+  lastname: String
+  photo: String
+  name: String
+}
+
+input customers_OrderByInput {
+  id: OrderBy
+  username: OrderBy
+  email: OrderBy
+  password: OrderBy
+  address_id: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  lastname: OrderBy
+  photo: OrderBy
+  name: OrderBy
+}
+
+input customers_addresses_WhereInput {
+  id: String
+  name: String
+  description: String
+  id_customer: String
+  created_at: String
+  updated_at: String
+}
+
+input customers_addresses_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  id_customer: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type attributes {
+  id: Int!
+  name: String!
+  display_type: attributes_display_type!
+}
+
+enum attributes_display_type {
+  radio
+  pills
+  select
+  color
+  custom
+}
+
+input attributes_WhereInput {
+  id: String
+  name: String
+  display_type: String
+}
+
+input attributes_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  display_type: OrderBy
+}
+
+type banner {
+  id: Int!
+  title: String!
+  subtitle: String
+  description: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  display_order: Int
+  link: String
+  image_url: String
+}
+
+input banner_WhereInput {
+  id: String
+  title: String
+  subtitle: String
+  description: String
+  created_at: String
+  updated_at: String
+  display_order: String
+  link: String
+  image_url: String
+}
+
+input banner_OrderByInput {
+  id: OrderBy
+  title: OrderBy
+  subtitle: OrderBy
+  description: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  display_order: OrderBy
+  link: OrderBy
+  image_url: OrderBy
+}
+
+type brands {
+  id: Int!
+  name: String!
+}
+
+input brands_WhereInput {
+  id: String
+  name: String
+}
+
+input brands_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+}
+
+type categories {
+  id: Int!
+  name: String!
+  description: String
+  parent_id: Int
+  image_url: String
+}
+
+input categories_WhereInput {
+  id: String
+  name: String
+  description: String
+  parent_id: String
+  image_url: String
+}
+
+input categories_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  parent_id: OrderBy
+  image_url: OrderBy
+}
+
+type permissions {
+  id: Int!
+  name: String!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+}
+
+input permissions_WhereInput {
+  id: String
+  name: String
+  created_at: String
+  updated_at: String
+}
+
+input permissions_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type product_categories {
+  product_id: Int!
+  category_id: Int!
+}
+
+input product_categories_WhereInput {
+  product_id: String
+  category_id: String
+}
+
+input product_categories_OrderByInput {
+  product_id: OrderBy
+  category_id: OrderBy
+}
+
+"""VIEW"""
+type product_rating_summary {
+  product_id: Int!
+  total_ratings: BigInt!
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+"""VIEW"""
+input product_rating_summary_WhereInput {
+  product_id: String
+  total_ratings: String
+  average_rating: String
+  five_star: String
+  four_star: String
+  three_star: String
+  two_star: String
+  one_star: String
+  verified_purchases: String
+}
+
+"""VIEW"""
+input product_rating_summary_OrderByInput {
+  product_id: OrderBy
+  total_ratings: OrderBy
+  average_rating: OrderBy
+  five_star: OrderBy
+  four_star: OrderBy
+  three_star: OrderBy
+  two_star: OrderBy
+  one_star: OrderBy
+  verified_purchases: OrderBy
+}
+
+type roles {
+  id: Int!
+  name: String!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_rol", "id"]])
+  users(limit: Int, offset: Int, where: users_WhereInput, orderBy: users_OrderByInput): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["role_id", "id"]])
+}
+
+type roles_sections {
+  id: Int!
+  id_section: Int
+  id_rol: Int
+  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "id_rol"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_rol")
+  sections(where: sections_WhereInput, orderBy: sections_OrderByInput, limit: Int, offset: Int): [sections] @mysqlSelect(subgraph: "Database", table: "sections", columnMap: [["id", "id_section"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_section")
+}
+
+input roles_WhereInput {
+  id: String
+  name: String
+  created_at: String
+  updated_at: String
+}
+
+input roles_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type sections {
+  id: Int!
+  name: String
+  url: String
+  image: String
+  display_order: Int
+  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_section", "id"]])
+}
+
+input roles_sections_WhereInput {
+  id: String
+  id_section: String
+  id_rol: String
+}
+
+input roles_sections_OrderByInput {
+  id: OrderBy
+  id_section: OrderBy
+  id_rol: OrderBy
+}
+
+input sections_WhereInput {
+  id: String
+  name: String
+  url: String
+  image: String
+  display_order: String
+}
+
+input sections_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  url: OrderBy
+  image: OrderBy
+  display_order: OrderBy
+}
+
+type users {
+  id: Int!
+  username: String!
+  email: String!
+  password: String!
+  role_id: Int!
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  lastname: String!
+  photo: String
+  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "role_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "role_id")
+}
+
+input users_WhereInput {
+  id: String
+  username: String
+  email: String
+  password: String
+  role_id: String
+  is_active: String
+  created_at: String
+  updated_at: String
+  lastname: String
+  photo: String
+}
+
+input users_OrderByInput {
+  id: OrderBy
+  username: OrderBy
+  email: OrderBy
+  password: OrderBy
+  role_id: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  lastname: OrderBy
+  photo: OrderBy
+}
+
+type services {
+  id: Int!
+  title: String!
+  subtitle: String
+  image_url: String
+  slug: String
+  description: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  display_order: Int
+  services_images(limit: Int, offset: Int, where: services_images_WhereInput, orderBy: services_images_OrderByInput): [services_images] @mysqlSelect(subgraph: "Database", table: "services_images", columnMap: [["id_service", "id"]])
+}
+
+type services_images {
+  id: Int!
+  title: String
+  subtitle: String
+  description: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  display_order: Int
+  id_service: Int
+  image_url: String
+  services(where: services_WhereInput, orderBy: services_OrderByInput, limit: Int, offset: Int): [services] @mysqlSelect(subgraph: "Database", table: "services", columnMap: [["id", "id_service"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_service")
+}
+
+input services_WhereInput {
+  id: String
+  title: String
+  subtitle: String
+  image_url: String
+  slug: String
+  description: String
+  created_at: String
+  updated_at: String
+  display_order: String
+}
+
+input services_OrderByInput {
+  id: OrderBy
+  title: OrderBy
+  subtitle: OrderBy
+  image_url: OrderBy
+  slug: OrderBy
+  description: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  display_order: OrderBy
+}
+
+input services_images_WhereInput {
+  id: String
+  title: String
+  subtitle: String
+  description: String
+  created_at: String
+  updated_at: String
+  display_order: String
+  id_service: String
+  image_url: String
+}
+
+input services_images_OrderByInput {
+  id: OrderBy
+  title: OrderBy
+  subtitle: OrderBy
+  description: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  display_order: OrderBy
+  id_service: OrderBy
+  image_url: OrderBy
+}
+
+"""VIEW"""
+type variant_rating_summary {
+  variant_id: Int!
+  total_ratings: BigInt!
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+"""VIEW"""
+input variant_rating_summary_WhereInput {
+  variant_id: String
+  total_ratings: String
+  average_rating: String
+  five_star: String
+  four_star: String
+  three_star: String
+  two_star: String
+  one_star: String
+  verified_purchases: String
+}
+
+"""VIEW"""
+input variant_rating_summary_OrderByInput {
+  variant_id: OrderBy
+  total_ratings: OrderBy
+  average_rating: OrderBy
+  five_star: OrderBy
+  four_star: OrderBy
+  three_star: OrderBy
+  two_star: OrderBy
+  one_star: OrderBy
+  verified_purchases: OrderBy
+}
+
+type Mutation {
+  insert_attribute_option_images(attribute_option_images: attribute_option_images_InsertInput!): attribute_option_images @mysqlInsert(subgraph: "Database", table: "attribute_option_images", primaryKeys: ["id"])
+  update_attribute_option_images(attribute_option_images: attribute_option_images_UpdateInput!, where: attribute_option_images_WhereInput): attribute_option_images @mysqlUpdate(subgraph: "Database", table: "attribute_option_images")
+  delete_attribute_option_images(where: attribute_option_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attribute_option_images")
+  insert_attribute_options(attribute_options: attribute_options_InsertInput!): attribute_options @mysqlInsert(subgraph: "Database", table: "attribute_options", primaryKeys: ["id"])
+  update_attribute_options(attribute_options: attribute_options_UpdateInput!, where: attribute_options_WhereInput): attribute_options @mysqlUpdate(subgraph: "Database", table: "attribute_options")
+  delete_attribute_options(where: attribute_options_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attribute_options")
+  insert_attributes(attributes: attributes_InsertInput!): attributes @mysqlInsert(subgraph: "Database", table: "attributes", primaryKeys: ["id"])
+  update_attributes(attributes: attributes_UpdateInput!, where: attributes_WhereInput): attributes @mysqlUpdate(subgraph: "Database", table: "attributes")
+  delete_attributes(where: attributes_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attributes")
+  insert_banner(banner: banner_InsertInput!): banner @mysqlInsert(subgraph: "Database", table: "banner", primaryKeys: ["id"])
+  update_banner(banner: banner_UpdateInput!, where: banner_WhereInput): banner @mysqlUpdate(subgraph: "Database", table: "banner")
+  delete_banner(where: banner_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "banner")
+  insert_brands(brands: brands_InsertInput!): brands @mysqlInsert(subgraph: "Database", table: "brands", primaryKeys: ["id"])
+  update_brands(brands: brands_UpdateInput!, where: brands_WhereInput): brands @mysqlUpdate(subgraph: "Database", table: "brands")
+  delete_brands(where: brands_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "brands")
+  insert_categories(categories: categories_InsertInput!): categories @mysqlInsert(subgraph: "Database", table: "categories", primaryKeys: ["id"])
+  update_categories(categories: categories_UpdateInput!, where: categories_WhereInput): categories @mysqlUpdate(subgraph: "Database", table: "categories")
+  delete_categories(where: categories_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "categories")
+  insert_customers(customers: customers_InsertInput!): customers @mysqlInsert(subgraph: "Database", table: "customers", primaryKeys: ["id"])
+  update_customers(customers: customers_UpdateInput!, where: customers_WhereInput): customers @mysqlUpdate(subgraph: "Database", table: "customers")
+  delete_customers(where: customers_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "customers")
+  insert_customers_addresses(customers_addresses: customers_addresses_InsertInput!): customers_addresses @mysqlInsert(subgraph: "Database", table: "customers_addresses", primaryKeys: ["id"])
+  update_customers_addresses(customers_addresses: customers_addresses_UpdateInput!, where: customers_addresses_WhereInput): customers_addresses @mysqlUpdate(subgraph: "Database", table: "customers_addresses")
+  delete_customers_addresses(where: customers_addresses_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "customers_addresses")
+  insert_permissions(permissions: permissions_InsertInput!): permissions @mysqlInsert(subgraph: "Database", table: "permissions", primaryKeys: ["id"])
+  update_permissions(permissions: permissions_UpdateInput!, where: permissions_WhereInput): permissions @mysqlUpdate(subgraph: "Database", table: "permissions")
+  delete_permissions(where: permissions_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "permissions")
+  insert_product_categories(product_categories: product_categories_InsertInput!): product_categories @mysqlInsert(subgraph: "Database", table: "product_categories", primaryKeys: ["product_id", "category_id"])
+  update_product_categories(product_categories: product_categories_UpdateInput!, where: product_categories_WhereInput): product_categories @mysqlUpdate(subgraph: "Database", table: "product_categories")
+  delete_product_categories(where: product_categories_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_categories")
+  insert_product_rating_summary(product_rating_summary: product_rating_summary_InsertInput!): product_rating_summary @mysqlInsert(subgraph: "Database", table: "product_rating_summary", primaryKeys: [])
+  update_product_rating_summary(product_rating_summary: product_rating_summary_UpdateInput!, where: product_rating_summary_WhereInput): product_rating_summary @mysqlUpdate(subgraph: "Database", table: "product_rating_summary")
+  delete_product_rating_summary(where: product_rating_summary_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_rating_summary")
+  insert_product_variants(product_variants: product_variants_InsertInput!): product_variants @mysqlInsert(subgraph: "Database", table: "product_variants", primaryKeys: ["id"])
+  update_product_variants(product_variants: product_variants_UpdateInput!, where: product_variants_WhereInput): product_variants @mysqlUpdate(subgraph: "Database", table: "product_variants")
+  delete_product_variants(where: product_variants_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_variants")
+  insert_products(products: products_InsertInput!): products @mysqlInsert(subgraph: "Database", table: "products", primaryKeys: ["id"])
+  update_products(products: products_UpdateInput!, where: products_WhereInput): products @mysqlUpdate(subgraph: "Database", table: "products")
+  delete_products(where: products_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "products")
+  insert_promotion_variants(promotion_variants: promotion_variants_InsertInput!): promotion_variants @mysqlInsert(subgraph: "Database", table: "promotion_variants", primaryKeys: ["promotion_id", "variant_id"])
+  update_promotion_variants(promotion_variants: promotion_variants_UpdateInput!, where: promotion_variants_WhereInput): promotion_variants @mysqlUpdate(subgraph: "Database", table: "promotion_variants")
+  delete_promotion_variants(where: promotion_variants_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "promotion_variants")
+  insert_promotions(promotions: promotions_InsertInput!): promotions @mysqlInsert(subgraph: "Database", table: "promotions", primaryKeys: ["id"])
+  update_promotions(promotions: promotions_UpdateInput!, where: promotions_WhereInput): promotions @mysqlUpdate(subgraph: "Database", table: "promotions")
+  delete_promotions(where: promotions_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "promotions")
+  insert_rating_images(rating_images: rating_images_InsertInput!): rating_images @mysqlInsert(subgraph: "Database", table: "rating_images", primaryKeys: ["id"])
+  update_rating_images(rating_images: rating_images_UpdateInput!, where: rating_images_WhereInput): rating_images @mysqlUpdate(subgraph: "Database", table: "rating_images")
+  delete_rating_images(where: rating_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "rating_images")
+  insert_roles(roles: roles_InsertInput!): roles @mysqlInsert(subgraph: "Database", table: "roles", primaryKeys: ["id"])
+  update_roles(roles: roles_UpdateInput!, where: roles_WhereInput): roles @mysqlUpdate(subgraph: "Database", table: "roles")
+  delete_roles(where: roles_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "roles")
+  insert_roles_sections(roles_sections: roles_sections_InsertInput!): roles_sections @mysqlInsert(subgraph: "Database", table: "roles_sections", primaryKeys: ["id"])
+  update_roles_sections(roles_sections: roles_sections_UpdateInput!, where: roles_sections_WhereInput): roles_sections @mysqlUpdate(subgraph: "Database", table: "roles_sections")
+  delete_roles_sections(where: roles_sections_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "roles_sections")
+  insert_sections(sections: sections_InsertInput!): sections @mysqlInsert(subgraph: "Database", table: "sections", primaryKeys: ["id"])
+  update_sections(sections: sections_UpdateInput!, where: sections_WhereInput): sections @mysqlUpdate(subgraph: "Database", table: "sections")
+  delete_sections(where: sections_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "sections")
+  insert_services(services: services_InsertInput!): services @mysqlInsert(subgraph: "Database", table: "services", primaryKeys: ["id"])
+  update_services(services: services_UpdateInput!, where: services_WhereInput): services @mysqlUpdate(subgraph: "Database", table: "services")
+  delete_services(where: services_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "services")
+  insert_services_images(services_images: services_images_InsertInput!): services_images @mysqlInsert(subgraph: "Database", table: "services_images", primaryKeys: ["id"])
+  update_services_images(services_images: services_images_UpdateInput!, where: services_images_WhereInput): services_images @mysqlUpdate(subgraph: "Database", table: "services_images")
+  delete_services_images(where: services_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "services_images")
+  insert_users(users: users_InsertInput!): users @mysqlInsert(subgraph: "Database", table: "users", primaryKeys: ["id"])
+  update_users(users: users_UpdateInput!, where: users_WhereInput): users @mysqlUpdate(subgraph: "Database", table: "users")
+  delete_users(where: users_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "users")
+  insert_variant_attribute_options(variant_attribute_options: variant_attribute_options_InsertInput!): variant_attribute_options @mysqlInsert(subgraph: "Database", table: "variant_attribute_options", primaryKeys: ["variant_id", "attribute_option_id"])
+  update_variant_attribute_options(variant_attribute_options: variant_attribute_options_UpdateInput!, where: variant_attribute_options_WhereInput): variant_attribute_options @mysqlUpdate(subgraph: "Database", table: "variant_attribute_options")
+  delete_variant_attribute_options(where: variant_attribute_options_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_attribute_options")
+  insert_variant_images(variant_images: variant_images_InsertInput!): variant_images @mysqlInsert(subgraph: "Database", table: "variant_images", primaryKeys: ["id"])
+  update_variant_images(variant_images: variant_images_UpdateInput!, where: variant_images_WhereInput): variant_images @mysqlUpdate(subgraph: "Database", table: "variant_images")
+  delete_variant_images(where: variant_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_images")
+  insert_variant_rating_summary(variant_rating_summary: variant_rating_summary_InsertInput!): variant_rating_summary @mysqlInsert(subgraph: "Database", table: "variant_rating_summary", primaryKeys: [])
+  update_variant_rating_summary(variant_rating_summary: variant_rating_summary_UpdateInput!, where: variant_rating_summary_WhereInput): variant_rating_summary @mysqlUpdate(subgraph: "Database", table: "variant_rating_summary")
+  delete_variant_rating_summary(where: variant_rating_summary_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_rating_summary")
+  insert_variant_ratings(variant_ratings: variant_ratings_InsertInput!): variant_ratings @mysqlInsert(subgraph: "Database", table: "variant_ratings", primaryKeys: ["id"])
+  update_variant_ratings(variant_ratings: variant_ratings_UpdateInput!, where: variant_ratings_WhereInput): variant_ratings @mysqlUpdate(subgraph: "Database", table: "variant_ratings")
+  delete_variant_ratings(where: variant_ratings_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_ratings")
+}
+
+"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
+input attribute_option_images_InsertInput {
+  id: Int
+  attribute_option_id: Int!
+  image_type: attribute_option_images_image_type
+  display_order: Int
+  """Imagen thumbnail 140x140 para selector de atributo"""
+  image_url_thumb: String!
+  """Imagen normal 600x800 (opcional)"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200 (opcional)"""
+  image_url_zoom: String
+  """Texto alternativo"""
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
+input attribute_option_images_UpdateInput {
+  id: Int
+  attribute_option_id: Int
+  image_type: attribute_option_images_image_type
+  display_order: Int
+  """Imagen thumbnail 140x140 para selector de atributo"""
+  image_url_thumb: String
+  """Imagen normal 600x800 (opcional)"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200 (opcional)"""
+  image_url_zoom: String
+  """Texto alternativo"""
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input attribute_options_InsertInput {
+  id: Int
+  attribute_id: Int!
+  value: String!
+  additional_cost: Float
+}
+
+input attribute_options_UpdateInput {
+  id: Int
+  attribute_id: Int
+  value: String
+  additional_cost: Float
+}
+
+input attributes_InsertInput {
+  id: Int
+  name: String!
+  display_type: attributes_display_type
+}
+
+input attributes_UpdateInput {
+  id: Int
+  name: String
+  display_type: attributes_display_type
+}
+
+input banner_InsertInput {
+  id: Int
+  title: String!
+  subtitle: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+  link: String
+  image_url: String
+}
+
+input banner_UpdateInput {
+  id: Int
+  title: String
+  subtitle: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+  link: String
+  image_url: String
+}
+
+input brands_InsertInput {
+  id: Int
+  name: String!
+}
+
+input brands_UpdateInput {
+  id: Int
+  name: String
+}
+
+input categories_InsertInput {
+  id: Int
+  name: String!
+  description: String
+  parent_id: Int
+  image_url: String
+}
+
+input categories_UpdateInput {
+  id: Int
+  name: String
+  description: String
+  parent_id: Int
+  image_url: String
+}
+
+input customers_InsertInput {
+  id: Int
+  username: String!
+  email: String!
+  password: String!
+  address_id: Int
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  lastname: String!
+  photo: String
+  name: String
+}
+
+input customers_UpdateInput {
+  id: Int
+  username: String
+  email: String
+  password: String
+  address_id: Int
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  lastname: String
+  photo: String
+  name: String
+}
+
+input customers_addresses_InsertInput {
+  id: Int
+  name: String
+  description: String
+  id_customer: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input customers_addresses_UpdateInput {
+  id: Int
+  name: String
+  description: String
+  id_customer: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input permissions_InsertInput {
+  id: Int
+  name: String!
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input permissions_UpdateInput {
+  id: Int
+  name: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input product_categories_InsertInput {
+  product_id: Int!
+  category_id: Int!
+}
+
+input product_categories_UpdateInput {
+  product_id: Int
+  category_id: Int
+}
+
+"""VIEW"""
+input product_rating_summary_InsertInput {
+  product_id: Int!
+  total_ratings: BigInt
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+"""VIEW"""
+input product_rating_summary_UpdateInput {
+  product_id: Int
+  total_ratings: BigInt
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+input product_variants_InsertInput {
+  id: Int
+  product_id: Int!
+  sku: String!
+  price: Float!
+  stock: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input product_variants_UpdateInput {
+  id: Int
+  product_id: Int
+  sku: String
+  price: Float
+  stock: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input products_InsertInput {
+  id: Int
+  name: String!
+  description: String
+  brand_id: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  base_price: Float
+}
+
+input products_UpdateInput {
+  id: Int
+  name: String
+  description: String
+  brand_id: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  base_price: Float
+}
+
+input promotion_variants_InsertInput {
+  promotion_id: Int!
+  variant_id: Int!
+  promotion_price: Float
+  stock_limit: Int
+  created_at: Timestamp
+}
+
+input promotion_variants_UpdateInput {
+  promotion_id: Int
+  variant_id: Int
+  promotion_price: Float
+  stock_limit: Int
+  created_at: Timestamp
+}
+
+input promotions_InsertInput {
+  id: Int
+  name: String!
+  description: String
+  start_date: DateTime!
+  end_date: DateTime!
+  discount_type: promotions_discount_type
+  discount_value: Float!
+  min_purchase_amount: Float
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input promotions_UpdateInput {
+  id: Int
+  name: String
+  description: String
+  start_date: DateTime
+  end_date: DateTime
+  discount_type: promotions_discount_type
+  discount_value: Float
+  min_purchase_amount: Float
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input rating_images_InsertInput {
+  id: Int
+  rating_id: Int!
+  image_url: String!
+  created_at: Timestamp
+}
+
+input rating_images_UpdateInput {
+  id: Int
+  rating_id: Int
+  image_url: String
+  created_at: Timestamp
+}
+
+input roles_InsertInput {
+  id: Int
+  name: String!
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input roles_UpdateInput {
+  id: Int
+  name: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input roles_sections_InsertInput {
+  id: Int
+  id_section: Int
+  id_rol: Int
+}
+
+input roles_sections_UpdateInput {
+  id: Int
+  id_section: Int
+  id_rol: Int
+}
+
+input sections_InsertInput {
+  id: Int
+  name: String
+  url: String
+  image: String
+  display_order: Int
+}
+
+input sections_UpdateInput {
+  id: Int
+  name: String
+  url: String
+  image: String
+  display_order: Int
+}
+
+input services_InsertInput {
+  id: Int
+  title: String!
+  subtitle: String
+  image_url: String
+  slug: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+}
+
+input services_UpdateInput {
+  id: Int
+  title: String
+  subtitle: String
+  image_url: String
+  slug: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+}
+
+input services_images_InsertInput {
+  id: Int
+  title: String
+  subtitle: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+  id_service: Int
+  image_url: String
+}
+
+input services_images_UpdateInput {
+  id: Int
+  title: String
+  subtitle: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  display_order: Int
+  id_service: Int
+  image_url: String
+}
+
+input users_InsertInput {
+  id: Int
+  username: String!
+  email: String!
+  password: String!
+  role_id: Int!
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  lastname: String!
+  photo: String
+}
+
+input users_UpdateInput {
+  id: Int
+  username: String
+  email: String
+  password: String
+  role_id: Int
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  lastname: String
+  photo: String
+}
+
+input variant_attribute_options_InsertInput {
+  variant_id: Int!
+  attribute_option_id: Int!
+}
+
+input variant_attribute_options_UpdateInput {
+  variant_id: Int
+  attribute_option_id: Int
+}
+
+"""Imágenes de variantes con múltiples tamaños y tipos"""
+input variant_images_InsertInput {
+  id: Int
+  variant_id: Int!
+  image_type: variant_images_image_type
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String!
+  """Imagen normal 600x800"""
+  image_url_normal: String!
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String!
+  """Imagen principal de la variante"""
+  is_primary: Int
+  """Orden de visualización"""
+  display_order: Int
+  """Texto alternativo para SEO"""
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+"""Imágenes de variantes con múltiples tamaños y tipos"""
+input variant_images_UpdateInput {
+  id: Int
+  variant_id: Int
+  image_type: variant_images_image_type
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String
+  """Imagen normal 600x800"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String
+  """Imagen principal de la variante"""
+  is_primary: Int
+  """Orden de visualización"""
+  display_order: Int
+  """Texto alternativo para SEO"""
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+"""VIEW"""
+input variant_rating_summary_InsertInput {
+  variant_id: Int!
+  total_ratings: BigInt
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+"""VIEW"""
+input variant_rating_summary_UpdateInput {
+  variant_id: Int
+  total_ratings: BigInt
+  average_rating: Float
+  five_star: Float
+  four_star: Float
+  three_star: Float
+  two_star: Float
+  one_star: Float
+  verified_purchases: Float
+}
+
+input variant_ratings_InsertInput {
+  id: Int
+  variant_id: Int!
+  customer_id: Int!
+  rating: Int
+  review: String
+  title: String
+  verified_purchase: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input variant_ratings_UpdateInput {
+  id: Int
+  variant_id: Int
+  customer_id: Int
+  rating: Int
+  review: String
+  title: String
+  verified_purchase: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}

@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "pnpm generate && next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "mesh-build": "pnpm exec mesh build",
+    "generate-domain-schema": "pnpm mesh-build && cp .mesh/schema.graphql schema.graphql",
+    "generate-domain-types": "pnpm exec graphql-codegen",
+    "prisma-pull": "npx prisma db pull",
+    "prisma-generate": "npx prisma generate",
+    "generate": "pnpm generate-domain-schema && pnpm generate-domain-types"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -19,12 +24,24 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-mesh/cli": "^0.100.5",
+    "@graphql-mesh/mysql": "^0.105.4",
+    "@graphql-mesh/string-interpolation": "^0.5.8",
+    "@graphql-mesh/transform-naming-convention": "^0.105.5",
+    "@graphql-mesh/transform-rename": "^0.105.5",
+    "@graphql-mesh/utils": "^0.104.4",
+    "@prisma/client": "^6.9.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "change-case-all": "^2.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
+    "graphql": "^16.11.0",
+    "prisma": "^6.9.0",
     "tailwindcss": "3.4.16",
     "typescript": "^5"
   }

@@ -1,19 +1,20 @@
-import {
-  PromotionDTO,
-  PromotionVariantDTO,
-  PromotionDBRecord,
-  PromotionVariantDBRecord,
-} from "@/dto/promotion.dto";
 import { executeQuery } from "@/lib/db";
+import { promotions as PromotionRaw, promotion_variants as PromotionVariantRaw } from "@/types/database"
+
+export type PromotionVariantMixRawData = Omit<PromotionVariantRaw & {promotion: Omit<PromotionRaw, "created_at" | "updated_at">}, "created_at" | "updated_at">
+
+interface BestPromotionForVariant extends PromotionVariantMixRawData {
+  calculated_price: number
+}
 
 export class PromotionModel {
   /**
    * Obtiene todas las promociones activas
    */
-  public async getActivePromotions(): Promise<PromotionDTO[]> {
+  public async getActivePromotions(): Promise<Omit<PromotionRaw, "created_at" | "updated_at">[] | null> {
     const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    const promotions = await executeQuery<PromotionDBRecord[]>({
+    const promotions = await executeQuery<PromotionRaw[]>({
       query: `
         SELECT * FROM promotions 
         WHERE is_active = 1 
@@ -23,14 +24,16 @@ export class PromotionModel {
       values: [now, now],
     });
 
+    if (promotions.length === 0) return null
+
     return promotions.map(this.mapPromotionToDTO);
   }
 
   /**
    * Obtiene una promoción por su ID
    */
-  public async getPromotionById(id: number): Promise<PromotionDTO | null> {
-    const promotions = await executeQuery<PromotionDBRecord[]>({
+  public async getPromotionById(id: number): Promise<Omit<PromotionRaw, "created_at" | "updated_at"> | null> {
+    const promotions = await executeQuery<PromotionRaw[]>({
       query: "SELECT * FROM promotions WHERE id = ?",
       values: [id],
     });
@@ -45,10 +48,10 @@ export class PromotionModel {
    */
   public async getPromotionsForVariant(
     variantId: number
-  ): Promise<PromotionVariantDTO[]> {
+  ): Promise<PromotionVariantMixRawData[]> {
     const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    const promotionVariants = await executeQuery<PromotionVariantDBRecord[]>({
+    const promotionVariants = await executeQuery<(PromotionRaw & PromotionVariantRaw)[]>({
       query: `
         SELECT pv.*, p.* FROM promotion_variants pv
         JOIN promotions p ON pv.promotion_id = p.id
@@ -60,13 +63,16 @@ export class PromotionModel {
       values: [variantId, now, now],
     });
 
-    return promotionVariants.map((pv) => ({
-      promotionId: pv.promotion_id,
-      variantId: pv.variant_id,
-      promotionPrice: pv.promotion_price ? Number(pv.promotion_price) : null,
-      stockLimit: pv.stock_limit,
-      promotion: this.mapPromotionToDTO(pv),
-    }));
+    if(promotionVariants.length === 0) return []
+
+    return promotionVariants.map((pv) => ({   
+        promotion_id: pv.promotion_id,
+        variant_id: pv.variant_id,
+        promotion_price: pv.promotion_price,
+        stock_limit: pv.stock_limit,
+        promotion: this.mapPromotionToDTO(pv)
+      })
+    );
   }
 
   /**
@@ -75,7 +81,7 @@ export class PromotionModel {
   public async getBestPromotionForVariant(
     variantId: number,
     originalPrice: number
-  ): Promise<PromotionVariantDTO | null> {
+  ): Promise<BestPromotionForVariant | null> {
     const promotions = await this.getPromotionsForVariant(variantId);
 
     if (promotions.length === 0) return null;
@@ -84,16 +90,16 @@ export class PromotionModel {
     const promotionsWithFinalPrice = promotions.map((promo) => {
       let finalPrice: number;
 
-      if (promo.promotionPrice !== null) {
+      if (promo.promotion_price !== null) {
         // Si hay un precio de promoción específico, usarlo
-        finalPrice = promo.promotionPrice;
+        finalPrice = Number(promo.promotion_price);
       } else if (promo.promotion) {
         // Calcular el precio basado en el tipo de descuento
-        if (promo.promotion.discountType === "percentage") {
+        if (promo.promotion.discount_type === "percentage") {
           finalPrice =
-            originalPrice * (1 - promo.promotion.discountValue / 100);
+            originalPrice * (1 - Number(promo.promotion.discount_value) / 100);
         } else {
-          finalPrice = originalPrice - promo.promotion.discountValue;
+          finalPrice = originalPrice - Number(promo.promotion.discount_value);
         }
         // Asegurar que el precio no sea negativo
         finalPrice = Math.max(finalPrice, 0);
@@ -103,13 +109,13 @@ export class PromotionModel {
 
       return {
         ...promo,
-        calculatedPrice: finalPrice,
+        calculated_price: finalPrice,
       };
     });
 
     // Ordenar por precio más bajo y devolver la mejor promoción
     promotionsWithFinalPrice.sort(
-      (a, b) => a.calculatedPrice - b.calculatedPrice
+      (a, b) => a.calculated_price - b.calculated_price
     );
 
     return promotionsWithFinalPrice[0];
@@ -118,19 +124,17 @@ export class PromotionModel {
   /**
    * Mapea un registro de la base de datos a un DTO de promoción
    */
-  private mapPromotionToDTO(promotion: PromotionDBRecord): PromotionDTO {
+  private mapPromotionToDTO(promotion: PromotionRaw): Omit<PromotionRaw, "created_at" | "updated_at"> {
     return {
       id: promotion.id,
       name: promotion.name,
       description: promotion.description,
-      startDate: new Date(promotion.start_date),
-      endDate: new Date(promotion.end_date),
-      discountType: promotion.discount_type,
-      discountValue: Number(promotion.discount_value),
-      minPurchaseAmount: promotion.min_purchase_amount
-        ? Number(promotion.min_purchase_amount)
-        : null,
-      isActive: Boolean(promotion.is_active),
+      start_date: promotion.start_date,
+      end_date: promotion.end_date,
+      discount_type: promotion.discount_type,
+      discount_value: promotion.discount_value,
+      min_purchase_amount: promotion.min_purchase_amount,
+      is_active: promotion.is_active,
     };
   }
 
@@ -138,8 +142,8 @@ export class PromotionModel {
    * Crea una nueva promoción
    */
   public async createPromotion(
-    promotionData: Omit<PromotionDTO, "id">
-  ): Promise<PromotionDTO> {
+    promotionData: Omit<PromotionRaw, "id">
+  ): Promise<Omit<PromotionRaw, "created_at" | "updated_at"> | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: `
         INSERT INTO promotions 
@@ -149,16 +153,16 @@ export class PromotionModel {
       values: [
         promotionData.name,
         promotionData.description,
-        promotionData.startDate,
-        promotionData.endDate,
-        promotionData.discountType,
-        promotionData.discountValue,
-        promotionData.minPurchaseAmount,
-        promotionData.isActive ? 1 : 0,
+        promotionData.start_date,
+        promotionData.end_date,
+        promotionData.discount_type,
+        promotionData.discount_value,
+        promotionData.min_purchase_amount,
+        promotionData.is_active ? 1 : 0,
       ],
     });
 
-    return this.getPromotionById(result.insertId) as Promise<PromotionDTO>;
+    return (await this.getPromotionById(result.insertId));
   }
 
   /**

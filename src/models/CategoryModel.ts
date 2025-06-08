@@ -1,37 +1,43 @@
-import { Category } from "@/interfaces/models";
-import { CategoryDTO } from "@/dto";
 import { executeQuery } from "@/lib/db";
+import { categories as CategoriesRaw } from "@/types/database"
+interface CategoryRawWithChildren extends CategoriesRaw {
+  children?: CategoriesRaw[]
+}
 
 export class CategoryModel {
-  public async getCategories(): Promise<CategoryDTO[]> {
-    const categories = await executeQuery<Category[]>({
-      query:
-        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories ORDER BY name",
+  public async getCategories(): Promise<CategoriesRaw[] | null> {
+    const categories = await executeQuery<CategoriesRaw[]>({
+      query: "SELECT * FROM categories ORDER BY name"
     });
 
+    if (categories.length === 0) return null;
     return categories;
   }
 
-  public async getCategoriesHierarchy(): Promise<CategoryDTO[]> {
+  public async getCategoriesHierarchy(): Promise<CategoriesRaw[] | null> {
     const categories = await this.getCategories();
+    if (categories === null) return null
 
     // Construir la jerarquía
-    const categoryMap = new Map<number, CategoryDTO>();
-    const rootCategories: CategoryDTO[] = [];
+    const categoryMap = new Map<number, CategoryRawWithChildren>();
+    const rootCategories: CategoriesRaw[] = [];
 
     // Crear el mapa de categorías
     categories.forEach((category) => {
-      categoryMap.set(category.id, { ...category, children: [] });
+      categoryMap.set(category.id, { 
+        ...category,
+        children: [] 
+      });
     });
 
     // Construir la jerarquía
     categories.forEach((category) => {
       const categoryWithChildren = categoryMap.get(category.id)!;
 
-      if (category.parentId === null) {
+      if (category.parent_id === null) {
         rootCategories.push(categoryWithChildren);
       } else {
-        const parent = categoryMap.get(category.parentId);
+        const parent = categoryMap.get(category.parent_id);
         if (parent) {
           if (!parent.children) {
             parent.children = [];
@@ -44,10 +50,9 @@ export class CategoryModel {
     return rootCategories;
   }
 
-  public async getCategoryById(id: number): Promise<CategoryDTO | null> {
-    const categories = await executeQuery<Category[]>({
-      query:
-        "SELECT id, name, description, parent_id as parentId, image_url as imageUrl FROM categories WHERE id = ?",
+  public async getCategoryById(id: number): Promise<CategoriesRaw | null> {
+    const categories = await executeQuery<CategoriesRaw[]>({
+      query: "SELECT * FROM categories WHERE id = ?",
       values: [id],
     });
 
@@ -57,10 +62,10 @@ export class CategoryModel {
 
   public async getCategoriesByProductId(
     productId: number
-  ): Promise<CategoryDTO[]> {
-    const categories = await executeQuery<Category[]>({
+  ): Promise<CategoriesRaw[] |null> {
+    const categories = await executeQuery<CategoriesRaw[]>({
       query: `
-        SELECT c.id, c.name, c.description, c.parent_id as parentId, c.image_url as imageUrl
+        SELECT c.id, c.name, c.description, c.parent_id, c.image_url
         FROM categories c
         JOIN product_categories pc ON c.id = pc.category_id
         WHERE pc.product_id = ?
@@ -68,30 +73,31 @@ export class CategoryModel {
       values: [productId],
     });
 
+    if (categories.length === 0) return null;
     return categories;
   }
 
   public async createCategory(
-    category: Omit<Category, "id">
-  ): Promise<CategoryDTO> {
+    category: Omit<CategoriesRaw, "id">
+  ): Promise<CategoriesRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: "INSERT INTO categories SET ?",
       values: [category],
     });
 
-    return (await this.getCategoryById(result.insertId)) as Category;
+    return (await this.getCategoryById(result.insertId));
   }
 
   public async updateCategory(
-    categoryData: Partial<Category>,
-    id: number
-  ): Promise<CategoryDTO> {
+    categoryData: Omit<CategoriesRaw, "id">,
+    id: number 
+  ): Promise<CategoriesRaw | null> {
     await executeQuery({
       query: "UPDATE categories SET ? WHERE id=?",
       values: [categoryData, id],
     });
 
-    return (await this.getCategoryById(id)) as Category;
+    return (await this.getCategoryById(id));
   }
 
   public async deleteCategory(id: number): Promise<void> {

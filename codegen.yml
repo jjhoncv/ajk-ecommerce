@@ -1,0 +1,30 @@
+# codegen.yml
+generates:
+  # Tipos de dominio usando schema con transforms
+  src/types/domain.ts:
+    schema: schema.graphql
+    plugins:
+      - add:
+          content: |
+            // ============================================================================
+            // TIPOS DE DOMINIO
+            // ============================================================================
+            // Campos en camelCase con relaciones incluidas
+            // ============================================================================
+      - typescript
+    config:
+      declarationKind: interface
+      skipTypename: true
+      scalars:
+        DateTime: Date
+        Timestamp: Date
+        String: string
+        Int: number
+        Float: number
+        Boolean: boolean
+      maybeValue: T | null
+      inputMaybeValue: T | null
+      avoidOptionals: true
+      enumsAsTypes: true
+      typesSuffix: ""
+      nonOptionalTypename: false

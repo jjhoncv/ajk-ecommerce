@@ -42,3 +42,8 @@ next-env.d.ts
 
 # mysql
 .data
+mysql/
+
+# Prisma
+prisma/migrations/
+/src/generated/prisma

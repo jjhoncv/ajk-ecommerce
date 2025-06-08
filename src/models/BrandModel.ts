@@ -1,18 +1,18 @@
-import { Brand } from "@/interfaces/models";
-import { BrandDTO } from "@/dto";
 import { executeQuery } from "@/lib/db";
+import { brands as BrandsRaw } from "@/types/database"
 
 export class BrandModel {
-  public async getBrands(): Promise<BrandDTO[]> {
-    const brands = await executeQuery<Brand[]>({
+  public async getBrands(): Promise<BrandsRaw[] | null> {
+    const brands = await executeQuery<BrandsRaw[]>({
       query: "SELECT * FROM brands",
     });
-
+    
+    if (brands.length === 0) return null;
     return brands;
   }
 
-  public async getBrandById(id: number): Promise<BrandDTO | null> {
-    const brands = await executeQuery<Brand[]>({
+  public async getBrandById(id: number): Promise<BrandsRaw | null> {
+    const brands = await executeQuery<BrandsRaw[]>({
       query: "SELECT * FROM brands WHERE id = ?",
       values: [id],
     });
@@ -21,25 +21,25 @@ export class BrandModel {
     return brands[0];
   }
 
-  public async createBrand(brand: Omit<Brand, "id">): Promise<BrandDTO> {
+  public async createBrand(brand: Omit<BrandsRaw, "id">): Promise<BrandsRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: "INSERT INTO brands SET ?",
       values: [brand],
     });
 
-    return (await this.getBrandById(result.insertId)) as Brand;
+    return (await this.getBrandById(result.insertId));
   }
 
   public async updateBrand(
-    brandData: Partial<Brand>,
+    brandData: Omit<BrandsRaw, "id">,
     id: number
-  ): Promise<BrandDTO> {
+  ): Promise<BrandsRaw | null> {
     await executeQuery({
       query: "UPDATE brands SET ? WHERE id=?",
       values: [brandData, id],
     });
 
-    return (await this.getBrandById(id)) as Brand;
+    return (await this.getBrandById(id));
   }
 
   public async deleteBrand(id: number): Promise<void> {

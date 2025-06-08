@@ -1,15 +1,18 @@
-import { Attribute, AttributeOption } from "@/interfaces/models";
-import { AttributeDTO } from "@/dto";
 import { executeQuery } from "@/lib/db";
+import { attributes as AttributeRaw, attribute_options as AttributeOptionRaw } from "@/types/database"
+
+export interface AttributeRawWithOption extends AttributeRaw {
+  options: AttributeOptionRaw[] | null
+} 
 
 export class AttributeModel {
-  public async getAttributes(): Promise<AttributeDTO[]> {
-    const attributes = await executeQuery<Attribute[]>({
+  public async getAttributes(): Promise<AttributeRawWithOption[]> {
+    const attributes = await executeQuery<AttributeRaw[]>({
       query: "SELECT * FROM attributes",
     });
 
     // Para cada atributo, obtener sus opciones
-    const attributesWithOptions = await Promise.all(
+    return await Promise.all(
       attributes.map(async (attribute) => {
         const options = await this.getAttributeOptions(attribute.id);
         return {
@@ -18,18 +21,10 @@ export class AttributeModel {
         };
       })
     );
-
-    // Convertir de Attribute a AttributeDTO
-    return attributesWithOptions.map((attr) => ({
-      id: attr.id,
-      name: attr.name,
-      display_type: attr.display_type,
-      options: attr.options || [],
-    }));
   }
 
-  public async getAttributeById(id: number): Promise<Attribute | null> {
-    const attributes = await executeQuery<Attribute[]>({
+  public async getAttributeById(id: number): Promise<AttributeRawWithOption | null> {
+    const attributes = await executeQuery<AttributeRaw[]>({
       query: "SELECT * FROM attributes WHERE id = ?",
       values: [id],
     });
@@ -47,37 +42,39 @@ export class AttributeModel {
 
   public async getAttributeOptions(
     attributeId: number
-  ): Promise<AttributeOption[]> {
-    const options = await executeQuery<AttributeOption[]>({
+  ): Promise<AttributeOptionRaw[] | null> {
+    const options = await executeQuery<AttributeOptionRaw[]>({
       query:
         "SELECT id, attribute_id as attributeId, value, additional_cost FROM attribute_options WHERE attribute_id = ?",
       values: [attributeId],
     });
 
+    if (options.length === 0) return null
+
     return options;
   }
 
   public async createAttribute(
-    attribute: Omit<Attribute, "id" | "options">
-  ): Promise<Attribute> {
+    attribute: Omit<AttributeRaw, "id">
+  ): Promise<AttributeRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: "INSERT INTO attributes SET ?",
       values: [attribute],
     });
 
-    return (await this.getAttributeById(result.insertId)) as Attribute;
+    return (await this.getAttributeById(result.insertId));
   }
 
   public async updateAttribute(
-    attributeData: Partial<Omit<Attribute, "options">>,
+    attributeData: Omit<AttributeRaw, "id">,
     id: number
-  ): Promise<Attribute> {
+  ): Promise<AttributeRaw | null> {
     await executeQuery({
       query: "UPDATE attributes SET ? WHERE id=?",
       values: [attributeData, id],
     });
 
-    return (await this.getAttributeById(id)) as Attribute;
+    return (await this.getAttributeById(id));
   }
 
   public async deleteAttribute(id: number): Promise<void> {
@@ -88,14 +85,14 @@ export class AttributeModel {
   }
 
   public async createAttributeOption(
-    option: Omit<AttributeOption, "id">
-  ): Promise<AttributeOption> {
+    option: Omit<AttributeOptionRaw, "id">
+  ): Promise<AttributeOptionRaw> {
     const result = await executeQuery<{ insertId: number }>({
       query: "INSERT INTO attribute_options SET ?",
       values: [option],
     });
 
-    const options = await executeQuery<AttributeOption[]>({
+    const options = await executeQuery<AttributeOptionRaw[]>({
       query: "SELECT * FROM attribute_options WHERE id = ?",
       values: [result.insertId],
     });
@@ -104,15 +101,15 @@ export class AttributeModel {
   }
 
   public async updateAttributeOption(
-    optionData: Partial<AttributeOption>,
+    optionData: Partial<AttributeOptionRaw>,
     id: number
-  ): Promise<AttributeOption> {
+  ): Promise<AttributeOptionRaw> {
     await executeQuery({
       query: "UPDATE attribute_options SET ? WHERE id=?",
       values: [optionData, id],
     });
 
-    const options = await executeQuery<AttributeOption[]>({
+    const options = await executeQuery<AttributeOptionRaw[]>({
       query: "SELECT * FROM attribute_options WHERE id = ?",
       values: [id],
     });
