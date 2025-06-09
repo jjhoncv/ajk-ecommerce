@@ -38,8 +38,6 @@ export type Scalars = {
   Float: { input: number; output: number; }
   Timestamp: { input: Date | string | number; output: Date | string | number; }
   DateTime: { input: Date | string; output: Date | string; }
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: { input: bigint; output: bigint; }
 };
 
 export type Query = {
@@ -63,8 +61,6 @@ export type Query = {
   countPermissions?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   countProductCategories?: Maybe<Scalars['Int']['output']>;
-  productRatingSummary?: Maybe<Array<Maybe<ProductRatingSummary>>>;
-  countProductRatingSummary?: Maybe<Scalars['Int']['output']>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
   countProductVariants?: Maybe<Scalars['Int']['output']>;
   products?: Maybe<Array<Maybe<Products>>>;
@@ -91,8 +87,6 @@ export type Query = {
   countVariantAttributeOptions?: Maybe<Scalars['Int']['output']>;
   variantImages?: Maybe<Array<Maybe<VariantImages>>>;
   countVariantImages?: Maybe<Scalars['Int']['output']>;
-  variantRatingSummary?: Maybe<Array<Maybe<VariantRatingSummary>>>;
-  countVariantRatingSummary?: Maybe<Scalars['Int']['output']>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
   countVariantRatings?: Maybe<Scalars['Int']['output']>;
 };
@@ -225,19 +219,6 @@ export type QueryproductCategoriesArgs = {
 
 export type QuerycountProductCategoriesArgs = {
   where?: InputMaybe<ProductCategoriesWhereInput>;
-};
-
-
-export type QueryproductRatingSummaryArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductRatingSummaryWhereInput>;
-  orderBy?: InputMaybe<ProductRatingSummaryOrderByInput>;
-};
-
-
-export type QuerycountProductRatingSummaryArgs = {
-  where?: InputMaybe<ProductRatingSummaryWhereInput>;
 };
 
 
@@ -410,19 +391,6 @@ export type QuerycountVariantImagesArgs = {
 };
 
 
-export type QueryvariantRatingSummaryArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<VariantRatingSummaryWhereInput>;
-  orderBy?: InputMaybe<VariantRatingSummaryOrderByInput>;
-};
-
-
-export type QuerycountVariantRatingSummaryArgs = {
-  where?: InputMaybe<VariantRatingSummaryWhereInput>;
-};
-
-
 export type QueryvariantRatingsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -466,9 +434,6 @@ export type Mutation = {
   insertProductCategories?: Maybe<ProductCategories>;
   updateProductCategories?: Maybe<ProductCategories>;
   deleteProductCategories?: Maybe<Scalars['Boolean']['output']>;
-  insertProductRatingSummary?: Maybe<ProductRatingSummary>;
-  updateProductRatingSummary?: Maybe<ProductRatingSummary>;
-  deleteProductRatingSummary?: Maybe<Scalars['Boolean']['output']>;
   insertProductVariants?: Maybe<ProductVariants>;
   updateProductVariants?: Maybe<ProductVariants>;
   deleteProductVariants?: Maybe<Scalars['Boolean']['output']>;
@@ -508,9 +473,6 @@ export type Mutation = {
   insertVariantImages?: Maybe<VariantImages>;
   updateVariantImages?: Maybe<VariantImages>;
   deleteVariantImages?: Maybe<Scalars['Boolean']['output']>;
-  insertVariantRatingSummary?: Maybe<VariantRatingSummary>;
-  updateVariantRatingSummary?: Maybe<VariantRatingSummary>;
-  deleteVariantRatingSummary?: Maybe<Scalars['Boolean']['output']>;
   insertVariantRatings?: Maybe<VariantRatings>;
   updateVariantRatings?: Maybe<VariantRatings>;
   deleteVariantRatings?: Maybe<Scalars['Boolean']['output']>;
@@ -674,22 +636,6 @@ export type MutationupdateProductCategoriesArgs = {
 
 export type MutationdeleteProductCategoriesArgs = {
   where?: InputMaybe<ProductCategoriesWhereInput>;
-};
-
-
-export type MutationinsertProductRatingSummaryArgs = {
-  product_rating_summary: ProductRatingSummaryInsertInput;
-};
-
-
-export type MutationupdateProductRatingSummaryArgs = {
-  product_rating_summary: ProductRatingSummaryUpdateInput;
-  where?: InputMaybe<ProductRatingSummaryWhereInput>;
-};
-
-
-export type MutationdeleteProductRatingSummaryArgs = {
-  where?: InputMaybe<ProductRatingSummaryWhereInput>;
 };
 
 
@@ -898,22 +844,6 @@ export type MutationupdateVariantImagesArgs = {
 
 export type MutationdeleteVariantImagesArgs = {
   where?: InputMaybe<VariantImagesWhereInput>;
-};
-
-
-export type MutationinsertVariantRatingSummaryArgs = {
-  variant_rating_summary: VariantRatingSummaryInsertInput;
-};
-
-
-export type MutationupdateVariantRatingSummaryArgs = {
-  variant_rating_summary: VariantRatingSummaryUpdateInput;
-  where?: InputMaybe<VariantRatingSummaryWhereInput>;
-};
-
-
-export type MutationdeleteVariantRatingSummaryArgs = {
-  where?: InputMaybe<VariantRatingSummaryWhereInput>;
 };
 
 
@@ -1721,45 +1651,6 @@ export type ProductCategoriesOrderByInput = {
   categoryId?: InputMaybe<OrderBy>;
 };
 
-/** VIEW */
-export type ProductRatingSummary = {
-  productId: Scalars['Int']['output'];
-  totalRatings: Scalars['BigInt']['output'];
-  averageRating?: Maybe<Scalars['Float']['output']>;
-  fiveStar?: Maybe<Scalars['Float']['output']>;
-  fourStar?: Maybe<Scalars['Float']['output']>;
-  threeStar?: Maybe<Scalars['Float']['output']>;
-  twoStar?: Maybe<Scalars['Float']['output']>;
-  oneStar?: Maybe<Scalars['Float']['output']>;
-  verifiedPurchases?: Maybe<Scalars['Float']['output']>;
-};
-
-/** VIEW */
-export type ProductRatingSummaryWhereInput = {
-  productId?: InputMaybe<Scalars['String']['input']>;
-  totalRatings?: InputMaybe<Scalars['String']['input']>;
-  averageRating?: InputMaybe<Scalars['String']['input']>;
-  fiveStar?: InputMaybe<Scalars['String']['input']>;
-  fourStar?: InputMaybe<Scalars['String']['input']>;
-  threeStar?: InputMaybe<Scalars['String']['input']>;
-  twoStar?: InputMaybe<Scalars['String']['input']>;
-  oneStar?: InputMaybe<Scalars['String']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** VIEW */
-export type ProductRatingSummaryOrderByInput = {
-  productId?: InputMaybe<OrderBy>;
-  totalRatings?: InputMaybe<OrderBy>;
-  averageRating?: InputMaybe<OrderBy>;
-  fiveStar?: InputMaybe<OrderBy>;
-  fourStar?: InputMaybe<OrderBy>;
-  threeStar?: InputMaybe<OrderBy>;
-  twoStar?: InputMaybe<OrderBy>;
-  oneStar?: InputMaybe<OrderBy>;
-  verifiedPurchases?: InputMaybe<OrderBy>;
-};
-
 export type Roles = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -2006,45 +1897,6 @@ export type ServicesImagesOrderByInput = {
   imageUrl?: InputMaybe<OrderBy>;
 };
 
-/** VIEW */
-export type VariantRatingSummary = {
-  variantId: Scalars['Int']['output'];
-  totalRatings: Scalars['BigInt']['output'];
-  averageRating?: Maybe<Scalars['Float']['output']>;
-  fiveStar?: Maybe<Scalars['Float']['output']>;
-  fourStar?: Maybe<Scalars['Float']['output']>;
-  threeStar?: Maybe<Scalars['Float']['output']>;
-  twoStar?: Maybe<Scalars['Float']['output']>;
-  oneStar?: Maybe<Scalars['Float']['output']>;
-  verifiedPurchases?: Maybe<Scalars['Float']['output']>;
-};
-
-/** VIEW */
-export type VariantRatingSummaryWhereInput = {
-  variantId?: InputMaybe<Scalars['String']['input']>;
-  totalRatings?: InputMaybe<Scalars['String']['input']>;
-  averageRating?: InputMaybe<Scalars['String']['input']>;
-  fiveStar?: InputMaybe<Scalars['String']['input']>;
-  fourStar?: InputMaybe<Scalars['String']['input']>;
-  threeStar?: InputMaybe<Scalars['String']['input']>;
-  twoStar?: InputMaybe<Scalars['String']['input']>;
-  oneStar?: InputMaybe<Scalars['String']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** VIEW */
-export type VariantRatingSummaryOrderByInput = {
-  variantId?: InputMaybe<OrderBy>;
-  totalRatings?: InputMaybe<OrderBy>;
-  averageRating?: InputMaybe<OrderBy>;
-  fiveStar?: InputMaybe<OrderBy>;
-  fourStar?: InputMaybe<OrderBy>;
-  threeStar?: InputMaybe<OrderBy>;
-  twoStar?: InputMaybe<OrderBy>;
-  oneStar?: InputMaybe<OrderBy>;
-  verifiedPurchases?: InputMaybe<OrderBy>;
-};
-
 /** Imágenes para opciones de atributos (colores, materiales, etc.) */
 export type AttributeOptionImagesInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -2225,32 +2077,6 @@ export type ProductCategoriesInsertInput = {
 export type ProductCategoriesUpdateInput = {
   productId?: InputMaybe<Scalars['Int']['input']>;
   categoryId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** VIEW */
-export type ProductRatingSummaryInsertInput = {
-  productId: Scalars['Int']['input'];
-  totalRatings?: InputMaybe<Scalars['BigInt']['input']>;
-  averageRating?: InputMaybe<Scalars['Float']['input']>;
-  fiveStar?: InputMaybe<Scalars['Float']['input']>;
-  fourStar?: InputMaybe<Scalars['Float']['input']>;
-  threeStar?: InputMaybe<Scalars['Float']['input']>;
-  twoStar?: InputMaybe<Scalars['Float']['input']>;
-  oneStar?: InputMaybe<Scalars['Float']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
-/** VIEW */
-export type ProductRatingSummaryUpdateInput = {
-  productId?: InputMaybe<Scalars['Int']['input']>;
-  totalRatings?: InputMaybe<Scalars['BigInt']['input']>;
-  averageRating?: InputMaybe<Scalars['Float']['input']>;
-  fiveStar?: InputMaybe<Scalars['Float']['input']>;
-  fourStar?: InputMaybe<Scalars['Float']['input']>;
-  threeStar?: InputMaybe<Scalars['Float']['input']>;
-  twoStar?: InputMaybe<Scalars['Float']['input']>;
-  oneStar?: InputMaybe<Scalars['Float']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type ProductVariantsInsertInput = {
@@ -2519,32 +2345,6 @@ export type VariantImagesUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
-/** VIEW */
-export type VariantRatingSummaryInsertInput = {
-  variantId: Scalars['Int']['input'];
-  totalRatings?: InputMaybe<Scalars['BigInt']['input']>;
-  averageRating?: InputMaybe<Scalars['Float']['input']>;
-  fiveStar?: InputMaybe<Scalars['Float']['input']>;
-  fourStar?: InputMaybe<Scalars['Float']['input']>;
-  threeStar?: InputMaybe<Scalars['Float']['input']>;
-  twoStar?: InputMaybe<Scalars['Float']['input']>;
-  oneStar?: InputMaybe<Scalars['Float']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
-/** VIEW */
-export type VariantRatingSummaryUpdateInput = {
-  variantId?: InputMaybe<Scalars['Int']['input']>;
-  totalRatings?: InputMaybe<Scalars['BigInt']['input']>;
-  averageRating?: InputMaybe<Scalars['Float']['input']>;
-  fiveStar?: InputMaybe<Scalars['Float']['input']>;
-  fourStar?: InputMaybe<Scalars['Float']['input']>;
-  threeStar?: InputMaybe<Scalars['Float']['input']>;
-  twoStar?: InputMaybe<Scalars['Float']['input']>;
-  oneStar?: InputMaybe<Scalars['Float']['input']>;
-  verifiedPurchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
 export type VariantRatingsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   variantId: Scalars['Int']['input'];
@@ -2721,10 +2521,6 @@ export type ResolversTypes = ResolversObject<{
   ProductCategories: ResolverTypeWrapper<ProductCategories>;
   ProductCategoriesWhereInput: ProductCategoriesWhereInput;
   ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  ProductRatingSummary: ResolverTypeWrapper<ProductRatingSummary>;
-  BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
-  ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
-  ProductRatingSummaryOrderByInput: ProductRatingSummaryOrderByInput;
   Roles: ResolverTypeWrapper<Roles>;
   RolesSections: ResolverTypeWrapper<RolesSections>;
   RolesWhereInput: RolesWhereInput;
@@ -2743,9 +2539,6 @@ export type ResolversTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
-  VariantRatingSummary: ResolverTypeWrapper<VariantRatingSummary>;
-  VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
-  VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
   AttributeOptionImagesInsertInput: AttributeOptionImagesInsertInput;
   AttributeOptionImagesUpdateInput: AttributeOptionImagesUpdateInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -2767,8 +2560,6 @@ export type ResolversTypes = ResolversObject<{
   PermissionsUpdateInput: PermissionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
   ProductCategoriesUpdateInput: ProductCategoriesUpdateInput;
-  ProductRatingSummaryInsertInput: ProductRatingSummaryInsertInput;
-  ProductRatingSummaryUpdateInput: ProductRatingSummaryUpdateInput;
   ProductVariantsInsertInput: ProductVariantsInsertInput;
   ProductVariantsUpdateInput: ProductVariantsUpdateInput;
   ProductsInsertInput: ProductsInsertInput;
@@ -2795,8 +2586,6 @@ export type ResolversTypes = ResolversObject<{
   VariantAttributeOptionsUpdateInput: VariantAttributeOptionsUpdateInput;
   VariantImagesInsertInput: VariantImagesInsertInput;
   VariantImagesUpdateInput: VariantImagesUpdateInput;
-  VariantRatingSummaryInsertInput: VariantRatingSummaryInsertInput;
-  VariantRatingSummaryUpdateInput: VariantRatingSummaryUpdateInput;
   VariantRatingsInsertInput: VariantRatingsInsertInput;
   VariantRatingsUpdateInput: VariantRatingsUpdateInput;
 }>;
@@ -2864,10 +2653,6 @@ export type ResolversParentTypes = ResolversObject<{
   ProductCategories: ProductCategories;
   ProductCategoriesWhereInput: ProductCategoriesWhereInput;
   ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  ProductRatingSummary: ProductRatingSummary;
-  BigInt: Scalars['BigInt']['output'];
-  ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
-  ProductRatingSummaryOrderByInput: ProductRatingSummaryOrderByInput;
   Roles: Roles;
   RolesSections: RolesSections;
   RolesWhereInput: RolesWhereInput;
@@ -2886,9 +2671,6 @@ export type ResolversParentTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
-  VariantRatingSummary: VariantRatingSummary;
-  VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
-  VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
   AttributeOptionImagesInsertInput: AttributeOptionImagesInsertInput;
   AttributeOptionImagesUpdateInput: AttributeOptionImagesUpdateInput;
   Boolean: Scalars['Boolean']['output'];
@@ -2910,8 +2692,6 @@ export type ResolversParentTypes = ResolversObject<{
   PermissionsUpdateInput: PermissionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
   ProductCategoriesUpdateInput: ProductCategoriesUpdateInput;
-  ProductRatingSummaryInsertInput: ProductRatingSummaryInsertInput;
-  ProductRatingSummaryUpdateInput: ProductRatingSummaryUpdateInput;
   ProductVariantsInsertInput: ProductVariantsInsertInput;
   ProductVariantsUpdateInput: ProductVariantsUpdateInput;
   ProductsInsertInput: ProductsInsertInput;
@@ -2938,8 +2718,6 @@ export type ResolversParentTypes = ResolversObject<{
   VariantAttributeOptionsUpdateInput: VariantAttributeOptionsUpdateInput;
   VariantImagesInsertInput: VariantImagesInsertInput;
   VariantImagesUpdateInput: VariantImagesUpdateInput;
-  VariantRatingSummaryInsertInput: VariantRatingSummaryInsertInput;
-  VariantRatingSummaryUpdateInput: VariantRatingSummaryUpdateInput;
   VariantRatingsInsertInput: VariantRatingsInsertInput;
   VariantRatingsUpdateInput: VariantRatingsUpdateInput;
 }>;
@@ -3018,8 +2796,6 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countPermissions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPermissionsArgs>>;
   productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<QueryproductCategoriesArgs>>;
   countProductCategories?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductCategoriesArgs>>;
-  productRatingSummary?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductRatingSummary']>>>, ParentType, ContextType, Partial<QueryproductRatingSummaryArgs>>;
-  countProductRatingSummary?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductRatingSummaryArgs>>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<QueryproductVariantsArgs>>;
   countProductVariants?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductVariantsArgs>>;
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<QueryproductsArgs>>;
@@ -3046,8 +2822,6 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countVariantAttributeOptions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantAttributeOptionsArgs>>;
   variantImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantImages']>>>, ParentType, ContextType, Partial<QueryvariantImagesArgs>>;
   countVariantImages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantImagesArgs>>;
-  variantRatingSummary?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatingSummary']>>>, ParentType, ContextType, Partial<QueryvariantRatingSummaryArgs>>;
-  countVariantRatingSummary?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantRatingSummaryArgs>>;
   variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<QueryvariantRatingsArgs>>;
   countVariantRatings?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantRatingsArgs>>;
 }>;
@@ -3083,9 +2857,6 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertProductCategories?: Resolver<Maybe<ResolversTypes['ProductCategories']>, ParentType, ContextType, RequireFields<MutationinsertProductCategoriesArgs, 'product_categories'>>;
   updateProductCategories?: Resolver<Maybe<ResolversTypes['ProductCategories']>, ParentType, ContextType, RequireFields<MutationupdateProductCategoriesArgs, 'product_categories'>>;
   deleteProductCategories?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductCategoriesArgs>>;
-  insertProductRatingSummary?: Resolver<Maybe<ResolversTypes['ProductRatingSummary']>, ParentType, ContextType, RequireFields<MutationinsertProductRatingSummaryArgs, 'product_rating_summary'>>;
-  updateProductRatingSummary?: Resolver<Maybe<ResolversTypes['ProductRatingSummary']>, ParentType, ContextType, RequireFields<MutationupdateProductRatingSummaryArgs, 'product_rating_summary'>>;
-  deleteProductRatingSummary?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductRatingSummaryArgs>>;
   insertProductVariants?: Resolver<Maybe<ResolversTypes['ProductVariants']>, ParentType, ContextType, RequireFields<MutationinsertProductVariantsArgs, 'product_variants'>>;
   updateProductVariants?: Resolver<Maybe<ResolversTypes['ProductVariants']>, ParentType, ContextType, RequireFields<MutationupdateProductVariantsArgs, 'product_variants'>>;
   deleteProductVariants?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductVariantsArgs>>;
@@ -3125,9 +2896,6 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertVariantImages?: Resolver<Maybe<ResolversTypes['VariantImages']>, ParentType, ContextType, RequireFields<MutationinsertVariantImagesArgs, 'variant_images'>>;
   updateVariantImages?: Resolver<Maybe<ResolversTypes['VariantImages']>, ParentType, ContextType, RequireFields<MutationupdateVariantImagesArgs, 'variant_images'>>;
   deleteVariantImages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantImagesArgs>>;
-  insertVariantRatingSummary?: Resolver<Maybe<ResolversTypes['VariantRatingSummary']>, ParentType, ContextType, RequireFields<MutationinsertVariantRatingSummaryArgs, 'variant_rating_summary'>>;
-  updateVariantRatingSummary?: Resolver<Maybe<ResolversTypes['VariantRatingSummary']>, ParentType, ContextType, RequireFields<MutationupdateVariantRatingSummaryArgs, 'variant_rating_summary'>>;
-  deleteVariantRatingSummary?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantRatingSummaryArgs>>;
   insertVariantRatings?: Resolver<Maybe<ResolversTypes['VariantRatings']>, ParentType, ContextType, RequireFields<MutationinsertVariantRatingsArgs, 'variant_ratings'>>;
   updateVariantRatings?: Resolver<Maybe<ResolversTypes['VariantRatings']>, ParentType, ContextType, RequireFields<MutationupdateVariantRatingsArgs, 'variant_ratings'>>;
   deleteVariantRatings?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantRatingsArgs>>;
@@ -3349,23 +3117,6 @@ export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProductRatingSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductRatingSummary'] = ResolversParentTypes['ProductRatingSummary']> = ResolversObject<{
-  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalRatings?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  averageRating?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  fiveStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  fourStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  threeStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  twoStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  oneStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  verifiedPurchases?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
-  name: 'BigInt';
-}
-
 export type RolesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Roles'] = ResolversParentTypes['Roles']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3438,19 +3189,6 @@ export type ServicesImagesResolvers<ContextType = MeshContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type VariantRatingSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantRatingSummary'] = ResolversParentTypes['VariantRatingSummary']> = ResolversObject<{
-  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalRatings?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  averageRating?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  fiveStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  fourStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  threeStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  twoStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  oneStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  verifiedPurchases?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
@@ -3474,15 +3212,12 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Categories?: CategoriesResolvers<ContextType>;
   Permissions?: PermissionsResolvers<ContextType>;
   ProductCategories?: ProductCategoriesResolvers<ContextType>;
-  ProductRatingSummary?: ProductRatingSummaryResolvers<ContextType>;
-  BigInt?: GraphQLScalarType;
   Roles?: RolesResolvers<ContextType>;
   RolesSections?: RolesSectionsResolvers<ContextType>;
   Sections?: SectionsResolvers<ContextType>;
   Users?: UsersResolvers<ContextType>;
   Services?: ServicesResolvers<ContextType>;
   ServicesImages?: ServicesImagesResolvers<ContextType>;
-  VariantRatingSummary?: VariantRatingSummaryResolvers<ContextType>;
 }>;
 
 export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{

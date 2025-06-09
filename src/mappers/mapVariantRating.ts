@@ -10,7 +10,7 @@ export const mapVariantRating = (data: VariantRatingRaw): VariantRating => {
     rating: data.rating,
     title: data.title ?? undefined,
     review: data.review ?? undefined,
-    verifiedPurchase: data.verified_purchase,
+    verifiedPurchase: Number(data.verified_purchase),
     createdAt: data.created_at,
     updatedAt: data.updated_at,
     customers: undefined, // Se llena en el modelo con lógica de negocio

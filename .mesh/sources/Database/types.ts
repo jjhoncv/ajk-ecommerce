@@ -26,8 +26,6 @@ export type Scalars = {
   Timestamp: { input: Date | string | number; output: Date | string | number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: Date | string; output: Date | string; }
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: { input: bigint; output: bigint; }
 };
 
 export type Query = {
@@ -51,8 +49,6 @@ export type Query = {
   count_permissions?: Maybe<Scalars['Int']['output']>;
   product_categories?: Maybe<Array<Maybe<product_categories>>>;
   count_product_categories?: Maybe<Scalars['Int']['output']>;
-  product_rating_summary?: Maybe<Array<Maybe<product_rating_summary>>>;
-  count_product_rating_summary?: Maybe<Scalars['Int']['output']>;
   product_variants?: Maybe<Array<Maybe<product_variants>>>;
   count_product_variants?: Maybe<Scalars['Int']['output']>;
   products?: Maybe<Array<Maybe<products>>>;
@@ -79,8 +75,6 @@ export type Query = {
   count_variant_attribute_options?: Maybe<Scalars['Int']['output']>;
   variant_images?: Maybe<Array<Maybe<variant_images>>>;
   count_variant_images?: Maybe<Scalars['Int']['output']>;
-  variant_rating_summary?: Maybe<Array<Maybe<variant_rating_summary>>>;
-  count_variant_rating_summary?: Maybe<Scalars['Int']['output']>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
   count_variant_ratings?: Maybe<Scalars['Int']['output']>;
 };
@@ -213,19 +207,6 @@ export type Queryproduct_categoriesArgs = {
 
 export type Querycount_product_categoriesArgs = {
   where?: InputMaybe<product_categories_WhereInput>;
-};
-
-
-export type Queryproduct_rating_summaryArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<product_rating_summary_WhereInput>;
-  orderBy?: InputMaybe<product_rating_summary_OrderByInput>;
-};
-
-
-export type Querycount_product_rating_summaryArgs = {
-  where?: InputMaybe<product_rating_summary_WhereInput>;
 };
 
 
@@ -395,19 +376,6 @@ export type Queryvariant_imagesArgs = {
 
 export type Querycount_variant_imagesArgs = {
   where?: InputMaybe<variant_images_WhereInput>;
-};
-
-
-export type Queryvariant_rating_summaryArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<variant_rating_summary_WhereInput>;
-  orderBy?: InputMaybe<variant_rating_summary_OrderByInput>;
-};
-
-
-export type Querycount_variant_rating_summaryArgs = {
-  where?: InputMaybe<variant_rating_summary_WhereInput>;
 };
 
 
@@ -1212,45 +1180,6 @@ export type product_categories_OrderByInput = {
   category_id?: InputMaybe<OrderBy>;
 };
 
-/** VIEW */
-export type product_rating_summary = {
-  product_id: Scalars['Int']['output'];
-  total_ratings: Scalars['BigInt']['output'];
-  average_rating?: Maybe<Scalars['Float']['output']>;
-  five_star?: Maybe<Scalars['Float']['output']>;
-  four_star?: Maybe<Scalars['Float']['output']>;
-  three_star?: Maybe<Scalars['Float']['output']>;
-  two_star?: Maybe<Scalars['Float']['output']>;
-  one_star?: Maybe<Scalars['Float']['output']>;
-  verified_purchases?: Maybe<Scalars['Float']['output']>;
-};
-
-/** VIEW */
-export type product_rating_summary_WhereInput = {
-  product_id?: InputMaybe<Scalars['String']['input']>;
-  total_ratings?: InputMaybe<Scalars['String']['input']>;
-  average_rating?: InputMaybe<Scalars['String']['input']>;
-  five_star?: InputMaybe<Scalars['String']['input']>;
-  four_star?: InputMaybe<Scalars['String']['input']>;
-  three_star?: InputMaybe<Scalars['String']['input']>;
-  two_star?: InputMaybe<Scalars['String']['input']>;
-  one_star?: InputMaybe<Scalars['String']['input']>;
-  verified_purchases?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** VIEW */
-export type product_rating_summary_OrderByInput = {
-  product_id?: InputMaybe<OrderBy>;
-  total_ratings?: InputMaybe<OrderBy>;
-  average_rating?: InputMaybe<OrderBy>;
-  five_star?: InputMaybe<OrderBy>;
-  four_star?: InputMaybe<OrderBy>;
-  three_star?: InputMaybe<OrderBy>;
-  two_star?: InputMaybe<OrderBy>;
-  one_star?: InputMaybe<OrderBy>;
-  verified_purchases?: InputMaybe<OrderBy>;
-};
-
 export type roles = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -1497,45 +1426,6 @@ export type services_images_OrderByInput = {
   image_url?: InputMaybe<OrderBy>;
 };
 
-/** VIEW */
-export type variant_rating_summary = {
-  variant_id: Scalars['Int']['output'];
-  total_ratings: Scalars['BigInt']['output'];
-  average_rating?: Maybe<Scalars['Float']['output']>;
-  five_star?: Maybe<Scalars['Float']['output']>;
-  four_star?: Maybe<Scalars['Float']['output']>;
-  three_star?: Maybe<Scalars['Float']['output']>;
-  two_star?: Maybe<Scalars['Float']['output']>;
-  one_star?: Maybe<Scalars['Float']['output']>;
-  verified_purchases?: Maybe<Scalars['Float']['output']>;
-};
-
-/** VIEW */
-export type variant_rating_summary_WhereInput = {
-  variant_id?: InputMaybe<Scalars['String']['input']>;
-  total_ratings?: InputMaybe<Scalars['String']['input']>;
-  average_rating?: InputMaybe<Scalars['String']['input']>;
-  five_star?: InputMaybe<Scalars['String']['input']>;
-  four_star?: InputMaybe<Scalars['String']['input']>;
-  three_star?: InputMaybe<Scalars['String']['input']>;
-  two_star?: InputMaybe<Scalars['String']['input']>;
-  one_star?: InputMaybe<Scalars['String']['input']>;
-  verified_purchases?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** VIEW */
-export type variant_rating_summary_OrderByInput = {
-  variant_id?: InputMaybe<OrderBy>;
-  total_ratings?: InputMaybe<OrderBy>;
-  average_rating?: InputMaybe<OrderBy>;
-  five_star?: InputMaybe<OrderBy>;
-  four_star?: InputMaybe<OrderBy>;
-  three_star?: InputMaybe<OrderBy>;
-  two_star?: InputMaybe<OrderBy>;
-  one_star?: InputMaybe<OrderBy>;
-  verified_purchases?: InputMaybe<OrderBy>;
-};
-
 export type Mutation = {
   insert_attribute_option_images?: Maybe<attribute_option_images>;
   update_attribute_option_images?: Maybe<attribute_option_images>;
@@ -1567,9 +1457,6 @@ export type Mutation = {
   insert_product_categories?: Maybe<product_categories>;
   update_product_categories?: Maybe<product_categories>;
   delete_product_categories?: Maybe<Scalars['Boolean']['output']>;
-  insert_product_rating_summary?: Maybe<product_rating_summary>;
-  update_product_rating_summary?: Maybe<product_rating_summary>;
-  delete_product_rating_summary?: Maybe<Scalars['Boolean']['output']>;
   insert_product_variants?: Maybe<product_variants>;
   update_product_variants?: Maybe<product_variants>;
   delete_product_variants?: Maybe<Scalars['Boolean']['output']>;
@@ -1609,9 +1496,6 @@ export type Mutation = {
   insert_variant_images?: Maybe<variant_images>;
   update_variant_images?: Maybe<variant_images>;
   delete_variant_images?: Maybe<Scalars['Boolean']['output']>;
-  insert_variant_rating_summary?: Maybe<variant_rating_summary>;
-  update_variant_rating_summary?: Maybe<variant_rating_summary>;
-  delete_variant_rating_summary?: Maybe<Scalars['Boolean']['output']>;
   insert_variant_ratings?: Maybe<variant_ratings>;
   update_variant_ratings?: Maybe<variant_ratings>;
   delete_variant_ratings?: Maybe<Scalars['Boolean']['output']>;
@@ -1775,22 +1659,6 @@ export type Mutationupdate_product_categoriesArgs = {
 
 export type Mutationdelete_product_categoriesArgs = {
   where?: InputMaybe<product_categories_WhereInput>;
-};
-
-
-export type Mutationinsert_product_rating_summaryArgs = {
-  product_rating_summary: product_rating_summary_InsertInput;
-};
-
-
-export type Mutationupdate_product_rating_summaryArgs = {
-  product_rating_summary: product_rating_summary_UpdateInput;
-  where?: InputMaybe<product_rating_summary_WhereInput>;
-};
-
-
-export type Mutationdelete_product_rating_summaryArgs = {
-  where?: InputMaybe<product_rating_summary_WhereInput>;
 };
 
 
@@ -2002,22 +1870,6 @@ export type Mutationdelete_variant_imagesArgs = {
 };
 
 
-export type Mutationinsert_variant_rating_summaryArgs = {
-  variant_rating_summary: variant_rating_summary_InsertInput;
-};
-
-
-export type Mutationupdate_variant_rating_summaryArgs = {
-  variant_rating_summary: variant_rating_summary_UpdateInput;
-  where?: InputMaybe<variant_rating_summary_WhereInput>;
-};
-
-
-export type Mutationdelete_variant_rating_summaryArgs = {
-  where?: InputMaybe<variant_rating_summary_WhereInput>;
-};
-
-
 export type Mutationinsert_variant_ratingsArgs = {
   variant_ratings: variant_ratings_InsertInput;
 };
@@ -2213,32 +2065,6 @@ export type product_categories_InsertInput = {
 export type product_categories_UpdateInput = {
   product_id?: InputMaybe<Scalars['Int']['input']>;
   category_id?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** VIEW */
-export type product_rating_summary_InsertInput = {
-  product_id: Scalars['Int']['input'];
-  total_ratings?: InputMaybe<Scalars['BigInt']['input']>;
-  average_rating?: InputMaybe<Scalars['Float']['input']>;
-  five_star?: InputMaybe<Scalars['Float']['input']>;
-  four_star?: InputMaybe<Scalars['Float']['input']>;
-  three_star?: InputMaybe<Scalars['Float']['input']>;
-  two_star?: InputMaybe<Scalars['Float']['input']>;
-  one_star?: InputMaybe<Scalars['Float']['input']>;
-  verified_purchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
-/** VIEW */
-export type product_rating_summary_UpdateInput = {
-  product_id?: InputMaybe<Scalars['Int']['input']>;
-  total_ratings?: InputMaybe<Scalars['BigInt']['input']>;
-  average_rating?: InputMaybe<Scalars['Float']['input']>;
-  five_star?: InputMaybe<Scalars['Float']['input']>;
-  four_star?: InputMaybe<Scalars['Float']['input']>;
-  three_star?: InputMaybe<Scalars['Float']['input']>;
-  two_star?: InputMaybe<Scalars['Float']['input']>;
-  one_star?: InputMaybe<Scalars['Float']['input']>;
-  verified_purchases?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type product_variants_InsertInput = {
@@ -2507,32 +2333,6 @@ export type variant_images_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
-/** VIEW */
-export type variant_rating_summary_InsertInput = {
-  variant_id: Scalars['Int']['input'];
-  total_ratings?: InputMaybe<Scalars['BigInt']['input']>;
-  average_rating?: InputMaybe<Scalars['Float']['input']>;
-  five_star?: InputMaybe<Scalars['Float']['input']>;
-  four_star?: InputMaybe<Scalars['Float']['input']>;
-  three_star?: InputMaybe<Scalars['Float']['input']>;
-  two_star?: InputMaybe<Scalars['Float']['input']>;
-  one_star?: InputMaybe<Scalars['Float']['input']>;
-  verified_purchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
-/** VIEW */
-export type variant_rating_summary_UpdateInput = {
-  variant_id?: InputMaybe<Scalars['Int']['input']>;
-  total_ratings?: InputMaybe<Scalars['BigInt']['input']>;
-  average_rating?: InputMaybe<Scalars['Float']['input']>;
-  five_star?: InputMaybe<Scalars['Float']['input']>;
-  four_star?: InputMaybe<Scalars['Float']['input']>;
-  three_star?: InputMaybe<Scalars['Float']['input']>;
-  two_star?: InputMaybe<Scalars['Float']['input']>;
-  one_star?: InputMaybe<Scalars['Float']['input']>;
-  verified_purchases?: InputMaybe<Scalars['Float']['input']>;
-};
-
 export type variant_ratings_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   variant_id: Scalars['Int']['input'];
@@ -2599,10 +2399,6 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_product_categories: InContextSdkMethod<Query['count_product_categories'], Querycount_product_categoriesArgs, MeshContext>,
   /** undefined **/
-  product_rating_summary: InContextSdkMethod<Query['product_rating_summary'], Queryproduct_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  count_product_rating_summary: InContextSdkMethod<Query['count_product_rating_summary'], Querycount_product_rating_summaryArgs, MeshContext>,
-  /** undefined **/
   product_variants: InContextSdkMethod<Query['product_variants'], Queryproduct_variantsArgs, MeshContext>,
   /** undefined **/
   count_product_variants: InContextSdkMethod<Query['count_product_variants'], Querycount_product_variantsArgs, MeshContext>,
@@ -2654,10 +2450,6 @@ export type variant_ratings_UpdateInput = {
   variant_images: InContextSdkMethod<Query['variant_images'], Queryvariant_imagesArgs, MeshContext>,
   /** undefined **/
   count_variant_images: InContextSdkMethod<Query['count_variant_images'], Querycount_variant_imagesArgs, MeshContext>,
-  /** undefined **/
-  variant_rating_summary: InContextSdkMethod<Query['variant_rating_summary'], Queryvariant_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  count_variant_rating_summary: InContextSdkMethod<Query['count_variant_rating_summary'], Querycount_variant_rating_summaryArgs, MeshContext>,
   /** undefined **/
   variant_ratings: InContextSdkMethod<Query['variant_ratings'], Queryvariant_ratingsArgs, MeshContext>,
   /** undefined **/
@@ -2725,12 +2517,6 @@ export type variant_ratings_UpdateInput = {
   update_product_categories: InContextSdkMethod<Mutation['update_product_categories'], Mutationupdate_product_categoriesArgs, MeshContext>,
   /** undefined **/
   delete_product_categories: InContextSdkMethod<Mutation['delete_product_categories'], Mutationdelete_product_categoriesArgs, MeshContext>,
-  /** undefined **/
-  insert_product_rating_summary: InContextSdkMethod<Mutation['insert_product_rating_summary'], Mutationinsert_product_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  update_product_rating_summary: InContextSdkMethod<Mutation['update_product_rating_summary'], Mutationupdate_product_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  delete_product_rating_summary: InContextSdkMethod<Mutation['delete_product_rating_summary'], Mutationdelete_product_rating_summaryArgs, MeshContext>,
   /** undefined **/
   insert_product_variants: InContextSdkMethod<Mutation['insert_product_variants'], Mutationinsert_product_variantsArgs, MeshContext>,
   /** undefined **/
@@ -2809,12 +2595,6 @@ export type variant_ratings_UpdateInput = {
   update_variant_images: InContextSdkMethod<Mutation['update_variant_images'], Mutationupdate_variant_imagesArgs, MeshContext>,
   /** undefined **/
   delete_variant_images: InContextSdkMethod<Mutation['delete_variant_images'], Mutationdelete_variant_imagesArgs, MeshContext>,
-  /** undefined **/
-  insert_variant_rating_summary: InContextSdkMethod<Mutation['insert_variant_rating_summary'], Mutationinsert_variant_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  update_variant_rating_summary: InContextSdkMethod<Mutation['update_variant_rating_summary'], Mutationupdate_variant_rating_summaryArgs, MeshContext>,
-  /** undefined **/
-  delete_variant_rating_summary: InContextSdkMethod<Mutation['delete_variant_rating_summary'], Mutationdelete_variant_rating_summaryArgs, MeshContext>,
   /** undefined **/
   insert_variant_ratings: InContextSdkMethod<Mutation['insert_variant_ratings'], Mutationinsert_variant_ratingsArgs, MeshContext>,
   /** undefined **/

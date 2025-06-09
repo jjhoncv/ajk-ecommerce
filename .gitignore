@@ -42,7 +42,7 @@ next-env.d.ts
 
 # mysql
 .data
-mysql/
+mysql-data/
 
 # Prisma
 prisma/migrations/

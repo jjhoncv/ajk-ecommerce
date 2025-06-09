@@ -38,8 +38,6 @@ type Query {
   countPermissions(where: PermissionsWhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
   productCategories(limit: Int, offset: Int, where: ProductCategoriesWhereInput, orderBy: ProductCategoriesOrderByInput): [ProductCategories] @mysqlSelect(subgraph: "Database", table: "product_categories")
   countProductCategories(where: ProductCategoriesWhereInput): Int @mysqlCount(subgraph: "Database", table: "product_categories")
-  productRatingSummary(limit: Int, offset: Int, where: ProductRatingSummaryWhereInput, orderBy: ProductRatingSummaryOrderByInput): [ProductRatingSummary] @mysqlSelect(subgraph: "Database", table: "product_rating_summary")
-  countProductRatingSummary(where: ProductRatingSummaryWhereInput): Int @mysqlCount(subgraph: "Database", table: "product_rating_summary")
   productVariants(limit: Int, offset: Int, where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants")
   countProductVariants(where: ProductVariantsWhereInput): Int @mysqlCount(subgraph: "Database", table: "product_variants")
   products(limit: Int, offset: Int, where: ProductsWhereInput, orderBy: ProductsOrderByInput): [Products] @mysqlSelect(subgraph: "Database", table: "products")
@@ -66,8 +64,6 @@ type Query {
   countVariantAttributeOptions(where: VariantAttributeOptionsWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_attribute_options")
   variantImages(limit: Int, offset: Int, where: VariantImagesWhereInput, orderBy: VariantImagesOrderByInput): [VariantImages] @mysqlSelect(subgraph: "Database", table: "variant_images")
   countVariantImages(where: VariantImagesWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_images")
-  variantRatingSummary(limit: Int, offset: Int, where: VariantRatingSummaryWhereInput, orderBy: VariantRatingSummaryOrderByInput): [VariantRatingSummary] @mysqlSelect(subgraph: "Database", table: "variant_rating_summary")
-  countVariantRatingSummary(where: VariantRatingSummaryWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_rating_summary")
   variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings")
   countVariantRatings(where: VariantRatingsWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_ratings")
 }
@@ -103,9 +99,6 @@ type Mutation {
   insertProductCategories(product_categories: ProductCategoriesInsertInput!): ProductCategories @mysqlInsert(subgraph: "Database", table: "product_categories", primaryKeys: ["product_id", "category_id"])
   updateProductCategories(product_categories: ProductCategoriesUpdateInput!, where: ProductCategoriesWhereInput): ProductCategories @mysqlUpdate(subgraph: "Database", table: "product_categories")
   deleteProductCategories(where: ProductCategoriesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_categories")
-  insertProductRatingSummary(product_rating_summary: ProductRatingSummaryInsertInput!): ProductRatingSummary @mysqlInsert(subgraph: "Database", table: "product_rating_summary", primaryKeys: [])
-  updateProductRatingSummary(product_rating_summary: ProductRatingSummaryUpdateInput!, where: ProductRatingSummaryWhereInput): ProductRatingSummary @mysqlUpdate(subgraph: "Database", table: "product_rating_summary")
-  deleteProductRatingSummary(where: ProductRatingSummaryWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_rating_summary")
   insertProductVariants(product_variants: ProductVariantsInsertInput!): ProductVariants @mysqlInsert(subgraph: "Database", table: "product_variants", primaryKeys: ["id"])
   updateProductVariants(product_variants: ProductVariantsUpdateInput!, where: ProductVariantsWhereInput): ProductVariants @mysqlUpdate(subgraph: "Database", table: "product_variants")
   deleteProductVariants(where: ProductVariantsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_variants")
@@ -145,9 +138,6 @@ type Mutation {
   insertVariantImages(variant_images: VariantImagesInsertInput!): VariantImages @mysqlInsert(subgraph: "Database", table: "variant_images", primaryKeys: ["id"])
   updateVariantImages(variant_images: VariantImagesUpdateInput!, where: VariantImagesWhereInput): VariantImages @mysqlUpdate(subgraph: "Database", table: "variant_images")
   deleteVariantImages(where: VariantImagesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_images")
-  insertVariantRatingSummary(variant_rating_summary: VariantRatingSummaryInsertInput!): VariantRatingSummary @mysqlInsert(subgraph: "Database", table: "variant_rating_summary", primaryKeys: [])
-  updateVariantRatingSummary(variant_rating_summary: VariantRatingSummaryUpdateInput!, where: VariantRatingSummaryWhereInput): VariantRatingSummary @mysqlUpdate(subgraph: "Database", table: "variant_rating_summary")
-  deleteVariantRatingSummary(where: VariantRatingSummaryWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_rating_summary")
   insertVariantRatings(variant_ratings: VariantRatingsInsertInput!): VariantRatings @mysqlInsert(subgraph: "Database", table: "variant_ratings", primaryKeys: ["id"])
   updateVariantRatings(variant_ratings: VariantRatingsUpdateInput!, where: VariantRatingsWhereInput): VariantRatings @mysqlUpdate(subgraph: "Database", table: "variant_ratings")
   deleteVariantRatings(where: VariantRatingsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_ratings")
@@ -763,50 +753,6 @@ input ProductCategoriesOrderByInput {
   categoryId: OrderBy
 }
 
-"""VIEW"""
-type ProductRatingSummary {
-  productId: Int!
-  totalRatings: BigInt!
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
-}
-
-"""
-The `BigInt` scalar type represents non-fractional signed whole numeric values.
-"""
-scalar BigInt
-
-"""VIEW"""
-input ProductRatingSummaryWhereInput {
-  productId: String
-  totalRatings: String
-  averageRating: String
-  fiveStar: String
-  fourStar: String
-  threeStar: String
-  twoStar: String
-  oneStar: String
-  verifiedPurchases: String
-}
-
-"""VIEW"""
-input ProductRatingSummaryOrderByInput {
-  productId: OrderBy
-  totalRatings: OrderBy
-  averageRating: OrderBy
-  fiveStar: OrderBy
-  fourStar: OrderBy
-  threeStar: OrderBy
-  twoStar: OrderBy
-  oneStar: OrderBy
-  verifiedPurchases: OrderBy
-}
-
 type Roles {
   id: Int!
   name: String!
@@ -989,45 +935,6 @@ input ServicesImagesOrderByInput {
   imageUrl: OrderBy
 }
 
-"""VIEW"""
-type VariantRatingSummary {
-  variantId: Int!
-  totalRatings: BigInt!
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
-}
-
-"""VIEW"""
-input VariantRatingSummaryWhereInput {
-  variantId: String
-  totalRatings: String
-  averageRating: String
-  fiveStar: String
-  fourStar: String
-  threeStar: String
-  twoStar: String
-  oneStar: String
-  verifiedPurchases: String
-}
-
-"""VIEW"""
-input VariantRatingSummaryOrderByInput {
-  variantId: OrderBy
-  totalRatings: OrderBy
-  averageRating: OrderBy
-  fiveStar: OrderBy
-  fourStar: OrderBy
-  threeStar: OrderBy
-  twoStar: OrderBy
-  oneStar: OrderBy
-  verifiedPurchases: OrderBy
-}
-
 """Imágenes para opciones de atributos (colores, materiales, etc.)"""
 input AttributeOptionImagesInsertInput {
   id: Int
@@ -1208,32 +1115,6 @@ input ProductCategoriesInsertInput {
 input ProductCategoriesUpdateInput {
   productId: Int
   categoryId: Int
-}
-
-"""VIEW"""
-input ProductRatingSummaryInsertInput {
-  productId: Int!
-  totalRatings: BigInt
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
-}
-
-"""VIEW"""
-input ProductRatingSummaryUpdateInput {
-  productId: Int
-  totalRatings: BigInt
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
 }
 
 input ProductVariantsInsertInput {
@@ -1500,32 +1381,6 @@ input VariantImagesUpdateInput {
   altText: String
   createdAt: Timestamp
   updatedAt: Timestamp
-}
-
-"""VIEW"""
-input VariantRatingSummaryInsertInput {
-  variantId: Int!
-  totalRatings: BigInt
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
-}
-
-"""VIEW"""
-input VariantRatingSummaryUpdateInput {
-  variantId: Int
-  totalRatings: BigInt
-  averageRating: Float
-  fiveStar: Float
-  fourStar: Float
-  threeStar: Float
-  twoStar: Float
-  oneStar: Float
-  verifiedPurchases: Float
 }
 
 input VariantRatingsInsertInput {

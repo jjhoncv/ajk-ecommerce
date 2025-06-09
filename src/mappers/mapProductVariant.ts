@@ -1,25 +1,28 @@
-import { promotion_variants as PromotionVariantRaw } from '@/types/database'
-import { PromotionVariants as PromotionVariant } from '@/types/domain'
+import { product_variants as ProductVariantRaw } from '@/types/database'
+import { ProductVariants as ProductVariant } from '@/types/domain'
 
 // ✅ Mapper individual puro - NO incluye relaciones
-export const mapPromotionVariant = (
-  data: PromotionVariantRaw
-): PromotionVariant => {
+export const mapProductVariant = (data: ProductVariantRaw): ProductVariant => {
   return {
-    promotionId: data.promotion_id,
-    variantId: data.variant_id,
-    promotionPrice: data.promotion_price ?? undefined,
-    stockLimit: data.stock_limit ?? undefined,
+    id: data.id,
+    productId: data.product_id,
+    sku: data.sku,
+    price: data.price,
+    stock: data.stock,
     createdAt: data.created_at,
-    productVariants: undefined, // Se llena en el modelo con lógica de negocio
-    promotions: undefined // Se llena en el modelo con lógica de negocio
+    updatedAt: data.updated_at,
+    products: undefined, // Se llena en el modelo con lógica de negocio
+    promotionVariants: undefined, // Se llena en el modelo con lógica de negocio
+    variantAttributeOptions: undefined, // Se llena en el modelo con lógica de negocio
+    variantImages: undefined, // Se llena en el modelo con lógica de negocio
+    variantRatings: undefined // Se llena en el modelo con lógica de negocio
   }
 }
 
 // ✅ Para arrays - maneja null a nivel de array
-export const mapPromotionVariants = (
-  data: PromotionVariantRaw[] | null
-): PromotionVariant[] | undefined => {
+export const mapProductVariants = (
+  data: ProductVariantRaw[] | null
+): ProductVariant[] | undefined => {
   if (data === null) return undefined
-  return data.map(mapPromotionVariant)
+  return data.map(mapProductVariant)
 }

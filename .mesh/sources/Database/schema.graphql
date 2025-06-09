@@ -38,8 +38,6 @@ type Query {
   count_permissions(where: permissions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
   product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories")
   count_product_categories(where: product_categories_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_categories")
-  product_rating_summary(limit: Int, offset: Int, where: product_rating_summary_WhereInput, orderBy: product_rating_summary_OrderByInput): [product_rating_summary] @mysqlSelect(subgraph: "Database", table: "product_rating_summary")
-  count_product_rating_summary(where: product_rating_summary_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_rating_summary")
   product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants")
   count_product_variants(where: product_variants_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_variants")
   products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products")
@@ -66,8 +64,6 @@ type Query {
   count_variant_attribute_options(where: variant_attribute_options_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_attribute_options")
   variant_images(limit: Int, offset: Int, where: variant_images_WhereInput, orderBy: variant_images_OrderByInput): [variant_images] @mysqlSelect(subgraph: "Database", table: "variant_images")
   count_variant_images(where: variant_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_images")
-  variant_rating_summary(limit: Int, offset: Int, where: variant_rating_summary_WhereInput, orderBy: variant_rating_summary_OrderByInput): [variant_rating_summary] @mysqlSelect(subgraph: "Database", table: "variant_rating_summary")
-  count_variant_rating_summary(where: variant_rating_summary_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_rating_summary")
   variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings")
   count_variant_ratings(where: variant_ratings_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_ratings")
 }
@@ -682,50 +678,6 @@ input product_categories_OrderByInput {
   category_id: OrderBy
 }
 
-"""VIEW"""
-type product_rating_summary {
-  product_id: Int!
-  total_ratings: BigInt!
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
-}
-
-"""
-The `BigInt` scalar type represents non-fractional signed whole numeric values.
-"""
-scalar BigInt
-
-"""VIEW"""
-input product_rating_summary_WhereInput {
-  product_id: String
-  total_ratings: String
-  average_rating: String
-  five_star: String
-  four_star: String
-  three_star: String
-  two_star: String
-  one_star: String
-  verified_purchases: String
-}
-
-"""VIEW"""
-input product_rating_summary_OrderByInput {
-  product_id: OrderBy
-  total_ratings: OrderBy
-  average_rating: OrderBy
-  five_star: OrderBy
-  four_star: OrderBy
-  three_star: OrderBy
-  two_star: OrderBy
-  one_star: OrderBy
-  verified_purchases: OrderBy
-}
-
 type roles {
   id: Int!
   name: String!
@@ -908,45 +860,6 @@ input services_images_OrderByInput {
   image_url: OrderBy
 }
 
-"""VIEW"""
-type variant_rating_summary {
-  variant_id: Int!
-  total_ratings: BigInt!
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
-}
-
-"""VIEW"""
-input variant_rating_summary_WhereInput {
-  variant_id: String
-  total_ratings: String
-  average_rating: String
-  five_star: String
-  four_star: String
-  three_star: String
-  two_star: String
-  one_star: String
-  verified_purchases: String
-}
-
-"""VIEW"""
-input variant_rating_summary_OrderByInput {
-  variant_id: OrderBy
-  total_ratings: OrderBy
-  average_rating: OrderBy
-  five_star: OrderBy
-  four_star: OrderBy
-  three_star: OrderBy
-  two_star: OrderBy
-  one_star: OrderBy
-  verified_purchases: OrderBy
-}
-
 type Mutation {
   insert_attribute_option_images(attribute_option_images: attribute_option_images_InsertInput!): attribute_option_images @mysqlInsert(subgraph: "Database", table: "attribute_option_images", primaryKeys: ["id"])
   update_attribute_option_images(attribute_option_images: attribute_option_images_UpdateInput!, where: attribute_option_images_WhereInput): attribute_option_images @mysqlUpdate(subgraph: "Database", table: "attribute_option_images")
@@ -978,9 +891,6 @@ type Mutation {
   insert_product_categories(product_categories: product_categories_InsertInput!): product_categories @mysqlInsert(subgraph: "Database", table: "product_categories", primaryKeys: ["product_id", "category_id"])
   update_product_categories(product_categories: product_categories_UpdateInput!, where: product_categories_WhereInput): product_categories @mysqlUpdate(subgraph: "Database", table: "product_categories")
   delete_product_categories(where: product_categories_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_categories")
-  insert_product_rating_summary(product_rating_summary: product_rating_summary_InsertInput!): product_rating_summary @mysqlInsert(subgraph: "Database", table: "product_rating_summary", primaryKeys: [])
-  update_product_rating_summary(product_rating_summary: product_rating_summary_UpdateInput!, where: product_rating_summary_WhereInput): product_rating_summary @mysqlUpdate(subgraph: "Database", table: "product_rating_summary")
-  delete_product_rating_summary(where: product_rating_summary_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_rating_summary")
   insert_product_variants(product_variants: product_variants_InsertInput!): product_variants @mysqlInsert(subgraph: "Database", table: "product_variants", primaryKeys: ["id"])
   update_product_variants(product_variants: product_variants_UpdateInput!, where: product_variants_WhereInput): product_variants @mysqlUpdate(subgraph: "Database", table: "product_variants")
   delete_product_variants(where: product_variants_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_variants")
@@ -1020,9 +930,6 @@ type Mutation {
   insert_variant_images(variant_images: variant_images_InsertInput!): variant_images @mysqlInsert(subgraph: "Database", table: "variant_images", primaryKeys: ["id"])
   update_variant_images(variant_images: variant_images_UpdateInput!, where: variant_images_WhereInput): variant_images @mysqlUpdate(subgraph: "Database", table: "variant_images")
   delete_variant_images(where: variant_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_images")
-  insert_variant_rating_summary(variant_rating_summary: variant_rating_summary_InsertInput!): variant_rating_summary @mysqlInsert(subgraph: "Database", table: "variant_rating_summary", primaryKeys: [])
-  update_variant_rating_summary(variant_rating_summary: variant_rating_summary_UpdateInput!, where: variant_rating_summary_WhereInput): variant_rating_summary @mysqlUpdate(subgraph: "Database", table: "variant_rating_summary")
-  delete_variant_rating_summary(where: variant_rating_summary_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_rating_summary")
   insert_variant_ratings(variant_ratings: variant_ratings_InsertInput!): variant_ratings @mysqlInsert(subgraph: "Database", table: "variant_ratings", primaryKeys: ["id"])
   update_variant_ratings(variant_ratings: variant_ratings_UpdateInput!, where: variant_ratings_WhereInput): variant_ratings @mysqlUpdate(subgraph: "Database", table: "variant_ratings")
   delete_variant_ratings(where: variant_ratings_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_ratings")
@@ -1208,32 +1115,6 @@ input product_categories_InsertInput {
 input product_categories_UpdateInput {
   product_id: Int
   category_id: Int
-}
-
-"""VIEW"""
-input product_rating_summary_InsertInput {
-  product_id: Int!
-  total_ratings: BigInt
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
-}
-
-"""VIEW"""
-input product_rating_summary_UpdateInput {
-  product_id: Int
-  total_ratings: BigInt
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
 }
 
 input product_variants_InsertInput {
@@ -1500,32 +1381,6 @@ input variant_images_UpdateInput {
   alt_text: String
   created_at: Timestamp
   updated_at: Timestamp
-}
-
-"""VIEW"""
-input variant_rating_summary_InsertInput {
-  variant_id: Int!
-  total_ratings: BigInt
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
-}
-
-"""VIEW"""
-input variant_rating_summary_UpdateInput {
-  variant_id: Int
-  total_ratings: BigInt
-  average_rating: Float
-  five_star: Float
-  four_star: Float
-  three_star: Float
-  two_star: Float
-  one_star: Float
-  verified_purchases: Float
 }
 
 input variant_ratings_InsertInput {
