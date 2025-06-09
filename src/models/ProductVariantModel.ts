@@ -5,11 +5,81 @@ import { executeQuery } from "@/lib/db";
 import PromotionModel from "./PromotionModel";
 import RatingModel from "./RatingModel";
 
+import { product_variants as ProductVariantRaw, 
+  variant_images as VariantImageRaw, 
+  attribute_option_images as AttributeOptionImageRaw,
+  promotions as PromotionRaw,
+  variant_ratings as VariantRatingRaw,
+  attribute_options as AttributeOptionRaw,
+  attributes as Attribute,
+  attribute_option_images_image_type as AttributeOptionImagesImageType,
+  attributes_display_type as AttributeDisplayType
+} from "@/types/database"
+
+interface QueryAttributeOptionRaw {
+  attribute_option_id: number;
+  attribute_id: number;
+  attribute_name: string;
+  display_type: string;
+  attribute_value: string;
+  additional_cost: number | null;
+}
+
+interface QueryAttributeImageRaw {
+  id: number;
+  attribute_option_id: number;
+  image_url_thumb: string;
+  image_url_normal: string | null;
+  image_url_zoom: string | null;
+  alt_text: string | null;
+  created_at: string;
+  updated_at: string;
+  attribute_id: number;
+  attribute_name: string;
+  display_type: AttributeDisplayType;
+  option_value: string;
+  additional_cost: number | null;
+  image_type: AttributeOptionImagesImageType
+  display_order: number
+}
+
+interface AttributeVariant  {
+  id: number;
+  name: string;
+  value: string;
+  optionId: number;
+  display_type?: string;
+  additional_cost?: number;
+}
+
+export interface ProductVariantRawData {
+  id: number;
+  product_id: number;
+  sku: string;
+  price: number;
+  stock: number;
+  attributes: AttributeVariant[];
+  images?: VariantImageRaw[];
+  // Imágenes de atributos (para selectores de color, etc.)
+  attribute_images: VariantAttributeOptionImageRaw[];
+  // Información de promoción
+  promotion?: PromotionRaw;
+  // Información de valoraciones
+  ratings?: VariantRatingRaw;
+}
+
+interface VariantAttributeOptionImageRaw extends AttributeOptionImageRaw {
+  attribute: Attribute
+  option: Omit<AttributeOptionRaw, "attribute_id">
+}
+
 export class ProductVariantModel {
-  public async getVariants(): Promise<ProductVariantDTO[]> {
-    const variants = await executeQuery<ProductVariant[]>({
+  public async getVariants(): Promise<ProductVariantDTO[] | null> {
+    const variants = await executeQuery<ProductVariantRaw[]>({
       query: "SELECT * FROM product_variants",
     });
+
+    if (variants.length === 0) return null
 
     return await Promise.all(
       variants.map((variant) => this.mapVariantToDTO(variant))
@@ -95,133 +165,11 @@ export class ProductVariantModel {
   }
 
   private async mapVariantToDTO(
-    variant: ProductVariant & { product_id?: number }
+    variant: ProductVariantRawData
   ): Promise<ProductVariantDTO> {
-    // Obtener las imágenes de la variante (sistema híbrido optimizado)
-    let images = await executeQuery<
-      {
-        id: number;
-        variant_id: number;
-        image_type: string;
-        image_url_thumb: string;
-        image_url_normal: string;
-        image_url_zoom: string;
-        is_primary: number;
-        display_order: number;
-        alt_text: string | null;
-        created_at: string;
-        updated_at: string;
-      }[]
-    >({
-      query:
-        "SELECT * FROM variant_images WHERE variant_id = ? ORDER BY display_order ASC, is_primary DESC",
-      values: [variant.id],
-    });
-
-    // Si no hay imágenes específicas de variante, buscar imágenes de atributos visuales
-    if (images.length === 0) {
-      const attributeImages = await executeQuery<
-        {
-          id: number;
-          image_url_thumb: string;
-          image_url_normal: string | null;
-          image_url_zoom: string | null;
-          alt_text: string | null;
-          created_at: string;
-          updated_at: string;
-          attribute_name: string;
-          option_value: string;
-          image_type: string;
-          display_order: number;
-        }[]
-      >({
-        query: `
-          SELECT 
-            aoi.id,
-            aoi.image_url_thumb,
-            aoi.image_url_normal,
-            aoi.image_url_zoom,
-            aoi.alt_text,
-            aoi.created_at,
-            aoi.updated_at,
-            a.name as attribute_name,
-            ao.value as option_value,
-            aoi.image_type,
-            aoi.display_order
-          FROM 
-            attribute_option_images aoi
-          JOIN 
-            attribute_options ao ON aoi.attribute_option_id = ao.id
-          JOIN 
-            attributes a ON ao.attribute_id = a.id
-          JOIN 
-            variant_attribute_options vao ON ao.id = vao.attribute_option_id
-          WHERE 
-            vao.variant_id = ? 
-            AND a.display_type = 'color'
-          ORDER BY aoi.display_order ASC, aoi.image_type ASC
-        `,
-        values: [variant.id],
-      });
-
-      // Convertir imágenes de atributos al formato de variant_images
-      images = attributeImages.map((img, index) => ({
-        id: img.id + 10000, // Offset para evitar conflictos de ID
-        variant_id: variant.id,
-        image_type: img.image_type as
-          | "front"
-          | "back"
-          | "left"
-          | "right"
-          | "top"
-          | "bottom"
-          | "detail"
-          | "lifestyle"
-          | "packaging", // Usar el tipo de imagen real
-        image_url_thumb: img.image_url_thumb || "/no-image.webp",
-        image_url_normal:
-          img.image_url_normal || img.image_url_thumb || "/no-image.webp",
-        image_url_zoom:
-          img.image_url_zoom ||
-          img.image_url_normal ||
-          img.image_url_thumb ||
-          "/no-image.webp",
-        is_primary: index === 0 ? 1 : 0, // La primera imagen es primaria
-        display_order: img.display_order,
-        alt_text:
-          img.alt_text ||
-          `${img.option_value} - ${img.attribute_name} - ${img.image_type}`,
-        created_at: img.created_at,
-        updated_at: img.updated_at,
-      }));
-    }
-
-    // Convertir imágenes al formato DTO
-    const variantImages: VariantImageDTO[] = images.map((img) => ({
-      id: img.id,
-      variantId: img.variant_id,
-      imageType: img.image_type as VariantImageDTO["imageType"],
-      imageUrlThumb: img.image_url_thumb,
-      imageUrlNormal: img.image_url_normal,
-      imageUrlZoom: img.image_url_zoom,
-      isPrimary: Boolean(img.is_primary),
-      displayOrder: img.display_order,
-      altText: img.alt_text || undefined,
-      createdAt: new Date(img.created_at),
-      updatedAt: new Date(img.updated_at),
-    }));
-
+   
     // Obtener los atributos de la variante
-    const attributeOptions = await executeQuery<
-      {
-        attribute_option_id: number;
-        attribute_id: number;
-        attribute_name: string;
-        display_type: string;
-        attribute_value: string;
-        additional_cost: number | null;
-      }[]
-    >({
+    const attributeOptions = await executeQuery<QueryAttributeOptionRaw[]>({
       query: `
         SELECT 
           vao.attribute_option_id,
@@ -254,23 +202,7 @@ export class ProductVariantModel {
         : undefined,
     }));
 
-    const attributeImages = await executeQuery<
-      {
-        id: number;
-        attribute_option_id: number;
-        image_url_thumb: string;
-        image_url_normal: string | null;
-        image_url_zoom: string | null;
-        alt_text: string | null;
-        created_at: string;
-        updated_at: string;
-        attribute_id: number;
-        attribute_name: string;
-        display_type: string;
-        option_value: string;
-        additional_cost: number | null;
-      }[]
-    >({
+    const attributeImages = await executeQuery<QueryAttributeImageRaw[]>({
       query: `
         SELECT DISTINCT
           aoi.id,
@@ -280,6 +212,7 @@ export class ProductVariantModel {
           aoi.image_url_zoom,
           aoi.alt_text,
           aoi.created_at,
+          aoi.image_type,
           aoi.updated_at,
           a.id as attribute_id,
           a.name as attribute_name,
@@ -300,41 +233,36 @@ export class ProductVariantModel {
             WHERE pv.product_id = ?
           )
       `,
-      values: [variant.productId || variant.product_id],
+      values: [variant.product_id],
     });
 
-    // Obtener la mejor promoción para esta variante
-    const bestPromotion = await PromotionModel.getBestPromotionForVariant(
-      variant.id,
-      Number(variant.price)
-    );
-
     // Crear el DTO de la variante
-    const variantDTO: ProductVariantDTO = {
+    const variantDTO: ProductVariantRawData = {
       id: variant.id,
-      productId: variant.productId || variant.product_id!,
+      product_id: variant.product_id,
       sku: variant.sku,
       price: variant.price,
       stock: variant.stock,
-      images: variantImages,
-      attributeImages: attributeImages.map((img) => ({
+      attribute_images: attributeImages.map((img) => ({
         id: img.id,
-        attributeOptionId: img.attribute_option_id,
-        imageUrlThumb: img.image_url_thumb,
-        imageUrlNormal: img.image_url_normal || undefined,
-        imageUrlZoom: img.image_url_zoom || undefined,
-        altText: img.alt_text || undefined,
-        createdAt: new Date(img.created_at),
-        updatedAt: new Date(img.updated_at),
+        attribute_option_id: img.attribute_option_id,
+        image_url_thumb: img.image_url_thumb,
+        image_url_normal: img.image_url_normal || null,
+        image_url_zoom: img.image_url_zoom || null,
+        alt_text: img.alt_text || null,
+        created_at: new Date(img.created_at),
+        updated_at: new Date(img.updated_at),
+        image_type: img.image_type,
+        display_order: img.display_order,
         attribute: {
           id: img.attribute_id,
           name: img.attribute_name,
-          displayType: img.display_type,
+          display_type: img.display_type,
         },
         option: {
           id: img.attribute_option_id,
           value: img.option_value,
-          additionalCost: img.additional_cost ? Number(img.additional_cost) : 0,
+          additional_cost: img.additional_cost ? Number(img.additional_cost) : 0,
         },
       })),
       attributes,
@@ -356,6 +284,12 @@ export class ProductVariantModel {
         verifiedPurchases: ratingSummary.verifiedPurchases,
       };
     }
+
+    // Obtener la mejor promoción para esta variante
+    const bestPromotion = await PromotionModel.getBestPromotionForVariant(
+      variant.id,
+      Number(variant.price)
+    );
 
     // Añadir información de promoción si existe
     if (bestPromotion && bestPromotion.promotion) {

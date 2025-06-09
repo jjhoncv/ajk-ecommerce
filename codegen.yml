@@ -22,9 +22,9 @@ generates:
         Int: number
         Float: number
         Boolean: boolean
-      maybeValue: T | null
-      inputMaybeValue: T | null
+      maybeValue: T | undefined
+      inputMaybeValue: T | undefined
       avoidOptionals: true
       enumsAsTypes: true
-      typesSuffix: ""
+      typesSuffix: ''
       nonOptionalTypename: false

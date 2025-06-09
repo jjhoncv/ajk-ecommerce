@@ -279,11 +279,12 @@ type Products {
   id: Int!
   name: String!
   description: String
-  brandId: Int
+  brandId: Int!
   createdAt: Timestamp!
   updatedAt: Timestamp!
   basePrice: Float
   productVariants(limit: Int, offset: Int, where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["product_id", "id"]])
+  brands(where: BrandsWhereInput, orderBy: BrandsOrderByInput, limit: Int, offset: Int): [Brands] @mysqlSelect(subgraph: "Database", table: "brands", columnMap: [["id", "brand_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "brand_id")
 }
 
 input ProductVariantsWhereInput {
@@ -306,6 +307,12 @@ input ProductVariantsOrderByInput {
   updatedAt: OrderBy
 }
 
+type Brands {
+  id: Int!
+  name: String!
+  products(limit: Int, offset: Int, where: ProductsWhereInput, orderBy: ProductsOrderByInput): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["brand_id", "id"]])
+}
+
 input ProductsWhereInput {
   id: String
   name: String
@@ -324,6 +331,16 @@ input ProductsOrderByInput {
   createdAt: OrderBy
   updatedAt: OrderBy
   basePrice: OrderBy
+}
+
+input BrandsWhereInput {
+  id: String
+  name: String
+}
+
+input BrandsOrderByInput {
+  id: OrderBy
+  name: OrderBy
 }
 
 type PromotionVariants {
@@ -684,21 +701,6 @@ input BannerOrderByInput {
   displayOrder: OrderBy
   link: OrderBy
   imageUrl: OrderBy
-}
-
-type Brands {
-  id: Int!
-  name: String!
-}
-
-input BrandsWhereInput {
-  id: String
-  name: String
-}
-
-input BrandsOrderByInput {
-  id: OrderBy
-  name: OrderBy
 }
 
 type Categories {
@@ -1258,7 +1260,7 @@ input ProductsInsertInput {
   id: Int
   name: String!
   description: String
-  brandId: Int
+  brandId: Int!
   createdAt: Timestamp
   updatedAt: Timestamp
   basePrice: Float

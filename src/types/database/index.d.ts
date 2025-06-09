@@ -2876,6 +2876,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type BrandsCountOutputType
+   */
+
+  export type BrandsCountOutputType = {
+    products: number
+  }
+
+  export type BrandsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | BrandsCountOutputTypeCountProductsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BrandsCountOutputType without action
+   */
+  export type BrandsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BrandsCountOutputType
+     */
+    select?: BrandsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BrandsCountOutputType without action
+   */
+  export type BrandsCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: productsWhereInput
+  }
+
+
+  /**
    * Count Type CustomersCountOutputType
    */
 
@@ -4213,27 +4244,27 @@ export namespace Prisma {
   export type Attribute_optionsAvgAggregateOutputType = {
     id: number | null
     attribute_id: number | null
-    additional_cost: Decimal | null
+    additional_cost: number | null
   }
 
   export type Attribute_optionsSumAggregateOutputType = {
     id: number | null
     attribute_id: number | null
-    additional_cost: Decimal | null
+    additional_cost: number | null
   }
 
   export type Attribute_optionsMinAggregateOutputType = {
     id: number | null
     attribute_id: number | null
     value: string | null
-    additional_cost: Decimal | null
+    additional_cost: number | null
   }
 
   export type Attribute_optionsMaxAggregateOutputType = {
     id: number | null
     attribute_id: number | null
     value: string | null
-    additional_cost: Decimal | null
+    additional_cost: number | null
   }
 
   export type Attribute_optionsCountAggregateOutputType = {
@@ -4369,7 +4400,7 @@ export namespace Prisma {
     id: number
     attribute_id: number
     value: string
-    additional_cost: Decimal | null
+    additional_cost: number | null
     _count: Attribute_optionsCountAggregateOutputType | null
     _avg: Attribute_optionsAvgAggregateOutputType | null
     _sum: Attribute_optionsSumAggregateOutputType | null
@@ -4427,7 +4458,7 @@ export namespace Prisma {
       id: number
       attribute_id: number
       value: string
-      additional_cost: Prisma.Decimal | null
+      additional_cost: number | null
     }, ExtArgs["result"]["attribute_options"]>
     composites: {}
   }
@@ -7244,6 +7275,8 @@ export namespace Prisma {
   export type brandsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    products?: boolean | brands$productsArgs<ExtArgs>
+    _count?: boolean | BrandsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["brands"]>
 
 
@@ -7254,10 +7287,16 @@ export namespace Prisma {
   }
 
   export type brandsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["brands"]>
+  export type brandsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | brands$productsArgs<ExtArgs>
+    _count?: boolean | BrandsCountOutputTypeDefaultArgs<ExtArgs>
+  }
 
   export type $brandsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "brands"
-    objects: {}
+    objects: {
+      products: Prisma.$productsPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
@@ -7601,6 +7640,7 @@ export namespace Prisma {
    */
   export interface Prisma__brandsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    products<T extends brands$productsArgs<ExtArgs> = {}>(args?: Subset<T, brands$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$productsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7649,6 +7689,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * Filter, which brands to fetch.
      */
     where: brandsWhereUniqueInput
@@ -7667,6 +7711,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * Filter, which brands to fetch.
      */
     where: brandsWhereUniqueInput
@@ -7684,6 +7732,10 @@ export namespace Prisma {
      * Omit specific fields from the brands
      */
     omit?: brandsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
     /**
      * Filter, which brands to fetch.
      */
@@ -7733,6 +7785,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * Filter, which brands to fetch.
      */
     where?: brandsWhereInput
@@ -7781,6 +7837,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * Filter, which brands to fetch.
      */
     where?: brandsWhereInput
@@ -7824,6 +7884,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * The data needed to create a brands.
      */
     data: XOR<brandsCreateInput, brandsUncheckedCreateInput>
@@ -7852,6 +7916,10 @@ export namespace Prisma {
      * Omit specific fields from the brands
      */
     omit?: brandsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
     /**
      * The data needed to update a brands.
      */
@@ -7893,6 +7961,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * The filter to search for the brands to update in case it exists.
      */
     where: brandsWhereUniqueInput
@@ -7919,6 +7991,10 @@ export namespace Prisma {
      */
     omit?: brandsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    /**
      * Filter which brands to delete.
      */
     where: brandsWhereUniqueInput
@@ -7939,6 +8015,30 @@ export namespace Prisma {
   }
 
   /**
+   * brands.products
+   */
+  export type brands$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the products
+     */
+    select?: productsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the products
+     */
+    omit?: productsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: productsInclude<ExtArgs> | null
+    where?: productsWhereInput
+    orderBy?: productsOrderByWithRelationInput | productsOrderByWithRelationInput[]
+    cursor?: productsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductsScalarFieldEnum | ProductsScalarFieldEnum[]
+  }
+
+  /**
    * brands without action
    */
   export type brandsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7950,6 +8050,10 @@ export namespace Prisma {
      * Omit specific fields from the brands
      */
     omit?: brandsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
   }
 
 
@@ -12764,14 +12868,14 @@ export namespace Prisma {
   export type Product_variantsAvgAggregateOutputType = {
     id: number | null
     product_id: number | null
-    price: Decimal | null
+    price: number | null
     stock: number | null
   }
 
   export type Product_variantsSumAggregateOutputType = {
     id: number | null
     product_id: number | null
-    price: Decimal | null
+    price: number | null
     stock: number | null
   }
 
@@ -12779,7 +12883,7 @@ export namespace Prisma {
     id: number | null
     product_id: number | null
     sku: string | null
-    price: Decimal | null
+    price: number | null
     stock: number | null
     created_at: Date | null
     updated_at: Date | null
@@ -12789,7 +12893,7 @@ export namespace Prisma {
     id: number | null
     product_id: number | null
     sku: string | null
-    price: Decimal | null
+    price: number | null
     stock: number | null
     created_at: Date | null
     updated_at: Date | null
@@ -12942,7 +13046,7 @@ export namespace Prisma {
     id: number
     product_id: number
     sku: string
-    price: Decimal
+    price: number
     stock: number
     created_at: Date
     updated_at: Date
@@ -13018,7 +13122,7 @@ export namespace Prisma {
       id: number
       product_id: number
       sku: string
-      price: Prisma.Decimal
+      price: number
       stock: number
       created_at: Date
       updated_at: Date
@@ -13875,13 +13979,13 @@ export namespace Prisma {
   export type ProductsAvgAggregateOutputType = {
     id: number | null
     brand_id: number | null
-    base_price: Decimal | null
+    base_price: number | null
   }
 
   export type ProductsSumAggregateOutputType = {
     id: number | null
     brand_id: number | null
-    base_price: Decimal | null
+    base_price: number | null
   }
 
   export type ProductsMinAggregateOutputType = {
@@ -13891,7 +13995,7 @@ export namespace Prisma {
     brand_id: number | null
     created_at: Date | null
     updated_at: Date | null
-    base_price: Decimal | null
+    base_price: number | null
   }
 
   export type ProductsMaxAggregateOutputType = {
@@ -13901,7 +14005,7 @@ export namespace Prisma {
     brand_id: number | null
     created_at: Date | null
     updated_at: Date | null
-    base_price: Decimal | null
+    base_price: number | null
   }
 
   export type ProductsCountAggregateOutputType = {
@@ -14049,10 +14153,10 @@ export namespace Prisma {
     id: number
     name: string
     description: string | null
-    brand_id: number | null
+    brand_id: number
     created_at: Date
     updated_at: Date
-    base_price: Decimal | null
+    base_price: number | null
     _count: ProductsCountAggregateOutputType | null
     _avg: ProductsAvgAggregateOutputType | null
     _sum: ProductsSumAggregateOutputType | null
@@ -14083,6 +14187,7 @@ export namespace Prisma {
     updated_at?: boolean
     base_price?: boolean
     product_variants?: boolean | products$product_variantsArgs<ExtArgs>
+    brands?: boolean | brandsDefaultArgs<ExtArgs>
     _count?: boolean | ProductsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["products"]>
 
@@ -14101,6 +14206,7 @@ export namespace Prisma {
   export type productsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "brand_id" | "created_at" | "updated_at" | "base_price", ExtArgs["result"]["products"]>
   export type productsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product_variants?: boolean | products$product_variantsArgs<ExtArgs>
+    brands?: boolean | brandsDefaultArgs<ExtArgs>
     _count?: boolean | ProductsCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -14108,15 +14214,16 @@ export namespace Prisma {
     name: "products"
     objects: {
       product_variants: Prisma.$product_variantsPayload<ExtArgs>[]
+      brands: Prisma.$brandsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       description: string | null
-      brand_id: number | null
+      brand_id: number
       created_at: Date
       updated_at: Date
-      base_price: Prisma.Decimal | null
+      base_price: number | null
     }, ExtArgs["result"]["products"]>
     composites: {}
   }
@@ -14458,6 +14565,7 @@ export namespace Prisma {
   export interface Prisma__productsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product_variants<T extends products$product_variantsArgs<ExtArgs> = {}>(args?: Subset<T, products$product_variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$product_variantsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    brands<T extends brandsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, brandsDefaultArgs<ExtArgs>>): Prisma__brandsClient<$Result.GetResult<Prisma.$brandsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14894,21 +15002,21 @@ export namespace Prisma {
   export type Promotion_variantsAvgAggregateOutputType = {
     promotion_id: number | null
     variant_id: number | null
-    promotion_price: Decimal | null
+    promotion_price: number | null
     stock_limit: number | null
   }
 
   export type Promotion_variantsSumAggregateOutputType = {
     promotion_id: number | null
     variant_id: number | null
-    promotion_price: Decimal | null
+    promotion_price: number | null
     stock_limit: number | null
   }
 
   export type Promotion_variantsMinAggregateOutputType = {
     promotion_id: number | null
     variant_id: number | null
-    promotion_price: Decimal | null
+    promotion_price: number | null
     stock_limit: number | null
     created_at: Date | null
   }
@@ -14916,7 +15024,7 @@ export namespace Prisma {
   export type Promotion_variantsMaxAggregateOutputType = {
     promotion_id: number | null
     variant_id: number | null
-    promotion_price: Decimal | null
+    promotion_price: number | null
     stock_limit: number | null
     created_at: Date | null
   }
@@ -15059,7 +15167,7 @@ export namespace Prisma {
   export type Promotion_variantsGroupByOutputType = {
     promotion_id: number
     variant_id: number
-    promotion_price: Decimal | null
+    promotion_price: number | null
     stock_limit: number | null
     created_at: Date
     _count: Promotion_variantsCountAggregateOutputType | null
@@ -15118,7 +15226,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       promotion_id: number
       variant_id: number
-      promotion_price: Prisma.Decimal | null
+      promotion_price: number | null
       stock_limit: number | null
       created_at: Date
     }, ExtArgs["result"]["promotion_variants"]>
@@ -15872,14 +15980,14 @@ export namespace Prisma {
 
   export type PromotionsAvgAggregateOutputType = {
     id: number | null
-    discount_value: Decimal | null
-    min_purchase_amount: Decimal | null
+    discount_value: number | null
+    min_purchase_amount: number | null
   }
 
   export type PromotionsSumAggregateOutputType = {
     id: number | null
-    discount_value: Decimal | null
-    min_purchase_amount: Decimal | null
+    discount_value: number | null
+    min_purchase_amount: number | null
   }
 
   export type PromotionsMinAggregateOutputType = {
@@ -15889,8 +15997,8 @@ export namespace Prisma {
     start_date: Date | null
     end_date: Date | null
     discount_type: $Enums.promotions_discount_type | null
-    discount_value: Decimal | null
-    min_purchase_amount: Decimal | null
+    discount_value: number | null
+    min_purchase_amount: number | null
     is_active: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -15903,8 +16011,8 @@ export namespace Prisma {
     start_date: Date | null
     end_date: Date | null
     discount_type: $Enums.promotions_discount_type | null
-    discount_value: Decimal | null
-    min_purchase_amount: Decimal | null
+    discount_value: number | null
+    min_purchase_amount: number | null
     is_active: boolean | null
     created_at: Date | null
     updated_at: Date | null
@@ -16074,8 +16182,8 @@ export namespace Prisma {
     start_date: Date
     end_date: Date
     discount_type: $Enums.promotions_discount_type
-    discount_value: Decimal
-    min_purchase_amount: Decimal | null
+    discount_value: number
+    min_purchase_amount: number | null
     is_active: boolean
     created_at: Date
     updated_at: Date
@@ -16150,8 +16258,8 @@ export namespace Prisma {
       start_date: Date
       end_date: Date
       discount_type: $Enums.promotions_discount_type
-      discount_value: Prisma.Decimal
-      min_purchase_amount: Prisma.Decimal | null
+      discount_value: number
+      min_purchase_amount: number | null
       is_active: boolean
       created_at: Date
       updated_at: Date
@@ -27832,11 +27940,13 @@ export namespace Prisma {
     NOT?: brandsWhereInput | brandsWhereInput[]
     id?: IntFilter<"brands"> | number
     name?: StringFilter<"brands"> | string
+    products?: ProductsListRelationFilter
   }
 
   export type brandsOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    products?: productsOrderByRelationAggregateInput
     _relevance?: brandsOrderByRelevanceInput
   }
 
@@ -27846,6 +27956,7 @@ export namespace Prisma {
     OR?: brandsWhereInput[]
     NOT?: brandsWhereInput | brandsWhereInput[]
     name?: StringFilter<"brands"> | string
+    products?: ProductsListRelationFilter
   }, "id">
 
   export type brandsOrderByWithAggregationInput = {
@@ -28252,22 +28363,24 @@ export namespace Prisma {
     id?: IntFilter<"products"> | number
     name?: StringFilter<"products"> | string
     description?: StringNullableFilter<"products"> | string | null
-    brand_id?: IntNullableFilter<"products"> | number | null
+    brand_id?: IntFilter<"products"> | number
     created_at?: DateTimeFilter<"products"> | Date | string
     updated_at?: DateTimeFilter<"products"> | Date | string
     base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
     product_variants?: Product_variantsListRelationFilter
+    brands?: XOR<BrandsScalarRelationFilter, brandsWhereInput>
   }
 
   export type productsOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    brand_id?: SortOrderInput | SortOrder
+    brand_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     base_price?: SortOrderInput | SortOrder
     product_variants?: product_variantsOrderByRelationAggregateInput
+    brands?: brandsOrderByWithRelationInput
     _relevance?: productsOrderByRelevanceInput
   }
 
@@ -28278,18 +28391,19 @@ export namespace Prisma {
     NOT?: productsWhereInput | productsWhereInput[]
     name?: StringFilter<"products"> | string
     description?: StringNullableFilter<"products"> | string | null
-    brand_id?: IntNullableFilter<"products"> | number | null
+    brand_id?: IntFilter<"products"> | number
     created_at?: DateTimeFilter<"products"> | Date | string
     updated_at?: DateTimeFilter<"products"> | Date | string
     base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
     product_variants?: Product_variantsListRelationFilter
+    brands?: XOR<BrandsScalarRelationFilter, brandsWhereInput>
   }, "id">
 
   export type productsOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    brand_id?: SortOrderInput | SortOrder
+    brand_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     base_price?: SortOrderInput | SortOrder
@@ -28307,7 +28421,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"products"> | number
     name?: StringWithAggregatesFilter<"products"> | string
     description?: StringNullableWithAggregatesFilter<"products"> | string | null
-    brand_id?: IntNullableWithAggregatesFilter<"products"> | number | null
+    brand_id?: IntWithAggregatesFilter<"products"> | number
     created_at?: DateTimeWithAggregatesFilter<"products"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"products"> | Date | string
     base_price?: DecimalNullableWithAggregatesFilter<"products"> | Decimal | DecimalJsLike | number | string | null
@@ -29400,20 +29514,24 @@ export namespace Prisma {
 
   export type brandsCreateInput = {
     name: string
+    products?: productsCreateNestedManyWithoutBrandsInput
   }
 
   export type brandsUncheckedCreateInput = {
     id?: number
     name: string
+    products?: productsUncheckedCreateNestedManyWithoutBrandsInput
   }
 
   export type brandsUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    products?: productsUpdateManyWithoutBrandsNestedInput
   }
 
   export type brandsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    products?: productsUncheckedUpdateManyWithoutBrandsNestedInput
   }
 
   export type brandsCreateManyInput = {
@@ -29811,18 +29929,18 @@ export namespace Prisma {
   export type productsCreateInput = {
     name: string
     description?: string | null
-    brand_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
     product_variants?: product_variantsCreateNestedManyWithoutProductsInput
+    brands: brandsCreateNestedOneWithoutProductsInput
   }
 
   export type productsUncheckedCreateInput = {
     id?: number
     name: string
     description?: string | null
-    brand_id?: number | null
+    brand_id: number
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -29832,18 +29950,18 @@ export namespace Prisma {
   export type productsUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     product_variants?: product_variantsUpdateManyWithoutProductsNestedInput
+    brands?: brandsUpdateOneRequiredWithoutProductsNestedInput
   }
 
   export type productsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
+    brand_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29854,7 +29972,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    brand_id?: number | null
+    brand_id: number
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -29863,7 +29981,6 @@ export namespace Prisma {
   export type productsUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29873,7 +29990,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
+    brand_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -31110,6 +31227,16 @@ export namespace Prisma {
     display_order?: SortOrder
   }
 
+  export type ProductsListRelationFilter = {
+    every?: productsWhereInput
+    some?: productsWhereInput
+    none?: productsWhereInput
+  }
+
+  export type productsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type brandsOrderByRelevanceInput = {
     fields: brandsOrderByRelevanceFieldEnum | brandsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -31489,6 +31616,11 @@ export namespace Prisma {
     every?: product_variantsWhereInput
     some?: product_variantsWhereInput
     none?: product_variantsWhereInput
+  }
+
+  export type BrandsScalarRelationFilter = {
+    is?: brandsWhereInput
+    isNot?: brandsWhereInput
   }
 
   export type product_variantsOrderByRelationAggregateInput = {
@@ -32369,6 +32501,48 @@ export namespace Prisma {
     set?: $Enums.attributes_display_type
   }
 
+  export type productsCreateNestedManyWithoutBrandsInput = {
+    create?: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput> | productsCreateWithoutBrandsInput[] | productsUncheckedCreateWithoutBrandsInput[]
+    connectOrCreate?: productsCreateOrConnectWithoutBrandsInput | productsCreateOrConnectWithoutBrandsInput[]
+    createMany?: productsCreateManyBrandsInputEnvelope
+    connect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+  }
+
+  export type productsUncheckedCreateNestedManyWithoutBrandsInput = {
+    create?: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput> | productsCreateWithoutBrandsInput[] | productsUncheckedCreateWithoutBrandsInput[]
+    connectOrCreate?: productsCreateOrConnectWithoutBrandsInput | productsCreateOrConnectWithoutBrandsInput[]
+    createMany?: productsCreateManyBrandsInputEnvelope
+    connect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+  }
+
+  export type productsUpdateManyWithoutBrandsNestedInput = {
+    create?: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput> | productsCreateWithoutBrandsInput[] | productsUncheckedCreateWithoutBrandsInput[]
+    connectOrCreate?: productsCreateOrConnectWithoutBrandsInput | productsCreateOrConnectWithoutBrandsInput[]
+    upsert?: productsUpsertWithWhereUniqueWithoutBrandsInput | productsUpsertWithWhereUniqueWithoutBrandsInput[]
+    createMany?: productsCreateManyBrandsInputEnvelope
+    set?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    disconnect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    delete?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    connect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    update?: productsUpdateWithWhereUniqueWithoutBrandsInput | productsUpdateWithWhereUniqueWithoutBrandsInput[]
+    updateMany?: productsUpdateManyWithWhereWithoutBrandsInput | productsUpdateManyWithWhereWithoutBrandsInput[]
+    deleteMany?: productsScalarWhereInput | productsScalarWhereInput[]
+  }
+
+  export type productsUncheckedUpdateManyWithoutBrandsNestedInput = {
+    create?: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput> | productsCreateWithoutBrandsInput[] | productsUncheckedCreateWithoutBrandsInput[]
+    connectOrCreate?: productsCreateOrConnectWithoutBrandsInput | productsCreateOrConnectWithoutBrandsInput[]
+    upsert?: productsUpsertWithWhereUniqueWithoutBrandsInput | productsUpsertWithWhereUniqueWithoutBrandsInput[]
+    createMany?: productsCreateManyBrandsInputEnvelope
+    set?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    disconnect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    delete?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    connect?: productsWhereUniqueInput | productsWhereUniqueInput[]
+    update?: productsUpdateWithWhereUniqueWithoutBrandsInput | productsUpdateWithWhereUniqueWithoutBrandsInput[]
+    updateMany?: productsUpdateManyWithWhereWithoutBrandsInput | productsUpdateManyWithWhereWithoutBrandsInput[]
+    deleteMany?: productsScalarWhereInput | productsScalarWhereInput[]
+  }
+
   export type customers_addressesCreateNestedManyWithoutCustomersInput = {
     create?: XOR<customers_addressesCreateWithoutCustomersInput, customers_addressesUncheckedCreateWithoutCustomersInput> | customers_addressesCreateWithoutCustomersInput[] | customers_addressesUncheckedCreateWithoutCustomersInput[]
     connectOrCreate?: customers_addressesCreateOrConnectWithoutCustomersInput | customers_addressesCreateOrConnectWithoutCustomersInput[]
@@ -32670,6 +32844,12 @@ export namespace Prisma {
     connect?: product_variantsWhereUniqueInput | product_variantsWhereUniqueInput[]
   }
 
+  export type brandsCreateNestedOneWithoutProductsInput = {
+    create?: XOR<brandsCreateWithoutProductsInput, brandsUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: brandsCreateOrConnectWithoutProductsInput
+    connect?: brandsWhereUniqueInput
+  }
+
   export type product_variantsUncheckedCreateNestedManyWithoutProductsInput = {
     create?: XOR<product_variantsCreateWithoutProductsInput, product_variantsUncheckedCreateWithoutProductsInput> | product_variantsCreateWithoutProductsInput[] | product_variantsUncheckedCreateWithoutProductsInput[]
     connectOrCreate?: product_variantsCreateOrConnectWithoutProductsInput | product_variantsCreateOrConnectWithoutProductsInput[]
@@ -32689,6 +32869,14 @@ export namespace Prisma {
     update?: product_variantsUpdateWithWhereUniqueWithoutProductsInput | product_variantsUpdateWithWhereUniqueWithoutProductsInput[]
     updateMany?: product_variantsUpdateManyWithWhereWithoutProductsInput | product_variantsUpdateManyWithWhereWithoutProductsInput[]
     deleteMany?: product_variantsScalarWhereInput | product_variantsScalarWhereInput[]
+  }
+
+  export type brandsUpdateOneRequiredWithoutProductsNestedInput = {
+    create?: XOR<brandsCreateWithoutProductsInput, brandsUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: brandsCreateOrConnectWithoutProductsInput
+    upsert?: brandsUpsertWithoutProductsInput
+    connect?: brandsWhereUniqueInput
+    update?: XOR<XOR<brandsUpdateToOneWithWhereWithoutProductsInput, brandsUpdateWithoutProductsInput>, brandsUncheckedUpdateWithoutProductsInput>
   }
 
   export type product_variantsUncheckedUpdateManyWithoutProductsNestedInput = {
@@ -33611,6 +33799,64 @@ export namespace Prisma {
     attribute_option_id?: IntFilter<"variant_attribute_options"> | number
   }
 
+  export type productsCreateWithoutBrandsInput = {
+    name: string
+    description?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    base_price?: Decimal | DecimalJsLike | number | string | null
+    product_variants?: product_variantsCreateNestedManyWithoutProductsInput
+  }
+
+  export type productsUncheckedCreateWithoutBrandsInput = {
+    id?: number
+    name: string
+    description?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    base_price?: Decimal | DecimalJsLike | number | string | null
+    product_variants?: product_variantsUncheckedCreateNestedManyWithoutProductsInput
+  }
+
+  export type productsCreateOrConnectWithoutBrandsInput = {
+    where: productsWhereUniqueInput
+    create: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput>
+  }
+
+  export type productsCreateManyBrandsInputEnvelope = {
+    data: productsCreateManyBrandsInput | productsCreateManyBrandsInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type productsUpsertWithWhereUniqueWithoutBrandsInput = {
+    where: productsWhereUniqueInput
+    update: XOR<productsUpdateWithoutBrandsInput, productsUncheckedUpdateWithoutBrandsInput>
+    create: XOR<productsCreateWithoutBrandsInput, productsUncheckedCreateWithoutBrandsInput>
+  }
+
+  export type productsUpdateWithWhereUniqueWithoutBrandsInput = {
+    where: productsWhereUniqueInput
+    data: XOR<productsUpdateWithoutBrandsInput, productsUncheckedUpdateWithoutBrandsInput>
+  }
+
+  export type productsUpdateManyWithWhereWithoutBrandsInput = {
+    where: productsScalarWhereInput
+    data: XOR<productsUpdateManyMutationInput, productsUncheckedUpdateManyWithoutBrandsInput>
+  }
+
+  export type productsScalarWhereInput = {
+    AND?: productsScalarWhereInput | productsScalarWhereInput[]
+    OR?: productsScalarWhereInput[]
+    NOT?: productsScalarWhereInput | productsScalarWhereInput[]
+    id?: IntFilter<"products"> | number
+    name?: StringFilter<"products"> | string
+    description?: StringNullableFilter<"products"> | string | null
+    brand_id?: IntFilter<"products"> | number
+    created_at?: DateTimeFilter<"products"> | Date | string
+    updated_at?: DateTimeFilter<"products"> | Date | string
+    base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type customers_addressesCreateWithoutCustomersInput = {
     name?: string | null
     description?: string | null
@@ -33805,17 +34051,17 @@ export namespace Prisma {
   export type productsCreateWithoutProduct_variantsInput = {
     name: string
     description?: string | null
-    brand_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
+    brands: brandsCreateNestedOneWithoutProductsInput
   }
 
   export type productsUncheckedCreateWithoutProduct_variantsInput = {
     id?: number
     name: string
     description?: string | null
-    brand_id?: number | null
+    brand_id: number
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -33950,17 +34196,17 @@ export namespace Prisma {
   export type productsUpdateWithoutProduct_variantsInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    brands?: brandsUpdateOneRequiredWithoutProductsNestedInput
   }
 
   export type productsUncheckedUpdateWithoutProduct_variantsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
+    brand_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -34093,6 +34339,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type brandsCreateWithoutProductsInput = {
+    name: string
+  }
+
+  export type brandsUncheckedCreateWithoutProductsInput = {
+    id?: number
+    name: string
+  }
+
+  export type brandsCreateOrConnectWithoutProductsInput = {
+    where: brandsWhereUniqueInput
+    create: XOR<brandsCreateWithoutProductsInput, brandsUncheckedCreateWithoutProductsInput>
+  }
+
   export type product_variantsUpsertWithWhereUniqueWithoutProductsInput = {
     where: product_variantsWhereUniqueInput
     update: XOR<product_variantsUpdateWithoutProductsInput, product_variantsUncheckedUpdateWithoutProductsInput>
@@ -34120,6 +34380,26 @@ export namespace Prisma {
     stock?: IntFilter<"product_variants"> | number
     created_at?: DateTimeFilter<"product_variants"> | Date | string
     updated_at?: DateTimeFilter<"product_variants"> | Date | string
+  }
+
+  export type brandsUpsertWithoutProductsInput = {
+    update: XOR<brandsUpdateWithoutProductsInput, brandsUncheckedUpdateWithoutProductsInput>
+    create: XOR<brandsCreateWithoutProductsInput, brandsUncheckedCreateWithoutProductsInput>
+    where?: brandsWhereInput
+  }
+
+  export type brandsUpdateToOneWithWhereWithoutProductsInput = {
+    where?: brandsWhereInput
+    data: XOR<brandsUpdateWithoutProductsInput, brandsUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type brandsUpdateWithoutProductsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type brandsUncheckedUpdateWithoutProductsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type promotionsCreateWithoutPromotion_variantsInput = {
@@ -35192,6 +35472,43 @@ export namespace Prisma {
 
   export type variant_attribute_optionsUncheckedUpdateManyWithoutAttribute_optionsInput = {
     variant_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type productsCreateManyBrandsInput = {
+    id?: number
+    name: string
+    description?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    base_price?: Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type productsUpdateWithoutBrandsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    product_variants?: product_variantsUpdateManyWithoutProductsNestedInput
+  }
+
+  export type productsUncheckedUpdateWithoutBrandsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    product_variants?: product_variantsUncheckedUpdateManyWithoutProductsNestedInput
+  }
+
+  export type productsUncheckedUpdateManyWithoutBrandsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type customers_addressesCreateManyCustomersInput = {

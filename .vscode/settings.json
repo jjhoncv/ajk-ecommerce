@@ -1,0 +1,111 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "eslint.workingDirectories": ["./src"],
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Styles"],
+  "cSpell.language": "en,es-ES",
+  "cSpell.words": [
+    "apikey",
+    "artifactory",
+    "bezier",
+    "biometrica",
+    "biométrica",
+    "cerato",
+    "codegen",
+    "Codegen",
+    "confirmacion",
+    "contentsub",
+    "elantra",
+    "esnext",
+    "facephi",
+    "Facephi",
+    "facephicorp",
+    "faqs",
+    "fphi",
+    "Fullsize",
+    "Galeria",
+    "grecaptcha",
+    "GROUPID",
+    "hyundai",
+    "interactible",
+    "ipod",
+    "jfrog",
+    "KHTML",
+    "Kilometraje",
+    "loadbalancer",
+    "logomark",
+    "lottie",
+    "lotties",
+    "makefiles",
+    "mapfre",
+    "mayhen",
+    "neoauto",
+    "neokit",
+    "neosid",
+    "neurial",
+    "nextsessionid",
+    "NEXTSID",
+    "nissan",
+    "nologin",
+    "npmjs",
+    "recaptcha",
+    "reintentar",
+    "Reintentar",
+    "reintentos",
+    "SAMEORIGIN",
+    "santander",
+    "selphi",
+    "Selphi",
+    "SELPHI",
+    "selphid",
+    "Selphid",
+    "SELPHID",
+    "setaf",
+    "ssrauctions",
+    "staticfiles",
+    "testid",
+    "tmpl",
+    "tput",
+    "traefik",
+    "Txterm",
+    "ubigeo",
+    "unstub",
+    "USERID",
+    "uuidv",
+    "Vehiculares",
+    "venv",
+    "vercel",
+    "verificacion",
+    "Whatsapp",
+    "WHATSAPP",
+    "xlarge"
+  ],
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

@@ -4,8 +4,8 @@
 // Campos en camelCase con relaciones incluidas
 // ============================================================================
 
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = T | null;
+export type Maybe<T> = T | undefined;
+export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -290,6 +290,15 @@ export interface BannerWhereInput {
 export interface Brands {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  products: Maybe<Array<Maybe<Products>>>;
+}
+
+
+export interface BrandsProductsArgs {
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
+  orderBy: InputMaybe<ProductsOrderByInput>;
+  where: InputMaybe<ProductsWhereInput>;
 }
 
 export interface BrandsInsertInput {
@@ -1217,13 +1226,22 @@ export interface ProductVariantsWhereInput {
 
 export interface Products {
   basePrice: Maybe<Scalars['Float']['output']>;
-  brandId: Maybe<Scalars['Int']['output']>;
+  brandId: Scalars['Int']['output'];
+  brands: Maybe<Array<Maybe<Brands>>>;
   createdAt: Scalars['Timestamp']['output'];
   description: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   productVariants: Maybe<Array<Maybe<ProductVariants>>>;
   updatedAt: Scalars['Timestamp']['output'];
+}
+
+
+export interface ProductsBrandsArgs {
+  limit: InputMaybe<Scalars['Int']['input']>;
+  offset: InputMaybe<Scalars['Int']['input']>;
+  orderBy: InputMaybe<BrandsOrderByInput>;
+  where: InputMaybe<BrandsWhereInput>;
 }
 
 
@@ -1236,7 +1254,7 @@ export interface ProductsProductVariantsArgs {
 
 export interface ProductsInsertInput {
   basePrice: InputMaybe<Scalars['Float']['input']>;
-  brandId: InputMaybe<Scalars['Int']['input']>;
+  brandId: Scalars['Int']['input'];
   createdAt: InputMaybe<Scalars['Timestamp']['input']>;
   description: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['Int']['input']>;

@@ -8,10 +8,28 @@ import {
 import {
   VariantRatingWithCustomer,
   RatingImage,
-  VariantRatingSummary,
+  // VariantRatingSummary,
   ProductRatingSummary,
 } from "@/interfaces/models";
 import { executeQuery } from "@/lib/db";
+
+import { variant_ratings as VariantRating, customers as Customer} from "@/types/database"
+export interface CustomerVariantRating extends Customer, VariantRating {
+  customer_name: string;
+  customer_photo: string | null;
+}
+
+export interface VariantRatingSummary {
+  variant_id: number;
+  total_ratings: number;
+  average_rating: number;
+  five_star: number;
+  four_star: number;
+  three_star: number;
+  two_star: number;
+  one_star: number;
+  verified_purchases: number;
+}
 
 export class RatingModel {
   /**
@@ -25,7 +43,7 @@ export class RatingModel {
     const offset = (page - 1) * limit;
 
     // Obtener las valoraciones
-    const ratings = await executeQuery<VariantRatingWithCustomer[]>({
+    const ratings = await executeQuery<CustomerVariantRating[]>({
       query: `
         SELECT 
           vr.*, 
@@ -189,7 +207,7 @@ export class RatingModel {
    */
   public async getVariantRatingSummary(
     variantId: number
-  ): Promise<VariantRatingSummaryDTO> {
+  ): Promise<VariantRatingSummary> {
     const summary = await executeQuery<VariantRatingSummary[]>({
       query: "SELECT * FROM variant_rating_summary WHERE variant_id = ?",
       values: [variantId],
@@ -197,28 +215,28 @@ export class RatingModel {
 
     if (summary.length === 0) {
       return {
-        variantId,
-        totalRatings: 0,
-        averageRating: 0,
-        fiveStar: 0,
-        fourStar: 0,
-        threeStar: 0,
-        twoStar: 0,
-        oneStar: 0,
-        verifiedPurchases: 0,
+        variant_id: variantId,
+        total_ratings: 0,
+        average_rating: 0,
+        five_star: 0,
+        four_star: 0,
+        three_star: 0,
+        two_star: 0,
+        one_star: 0,
+        verified_purchases: 0,
       };
     }
 
     return {
-      variantId,
-      totalRatings: Number(summary[0].total_ratings),
-      averageRating: Number(summary[0].average_rating),
-      fiveStar: Number(summary[0].five_star),
-      fourStar: Number(summary[0].four_star),
-      threeStar: Number(summary[0].three_star),
-      twoStar: Number(summary[0].two_star),
-      oneStar: Number(summary[0].one_star),
-      verifiedPurchases: Number(summary[0].verified_purchases),
+      variant_id: variantId,
+      total_ratings: Number(summary[0].total_ratings),
+      average_rating: Number(summary[0].average_rating),
+      five_star: Number(summary[0].five_star),
+      four_star: Number(summary[0].four_star),
+      three_star: Number(summary[0].three_star),
+      two_star: Number(summary[0].two_star),
+      one_star: Number(summary[0].one_star),
+      verified_purchases: Number(summary[0].verified_purchases),
     };
   }
 

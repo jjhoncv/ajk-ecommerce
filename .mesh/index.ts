@@ -1132,11 +1132,12 @@ export type Products = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  brandId?: Maybe<Scalars['Int']['output']>;
+  brandId: Scalars['Int']['output'];
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
   basePrice?: Maybe<Scalars['Float']['output']>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+  brands?: Maybe<Array<Maybe<Brands>>>;
 };
 
 
@@ -1145,6 +1146,14 @@ export type ProductsproductVariantsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ProductVariantsWhereInput>;
   orderBy?: InputMaybe<ProductVariantsOrderByInput>;
+};
+
+
+export type ProductsbrandsArgs = {
+  where?: InputMaybe<BrandsWhereInput>;
+  orderBy?: InputMaybe<BrandsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type ProductVariantsWhereInput = {
@@ -1167,6 +1176,20 @@ export type ProductVariantsOrderByInput = {
   updatedAt?: InputMaybe<OrderBy>;
 };
 
+export type Brands = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  products?: Maybe<Array<Maybe<Products>>>;
+};
+
+
+export type BrandsproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+};
+
 export type ProductsWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -1185,6 +1208,16 @@ export type ProductsOrderByInput = {
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
   basePrice?: InputMaybe<OrderBy>;
+};
+
+export type BrandsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BrandsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
 };
 
 export type PromotionVariants = {
@@ -1626,21 +1659,6 @@ export type BannerOrderByInput = {
   displayOrder?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   imageUrl?: InputMaybe<OrderBy>;
-};
-
-export type Brands = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type BrandsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type BrandsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
 };
 
 export type Categories = {
@@ -2259,7 +2277,7 @@ export type ProductsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
-  brandId?: InputMaybe<Scalars['Int']['input']>;
+  brandId: Scalars['Int']['input'];
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   basePrice?: InputMaybe<Scalars['Float']['input']>;
@@ -2656,8 +2674,11 @@ export type ResolversTypes = ResolversObject<{
   Products: ResolverTypeWrapper<Products>;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
+  Brands: ResolverTypeWrapper<Brands>;
   ProductsWhereInput: ProductsWhereInput;
   ProductsOrderByInput: ProductsOrderByInput;
+  BrandsWhereInput: BrandsWhereInput;
+  BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: ResolverTypeWrapper<PromotionVariants>;
   Promotions: ResolverTypeWrapper<Promotions>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
@@ -2691,9 +2712,6 @@ export type ResolversTypes = ResolversObject<{
   Banner: ResolverTypeWrapper<Banner>;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
-  Brands: ResolverTypeWrapper<Brands>;
-  BrandsWhereInput: BrandsWhereInput;
-  BrandsOrderByInput: BrandsOrderByInput;
   Categories: ResolverTypeWrapper<Categories>;
   CategoriesWhereInput: CategoriesWhereInput;
   CategoriesOrderByInput: CategoriesOrderByInput;
@@ -2802,8 +2820,11 @@ export type ResolversParentTypes = ResolversObject<{
   Products: Products;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
+  Brands: Brands;
   ProductsWhereInput: ProductsWhereInput;
   ProductsOrderByInput: ProductsOrderByInput;
+  BrandsWhereInput: BrandsWhereInput;
+  BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: PromotionVariants;
   Promotions: Promotions;
   DateTime: Scalars['DateTime']['output'];
@@ -2834,9 +2855,6 @@ export type ResolversParentTypes = ResolversObject<{
   Banner: Banner;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
-  Brands: Brands;
-  BrandsWhereInput: BrandsWhereInput;
-  BrandsOrderByInput: BrandsOrderByInput;
   Categories: Categories;
   CategoriesWhereInput: CategoriesWhereInput;
   CategoriesOrderByInput: CategoriesOrderByInput;
@@ -3172,11 +3190,19 @@ export type ProductsResolvers<ContextType = MeshContext, ParentType extends Reso
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  brandId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  brandId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   basePrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<ProductsproductVariantsArgs>>;
+  brands?: Resolver<Maybe<Array<Maybe<ResolversTypes['Brands']>>>, ParentType, ContextType, Partial<ProductsbrandsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BrandsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Brands'] = ResolversParentTypes['Brands']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<BrandsproductsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3297,12 +3323,6 @@ export type BannerResolvers<ContextType = MeshContext, ParentType extends Resolv
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type BrandsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Brands'] = ResolversParentTypes['Brands']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3440,6 +3460,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   VariantAttributeOptions?: VariantAttributeOptionsResolvers<ContextType>;
   ProductVariants?: ProductVariantsResolvers<ContextType>;
   Products?: ProductsResolvers<ContextType>;
+  Brands?: BrandsResolvers<ContextType>;
   PromotionVariants?: PromotionVariantsResolvers<ContextType>;
   Promotions?: PromotionsResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -3450,7 +3471,6 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
   Attributes?: AttributesResolvers<ContextType>;
   Banner?: BannerResolvers<ContextType>;
-  Brands?: BrandsResolvers<ContextType>;
   Categories?: CategoriesResolvers<ContextType>;
   Permissions?: PermissionsResolvers<ContextType>;
   ProductCategories?: ProductCategoriesResolvers<ContextType>;
@@ -3522,7 +3542,7 @@ const databaseTransforms = [];
 const DatabaseHandler = await import("@graphql-mesh/mysql").then(handleImport);
 const databaseHandler = new DatabaseHandler({
               name: "Database",
-              config: {"host":"localhost","port":3306,"user":"root","password":"12345678","database":"ajkecommerce","typeCast":true,"supportBigNumbers":true,"bigNumberStrings":false,"typeMapping":{"tinyint":"Boolean"}},
+              config: {"host":"localhost","port":3306,"user":"root","password":"12345678","database":"ajkecommerce","typeCast":true,"supportBigNumbers":true,"bigNumberStrings":false,"typeMapping":{"tinyint(1)":"Boolean","tinyint":"Int"}},
               baseDir,
               cache,
               pubsub,

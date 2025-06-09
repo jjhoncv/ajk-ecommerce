@@ -623,11 +623,12 @@ export type products = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  brand_id?: Maybe<Scalars['Int']['output']>;
+  brand_id: Scalars['Int']['output'];
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
   base_price?: Maybe<Scalars['Float']['output']>;
   product_variants?: Maybe<Array<Maybe<product_variants>>>;
+  brands?: Maybe<Array<Maybe<brands>>>;
 };
 
 
@@ -636,6 +637,14 @@ export type productsproduct_variantsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<product_variants_WhereInput>;
   orderBy?: InputMaybe<product_variants_OrderByInput>;
+};
+
+
+export type productsbrandsArgs = {
+  where?: InputMaybe<brands_WhereInput>;
+  orderBy?: InputMaybe<brands_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type product_variants_WhereInput = {
@@ -658,6 +667,20 @@ export type product_variants_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
+export type brands = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  products?: Maybe<Array<Maybe<products>>>;
+};
+
+
+export type brandsproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+};
+
 export type products_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -676,6 +699,16 @@ export type products_OrderByInput = {
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   base_price?: InputMaybe<OrderBy>;
+};
+
+export type brands_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type brands_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
 };
 
 export type promotion_variants = {
@@ -1117,21 +1150,6 @@ export type banner_OrderByInput = {
   display_order?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   image_url?: InputMaybe<OrderBy>;
-};
-
-export type brands = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-};
-
-export type brands_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type brands_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
 };
 
 export type categories = {
@@ -2247,7 +2265,7 @@ export type products_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
-  brand_id?: InputMaybe<Scalars['Int']['input']>;
+  brand_id: Scalars['Int']['input'];
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   base_price?: InputMaybe<Scalars['Float']['input']>;

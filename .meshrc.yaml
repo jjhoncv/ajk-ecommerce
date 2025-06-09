@@ -1,4 +1,4 @@
-# .meshrc.yaml  
+# .meshrc.yaml
 sources:
   - name: Database
     handler:
@@ -12,7 +12,8 @@ sources:
         supportBigNumbers: true
         bigNumberStrings: false
         typeMapping:
-          tinyint: 'Boolean'
+          'tinyint(1)': 'Boolean' # Más específico
+          tinyint: 'Int' # Para otros tinyint
 
 transforms:
   - namingConvention:

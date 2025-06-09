@@ -1,0 +1,11 @@
+public
+build
+coverage
+gql
+src/lotties
+
+.next
+.cache
+next-env.d.ts
+pnpm-lock.yaml
+.pnpm-store

@@ -1,0 +1,25 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "extends": ["love"],
+      "rules": {
+        "space-before-function-paren": "off",
+        "multiline-ternary": "off",
+        "@typescript-eslint/space-before-function-paren": "off",
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "@typescript-eslint/indent": "off",
+        "@next/next/no-img-element": "off",
+        "@typescript-eslint/no-misused-promises": [
+          2,
+          {
+            "checksVoidReturn": {
+              "attributes": false
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
