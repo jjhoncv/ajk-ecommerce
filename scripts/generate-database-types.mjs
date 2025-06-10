@@ -20,6 +20,7 @@ try {
   execSync('npx graphql-codegen --config codegen-database.yml', {
     stdio: 'inherit'
   })
+  execSync('rm schema-database.graphql')
 
   console.log('✅ Tipos de base de datos generados correctamente')
   console.log('📁 Archivo generado: src/types/database/database.d.ts')

@@ -4,7 +4,7 @@ console.log('🚀 Generando esquema GraphQL para tipos de dominio...')
 
 try {
   // Generar esquema GraphQL usando Mesh
-  execSync('npx mesh build --config .meshrc.yaml', {
+  execSync('npx mesh build --config .meshrc-domain.yaml', {
     stdio: 'inherit'
   })
 
@@ -20,6 +20,8 @@ try {
   execSync('npx graphql-codegen --config codegen-domain.yml', {
     stdio: 'inherit'
   })
+
+  execSync('rm schema-domain.graphql')
 
   console.log('✅ Tipos de dominio generados correctamente')
   console.log('📁 Archivo generado: src/types/domain/domain.d.ts')

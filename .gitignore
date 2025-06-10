@@ -53,4 +53,5 @@ prisma/migrations/
 src/types/database/*.node
 
 # schema
-schema-*.graphql
+schema-database.graphql
+schema-domain.graphql
