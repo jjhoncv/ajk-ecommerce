@@ -1,34 +1,34 @@
-import { CategoryDTO, ProductDTO } from '@/dto'
 import categoryModel from '@/models/Category.model'
 import searchModel from '@/models/Search.model'
+import { Categories } from '@/types/domain'
 import { HomeData } from '@/types/home'
-import { hydrateProductDTOs } from '@/utils/hydrators/product-card.hydrator'
+import { ProductSearchItem } from '@/types/search'
 
 // Esta función obtiene datos reales desde la base de datos
 export async function getHomeData(): Promise<HomeData> {
   try {
-    // Obtener variantes populares usando el método de búsqueda
+    // Obtener productos populares usando el método de búsqueda
     const popularVariantsResult = await searchModel.searchProducts({
       page: 1,
       limit: 5,
       sort: 'newest'
     })
-    const popularProducts = hydrateProductDTOs(popularVariantsResult.products)
+    const popularProducts = popularVariantsResult.products
 
-    // Obtener variantes para ofertas del día (diferentes variantes)
+    // Obtener productos para ofertas del día
     const dealsVariantsResult = await searchModel.searchProducts({
       page: 1,
       limit: 4,
       sort: 'price_desc'
     })
-    const dealsProducts = hydrateProductDTOs(dealsVariantsResult.products)
+    const dealsProducts = dealsVariantsResult.products
 
     // Obtener todas las categorías
     const categoriesData = await categoryModel.getCategories()
 
     // Filtrar categorías principales para la sección de categorías
     const mainCategories = categoriesData
-      ? categoriesData.filter((cat: CategoryDTO) => !cat.parentId).slice(0, 8)
+      ? categoriesData.filter((cat) => !cat.parentId).slice(0, 8)
       : []
 
     // Usar todas las categorías para construir el mega menú jerárquico
@@ -107,28 +107,50 @@ export async function getHomeData(): Promise<HomeData> {
       ],
 
       // Categorías de productos reales
-      productCategories: mainCategories.map(
-        (category: CategoryDTO, index: number) => ({
-          name: category.name,
-          icon: getCategoryIcon(category.name),
-          bg: getCategoryColor(index),
-          image: category.imageUrl
-        })
-      ),
+      productCategories: mainCategories.map((category, index) => ({
+        name: category.name,
+        icon: getCategoryIcon(category.name),
+        bg: getCategoryColor(index),
+        image: category.imageUrl ?? null
+      })),
 
       // Categorías destacadas
-      featuredCategories: mainCategories
-        .slice(0, 3)
-        .map((category: CategoryDTO, index: number) => ({
-          title: `Ofertas en ${category.name}`,
-          subtitle: 'Descuentos especiales',
-          color: getFeaturedCategoryColor(index),
-          image: getCategoryImage(category.name)
-        })),
+      featuredCategories: mainCategories.slice(0, 3).map((category, index) => ({
+        title: `Ofertas en ${category.name}`,
+        subtitle: 'Descuentos especiales',
+        color: getFeaturedCategoryColor(index),
+        image: getCategoryImage(category.name)
+      })),
 
-      // Solo productos hidratados (eliminamos duplicación)
-      hydratedPopularProducts: popularProducts,
-      hydratedDealsOfTheDay: dealsProducts,
+      // Productos hidratados (ahora directamente desde los modelos)
+      hydratedPopularProducts: popularProducts.map((product) => ({
+        product: {
+          id: product.id,
+          name: product.name,
+          description: product.description || '',
+          basePrice: product.basePrice,
+          brandId: product.brandId,
+          brandName: product.brandName || '',
+          minVariantPrice: product.minVariantPrice,
+          categories: product.categories || [],
+          variants: product.variants || [],
+          mainImage: product.mainImage
+        }
+      })),
+      hydratedDealsOfTheDay: dealsProducts.map((product) => ({
+        product: {
+          id: product.id,
+          name: product.name,
+          description: product.description || '',
+          basePrice: product.basePrice,
+          brandId: product.brandId,
+          brandName: product.brandName || '',
+          minVariantPrice: product.minVariantPrice,
+          categories: product.categories || [],
+          variants: product.variants || [],
+          mainImage: product.mainImage
+        }
+      })),
 
       // Footer (mantenemos estático)
       footerSections: [
@@ -184,15 +206,19 @@ export async function getHomeData(): Promise<HomeData> {
 
 // Función auxiliar para construir el mega menú con categorías reales
 function buildMegaMenuCategories(
-  categories: CategoryDTO[],
-  hydratedProducts: { product: ProductDTO }[]
+  categories: Categories[],
+  products: ProductSearchItem[]
 ): Record<
   string,
   {
     subcategories: {
       name: string
       link: string
-      children: any[]
+      children: {
+        name: string
+        link: string
+        children: any[]
+      }[]
     }[]
     featuredProducts: {
       name: string
@@ -209,7 +235,7 @@ function buildMegaMenuCategories(
   const megaMenu: Record<string, any> = {}
 
   // Crear un mapa de categorías por ID para fácil acceso
-  const categoryMap = new Map<number, CategoryDTO>()
+  const categoryMap = new Map<number, Categories>()
   categories.forEach((cat) => categoryMap.set(cat.id, cat))
 
   // Función para construir subcategorías recursivamente
@@ -228,13 +254,10 @@ function buildMegaMenuCategories(
     if (!category.parentId) {
       megaMenu[category.name] = {
         subcategories: buildSubcategories(category.id),
-        featuredProducts: hydratedProducts.slice(0, 2).map((item) => ({
-          name: item.product.name,
-          price:
-            item.product.variants[0]?.promotion?.promotionPrice ||
-            item.product.variants[0]?.price ||
-            item.product.basePrice,
-          image: getProductImage(item.product)
+        featuredProducts: products.slice(0, 2).map((product) => ({
+          name: product.name,
+          price: product.minVariantPrice || product.basePrice,
+          image: getProductImage(product)
         })),
         banner: {
           title: `Ofertas en ${category.name}`,
@@ -249,10 +272,9 @@ function buildMegaMenuCategories(
 }
 
 // Función auxiliar para obtener la imagen principal de un producto
-function getProductImage(product: ProductDTO): string {
-  const variant = product.variants[0]
-  if (variant?.images?.length > 0) {
-    return variant.images[0].imageUrlNormal || variant.images[0].imageUrlThumb
+function getProductImage(product: ProductSearchItem): string {
+  if (product.mainImage) {
+    return product.mainImage
   }
   return '/no-image.webp'
 }

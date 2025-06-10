@@ -1,9 +1,8 @@
-import React from "react";
-import TopBar from "./TopBar";
-import Header from "./Header";
-import Footer from "./Footer";
+import categoryModel from "@/models/Category.model";
 import { getHomeData } from "@/services/homeService";
-import CategoryModel from "@/models/CategoryModel";
+import React from "react";
+import Footer from "./Footer";
+import Header from "./Header";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,12 +11,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
   // Obtener datos necesarios para el layout
   const homeData = await getHomeData();
-  const categories = await CategoryModel.getCategories();
+  const categories = await categoryModel.getCategories();
 
   return (
     <div className="min-h-screen bg-white">
       {/* <TopBar /> */}
-      <Header categories={categories} />
+      <Header categories={categories || []} />
       {children}
       <Footer
         sections={homeData.footerSections}

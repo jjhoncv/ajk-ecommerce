@@ -1,13 +1,13 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
+import { Categories } from "@/types/domain";
 import { Menu, Percent } from "lucide-react";
-import SlidePage from "./SlidePage";
+import Link from "next/link";
+import React, { useState } from "react";
 import CategoriesMenu from "./CategoriesMenu";
-import { CategoryDTO } from "@/dto/category.dto";
+import SlidePage from "./SlidePage";
 
 interface NavigationProps {
-  categories: CategoryDTO[];
+  categories: Categories[];
 }
 
 const Navigation: React.FC<NavigationProps> = ({ categories }) => {

@@ -1,18 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
+import { Categories } from "@/types/domain";
+import { ChevronLeft, ChevronRight, Home } from "lucide-react";
 import Image from "next/image";
-import { ChevronRight, ChevronLeft, Home } from "lucide-react";
-import { CategoryDTO } from "@/dto/category.dto";
+import Link from "next/link";
+import React, { useState } from "react";
 
 interface CategoriesMenuProps {
-  categories: CategoryDTO[];
+  categories: Categories[];
   onClose?: () => void;
 }
 
 interface CategoryLevel {
-  category: CategoryDTO | null;
-  children: CategoryDTO[];
+  category: Categories | null;
+  children: Categories[];
   title: string;
 }
 
@@ -32,7 +32,7 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
 
   const currentLevel = categoryStack[categoryStack.length - 1];
 
-  const handleCategoryClick = (category: CategoryDTO) => {
+  const handleCategoryClick = (category: Categories) => {
     const children = categories
       ? categories.filter((cat) => cat.parentId === category.id)
       : [];

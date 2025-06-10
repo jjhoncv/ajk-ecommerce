@@ -1,4 +1,4 @@
-import { CategoryDTO } from "@/dto/category.dto";
+import { Categories } from "@/types/domain";
 import { Heart } from "lucide-react";
 import CartButton from "../ui/CartButton";
 import Logo from "../ui/Logo";
@@ -7,7 +7,7 @@ import SearchBar from "../ui/SearchBar";
 import ServerAuthButton from "../ui/ServerAuthButton";
 
 interface HeaderProps {
-  categories: CategoryDTO[];
+  categories: Categories[];
 }
 
 const Header = async ({ categories }: HeaderProps) => {
