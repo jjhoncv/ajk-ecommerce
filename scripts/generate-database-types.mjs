@@ -22,7 +22,7 @@ try {
   })
 
   console.log('✅ Tipos de base de datos generados correctamente')
-  console.log('📁 Archivo generado: src/types/database/index.d.ts')
+  console.log('📁 Archivo generado: src/types/database/database.d.ts')
 } catch (error) {
   console.error('❌ Error al generar tipos de base de datos:', error.message)
   process.exit(1)

@@ -6,11 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "generate-domain-schema": "pnpm exec mesh build --config-name domain && cp .mesh/schema.graphql schema-domain.graphql",
-    "generate-domain-types": "pnpm exec graphql-codegen",
-    "generate-clean": "pnpm generate-domain-schema && pnpm generate-domain-types",
+    "generate-domain-types": "node scripts/generate-domain-types.mjs",
     "generate-database-types": "node scripts/generate-database-types.mjs",
-    "generate": "pnpm generate-domain-schema && pnpm generate-domain-types && pnpm generate-database-types"
+    "generate": "pnpm generate-domain-types && pnpm generate-database-types"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
