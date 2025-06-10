@@ -26,7 +26,7 @@ export default async function HomePage() {
       <Features features={data.features} />
       <Categories categories={data.productCategories} />
       <FeaturedCategories categories={data.featuredCategories} />
-      <PopularProducts popularProducts={data.popularProducts} />
+      <PopularProducts popularProducts={data.hydratedPopularProducts} />
       <DailyDeals hydratedDeals={data.hydratedDealsOfTheDay} />
       <Newsletter />
     </Layout>

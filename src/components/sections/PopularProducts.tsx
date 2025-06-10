@@ -1,12 +1,12 @@
 import ProductCard from "@/components/ui/ProductCard";
-import { ProductSearchItem } from "@/types/search";
+import { Product } from "@/types/home";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 interface PopularProductsProps {
   // Solo necesitamos productos hidratados
-  popularProducts: ProductSearchItem[];
+  popularProducts: { product: Product }[];
 }
 
 const PopularProducts: React.FC<PopularProductsProps> = ({
@@ -30,26 +30,20 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
       <div className="grid grid-cols-5 gap-6">
         {popularProducts?.map((item) => (
           <ProductCard
-            key={item.variants[0].id}
+            key={item.product.id}
             product={{
               type: "variant",
               product: {
-                productVariants: item.variants,
-                name: item.name
+                id: item.product.id,
+                name: item.product.name,
+                description: item.product.description,
+                basePrice: item.product.basePrice,
+                brandId: item.product.brandId,
+                productVariants: item.product.variants,
+                createdAt: new Date(),
+                updatedAt: new Date()
               }
             }}
-
-          // basePrice?: Maybe<Scalars['Float']['output']>;
-          // brandId?: Maybe<Scalars['Int']['output']>;
-          // brands?: Maybe<Array<Maybe<Brands>>>;
-          // createdAt: Scalars['Timestamp']['output'];
-          // description?: Maybe<Scalars['String']['output']>;
-          // id: Scalars['Int']['output'];
-          // name: Scalars['String']['output'];
-          // productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
-          // updatedAt: Scalars['Timestamp']['output'];
-
-
           />
         )) || (
             <div className="col-span-5 text-center py-8 text-gray-500">

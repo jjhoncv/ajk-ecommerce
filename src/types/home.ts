@@ -1,4 +1,3 @@
-import { ProductSearchItem } from '@/types/search'
 import { Category, MegaMenuCategories } from './navigation'
 
 export interface Slide {
@@ -79,6 +78,6 @@ export interface HomeData {
   footerSections: FooterSection[]
   socialLinks: SocialLink[]
   // Solo productos hidratados (eliminamos duplicación)
-  popularProducts: ProductSearchItem[]
+  hydratedPopularProducts: { product: Product }[]
   hydratedDealsOfTheDay: { product: Product }[]
 }

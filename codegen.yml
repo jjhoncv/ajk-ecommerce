@@ -2,7 +2,7 @@
 generates:
   # Solo interfaces de entidades básicas
   src/types/domain/domain.d.ts:
-    schema: schema.graphql
+    schema: schema-domain.graphql
     plugins:
       - add:
           content: |
@@ -49,4 +49,4 @@ generates:
 # Hooks para ejecutar scripts después de la generación
 hooks:
   afterAllFileWrite:
-    - node scripts/clean-types.mjs
+    - node scripts/clean-domain-types.mjs
