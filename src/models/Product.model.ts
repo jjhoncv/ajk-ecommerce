@@ -61,9 +61,11 @@ export class ProductModel {
     const brandsMap = new Map()
 
     for (const brandId of brandIds) {
-      const brand = await brandModel.getBrandById(brandId)
-      if (brand) {
-        brandsMap.set(brandId, brand)
+      if (brandId) {
+        const brand = await brandModel.getBrandById(brandId)
+        if (brand) {
+          brandsMap.set(brandId, brand)
+        }
       }
     }
 
@@ -93,9 +95,11 @@ export class ProductModel {
     const brandsMap = new Map()
 
     for (const brandId of brandIds) {
-      const brand = await brandModel.getBrandById(brandId)
-      if (brand) {
-        brandsMap.set(brandId, brand)
+      if (brandId) {
+        const brand = await brandModel.getBrandById(brandId)
+        if (brand) {
+          brandsMap.set(brandId, brand)
+        }
       }
     }
 
@@ -176,12 +180,13 @@ export class ProductModel {
       )
 
     // Obtener brand
-    const brand = await brandModel.getBrandById(product.brandId)
-
-    return {
-      ...product,
-      productVariants: variants || [],
-      brands: brand ? [brand] : []
+    if (product.brandId) {
+      const brand = await brandModel.getBrandById(product.brandId)
+      return {
+        ...product,
+        productVariants: variants || [],
+        brands: brand ? [brand] : []
+      }
     }
   }
 
