@@ -135,12 +135,12 @@ model products {
   id               Int                @id @default(autoincrement())
   name             String             @db.VarChar(255)
   description      String?            @db.Text
-  brand_id         Int
+  brand_id         Int?
   created_at       DateTime           @default(now()) @db.Timestamp(0)
   updated_at       DateTime           @default(now()) @db.Timestamp(0)
   base_price       Decimal?           @db.Decimal(10, 2)
   product_variants product_variants[]
-  brands           brands             @relation(fields: [brand_id], references: [id], onDelete: Cascade, map: "fk_products_brand")
+  brands           brands?            @relation(fields: [brand_id], references: [id], onDelete: Cascade, map: "fk_products_brand")
 
   @@index([brand_id], map: "idx_brand")
 }
@@ -167,7 +167,7 @@ model promotions {
   discount_type       promotions_discount_type @default(percentage)
   discount_value      Decimal                  @db.Decimal(10, 2)
   min_purchase_amount Decimal?                 @db.Decimal(10, 2)
-  is_active           Boolean                  @default(true)
+  is_active           Boolean?                 @default(true)
   created_at          DateTime                 @default(now()) @db.Timestamp(0)
   updated_at          DateTime                 @default(now()) @db.Timestamp(0)
   promotion_variants  promotion_variants[]

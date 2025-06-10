@@ -47,3 +47,7 @@ mysql-data/
 # Prisma
 prisma/migrations/
 /src/generated/prisma
+
+# Mesh
+.mesh
+src/types/database/*.node

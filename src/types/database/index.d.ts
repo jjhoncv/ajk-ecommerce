@@ -14153,7 +14153,7 @@ export namespace Prisma {
     id: number
     name: string
     description: string | null
-    brand_id: number
+    brand_id: number | null
     created_at: Date
     updated_at: Date
     base_price: number | null
@@ -14187,7 +14187,7 @@ export namespace Prisma {
     updated_at?: boolean
     base_price?: boolean
     product_variants?: boolean | products$product_variantsArgs<ExtArgs>
-    brands?: boolean | brandsDefaultArgs<ExtArgs>
+    brands?: boolean | products$brandsArgs<ExtArgs>
     _count?: boolean | ProductsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["products"]>
 
@@ -14206,7 +14206,7 @@ export namespace Prisma {
   export type productsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "brand_id" | "created_at" | "updated_at" | "base_price", ExtArgs["result"]["products"]>
   export type productsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product_variants?: boolean | products$product_variantsArgs<ExtArgs>
-    brands?: boolean | brandsDefaultArgs<ExtArgs>
+    brands?: boolean | products$brandsArgs<ExtArgs>
     _count?: boolean | ProductsCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -14214,13 +14214,13 @@ export namespace Prisma {
     name: "products"
     objects: {
       product_variants: Prisma.$product_variantsPayload<ExtArgs>[]
-      brands: Prisma.$brandsPayload<ExtArgs>
+      brands: Prisma.$brandsPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       description: string | null
-      brand_id: number
+      brand_id: number | null
       created_at: Date
       updated_at: Date
       base_price: number | null
@@ -14565,7 +14565,7 @@ export namespace Prisma {
   export interface Prisma__productsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     product_variants<T extends products$product_variantsArgs<ExtArgs> = {}>(args?: Subset<T, products$product_variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$product_variantsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    brands<T extends brandsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, brandsDefaultArgs<ExtArgs>>): Prisma__brandsClient<$Result.GetResult<Prisma.$brandsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    brands<T extends products$brandsArgs<ExtArgs> = {}>(args?: Subset<T, products$brandsArgs<ExtArgs>>): Prisma__brandsClient<$Result.GetResult<Prisma.$brandsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14966,6 +14966,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Product_variantsScalarFieldEnum | Product_variantsScalarFieldEnum[]
+  }
+
+  /**
+   * products.brands
+   */
+  export type products$brandsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the brands
+     */
+    select?: brandsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the brands
+     */
+    omit?: brandsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: brandsInclude<ExtArgs> | null
+    where?: brandsWhereInput
   }
 
   /**
@@ -16184,7 +16203,7 @@ export namespace Prisma {
     discount_type: $Enums.promotions_discount_type
     discount_value: number
     min_purchase_amount: number | null
-    is_active: boolean
+    is_active: boolean | null
     created_at: Date
     updated_at: Date
     _count: PromotionsCountAggregateOutputType | null
@@ -16260,7 +16279,7 @@ export namespace Prisma {
       discount_type: $Enums.promotions_discount_type
       discount_value: number
       min_purchase_amount: number | null
-      is_active: boolean
+      is_active: boolean | null
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["promotions"]>
@@ -28363,19 +28382,19 @@ export namespace Prisma {
     id?: IntFilter<"products"> | number
     name?: StringFilter<"products"> | string
     description?: StringNullableFilter<"products"> | string | null
-    brand_id?: IntFilter<"products"> | number
+    brand_id?: IntNullableFilter<"products"> | number | null
     created_at?: DateTimeFilter<"products"> | Date | string
     updated_at?: DateTimeFilter<"products"> | Date | string
     base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
     product_variants?: Product_variantsListRelationFilter
-    brands?: XOR<BrandsScalarRelationFilter, brandsWhereInput>
+    brands?: XOR<BrandsNullableScalarRelationFilter, brandsWhereInput> | null
   }
 
   export type productsOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    brand_id?: SortOrder
+    brand_id?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     base_price?: SortOrderInput | SortOrder
@@ -28391,19 +28410,19 @@ export namespace Prisma {
     NOT?: productsWhereInput | productsWhereInput[]
     name?: StringFilter<"products"> | string
     description?: StringNullableFilter<"products"> | string | null
-    brand_id?: IntFilter<"products"> | number
+    brand_id?: IntNullableFilter<"products"> | number | null
     created_at?: DateTimeFilter<"products"> | Date | string
     updated_at?: DateTimeFilter<"products"> | Date | string
     base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
     product_variants?: Product_variantsListRelationFilter
-    brands?: XOR<BrandsScalarRelationFilter, brandsWhereInput>
+    brands?: XOR<BrandsNullableScalarRelationFilter, brandsWhereInput> | null
   }, "id">
 
   export type productsOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    brand_id?: SortOrder
+    brand_id?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     base_price?: SortOrderInput | SortOrder
@@ -28421,7 +28440,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"products"> | number
     name?: StringWithAggregatesFilter<"products"> | string
     description?: StringNullableWithAggregatesFilter<"products"> | string | null
-    brand_id?: IntWithAggregatesFilter<"products"> | number
+    brand_id?: IntNullableWithAggregatesFilter<"products"> | number | null
     created_at?: DateTimeWithAggregatesFilter<"products"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"products"> | Date | string
     base_price?: DecimalNullableWithAggregatesFilter<"products"> | Decimal | DecimalJsLike | number | string | null
@@ -28500,7 +28519,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFilter<"promotions"> | $Enums.promotions_discount_type
     discount_value?: DecimalFilter<"promotions"> | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: DecimalNullableFilter<"promotions"> | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFilter<"promotions"> | boolean
+    is_active?: BoolNullableFilter<"promotions"> | boolean | null
     created_at?: DateTimeFilter<"promotions"> | Date | string
     updated_at?: DateTimeFilter<"promotions"> | Date | string
     promotion_variants?: Promotion_variantsListRelationFilter
@@ -28515,7 +28534,7 @@ export namespace Prisma {
     discount_type?: SortOrder
     discount_value?: SortOrder
     min_purchase_amount?: SortOrderInput | SortOrder
-    is_active?: SortOrder
+    is_active?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     promotion_variants?: promotion_variantsOrderByRelationAggregateInput
@@ -28534,7 +28553,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFilter<"promotions"> | $Enums.promotions_discount_type
     discount_value?: DecimalFilter<"promotions"> | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: DecimalNullableFilter<"promotions"> | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFilter<"promotions"> | boolean
+    is_active?: BoolNullableFilter<"promotions"> | boolean | null
     created_at?: DateTimeFilter<"promotions"> | Date | string
     updated_at?: DateTimeFilter<"promotions"> | Date | string
     promotion_variants?: Promotion_variantsListRelationFilter
@@ -28549,7 +28568,7 @@ export namespace Prisma {
     discount_type?: SortOrder
     discount_value?: SortOrder
     min_purchase_amount?: SortOrderInput | SortOrder
-    is_active?: SortOrder
+    is_active?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
     _count?: promotionsCountOrderByAggregateInput
@@ -28571,7 +28590,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeWithAggregatesFilter<"promotions"> | $Enums.promotions_discount_type
     discount_value?: DecimalWithAggregatesFilter<"promotions"> | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: DecimalNullableWithAggregatesFilter<"promotions"> | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolWithAggregatesFilter<"promotions"> | boolean
+    is_active?: BoolNullableWithAggregatesFilter<"promotions"> | boolean | null
     created_at?: DateTimeWithAggregatesFilter<"promotions"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"promotions"> | Date | string
   }
@@ -29933,14 +29952,14 @@ export namespace Prisma {
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
     product_variants?: product_variantsCreateNestedManyWithoutProductsInput
-    brands: brandsCreateNestedOneWithoutProductsInput
+    brands?: brandsCreateNestedOneWithoutProductsInput
   }
 
   export type productsUncheckedCreateInput = {
     id?: number
     name: string
     description?: string | null
-    brand_id: number
+    brand_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -29954,14 +29973,14 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     product_variants?: product_variantsUpdateManyWithoutProductsNestedInput
-    brands?: brandsUpdateOneRequiredWithoutProductsNestedInput
+    brands?: brandsUpdateOneWithoutProductsNestedInput
   }
 
   export type productsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: IntFieldUpdateOperationsInput | number
+    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -29972,7 +29991,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    brand_id: number
+    brand_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -29990,7 +30009,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: IntFieldUpdateOperationsInput | number
+    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -30058,7 +30077,7 @@ export namespace Prisma {
     discount_type?: $Enums.promotions_discount_type
     discount_value: Decimal | DecimalJsLike | number | string
     min_purchase_amount?: Decimal | DecimalJsLike | number | string | null
-    is_active?: boolean
+    is_active?: boolean | null
     created_at?: Date | string
     updated_at?: Date | string
     promotion_variants?: promotion_variantsCreateNestedManyWithoutPromotionsInput
@@ -30073,7 +30092,7 @@ export namespace Prisma {
     discount_type?: $Enums.promotions_discount_type
     discount_value: Decimal | DecimalJsLike | number | string
     min_purchase_amount?: Decimal | DecimalJsLike | number | string | null
-    is_active?: boolean
+    is_active?: boolean | null
     created_at?: Date | string
     updated_at?: Date | string
     promotion_variants?: promotion_variantsUncheckedCreateNestedManyWithoutPromotionsInput
@@ -30087,7 +30106,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     promotion_variants?: promotion_variantsUpdateManyWithoutPromotionsNestedInput
@@ -30102,7 +30121,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     promotion_variants?: promotion_variantsUncheckedUpdateManyWithoutPromotionsNestedInput
@@ -30117,7 +30136,7 @@ export namespace Prisma {
     discount_type?: $Enums.promotions_discount_type
     discount_value: Decimal | DecimalJsLike | number | string
     min_purchase_amount?: Decimal | DecimalJsLike | number | string | null
-    is_active?: boolean
+    is_active?: boolean | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -30130,7 +30149,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30144,7 +30163,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31618,9 +31637,9 @@ export namespace Prisma {
     none?: product_variantsWhereInput
   }
 
-  export type BrandsScalarRelationFilter = {
-    is?: brandsWhereInput
-    isNot?: brandsWhereInput
+  export type BrandsNullableScalarRelationFilter = {
+    is?: brandsWhereInput | null
+    isNot?: brandsWhereInput | null
   }
 
   export type product_variantsOrderByRelationAggregateInput = {
@@ -31735,11 +31754,6 @@ export namespace Prisma {
     not?: NestedEnumpromotions_discount_typeFilter<$PrismaModel> | $Enums.promotions_discount_type
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type promotionsOrderByRelevanceInput = {
     fields: promotionsOrderByRelevanceFieldEnum | promotionsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -31808,14 +31822,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumpromotions_discount_typeFilter<$PrismaModel>
     _max?: NestedEnumpromotions_discount_typeFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type Variant_ratingsScalarRelationFilter = {
@@ -32283,6 +32289,11 @@ export namespace Prisma {
     _max?: NestedEnumvariant_images_image_typeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type Rating_imagesListRelationFilter = {
     every?: rating_imagesWhereInput
     some?: rating_imagesWhereInput
@@ -32357,6 +32368,14 @@ export namespace Prisma {
     variant_id?: SortOrder
     customer_id?: SortOrder
     rating?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type attribute_optionsCreateNestedOneWithoutAttribute_option_imagesInput = {
@@ -32871,10 +32890,12 @@ export namespace Prisma {
     deleteMany?: product_variantsScalarWhereInput | product_variantsScalarWhereInput[]
   }
 
-  export type brandsUpdateOneRequiredWithoutProductsNestedInput = {
+  export type brandsUpdateOneWithoutProductsNestedInput = {
     create?: XOR<brandsCreateWithoutProductsInput, brandsUncheckedCreateWithoutProductsInput>
     connectOrCreate?: brandsCreateOrConnectWithoutProductsInput
     upsert?: brandsUpsertWithoutProductsInput
+    disconnect?: brandsWhereInput | boolean
+    delete?: brandsWhereInput | boolean
     connect?: brandsWhereUniqueInput
     update?: XOR<XOR<brandsUpdateToOneWithWhereWithoutProductsInput, brandsUpdateWithoutProductsInput>, brandsUncheckedUpdateWithoutProductsInput>
   }
@@ -32937,10 +32958,6 @@ export namespace Prisma {
 
   export type Enumpromotions_discount_typeFieldUpdateOperationsInput = {
     set?: $Enums.promotions_discount_type
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type promotion_variantsUpdateManyWithoutPromotionsNestedInput = {
@@ -33287,6 +33304,10 @@ export namespace Prisma {
     connect?: rating_imagesWhereUniqueInput | rating_imagesWhereUniqueInput[]
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type rating_imagesUpdateManyWithoutVariant_ratingsNestedInput = {
     create?: XOR<rating_imagesCreateWithoutVariant_ratingsInput, rating_imagesUncheckedCreateWithoutVariant_ratingsInput> | rating_imagesCreateWithoutVariant_ratingsInput[] | rating_imagesUncheckedCreateWithoutVariant_ratingsInput[]
     connectOrCreate?: rating_imagesCreateOrConnectWithoutVariant_ratingsInput | rating_imagesCreateOrConnectWithoutVariant_ratingsInput[]
@@ -33606,11 +33627,6 @@ export namespace Prisma {
     not?: NestedEnumpromotions_discount_typeFilter<$PrismaModel> | $Enums.promotions_discount_type
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumpromotions_discount_typeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.promotions_discount_type | Enumpromotions_discount_typeFieldRefInput<$PrismaModel>
     in?: $Enums.promotions_discount_type[]
@@ -33619,14 +33635,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumpromotions_discount_typeFilter<$PrismaModel>
     _max?: NestedEnumpromotions_discount_typeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumvariant_images_image_typeFilter<$PrismaModel = never> = {
@@ -33644,6 +33652,19 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumvariant_images_image_typeFilter<$PrismaModel>
     _max?: NestedEnumvariant_images_image_typeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type attribute_optionsCreateWithoutAttribute_option_imagesInput = {
@@ -33851,7 +33872,7 @@ export namespace Prisma {
     id?: IntFilter<"products"> | number
     name?: StringFilter<"products"> | string
     description?: StringNullableFilter<"products"> | string | null
-    brand_id?: IntFilter<"products"> | number
+    brand_id?: IntNullableFilter<"products"> | number | null
     created_at?: DateTimeFilter<"products"> | Date | string
     updated_at?: DateTimeFilter<"products"> | Date | string
     base_price?: DecimalNullableFilter<"products"> | Decimal | DecimalJsLike | number | string | null
@@ -34054,14 +34075,14 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
-    brands: brandsCreateNestedOneWithoutProductsInput
+    brands?: brandsCreateNestedOneWithoutProductsInput
   }
 
   export type productsUncheckedCreateWithoutProduct_variantsInput = {
     id?: number
     name: string
     description?: string | null
-    brand_id: number
+    brand_id?: number | null
     created_at?: Date | string
     updated_at?: Date | string
     base_price?: Decimal | DecimalJsLike | number | string | null
@@ -34199,14 +34220,14 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    brands?: brandsUpdateOneRequiredWithoutProductsNestedInput
+    brands?: brandsUpdateOneWithoutProductsNestedInput
   }
 
   export type productsUncheckedUpdateWithoutProduct_variantsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    brand_id?: IntFieldUpdateOperationsInput | number
+    brand_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     base_price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -34410,7 +34431,7 @@ export namespace Prisma {
     discount_type?: $Enums.promotions_discount_type
     discount_value: Decimal | DecimalJsLike | number | string
     min_purchase_amount?: Decimal | DecimalJsLike | number | string | null
-    is_active?: boolean
+    is_active?: boolean | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -34424,7 +34445,7 @@ export namespace Prisma {
     discount_type?: $Enums.promotions_discount_type
     discount_value: Decimal | DecimalJsLike | number | string
     min_purchase_amount?: Decimal | DecimalJsLike | number | string | null
-    is_active?: boolean
+    is_active?: boolean | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -34483,7 +34504,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34497,7 +34518,7 @@ export namespace Prisma {
     discount_type?: Enumpromotions_discount_typeFieldUpdateOperationsInput | $Enums.promotions_discount_type
     discount_value?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     min_purchase_amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
+    is_active?: NullableBoolFieldUpdateOperationsInput | boolean | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
