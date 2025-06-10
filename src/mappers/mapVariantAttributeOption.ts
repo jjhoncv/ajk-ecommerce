@@ -1,4 +1,4 @@
-import { variant_attribute_options as VariantAttributeOptionRaw } from '@/types/database'
+import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
 import { VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
 
 // ✅ Mapper individual puro - NO incluye relaciones

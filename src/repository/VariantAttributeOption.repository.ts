@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { variant_attribute_options as VariantAttributeOptionRaw } from '@/types/database'
+import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
 
 export class VariantAttributeOptionRepository {
   // ✅ Obtener variant attribute options por variant ID

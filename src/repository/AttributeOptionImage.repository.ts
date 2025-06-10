@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { attribute_option_images as AttributeOptionImageRaw } from '@/types/database'
+import { AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
 
 export class AttributeOptionImageRepository {
   // ✅ Obtener images por attribute option ID

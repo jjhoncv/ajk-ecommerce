@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { promotion_variants as PromotionVariantRaw } from '@/types/database'
+import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
 
 export class PromotionVariantRepository {
   // ✅ Obtener todas las promotion variants

@@ -1,20 +1,23 @@
-# codegen.yml
+# codegen.yml - Configuración optimizada para generar solo tipos básicos
 generates:
-  # Tipos de dominio usando schema con transforms
+  # Solo interfaces de entidades básicas
   src/types/domain.ts:
     schema: schema.graphql
     plugins:
       - add:
           content: |
             // ============================================================================
-            // TIPOS DE DOMINIO
+            // TIPOS DE DOMINIO BÁSICOS - SOLO INTERFACES Y ENUMS
             // ============================================================================
-            // Campos en camelCase con relaciones incluidas
+            // Para uso con consultas SQL directas
             // ============================================================================
       - typescript
     config:
+      # Configuración para generar solo tipos básicos
       declarationKind: interface
       skipTypename: true
+
+      # Mapeo de escalares
       scalars:
         DateTime: Date
         Timestamp: Date
@@ -22,9 +25,28 @@ generates:
         Int: number
         Float: number
         Boolean: boolean
-      maybeValue: T | undefined
-      inputMaybeValue: T | undefined
-      avoidOptionals: true
+        BigInt: number
+
+      # Configuración para tipos limpios
+      maybeValue: T | null
+      inputMaybeValue: T | null
+      avoidOptionals: false
       enumsAsTypes: true
       typesSuffix: ''
       nonOptionalTypename: false
+
+      # Omitir tipos innecesarios
+      skipDocumentsValidation: true
+      onlyOperationTypes: false
+      typesPrefix: ''
+      omitDeprecatedFields: true
+
+      # Configuración adicional para limpiar
+      preResolveTypes: true
+      flattenGeneratedTypes: false
+      ignoreNoDocuments: true
+
+# Hooks para ejecutar scripts después de la generación
+hooks:
+  afterAllFileWrite:
+    - node scripts/clean-types.mjs

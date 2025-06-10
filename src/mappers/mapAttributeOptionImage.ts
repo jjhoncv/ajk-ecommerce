@@ -1,4 +1,4 @@
-import { attribute_option_images as AttributeOptionImageRaw } from '@/types/database'
+import { AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
 import { AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
 
 // ✅ Mapper individual puro

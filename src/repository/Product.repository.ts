@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { products as ProductRaw } from '@/types/database'
+import { Products as ProductRaw } from '@/types/database'
 
 export class ProductRepository {
   // ✅ Obtener todos los products

@@ -1,4 +1,4 @@
-import { attributes as AttributeRaw } from '@/types/database'
+import { Attributes as AttributeRaw } from '@/types/database'
 import { Attributes as Attribute } from '@/types/domain'
 
 export const mapAttribute = (data: AttributeRaw): Attribute => {

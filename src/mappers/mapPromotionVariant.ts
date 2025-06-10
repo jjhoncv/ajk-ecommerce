@@ -1,4 +1,4 @@
-import { promotion_variants as PromotionVariantRaw } from '@/types/database'
+import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
 import { PromotionVariants as PromotionVariant } from '@/types/domain'
 
 // ✅ Mapper individual puro - NO incluye relaciones

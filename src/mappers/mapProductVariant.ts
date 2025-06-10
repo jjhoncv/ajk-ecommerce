@@ -1,4 +1,4 @@
-import { product_variants as ProductVariantRaw } from '@/types/database'
+import { ProductVariants as ProductVariantRaw } from '@/types/database'
 import { ProductVariants as ProductVariant } from '@/types/domain'
 
 // ✅ Mapper individual puro - NO incluye relaciones

@@ -7,20 +7,20 @@ import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
 import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
 import oAttributeOptionRep from '@/repository/AttributeOption.repository'
 
-import { attribute_options as AttributeOptionRaw } from '@/types/database'
+import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import { AttributeOptions as AttributeOption } from '@/types/domain'
 
 export interface AttributeOptionWithImages extends AttributeOption {
-  attributeOptionImages: AttributeOption['attributeOptionImages']
+  attributeOptionImages?: AttributeOption['attributeOptionImages']
 }
 
 export interface AttributeOptionWithVariantOptions extends AttributeOption {
-  variantAttributeOptions: AttributeOption['variantAttributeOptions']
+  variantAttributeOptions?: AttributeOption['variantAttributeOptions']
 }
 
 export interface AttributeOptionComplete extends AttributeOption {
-  attributeOptionImages: AttributeOption['attributeOptionImages']
-  variantAttributeOptions: AttributeOption['variantAttributeOptions']
+  attributeOptionImages?: AttributeOption['attributeOptionImages']
+  variantAttributeOptions?: AttributeOption['variantAttributeOptions']
 }
 
 export class AttributeOptionModel {

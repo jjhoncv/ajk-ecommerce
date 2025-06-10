@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { attributes as AttributeRaw } from '@/types/database'
+import { Attributes as AttributeRaw } from '@/types/database'
 
 export class AttributeRepository {
   public async getAttributes(): Promise<AttributeRaw[] | null> {

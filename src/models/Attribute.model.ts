@@ -4,7 +4,7 @@ import attributeOptionModel from '@/models/AttributeOption.model'
 import oAttributeRep from '@/repository/Attribute.repository'
 import oAttributeOptionRep from '@/repository/AttributeOption.repository'
 
-import { attributes as AttributeRaw } from '@/types/database'
+import { Attributes as AttributeRaw } from '@/types/database'
 import {
   Attributes as Attribute,
   AttributeOptions as AttributeOption

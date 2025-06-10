@@ -4,7 +4,7 @@ import {
 } from '@/mappers/mapVariantAttributeOption'
 import oVariantAttributeOptionRep from '@/repository/VariantAttributeOption.repository'
 
-import { variant_attribute_options as VariantAttributeOptionRaw } from '@/types/database'
+import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
 import { VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
 
 export class VariantAttributeOptionModel {

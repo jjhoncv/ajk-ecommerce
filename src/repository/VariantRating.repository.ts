@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { variant_ratings as VariantRatingRaw } from '@/types/database'
+import { VariantRatings as VariantRatingRaw } from '@/types/database'
 
 export class VariantRatingRepository {
   // ✅ Obtener todas las variant ratings

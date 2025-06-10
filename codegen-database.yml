@@ -1,0 +1,56 @@
+# codegen-database.yml - Configuración para generar tipos de base de datos sin relaciones
+generates:
+  # Tipos de base de datos sin relaciones
+  src/types/database/index.d.ts:
+    schema: schema-database.graphql
+    plugins:
+      - add:
+          content: |
+            // ============================================================================
+            // TIPOS DE BASE DE DATOS - SIN RELACIONES
+            // ============================================================================
+            // Nombres tal como están en la base de datos
+            // Para uso directo con consultas SQL
+            // ============================================================================
+      - typescript
+    config:
+      # Configuración para generar solo tipos básicos
+      declarationKind: interface
+      skipTypename: true
+
+      # Mapeo de escalares
+      scalars:
+        DateTime: Date
+        Timestamp: Date
+        String: string
+        Int: number
+        Float: number
+        Boolean: boolean
+        BigInt: number
+
+      # Configuración para tipos limpios
+      maybeValue: T | null
+      inputMaybeValue: T | null
+      avoidOptionals: false
+      enumsAsTypes: true
+      typesSuffix: ''
+      nonOptionalTypename: false
+
+      # Omitir tipos innecesarios
+      skipDocumentsValidation: true
+      onlyOperationTypes: false
+      typesPrefix: ''
+      omitDeprecatedFields: true
+
+      # Configuración adicional para limpiar
+      preResolveTypes: true
+      flattenGeneratedTypes: false
+      ignoreNoDocuments: true
+
+      # NO aplicar naming convention - mantener nombres originales
+      namingConvention: keep
+
+# Hooks para ejecutar scripts después de la generación
+hooks:
+  afterAllFileWrite:
+    - node scripts/clean-database-types-v2.mjs

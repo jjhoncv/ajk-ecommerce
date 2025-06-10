@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { product_variants as ProductVariantRaw } from '@/types/database'
+import { ProductVariants as ProductVariantRaw } from '@/types/database'
 
 export class ProductVariantRepository {
   // ✅ Obtener todas las variants

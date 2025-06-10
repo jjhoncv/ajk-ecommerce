@@ -1,4 +1,4 @@
-# .meshrc.yaml
+# .meshrc.yaml - Configuración optimizada para generar solo tipos básicos
 sources:
   - name: Database
     handler:

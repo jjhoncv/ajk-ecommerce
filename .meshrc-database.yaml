@@ -1,0 +1,28 @@
+# .meshrc-database.yaml - Configuración para generar tipos de base de datos sin relaciones
+sources:
+  - name: DatabaseTypes
+    handler:
+      mysql:
+        host: localhost
+        port: 3306
+        user: root
+        password: '12345678'
+        database: ajkecommerce
+        typeCast: true
+        supportBigNumbers: true
+        bigNumberStrings: false
+        typeMapping:
+          'tinyint(1)': 'Boolean'
+          tinyint: 'Int'
+
+# Convertir nombres de campos de camelCase a snake_case
+transforms:
+  - namingConvention:
+      mode: bare
+      typeNames: pascalCase
+      fieldNames: SNAKE_CASE
+
+additionalTypeDefs: |
+  scalar DateTime
+  scalar Timestamp
+  scalar BigInt

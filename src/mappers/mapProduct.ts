@@ -1,4 +1,4 @@
-import { products as ProductRaw } from '@/types/database'
+import { Products as ProductRaw } from '@/types/database'
 import { Products as Product } from '@/types/domain'
 
 // ✅ Mapper individual puro - NO incluye relaciones

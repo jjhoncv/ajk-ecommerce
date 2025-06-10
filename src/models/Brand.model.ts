@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { brands as BrandsRaw } from '@/types/database'
+import { Brands as BrandsRaw } from '@/types/database'
 
 import { Brands as Brand } from '@/types/domain'
 

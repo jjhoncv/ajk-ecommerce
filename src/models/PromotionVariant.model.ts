@@ -4,7 +4,7 @@ import {
 } from '@/mappers/mapPromotionVariant'
 import oPromotionVariantRep from '@/repository/PromotionVariant.repository'
 
-import { promotion_variants as PromotionVariantRaw } from '@/types/database'
+import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
 import { PromotionVariants as PromotionVariant } from '@/types/domain'
 
 export class PromotionVariantModel {

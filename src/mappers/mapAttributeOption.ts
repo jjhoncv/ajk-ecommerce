@@ -1,4 +1,4 @@
-import { attribute_options as AttributeOptionRaw } from '@/types/database'
+import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import {
   AttributeOptions as AttributeOption,
   AttributeOptionImages,
