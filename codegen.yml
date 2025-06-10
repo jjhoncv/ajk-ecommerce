@@ -1,7 +1,7 @@
 # codegen.yml - Configuración optimizada para generar solo tipos básicos
 generates:
   # Solo interfaces de entidades básicas
-  src/types/domain.ts:
+  src/types/domain/domain.d.ts:
     schema: schema.graphql
     plugins:
       - add:

@@ -1,10 +1,11 @@
 import { executeQuery } from '@/lib/db'
-import { ProductSearchFilters, VariantSearchResult } from '@/types/search'
+import { VariantSearchResultRaw } from '@/types/database/search'
+import { ProductSearchFilters } from '@/types/search'
 
 export class SearchRepository {
   public async searchProductVariants(
     filters: ProductSearchFilters
-  ): Promise<{ results: VariantSearchResult[]; totalCount: number }> {
+  ): Promise<{ results: VariantSearchResultRaw[]; totalCount: number }> {
     let query = `
       SELECT 
         pv.id as variant_id, 
@@ -125,7 +126,7 @@ export class SearchRepository {
     queryParams.push(limit, offset)
 
     // Ejecutar la consulta
-    const results = await executeQuery<VariantSearchResult[]>({
+    const results = await executeQuery<VariantSearchResultRaw[]>({
       query,
       values: queryParams
     })

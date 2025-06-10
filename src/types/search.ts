@@ -2,7 +2,7 @@
 // INTERFACES PARA BÚSQUEDA Y FILTROS DE PRODUCTOS
 // ============================================================================
 
-import { Brands, Categories, Products, ProductVariants } from './domain'
+import { Brands, Categories, Products, ProductVariants } from '@/types/domain'
 
 export interface ProductSearchFilters {
   query?: string

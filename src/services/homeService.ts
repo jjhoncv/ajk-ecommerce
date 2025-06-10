@@ -13,7 +13,7 @@ export async function getHomeData(): Promise<HomeData> {
       limit: 5,
       sort: 'newest'
     })
-    const popularProducts = popularVariantsResult.products
+    // const popularProducts = popularVariantsResult.products
 
     // Obtener productos para ofertas del día
     const dealsVariantsResult = await searchModel.searchProducts({
@@ -38,7 +38,7 @@ export async function getHomeData(): Promise<HomeData> {
       // Mega menú con categorías reales y productos destacados con imágenes
       megaMenuCategories: buildMegaMenuCategories(
         megaMenuData,
-        popularProducts
+        popularVariantsResult.products
       ),
 
       // Slides del hero (mantenemos algunos datos estáticos por ahora)
@@ -123,20 +123,8 @@ export async function getHomeData(): Promise<HomeData> {
       })),
 
       // Productos hidratados (ahora directamente desde los modelos)
-      hydratedPopularProducts: popularProducts.map((product) => ({
-        product: {
-          id: product.id,
-          name: product.name,
-          description: product.description || '',
-          basePrice: product.basePrice,
-          brandId: product.brandId,
-          brandName: product.brandName || '',
-          minVariantPrice: product.minVariantPrice,
-          categories: product.categories || [],
-          variants: product.variants || [],
-          mainImage: product.mainImage
-        }
-      })),
+      popularProducts: popularVariantsResult.products,
+
       hydratedDealsOfTheDay: dealsProducts.map((product) => ({
         product: {
           id: product.id,

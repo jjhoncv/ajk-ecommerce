@@ -5,78 +5,70 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const filePath = path.join(__dirname, '../src/types/database/index.d.ts')
+const filePath = path.join(__dirname, '../src/types/database/database.d.ts')
 
 if (fs.existsSync(filePath)) {
   let content = fs.readFileSync(filePath, 'utf8')
 
-  // Extraer tipos y enums básicos
-  const typeRegex = /export type (\w+) =[\s\S]*?;/g
-  const interfaceRegex = /export interface (\w+) \{([\s\S]*?)\}/g
+  // Extraer solo las interfaces principales de entidades (sin relaciones)
+  const entityInterfaces = new Map()
+  const enumTypes = new Map()
 
-  const uniqueTypes = new Map()
-  const uniqueInterfaces = new Map()
-
-  // Extraer tipos básicos únicos (excluyendo Args e Input)
-  let typeMatch
-  while ((typeMatch = typeRegex.exec(content)) !== null) {
-    const typeName = typeMatch[1]
-    if (!typeName.includes('Args') && !typeName.includes('Input')) {
-      // Solo agregar si no existe ya
-      if (!uniqueTypes.has(typeName)) {
-        uniqueTypes.set(typeName, typeMatch[0].trim())
-      }
+  // Buscar enums
+  const enumRegex = /export type (\w+) =\s*\n\s*\|[^;]+;/g
+  let enumMatch
+  while ((enumMatch = enumRegex.exec(content)) !== null) {
+    const enumName = enumMatch[1]
+    if (
+      !enumName.includes('Input') &&
+      !enumName.includes('Args') &&
+      !enumName.includes('OrderBy') &&
+      !enumName.includes('Where')
+    ) {
+      enumTypes.set(enumName, enumMatch[0].trim())
     }
   }
 
-  // Procesar interfaces únicas
+  // Buscar interfaces principales de entidades
+  const interfaceRegex = /export interface (\w+) \{([^}]+)\}/g
   let interfaceMatch
   while ((interfaceMatch = interfaceRegex.exec(content)) !== null) {
     const interfaceName = interfaceMatch[1]
     const interfaceBody = interfaceMatch[2]
 
-    // Saltar Query, Mutation, Scalars duplicados y tipos de input/args
+    // Solo procesar interfaces de entidades principales (sin Input, Args, etc.)
     if (
+      interfaceName === 'Scalars' ||
       interfaceName === 'Query' ||
       interfaceName === 'Mutation' ||
-      interfaceName === 'Scalars' ||
-      interfaceName.includes('Args') ||
       interfaceName.includes('Input') ||
+      interfaceName.includes('Args') ||
       interfaceName.includes('OrderBy') ||
       interfaceName.includes('Where') ||
       interfaceName.includes('Insert') ||
       interfaceName.includes('Update') ||
-      uniqueInterfaces.has(interfaceName)
+      entityInterfaces.has(interfaceName)
     ) {
       continue
     }
 
-    // Limpiar y formatear campos
+    // Limpiar campos de relaciones
     const lines = interfaceBody.split('\n')
     const cleanFields = []
 
     for (const line of lines) {
       const trimmed = line.trim()
 
-      // Saltar líneas vacías, comentarios sueltos y campos de relaciones
+      // Saltar líneas vacías y campos de relaciones
       if (
         !trimmed ||
-        trimmed === '}' ||
-        trimmed.includes('Args') ||
         trimmed.includes('Maybe<Array<') ||
         trimmed.includes('Array<Maybe<') ||
         trimmed.includes('limit?:') ||
         trimmed.includes('offset?:') ||
         trimmed.includes('orderBy?:') ||
         trimmed.includes('where?:') ||
-        trimmed.startsWith('delete') ||
-        trimmed.startsWith('insert') ||
-        trimmed.startsWith('update') ||
-        trimmed.startsWith('count') ||
-        // Remover campos que son claramente relaciones (nombres de otras tablas en plural o singular)
-        /^\w+\??: Maybe<Array</.test(trimmed) ||
-        /^\w+\??: Array</.test(trimmed) ||
-        // Campos que terminan con nombres de otras entidades
+        // Campos específicos de relaciones
         trimmed.includes('products?:') ||
         trimmed.includes('brands?:') ||
         trimmed.includes('categories?:') ||
@@ -105,37 +97,43 @@ if (fs.existsSync(filePath)) {
       // Limpiar formato de línea
       let cleanLine = trimmed
 
-      // Si la línea no termina con ; agregarla
+      // Convertir solo el nombre del campo de camelCase a snake_case, manteniendo los tipos
+      if (cleanLine.includes(':')) {
+        const [fieldPart, typePart] = cleanLine.split(':', 2)
+        const fieldName = fieldPart.trim()
+        const snakeFieldName = fieldName
+          .replace(/([a-z])([A-Z])/g, '$1_$2')
+          .toLowerCase()
+        cleanLine = `${snakeFieldName}:${typePart}`
+      }
+
+      // Remover punto y coma si ya existe para evitar duplicados
+      if (cleanLine.endsWith(';')) {
+        cleanLine = cleanLine.slice(0, -1)
+      }
+
+      // Agregar punto y coma solo si la línea no está vacía y no es un comentario
       if (
-        !cleanLine.endsWith(';') &&
-        !cleanLine.startsWith('/**') &&
-        !cleanLine.startsWith('*/')
+        cleanLine.length > 0 &&
+        !cleanLine.startsWith('/*') &&
+        !cleanLine.startsWith('*') &&
+        !cleanLine.startsWith('//')
       ) {
         cleanLine += ';'
       }
 
-      cleanFields.push('  ' + cleanLine)
+      if (cleanLine.length > 0) {
+        cleanFields.push('  ' + cleanLine)
+      }
     }
 
     if (cleanFields.length > 0) {
-      // Agregar comentario si existe
-      let interfaceComment = ''
-      const commentMatch = content.match(
-        new RegExp(`/\\*\\*[\\s\\S]*?\\*/\\s*export interface ${interfaceName}`)
-      )
-      if (commentMatch) {
-        interfaceComment =
-          commentMatch[0]
-            .replace(`export interface ${interfaceName}`, '')
-            .trim() + '\n'
-      }
-
-      const cleanInterface = `${interfaceComment}export interface ${interfaceName} {\n${cleanFields.join('\n')}\n}`
-      uniqueInterfaces.set(interfaceName, cleanInterface)
+      const cleanInterface = `export interface ${interfaceName} {\n${cleanFields.join('\n')}\n}`
+      entityInterfaces.set(interfaceName, cleanInterface)
     }
   }
 
-  // Reconstruir el contenido con header completo
+  // Reconstruir el contenido
   const header = `// ============================================================================
 // TIPOS DE BASE DE DATOS - SIN RELACIONES
 // ============================================================================
@@ -168,22 +166,23 @@ export interface Scalars {
 
 `
 
-  // Combinar todo
-  const typesArray = Array.from(uniqueTypes.values())
-  const interfacesArray = Array.from(uniqueInterfaces.values())
+  // Combinar enums y interfaces
+  const enumsArray = Array.from(enumTypes.values())
+  const interfacesArray = Array.from(entityInterfaces.values())
 
-  content =
+  const finalContent =
     header +
-    typesArray.join('\n\n') +
+    enumsArray.join('\n\n') +
     '\n\n' +
     interfacesArray.join('\n\n') +
     '\n'
 
   // Escribir el archivo limpio
-  fs.writeFileSync(filePath, content)
-  console.log('✅ Tipos de base de datos limpiados correctamente')
-  console.log(`📊 Tipos únicos: ${typesArray.length}`)
+  fs.writeFileSync(filePath, finalContent)
+  console.log('✅ Tipos de base de datos limpiados correctamente (v2)')
+  console.log(`📊 Enums únicos: ${enumsArray.length}`)
   console.log(`📊 Interfaces únicas: ${interfacesArray.length}`)
+  console.log(`📏 Líneas totales: ${finalContent.split('\n').length}`)
 } else {
   console.log('❌ Archivo de tipos de base de datos no encontrado')
 }

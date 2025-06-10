@@ -1,13 +1,13 @@
-import { Metadata } from "next";
 import Layout from "@/components/layout/Layout";
-import HeroSlider from "@/components/sections/HeroSlider";
-import Features from "@/components/sections/Features";
 import Categories from "@/components/sections/Categories";
-import FeaturedCategories from "@/components/sections/FeaturedCategories";
-import Newsletter from "@/components/sections/Newsletter";
-import { getHomeData } from "@/services/homeService";
-import PopularProducts from "@/components/sections/PopularProducts";
 import DailyDeals from "@/components/sections/DailyDeals";
+import FeaturedCategories from "@/components/sections/FeaturedCategories";
+import Features from "@/components/sections/Features";
+import HeroSlider from "@/components/sections/HeroSlider";
+import Newsletter from "@/components/sections/Newsletter";
+import PopularProducts from "@/components/sections/PopularProducts";
+import { getHomeData } from "@/services/homeService";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "TechStore - Tu tienda de tecnología y zapatillas",
@@ -18,13 +18,15 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const data = await getHomeData();
 
+  console.log({ data })
+
   return (
     <Layout>
       <HeroSlider slides={data.slides} sideBanners={data.sideBanners} />
       <Features features={data.features} />
       <Categories categories={data.productCategories} />
       <FeaturedCategories categories={data.featuredCategories} />
-      <PopularProducts hydratedProducts={data.hydratedPopularProducts} />
+      <PopularProducts popularProducts={data.popularProducts} />
       <DailyDeals hydratedDeals={data.hydratedDealsOfTheDay} />
       <Newsletter />
     </Layout>

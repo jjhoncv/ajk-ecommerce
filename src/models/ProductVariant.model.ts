@@ -159,6 +159,7 @@ export class ProductVariantModel {
     id: number
   ): Promise<ProductVariantWithAttributeOptions | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
+    console.log('variantRaw', variantRaw, id)
     if (!variantRaw) return undefined
 
     const variant = mapProductVariant(variantRaw)

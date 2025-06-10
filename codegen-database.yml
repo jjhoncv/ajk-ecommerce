@@ -1,7 +1,7 @@
 # codegen-database.yml - Configuración para generar tipos de base de datos sin relaciones
 generates:
   # Tipos de base de datos sin relaciones
-  src/types/database/index.d.ts:
+  src/types/database/database.d.ts:
     schema: schema-database.graphql
     plugins:
       - add:
@@ -53,4 +53,4 @@ generates:
 # Hooks para ejecutar scripts después de la generación
 hooks:
   afterAllFileWrite:
-    - node scripts/clean-database-types-v2.mjs
+    - node scripts/clean-database-types.mjs

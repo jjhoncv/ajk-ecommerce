@@ -1,31 +1,32 @@
-import { ProductVariants } from '@/types/domain'
+import { ProductVariantComplete } from '@/models/ProductVariant.model'
+import { VariantSearchResultRaw } from '@/types/database'
 import { ProductSearchItem, VariantSearchResult } from '@/types/search'
 
 export const mapVariantSearchResult = (
-  data: VariantSearchResult
+  data: VariantSearchResultRaw
 ): VariantSearchResult => {
   return {
-    variantId: data.variantId,
-    productId: data.productId,
+    variantId: data.variant_id,
+    productId: data.product_id,
     sku: data.sku,
     price: data.price,
     stock: data.stock,
-    productName: data.productName,
-    productDescription: data.productDescription,
-    brandId: data.brandId,
-    basePrice: data.basePrice
+    productName: data.product_name,
+    productDescription: data.product_description,
+    brandId: data.brand_id,
+    basePrice: data.base_price
   }
 }
 
 export const mapVariantSearchResults = (
-  data: VariantSearchResult[]
+  data: VariantSearchResultRaw[]
 ): VariantSearchResult[] => {
   return data.map(mapVariantSearchResult)
 }
 
 export const mapToProductSearchItem = (
   variantResult: VariantSearchResult,
-  variant: ProductVariants,
+  variant: ProductVariantComplete,
   brandName: string,
   categories: Array<{ id: number; name: string }>,
   mainImage?: string

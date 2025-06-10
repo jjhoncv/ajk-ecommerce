@@ -22,19 +22,29 @@ export class SearchModel {
 
     // Mapear los resultados
     const mappedResults = mapVariantSearchResults(results)
+    // console.log('mappedResults', mappedResults, filters)
 
     // Procesar cada variante como un producto individual
     const productSearchItems = await Promise.all(
       mappedResults.map(async (variantResult) => {
         // Obtener detalles completos de la variante
+
+        // console.log('variantResult', variantResult)
+
         const variantDetail =
-          await productVariantModel.getProductVariantByIdWithAttributeOptions(
+          await productVariantModel.getProductVariantComplete(
             variantResult.variantId
           )
 
         if (!variantDetail) {
           return null
         }
+
+        // const xx = await productVariantModel.getProductVariantComplete(
+        //   variantResult.variantId
+        // )
+
+        // console.log('variantDetail', variantDetail, xx)
 
         // Obtener la marca
         const brand = await brandModel.getBrandById(variantResult.brandId)
@@ -85,6 +95,12 @@ export class SearchModel {
     const page = filters.page || 1
     const limit = filters.limit || 10
     const totalPages = Math.ceil(totalCount / limit)
+
+    console.log(
+      'filteredProductSearchItems',
+      filteredProductSearchItems,
+      filters
+    )
 
     return {
       products: filteredProductSearchItems,

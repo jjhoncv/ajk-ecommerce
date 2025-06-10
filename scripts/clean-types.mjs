@@ -8,7 +8,10 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const DOMAIN_TYPES_PATH = path.join(__dirname, '../src/types/domain.ts')
+const DOMAIN_TYPES_PATH = path.join(
+  __dirname,
+  '../src/types/domain/domain.d.ts'
+)
 
 // Tipos que queremos omitir
 const unwantedSuffixes = [

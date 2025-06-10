@@ -1,17 +1,20 @@
-import React from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import ProductCard from "@/components/ui/ProductCard";
-import { ProductDTO } from "@/dto";
+import { ProductSearchItem } from "@/types/search";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import React from "react";
 
 interface PopularProductsProps {
   // Solo necesitamos productos hidratados
-  hydratedProducts: { product: ProductDTO }[];
+  popularProducts: ProductSearchItem[];
 }
 
 const PopularProducts: React.FC<PopularProductsProps> = ({
-  hydratedProducts,
+  popularProducts,
 }) => {
+
+  console.log("popularProducts", popularProducts)
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
@@ -25,16 +28,34 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
         </Link>
       </div>
       <div className="grid grid-cols-5 gap-6">
-        {hydratedProducts?.map((item) => (
+        {popularProducts?.map((item) => (
           <ProductCard
-            key={item.product.variants[0]?.id || item.product.id}
-            product={item}
+            key={item.variants[0].id}
+            product={{
+              type: "variant",
+              product: {
+                productVariants: item.variants,
+                name: item.name
+              }
+            }}
+
+          // basePrice?: Maybe<Scalars['Float']['output']>;
+          // brandId?: Maybe<Scalars['Int']['output']>;
+          // brands?: Maybe<Array<Maybe<Brands>>>;
+          // createdAt: Scalars['Timestamp']['output'];
+          // description?: Maybe<Scalars['String']['output']>;
+          // id: Scalars['Int']['output'];
+          // name: Scalars['String']['output'];
+          // productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+          // updatedAt: Scalars['Timestamp']['output'];
+
+
           />
         )) || (
-          <div className="col-span-5 text-center py-8 text-gray-500">
-            No hay productos disponibles
-          </div>
-        )}
+            <div className="col-span-5 text-center py-8 text-gray-500">
+              No hay productos disponibles
+            </div>
+          )}
       </div>
     </section>
   );

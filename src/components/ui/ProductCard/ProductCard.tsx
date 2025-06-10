@@ -17,23 +17,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
   // Verificar que el producto y sus variantes existan
   if (
     !variantProduct ||
-    !variantProduct.variants ||
-    variantProduct.variants.length === 0
+    !variantProduct.productVariants ||
+    variantProduct.productVariants.length === 0
   ) {
     console.error("ProductCard: Producto o variantes no válidos:", product);
     return null;
   }
 
-  const selectedVariant = variantProduct.variants[0];
+  const selectedVariant = variantProduct.productVariants[0];
+  if (!selectedVariant) {
+    console.error("ProductCard: Producto sin Variantes:", product);
+    return null
+  }
   const hasDiscount = hasPromotion(selectedVariant);
 
   return (
     <div
-      className={`bg-white relative p-2 hover:shadow-lg transition-shadow  ${className} ${
-        layout === "list"
-          ? "flex flex-col md:flex-row md:items-center md:gap-6"
-          : ""
-      }`}
+      className={`bg-white relative p-2 hover:shadow-lg transition-shadow  ${className} ${layout === "list"
+        ? "flex flex-col md:flex-row md:items-center md:gap-6"
+        : ""
+        }`}
     >
       <Link
         href={`/productos/variante/${selectedVariant.id}`}
