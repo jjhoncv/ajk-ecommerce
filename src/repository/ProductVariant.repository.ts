@@ -16,7 +16,6 @@ export class ProductVariantRepository {
   public async getProductVariantById(
     id: number
   ): Promise<ProductVariantRaw | null> {
-    console.log(`SELECT * FROM product_variants WHERE id = ${id}`)
     const variants = await executeQuery<ProductVariantRaw[]>({
       query: 'SELECT * FROM product_variants WHERE id = ?',
       values: [id]

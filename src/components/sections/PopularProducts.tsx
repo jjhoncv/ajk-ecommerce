@@ -1,19 +1,16 @@
 import ProductCard from "@/components/ui/ProductCard";
-import { Product } from "@/types/home";
+import { ProductSearchItem } from "@/types/search";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 interface PopularProductsProps {
-  // Solo necesitamos productos hidratados
-  popularProducts: { product: Product }[];
+  products: ProductSearchItem[]
 }
 
 const PopularProducts: React.FC<PopularProductsProps> = ({
-  popularProducts,
+  products,
 }) => {
-
-  console.log("popularProducts", popularProducts)
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
@@ -28,22 +25,10 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
         </Link>
       </div>
       <div className="grid grid-cols-5 gap-6">
-        {popularProducts?.map((item) => (
+        {products?.map((item) => (
           <ProductCard
-            key={item.product.id}
-            product={{
-              type: "variant",
-              product: {
-                id: item.product.id,
-                name: item.product.name,
-                description: item.product.description,
-                basePrice: item.product.basePrice,
-                brandId: item.product.brandId,
-                productVariants: item.product.variants,
-                createdAt: new Date(),
-                updatedAt: new Date()
-              }
-            }}
+            key={item.variantId}
+            product={item}
           />
         )) || (
             <div className="col-span-5 text-center py-8 text-gray-500">

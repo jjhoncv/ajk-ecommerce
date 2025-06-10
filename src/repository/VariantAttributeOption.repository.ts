@@ -15,6 +15,33 @@ export class VariantAttributeOptionRepository {
     return options
   }
 
+  // ✅ Obtener variant attribute options con datos completos (JOIN con attributes y attribute_options)
+  public async getVariantAttributeOptionsWithDetailsById(
+    variantId: number
+  ): Promise<any[] | null> {
+    const options = await executeQuery<any[]>({
+      query: `
+        SELECT 
+          vao.variant_id,
+          vao.attribute_option_id,
+          ao.value as attribute_option_value,
+          ao.additional_cost,
+          ao.attribute_id,
+          a.name as attribute_name,
+          a.display_type as attribute_display_type
+        FROM variant_attribute_options vao
+        JOIN attribute_options ao ON vao.attribute_option_id = ao.id
+        JOIN attributes a ON ao.attribute_id = a.id
+        WHERE vao.variant_id = ?
+        ORDER BY a.id, ao.id
+      `,
+      values: [variantId]
+    })
+
+    if (options.length === 0) return null
+    return options
+  }
+
   // ✅ Obtener variant attribute options por attribute option ID
   public async getVariantAttributeOptionsByAttributeOptionId(
     attributeOptionId: number

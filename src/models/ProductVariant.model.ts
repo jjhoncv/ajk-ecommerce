@@ -9,6 +9,7 @@ import variantRatingModel from '@/models/VariantRating.model'
 
 import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
 import oProductVariantRep from '@/repository/ProductVariant.repository'
+import oVariantAttributeOptionRep from '@/repository/VariantAttributeOption.repository'
 
 import { ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
@@ -302,11 +303,26 @@ export class ProductVariantModel {
 
     const variant = mapProductVariant(variantRaw)
 
-    // Obtener atributos usando composición
-    const attributeOptions =
-      await variantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
+    // Obtener atributos usando composición con datos completos
+    const attributeOptionsRaw =
+      await oVariantAttributeOptionRep.getVariantAttributeOptionsWithDetailsById(
         id
       )
+
+    // Construir variantAttributeOptions con datos completos
+    const attributeOptions =
+      attributeOptionsRaw?.map((option: any) => ({
+        variantId: option.variant_id,
+        attributeOptionId: option.attribute_option_id,
+        attributeOptions: [
+          {
+            id: option.attribute_option_id,
+            value: option.attribute_option_value,
+            additionalCost: option.additional_cost,
+            attributeId: option.attribute_id
+          }
+        ]
+      })) || []
 
     // Obtener imágenes de la variante
     const images = await this.getVariantImages(id)

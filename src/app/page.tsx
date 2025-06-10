@@ -18,16 +18,14 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const data = await getHomeData();
 
-  console.log({ data })
-
   return (
     <Layout>
       <HeroSlider slides={data.slides} sideBanners={data.sideBanners} />
       <Features features={data.features} />
       <Categories categories={data.productCategories} />
       <FeaturedCategories categories={data.featuredCategories} />
-      <PopularProducts popularProducts={data.hydratedPopularProducts} />
-      <DailyDeals hydratedDeals={data.hydratedDealsOfTheDay} />
+      <PopularProducts products={data.popularProducts} />
+      <DailyDeals products={data.dealsProducts} />
       <Newsletter />
     </Layout>
   );

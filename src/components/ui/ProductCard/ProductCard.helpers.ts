@@ -1,8 +1,6 @@
 import { ProductDTO, ProductVariantDTO } from '@/dto'
-import {
-  Products as Product,
-  ProductVariants as ProductVariant
-} from '@/types/domain'
+import { ProductVariantComplete } from '@/models/ProductVariant.model'
+import { AttributeOptionImages, VariantAttributeOptions } from '@/types/domain'
 
 /**
  * Calcula el precio mínimo de las variantes de un producto
@@ -83,7 +81,9 @@ export const findMainImage = (
   }
 
   const primaryImage = variant.images.find((img) => img.isPrimary)
-  return primaryImage ? primaryImage.imageUrl : variant.images[0].imageUrl
+  return primaryImage
+    ? primaryImage.imageUrlThumb || primaryImage.imageUrlNormal
+    : variant.images[0].imageUrlThumb || variant.images[0].imageUrlNormal
 }
 
 /**
@@ -91,8 +91,11 @@ export const findMainImage = (
  * @param variant Variante a verificar
  * @returns true si la variante tiene promoción
  */
-export const hasPromotion = (variant: ProductVariant): boolean => {
-  return !!variant.promotionVariants
+export const hasPromotion = (variant: ProductVariantComplete): boolean => {
+  return (
+    !!variant.promotion ||
+    (!!variant.promotionVariants && variant.promotionVariants.length > 0)
+  )
 }
 
 /**
@@ -132,22 +135,27 @@ export const calculateDiscountPercentage = (
 }
 
 export const getVariantTitle = (
-  product: Product,
-  selectedVariant: ProductVariant
+  product: { name: string },
+  selectedVariant: ProductVariantComplete
 ) => {
   const baseTitle = product.name
-  // const variantAttributes = selectedVariant.variantAttributeOptions
-  //   ?.filter((attr) => attr.toLowerCase() !== 'sku') // Excluir SKU
-  //   .map((attr) => attr.value)
-  //   .join(' - ')
 
-  if (!product.productVariants) {
-    return baseTitle
+  // Obtener los atributos de la variante
+  const variantAttributes = selectedVariant.variantAttributeOptions
+    ?.map((variantAttr: VariantAttributeOptions | null) => {
+      // Verificar que variantAttr no sea null
+      if (!variantAttr) return null
+      // Obtener el valor del atributo desde attributeOptions
+      const attributeOption = variantAttr.attributeOptions?.[0]
+      return attributeOption?.value
+    })
+    .filter(Boolean) // Filtrar valores undefined/null
+    .join(' - ')
+
+  // Si hay atributos, agregarlos al título
+  if (variantAttributes && variantAttributes.length > 0) {
+    return `${baseTitle} - ${variantAttributes}`
   }
-
-  // if (variantAttributes && product.productVariants.length > 0) {
-  //   return `${baseTitle} - ${variantAttributes}`
-  // }
 
   return baseTitle
 }
@@ -171,4 +179,124 @@ export const getPromotionDiscount = (
       : Math.round(((originalPrice - promotionPrice) / originalPrice) * 100)
 
   return discountPercentage
+}
+
+export const getVariantImages = (
+  selectedVariant: ProductVariantComplete,
+  product: { name: string; mainImage?: string }
+) => {
+  // Primero intentar con variantImages
+  if (
+    selectedVariant.variantImages &&
+    selectedVariant.variantImages.length > 0
+  ) {
+    return selectedVariant.variantImages.map((img) => ({
+      alt: product.name,
+      url: img?.imageUrlNormal || img?.imageUrlThumb || '',
+      isPrimary: !!img?.isPrimary
+    }))
+  }
+
+  // Si no hay variantImages, filtrar attributeImages según los atributos de la variante
+  if (
+    selectedVariant.attributeImages &&
+    selectedVariant.attributeImages.length > 0 &&
+    selectedVariant.variantAttributeOptions &&
+    selectedVariant.variantAttributeOptions.length > 0
+  ) {
+    // Obtener los attributeOptionIds de la variante
+    const variantAttributeOptionIds =
+      selectedVariant.variantAttributeOptions.map(
+        (attr) => attr.attributeOptionId
+      )
+
+    // Filtrar solo las imágenes que corresponden a los atributos de esta variante
+    const filteredImages = selectedVariant.attributeImages.filter(
+      (img: AttributeOptionImages) =>
+        variantAttributeOptionIds.includes(img.attributeOptionId)
+    )
+
+    if (filteredImages.length > 0) {
+      // Ordenar: front primero, luego por displayOrder
+      const sortedImages = filteredImages.sort(
+        (a: AttributeOptionImages, b: AttributeOptionImages) => {
+          if (a.imageType === 'front' && b.imageType !== 'front') return -1
+          if (b.imageType === 'front' && a.imageType !== 'front') return 1
+          return (a.displayOrder || 0) - (b.displayOrder || 0)
+        }
+      )
+
+      return sortedImages.map((img: AttributeOptionImages, index: number) => ({
+        alt: product.name,
+        url: img?.imageUrlNormal || img?.imageUrlThumb || '',
+        isPrimary: index === 0 || img.imageType === 'front'
+      }))
+    }
+  }
+
+  // Fallback a mainImage del producto o imagen por defecto
+  return [
+    {
+      alt: product.name,
+      url: product.mainImage || '/no-image.webp',
+      isPrimary: true
+    }
+  ]
+}
+
+export const getThumbImage = (
+  selectedVariant: ProductVariantComplete,
+  product: { name: string; mainImage?: string }
+) => {
+  // Primero intentar con variantImages
+  if (
+    selectedVariant.variantImages &&
+    selectedVariant.variantImages.length > 0
+  ) {
+    const primaryImage = selectedVariant.variantImages.find(
+      (img) => img?.isPrimary
+    )
+    return (
+      primaryImage?.imageUrlThumb ||
+      selectedVariant.variantImages[0]?.imageUrlThumb ||
+      ''
+    )
+  }
+
+  // Si no hay variantImages, filtrar attributeImages según los atributos de la variante
+  if (
+    selectedVariant.attributeImages &&
+    selectedVariant.attributeImages.length > 0 &&
+    selectedVariant.variantAttributeOptions &&
+    selectedVariant.variantAttributeOptions.length > 0
+  ) {
+    // Obtener los attributeOptionIds de la variante
+    const variantAttributeOptionIds =
+      selectedVariant.variantAttributeOptions.map(
+        (attr) => attr.attributeOptionId
+      )
+
+    // Filtrar solo las imágenes que corresponden a los atributos de esta variante
+    const filteredImages = selectedVariant.attributeImages.filter(
+      (img: AttributeOptionImages) =>
+        variantAttributeOptionIds.includes(img.attributeOptionId)
+    )
+
+    if (filteredImages.length > 0) {
+      // Priorizar imagen 'front' si existe
+      const frontImage = filteredImages.find(
+        (img: AttributeOptionImages) => img.imageType === 'front'
+      )
+
+      if (frontImage) {
+        return frontImage.imageUrlThumb || ''
+      }
+
+      // Si no hay front, usar la primera imagen filtrada
+      return filteredImages[0]?.imageUrlThumb || ''
+    }
+  }
+
+  // Fallback a mainImage del producto
+  return product.mainImage || '/no-image.webp'
 }

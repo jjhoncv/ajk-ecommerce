@@ -1,16 +1,12 @@
-import React from "react";
-import { Metadata } from "next";
-import ProductService from "@/services/productService";
+import Layout from "@/components/layout/Layout";
 import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
-import SearchSorting from "@/components/search/SearchSorting";
-import { ProductSearchFiltersDTO } from "@/dto";
-import Layout from "@/components/layout/Layout";
-import {
-  hydrateSearchFiltersProps,
-  hydrateSearchResultsProps,
-  hydrateSearchSortingProps,
-} from "@/utils/hydrators/search.hydrator";
+import attributeModel from "@/models/Attribute.model";
+import brandModel from "@/models/Brand.model";
+import categoryModel from "@/models/Category.model";
+import searchModel from "@/models/Search.model";
+import { ProductSearchFilters } from "@/types/search";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Búsqueda de Productos | AJK E-commerce",
@@ -35,7 +31,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
 
   // Convertir parámetros de búsqueda a filtros
-  const filters: ProductSearchFiltersDTO = {
+  const filters: ProductSearchFilters = {
     query: params.q,
     categoryId: params.category ? parseInt(params.category) : undefined,
     brandId: params.brand ? parseInt(params.brand) : undefined,
@@ -70,13 +66,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     filters.attributes = attributeFilters;
   }
 
-  // Obtener resultados de búsqueda
-  const searchResults = await ProductService.searchProducts(filters);
+  // Obtener resultados de búsqueda directamente del modelo
+  const searchResults = await searchModel.searchProducts(filters);
 
-  // Obtener categorías y marcas para los filtros
-  const categories = await ProductService.getCategories();
-  const brands = await ProductService.getBrands();
-  const attributes = await ProductService.getAttributes();
+  // Obtener categorías, marcas y atributos directamente de los modelos
+  const categories = await categoryModel.getCategories();
+  const brands = await brandModel.getBrands();
+  const attributes = await attributeModel.getAttributes();
+
+  // Search page usando datos directos de los modelos - sin hydrators
 
   return (
     <Layout>
@@ -89,30 +87,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {/* Filtros laterales */}
           <div className="w-full lg:w-1/4">
             <SearchFilters
-              {...hydrateSearchFiltersProps(
-                categories,
-                brands,
-                attributes,
-                searchResults,
-                filters
-              )}
+              categories={categories || []}
+              brands={brands || []}
+              attributes={attributes || []}
+              availableFilters={searchResults.filters}
+              currentFilters={filters}
             />
           </div>
 
           {/* Resultados */}
           <div className="w-full lg:w-3/4">
-            <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <p className="text-gray-600">
-                {searchResults.totalCount} productos encontrados
-              </p>
-
-              <div className="flex items-center gap-4">
-                <SearchSorting {...hydrateSearchSortingProps(filters)} />
-              </div>
-            </div>
-
             <SearchResults
-              {...hydrateSearchResultsProps(searchResults, filters)}
+              products={searchResults.products}
+              totalPages={searchResults.totalPages}
+              currentPage={searchResults.page}
+              currentFilters={filters}
               defaultView="grid"
             />
           </div>

@@ -1,83 +1,90 @@
-import { Category, MegaMenuCategories } from './navigation'
-
-export interface Slide {
-  title: string
-  subtitle: string
-  description: string
-  image: string
-  cta: string
-  ctaLink: string
-}
-
-export interface SideBanner {
-  title: string
-  subtitle: string
-  image: string
-  link: string
-}
-
-export interface Feature {
-  icon: string
-  title: string
-  description: string
-}
-
-export interface FeaturedCategory {
-  title: string
-  subtitle: string
-  color: string
-  image: string
-  link?: string
-}
-
-export interface Product {
-  id: number
-  name: string
-  description: string
-  basePrice?: number
-  brandId?: number
-  brandName: string
-  minVariantPrice: number
-  categories: any[]
-  variants: any[]
-  mainImage?: string
-}
-
-export interface Deal {
-  id: string
-  name: string
-  originalPrice: number
-  price: number
-  discount: number
-  image: string
-  timer: string
-  stock: number
-}
-
-export interface FooterSection {
-  title: string
-  links: {
-    name: string
-    href: string
-  }[]
-}
-
-export interface SocialLink {
-  name: string
-  icon: string
-  href: string
-}
+import { ProductSearchItem } from './search'
 
 export interface HomeData {
-  megaMenuCategories: MegaMenuCategories
-  slides: Slide[]
-  sideBanners: SideBanner[]
-  features: Feature[]
-  productCategories: Category[]
-  featuredCategories: FeaturedCategory[]
-  footerSections: FooterSection[]
-  socialLinks: SocialLink[]
-  // Solo productos hidratados (eliminamos duplicación)
-  hydratedPopularProducts: { product: Product }[]
-  hydratedDealsOfTheDay: { product: Product }[]
+  // Mega menú con categorías reales
+  megaMenuCategories: Record<
+    string,
+    {
+      subcategories: {
+        name: string
+        link: string
+        children: {
+          name: string
+          link: string
+          children: any[]
+        }[]
+      }[]
+      featuredProducts: {
+        name: string
+        price: number
+        image: string
+      }[]
+      banner: {
+        title: string
+        discount: string
+        image: string
+      }
+    }
+  >
+
+  // Slides del hero
+  slides: {
+    title: string
+    subtitle: string
+    description: string
+    image: string
+    cta: string
+    ctaLink: string
+  }[]
+
+  // Banners laterales
+  sideBanners: {
+    title: string
+    subtitle: string
+    image: string
+    link: string
+  }[]
+
+  // Features
+  features: {
+    icon: string
+    title: string
+    description: string
+  }[]
+
+  // Categorías de productos
+  productCategories: {
+    name: string
+    icon: string
+    bg: string
+    image: string | null
+  }[]
+
+  // Categorías destacadas
+  featuredCategories: {
+    title: string
+    subtitle: string
+    color: string
+    image: string
+  }[]
+
+  // Footer
+  footerSections: {
+    title: string
+    links: {
+      name: string
+      href: string
+    }[]
+  }[]
+
+  // Social links
+  socialLinks: {
+    name: string
+    icon: string
+    href: string
+  }[]
+
+  // sections
+  popularProducts: ProductSearchItem[]
+  dealsProducts: ProductSearchItem[]
 }

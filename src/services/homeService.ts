@@ -8,20 +8,18 @@ import { ProductSearchItem } from '@/types/search'
 export async function getHomeData(): Promise<HomeData> {
   try {
     // Obtener productos populares usando el método de búsqueda
-    const popularVariantsResult = await searchModel.searchProducts({
+    const popularSearchResult = await searchModel.searchProducts({
       page: 1,
       limit: 5,
       sort: 'newest'
     })
-    // const popularProducts = popularVariantsResult.products
 
     // Obtener productos para ofertas del día
-    const dealsVariantsResult = await searchModel.searchProducts({
+    const dealsSearchResult = await searchModel.searchProducts({
       page: 1,
       limit: 4,
       sort: 'price_desc'
     })
-    const dealsProducts = dealsVariantsResult.products
 
     // Obtener todas las categorías
     const categoriesData = await categoryModel.getCategories()
@@ -38,7 +36,7 @@ export async function getHomeData(): Promise<HomeData> {
       // Mega menú con categorías reales y productos destacados con imágenes
       megaMenuCategories: buildMegaMenuCategories(
         megaMenuData,
-        popularVariantsResult.products
+        popularSearchResult.products
       ),
 
       // Slides del hero (mantenemos algunos datos estáticos por ahora)
@@ -123,22 +121,10 @@ export async function getHomeData(): Promise<HomeData> {
       })),
 
       // Productos hidratados (ahora directamente desde los modelos)
-      popularProducts: popularVariantsResult.products,
+      popularProducts: popularSearchResult.products,
 
-      hydratedDealsOfTheDay: dealsProducts.map((product) => ({
-        product: {
-          id: product.id,
-          name: product.name,
-          description: product.description || '',
-          basePrice: product.basePrice,
-          brandId: product.brandId,
-          brandName: product.brandName || '',
-          minVariantPrice: product.minVariantPrice,
-          categories: product.categories || [],
-          variants: product.variants || [],
-          mainImage: product.mainImage
-        }
-      })),
+      // Ofertas del día usando la misma estructura que popularProducts
+      dealsProducts: dealsSearchResult.products,
 
       // Footer (mantenemos estático)
       footerSections: [
@@ -340,7 +326,7 @@ function getBasicHomeData(): HomeData {
     footerSections: [],
     socialLinks: [],
     // Solo propiedades hidratadas
-    hydratedPopularProducts: [],
-    hydratedDealsOfTheDay: []
+    popularProducts: [],
+    dealsProducts: []
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { getVariantTitle, hasPromotion } from "./ProductCard.helpers";
+import ButtonAddToCart from "../ButtonAddToCart";
+import { getThumbImage, getVariantImages, getVariantTitle, hasPromotion } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
 import ProductCardPrice from "./ProductCardPrice";
 import ProductCardSlider from "./ProductCardSlider";
@@ -11,24 +12,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
   layout = "grid",
   className = "",
 }) => {
-  // Obtener el producto directamente
-  const variantProduct = product.product;
 
   // Verificar que el producto y sus variantes existan
   if (
-    !variantProduct ||
-    !variantProduct.productVariants ||
-    variantProduct.productVariants.length === 0
+    !product ||
+    !product.variants ||
+    product.variants.length === 0 ||
+    !product.variantId
   ) {
     console.error("ProductCard: Producto o variantes no válidos:", product);
     return null;
   }
 
-  const selectedVariant = variantProduct.productVariants[0];
+  // Buscar la variante específica por variantId
+  const selectedVariant = product.variants.find(v => v.id === product.variantId) || product.variants[0];
   if (!selectedVariant) {
-    console.error("ProductCard: Producto sin Variantes:", product);
-    return null
+    console.error("ProductCard: Variante no encontrada:", product);
+    return null;
   }
+
   const hasDiscount = hasPromotion(selectedVariant);
 
   return (
@@ -38,34 +40,43 @@ const ProductCard: React.FC<ProductCardProps> = ({
         : ""
         }`}
     >
-      <Link
-        href={`/productos/variante/${selectedVariant.id}`}
-        className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
-      >
-        <ProductCardSlider
-          selectedVariant={selectedVariant}
-          layout={layout}
-          variantProduct={variantProduct}
+      {/* Contenedor relativo para ProductCardSlider y ButtonAddToCart */}
+      <div className="relative">
+        <Link
+          href={`/productos/variante/${selectedVariant.id}`}
+          className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
+        >
+          <ProductCardSlider
+            images={getVariantImages(selectedVariant, product)}
+          />
+        </Link>
+
+        {/* ButtonAddToCart posicionado absolutamente */}
+        <ButtonAddToCart
+          id={product.variantId}
+          image={getThumbImage(selectedVariant, product)}
+          name={product.name}
+          price={product.variantPrice || selectedVariant.price}
         />
-      </Link>
+      </div>
 
       <div className={layout === "list" ? "md:w-2/3" : ""}>
         <Link href={`/productos/variante/${selectedVariant.id}`}>
           <h3 className="font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
             {/* Promoción */}
-            {hasDiscount && selectedVariant.promotion && (
+            {hasDiscount && (
               <span className="bg-red-500 text-[11px] leading-[11px] inline-block text-white px-[3px] py-[2px] mr-[1px]">
                 Promo
               </span>
             )}
 
-            {getVariantTitle(variantProduct, selectedVariant)}
+            {getVariantTitle(product, selectedVariant)}
           </h3>
         </Link>
 
-        {/* Atributos con selección */}
+        {/* Precio */}
         <div className="space-y-2">
-          <ProductCardPrice variantProduct={variantProduct} />
+          <ProductCardPrice variantProduct={selectedVariant} />
         </div>
       </div>
     </div>

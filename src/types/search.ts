@@ -2,6 +2,7 @@
 // INTERFACES PARA BÚSQUEDA Y FILTROS DE PRODUCTOS
 // ============================================================================
 
+import { ProductVariantComplete } from '@/models/ProductVariant.model'
 import { Brands, Categories, Products, ProductVariants } from '@/types/domain'
 
 export interface ProductSearchFilters {
@@ -35,10 +36,10 @@ export interface ProductSearchItem {
   basePrice?: number
   minVariantPrice: number
   categories: CategorySummary[]
-  variants: ProductVariants[]
+  variants: ProductVariantComplete[]
   mainImage?: string
   // Campos específicos de variante para resultados de búsqueda
-  variantId?: number
+  variantId: number
   variantSku?: string
   variantPrice?: number
   variantStock?: number

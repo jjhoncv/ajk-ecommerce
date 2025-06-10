@@ -1,20 +1,19 @@
-import React from "react";
+import ProductCard from "@/components/ui/ProductCard";
+import { ProductSearchItem } from "@/types/search";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import ProductCard from "@/components/ui/ProductCard";
-import { ProductDTO } from "@/dto";
+import React from "react";
 
 interface DailyDealsProps {
   bannerImage?: string;
   bannerTitle?: string;
-  // Solo necesitamos productos hidratados
-  hydratedDeals: { product: ProductDTO }[];
+  products: ProductSearchItem[];
 }
 
 const DailyDeals: React.FC<DailyDealsProps> = ({
   bannerImage = "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
   bannerTitle = "Trae la naturaleza a tu hogar",
-  hydratedDeals,
+  products,
 }) => {
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
@@ -60,16 +59,16 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
         {/* Products Grid */}
         <div className="md:col-span-9">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hydratedDeals?.map((item) => (
+            {products?.map((item) => (
               <ProductCard
-                key={item.product.variants[0]?.id || item.product.id}
+                key={item.variantId || item.id}
                 product={item}
               />
             )) || (
-              <div className="col-span-4 text-center py-8 text-gray-500">
-                No hay ofertas disponibles
-              </div>
-            )}
+                <div className="col-span-4 text-center py-8 text-gray-500">
+                  No hay ofertas disponibles
+                </div>
+              )}
           </div>
         </div>
       </div>
