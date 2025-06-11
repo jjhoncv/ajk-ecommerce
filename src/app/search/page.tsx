@@ -69,7 +69,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <Layout>
-      <div className="max-w-[1920px] mx-auto px-12 py-8">
+      <div className="max-w-screen-4xl mx-auto px-12 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filtros laterales */}
           <div className="lg:min-w-56 lg:max-w-56">

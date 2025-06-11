@@ -1,8 +1,6 @@
 import categoryModel from '@/models/Category.model'
 import searchModel from '@/models/Search.model'
-import { Categories } from '@/types/domain'
 import { HomeData } from '@/types/home'
-import { ProductSearchItem } from '@/types/search'
 
 // Esta función obtiene datos reales desde la base de datos
 export async function getHomeData(): Promise<HomeData> {
@@ -10,14 +8,14 @@ export async function getHomeData(): Promise<HomeData> {
     // Obtener productos populares usando el método de búsqueda
     const popularSearchResult = await searchModel.searchProducts({
       page: 1,
-      limit: 5,
+      limit: 7,
       sort: 'newest'
     })
 
     // Obtener productos para ofertas del día
     const dealsSearchResult = await searchModel.searchProducts({
       page: 1,
-      limit: 4,
+      limit: 6,
       sort: 'price_desc'
     })
 
@@ -29,16 +27,7 @@ export async function getHomeData(): Promise<HomeData> {
       ? categoriesData.filter((cat) => !cat.parentId).slice(0, 8)
       : []
 
-    // Usar todas las categorías para construir el mega menú jerárquico
-    const megaMenuData = categoriesData || []
-
     return {
-      // Mega menú con categorías reales y productos destacados con imágenes
-      megaMenuCategories: buildMegaMenuCategories(
-        megaMenuData,
-        popularSearchResult.products
-      ),
-
       // Slides del hero (mantenemos algunos datos estáticos por ahora)
       slides: [
         {
@@ -105,19 +94,16 @@ export async function getHomeData(): Promise<HomeData> {
       ],
 
       // Categorías de productos reales
-      productCategories: mainCategories.map((category, index) => ({
+      productCategories: mainCategories.map((category) => ({
         name: category.name,
-        icon: getCategoryIcon(category.name),
-        bg: getCategoryColor(index),
         image: category.imageUrl ?? null
       })),
 
       // Categorías destacadas
-      featuredCategories: mainCategories.slice(0, 3).map((category, index) => ({
+      featuredCategories: mainCategories.slice(0, 3).map((category) => ({
         title: `Ofertas en ${category.name}`,
         subtitle: 'Descuentos especiales',
-        color: getFeaturedCategoryColor(index),
-        image: getCategoryImage(category.name)
+        image: category.imageUrl ?? null
       })),
 
       // Productos hidratados (ahora directamente desde los modelos)
@@ -178,146 +164,9 @@ export async function getHomeData(): Promise<HomeData> {
   }
 }
 
-// Función auxiliar para construir el mega menú con categorías reales
-function buildMegaMenuCategories(
-  categories: Categories[],
-  products: ProductSearchItem[]
-): Record<
-  string,
-  {
-    subcategories: {
-      name: string
-      link: string
-      children: {
-        name: string
-        link: string
-        children: any[]
-      }[]
-    }[]
-    featuredProducts: {
-      name: string
-      price: number
-      image: string
-    }[]
-    banner: {
-      title: string
-      discount: string
-      image: string
-    }
-  }
-> {
-  const megaMenu: Record<string, any> = {}
-
-  // Crear un mapa de categorías por ID para fácil acceso
-  const categoryMap = new Map<number, Categories>()
-  categories.forEach((cat) => categoryMap.set(cat.id, cat))
-
-  // Función para construir subcategorías recursivamente
-  const buildSubcategories = (parentId: number): any[] => {
-    return categories
-      .filter((cat) => cat.parentId === parentId)
-      .map((cat) => ({
-        name: cat.name,
-        link: `/categoria/${cat.name.toLowerCase().replace(/\s+/g, '-')}`,
-        children: buildSubcategories(cat.id) // Recursión para subcategorías anidadas
-      }))
-  }
-
-  // Construir el mega menú solo para categorías principales (parentId = null)
-  categories.forEach((category) => {
-    if (!category.parentId) {
-      megaMenu[category.name] = {
-        subcategories: buildSubcategories(category.id),
-        featuredProducts: products.slice(0, 2).map((product) => ({
-          name: product.name,
-          price: product.minVariantPrice || product.basePrice,
-          image: getProductImage(product)
-        })),
-        banner: {
-          title: `Ofertas en ${category.name}`,
-          discount: 'Hasta 30% OFF',
-          image: getCategoryImage(category.name)
-        }
-      }
-    }
-  })
-
-  return megaMenu
-}
-
-// Función auxiliar para obtener la imagen principal de un producto
-function getProductImage(product: ProductSearchItem): string {
-  if (product.mainImage) {
-    return product.mainImage
-  }
-  return '/no-image.webp'
-}
-
-// Función auxiliar para obtener iconos de categorías
-function getCategoryIcon(categoryName: string): string {
-  const icons: { [key: string]: string } = {
-    Electrónicos: '📱',
-    Smartphones: '📱',
-    Computadoras: '💻',
-    Laptops: '💻',
-    Audio: '🎧',
-    Auriculares: '🎧',
-    Wearables: '⌚',
-    Smartwatches: '⌚',
-    iPhone: '📱'
-  }
-  return icons[categoryName] || '🔌'
-}
-
-// Función auxiliar para obtener colores de categorías
-function getCategoryColor(index: number): string {
-  const colors = [
-    '#FEE2E2',
-    '#E0F2FE',
-    '#F3E8FF',
-    '#ECFDF5',
-    '#FEF3C7',
-    '#FCE7F3',
-    '#E0E7FF',
-    '#DBEAFE'
-  ]
-  return colors[index % colors.length]
-}
-
-// Función auxiliar para obtener colores de categorías destacadas
-function getFeaturedCategoryColor(index: number): string {
-  const colors = ['#5B4AE8', '#22C55E', '#EF4444']
-  return colors[index % colors.length]
-}
-
-// Función auxiliar para obtener imágenes de categorías
-function getCategoryImage(categoryName: string): string {
-  const images: { [key: string]: string } = {
-    Smartphones:
-      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=200&fit=crop',
-    Computadoras:
-      'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&h=200&fit=crop',
-    Laptops:
-      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=200&fit=crop',
-    Audio:
-      'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&h=200&fit=crop',
-    Auriculares:
-      'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&h=200&fit=crop',
-    Wearables:
-      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&h=200&fit=crop',
-    iPhone:
-      'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=400&h=200&fit=crop'
-  }
-  return (
-    images[categoryName] ||
-    'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=200&fit=crop'
-  )
-}
-
 // Función de fallback con datos básicos
 function getBasicHomeData(): HomeData {
   return {
-    megaMenuCategories: {},
     slides: [],
     sideBanners: [],
     features: [],
@@ -325,7 +174,6 @@ function getBasicHomeData(): HomeData {
     featuredCategories: [],
     footerSections: [],
     socialLinks: [],
-    // Solo propiedades hidratadas
     popularProducts: [],
     dealsProducts: []
   }

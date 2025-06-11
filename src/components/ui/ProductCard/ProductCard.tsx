@@ -10,7 +10,6 @@ import ProductCardSlider from "./ProductCardSlider";
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
 }) => {
-
   // Verificar que el producto y sus variantes existan
   if (
     !product ||

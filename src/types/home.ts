@@ -1,32 +1,8 @@
+import { featuredCategories } from '@/types/domain/featuredCategories'
+import { Category } from '@/types/navigation'
 import { ProductSearchItem } from './search'
 
 export interface HomeData {
-  // Mega menú con categorías reales
-  megaMenuCategories: Record<
-    string,
-    {
-      subcategories: {
-        name: string
-        link: string
-        children: {
-          name: string
-          link: string
-          children: any[]
-        }[]
-      }[]
-      featuredProducts: {
-        name: string
-        price: number
-        image: string
-      }[]
-      banner: {
-        title: string
-        discount: string
-        image: string
-      }
-    }
-  >
-
   // Slides del hero
   slides: {
     title: string
@@ -53,20 +29,10 @@ export interface HomeData {
   }[]
 
   // Categorías de productos
-  productCategories: {
-    name: string
-    icon: string
-    bg: string
-    image: string | null
-  }[]
+  productCategories: Category[]
 
   // Categorías destacadas
-  featuredCategories: {
-    title: string
-    subtitle: string
-    color: string
-    image: string
-  }[]
+  featuredCategories: featuredCategories[]
 
   // Footer
   footerSections: {

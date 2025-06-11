@@ -2,7 +2,6 @@ import { executeQuery } from '@/lib/db'
 import { Products as ProductRaw } from '@/types/database'
 
 export class ProductRepository {
-  // ✅ Obtener todos los products
   public async getProducts(): Promise<ProductRaw[] | null> {
     const products = await executeQuery<ProductRaw[]>({
       query: 'SELECT * FROM products ORDER BY id ASC'
@@ -12,7 +11,6 @@ export class ProductRepository {
     return products
   }
 
-  // ✅ Obtener product por ID
   public async getProductById(id: number): Promise<ProductRaw | null> {
     const products = await executeQuery<ProductRaw[]>({
       query: 'SELECT * FROM products WHERE id = ?',
@@ -23,7 +21,6 @@ export class ProductRepository {
     return products[0]
   }
 
-  // ✅ Obtener products por brand ID
   public async getProductsByBrandId(
     brandId: number
   ): Promise<ProductRaw[] | null> {
@@ -36,7 +33,6 @@ export class ProductRepository {
     return products
   }
 
-  // ✅ Obtener products por múltiples brand IDs (batch loading)
   public async getProductsByBrandIds(
     brandIds: number[]
   ): Promise<ProductRaw[] | null> {
@@ -52,7 +48,6 @@ export class ProductRepository {
     return products
   }
 
-  // ✅ Buscar products por nombre (para búsqueda)
   public async searchProductsByName(
     searchTerm: string
   ): Promise<ProductRaw[] | null> {
@@ -65,7 +60,6 @@ export class ProductRepository {
     return products
   }
 
-  // ✅ Obtener products con paginación
   public async getProductsPaginated(
     limit: number,
     offset: number
@@ -79,7 +73,6 @@ export class ProductRepository {
     return products
   }
 
-  // ✅ Contar total de products
   public async getProductsCount(): Promise<number> {
     const result = await executeQuery<{ count: number }[]>({
       query: 'SELECT COUNT(*) as count FROM products'
@@ -88,7 +81,6 @@ export class ProductRepository {
     return result[0].count
   }
 
-  // ✅ Crear product
   public async createProduct(
     product: Omit<ProductRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<ProductRaw | null> {
@@ -100,7 +92,6 @@ export class ProductRepository {
     return await this.getProductById(result.insertId)
   }
 
-  // ✅ Actualizar product
   public async updateProduct(
     productData: Partial<Omit<ProductRaw, 'id' | 'created_at' | 'updated_at'>>,
     id: number
@@ -113,7 +104,6 @@ export class ProductRepository {
     return await this.getProductById(id)
   }
 
-  // ✅ Eliminar product
   public async deleteProduct(id: number): Promise<void> {
     await executeQuery({
       query: 'DELETE FROM products WHERE id = ?',

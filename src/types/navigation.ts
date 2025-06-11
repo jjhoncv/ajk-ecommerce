@@ -1,33 +1,21 @@
 export interface Category {
-  name: string;
-  icon: string;
-  bg: string;
-  image: string | null;
+  name: string
+  image: string | null
 }
 
 export interface SubCategory {
-  name: string;
-  link: string;
+  name: string
+  link: string
 }
 
 export interface FeaturedProduct {
-  name: string;
-  price: number;
-  image: string;
+  name: string
+  price: number
+  image: string | null
 }
 
 export interface Banner {
-  title: string;
-  discount: string;
-  image: string;
-}
-
-export interface MegaMenuCategory {
-  subcategories: SubCategory[];
-  featuredProducts: FeaturedProduct[];
-  banner: Banner;
-}
-
-export interface MegaMenuCategories {
-  [key: string]: MegaMenuCategory;
+  title: string
+  discount: string
+  image: string
 }

@@ -1,27 +1,24 @@
-import {
-  mapAttributeOption,
-  mapAttributeOptions,
-  mapAttributeOptionWithImages
-} from '@/mappers/mapAttributeOption'
-import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
-import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
-import oAttributeOptionRep from '@/repository/AttributeOption.repository'
-
+// generated
 import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import { AttributeOptions as AttributeOption } from '@/types/domain'
 
-export interface AttributeOptionWithImages extends AttributeOption {
-  attributeOptionImages?: AttributeOption['attributeOptionImages']
-}
+// others
+import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
+import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
 
-export interface AttributeOptionWithVariantOptions extends AttributeOption {
-  variantAttributeOptions?: AttributeOption['variantAttributeOptions']
-}
+// me
+import {
+  AttributeOptionMapper,
+  AttributeOptionMapperWithImages,
+  AttributeOptionsMapper
+} from './AttributeOption.mapper'
+import oAttributeOptionRep from './AttributeOption.repository'
 
-export interface AttributeOptionComplete extends AttributeOption {
-  attributeOptionImages?: AttributeOption['attributeOptionImages']
-  variantAttributeOptions?: AttributeOption['variantAttributeOptions']
-}
+import {
+  AttributeOptionComplete,
+  AttributeOptionWithImages,
+  AttributeOptionWithVariantOptions
+} from './AttributeOption.interfaces'
 
 export class AttributeOptionModel {
   // ✅ Obtener opciones por attribute ID (SIN relaciones por defecto)
@@ -30,7 +27,7 @@ export class AttributeOptionModel {
   ): Promise<AttributeOption[] | undefined> {
     const optionsRaw =
       await oAttributeOptionRep.getAttributeOptions(attributeId)
-    return mapAttributeOptions(optionsRaw)
+    return AttributeOptionsMapper(optionsRaw)
   }
 
   // ✅ Obtener opciones por attribute ID CON images (lógica de negocio)
@@ -43,7 +40,7 @@ export class AttributeOptionModel {
     if (!optionsRaw) return undefined
 
     // Mapear opciones básicas
-    const options = mapAttributeOptions(optionsRaw)
+    const options = AttributeOptionsMapper(optionsRaw)
     if (!options) return undefined
 
     // Obtener images para todas las opciones (batch loading optimizado)
@@ -70,7 +67,7 @@ export class AttributeOptionModel {
     if (!optionsRaw) return undefined
 
     // Mapear opciones básicas
-    const options = mapAttributeOptions(optionsRaw)
+    const options = AttributeOptionsMapper(optionsRaw)
     if (!options) return undefined
 
     // Obtener variant options para todas las opciones (batch loading optimizado)
@@ -97,7 +94,7 @@ export class AttributeOptionModel {
     if (!optionsRaw) return undefined
 
     // Mapear opciones básicas
-    const options = mapAttributeOptions(optionsRaw)
+    const options = AttributeOptionsMapper(optionsRaw)
     if (!options) return undefined
 
     // Obtener images y variant options para todas las opciones (batch loading optimizado)
@@ -125,7 +122,7 @@ export class AttributeOptionModel {
 
     if (!optionRaw) return undefined
 
-    return mapAttributeOption(optionRaw)
+    return AttributeOptionMapper(optionRaw)
   }
 
   // ✅ Obtener option por ID CON images (lógica de negocio)
@@ -139,7 +136,7 @@ export class AttributeOptionModel {
     // Obtener images de la option
     const images = await attributeOptionImageModel.getAttributeOptionImages(id)
 
-    return mapAttributeOptionWithImages(optionRaw, images)
+    return AttributeOptionMapperWithImages(optionRaw, images)
   }
 
   // ✅ Crear option - delega al repository
@@ -150,7 +147,7 @@ export class AttributeOptionModel {
 
     if (!created) return undefined
 
-    return mapAttributeOption(created)
+    return AttributeOptionMapper(created)
   }
 
   // ✅ Actualizar option - delega al repository
@@ -165,7 +162,7 @@ export class AttributeOptionModel {
 
     if (!updated) return undefined
 
-    return mapAttributeOption(updated)
+    return AttributeOptionMapper(updated)
   }
 
   // ✅ Eliminar option - delega al repository

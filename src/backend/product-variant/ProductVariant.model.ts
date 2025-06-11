@@ -1,67 +1,36 @@
 import { executeQuery } from '@/lib/db'
-import {
-  mapProductVariant,
-  mapProductVariants
-} from '@/mappers/mapProductVariant'
+
+// others
+import variantImage from '@/backend/variant-image/VariantImage.model'
 import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
 import promotionVariantModel from '@/models/PromotionVariant.model'
+import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
 import variantRatingModel from '@/models/VariantRating.model'
 
-import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
-import oProductVariantRep from '@/repository/ProductVariant.repository'
+//me
+import {
+  ProductVariantMapper,
+  ProductVariantsMapper
+} from './ProductVariant.mapper'
+
 import oVariantAttributeOptionRep from '@/repository/VariantAttributeOption.repository'
+import oProductVariantRep from './ProductVariant.repository'
 
 import { ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
   AttributeOptionImages,
-  ProductVariants as ProductVariant,
-  VariantAttributeOptions,
-  VariantImages,
-  VariantImagesImageType
+  ProductVariants as ProductVariant
 } from '@/types/domain'
-
-export interface ProductVariantWithAttributeOptions extends ProductVariant {
-  variantAttributeOptions: VariantAttributeOptions[]
-}
-
-export interface ProductVariantWithImages extends ProductVariant {
-  variantImages: VariantImages[]
-}
-
-export interface ProductVariantComplete extends ProductVariant {
-  variantAttributeOptions: VariantAttributeOptions[]
-  variantImages: VariantImages[]
-  attributeImages: AttributeOptionImages[]
-  promotion?: {
-    id: number
-    name: string
-    discountType: 'percentage' | 'fixed_amount'
-    discountValue: number
-    promotionPrice: number | null
-    startDate: Date
-    endDate: Date
-    stockLimit: number | null
-  }
-  ratings?: {
-    totalRatings: number
-    averageRating: number
-    fiveStar: number
-    fourStar: number
-    threeStar: number
-    twoStar: number
-    oneStar: number
-    verifiedPurchases: number
-  }
-}
+import {
+  ProductVariantComplete,
+  ProductVariantWithAttributeOptions,
+  ProductVariantWithImages
+} from './ProductVariant.interfaces'
 
 export class ProductVariantModel {
-  // ============================================================================
-  // MÉTODOS BÁSICOS (nueva estructura)
-  // ============================================================================
-
   public async getProductVariants(): Promise<ProductVariant[] | undefined> {
     const variantsRaw = await oProductVariantRep.getProductVariants()
-    return mapProductVariants(variantsRaw)
+    return ProductVariantsMapper(variantsRaw)
   }
 
   public async getProductVariantById(
@@ -69,7 +38,7 @@ export class ProductVariantModel {
   ): Promise<ProductVariant | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
     if (!variantRaw) return undefined
-    return mapProductVariant(variantRaw)
+    return ProductVariantMapper(variantRaw)
   }
 
   public async getProductVariantsByProductId(
@@ -77,7 +46,7 @@ export class ProductVariantModel {
   ): Promise<ProductVariant[] | undefined> {
     const variantsRaw =
       await oProductVariantRep.getProductVariantsByProductId(productId)
-    return mapProductVariants(variantsRaw)
+    return ProductVariantsMapper(variantsRaw)
   }
 
   public async getProductVariantBySku(
@@ -85,7 +54,7 @@ export class ProductVariantModel {
   ): Promise<ProductVariant | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantBySku(sku)
     if (!variantRaw) return undefined
-    return mapProductVariant(variantRaw)
+    return ProductVariantMapper(variantRaw)
   }
 
   public async createProductVariant(
@@ -93,7 +62,7 @@ export class ProductVariantModel {
   ): Promise<ProductVariant | undefined> {
     const created = await oProductVariantRep.createProductVariant(variantData)
     if (!created) return undefined
-    return mapProductVariant(created)
+    return ProductVariantMapper(created)
   }
 
   public async updateProductVariant(
@@ -107,7 +76,7 @@ export class ProductVariantModel {
       id
     )
     if (!updated) return undefined
-    return mapProductVariant(updated)
+    return ProductVariantMapper(updated)
   }
 
   public async deleteProductVariant(id: number): Promise<void> {
@@ -129,18 +98,14 @@ export class ProductVariantModel {
       stock
     )
     if (!updated) return undefined
-    return mapProductVariant(updated)
+    return ProductVariantMapper(updated)
   }
-
-  // ============================================================================
-  // MÉTODOS CON COMPOSICIÓN (nueva estructura)
-  // ============================================================================
 
   public async getProductVariantsWithAttributeOptions(): Promise<
     ProductVariantWithAttributeOptions[] | undefined
   > {
     const variantsRaw = await oProductVariantRep.getProductVariants()
-    const variants = mapProductVariants(variantsRaw)
+    const variants = ProductVariantsMapper(variantsRaw)
 
     if (!variants) return undefined
 
@@ -163,7 +128,7 @@ export class ProductVariantModel {
     console.log('variantRaw', variantRaw, id)
     if (!variantRaw) return undefined
 
-    const variant = mapProductVariant(variantRaw)
+    const variant = ProductVariantMapper(variantRaw)
     const attributeOptions =
       await variantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
         id
@@ -180,7 +145,7 @@ export class ProductVariantModel {
   ): Promise<ProductVariantWithAttributeOptions[] | undefined> {
     const variantsRaw =
       await oProductVariantRep.getProductVariantsByProductId(productId)
-    const variants = mapProductVariants(variantsRaw)
+    const variants = ProductVariantsMapper(variantsRaw)
 
     if (!variants) return undefined
 
@@ -207,7 +172,7 @@ export class ProductVariantModel {
     const variantsByProductId = new Map<number, ProductVariant[]>()
 
     for (const variantRaw of variantsRaw) {
-      const variant = mapProductVariant(variantRaw)
+      const variant = ProductVariantMapper(variantRaw)
       const productId = variant.productId
 
       if (!variantsByProductId.has(productId)) {
@@ -220,18 +185,14 @@ export class ProductVariantModel {
     return variantsByProductId
   }
 
-  // ============================================================================
-  // MÉTODOS CON IMÁGENES (usando composición)
-  // ============================================================================
-
   public async getProductVariantWithImages(
     id: number
   ): Promise<ProductVariantWithImages | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
     if (!variantRaw) return undefined
 
-    const variant = mapProductVariant(variantRaw)
-    const images = await this.getVariantImages(id)
+    const variant = ProductVariantMapper(variantRaw)
+    const images = await variantImage.getVariantImages(id)
 
     return {
       ...variant,
@@ -239,69 +200,13 @@ export class ProductVariantModel {
     }
   }
 
-  public async getVariantImages(variantId: number): Promise<VariantImages[]> {
-    const images = await executeQuery<
-      {
-        id: number
-        variant_id: number
-        image_url_thumb: string
-        image_url_normal: string
-        image_url_zoom: string
-        image_type: VariantImagesImageType
-        is_primary: number
-        alt_text: string | null
-        display_order: number | null
-        created_at: Date
-        updated_at: Date
-      }[]
-    >({
-      query: `
-        SELECT 
-          id,
-          variant_id,
-          image_url_thumb,
-          image_url_normal,
-          image_url_zoom,
-          image_type,
-          is_primary,
-          alt_text,
-          display_order,
-          created_at,
-          updated_at
-        FROM variant_images 
-        WHERE variant_id = ?
-        ORDER BY display_order ASC, is_primary DESC
-      `,
-      values: [variantId]
-    })
-
-    return images.map((img) => ({
-      id: img.id,
-      variantId: img.variant_id,
-      imageUrlThumb: img.image_url_thumb,
-      imageUrlNormal: img.image_url_normal,
-      imageUrlZoom: img.image_url_zoom,
-      imageType: img.image_type,
-      isPrimary: img.is_primary,
-      altText: img.alt_text,
-      displayOrder: img.display_order,
-      createdAt: img.created_at,
-      updatedAt: img.updated_at,
-      productVariants: undefined
-    }))
-  }
-
-  // ============================================================================
-  // MÉTODOS COMPLETOS (con todo: atributos, imágenes, promociones, ratings)
-  // ============================================================================
-
   public async getProductVariantComplete(
     id: number
   ): Promise<ProductVariantComplete | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
     if (!variantRaw) return undefined
 
-    const variant = mapProductVariant(variantRaw)
+    const variant = ProductVariantMapper(variantRaw)
 
     // Obtener atributos usando composición con datos completos
     const attributeOptionsRaw =
@@ -325,7 +230,7 @@ export class ProductVariantModel {
       })) || []
 
     // Obtener imágenes de la variante
-    const images = await this.getVariantImages(id)
+    const images = await variantImage.getVariantImages(id)
 
     // Obtener imágenes de atributos usando composición
     const attributeImages = await this.getAttributeImagesForVariant(

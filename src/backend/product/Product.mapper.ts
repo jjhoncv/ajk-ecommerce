@@ -1,8 +1,7 @@
 import { Products as ProductRaw } from '@/types/database'
 import { Products as Product } from '@/types/domain'
 
-// ✅ Mapper individual puro - NO incluye relaciones
-export const mapProduct = (data: ProductRaw): Product => {
+export const ProductMapper = (data: ProductRaw): Product => {
   return {
     id: data.id,
     name: data.name,
@@ -11,15 +10,14 @@ export const mapProduct = (data: ProductRaw): Product => {
     brandId: data.brand_id,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
-    brands: undefined, // Se llena en el modelo con lógica de negocio
-    productVariants: undefined // Se llena en el modelo con lógica de negocio
+    brands: undefined,
+    productVariants: undefined
   }
 }
 
-// ✅ Para arrays - maneja null a nivel de array
-export const mapProducts = (
+export const ProductsMapper = (
   data: ProductRaw[] | null
 ): Product[] | undefined => {
   if (data === null) return undefined
-  return data.map(mapProduct)
+  return data.map(ProductMapper)
 }

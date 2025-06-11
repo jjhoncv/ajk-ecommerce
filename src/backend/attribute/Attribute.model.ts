@@ -1,25 +1,22 @@
-import { mapAttribute, mapAttributes } from '@/mappers/mapAttribute'
-import { mapAttributeOptions } from '@/mappers/mapAttributeOption'
-import attributeOptionModel from '@/models/AttributeOption.model'
-import oAttributeRep from '@/repository/Attribute.repository'
-import oAttributeOptionRep from '@/repository/AttributeOption.repository'
-
+// generated
 import { Attributes as AttributeRaw } from '@/types/database'
-import {
-  Attributes as Attribute,
-  AttributeOptions as AttributeOption
-} from '@/types/domain'
+import { AttributeOptions as AttributeOption } from '@/types/domain'
 
-// ✅ Interface para Attribute con opciones
-export interface AttributeWithOptions extends Attribute {
-  options?: AttributeOption[]
-}
+// others
+import { AttributeOptionsMapper } from '@/backend/attribute-option/AttributeOption.mapper'
+import attributeOptionModel from '@/backend/attribute-option/AttributeOption.model'
+import oAttributeOptionRep from '@/backend/attribute-option/AttributeOption.repository'
+
+// me
+import { AttributeWithOptions } from './Attribute.interfaces'
+import { AttributeMapper, AttributeMappers } from './Attribute.mapper'
+import oAttributeRep from './Attribute.repository'
 
 export class AttributeModel {
   // ✅ Obtener todos los attributes con sus opciones (SIN images por defecto)
   public async getAttributes(): Promise<AttributeWithOptions[] | undefined> {
     const attributesRaw = await oAttributeRep.getAttributes()
-    const attributes = mapAttributes(attributesRaw)
+    const attributes = AttributeMappers(attributesRaw)
 
     if (!attributes) return undefined
 
@@ -37,7 +34,7 @@ export class AttributeModel {
     AttributeWithOptions[] | undefined
   > {
     const attributesRaw = await oAttributeRep.getAttributes()
-    const attributes = mapAttributes(attributesRaw)
+    const attributes = AttributeMappers(attributesRaw)
 
     if (!attributes) return undefined
 
@@ -60,7 +57,7 @@ export class AttributeModel {
 
     if (!attributeRaw) return undefined
 
-    const attribute = mapAttribute(attributeRaw)
+    const attribute = AttributeMapper(attributeRaw)
     const options = await this.getAttributeOptions(attribute.id)
 
     return {
@@ -77,7 +74,7 @@ export class AttributeModel {
 
     if (!attributeRaw) return undefined
 
-    const attribute = mapAttribute(attributeRaw)
+    const attribute = AttributeMapper(attributeRaw)
     const options = await attributeOptionModel.getAttributeOptionsWithImages(
       attribute.id
     )
@@ -94,7 +91,7 @@ export class AttributeModel {
   ): Promise<AttributeOption[] | undefined> {
     const optionsRaw =
       await oAttributeOptionRep.getAttributeOptions(attributeId)
-    return mapAttributeOptions(optionsRaw)
+    return AttributeOptionsMapper(optionsRaw)
   }
 
   // ✅ Crear attribute - delega al repository

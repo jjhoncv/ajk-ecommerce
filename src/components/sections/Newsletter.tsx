@@ -1,11 +1,11 @@
-import React from "react";
 import { siteConfig } from "@/config";
 import Image from "next/image";
+import React from "react";
 
 const Newsletter: React.FC = () => {
   return (
     <section className="bg-gray-100 py-16">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-screen-4xl mx-auto px-12">
         <div className="bg-secondary rounded-2xl p-8 md:p-12 relative overflow-hidden">
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -31,9 +31,9 @@ const Newsletter: React.FC = () => {
             <Image
               src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=400&fit=crop"
               alt="Delivery"
-              width={400}
-              height={400}
-              className="h-full w-full object-contain"
+              width={500}
+              height={500}
+              className="h-full w-full object-cover"
             />
           </div>
         </div>

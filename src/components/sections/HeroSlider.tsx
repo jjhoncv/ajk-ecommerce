@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
 
 interface Slide {
   title: string;
@@ -41,16 +41,15 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
   return (
     <section className="relative">
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-screen-4xl mx-auto px-12 py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Slider */}
           <div className="col-span-8 relative rounded-lg overflow-hidden h-[400px]">
             {slides.map((slide, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-500 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute inset-0 transition-opacity duration-500 ${index === currentSlide ? "opacity-100" : "opacity-0"
+                  }`}
               >
                 <Image
                   src={slide.image}
@@ -102,9 +101,8 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full ${
-                    index === currentSlide ? "bg-white" : "bg-white/50"
-                  }`}
+                  className={`w-3 h-3 rounded-full ${index === currentSlide ? "bg-white" : "bg-white/50"
+                    }`}
                 />
               ))}
             </div>

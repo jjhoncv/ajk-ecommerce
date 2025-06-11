@@ -16,7 +16,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
   products,
 }) => {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
+    <section className="max-w-screen-4xl mx-auto px-12 py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Mejores Ventas del Día</h2>
         <div className="flex items-center gap-4">
@@ -34,7 +34,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Banner */}
-        <div className="md:col-span-3">
+        <div className="md:col-span-2">
           <div className="relative rounded-lg overflow-hidden h-[400px] md:h-full">
             <Image
               src={bannerImage}
@@ -57,8 +57,8 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
         </div>
 
         {/* Products Grid */}
-        <div className="md:col-span-9">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="md:col-span-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
             {products?.map((item) => (
               <ProductCard
                 key={item.variantId || item.id}

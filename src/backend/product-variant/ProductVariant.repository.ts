@@ -2,7 +2,6 @@ import { executeQuery } from '@/lib/db'
 import { ProductVariants as ProductVariantRaw } from '@/types/database'
 
 export class ProductVariantRepository {
-  // ✅ Obtener todas las variants
   public async getProductVariants(): Promise<ProductVariantRaw[] | null> {
     const variants = await executeQuery<ProductVariantRaw[]>({
       query: 'SELECT * FROM product_variants ORDER BY id ASC'
@@ -12,7 +11,6 @@ export class ProductVariantRepository {
     return variants
   }
 
-  // ✅ Obtener variant por ID
   public async getProductVariantById(
     id: number
   ): Promise<ProductVariantRaw | null> {
@@ -25,7 +23,6 @@ export class ProductVariantRepository {
     return variants[0]
   }
 
-  // ✅ Obtener variants por product ID
   public async getProductVariantsByProductId(
     productId: number
   ): Promise<ProductVariantRaw[] | null> {
@@ -39,7 +36,6 @@ export class ProductVariantRepository {
     return variants
   }
 
-  // ✅ Obtener variants por múltiples product IDs (batch loading)
   public async getProductVariantsByProductIds(
     productIds: number[]
   ): Promise<ProductVariantRaw[] | null> {
@@ -55,7 +51,6 @@ export class ProductVariantRepository {
     return variants
   }
 
-  // ✅ Buscar variant por SKU
   public async getProductVariantBySku(
     sku: string
   ): Promise<ProductVariantRaw | null> {
@@ -68,7 +63,6 @@ export class ProductVariantRepository {
     return variants[0]
   }
 
-  // ✅ Crear variant
   public async createProductVariant(
     variant: Omit<ProductVariantRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<ProductVariantRaw | null> {
@@ -80,7 +74,6 @@ export class ProductVariantRepository {
     return await this.getProductVariantById(result.insertId)
   }
 
-  // ✅ Actualizar variant
   public async updateProductVariant(
     variantData: Partial<
       Omit<ProductVariantRaw, 'id' | 'created_at' | 'updated_at'>
@@ -95,7 +88,6 @@ export class ProductVariantRepository {
     return await this.getProductVariantById(id)
   }
 
-  // ✅ Eliminar variant
   public async deleteProductVariant(id: number): Promise<void> {
     await executeQuery({
       query: 'DELETE FROM product_variants WHERE id = ?',
@@ -103,7 +95,6 @@ export class ProductVariantRepository {
     })
   }
 
-  // ✅ Eliminar todas las variants de un product
   public async deleteProductVariantsByProductId(
     productId: number
   ): Promise<void> {
@@ -113,7 +104,6 @@ export class ProductVariantRepository {
     })
   }
 
-  // ✅ Actualizar stock de variant
   public async updateProductVariantStock(
     id: number,
     stock: number

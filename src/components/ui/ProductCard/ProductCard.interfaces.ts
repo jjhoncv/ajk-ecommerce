@@ -1,12 +1,8 @@
-import { ProductVariantComplete } from '@/models/ProductVariant.model'
-import { ProductSearchItem } from '@/types/search'
+import { ProductVariantComplete } from '../../../backend/product-variant/ProductVariant.model'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {
-  product: ProductSearchItem
-  layout?: 'grid' | 'list'
-  showCategories?: boolean
-  className?: string
+  product: ProductComplete
 }
 
 // Props para el componente ProductCardVariants

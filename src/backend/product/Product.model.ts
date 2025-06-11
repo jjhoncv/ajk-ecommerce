@@ -1,5 +1,7 @@
+// generated
 import { Products as ProductRaw } from '@/types/database'
 import { Products as Product } from '@/types/domain'
+
 import {
   ProductComplete,
   ProductSearchFilters,
@@ -9,45 +11,42 @@ import {
   ProductWithVariants
 } from '@/types/search'
 
-import { mapProduct, mapProducts } from '@/mappers/mapProduct'
-import oProductRep from '@/repository/Product.repository'
+// me
+import { ProductMapper, ProductsMapper } from './Product.mapper'
+import oProductRep from './Product.repository'
 
-// Importar otros modelos para composición
+// others
+import productVariantModel from '@/backend/product-variant/ProductVariant.model'
 import brandModel from '@/models/Brand.model'
 import categoryModel from '@/models/Category.model'
 import filtersModel from '@/models/Filters.model'
-import productVariantModel from '@/models/ProductVariant.model'
 import promotionVariantModel from '@/models/PromotionVariant.model'
 import searchModel from '@/models/Search.model'
 
 export class ProductModel {
-  // ============================================================================
-  // MÉTODOS BÁSICOS (nueva estructura)
-  // ============================================================================
-
   public async getProducts(): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProducts()
-    return mapProducts(productsRaw)
+    return ProductsMapper(productsRaw)
   }
 
   public async getProductById(id: number): Promise<Product | undefined> {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
-    return mapProduct(productRaw)
+    return ProductMapper(productRaw)
   }
 
   public async getProductsByBrandId(
     brandId: number
   ): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProductsByBrandId(brandId)
-    return mapProducts(productsRaw)
+    return ProductsMapper(productsRaw)
   }
 
   public async searchProductsByName(
     searchTerm: string
   ): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.searchProductsByName(searchTerm)
-    return mapProducts(productsRaw)
+    return ProductsMapper(productsRaw)
   }
 
   public async getProductsPaginated(
@@ -55,7 +54,7 @@ export class ProductModel {
     offset: number
   ): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProductsPaginated(limit, offset)
-    return mapProducts(productsRaw)
+    return ProductsMapper(productsRaw)
   }
 
   public async getProductsCount(): Promise<number> {
@@ -67,7 +66,7 @@ export class ProductModel {
   ): Promise<Product | undefined> {
     const created = await oProductRep.createProduct(productData)
     if (!created) return undefined
-    return mapProduct(created)
+    return ProductMapper(created)
   }
 
   public async updateProduct(
@@ -76,7 +75,7 @@ export class ProductModel {
   ): Promise<Product | undefined> {
     const updated = await oProductRep.updateProduct(productData, id)
     if (!updated) return undefined
-    return mapProduct(updated)
+    return ProductMapper(updated)
   }
 
   public async deleteProduct(id: number): Promise<void> {
@@ -91,7 +90,7 @@ export class ProductModel {
     ProductWithVariants[] | undefined
   > {
     const productsRaw = await oProductRep.getProducts()
-    const products = mapProducts(productsRaw)
+    const products = ProductsMapper(productsRaw)
 
     if (!products) return undefined
 
@@ -109,7 +108,7 @@ export class ProductModel {
     ProductWithBrand[] | undefined
   > {
     const productsRaw = await oProductRep.getProducts()
-    const products = mapProducts(productsRaw)
+    const products = ProductsMapper(productsRaw)
 
     if (!products) return undefined
 
@@ -137,7 +136,7 @@ export class ProductModel {
     ProductWithCategories[] | undefined
   > {
     const productsRaw = await oProductRep.getProducts()
-    const products = mapProducts(productsRaw)
+    const products = ProductsMapper(productsRaw)
 
     if (!products) return undefined
 
@@ -158,7 +157,7 @@ export class ProductModel {
 
   public async getProductsComplete(): Promise<ProductComplete[] | undefined> {
     const productsRaw = await oProductRep.getProducts()
-    const products = mapProducts(productsRaw)
+    const products = ProductsMapper(productsRaw)
 
     if (!products) return undefined
 
@@ -203,7 +202,7 @@ export class ProductModel {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
 
-    const product = mapProduct(productRaw)
+    const product = ProductMapper(productRaw)
     const variants = await productVariantModel.getProductVariantsByProductId(id)
 
     return {
@@ -218,7 +217,7 @@ export class ProductModel {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
 
-    const product = mapProduct(productRaw)
+    const product = ProductMapper(productRaw)
 
     if (product.brandId) {
       const brand = await brandModel.getBrandById(product.brandId)
@@ -240,7 +239,7 @@ export class ProductModel {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
 
-    const product = mapProduct(productRaw)
+    const product = ProductMapper(productRaw)
     const categories = await categoryModel.getCategoriesByProductId(id)
 
     return {
@@ -255,7 +254,7 @@ export class ProductModel {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
 
-    const product = mapProduct(productRaw)
+    const product = ProductMapper(productRaw)
     const variants =
       await productVariantModel.getProductVariantsByProductIdWithAttributeOptions(
         id
@@ -306,7 +305,7 @@ export class ProductModel {
   // MÉTODOS PARA COMPATIBILIDAD CON ProductModel.ts ORIGINAL
   // ============================================================================
 
-  public async mapProductToDTO(product: Product) {
+  public async ProductMapperToDTO(product: Product) {
     const brand = await brandModel.getBrandById(product.brandId || 0)
     const categories = await categoryModel.getCategoriesByProductId(product.id)
 

@@ -1,6 +1,6 @@
 import { ProductDTO, ProductVariantDTO } from '@/dto'
-import { ProductVariantComplete } from '@/models/ProductVariant.model'
 import { AttributeOptionImages, VariantAttributeOptions } from '@/types/domain'
+import { ProductVariantComplete } from '../../../backend/product-variant/ProductVariant.model'
 
 /**
  * Calcula el precio mínimo de las variantes de un producto

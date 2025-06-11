@@ -1,12 +1,11 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 interface FeaturedCategory {
   title: string;
   subtitle: string;
-  color?: string; // Opcional
   image: string;
   link?: string;
 }
@@ -19,7 +18,7 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
   categories,
 }) => {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
+    <section className="max-w-screen-4xl mx-auto px-12 py-8">
       <h2 className="text-2xl font-bold mb-6">Categorías Destacadas</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {categories.map((category, index) => (

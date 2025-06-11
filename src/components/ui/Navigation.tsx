@@ -15,7 +15,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories }) => {
 
   return (
     <div className="bg-gray-100 border-t border-gray-200 border-none">
-      <div className="max-w-[1920px] mx-auto px-12">
+      <div className="max-w-screen-4xl mx-auto px-12">
         <div className="flex items-center">
           {/* Botón de categorías que abre el SlidePage */}
           <div className="relative">

@@ -2,8 +2,8 @@
 // INTERFACES PARA BÚSQUEDA Y FILTROS DE PRODUCTOS
 // ============================================================================
 
-import { ProductVariantComplete } from '@/models/ProductVariant.model'
 import { Brands, Categories, Products, ProductVariants } from '@/types/domain'
+import { ProductVariantComplete } from '../backend/product-variant/ProductVariant.model'
 
 export interface ProductSearchFilters {
   query?: string

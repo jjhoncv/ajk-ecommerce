@@ -1,7 +1,7 @@
 import attributeModel from '@/models/Attribute.model'
 import brandModel from '@/models/Brand.model'
 import categoryModel from '@/models/Category.model'
-import productModel from '@/models/Product.model'
+import productModel from '@/models/Product/Product.model'
 import searchModel from '@/models/Search.model'
 import { Attributes, Brands, Categories, Products } from '@/types/domain'
 import { ProductSearchFilters, ProductSearchResult } from '@/types/search'

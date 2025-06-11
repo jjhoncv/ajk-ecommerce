@@ -1,11 +1,10 @@
-import ProductCard from "@/components/ui/ProductCard";
-import { ProductSearchItem } from "@/types/search";
+import ProductCard, { ProductComplete } from "@/components/ui/ProductCard";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 interface PopularProductsProps {
-  products: ProductSearchItem[]
+  products: ProductComplete[]
 }
 
 const PopularProducts: React.FC<PopularProductsProps> = ({
@@ -13,7 +12,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
 }) => {
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
+    <section className="max-w-screen-4xl mx-auto px-12 py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Productos Populares</h2>
         <Link
@@ -24,7 +23,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
           <ChevronRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid grid-cols-5 gap-6">
+      <div className="grid grid-cols-7 gap-6">
         {products?.map((item) => (
           <ProductCard
             key={item.variantId}

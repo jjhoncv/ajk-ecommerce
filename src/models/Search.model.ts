@@ -4,7 +4,7 @@ import { ProductSearchFilters, ProductSearchResult } from '@/types/search'
 import attributeModel from '@/models/Attribute.model'
 import brandModel from '@/models/Brand.model'
 import categoryModel from '@/models/Category.model'
-import productVariantModel from '@/models/ProductVariant.model'
+import productVariantModel from '../backend/product-variant/ProductVariant.model'
 
 // Importar repository y mappers
 import {

@@ -1,59 +1,59 @@
-import React from "react";
-import Link from "next/link";
 import { Category } from "@/types/navigation";
+import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+
 interface CategoriesProps {
   categories: Category[];
 }
 
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {
-  // Función para obtener la clase de color de fondo basada en el índice
-  const getBgColorClass = (index: number) => {
-    const colorClasses = [
-      "bg-red-100",
-      "bg-blue-100",
-      "bg-purple-100",
-      "bg-green-100",
-      "bg-yellow-100",
-      "bg-pink-100",
-      "bg-indigo-100",
-      "bg-sky-100",
-    ];
-    return colorClasses[index % colorClasses.length];
-  };
-
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6">Comprar por Categorías</h2>
-      <div className="grid grid-cols-8 gap-4">
-        {categories.map((category, index) => (
+    <section className="max-w-[1920px] mx-auto px-12 py-12 bg-gray-50">
+      <div className="text-center mb-10">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <ShoppingBag className="h-8 w-8 text-primary" />
+          <h2 className="text-3xl font-bold text-gray-900">
+            Explora Nuestras Categorías
+          </h2>
+        </div>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          Descubre la mejor tecnología organizada por categorías para encontrar exactamente lo que necesitas
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        {categories.map((category) => (
           <Link
             key={category.name}
             href={`/categoria/${category.name.toLowerCase()}`}
-            className="flex flex-col items-center p-4 rounded-lg hover:shadow-md transition-shadow group"
+            className="group bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
           >
-            <div>
-              {category.image === null ? (
-                <Image src="/not-image.webp" />
-              ) : (
-                <Image
-                  src={category.image}
-                  width={80}
-                  height={80}
-                  alt={category.name}
-                />
-              )}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-4 p-4 bg-gray-50 rounded-full group-hover:bg-primary/10 transition-colors">
+                {category.image === null ? (
+                  <Image
+                    alt={category.name}
+                    src="/no-image.webp"
+                    width={60}
+                    height={60}
+                    className="rounded-lg"
+                  />
+                ) : (
+                  <Image
+                    src={category.image}
+                    width={60}
+                    height={60}
+                    alt={category.name}
+                    className="rounded-lg group-hover:scale-110 transition-transform duration-300"
+                  />
+                )}
+              </div>
+              <span className="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors">
+                {category.name}
+              </span>
             </div>
-            {/* <div
-              className={`w-20 h-20 rounded-lg flex items-center justify-center text-3xl mb-3 ${getBgColorClass(
-                index
-              )}`}
-            >
-              {category.icon}
-            </div> */}
-            <span className="text-sm font-medium text-center">
-              {category.name}
-            </span>
           </Link>
         ))}
       </div>

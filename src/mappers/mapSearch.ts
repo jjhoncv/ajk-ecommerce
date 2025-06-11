@@ -1,6 +1,6 @@
-import { ProductVariantComplete } from '@/models/ProductVariant.model'
 import { VariantSearchResultRaw } from '@/types/database'
 import { ProductSearchItem, VariantSearchResult } from '@/types/search'
+import { ProductVariantComplete } from '../backend/product-variant/ProductVariant.model'
 
 export const mapVariantSearchResult = (
   data: VariantSearchResultRaw

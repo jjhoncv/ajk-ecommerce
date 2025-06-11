@@ -1,3 +1,4 @@
+// generated
 import { executeQuery } from '@/lib/db'
 import { Attributes as AttributeRaw } from '@/types/database'
 

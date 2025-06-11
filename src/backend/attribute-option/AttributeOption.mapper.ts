@@ -1,3 +1,4 @@
+// generated
 import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import {
   AttributeOptions as AttributeOption,
@@ -5,8 +6,7 @@ import {
   VariantAttributeOptions
 } from '@/types/domain'
 
-// ✅ Mapper individual puro - NO incluye relaciones
-export const mapAttributeOption = (
+export const AttributeOptionMapper = (
   data: AttributeOptionRaw
 ): AttributeOption => {
   return {
@@ -14,50 +14,46 @@ export const mapAttributeOption = (
     attributeId: data.attribute_id,
     value: data.value,
     additionalCost: data.additional_cost ?? undefined,
-    attributeOptionImages: undefined, // Se llena en el modelo con lógica de negocio
-    variantAttributeOptions: undefined // Se llena en el modelo con lógica de negocio
+    attributeOptionImages: undefined,
+    variantAttributeOptions: undefined
   }
 }
 
-// ✅ Mapper con images (para usar en modelo cuando ya tienes las images)
-export const mapAttributeOptionWithImages = (
+export const AttributeOptionMapperWithImages = (
   data: AttributeOptionRaw,
   images?: AttributeOptionImages[]
 ): AttributeOption => {
   return {
-    ...mapAttributeOption(data),
+    ...AttributeOptionMapper(data),
     attributeOptionImages: images
   }
 }
 
-// ✅ Mapper con variant attribute options (para usar en modelo cuando ya tienes las relaciones)
-export const mapAttributeOptionWithVariantOptions = (
+export const AttributeOptionMapperWithVariantOptions = (
   data: AttributeOptionRaw,
   variantOptions?: VariantAttributeOptions[]
 ): AttributeOption => {
   return {
-    ...mapAttributeOption(data),
+    ...AttributeOptionMapper(data),
     variantAttributeOptions: variantOptions
   }
 }
 
-// ✅ Mapper completo con todas las relaciones
-export const mapAttributeOptionComplete = (
+export const AttributeOptionMapperComplete = (
   data: AttributeOptionRaw,
   images?: AttributeOptionImages[],
   variantOptions?: VariantAttributeOptions[]
 ): AttributeOption => {
   return {
-    ...mapAttributeOption(data),
+    ...AttributeOptionMapper(data),
     attributeOptionImages: images,
     variantAttributeOptions: variantOptions
   }
 }
 
-// ✅ Para arrays - maneja null a nivel de array
-export const mapAttributeOptions = (
+export const AttributeOptionsMapper = (
   data: AttributeOptionRaw[] | null
 ): AttributeOption[] | undefined => {
   if (data === null) return undefined
-  return data.map(mapAttributeOption)
+  return data.map(AttributeOptionMapper)
 }
