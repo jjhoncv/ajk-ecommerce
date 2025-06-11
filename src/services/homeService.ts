@@ -1,5 +1,5 @@
+import searchModel from '@/backend/search'
 import categoryModel from '@/models/Category.model'
-import searchModel from '@/models/Search.model'
 import { HomeData } from '@/types/home'
 
 // Esta función obtiene datos reales desde la base de datos

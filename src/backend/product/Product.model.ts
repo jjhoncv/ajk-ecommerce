@@ -16,12 +16,12 @@ import { ProductMapper, ProductsMapper } from './Product.mapper'
 import oProductRep from './Product.repository'
 
 // others
-import productVariantModel from '@/backend/product-variant/ProductVariant.model'
-import brandModel from '@/models/Brand.model'
-import categoryModel from '@/models/Category.model'
-import filtersModel from '@/models/Filters.model'
-import promotionVariantModel from '@/models/PromotionVariant.model'
-import searchModel from '@/models/Search.model'
+import brandModel from '@/backend/brand'
+import categoryModel from '@/backend/category'
+import filtersModel from '@/backend/filters'
+import productVariantModel from '@/backend/product-variant'
+import promotionVariantModel from '@/backend/promotion-variant'
+import searchModel from '@/backend/search'
 
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {

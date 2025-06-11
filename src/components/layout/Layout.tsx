@@ -1,4 +1,4 @@
-import categoryModel from "@/models/Category.model";
+import categoryModel from "@/backend/category";
 import { getHomeData } from "@/services/homeService";
 import React from "react";
 import Footer from "./Footer";
@@ -9,7 +9,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
-  // Obtener datos necesarios para el layout
   const homeData = await getHomeData();
   const categories = await categoryModel.getCategories();
 

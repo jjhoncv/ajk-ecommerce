@@ -115,6 +115,23 @@ export class ProductVariantRepository {
 
     return await this.getProductVariantById(id)
   }
+
+  public async getAttributeOptionIdsByProductId(
+    productId: number
+  ): Promise<{ attribute_option_id: number }[] | null> {
+    const optionIds = await executeQuery<{ attribute_option_id: number }[]>({
+      query: `
+        SELECT DISTINCT vao.attribute_option_id
+        FROM variant_attribute_options vao 
+        JOIN product_variants pv ON vao.variant_id = pv.id 
+        WHERE pv.product_id = ?
+      `,
+      values: [productId]
+    })
+
+    if (optionIds.length === 0) return null
+    return optionIds
+  }
 }
 
 const productVariantRepository = new ProductVariantRepository()

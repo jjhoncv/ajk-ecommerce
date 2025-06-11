@@ -1,11 +1,9 @@
 import Layout from "@/components/layout/Layout";
 import Categories from "@/components/sections/Categories";
 import DailyDeals from "@/components/sections/DailyDeals";
-import FeaturedCategories from "@/components/sections/FeaturedCategories";
 import Features from "@/components/sections/Features";
 import HeroSlider from "@/components/sections/HeroSlider";
 import Newsletter from "@/components/sections/Newsletter";
-import PopularProducts from "@/components/sections/PopularProducts";
 import { getHomeData } from "@/services/homeService";
 import { Metadata } from "next";
 
@@ -23,8 +21,8 @@ export default async function HomePage() {
       <HeroSlider slides={data.slides} sideBanners={data.sideBanners} />
       <Features features={data.features} />
       <Categories categories={data.productCategories} />
-      <FeaturedCategories categories={data.featuredCategories} />
-      <PopularProducts products={data.popularProducts} />
+      {/* <FeaturedCategories categories={data.featuredCategories} /> */}
+      {/* <PopularProducts products={data.popularProducts} /> */}
       <DailyDeals products={data.dealsProducts} />
       <Newsletter />
     </Layout>

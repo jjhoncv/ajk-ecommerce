@@ -1,3 +1,3 @@
 export * from './AttributeOption.interfaces'
-export * from './AttributeOption.model'
+export { default } from './AttributeOption.model'
 export * from './AttributeOption.repository'

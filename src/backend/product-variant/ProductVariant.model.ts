@@ -1,11 +1,9 @@
-import { executeQuery } from '@/lib/db'
-
 // others
-import variantImage from '@/backend/variant-image/VariantImage.model'
-import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
-import promotionVariantModel from '@/models/PromotionVariant.model'
-import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
-import variantRatingModel from '@/models/VariantRating.model'
+import oAttributeOptionImageModel from '@/backend/attribute-option-image'
+import oPromotionVariantModel from '@/backend/promotion-variant'
+import oVariantAttributeOptionModel from '@/backend/variant-attribute-option'
+import oVariantImageModel from '@/backend/variant-image'
+import oVariantRatingModel from '@/backend/variant-rating'
 
 //me
 import {
@@ -13,7 +11,6 @@ import {
   ProductVariantsMapper
 } from './ProductVariant.mapper'
 
-import oVariantAttributeOptionRep from '@/repository/VariantAttributeOption.repository'
 import oProductVariantRep from './ProductVariant.repository'
 
 import { ProductVariants as ProductVariantRaw } from '@/types/database'
@@ -111,7 +108,7 @@ export class ProductVariantModel {
 
     const variantIds = variants.map((variant) => variant.id)
     const attributeOptionsByVariantId =
-      await variantAttributeOptionModel.getVariantAttributeOptionsByVariantIds(
+      await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantIds(
         variantIds
       )
 
@@ -125,12 +122,11 @@ export class ProductVariantModel {
     id: number
   ): Promise<ProductVariantWithAttributeOptions | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
-    console.log('variantRaw', variantRaw, id)
     if (!variantRaw) return undefined
 
     const variant = ProductVariantMapper(variantRaw)
     const attributeOptions =
-      await variantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
+      await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
         id
       )
 
@@ -151,7 +147,7 @@ export class ProductVariantModel {
 
     const variantIds = variants.map((variant) => variant.id)
     const attributeOptionsByVariantId =
-      await variantAttributeOptionModel.getVariantAttributeOptionsByVariantIds(
+      await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantIds(
         variantIds
       )
 
@@ -192,7 +188,7 @@ export class ProductVariantModel {
     if (!variantRaw) return undefined
 
     const variant = ProductVariantMapper(variantRaw)
-    const images = await variantImage.getVariantImages(id)
+    const images = await oVariantImageModel.getVariantImages(id)
 
     return {
       ...variant,
@@ -210,7 +206,7 @@ export class ProductVariantModel {
 
     // Obtener atributos usando composición con datos completos
     const attributeOptionsRaw =
-      await oVariantAttributeOptionRep.getVariantAttributeOptionsWithDetailsById(
+      await oVariantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
         id
       )
 
@@ -230,7 +226,7 @@ export class ProductVariantModel {
       })) || []
 
     // Obtener imágenes de la variante
-    const images = await variantImage.getVariantImages(id)
+    const images = await oVariantImageModel.getVariantImages(id)
 
     // Obtener imágenes de atributos usando composición
     const attributeImages = await this.getAttributeImagesForVariant(
@@ -240,10 +236,10 @@ export class ProductVariantModel {
 
     // Obtener promoción usando composición
     const bestPromotion =
-      await promotionVariantModel.getBestPromotionForVariant(id)
+      await oPromotionVariantModel.getBestPromotionForVariant(id)
 
     // Obtener ratings usando composición
-    const ratingSummary = await variantRatingModel.getVariantRatingSummary(id)
+    const ratingSummary = await oVariantRatingModel.getVariantRatingSummary(id)
 
     const result: ProductVariantComplete = {
       ...variant,
@@ -293,29 +289,27 @@ export class ProductVariantModel {
   }
 
   // ============================================================================
-  // MÉTODOS PARA ATRIBUTOS (compatibilidad con ProductVariantModel.ts)
+  // MÉTODOS PARA ATRIBUTOS (delegados al modelo VariantAttributeOption)
   // ============================================================================
 
   public async addAttributeOptionToVariant(
     variantId: number,
     attributeOptionId: number
   ): Promise<void> {
-    await executeQuery({
-      query:
-        'INSERT INTO variant_attribute_options (variant_id, attribute_option_id) VALUES (?, ?)',
-      values: [variantId, attributeOptionId]
-    })
+    await oVariantAttributeOptionModel.addAttributeOptionToVariant(
+      variantId,
+      attributeOptionId
+    )
   }
 
   public async removeAttributeOptionFromVariant(
     variantId: number,
     attributeOptionId: number
   ): Promise<void> {
-    await executeQuery({
-      query:
-        'DELETE FROM variant_attribute_options WHERE variant_id = ? AND attribute_option_id = ?',
-      values: [variantId, attributeOptionId]
-    })
+    await oVariantAttributeOptionModel.removeAttributeOptionFromVariant(
+      variantId,
+      attributeOptionId
+    )
   }
 
   // ============================================================================
@@ -328,7 +322,7 @@ export class ProductVariantModel {
   ): Promise<AttributeOptionImages[]> {
     // Obtener los attribute option IDs de esta variante
     const attributeOptions =
-      await variantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
+      await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
         variantId
       )
 
@@ -336,36 +330,27 @@ export class ProductVariantModel {
       return []
     }
 
-    // Obtener todas las opciones de atributos del producto para tener más imágenes disponibles
-    const productAttributeOptionIds = await executeQuery<
-      { attribute_option_id: number }[]
-    >({
-      query: `
-        SELECT DISTINCT vao.attribute_option_id
-        FROM variant_attribute_options vao 
-        JOIN product_variants pv ON vao.variant_id = pv.id 
-        WHERE pv.product_id = ?
-      `,
-      values: [productId]
-    })
+    // Obtener todas las opciones de atributos del producto usando el repository
+    const productAttributeOptionIds =
+      await oProductVariantRep.getAttributeOptionIdsByProductId(productId)
+
+    if (!productAttributeOptionIds || productAttributeOptionIds.length === 0) {
+      return []
+    }
 
     const allOptionIds = productAttributeOptionIds.map(
       (row) => row.attribute_option_id
     )
 
-    if (allOptionIds.length === 0) {
-      return []
-    }
-
     // Usar el modelo de AttributeOptionImage para obtener las imágenes
     const imagesByOptionId =
-      await attributeOptionImageModel.getAttributeOptionImagesByOptionIds(
+      await oAttributeOptionImageModel.getAttributeOptionImagesByOptionIds(
         allOptionIds
       )
 
     // Convertir el Map a array
     const allImages: AttributeOptionImages[] = []
-    imagesByOptionId.forEach((images) => {
+    imagesByOptionId.forEach((images: AttributeOptionImages[]) => {
       allImages.push(...images)
     })
 

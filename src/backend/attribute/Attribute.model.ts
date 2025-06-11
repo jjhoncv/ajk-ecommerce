@@ -3,9 +3,7 @@ import { Attributes as AttributeRaw } from '@/types/database'
 import { AttributeOptions as AttributeOption } from '@/types/domain'
 
 // others
-import { AttributeOptionsMapper } from '@/backend/attribute-option/AttributeOption.mapper'
 import attributeOptionModel from '@/backend/attribute-option/AttributeOption.model'
-import oAttributeOptionRep from '@/backend/attribute-option/AttributeOption.repository'
 
 // me
 import { AttributeWithOptions } from './Attribute.interfaces'
@@ -90,8 +88,9 @@ export class AttributeModel {
     attributeId: number
   ): Promise<AttributeOption[] | undefined> {
     const optionsRaw =
-      await oAttributeOptionRep.getAttributeOptions(attributeId)
-    return AttributeOptionsMapper(optionsRaw)
+      await attributeOptionModel.getAttributeOptions(attributeId)
+    if (!optionsRaw) return undefined
+    return optionsRaw
   }
 
   // ✅ Crear attribute - delega al repository

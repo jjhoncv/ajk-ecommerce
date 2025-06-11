@@ -3,8 +3,8 @@ import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import { AttributeOptions as AttributeOption } from '@/types/domain'
 
 // others
-import attributeOptionImageModel from '@/models/AttributeOptionImage.model'
-import variantAttributeOptionModel from '@/models/VariantAttributeOption.model'
+import attributeOptionImageModel from '@/backend/attribute-option-image'
+import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 
 // me
 import {
