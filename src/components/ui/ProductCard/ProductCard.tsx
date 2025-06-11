@@ -9,8 +9,6 @@ import ProductCardSlider from "./ProductCardSlider";
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
-  layout = "grid",
-  className = "",
 }) => {
 
   // Verificar que el producto y sus variantes existan
@@ -35,23 +33,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className={`bg-white relative p-2 hover:shadow-lg transition-shadow  ${className} ${layout === "list"
-        ? "flex flex-col md:flex-row md:items-center md:gap-6"
-        : ""
-        }`}
+      className={`bg-white relative hover:shadow-lg transition-shadow pb-2`}
     >
-      {/* Contenedor relativo para ProductCardSlider y ButtonAddToCart */}
       <div className="relative">
         <Link
           href={`/productos/variante/${selectedVariant.id}`}
-          className={`block ${layout === "list" ? "md:w-1/3" : ""}`}
+          className={`block`}
         >
           <ProductCardSlider
             images={getVariantImages(selectedVariant, product)}
           />
         </Link>
 
-        {/* ButtonAddToCart posicionado absolutamente */}
         <ButtonAddToCart
           id={product.variantId}
           image={getThumbImage(selectedVariant, product)}
@@ -60,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         />
       </div>
 
-      <div className={layout === "list" ? "md:w-2/3" : ""}>
+      <div className="px-1">
         <Link href={`/productos/variante/${selectedVariant.id}`}>
           <h3 className="font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
             {/* Promoción */}

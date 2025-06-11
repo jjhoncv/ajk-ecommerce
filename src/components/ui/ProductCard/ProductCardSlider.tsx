@@ -9,7 +9,7 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
 }) => {
   return (
     <div
-      className="relative mb-4 group"
+      className="relative mb-2 group"
     >
       {/* Slider de imágenes */}
       <ImageSlider

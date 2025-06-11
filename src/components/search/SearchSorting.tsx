@@ -3,18 +3,54 @@ import { SearchSortingProps } from "@/interfaces/components/search.interface";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
-const SearchSorting: React.FC<SearchSortingProps> = ({ currentSort }) => {
+interface ExtendedSearchSortingProps extends SearchSortingProps {
+  variant?: "select" | "toggle";
+}
+
+const SearchSorting: React.FC<ExtendedSearchSortingProps> = ({
+  currentSort,
+  variant = "select"
+}) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const sortOptions = [
-    { value: "newest", label: "Más recientes" },
-    { value: "price_asc", label: "Precio: menor a mayor" },
-    { value: "price_desc", label: "Precio: mayor a menor" },
-    { value: "name_asc", label: "Nombre: A-Z" },
-    { value: "name_desc", label: "Nombre: Z-A" },
+    {
+      key: "newest",
+      label: "Más recientes",
+      asc: "newest",
+      desc: "newest", // Solo hay una dirección para "más recientes"
+    },
+    {
+      key: "price",
+      label: "Precio",
+      asc: "price_asc",
+      desc: "price_desc",
+    },
+    {
+      key: "name",
+      label: "Nombre",
+      asc: "name_asc",
+      desc: "name_desc",
+    },
   ];
+
+  // Función para determinar qué opción está activa y su dirección
+  const getActiveSort = () => {
+    const current = currentSort || "newest";
+    for (const option of sortOptions) {
+      if (current === option.asc || current === option.desc) {
+        return {
+          key: option.key,
+          direction: current === option.desc ? "desc" : "asc"
+        };
+      }
+    }
+    return { key: "newest", direction: "asc" };
+  };
+
+  const activeSort = getActiveSort();
 
   const handleSortChange = (sortValue: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -22,6 +58,52 @@ const SearchSorting: React.FC<SearchSortingProps> = ({ currentSort }) => {
     params.set("page", "1"); // Reset to first page when sorting
     router.push(`${pathname}?${params.toString()}`);
   };
+
+  const handleToggleDirection = (option: typeof sortOptions[0]) => {
+    if (option.key === "newest") {
+      // Para "más recientes" solo hay una opción
+      handleSortChange(option.asc);
+      return;
+    }
+
+    // Para precio y nombre, alternar entre asc y desc
+    const currentValue = currentSort || "newest";
+    const isCurrentlyAsc = currentValue === option.asc;
+    const newValue = isCurrentlyAsc ? option.desc : option.asc;
+    handleSortChange(newValue);
+  };
+
+  if (variant === "toggle") {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium text-gray-700">Ordenar por:</span>
+        <div className="flex flex-wrap gap-2">
+          {sortOptions.map((option) => {
+            const isActive = activeSort.key === option.key;
+            const isDesc = activeSort.direction === "desc";
+
+            return (
+              <button
+                key={option.key}
+                onClick={() => handleToggleDirection(option)}
+                className={`flex items-center gap-2 px-3 py-2 text-sm border transition-colors ${isActive
+                  ? "bg-primary text-white border-primary"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                  }`}
+              >
+                <span>{option.label}</span>
+                {option.key !== "newest" && (
+                  <span className="text-xs">
+                    {isActive && isDesc ? "↓" : "↑"}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center gap-2">
@@ -34,11 +116,11 @@ const SearchSorting: React.FC<SearchSortingProps> = ({ currentSort }) => {
         onChange={(e) => handleSortChange(e.target.value)}
         className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
       >
-        {sortOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
+        <option value="newest">Más recientes</option>
+        <option value="price_asc">Precio: menor a mayor</option>
+        <option value="price_desc">Precio: mayor a menor</option>
+        <option value="name_asc">Nombre: A-Z</option>
+        <option value="name_desc">Nombre: Z-A</option>
       </select>
     </div>
   );

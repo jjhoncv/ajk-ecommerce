@@ -1,9 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
-import attributeModel from "@/models/Attribute.model";
-import brandModel from "@/models/Brand.model";
-import categoryModel from "@/models/Category.model";
+import StickyFilters from "@/components/search/StickyFilters";
 import searchModel from "@/models/Search.model";
 import { ProductSearchFilters } from "@/types/search";
 import { Metadata } from "next";
@@ -69,34 +67,22 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   // Obtener resultados de búsqueda directamente del modelo
   const searchResults = await searchModel.searchProducts(filters);
 
-  // Obtener categorías, marcas y atributos directamente de los modelos
-  const categories = await categoryModel.getCategories();
-  const brands = await brandModel.getBrands();
-  const attributes = await attributeModel.getAttributes();
-
-  // Search page usando datos directos de los modelos - sin hydrators
-
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">
-          {params.q ? `Resultados para "${params.q}"` : "Todos los productos"}
-        </h1>
-
+      <div className="max-w-[1920px] mx-auto px-12 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filtros laterales */}
-          <div className="w-full lg:w-1/4">
-            <SearchFilters
-              categories={categories || []}
-              brands={brands || []}
-              attributes={attributes || []}
-              availableFilters={searchResults.filters}
-              currentFilters={filters}
-            />
+          <div className="lg:min-w-56 lg:max-w-56">
+            <StickyFilters>
+              <SearchFilters
+                availableFilters={searchResults.filters}
+                currentFilters={filters}
+              />
+            </StickyFilters>
           </div>
 
           {/* Resultados */}
-          <div className="w-full lg:w-3/4">
+          <div className="w-full lg:100%">
             <SearchResults
               products={searchResults.products}
               totalPages={searchResults.totalPages}

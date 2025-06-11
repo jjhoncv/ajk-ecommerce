@@ -22,8 +22,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <div>
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex items-center gap-4">
-          <SearchSorting currentSort={filters.sort} />
+        <div className="flex items-center w-full justify-end">
+          <SearchSorting currentSort={filters.sort} variant="toggle" />
         </div>
       </div>
 
@@ -31,7 +31,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
       <div
         className={
           viewMode === "grid"
-            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
+            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5"
             : "flex flex-col space-y-4"
         }
       >

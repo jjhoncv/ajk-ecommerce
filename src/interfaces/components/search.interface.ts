@@ -1,4 +1,3 @@
-import { Attributes, Brands, Categories } from '@/types/domain'
 import {
   ProductSearchFilters,
   ProductSearchItem,
@@ -7,9 +6,6 @@ import {
 
 // Interface para SearchFilters - usando tipos de domain directamente
 export interface SearchFiltersProps {
-  categories: Categories[]
-  brands: Brands[]
-  attributes: Attributes[]
   availableFilters: ProductSearchResult['filters']
   currentFilters: ProductSearchFilters
 }

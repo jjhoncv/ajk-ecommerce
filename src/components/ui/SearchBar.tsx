@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function SearchBar() {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="flex-1 max-w-xl mx-8">
+    <div className="flex-1 mx-8">
       <form
         onSubmit={handleSearch}
         className="flex items-center border border-gray-300 rounded-3xl overflow-hidden relative"
