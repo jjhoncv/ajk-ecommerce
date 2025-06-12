@@ -1,18 +1,12 @@
+import { Feature } from "@/services/features";
 import { Clock, Percent } from "lucide-react";
 import React from "react";
-
-interface Feature {
-  icon: string;
-  title: string;
-  description: string;
-}
 
 interface FeaturesProps {
   features: Feature[];
 }
 
 const Features: React.FC<FeaturesProps> = ({ features }) => {
-  // Función para renderizar el icono según el nombre
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case "shipping":

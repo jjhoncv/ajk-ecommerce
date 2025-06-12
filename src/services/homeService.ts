@@ -1,117 +1,9 @@
-import searchModel from '@/backend/search'
-import categoryModel from '@/models/Category.model'
 import { HomeData } from '@/types/home'
 
 // Esta función obtiene datos reales desde la base de datos
 export async function getHomeData(): Promise<HomeData> {
   try {
-    // Obtener productos populares usando el método de búsqueda
-    const popularSearchResult = await searchModel.searchProducts({
-      page: 1,
-      limit: 7,
-      sort: 'newest'
-    })
-
-    // Obtener productos para ofertas del día
-    const dealsSearchResult = await searchModel.searchProducts({
-      page: 1,
-      limit: 6,
-      sort: 'price_desc'
-    })
-
-    // Obtener todas las categorías
-    const categoriesData = await categoryModel.getCategories()
-
-    // Filtrar categorías principales para la sección de categorías
-    const mainCategories = categoriesData
-      ? categoriesData.filter((cat) => !cat.parentId).slice(0, 8)
-      : []
-
     return {
-      // Slides del hero (mantenemos algunos datos estáticos por ahora)
-      slides: [
-        {
-          title: 'No te pierdas las ofertas increíbles',
-          subtitle: 'Hasta 50% OFF en toda la tienda',
-          description: 'Aprovecha nuestras ofertas especiales en tecnología',
-          image:
-            'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1920&h=600&fit=crop',
-          cta: 'Comprar Ahora',
-          ctaLink: '/search'
-        },
-        {
-          title: 'Descuentos en Tecnología',
-          subtitle: 'Ahorra hasta S/1,200',
-          description:
-            'Los mejores smartphones y laptops con precios especiales',
-          image:
-            'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=1920&h=600&fit=crop',
-          cta: 'Ver Ofertas',
-          ctaLink: '/search?category=tecnologia'
-        }
-      ],
-
-      // Banners laterales
-      sideBanners: [
-        {
-          title: 'Smartphones',
-          subtitle: 'Oferta Especial',
-          image:
-            'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=200&fit=crop',
-          link: '/search?category=smartphones'
-        },
-        {
-          title: 'Laptops',
-          subtitle: 'Solo esta semana',
-          image:
-            'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=200&fit=crop',
-          link: '/search?category=laptops'
-        }
-      ],
-
-      // Features (mantenemos estáticos)
-      features: [
-        {
-          icon: 'shipping',
-          title: 'Envío Gratis',
-          description: 'Pedidos sobre S/99'
-        },
-        {
-          icon: 'discount',
-          title: 'Mejores Ofertas',
-          description: 'Precios increíbles'
-        },
-        {
-          icon: 'delivery',
-          title: 'Delivery Rápido',
-          description: 'En 24 horas'
-        },
-        {
-          icon: 'secure',
-          title: 'Pago Seguro',
-          description: '100% protegido'
-        }
-      ],
-
-      // Categorías de productos reales
-      productCategories: mainCategories.map((category) => ({
-        name: category.name,
-        image: category.imageUrl ?? null
-      })),
-
-      // Categorías destacadas
-      featuredCategories: mainCategories.slice(0, 3).map((category) => ({
-        title: `Ofertas en ${category.name}`,
-        subtitle: 'Descuentos especiales',
-        image: category.imageUrl ?? null
-      })),
-
-      // Productos hidratados (ahora directamente desde los modelos)
-      popularProducts: popularSearchResult.products,
-
-      // Ofertas del día usando la misma estructura que popularProducts
-      dealsProducts: dealsSearchResult.products,
-
       // Footer (mantenemos estático)
       footerSections: [
         {
@@ -164,17 +56,9 @@ export async function getHomeData(): Promise<HomeData> {
   }
 }
 
-// Función de fallback con datos básicos
 function getBasicHomeData(): HomeData {
   return {
-    slides: [],
-    sideBanners: [],
-    features: [],
-    productCategories: [],
-    featuredCategories: [],
     footerSections: [],
-    socialLinks: [],
-    popularProducts: [],
-    dealsProducts: []
+    socialLinks: []
   }
 }

@@ -1,5 +1,3 @@
-import { ProductSearchFilters, ProductSearchResult } from '@/types/search'
-
 // me
 import {
   ProductSearchItemMapper,
@@ -12,6 +10,11 @@ import oAttributeModel from '@/backend/attribute'
 import oBrandModel from '@/backend/brand'
 import oCategoryModel from '@/backend/category'
 import oProductVariantModel from '@/backend/product-variant'
+import {
+  ProductSearchFilters,
+  ProductSearchItem,
+  ProductSearchResult
+} from './Search.interfaces'
 
 export class SearchModel {
   public async searchProducts(
@@ -108,7 +111,7 @@ export class SearchModel {
   }
 
   // Método privado para generar filtros con contadores
-  private async generateFiltersFromProducts(products: any[]) {
+  private async generateFiltersFromProducts(products: ProductSearchItem[]) {
     // Obtener todos los atributos para mapear nombres
     const allAttributes = await oAttributeModel.getAttributes()
     const attributeNameMap = new Map<number, string>()
@@ -135,7 +138,7 @@ export class SearchModel {
     products.forEach((product) => {
       // Contar categorías
       if (product.categories) {
-        product.categories.forEach((category: any) => {
+        product.categories.forEach((category) => {
           const existing = categoryCount.get(category.id)
           if (existing) {
             existing.count++
@@ -166,9 +169,9 @@ export class SearchModel {
       const processedAttributeValues = new Set<string>()
 
       if (product.variants) {
-        product.variants.forEach((variant: any) => {
+        product.variants.forEach((variant) => {
           if (variant.variantAttributeOptions) {
-            variant.variantAttributeOptions.forEach((variantAttr: any) => {
+            variant.variantAttributeOptions.forEach((variantAttr) => {
               if (
                 variantAttr.attributeOptions &&
                 variantAttr.attributeOptions[0]

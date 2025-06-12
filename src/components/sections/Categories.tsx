@@ -1,11 +1,11 @@
-import { Category } from "@/types/navigation";
+import { MainCategory } from "@/services/mainCategories";
 import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 interface CategoriesProps {
-  categories: Category[];
+  categories: MainCategory[];
 }
 
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {

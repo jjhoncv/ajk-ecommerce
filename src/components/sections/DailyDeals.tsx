@@ -1,5 +1,5 @@
+import { ProductSearchItem } from "@/backend/search";
 import ProductCard from "@/components/ui/ProductCard";
-import { ProductSearchItem } from "@/types/search";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";

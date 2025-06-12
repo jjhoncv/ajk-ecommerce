@@ -1,8 +1,8 @@
-import { ProductComplete } from '@/models/Product'
-import searchModel from '@/models/Search.model'
+import { ProductComplete } from '@/backend/product'
+import searchModel from '@/backend/search'
 import { hydratePopularProducts } from './hydrators'
 
-export const popularProducts = async (): Promise<ProductComplete[]> => {
+export const getPopularProducts = async (): Promise<ProductComplete[]> => {
   try {
     const popularSearchResult = await searchModel.searchProducts({
       page: 1,

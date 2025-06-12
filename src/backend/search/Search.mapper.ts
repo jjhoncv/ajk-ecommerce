@@ -1,8 +1,8 @@
 import { VariantSearchResultRaw } from '@/types/database'
-import { ProductSearchItem, VariantSearchResult } from '@/types/search'
 
 // others
 import { ProductVariantComplete } from '@/backend/product-variant'
+import { ProductSearchItem, VariantSearchResult } from './Search.interfaces'
 
 export const VariantSearchResultMapper = (
   data: VariantSearchResultRaw

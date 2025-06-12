@@ -1,6 +1,5 @@
-import { AvailableFilters } from '@/types/search'
-
 // me
+import { AvailableFilters } from './Filters.interfaces'
 import { AvailableFiltersMapper } from './Filters.mapper'
 import oFiltersRep from './Filters.repository'
 

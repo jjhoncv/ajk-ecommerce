@@ -5,7 +5,8 @@ import {
   VariantAttributeOptions as VariantAttributeOptionRaw
 } from '@/types/database'
 
-interface VariantAttributeOptionWithDetails extends VariantAttributeOptionRaw {
+interface VariantAttributeOptionWithDetailsRaw
+  extends VariantAttributeOptionRaw {
   attribute_option_value: AttributeOptions['value']
   additional_cost: AttributeOptions['additional_cost']
   attribute_id: AttributeOptions['attribute_id']
@@ -28,8 +29,8 @@ export class VariantAttributeOptionRepository {
 
   public async getVariantAttributeOptionsWithDetailsById(
     variantId: number
-  ): Promise<VariantAttributeOptionWithDetails[] | null> {
-    const options = await executeQuery<VariantAttributeOptionWithDetails[]>({
+  ): Promise<VariantAttributeOptionWithDetailsRaw[] | null> {
+    const options = await executeQuery<VariantAttributeOptionWithDetailsRaw[]>({
       query: `
         SELECT 
           vao.variant_id,

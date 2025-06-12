@@ -4,7 +4,7 @@ import {
   FilterBrand,
   FilterCategory,
   PriceRange
-} from '@/types/search'
+} from './Filters.interfaces'
 
 export class FiltersRepository {
   public async getAvailableCategories(): Promise<FilterCategory[]> {

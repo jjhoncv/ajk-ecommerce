@@ -3,7 +3,7 @@ import {
   FilterAttribute,
   FilterBrand,
   FilterCategory
-} from '@/types/search'
+} from './Filters.interfaces'
 
 export const FilterCategoryMapper = (data: FilterCategory): FilterCategory => {
   return {

@@ -1,4 +1,5 @@
-import ProductCard, { ProductComplete } from "@/components/ui/ProductCard";
+import { ProductComplete } from "@/backend/product";
+import ProductCard from "@/components/ui/ProductCard";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";

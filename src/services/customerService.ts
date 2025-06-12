@@ -1,6 +1,6 @@
+import customerModel from '@/backend/customer'
 import { Customers as Customer } from '@/types/domain'
 import bcrypt from 'bcryptjs'
-import customerModel from '../models/Customer.model'
 export class CustomerService {
   private customerModel = customerModel
 

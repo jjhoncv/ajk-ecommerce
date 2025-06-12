@@ -1,5 +1,5 @@
-import categoryModel from "@/backend/category";
-import { getHomeData } from "@/services/homeService";
+import { getFooter } from "@/services/footer";
+import { getHeader } from "@/services/header";
 import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -9,8 +9,9 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
-  const homeData = await getHomeData();
-  const categories = await categoryModel.getCategories();
+  const categories = await getHeader();
+  const footer = await getFooter();
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -18,8 +19,8 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
       <Header categories={categories || []} />
       {children}
       <Footer
-        sections={homeData.footerSections}
-        socialLinks={homeData.socialLinks}
+        sections={footer.sections}
+        socialLinks={footer.socialLinks}
       />
     </div>
   );

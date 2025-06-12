@@ -1,14 +1,8 @@
+import { FeaturedCategory } from "@/services/featuredCategories";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
-interface FeaturedCategory {
-  title: string;
-  subtitle: string;
-  image: string;
-  link?: string;
-}
 
 interface FeaturedCategoriesProps {
   categories: FeaturedCategory[];
@@ -26,14 +20,16 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
             key={index}
             className="relative rounded-lg overflow-hidden group h-48"
           >
+
             <Image
-              src={category.image}
+              src={category.image ? category.image : '/no-image.webp'}
               alt={category.title}
               fill
               sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover"
               priority={index < 2}
             />
+
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent p-6 flex flex-col justify-end">
               <h3 className="text-white text-xl font-bold mb-1">
                 {category.title}

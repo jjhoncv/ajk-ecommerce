@@ -1,17 +1,9 @@
 "use client";
+import { Hero } from "@/services/hero";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-
-interface Slide {
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-  cta: string;
-  ctaLink: string;
-}
 
 interface SideBanner {
   title: string;
@@ -21,7 +13,7 @@ interface SideBanner {
 }
 
 interface HeroSliderProps {
-  slides: Slide[];
+  slides: Hero[];
   sideBanners?: SideBanner[];
 }
 
