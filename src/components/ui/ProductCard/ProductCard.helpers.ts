@@ -104,7 +104,7 @@ export const hasPromotion = (variant: ProductVariantComplete): boolean => {
  * @returns El precio final de la variante
  */
 export const calculateFinalPrice = (
-  variant: ProductDTO['variants'][0]
+  variant: ProductVariantComplete
 ): number => {
   if (variant.promotion && variant.promotion.promotionPrice !== null) {
     return Number(variant.promotion.promotionPrice)

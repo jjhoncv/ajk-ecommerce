@@ -1,20 +1,20 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import { Minus, Plus, Heart, Share2 } from "lucide-react";
+import { ProductComplete } from "@/backend/product";
 import ImageZoomModal from "@/components/ui/ImageZoomModal";
-import { ProductDTO } from "@/dto";
-import ProductImageSlider from "./ProductImageSlider";
-import ProductAttributes from "./ProductAttributes";
-import ProductRatings from "./ProductRatings";
-import ProductCardRating from "@/components/ui/ProductCard/ProductCardRating";
 import {
-  hasPromotion,
   calculateFinalPrice,
+  hasPromotion,
 } from "@/components/ui/ProductCard/ProductCard.helpers";
+import ProductCardRating from "@/components/ui/ProductCard/ProductCardRating";
+import { Heart, Minus, Plus, Share2 } from "lucide-react";
+import Link from "next/link";
+import React, { useState } from "react";
+import ProductAttributes from "./ProductAttributes";
+import ProductImageSlider from "./ProductImageSlider";
+import ProductRatings from "./ProductRatings";
 
 interface ProductDetailProps {
-  product: ProductDTO;
+  product: ProductComplete;
   initialSelectedVariantIndex?: number;
 }
 
@@ -72,7 +72,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
       {/* Columna izquierda: Imágenes */}
       <div>
         <ProductImageSlider
-          images={selectedVariant.images}
+          images={selectedVariant.attributeImages}
           productName={product.name}
           onImageZoom={handleImageZoom}
         />
@@ -210,9 +210,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
             className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100"
           >
             <Heart
-              className={`h-5 w-5 ${
-                isFavorite ? "fill-red-500 text-red-500" : ""
-              }`}
+              className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""
+                }`}
             />
           </button>
           <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100">
@@ -227,10 +226,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
               <h3 className="text-sm font-medium text-gray-500">SKU</h3>
               <p className="mt-1">{selectedVariant.sku}</p>
             </div>
-            <div>
+            {/* <div>
               <h3 className="text-sm font-medium text-gray-500">Categoría</h3>
               <p className="mt-1">{product.categories[0]?.name || "N/A"}</p>
-            </div>
+            </div> */}
             <div>
               <h3 className="text-sm font-medium text-gray-500">Marca</h3>
               <p className="mt-1">{product.brandName}</p>

@@ -2,14 +2,14 @@
 import { Products as ProductRaw } from '@/types/database'
 import { Products as Product } from '@/types/domain'
 
-import {
-  ProductComplete,
-  ProductSearchFilters,
-  ProductSearchResult,
-  ProductWithBrand,
-  ProductWithCategories,
-  ProductWithVariants
-} from '@/types/search'
+// import {
+//   ProductComplete,
+//   ProductSearchFilters,
+//   ProductSearchResult,
+//   ProductWithBrand,
+//   ProductWithCategories,
+//   ProductWithVariants
+// } from '@/types/search'
 
 // me
 import { ProductMapper, ProductsMapper } from './Product.mapper'
@@ -21,7 +21,10 @@ import categoryModel from '@/backend/category'
 import filtersModel from '@/backend/filters'
 import productVariantModel from '@/backend/product-variant'
 import promotionVariantModel from '@/backend/promotion-variant'
-import searchModel from '@/backend/search'
+import searchModel, {
+  ProductSearchFilters,
+  ProductSearchResult
+} from '@/backend/search'
 
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {
@@ -86,27 +89,25 @@ export class ProductModel {
   // MÉTODOS CON COMPOSICIÓN (nueva estructura)
   // ============================================================================
 
-  public async getProductsWithVariants(): Promise<
-    ProductWithVariants[] | undefined
-  > {
-    const productsRaw = await oProductRep.getProducts()
-    const products = ProductsMapper(productsRaw)
+  // public async getProductsWithVariants(): Promise<
+  //   ProductWithVariants[] | undefined
+  // > {
+  //   const productsRaw = await oProductRep.getProducts()
+  //   const products = ProductsMapper(productsRaw)
 
-    if (!products) return undefined
+  //   if (!products) return undefined
 
-    const productIds = products.map((product) => product.id)
-    const variantsByProductId =
-      await productVariantModel.getProductVariantsByProductIds(productIds)
+  //   const productIds = products.map((product) => product.id)
+  //   const variantsByProductId =
+  //     await productVariantModel.getProductVariantsByProductIds(productIds)
 
-    return products.map((product) => ({
-      ...product,
-      productVariants: variantsByProductId.get(product.id) || []
-    }))
-  }
+  //   return products.map((product) => ({
+  //     ...product,
+  //     productVariants: variantsByProductId.get(product.id) || []
+  //   }))
+  // }
 
-  public async getProductsWithBrands(): Promise<
-    ProductWithBrand[] | undefined
-  > {
+  public async getProductsWithBrands(): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProducts()
     const products = ProductsMapper(productsRaw)
 
@@ -132,146 +133,146 @@ export class ProductModel {
     }))
   }
 
-  public async getProductsWithCategories(): Promise<
-    ProductWithCategories[] | undefined
-  > {
-    const productsRaw = await oProductRep.getProducts()
-    const products = ProductsMapper(productsRaw)
+  // public async getProductsWithCategories(): Promise<
+  //   ProductWithCategories[] | undefined
+  // > {
+  //   const productsRaw = await oProductRep.getProducts()
+  //   const products = ProductsMapper(productsRaw)
 
-    if (!products) return undefined
+  //   if (!products) return undefined
 
-    const productsWithCategories = await Promise.all(
-      products.map(async (product) => {
-        const categories = await categoryModel.getCategoriesByProductId(
-          product.id
-        )
-        return {
-          ...product,
-          categories: categories || []
-        }
-      })
-    )
+  //   const productsWithCategories = await Promise.all(
+  //     products.map(async (product) => {
+  //       const categories = await categoryModel.getCategoriesByProductId(
+  //         product.id
+  //       )
+  //       return {
+  //         ...product,
+  //         categories: categories || []
+  //       }
+  //     })
+  //   )
 
-    return productsWithCategories
-  }
+  //   return productsWithCategories
+  // }
 
-  public async getProductsComplete(): Promise<ProductComplete[] | undefined> {
-    const productsRaw = await oProductRep.getProducts()
-    const products = ProductsMapper(productsRaw)
+  // public async getProductsComplete(): Promise<ProductComplete2[] | undefined> {
+  //   const productsRaw = await oProductRep.getProducts()
+  //   const products = ProductsMapper(productsRaw)
 
-    if (!products) return undefined
+  //   if (!products) return undefined
 
-    const productIds = products.map((product) => product.id)
-    const variantsByProductId =
-      await productVariantModel.getProductVariantsByProductIds(productIds)
+  //   const productIds = products.map((product) => product.id)
+  //   const variantsByProductId =
+  //     await productVariantModel.getProductVariantsByProductIds(productIds)
 
-    const brandIds = [...new Set(products.map((product) => product.brandId))]
-    const brandsMap = new Map()
+  //   const brandIds = [...new Set(products.map((product) => product.brandId))]
+  //   const brandsMap = new Map()
 
-    for (const brandId of brandIds) {
-      if (brandId) {
-        const brand = await brandModel.getBrandById(brandId)
-        if (brand) {
-          brandsMap.set(brandId, brand)
-        }
-      }
-    }
+  //   for (const brandId of brandIds) {
+  //     if (brandId) {
+  //       const brand = await brandModel.getBrandById(brandId)
+  //       if (brand) {
+  //         brandsMap.set(brandId, brand)
+  //       }
+  //     }
+  //   }
 
-    const productsComplete = await Promise.all(
-      products.map(async (product) => {
-        const categories = await categoryModel.getCategoriesByProductId(
-          product.id
-        )
-        return {
-          ...product,
-          productVariants: variantsByProductId.get(product.id) || [],
-          brands: brandsMap.get(product.brandId)
-            ? [brandsMap.get(product.brandId)]
-            : [],
-          categories: categories || []
-        }
-      })
-    )
+  //   const productsComplete = await Promise.all(
+  //     products.map(async (product) => {
+  //       const categories = await categoryModel.getCategoriesByProductId(
+  //         product.id
+  //       )
+  //       return {
+  //         ...product,
+  //         productVariants: variantsByProductId.get(product.id) || [],
+  //         brands: brandsMap.get(product.brandId)
+  //           ? [brandsMap.get(product.brandId)]
+  //           : [],
+  //         categories: categories || []
+  //       }
+  //     })
+  //   )
 
-    return productsComplete
-  }
+  //   return productsComplete
+  // }
 
-  public async getProductByIdWithVariants(
-    id: number
-  ): Promise<ProductWithVariants | undefined> {
-    const productRaw = await oProductRep.getProductById(id)
-    if (!productRaw) return undefined
+  // public async getProductByIdWithVariants(
+  //   id: number
+  // ): Promise<ProductWithVariants | undefined> {
+  //   const productRaw = await oProductRep.getProductById(id)
+  //   if (!productRaw) return undefined
 
-    const product = ProductMapper(productRaw)
-    const variants = await productVariantModel.getProductVariantsByProductId(id)
+  //   const product = ProductMapper(productRaw)
+  //   const variants = await productVariantModel.getProductVariantsByProductId(id)
 
-    return {
-      ...product,
-      productVariants: variants || []
-    }
-  }
+  //   return {
+  //     ...product,
+  //     productVariants: variants || []
+  //   }
+  // }
 
-  public async getProductByIdWithBrand(
-    id: number
-  ): Promise<ProductWithBrand | undefined> {
-    const productRaw = await oProductRep.getProductById(id)
-    if (!productRaw) return undefined
+  // public async getProductByIdWithBrand(
+  //   id: number
+  // ): Promise<ProductWithBrand | undefined> {
+  //   const productRaw = await oProductRep.getProductById(id)
+  //   if (!productRaw) return undefined
 
-    const product = ProductMapper(productRaw)
+  //   const product = ProductMapper(productRaw)
 
-    if (product.brandId) {
-      const brand = await brandModel.getBrandById(product.brandId)
-      return {
-        ...product,
-        brands: brand ? [brand] : []
-      }
-    }
+  //   if (product.brandId) {
+  //     const brand = await brandModel.getBrandById(product.brandId)
+  //     return {
+  //       ...product,
+  //       brands: brand ? [brand] : []
+  //     }
+  //   }
 
-    return {
-      ...product,
-      brands: []
-    }
-  }
+  //   return {
+  //     ...product,
+  //     brands: []
+  //   }
+  // }
 
-  public async getProductByIdWithCategories(
-    id: number
-  ): Promise<ProductWithCategories | undefined> {
-    const productRaw = await oProductRep.getProductById(id)
-    if (!productRaw) return undefined
+  // public async getProductByIdWithCategories(
+  //   id: number
+  // ): Promise<ProductWithCategories | undefined> {
+  //   const productRaw = await oProductRep.getProductById(id)
+  //   if (!productRaw) return undefined
 
-    const product = ProductMapper(productRaw)
-    const categories = await categoryModel.getCategoriesByProductId(id)
+  //   const product = ProductMapper(productRaw)
+  //   const categories = await categoryModel.getCategoriesByProductId(id)
 
-    return {
-      ...product,
-      categories: categories || []
-    }
-  }
+  //   return {
+  //     ...product,
+  //     categories: categories || []
+  //   }
+  // }
 
-  public async getProductByIdComplete(
-    id: number
-  ): Promise<ProductComplete | undefined> {
-    const productRaw = await oProductRep.getProductById(id)
-    if (!productRaw) return undefined
+  // public async getProductByIdComplete(
+  //   id: number
+  // ): Promise<ProductComplete | undefined> {
+  //   const productRaw = await oProductRep.getProductById(id)
+  //   if (!productRaw) return undefined
 
-    const product = ProductMapper(productRaw)
-    const variants =
-      await productVariantModel.getProductVariantsByProductIdWithAttributeOptions(
-        id
-      )
+  //   const product = ProductMapper(productRaw)
+  //   const variants =
+  //     await productVariantModel.getProductVariantsByProductIdWithAttributeOptions(
+  //       id
+  //     )
 
-    const brand = product.brandId
-      ? await brandModel.getBrandById(product.brandId)
-      : undefined
-    const categories = await categoryModel.getCategoriesByProductId(id)
+  //   const brand = product.brandId
+  //     ? await brandModel.getBrandById(product.brandId)
+  //     : undefined
+  //   const categories = await categoryModel.getCategoriesByProductId(id)
 
-    return {
-      ...product,
-      productVariants: variants || [],
-      brands: brand ? [brand] : [],
-      categories: categories || []
-    }
-  }
+  //   return {
+  //     ...product,
+  //     productVariants: variants || [],
+  //     brands: brand ? [brand] : [],
+  //     categories: categories || []
+  //   }
+  // }
 
   // ============================================================================
   // MÉTODOS DE BÚSQUEDA Y FILTROS (delegación a modelos especializados)
