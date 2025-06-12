@@ -1,4 +1,5 @@
-import { ProductVariantComplete } from '../../../backend/product-variant/ProductVariant.model'
+import { ProductComplete } from '@/backend/product'
+import { ProductVariantComplete } from '@/backend/product-variant'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {

@@ -1,9 +1,9 @@
 import Layout from '@/components/layout/Layout'
+import { ProductVariantNotFound } from '@/components/product/ProductVariantNotFound'
 import ProductVariantView from '@/components/product/ProductVariantView'
 import { generateErrorMetadata, generateProductVariantMetadata } from '@/helpers/productVariant.helpers'
 import ProductService from '@/services/product'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 
 interface ProductVariantPageProps {
   params: Promise<{
@@ -38,21 +38,15 @@ export default async function ProductVariantPage({
 
   // Validar ID
   if (isNaN(variantId)) {
-    notFound()
+    return <ProductVariantNotFound />
   }
 
-  let data
-  try {
-    // Obtener datos del producto y variante
-    data = await ProductService.getProductVariant(variantId)
+  const data = await ProductService.getProductVariant(variantId)
 
-    if (!data) {
-      notFound()
-    }
-  } catch (error) {
-    console.error('Error loading product variant:', error)
-    throw error // Esto activará la página de error
+  if (!data) {
+    return <ProductVariantNotFound />
   }
+
 
   return (
     <Layout>

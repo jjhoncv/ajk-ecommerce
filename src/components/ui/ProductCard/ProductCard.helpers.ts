@@ -1,6 +1,6 @@
+import { ProductVariantComplete } from '@/backend/product-variant'
 import { ProductDTO, ProductVariantDTO } from '@/dto'
-import { AttributeOptionImages, VariantAttributeOptions } from '@/types/domain'
-import { ProductVariantComplete } from '../../../backend/product-variant/ProductVariant.model'
+import { AttributeOptionImages } from '@/types/domain'
 
 /**
  * Calcula el precio mínimo de las variantes de un producto
@@ -142,12 +142,11 @@ export const getVariantTitle = (
 
   // Obtener los atributos de la variante
   const variantAttributes = selectedVariant.variantAttributeOptions
-    ?.map((variantAttr: VariantAttributeOptions | null) => {
+    ?.map((variantAttr) => {
       // Verificar que variantAttr no sea null
       if (!variantAttr) return null
       // Obtener el valor del atributo desde attributeOptions
-      const attributeOption = variantAttr.attributeOptions?.[0]
-      return attributeOption?.value
+      return variantAttr.value
     })
     .filter(Boolean) // Filtrar valores undefined/null
     .join(' - ')

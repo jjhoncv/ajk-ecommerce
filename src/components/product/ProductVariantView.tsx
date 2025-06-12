@@ -13,8 +13,8 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data }) => {
 
   // Obtener atributos de la variante
   const variantAttributes = variant.variantAttributeOptions?.map((vao) => ({
-    name: vao.attributeOptions?.[0]?.value || '',
-    attributeId: vao.attributeOptions?.[0]?.attributeId
+    name: vao.value || '',
+    attributeId: vao.attributeId
   })) || []
 
   // Obtener imagen principal
@@ -166,6 +166,15 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data }) => {
             variantId={variant.id}
             price={Number(variant.price)}
           />
+
+          <div>
+            <h5>Categorias</h5>
+            <div>{product.productCategories?.find(item => item?.productId === product.id)?.categories?.map((categorie) => (
+              <p key={categorie?.id}>{categorie?.name}</p>
+            ))}</div>
+            <h5>Marca</h5>
+            <div>{product?.brand?.name}</div>
+          </div>
         </div>
       </div>
     </main>

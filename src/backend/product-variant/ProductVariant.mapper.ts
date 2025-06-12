@@ -12,7 +12,7 @@ export const ProductVariantMapper = (
     stock: data.stock,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
-    products: undefined,
+    product: undefined,
     promotionVariants: undefined,
     variantAttributeOptions: undefined,
     variantImages: undefined,

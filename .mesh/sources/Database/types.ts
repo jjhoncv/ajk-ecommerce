@@ -627,8 +627,17 @@ export type products = {
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
   base_price?: Maybe<Scalars['Float']['output']>;
+  product_categories?: Maybe<Array<Maybe<product_categories>>>;
   product_variants?: Maybe<Array<Maybe<product_variants>>>;
   brands?: Maybe<Array<Maybe<brands>>>;
+};
+
+
+export type productsproduct_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_categories_WhereInput>;
+  orderBy?: InputMaybe<product_categories_OrderByInput>;
 };
 
 
@@ -645,6 +654,92 @@ export type productsbrandsArgs = {
   orderBy?: InputMaybe<brands_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type product_categories = {
+  product_id: Scalars['Int']['output'];
+  category_id: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<categories>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+};
+
+
+export type product_categoriescategoriesArgs = {
+  where?: InputMaybe<categories_WhereInput>;
+  orderBy?: InputMaybe<categories_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type product_categoriesproductsArgs = {
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type categories = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  product_categories?: Maybe<Array<Maybe<product_categories>>>;
+};
+
+
+export type categoriesproduct_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_categories_WhereInput>;
+  orderBy?: InputMaybe<product_categories_OrderByInput>;
+};
+
+export type product_categories_WhereInput = {
+  product_id?: InputMaybe<Scalars['String']['input']>;
+  category_id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type product_categories_OrderByInput = {
+  product_id?: InputMaybe<OrderBy>;
+  category_id?: InputMaybe<OrderBy>;
+};
+
+export type categories_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  parent_id?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type categories_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  parent_id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+};
+
+export type products_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  brand_id?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  base_price?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type products_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  brand_id?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  base_price?: InputMaybe<OrderBy>;
 };
 
 export type product_variants_WhereInput = {
@@ -679,26 +774,6 @@ export type brandsproductsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<products_WhereInput>;
   orderBy?: InputMaybe<products_OrderByInput>;
-};
-
-export type products_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  brand_id?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  base_price?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type products_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  brand_id?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  base_price?: InputMaybe<OrderBy>;
 };
 
 export type brands_WhereInput = {
@@ -1152,30 +1227,6 @@ export type banner_OrderByInput = {
   image_url?: InputMaybe<OrderBy>;
 };
 
-export type categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parent_id?: Maybe<Scalars['Int']['output']>;
-  image_url?: Maybe<Scalars['String']['output']>;
-};
-
-export type categories_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parent_id?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type categories_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parent_id?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-};
-
 export type permissions = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -1195,21 +1246,6 @@ export type permissions_OrderByInput = {
   name?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
-};
-
-export type product_categories = {
-  product_id: Scalars['Int']['output'];
-  category_id: Scalars['Int']['output'];
-};
-
-export type product_categories_WhereInput = {
-  product_id?: InputMaybe<Scalars['String']['input']>;
-  category_id?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type product_categories_OrderByInput = {
-  product_id?: InputMaybe<OrderBy>;
-  category_id?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */

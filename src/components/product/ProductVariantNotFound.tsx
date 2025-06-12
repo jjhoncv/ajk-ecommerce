@@ -1,7 +1,7 @@
-import Layout from '@/components/layout/Layout'
-import Link from 'next/link'
+import Layout from "@/components/layout/Layout"
+import Link from "next/link"
 
-export default function ProductVariantNotFound() {
+export const ProductVariantNotFound = () => {
   return (
     <Layout>
       <main className="max-w-[1920px] mx-auto px-12 py-8">

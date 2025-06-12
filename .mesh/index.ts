@@ -1136,8 +1136,17 @@ export type Products = {
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
   basePrice?: Maybe<Scalars['Float']['output']>;
+  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
   brands?: Maybe<Array<Maybe<Brands>>>;
+};
+
+
+export type ProductsproductCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductCategoriesWhereInput>;
+  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
 };
 
 
@@ -1154,6 +1163,92 @@ export type ProductsbrandsArgs = {
   orderBy?: InputMaybe<BrandsOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ProductCategories = {
+  productId: Scalars['Int']['output'];
+  categoryId: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+};
+
+
+export type ProductCategoriescategoriesArgs = {
+  where?: InputMaybe<CategoriesWhereInput>;
+  orderBy?: InputMaybe<CategoriesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ProductCategoriesproductsArgs = {
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Categories = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
+};
+
+
+export type CategoriesproductCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductCategoriesWhereInput>;
+  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
+};
+
+export type ProductCategoriesWhereInput = {
+  productId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductCategoriesOrderByInput = {
+  productId?: InputMaybe<OrderBy>;
+  categoryId?: InputMaybe<OrderBy>;
+};
+
+export type CategoriesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  parentId?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategoriesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  parentId?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+};
+
+export type ProductsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  brandId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  basePrice?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  brandId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  basePrice?: InputMaybe<OrderBy>;
 };
 
 export type ProductVariantsWhereInput = {
@@ -1188,26 +1283,6 @@ export type BrandsproductsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ProductsWhereInput>;
   orderBy?: InputMaybe<ProductsOrderByInput>;
-};
-
-export type ProductsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  brandId?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  basePrice?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  brandId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  basePrice?: InputMaybe<OrderBy>;
 };
 
 export type BrandsWhereInput = {
@@ -1661,30 +1736,6 @@ export type BannerOrderByInput = {
   imageUrl?: InputMaybe<OrderBy>;
 };
 
-export type Categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parentId?: Maybe<Scalars['Int']['output']>;
-  imageUrl?: Maybe<Scalars['String']['output']>;
-};
-
-export type CategoriesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parentId?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CategoriesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  imageUrl?: InputMaybe<OrderBy>;
-};
-
 export type Permissions = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -1704,21 +1755,6 @@ export type PermissionsOrderByInput = {
   name?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type ProductCategories = {
-  productId: Scalars['Int']['output'];
-  categoryId: Scalars['Int']['output'];
-};
-
-export type ProductCategoriesWhereInput = {
-  productId?: InputMaybe<Scalars['String']['input']>;
-  categoryId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductCategoriesOrderByInput = {
-  productId?: InputMaybe<OrderBy>;
-  categoryId?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -2672,11 +2708,17 @@ export type ResolversTypes = ResolversObject<{
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
   ProductVariants: ResolverTypeWrapper<ProductVariants>;
   Products: ResolverTypeWrapper<Products>;
+  ProductCategories: ResolverTypeWrapper<ProductCategories>;
+  Categories: ResolverTypeWrapper<Categories>;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  ProductsWhereInput: ProductsWhereInput;
+  ProductsOrderByInput: ProductsOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
   Brands: ResolverTypeWrapper<Brands>;
-  ProductsWhereInput: ProductsWhereInput;
-  ProductsOrderByInput: ProductsOrderByInput;
   BrandsWhereInput: BrandsWhereInput;
   BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: ResolverTypeWrapper<PromotionVariants>;
@@ -2712,15 +2754,9 @@ export type ResolversTypes = ResolversObject<{
   Banner: ResolverTypeWrapper<Banner>;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
-  Categories: ResolverTypeWrapper<Categories>;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
   Permissions: ResolverTypeWrapper<Permissions>;
   PermissionsWhereInput: PermissionsWhereInput;
   PermissionsOrderByInput: PermissionsOrderByInput;
-  ProductCategories: ResolverTypeWrapper<ProductCategories>;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
   ProductRatingSummary: ResolverTypeWrapper<ProductRatingSummary>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
@@ -2818,11 +2854,17 @@ export type ResolversParentTypes = ResolversObject<{
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
   ProductVariants: ProductVariants;
   Products: Products;
+  ProductCategories: ProductCategories;
+  Categories: Categories;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  ProductsWhereInput: ProductsWhereInput;
+  ProductsOrderByInput: ProductsOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
   Brands: Brands;
-  ProductsWhereInput: ProductsWhereInput;
-  ProductsOrderByInput: ProductsOrderByInput;
   BrandsWhereInput: BrandsWhereInput;
   BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: PromotionVariants;
@@ -2855,15 +2897,9 @@ export type ResolversParentTypes = ResolversObject<{
   Banner: Banner;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
-  Categories: Categories;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
   Permissions: Permissions;
   PermissionsWhereInput: PermissionsWhereInput;
   PermissionsOrderByInput: PermissionsOrderByInput;
-  ProductCategories: ProductCategories;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
   ProductRatingSummary: ProductRatingSummary;
   BigInt: Scalars['BigInt']['output'];
   ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
@@ -3194,8 +3230,27 @@ export type ProductsResolvers<ContextType = MeshContext, ParentType extends Reso
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   basePrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<ProductsproductCategoriesArgs>>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<ProductsproductVariantsArgs>>;
   brands?: Resolver<Maybe<Array<Maybe<ResolversTypes['Brands']>>>, ParentType, ContextType, Partial<ProductsbrandsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
+  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<ProductCategoriescategoriesArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductCategoriesproductsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3326,26 +3381,11 @@ export type BannerResolvers<ContextType = MeshContext, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type PermissionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Permissions'] = ResolversParentTypes['Permissions']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
-  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3460,6 +3500,8 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   VariantAttributeOptions?: VariantAttributeOptionsResolvers<ContextType>;
   ProductVariants?: ProductVariantsResolvers<ContextType>;
   Products?: ProductsResolvers<ContextType>;
+  ProductCategories?: ProductCategoriesResolvers<ContextType>;
+  Categories?: CategoriesResolvers<ContextType>;
   Brands?: BrandsResolvers<ContextType>;
   PromotionVariants?: PromotionVariantsResolvers<ContextType>;
   Promotions?: PromotionsResolvers<ContextType>;
@@ -3471,9 +3513,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
   Attributes?: AttributesResolvers<ContextType>;
   Banner?: BannerResolvers<ContextType>;
-  Categories?: CategoriesResolvers<ContextType>;
   Permissions?: PermissionsResolvers<ContextType>;
-  ProductCategories?: ProductCategoriesResolvers<ContextType>;
   ProductRatingSummary?: ProductRatingSummaryResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Roles?: RolesResolvers<ContextType>;
@@ -3542,7 +3582,7 @@ const databaseTransforms = [];
 const DatabaseHandler = await import("@graphql-mesh/mysql").then(handleImport);
 const databaseHandler = new DatabaseHandler({
               name: "Database",
-              config: {"host":"localhost","port":3306,"user":"root","password":"12345678","database":"ajkecommerce","typeCast":true,"supportBigNumbers":true,"bigNumberStrings":false,"typeMapping":{"tinyint(1)":"Boolean","tinyint":"Int"}},
+              config: {"host":"localhost","port":3306,"user":"root","password":"12345678","database":"ajkecommerce","typeCast":true,"supportBigNumbers":true,"bigNumberStrings":false,"tableColumnTypesMap":{"*_id":"Int","created_at":"Timestamp","updated_at":"Timestamp"}},
               baseDir,
               cache,
               pubsub,

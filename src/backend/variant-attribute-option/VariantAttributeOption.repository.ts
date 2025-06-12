@@ -5,7 +5,7 @@ import {
   VariantAttributeOptions as VariantAttributeOptionRaw
 } from '@/types/database'
 
-interface VariantAttributeOptionWithDetailsRaw
+export interface VariantAttributeOptionWithDetailsRaw
   extends VariantAttributeOptionRaw {
   attribute_option_value: AttributeOptions['value']
   additional_cost: AttributeOptions['additional_cost']

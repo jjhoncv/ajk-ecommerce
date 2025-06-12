@@ -202,8 +202,71 @@ type products {
   created_at: Timestamp!
   updated_at: Timestamp!
   base_price: Float
+  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["product_id", "id"]])
   product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["product_id", "id"]])
   brands(where: brands_WhereInput, orderBy: brands_OrderByInput, limit: Int, offset: Int): [brands] @mysqlSelect(subgraph: "Database", table: "brands", columnMap: [["id", "brand_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "brand_id")
+}
+
+type product_categories {
+  product_id: Int!
+  category_id: Int!
+  categories(where: categories_WhereInput, orderBy: categories_OrderByInput, limit: Int, offset: Int): [categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
+  products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
+}
+
+type categories {
+  id: Int!
+  name: String!
+  description: String
+  parent_id: Int
+  image_url: String
+  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
+}
+
+input product_categories_WhereInput {
+  product_id: String
+  category_id: String
+}
+
+input product_categories_OrderByInput {
+  product_id: OrderBy
+  category_id: OrderBy
+}
+
+input categories_WhereInput {
+  id: String
+  name: String
+  description: String
+  parent_id: String
+  image_url: String
+}
+
+input categories_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  parent_id: OrderBy
+  image_url: OrderBy
+}
+
+input products_WhereInput {
+  id: String
+  name: String
+  description: String
+  brand_id: String
+  created_at: String
+  updated_at: String
+  base_price: String
+}
+
+input products_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  brand_id: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  base_price: OrderBy
 }
 
 input product_variants_WhereInput {
@@ -230,26 +293,6 @@ type brands {
   id: Int!
   name: String!
   products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["brand_id", "id"]])
-}
-
-input products_WhereInput {
-  id: String
-  name: String
-  description: String
-  brand_id: String
-  created_at: String
-  updated_at: String
-  base_price: String
-}
-
-input products_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  brand_id: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-  base_price: OrderBy
 }
 
 input brands_WhereInput {
@@ -622,30 +665,6 @@ input banner_OrderByInput {
   image_url: OrderBy
 }
 
-type categories {
-  id: Int!
-  name: String!
-  description: String
-  parent_id: Int
-  image_url: String
-}
-
-input categories_WhereInput {
-  id: String
-  name: String
-  description: String
-  parent_id: String
-  image_url: String
-}
-
-input categories_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  parent_id: OrderBy
-  image_url: OrderBy
-}
-
 type permissions {
   id: Int!
   name: String!
@@ -665,21 +684,6 @@ input permissions_OrderByInput {
   name: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
-}
-
-type product_categories {
-  product_id: Int!
-  category_id: Int!
-}
-
-input product_categories_WhereInput {
-  product_id: String
-  category_id: String
-}
-
-input product_categories_OrderByInput {
-  product_id: OrderBy
-  category_id: OrderBy
 }
 
 """VIEW"""

@@ -15,13 +15,19 @@ try {
 
   console.log('✅ Esquema de dominio generado correctamente')
 
+  // NUEVO: Corregir relaciones automáticamente usando el script independiente
+  console.log('🔧 Ejecutando corrector de relaciones...')
+  execSync('node scripts/fix-schema-relationships.mjs', {
+    stdio: 'inherit'
+  })
+
   // Generar tipos TypeScript usando GraphQL Code Generator
   console.log('🔄 Generando tipos de dominio TypeScript...')
   execSync('npx graphql-codegen --config codegen-domain.yml', {
     stdio: 'inherit'
   })
 
-  execSync('rm schema-domain.graphql')
+  // execSync('rm schema-domain.graphql')
 
   console.log('✅ Tipos de dominio generados correctamente')
   console.log('📁 Archivo generado: src/types/domain/domain.d.ts')

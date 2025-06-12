@@ -11,9 +11,12 @@ sources:
         typeCast: true
         supportBigNumbers: true
         bigNumberStrings: false
-        typeMapping:
-          'tinyint(1)': 'Boolean' # Más específico
-          tinyint: 'Int' # Para otros tinyint
+
+        tableColumnTypesMap:
+          # Esto ayuda a Mesh a entender mejor los tipos
+          '*_id': 'Int'
+          'created_at': 'Timestamp'
+          'updated_at': 'Timestamp'
 
 transforms:
   - namingConvention:

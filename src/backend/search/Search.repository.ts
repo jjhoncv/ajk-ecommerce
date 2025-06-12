@@ -1,6 +1,17 @@
 import { executeQuery } from '@/lib/db'
-import { VariantSearchResultRaw } from '@/types/database/search'
-import { ProductSearchFilters } from '@/types/search'
+import { ProductSearchFilters } from './Search.interfaces'
+
+export interface VariantSearchResultRaw {
+  variant_id: number
+  product_id: number
+  sku: string
+  price: number
+  stock: number
+  product_name: string
+  product_description: string
+  brand_id: number
+  base_price: number
+}
 
 export class SearchRepository {
   public async searchProductVariants(

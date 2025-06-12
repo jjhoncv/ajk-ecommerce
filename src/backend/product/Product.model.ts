@@ -35,7 +35,23 @@ export class ProductModel {
   public async getProductById(id: number): Promise<Product | undefined> {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined
-    return ProductMapper(productRaw)
+    const product = ProductMapper(productRaw)
+
+    if (!product.brandId) return product
+    const brand = await brandModel.getBrandById(product.brandId)
+    if (!brand) return product
+    product.brand = brand
+
+    const categories = await categoryModel.getCategoriesByProductId(product.id)
+    if (!categories) return product
+
+    product.productCategories = categories.map((category) => ({
+      categoryId: category.id,
+      productId: product.id,
+      categories
+    }))
+
+    return product
   }
 
   public async getProductsByBrandId(

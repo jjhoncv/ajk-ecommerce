@@ -172,11 +172,8 @@ export class SearchModel {
         product.variants.forEach((variant) => {
           if (variant.variantAttributeOptions) {
             variant.variantAttributeOptions.forEach((variantAttr) => {
-              if (
-                variantAttr.attributeOptions &&
-                variantAttr.attributeOptions[0]
-              ) {
-                const option = variantAttr.attributeOptions[0]
+              if (variantAttr.attributeOption) {
+                const option = variantAttr.attributeOption
                 const attributeId = option.attributeId
                 const uniqueKey = `${product.id}-${attributeId}-${option.value}`
 

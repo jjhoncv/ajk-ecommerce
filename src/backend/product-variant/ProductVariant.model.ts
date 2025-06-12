@@ -21,7 +21,8 @@ import {
 import {
   ProductVariantComplete,
   ProductVariantWithAttributeOptions,
-  ProductVariantWithImages
+  ProductVariantWithImages,
+  VariantAttributeOptionDetail
 } from './ProductVariant.interfaces'
 
 export class ProductVariantModel {
@@ -205,24 +206,20 @@ export class ProductVariantModel {
     const variant = ProductVariantMapper(variantRaw)
 
     // Obtener atributos usando composición con datos completos
-    const attributeOptionsRaw =
+    const variantAttributeOptionWithDetails =
       await oVariantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
         id
       )
 
     // Construir variantAttributeOptions con datos completos
-    const attributeOptions =
-      attributeOptionsRaw?.map((option: any) => ({
-        variantId: option.variant_id,
-        attributeOptionId: option.attribute_option_id,
-        attributeOptions: [
-          {
-            id: option.attribute_option_id,
-            value: option.attribute_option_value,
-            additionalCost: option.additional_cost,
-            attributeId: option.attribute_id
-          }
-        ]
+    const attributeOptions: VariantAttributeOptionDetail[] =
+      variantAttributeOptionWithDetails?.map((option) => ({
+        variantId: option.variantId,
+        attributeOptionId: option.attributeOptionId,
+        value: option.attributeOptionValue,
+        additionalCost: option.additionalCost,
+        attributeId: option.attributeId,
+        attributeName: option.attributeName
       })) || []
 
     // Obtener imágenes de la variante
