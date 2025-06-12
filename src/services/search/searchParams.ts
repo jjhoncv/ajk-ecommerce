@@ -3,7 +3,7 @@ import searchModel, {
   ProductSearchResult
 } from '@/backend/search'
 
-export const getSearch = async (
+export const getSearchParams = async (
   filters: ProductSearchFilters
 ): Promise<ProductSearchResult> => {
   try {
@@ -11,7 +11,7 @@ export const getSearch = async (
     return searchResults
   } catch (error) {
     throw new Error(
-      `Error al obtener getSearch ${error instanceof Error ? error.message : 'Unknow error'}`
+      `Error al obtener getSearchParams ${error instanceof Error ? error.message : 'Unknow error'}`
     )
   }
 }

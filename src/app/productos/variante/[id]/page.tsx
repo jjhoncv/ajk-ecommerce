@@ -1,9 +1,9 @@
+import productModel from "@/backend/product";
+import productVariantModel from "@/backend/product-variant";
 import Layout from "@/components/layout/Layout";
-import productModel from "@/models/Product/Product.model";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import productVariantModel from "../../../../backend/product-variant/ProductVariant.model";
 
 interface ProductVariantPageProps {
   params: Promise<{

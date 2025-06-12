@@ -1,24 +1,27 @@
-import { SearchParams } from '@/app/search/page'
 import { ProductSearchFilters } from '@/backend/search'
+import {
+  SEARCH_INITIAL_PAGE,
+  SEARCH_PRODUCTS_PER_PAGE
+} from '@/constants/search.constants'
+import { FILTER_SORT, SEARCH_SORT, SearchParams } from '@/shared'
 
-export const getFilters = (params: SearchParams): ProductSearchFilters => {
-  // Convertir parámetros de búsqueda a filtros
-  const filters: ProductSearchFilters = {
+export const formatParams = (params: SearchParams): ProductSearchFilters => {
+  const filters = {
     query: params.q,
     categoryId: params.category ? parseInt(params.category) : undefined,
     brandId: params.brand ? parseInt(params.brand) : undefined,
     minPrice: params.minPrice ? parseFloat(params.minPrice) : undefined,
     maxPrice: params.maxPrice ? parseFloat(params.maxPrice) : undefined,
-    page: params.page ? parseInt(params.page) : 1,
-    limit: 12,
-    sort:
-      (params.sort as
-        | 'price_asc'
-        | 'price_desc'
-        | 'name_asc'
-        | 'name_desc'
-        | 'newest') || 'newest'
+    page: params.page ? parseInt(params.page) : SEARCH_INITIAL_PAGE,
+    limit: SEARCH_PRODUCTS_PER_PAGE,
+    sort: (params.sort as FILTER_SORT) || SEARCH_SORT.NEWEST
   }
+  return filters
+}
+
+export const getFilters = (params: SearchParams): ProductSearchFilters => {
+  // Convertir parámetros de búsqueda a filtros
+  const filters = formatParams(params)
 
   // Procesar atributos desde searchParams
   // Formato esperado: attr_1=2,3&attr_2=5
