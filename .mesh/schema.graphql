@@ -169,6 +169,7 @@ type AttributeOptionImages {
   altText: String
   createdAt: Timestamp!
   updatedAt: Timestamp!
+  isPrimary: Int
   attributeOptions(where: AttributeOptionsWhereInput, orderBy: AttributeOptionsOrderByInput, limit: Int, offset: Int): [AttributeOptions] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
 }
 
@@ -214,6 +215,7 @@ input AttributeOptionImagesWhereInput {
   altText: String
   createdAt: String
   updatedAt: String
+  isPrimary: String
 }
 
 """Imágenes para opciones de atributos (colores, materiales, etc.)"""
@@ -232,6 +234,7 @@ input AttributeOptionImagesOrderByInput {
   altText: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
+  isPrimary: OrderBy
 }
 
 enum OrderBy {
@@ -1048,6 +1051,7 @@ input AttributeOptionImagesInsertInput {
   altText: String
   createdAt: Timestamp
   updatedAt: Timestamp
+  isPrimary: Int
 }
 
 """Imágenes para opciones de atributos (colores, materiales, etc.)"""
@@ -1066,6 +1070,7 @@ input AttributeOptionImagesUpdateInput {
   altText: String
   createdAt: Timestamp
   updatedAt: Timestamp
+  isPrimary: Int
 }
 
 input AttributeOptionsInsertInput {

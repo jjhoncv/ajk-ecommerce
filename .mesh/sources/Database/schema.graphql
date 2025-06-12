@@ -88,6 +88,7 @@ type attribute_option_images {
   alt_text: String
   created_at: Timestamp!
   updated_at: Timestamp!
+  is_primary: Int
   attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
 }
 
@@ -133,6 +134,7 @@ input attribute_option_images_WhereInput {
   alt_text: String
   created_at: String
   updated_at: String
+  is_primary: String
 }
 
 """Imágenes para opciones de atributos (colores, materiales, etc.)"""
@@ -151,6 +153,7 @@ input attribute_option_images_OrderByInput {
   alt_text: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
+  is_primary: OrderBy
 }
 
 enum OrderBy {
@@ -1048,6 +1051,7 @@ input attribute_option_images_InsertInput {
   alt_text: String
   created_at: Timestamp
   updated_at: Timestamp
+  is_primary: Int
 }
 
 """Imágenes para opciones de atributos (colores, materiales, etc.)"""
@@ -1066,6 +1070,7 @@ input attribute_option_images_UpdateInput {
   alt_text: String
   created_at: Timestamp
   updated_at: Timestamp
+  is_primary: Int
 }
 
 input attribute_options_InsertInput {

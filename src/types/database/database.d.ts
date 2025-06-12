@@ -75,6 +75,7 @@ export interface AttributeOptionImages {
   image_url_thumb: Scalars['String']['output'];
   /** Imagen zoom 1200x1200 (opcional) */
   image_url_zoom?: Maybe<Scalars['String']['output']>;
+  is_primary?: Maybe<Scalars['Int']['output']>;
   updated_at: Scalars['Timestamp']['output'];
 }
 

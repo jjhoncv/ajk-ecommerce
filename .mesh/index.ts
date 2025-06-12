@@ -948,6 +948,7 @@ export type AttributeOptionImages = {
   altText?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
+  isPrimary?: Maybe<Scalars['Int']['output']>;
   attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
 };
 
@@ -1012,6 +1013,7 @@ export type AttributeOptionImagesWhereInput = {
   altText?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
+  isPrimary?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Imágenes para opciones de atributos (colores, materiales, etc.) */
@@ -1030,6 +1032,7 @@ export type AttributeOptionImagesOrderByInput = {
   altText?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  isPrimary?: InputMaybe<OrderBy>;
 };
 
 export type OrderBy =
@@ -2097,6 +2100,7 @@ export type AttributeOptionImagesInsertInput = {
   altText?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  isPrimary?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Imágenes para opciones de atributos (colores, materiales, etc.) */
@@ -2115,6 +2119,7 @@ export type AttributeOptionImagesUpdateInput = {
   altText?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  isPrimary?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type AttributeOptionsInsertInput = {
@@ -3180,6 +3185,7 @@ export type AttributeOptionImagesResolvers<ContextType = MeshContext, ParentType
   altText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  isPrimary?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<AttributeOptionImagesattributeOptionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

@@ -439,6 +439,7 @@ export type attribute_option_images = {
   alt_text?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
+  is_primary?: Maybe<Scalars['Int']['output']>;
   attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
 };
 
@@ -503,6 +504,7 @@ export type attribute_option_images_WhereInput = {
   alt_text?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
+  is_primary?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Imágenes para opciones de atributos (colores, materiales, etc.) */
@@ -521,6 +523,7 @@ export type attribute_option_images_OrderByInput = {
   alt_text?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  is_primary?: InputMaybe<OrderBy>;
 };
 
 export type OrderBy =
@@ -2085,6 +2088,7 @@ export type attribute_option_images_InsertInput = {
   alt_text?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  is_primary?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Imágenes para opciones de atributos (colores, materiales, etc.) */
@@ -2103,6 +2107,7 @@ export type attribute_option_images_UpdateInput = {
   alt_text?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  is_primary?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type attribute_options_InsertInput = {

@@ -1,7 +1,7 @@
 import { ProductVariantData } from '@/services/product/productVariant'
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import ProductImageSlider from './ProductImageSlider'
 import ProductVariantActions from './ProductVariantActions'
 
 interface ProductVariantViewProps {
@@ -16,11 +16,6 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data }) => {
     name: vao.attributeOption?.value || '',
     attributeId: vao.attributeOption?.attributeId
   })) || []
-
-  // Obtener imagen principal
-  const mainImage = variant.attributeImages?.find((img) =>
-    img.attributeOptionId === variant.variantAttributeOptions?.[0]?.attributeOptionId
-  ) || variant.attributeImages?.[0]
 
   return (
     <main className="max-w-[1920px] mx-auto px-12 py-8">
@@ -37,39 +32,7 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Galería de imágenes */}
-        <div className="space-y-4">
-          {mainImage && mainImage.imageUrlNormal && (
-            <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden">
-              <Image
-                src={mainImage.imageUrlNormal}
-                alt={mainImage.altText || 'Imagen del producto'}
-                width={600}
-                height={600}
-                className="w-full h-full object-contain"
-                priority
-              />
-            </div>
-          )}
-
-          {/* Thumbnails */}
-          {variant.attributeImages && variant.attributeImages.length > 1 && (
-            <div className="grid grid-cols-4 gap-2">
-              {variant.attributeImages.map((image) => (
-                image.imageUrlThumb && (
-                  <div key={image.id} className="aspect-square bg-gray-50 rounded-lg overflow-hidden border-2 border-transparent hover:border-primary cursor-pointer">
-                    <Image
-                      src={image.imageUrlThumb}
-                      alt={image.altText || 'Imagen del producto'}
-                      width={150}
-                      height={150}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                )
-              ))}
-            </div>
-          )}
-        </div>
+        <ProductImageSlider images={variant.attributeImages} productName={product.name} />
 
         {/* Información del producto */}
         <div className="space-y-6">
