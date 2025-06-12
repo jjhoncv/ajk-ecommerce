@@ -12,18 +12,8 @@ export interface ProductVariantWithAttributeOptions extends ProductVariant {
 export interface ProductVariantWithImages extends ProductVariant {
   variantImages?: VariantImage[]
 }
-
-export interface VariantAttributeOptionDetail {
-  variantId: number
-  attributeOptionId: number
-  value: string
-  additionalCost: number
-  attributeId: number
-  attributeName: string
-}
-
 export interface ProductVariantComplete extends ProductVariant {
-  variantAttributeOptions: VariantAttributeOptionDetail[]
+  variantAttributeOptions: VariantAttributeOption[]
   variantImages?: VariantImage[]
   attributeImages: AttributeOptionImage[]
   promotion?: {

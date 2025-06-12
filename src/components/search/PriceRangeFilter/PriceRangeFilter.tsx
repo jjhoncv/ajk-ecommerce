@@ -1,16 +1,17 @@
 'use client'
+import { AvailableFilters } from '@/backend/filters'
+import { ProductSearchFilters } from '@/backend/search'
 import CollapsibleSection from '@/components/ui/CollapsibleSection'
-import { SearchFiltersProps } from '@/interfaces/components/search.interface'
-import React from 'react'
+import { FC } from 'react'
 import InputPrice from './InputPrice'
 import { usePriceRangeFilter } from './usePriceRangeFilter'
 
 interface PriceRangeFilterProps {
-  availableFilters: SearchFiltersProps['availableFilters']
-  currentFilters: SearchFiltersProps['currentFilters']
+  availableFilters: AvailableFilters
+  currentFilters: ProductSearchFilters
 }
 
-const PriceRangeFilter: React.FC<PriceRangeFilterProps> = ({
+const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
   availableFilters,
   currentFilters
 }) => {

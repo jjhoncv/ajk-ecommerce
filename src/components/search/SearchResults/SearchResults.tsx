@@ -1,10 +1,18 @@
 "use client";
+import { ProductSearchFilters, ProductSearchItem } from "@/backend/search";
 import Pagination from "@/components/search/Pagination";
 import { SearchNotFound } from "@/components/search/SearchNotFound";
 import SearchSorting from "@/components/search/SearchSorting";
 import ProductCard from "@/components/ui/ProductCard";
-import { SearchResultsProps } from "@/interfaces/components/search.interface";
 import React from "react";
+
+interface SearchResultsProps {
+  products: ProductSearchItem[]
+  totalPages: number
+  currentPage: number
+  currentFilters: ProductSearchFilters
+  defaultView?: 'grid' | 'list'
+}
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   products,
@@ -13,7 +21,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   defaultView: viewMode = "grid",
   currentFilters: filters
 }) => {
-
 
   if (products.length === 0) {
     return <SearchNotFound />
@@ -39,7 +46,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           <ProductCard
             key={product.variantId || product.id}
             product={product}
-            layout={viewMode === "list" ? "list" : "grid"}
           />
         ))}
       </div>

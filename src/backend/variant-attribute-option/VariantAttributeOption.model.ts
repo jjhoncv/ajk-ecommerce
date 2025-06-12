@@ -1,8 +1,10 @@
 import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
-import { VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
+import {
+  VariantAttributeOptions as VariantAttributeOption,
+  VariantAttributeOptions
+} from '@/types/domain'
 
 // me
-import { VariantAttributeOptionWithDetails } from './VariantAttributeOption.interfaces'
 import {
   VariantAttributeOptionMapper,
   VariantAttributeOptionsMapper,
@@ -125,15 +127,32 @@ export class VariantAttributeOptionModel {
 
   public async getVariantAttributeOptionsWithDetailsById(
     variantId: number
-  ): Promise<VariantAttributeOptionWithDetails[] | undefined> {
-    const optionsRaw =
+  ): Promise<VariantAttributeOptions[] | undefined> {
+    const attributeOptionsFlatRaw =
       await oVariantAttributeOptionRep.getVariantAttributeOptionsWithDetailsById(
         variantId
       )
 
-    if (optionsRaw === null) return undefined
-    const options = VariantAttributeOptionsWithDetailMapper(optionsRaw)
+    if (attributeOptionsFlatRaw === null) return undefined
+    const options = VariantAttributeOptionsWithDetailMapper(
+      attributeOptionsFlatRaw
+    )
+    // console.log('options', options)
 
+    /*
+      options [
+        {
+          additionalCost: 0,
+          attributeOptionValue: 'Blanco',
+          attributeId: 1,
+          attributeOptionId: 2,
+
+          attributeDisplayType: 'color',
+          attributeName: 'Color',
+          variantId: 11
+        }
+    ]
+    */
     return options
   }
 

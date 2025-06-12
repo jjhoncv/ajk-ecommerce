@@ -16,13 +16,14 @@ import oProductVariantRep from './ProductVariant.repository'
 import { ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
   AttributeOptionImages,
-  ProductVariants as ProductVariant
+  ProductVariants as ProductVariant,
+  VariantAttributeOptions as VariantAttributeOption
 } from '@/types/domain'
+
 import {
   ProductVariantComplete,
   ProductVariantWithAttributeOptions,
-  ProductVariantWithImages,
-  VariantAttributeOptionDetail
+  ProductVariantWithImages
 } from './ProductVariant.interfaces'
 
 export class ProductVariantModel {
@@ -212,14 +213,11 @@ export class ProductVariantModel {
       )
 
     // Construir variantAttributeOptions con datos completos
-    const attributeOptions: VariantAttributeOptionDetail[] =
+    const attributeOptions: VariantAttributeOption[] =
       variantAttributeOptionWithDetails?.map((option) => ({
         variantId: option.variantId,
         attributeOptionId: option.attributeOptionId,
-        value: option.attributeOptionValue,
-        additionalCost: option.additionalCost,
-        attributeId: option.attributeId,
-        attributeName: option.attributeName
+        attributeOption: option.attributeOption
       })) || []
 
     // Obtener imágenes de la variante

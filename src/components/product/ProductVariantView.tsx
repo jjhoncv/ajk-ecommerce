@@ -13,8 +13,8 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data }) => {
 
   // Obtener atributos de la variante
   const variantAttributes = variant.variantAttributeOptions?.map((vao) => ({
-    name: vao.value || '',
-    attributeId: vao.attributeId
+    name: vao.attributeOption?.value || '',
+    attributeId: vao.attributeOption?.attributeId
   })) || []
 
   // Obtener imagen principal

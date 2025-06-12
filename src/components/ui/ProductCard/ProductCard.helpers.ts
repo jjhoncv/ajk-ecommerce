@@ -146,7 +146,8 @@ export const getVariantTitle = (
       // Verificar que variantAttr no sea null
       if (!variantAttr) return null
       // Obtener el valor del atributo desde attributeOptions
-      return variantAttr.value
+      const attributeOption = variantAttr.attributeOption
+      return attributeOption?.value
     })
     .filter(Boolean) // Filtrar valores undefined/null
     .join(' - ')

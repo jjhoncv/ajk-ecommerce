@@ -1,7 +1,6 @@
 import { VariantAttributeOptionWithDetailsRaw } from '@/backend/variant-attribute-option'
 import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
 import { VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
-import { VariantAttributeOptionWithDetails } from './VariantAttributeOption.interfaces'
 
 export const VariantAttributeOptionMapper = (
   data: VariantAttributeOptionRaw
@@ -23,14 +22,24 @@ export const VariantAttributeOptionsMapper = (
 
 export const VariantAttributeOptionsWithDetailMapper = (
   data: VariantAttributeOptionWithDetailsRaw[]
-): VariantAttributeOptionWithDetails[] => {
+): VariantAttributeOption[] => {
   return data.map((item) => ({
-    additionalCost: Number(item.additional_cost),
-    attributeDisplayType: item.attribute_display_type,
-    attributeId: item.attribute_id,
-    attributeName: item.attribute_name,
-    attributeOptionValue: item.attribute_option_value,
     attributeOptionId: item.attribute_option_id,
-    variantId: item.variant_id
+    variantId: item.variant_id,
+    attributeOption: {
+      attributeId: item.attribute_id,
+      id: item.attribute_option_id,
+      value: item.attribute_option_value,
+      additionalCost: item.additional_cost
+    }
   }))
+  // return data.map((item) => ({
+  //   additionalCost: Number(item.additional_cost),
+  //   attributeDisplayType: item.attribute_display_type,
+  //   attributeId: item.attribute_id,
+  //   attributeName: item.attribute_name,
+  //   attributeOptionValue: item.attribute_option_value,
+  //   attributeOptionId: item.attribute_option_id,
+  //   variantId: item.variant_id
+  // }))
 }

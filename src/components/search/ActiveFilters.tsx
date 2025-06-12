@@ -1,11 +1,13 @@
 "use client";
-import { SearchFiltersProps } from "@/interfaces/components/search.interface";
+import { AvailableFilters } from '@/backend/filters';
+import { ProductSearchFilters } from '@/backend/search';
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 interface ActiveFiltersProps {
-  availableFilters: SearchFiltersProps['availableFilters'];
-  currentFilters: SearchFiltersProps['currentFilters'];
+  availableFilters: AvailableFilters;
+  currentFilters: ProductSearchFilters;
 }
 
 const ActiveFilters: React.FC<ActiveFiltersProps> = ({

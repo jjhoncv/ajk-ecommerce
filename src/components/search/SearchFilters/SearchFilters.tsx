@@ -1,9 +1,15 @@
 "use client";
+import { AvailableFilters } from "@/backend/filters";
+import { ProductSearchFilters } from "@/backend/search";
 import ActiveFilters from "@/components/search/ActiveFilters";
 import AttributeFilter from "@/components/search/AttributeFilter";
 import PriceRangeFilter from "@/components/search/PriceRangeFilter";
-import { SearchFiltersProps } from "@/interfaces/components/search.interface";
 import React from "react";
+
+interface SearchFiltersProps {
+  availableFilters: AvailableFilters
+  currentFilters: ProductSearchFilters
+}
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({
   availableFilters,

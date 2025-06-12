@@ -9,6 +9,7 @@ import oSearchRep from './Search.repository'
 import oAttributeModel from '@/backend/attribute'
 import oBrandModel from '@/backend/brand'
 import oCategoryModel from '@/backend/category'
+import { AvailableFilters } from '@/backend/filters'
 import oProductVariantModel from '@/backend/product-variant'
 import {
   ProductSearchFilters,
@@ -111,7 +112,9 @@ export class SearchModel {
   }
 
   // Método privado para generar filtros con contadores
-  private async generateFiltersFromProducts(products: ProductSearchItem[]) {
+  private async generateFiltersFromProducts(
+    products: ProductSearchItem[]
+  ): Promise<AvailableFilters> {
     // Obtener todos los atributos para mapear nombres
     const allAttributes = await oAttributeModel.getAttributes()
     const attributeNameMap = new Map<number, string>()

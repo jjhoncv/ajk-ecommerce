@@ -1,12 +1,12 @@
 'use client'
 import { useStickyFilters } from '@/hooks/useStickyFilters'
-import React from 'react'
+import { FC, ReactNode } from 'react'
 
 interface StickyFiltersProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const StickyFilters: React.FC<StickyFiltersProps> = ({ children }) => {
+const StickyFilters: FC<StickyFiltersProps> = ({ children }) => {
   const { topPosition, maxHeight, minHeight, bottomConstraint } = useStickyFilters()
 
   return (

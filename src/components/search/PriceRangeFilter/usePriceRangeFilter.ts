@@ -1,12 +1,13 @@
-import { SearchFiltersProps } from '@/interfaces/components/search.interface'
+import { AvailableFilters } from '@/backend/filters'
+import { ProductSearchFilters } from '@/backend/search'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
 import { priceSchema } from './schema'
 
 interface UsePriceRangeFilterProps {
-  availableFilters: SearchFiltersProps['availableFilters']
-  currentFilters: SearchFiltersProps['currentFilters']
+  availableFilters: AvailableFilters
+  currentFilters: ProductSearchFilters
 }
 
 export const usePriceRangeFilter = ({

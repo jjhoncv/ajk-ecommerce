@@ -1,8 +1,11 @@
 "use client";
-import { SearchSortingProps } from "@/interfaces/components/search.interface";
+import { ProductSearchFilters } from "@/backend/search";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
+interface SearchSortingProps {
+  currentSort?: ProductSearchFilters['sort']
+}
 interface ExtendedSearchSortingProps extends SearchSortingProps {
   variant?: "select" | "toggle";
 }
