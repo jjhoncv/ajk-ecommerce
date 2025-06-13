@@ -196,6 +196,7 @@ type AttributeOptions {
   value: String!
   additionalCost: Float
   attributeOptionImages(limit: Int, offset: Int, where: AttributeOptionImagesWhereInput, orderBy: AttributeOptionImagesOrderByInput): [AttributeOptionImages] @mysqlSelect(subgraph: "Database", table: "attribute_option_images", columnMap: [["attribute_option_id", "id"]])
+  attributes(where: AttributesWhereInput, orderBy: AttributesOrderByInput, limit: Int, offset: Int): [Attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_id")
   variantAttributeOptions(limit: Int, offset: Int, where: VariantAttributeOptionsWhereInput, orderBy: VariantAttributeOptionsOrderByInput): [VariantAttributeOptions] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["attribute_option_id", "id"]])
 }
 
@@ -242,11 +243,19 @@ enum OrderBy {
   desc
 }
 
-type VariantAttributeOptions {
-  variantId: Int!
-  attributeOptionId: Int!
-  attributeOptions(where: AttributeOptionsWhereInput, orderBy: AttributeOptionsOrderByInput, limit: Int, offset: Int): [AttributeOptions] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
-  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+type Attributes {
+  id: Int!
+  name: String!
+  displayType: AttributesDisplayType!
+  attributeOptions(limit: Int, offset: Int, where: AttributeOptionsWhereInput, orderBy: AttributeOptionsOrderByInput): [AttributeOptions] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["attribute_id", "id"]])
+}
+
+enum AttributesDisplayType {
+  radio
+  pills
+  select
+  color
+  custom
 }
 
 input AttributeOptionsWhereInput {
@@ -261,6 +270,25 @@ input AttributeOptionsOrderByInput {
   attributeId: OrderBy
   value: OrderBy
   additionalCost: OrderBy
+}
+
+input AttributesWhereInput {
+  id: String
+  name: String
+  displayType: String
+}
+
+input AttributesOrderByInput {
+  id: OrderBy
+  name: OrderBy
+  displayType: OrderBy
+}
+
+type VariantAttributeOptions {
+  variantId: Int!
+  attributeOptionId: Int!
+  attributeOptions(where: AttributeOptionsWhereInput, orderBy: AttributeOptionsOrderByInput, limit: Int, offset: Int): [AttributeOptions] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
+  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
 }
 
 type ProductVariants {
@@ -685,32 +713,6 @@ input CustomersAddressesOrderByInput {
   idCustomer: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
-}
-
-type Attributes {
-  id: Int!
-  name: String!
-  displayType: AttributesDisplayType!
-}
-
-enum AttributesDisplayType {
-  radio
-  pills
-  select
-  color
-  custom
-}
-
-input AttributesWhereInput {
-  id: String
-  name: String
-  displayType: String
-}
-
-input AttributesOrderByInput {
-  id: OrderBy
-  name: OrderBy
-  displayType: OrderBy
 }
 
 type Banner {

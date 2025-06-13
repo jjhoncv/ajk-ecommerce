@@ -147,16 +147,27 @@ export class ProductVariantModel {
 
     if (!variants) return undefined
 
-    const variantIds = variants.map((variant) => variant.id)
-    const attributeOptionsByVariantId =
-      await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantIds(
-        variantIds
-      )
+    return Promise.all(
+      variants.map(async (variant) => {
+        // Obtener atributos usando composición con datos completos
+        const variantAttributeOptionWithDetails =
+          await oVariantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+            variant.id
+          )
 
-    return variants.map((variant) => ({
-      ...variant,
-      variantAttributeOptions: attributeOptionsByVariantId.get(variant.id) || []
-    }))
+        const attributeOptions: VariantAttributeOption[] =
+          variantAttributeOptionWithDetails?.map((option) => ({
+            variantId: option.variantId,
+            attributeOptionId: option.attributeOptionId,
+            attributeOption: option.attributeOption
+          })) || []
+
+        return {
+          ...variant,
+          variantAttributeOptions: attributeOptions
+        }
+      })
+    )
   }
 
   public async getProductVariantsByProductIds(

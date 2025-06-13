@@ -137,22 +137,7 @@ export class VariantAttributeOptionModel {
     const options = VariantAttributeOptionsWithDetailMapper(
       attributeOptionsFlatRaw
     )
-    // console.log('options', options)
-
-    /*
-      options [
-        {
-          additionalCost: 0,
-          attributeOptionValue: 'Blanco',
-          attributeId: 1,
-          attributeOptionId: 2,
-
-          attributeDisplayType: 'color',
-          attributeName: 'Color',
-          variantId: 11
-        }
-    ]
-    */
+    
     return options
   }
 

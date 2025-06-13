@@ -115,6 +115,7 @@ type attribute_options {
   value: String!
   additional_cost: Float
   attribute_option_images(limit: Int, offset: Int, where: attribute_option_images_WhereInput, orderBy: attribute_option_images_OrderByInput): [attribute_option_images] @mysqlSelect(subgraph: "Database", table: "attribute_option_images", columnMap: [["attribute_option_id", "id"]])
+  attributes(where: attributes_WhereInput, orderBy: attributes_OrderByInput, limit: Int, offset: Int): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_id")
   variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["attribute_option_id", "id"]])
 }
 
@@ -161,11 +162,19 @@ enum OrderBy {
   desc
 }
 
-type variant_attribute_options {
-  variant_id: Int!
-  attribute_option_id: Int!
-  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
-  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+type attributes {
+  id: Int!
+  name: String!
+  display_type: attributes_display_type!
+  attribute_options(limit: Int, offset: Int, where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["attribute_id", "id"]])
+}
+
+enum attributes_display_type {
+  radio
+  pills
+  select
+  color
+  custom
 }
 
 input attribute_options_WhereInput {
@@ -180,6 +189,25 @@ input attribute_options_OrderByInput {
   attribute_id: OrderBy
   value: OrderBy
   additional_cost: OrderBy
+}
+
+input attributes_WhereInput {
+  id: String
+  name: String
+  display_type: String
+}
+
+input attributes_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  display_type: OrderBy
+}
+
+type variant_attribute_options {
+  variant_id: Int!
+  attribute_option_id: Int!
+  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
+  product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
 }
 
 type product_variants {
@@ -604,32 +632,6 @@ input customers_addresses_OrderByInput {
   id_customer: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
-}
-
-type attributes {
-  id: Int!
-  name: String!
-  display_type: attributes_display_type!
-}
-
-enum attributes_display_type {
-  radio
-  pills
-  select
-  color
-  custom
-}
-
-input attributes_WhereInput {
-  id: String
-  name: String
-  display_type: String
-}
-
-input attributes_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  display_type: OrderBy
 }
 
 type banner {

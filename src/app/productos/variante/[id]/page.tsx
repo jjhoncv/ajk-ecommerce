@@ -47,10 +47,14 @@ export default async function ProductVariantPage({
     return <ProductVariantNotFound />
   }
 
+  console.log("data", data)
+
+  // Ahora las variantes vienen completas con variantAttributeOptions
+  const allVariants = (data.product.productVariants || []).filter(v => v !== null)
 
   return (
     <Layout>
-      <ProductVariantView data={data} />
+      <ProductVariantView data={data} allVariants={allVariants} currentVariantId={variantId} />
     </Layout>
   )
 }

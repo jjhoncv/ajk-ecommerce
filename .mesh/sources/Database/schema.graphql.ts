@@ -5773,6 +5773,174 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
+            "value": "attributes"
+          },
+          "arguments": [
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "where"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "attributes_WhereInput"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "orderBy"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "attributes_OrderByInput"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "limit"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Int"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "offset"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Int"
+                }
+              },
+              "directives": []
+            }
+          ],
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "attributes"
+              }
+            }
+          },
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "mysqlSelect"
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "subgraph"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "Database"
+                  }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "table"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "attributes"
+                  }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "columnMap"
+                  },
+                  "value": {
+                    "kind": "ListValue",
+                    "values": [
+                      {
+                        "kind": "ListValue",
+                        "values": [
+                          {
+                            "kind": "StringValue",
+                            "value": "id"
+                          },
+                          {
+                            "kind": "StringValue",
+                            "value": "attribute_id"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "mysqlTableForeign"
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "subgraph"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "Database"
+                  }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "columnName"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "attribute_id"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
             "value": "variant_attribute_options"
           },
           "arguments": [
@@ -6340,6 +6508,511 @@ const schemaAST = {
       "kind": "ObjectTypeDefinition",
       "name": {
         "kind": "Name",
+        "value": "attributes"
+      },
+      "fields": [
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "id"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "Int"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "name"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "String"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "display_type"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "attributes_display_type"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "attribute_options"
+          },
+          "arguments": [
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "limit"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Int"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "offset"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "Int"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "where"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "attribute_options_WhereInput"
+                }
+              },
+              "directives": []
+            },
+            {
+              "kind": "InputValueDefinition",
+              "name": {
+                "kind": "Name",
+                "value": "orderBy"
+              },
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "attribute_options_OrderByInput"
+                }
+              },
+              "directives": []
+            }
+          ],
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "attribute_options"
+              }
+            }
+          },
+          "directives": [
+            {
+              "kind": "Directive",
+              "name": {
+                "kind": "Name",
+                "value": "mysqlSelect"
+              },
+              "arguments": [
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "subgraph"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "Database"
+                  }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "table"
+                  },
+                  "value": {
+                    "kind": "StringValue",
+                    "value": "attribute_options"
+                  }
+                },
+                {
+                  "kind": "Argument",
+                  "name": {
+                    "kind": "Name",
+                    "value": "columnMap"
+                  },
+                  "value": {
+                    "kind": "ListValue",
+                    "values": [
+                      {
+                        "kind": "ListValue",
+                        "values": [
+                          {
+                            "kind": "StringValue",
+                            "value": "attribute_id"
+                          },
+                          {
+                            "kind": "StringValue",
+                            "value": "id"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "interfaces": [],
+      "directives": []
+    },
+    {
+      "kind": "EnumTypeDefinition",
+      "name": {
+        "kind": "Name",
+        "value": "attributes_display_type"
+      },
+      "values": [
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "radio"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "pills"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "select"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "color"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "custom"
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
+        "value": "attribute_options_WhereInput"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "attribute_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "value"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "additional_cost"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
+        "value": "attribute_options_OrderByInput"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "attribute_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "value"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "additional_cost"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
+        "value": "attributes_WhereInput"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "name"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "display_type"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
+        "value": "attributes_OrderByInput"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "name"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "display_type"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "OrderBy"
+            }
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "ObjectTypeDefinition",
+      "name": {
+        "kind": "Name",
         "value": "variant_attribute_options"
       },
       "fields": [
@@ -6719,146 +7392,6 @@ const schemaAST = {
         }
       ],
       "interfaces": [],
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attribute_options_WhereInput"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "attribute_id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "value"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "additional_cost"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attribute_options_OrderByInput"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "attribute_id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "value"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "additional_cost"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        }
-      ],
       "directives": []
     },
     {
@@ -14869,234 +15402,6 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "updated_at"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "ObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attributes"
-      },
-      "fields": [
-        {
-          "kind": "FieldDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "id"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "Int"
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "FieldDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "name"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "String"
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "FieldDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "display_type"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "attributes_display_type"
-              }
-            }
-          },
-          "directives": []
-        }
-      ],
-      "interfaces": [],
-      "directives": []
-    },
-    {
-      "kind": "EnumTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attributes_display_type"
-      },
-      "values": [
-        {
-          "kind": "EnumValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "radio"
-          },
-          "directives": []
-        },
-        {
-          "kind": "EnumValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "pills"
-          },
-          "directives": []
-        },
-        {
-          "kind": "EnumValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "select"
-          },
-          "directives": []
-        },
-        {
-          "kind": "EnumValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "color"
-          },
-          "directives": []
-        },
-        {
-          "kind": "EnumValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "custom"
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attributes_WhereInput"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "name"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "display_type"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "attributes_OrderByInput"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "name"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "OrderBy"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "display_type"
           },
           "type": {
             "kind": "NamedType",

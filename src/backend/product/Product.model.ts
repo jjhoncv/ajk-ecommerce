@@ -16,20 +16,76 @@ import { ProductMapper, ProductsMapper } from './Product.mapper'
 import oProductRep from './Product.repository'
 
 // others
+import attributeOptionImageModel from '@/backend/attribute-option-image'
 import brandModel from '@/backend/brand'
 import categoryModel from '@/backend/category'
 import filtersModel from '@/backend/filters'
 import productVariantModel from '@/backend/product-variant'
+import promotionModel from '@/backend/promotion'
 import promotionVariantModel from '@/backend/promotion-variant'
 import searchModel, {
   ProductSearchFilters,
   ProductSearchResult
 } from '@/backend/search'
+import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import variantImageModel from '@/backend/variant-image'
+import variantRatingModel, {
+  VariantRatingWithCustomer
+} from '@/backend/variant-rating'
+import { VariantAttributeOption } from '@/interfaces/models'
 
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProducts()
     return ProductsMapper(productsRaw)
+  }
+
+  public async getProductFullById(id: number): Promise<Product | undefined> {
+    const productRaw = await oProductRep.getProductById(id)
+    if (!productRaw) return undefined
+    const product = ProductMapper(productRaw)
+
+    if (!product.brandId) return product
+    const brand = await brandModel.getBrandById(product.brandId)
+    if (!brand) return product
+    product.brand = brand
+
+    const categories = await categoryModel.getCategoriesByProductId(product.id)
+    if (!categories) return product
+
+    product.productCategories = categories.map((category) => ({
+      categoryId: category.id,
+      productId: product.id,
+      categories
+    }))
+
+    const productVariants =
+      await productVariantModel.getProductVariantsByProductId(product.id)
+
+    if (!productVariants) return product
+
+    product.productVariants = await Promise.all(
+      productVariants.map(async (productVariant) => {
+        const variantAttributeOptionWithDetails =
+          await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+            productVariant.id
+          )
+
+        const attributeOptions: VariantAttributeOption[] =
+          variantAttributeOptionWithDetails?.map((option) => ({
+            variantId: option.variantId,
+            attributeOptionId: option.attributeOptionId,
+            attributeOption: option.attributeOption
+          })) || []
+
+        return {
+          ...productVariant,
+          variantAttributeOptions: attributeOptions
+        }
+      })
+    )
+
+    return product
   }
 
   public async getProductById(id: number): Promise<Product | undefined> {
@@ -51,9 +107,83 @@ export class ProductModel {
       categories
     }))
 
+    const productVariants =
+      await productVariantModel.getProductVariantsByProductId(product.id)
+
+    if (!productVariants) return product
+
+    product.productVariants = productVariants.map((productVariant) => ({
+      ...productVariant,
+      id: productVariant.id
+    }))
+
+    product.productVariants = await Promise.all(
+      productVariants.map(async (productVariant) => {
+        const variantAttributeOptionWithDetails =
+          await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+            productVariant.id
+          )
+
+        const attributeOptions: VariantAttributeOption[] = await Promise.all(
+          variantAttributeOptionWithDetails?.map(async (option) => ({
+            variantId: option.variantId,
+            attributeOptionId: option.attributeOptionId,
+            attributeOption: {
+              ...option.attributeOption,
+              attributeOptionImages:
+                await attributeOptionImageModel.getAttributeOptionImages(
+                  option.attributeOptionId
+                )
+            }
+          })) || []
+        )
+
+        const promotionVariantsByVariantId =
+          await promotionVariantModel.getPromotionVariantsByVariantId(
+            productVariant.id
+          )
+
+        if (!promotionVariantsByVariantId)
+          return {
+            ...productVariant,
+            variantAttributeOptions: attributeOptions,
+            promotionVariants: []
+          }
+
+        const promotionVariants =
+          (await Promise.all(
+            promotionVariantsByVariantId.map(async (promotionVariant) => ({
+              ...promotionVariant,
+              promotion: await promotionModel.getPromotionById(
+                promotionVariant.promotionId
+              )
+            }))
+          )) || []
+
+        const variantImages = await variantImageModel.getVariantImages(
+          productVariant.id
+        )
+
+        const variantRatingSearch =
+          await variantRatingModel.getRatingsByVariantId(productVariant.id)
+
+        const variantRatings: VariantRatingWithCustomer[] =
+          variantRatingSearch.ratings.map((rating) => ({
+            ...rating
+          }))
+
+        return {
+          ...productVariant,
+          variantAttributeOptions: attributeOptions,
+          promotionVariants: promotionVariants,
+          variantImages: variantImages,
+          variantRatings: variantRatings
+        }
+      })
+    )
+
     return product
   }
-
   public async getProductsByBrandId(
     brandId: number
   ): Promise<Product[] | undefined> {

@@ -30,16 +30,12 @@ export const VariantAttributeOptionsWithDetailMapper = (
       attributeId: item.attribute_id,
       id: item.attribute_option_id,
       value: item.attribute_option_value,
-      additionalCost: item.additional_cost
+      additionalCost: item.additional_cost,
+      attribute: {
+        displayType: item.attribute_display_type,
+        id: item.attribute_id,
+        name: item.attribute_name
+      }
     }
   }))
-  // return data.map((item) => ({
-  //   additionalCost: Number(item.additional_cost),
-  //   attributeDisplayType: item.attribute_display_type,
-  //   attributeId: item.attribute_id,
-  //   attributeName: item.attribute_name,
-  //   attributeOptionValue: item.attribute_option_value,
-  //   attributeOptionId: item.attribute_option_id,
-  //   variantId: item.variant_id
-  // }))
 }

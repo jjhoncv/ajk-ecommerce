@@ -469,6 +469,7 @@ export type attribute_options = {
   value: Scalars['String']['output'];
   additional_cost?: Maybe<Scalars['Float']['output']>;
   attribute_option_images?: Maybe<Array<Maybe<attribute_option_images>>>;
+  attributes?: Maybe<Array<Maybe<attributes>>>;
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
 };
 
@@ -478,6 +479,14 @@ export type attribute_optionsattribute_option_imagesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<attribute_option_images_WhereInput>;
   orderBy?: InputMaybe<attribute_option_images_OrderByInput>;
+};
+
+
+export type attribute_optionsattributesArgs = {
+  where?: InputMaybe<attributes_WhereInput>;
+  orderBy?: InputMaybe<attributes_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -530,6 +539,54 @@ export type OrderBy =
   | 'asc'
   | 'desc';
 
+export type attributes = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  display_type: attributes_display_type;
+  attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
+};
+
+
+export type attributesattribute_optionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<attribute_options_WhereInput>;
+  orderBy?: InputMaybe<attribute_options_OrderByInput>;
+};
+
+export type attributes_display_type =
+  | 'radio'
+  | 'pills'
+  | 'select'
+  | 'color'
+  | 'custom';
+
+export type attribute_options_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  attribute_id?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+  additional_cost?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type attribute_options_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  attribute_id?: InputMaybe<OrderBy>;
+  value?: InputMaybe<OrderBy>;
+  additional_cost?: InputMaybe<OrderBy>;
+};
+
+export type attributes_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  display_type?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type attributes_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  display_type?: InputMaybe<OrderBy>;
+};
+
 export type variant_attribute_options = {
   variant_id: Scalars['Int']['output'];
   attribute_option_id: Scalars['Int']['output'];
@@ -551,20 +608,6 @@ export type variant_attribute_optionsproduct_variantsArgs = {
   orderBy?: InputMaybe<product_variants_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type attribute_options_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  attribute_id?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-  additional_cost?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type attribute_options_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  attribute_id?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-  additional_cost?: InputMaybe<OrderBy>;
 };
 
 export type product_variants = {
@@ -1167,31 +1210,6 @@ export type customers_addresses_OrderByInput = {
   id_customer?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
-};
-
-export type attributes = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  display_type: attributes_display_type;
-};
-
-export type attributes_display_type =
-  | 'radio'
-  | 'pills'
-  | 'select'
-  | 'color'
-  | 'custom';
-
-export type attributes_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  display_type?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type attributes_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  display_type?: InputMaybe<OrderBy>;
 };
 
 export type banner = {

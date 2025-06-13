@@ -978,6 +978,7 @@ export type AttributeOptions = {
   value: Scalars['String']['output'];
   additionalCost?: Maybe<Scalars['Float']['output']>;
   attributeOptionImages?: Maybe<Array<Maybe<AttributeOptionImages>>>;
+  attributes?: Maybe<Array<Maybe<Attributes>>>;
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
 };
 
@@ -987,6 +988,14 @@ export type AttributeOptionsattributeOptionImagesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<AttributeOptionImagesWhereInput>;
   orderBy?: InputMaybe<AttributeOptionImagesOrderByInput>;
+};
+
+
+export type AttributeOptionsattributesArgs = {
+  where?: InputMaybe<AttributesWhereInput>;
+  orderBy?: InputMaybe<AttributesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1039,6 +1048,54 @@ export type OrderBy =
   | 'asc'
   | 'desc';
 
+export type Attributes = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  displayType: AttributesDisplayType;
+  attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
+};
+
+
+export type AttributesattributeOptionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<AttributeOptionsOrderByInput>;
+};
+
+export type AttributesDisplayType =
+  | 'radio'
+  | 'pills'
+  | 'select'
+  | 'color'
+  | 'custom';
+
+export type AttributeOptionsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  attributeId?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+  additionalCost?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttributeOptionsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  attributeId?: InputMaybe<OrderBy>;
+  value?: InputMaybe<OrderBy>;
+  additionalCost?: InputMaybe<OrderBy>;
+};
+
+export type AttributesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  displayType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type AttributesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  displayType?: InputMaybe<OrderBy>;
+};
+
 export type VariantAttributeOptions = {
   variantId: Scalars['Int']['output'];
   attributeOptionId: Scalars['Int']['output'];
@@ -1060,20 +1117,6 @@ export type VariantAttributeOptionsproductVariantsArgs = {
   orderBy?: InputMaybe<ProductVariantsOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type AttributeOptionsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  attributeId?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-  additionalCost?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AttributeOptionsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  attributeId?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-  additionalCost?: InputMaybe<OrderBy>;
 };
 
 export type ProductVariants = {
@@ -1676,31 +1719,6 @@ export type CustomersAddressesOrderByInput = {
   idCustomer?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type Attributes = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  displayType: AttributesDisplayType;
-};
-
-export type AttributesDisplayType =
-  | 'radio'
-  | 'pills'
-  | 'select'
-  | 'color'
-  | 'custom';
-
-export type AttributesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  displayType?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type AttributesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  displayType?: InputMaybe<OrderBy>;
 };
 
 export type Banner = {
@@ -2708,9 +2726,13 @@ export type ResolversTypes = ResolversObject<{
   AttributeOptionImagesWhereInput: AttributeOptionImagesWhereInput;
   AttributeOptionImagesOrderByInput: AttributeOptionImagesOrderByInput;
   OrderBy: OrderBy;
-  VariantAttributeOptions: ResolverTypeWrapper<VariantAttributeOptions>;
+  Attributes: ResolverTypeWrapper<Attributes>;
+  AttributesDisplayType: AttributesDisplayType;
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
+  AttributesWhereInput: AttributesWhereInput;
+  AttributesOrderByInput: AttributesOrderByInput;
+  VariantAttributeOptions: ResolverTypeWrapper<VariantAttributeOptions>;
   ProductVariants: ResolverTypeWrapper<ProductVariants>;
   Products: ResolverTypeWrapper<Products>;
   ProductCategories: ResolverTypeWrapper<ProductCategories>;
@@ -2752,10 +2774,6 @@ export type ResolversTypes = ResolversObject<{
   CustomersOrderByInput: CustomersOrderByInput;
   CustomersAddressesWhereInput: CustomersAddressesWhereInput;
   CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
-  Attributes: ResolverTypeWrapper<Attributes>;
-  AttributesDisplayType: AttributesDisplayType;
-  AttributesWhereInput: AttributesWhereInput;
-  AttributesOrderByInput: AttributesOrderByInput;
   Banner: ResolverTypeWrapper<Banner>;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
@@ -2854,9 +2872,12 @@ export type ResolversParentTypes = ResolversObject<{
   Float: Scalars['Float']['output'];
   AttributeOptionImagesWhereInput: AttributeOptionImagesWhereInput;
   AttributeOptionImagesOrderByInput: AttributeOptionImagesOrderByInput;
-  VariantAttributeOptions: VariantAttributeOptions;
+  Attributes: Attributes;
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
+  AttributesWhereInput: AttributesWhereInput;
+  AttributesOrderByInput: AttributesOrderByInput;
+  VariantAttributeOptions: VariantAttributeOptions;
   ProductVariants: ProductVariants;
   Products: Products;
   ProductCategories: ProductCategories;
@@ -2896,9 +2917,6 @@ export type ResolversParentTypes = ResolversObject<{
   CustomersOrderByInput: CustomersOrderByInput;
   CustomersAddressesWhereInput: CustomersAddressesWhereInput;
   CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
-  Attributes: Attributes;
-  AttributesWhereInput: AttributesWhereInput;
-  AttributesOrderByInput: AttributesOrderByInput;
   Banner: Banner;
   BannerWhereInput: BannerWhereInput;
   BannerOrderByInput: BannerOrderByInput;
@@ -3200,7 +3218,16 @@ export type AttributeOptionsResolvers<ContextType = MeshContext, ParentType exte
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   additionalCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   attributeOptionImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptionImages']>>>, ParentType, ContextType, Partial<AttributeOptionsattributeOptionImagesArgs>>;
+  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<AttributeOptionsattributesArgs>>;
   variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<AttributeOptionsvariantAttributeOptionsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AttributesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Attributes'] = ResolversParentTypes['Attributes']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  displayType?: Resolver<ResolversTypes['AttributesDisplayType'], ParentType, ContextType>;
+  attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<AttributesattributeOptionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3367,13 +3394,6 @@ export type CustomersAddressesResolvers<ContextType = MeshContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type AttributesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Attributes'] = ResolversParentTypes['Attributes']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  displayType?: Resolver<ResolversTypes['AttributesDisplayType'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type BannerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Banner'] = ResolversParentTypes['Banner']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3503,6 +3523,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   AttributeOptionImages?: AttributeOptionImagesResolvers<ContextType>;
   Timestamp?: GraphQLScalarType;
   AttributeOptions?: AttributeOptionsResolvers<ContextType>;
+  Attributes?: AttributesResolvers<ContextType>;
   VariantAttributeOptions?: VariantAttributeOptionsResolvers<ContextType>;
   ProductVariants?: ProductVariantsResolvers<ContextType>;
   Products?: ProductsResolvers<ContextType>;
@@ -3517,7 +3538,6 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   RatingImages?: RatingImagesResolvers<ContextType>;
   Customers?: CustomersResolvers<ContextType>;
   CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
-  Attributes?: AttributesResolvers<ContextType>;
   Banner?: BannerResolvers<ContextType>;
   Permissions?: PermissionsResolvers<ContextType>;
   ProductRatingSummary?: ProductRatingSummaryResolvers<ContextType>;

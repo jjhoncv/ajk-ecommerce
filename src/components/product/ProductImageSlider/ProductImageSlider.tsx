@@ -1,5 +1,4 @@
 "use client";
-import { AttributeOptionImages } from "@/types/domain";
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import Image from "next/image";
 import React from "react";
@@ -8,10 +7,11 @@ import {
   findPrimaryImageIndex,
   getImageTypeLabel
 } from "../ProductVariant.helpers";
+import { AttributeOptionImagesSlider } from "./ProductImage.interfaces";
 import { useImageNavigation } from "./useImageNavigation";
 
 interface ProductImageSliderProps {
-  images: AttributeOptionImages[];
+  images: AttributeOptionImagesSlider[];
   productName: string;
   onImageZoom?: (imageUrl: string) => void;
 }
@@ -59,11 +59,10 @@ const ProductImageSlider: React.FC<ProductImageSliderProps> = ({
             <button
               key={image.id}
               onClick={() => selectImage(index)}
-              className={`relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0 border-2 ${
-                index === currentImageIndex
-                  ? "border-indigo-600"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
+              className={`relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0 border-2 ${index === currentImageIndex
+                ? "border-indigo-600"
+                : "border-gray-200 hover:border-gray-300"
+                }`}
               aria-label={`Ver imagen ${index + 1}`}
             >
               <Image

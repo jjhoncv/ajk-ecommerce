@@ -64,6 +64,7 @@ export type AttributeOptionImagesImageType =
 
 export interface AttributeOptions {
   additionalCost?: Maybe<Scalars['Float']['output']>;
+  attribute?: Maybe<Attributes>;
   attributeId: Scalars['Int']['output'];
   attributeOptionImages?: Maybe<Array<Maybe<AttributeOptionImages>>>;
   id: Scalars['Int']['output'];
@@ -72,6 +73,7 @@ export interface AttributeOptions {
 }
 
 export interface Attributes {
+  attributeOption?: Maybe<AttributeOptions>;
   displayType: AttributesDisplayType;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
