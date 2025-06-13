@@ -143,17 +143,38 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
     }
   };
 
-  // Verificar si una opción está disponible
-  const isOptionAvailable = (optionId: number): boolean => {
-    if (!allVariants || allVariants.length === 0) {
+  // Verificar si una opción está disponible considerando las combinaciones válidas
+  const isOptionAvailable = (attributeId: number, optionId: number): boolean => {
+    if (!allVariants || allVariants.length === 0 || !currentVariant) {
       return true;
     }
 
-    return allVariants.some((v) =>
-      v?.variantAttributeOptions?.some((vao) =>
+    // Obtener los otros atributos de la variante actual (excluyendo el atributo que estamos evaluando)
+    const currentOtherAttributes = currentVariant.variantAttributeOptions
+      ?.filter(vao => vao?.attributeOption?.attributeId !== attributeId)
+      ?.map(vao => vao?.attributeOption?.id)
+      ?.filter(Boolean) || [];
+
+    // Buscar si existe alguna variante que tenga esta opción Y todos los otros atributos actuales
+    return allVariants.some((variant) => {
+      if (!variant?.variantAttributeOptions) return false;
+
+      // Verificar si esta variante tiene la opción que estamos evaluando
+      const hasTargetOption = variant.variantAttributeOptions.some(vao =>
         vao?.attributeOption?.id === optionId
-      )
-    );
+      );
+
+      if (!hasTargetOption) return false;
+
+      // Verificar si esta variante también tiene todos los otros atributos actuales
+      const variantOptionIds = variant.variantAttributeOptions
+        ?.map(vao => vao?.attributeOption?.id)
+        ?.filter(Boolean) || [];
+
+      return currentOtherAttributes.every(optionId =>
+        variantOptionIds.includes(optionId)
+      );
+    });
   };
 
   // Renderizar selector según el tipo de display
@@ -170,7 +191,8 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
             <div className="flex flex-wrap gap-3">
               {group.availableOptions.map((option) => {
                 const isSelected = group.selectedOptionId === option.optionId;
-                const isAvailable = isOptionAvailable(option.optionId);
+                // const isAvailable = isOptionAvailable(group.attributeId, option.optionId);
+                const isAvailable = true
 
                 return (
                   <button
@@ -218,7 +240,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
             <div className="flex flex-wrap gap-2">
               {group.availableOptions.map((option) => {
                 const isSelected = group.selectedOptionId === option.optionId;
-                const isAvailable = isOptionAvailable(option.optionId);
+                const isAvailable = isOptionAvailable(group.attributeId, option.optionId);
 
                 return (
                   <button
@@ -249,7 +271,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
             <div className="grid grid-cols-3 gap-2">
               {group.availableOptions.map((option) => {
                 const isSelected = group.selectedOptionId === option.optionId;
-                const isAvailable = isOptionAvailable(option.optionId);
+                const isAvailable = isOptionAvailable(group.attributeId, option.optionId);
 
                 return (
                   <button
@@ -282,7 +304,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
               className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black disabled:opacity-50"
             >
               {group.availableOptions.map((option) => {
-                const isAvailable = isOptionAvailable(option.optionId);
+                const isAvailable = isOptionAvailable(group.attributeId, option.optionId);
                 return (
                   <option key={option.optionId} value={option.optionId} disabled={!isAvailable}>
                     {option.value} {!isAvailable && "(No disponible)"}
