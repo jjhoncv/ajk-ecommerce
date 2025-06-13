@@ -1,12 +1,12 @@
-import { ProductVariantWithAttributeOptions } from '@/backend/product-variant'
 import { ProductVariantData } from '@/services/product/productVariant'
+import { ProductVariants } from '@/types/domain'
 import Link from 'next/link'
 import React from 'react'
 import ProductVariantInteractive from './ProductVariantInteractive'
 
 interface ProductVariantViewProps {
   data: ProductVariantData
-  allVariants: ProductVariantWithAttributeOptions[]
+  allVariants: ProductVariants[]
   currentVariantId: number
 }
 

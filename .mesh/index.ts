@@ -941,9 +941,9 @@ export type AttributeOptionImages = {
   /** Imagen thumbnail 140x140 para selector de atributo */
   imageUrlThumb: Scalars['String']['output'];
   /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal?: Maybe<Scalars['String']['output']>;
+  imageUrlNormal: Scalars['String']['output'];
   /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom?: Maybe<Scalars['String']['output']>;
+  imageUrlZoom: Scalars['String']['output'];
   /** Texto alternativo */
   altText?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Timestamp']['output'];
@@ -2111,9 +2111,9 @@ export type AttributeOptionImagesInsertInput = {
   /** Imagen thumbnail 140x140 para selector de atributo */
   imageUrlThumb: Scalars['String']['input'];
   /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal?: InputMaybe<Scalars['String']['input']>;
+  imageUrlNormal: Scalars['String']['input'];
   /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom?: InputMaybe<Scalars['String']['input']>;
+  imageUrlZoom: Scalars['String']['input'];
   /** Texto alternativo */
   altText?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -3198,8 +3198,8 @@ export type AttributeOptionImagesResolvers<ContextType = MeshContext, ParentType
   imageType?: Resolver<ResolversTypes['AttributeOptionImagesImageType'], ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   imageUrlThumb?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  imageUrlNormal?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  imageUrlZoom?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imageUrlNormal?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrlZoom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   altText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;

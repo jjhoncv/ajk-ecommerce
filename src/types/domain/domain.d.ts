@@ -42,11 +42,11 @@ export interface AttributeOptionImages {
   id: Scalars['Int']['output'];
   imageType: AttributeOptionImagesImageType;
 
-  imageUrlNormal?: Maybe<Scalars['String']['output']>;
+  imageUrlNormal: Scalars['String']['output'];
 
   imageUrlThumb: Scalars['String']['output'];
 
-  imageUrlZoom?: Maybe<Scalars['String']['output']>;
+  imageUrlZoom: Scalars['String']['output'];
   isPrimary?: Maybe<Scalars['Int']['output']>;
   updatedAt: Scalars['Timestamp']['output'];
 }

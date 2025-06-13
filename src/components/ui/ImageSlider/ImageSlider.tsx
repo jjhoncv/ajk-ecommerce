@@ -1,17 +1,11 @@
 "use client";
+import { ItemImage } from "@/shared";
 import Image from "next/image";
 import React from "react";
 import { useImageSlider } from "./useImageSlider"; // Ajusta la ruta según tu estructura
 
-// Interfaces para el slider
-interface ImageInterface {
-  alt: string;
-  url: string;
-  isPrimary: boolean;
-}
-
 interface ImageSliderProps {
-  images: ImageInterface[];
+  images: ItemImage[];
   defaultImage?: string;
   className?: string;
   autoSlideInterval?: number;
@@ -65,8 +59,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
             }`}
         >
           <Image
-            src={image.url || defaultImage}
-            alt={image.alt}
+            src={image.imageUrlNormal || defaultImage}
+            alt={image.altText || ""}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-contain"

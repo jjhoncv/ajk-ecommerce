@@ -162,9 +162,9 @@ type AttributeOptionImages {
   """Imagen thumbnail 140x140 para selector de atributo"""
   imageUrlThumb: String!
   """Imagen normal 600x800 (opcional)"""
-  imageUrlNormal: String
+  imageUrlNormal: String!
   """Imagen zoom 1200x1200 (opcional)"""
-  imageUrlZoom: String
+  imageUrlZoom: String!
   """Texto alternativo"""
   altText: String
   createdAt: Timestamp!
@@ -1046,9 +1046,9 @@ input AttributeOptionImagesInsertInput {
   """Imagen thumbnail 140x140 para selector de atributo"""
   imageUrlThumb: String!
   """Imagen normal 600x800 (opcional)"""
-  imageUrlNormal: String
+  imageUrlNormal: String!
   """Imagen zoom 1200x1200 (opcional)"""
-  imageUrlZoom: String
+  imageUrlZoom: String!
   """Texto alternativo"""
   altText: String
   createdAt: Timestamp

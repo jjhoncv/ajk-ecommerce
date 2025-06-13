@@ -1,13 +1,14 @@
 "use client";
-import { ProductVariantWithAttributeOptions } from "@/backend/product-variant";
 import { ProductVariantData } from "@/services/product/productVariant";
+import { ProductVariants } from "@/types/domain";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface ProductVariantAttributeSelectorProps {
   data: ProductVariantData;
-  allVariants: ProductVariantWithAttributeOptions[];
+  allVariants: ProductVariants[];
+  currentVariantId: number;
   onVariantChange?: (newData: ProductVariantData) => void;
 }
 
@@ -30,31 +31,23 @@ interface AttributeGroup {
 
 const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorProps> = ({
   allVariants,
+  currentVariantId,
   onVariantChange,
 }) => {
   const router = useRouter();
 
-  // Obtener la variante actual desde las variantes del producto usando el ID de la URL
-  const currentVariantId = typeof window !== 'undefined' ?
-    parseInt(window.location.pathname.split('/').pop() || '0') : 0;
-
+  // Obtener la variante actual desde las variantes del producto usando el ID pasado como prop
   const currentVariant = allVariants.find((v) => v.id === currentVariantId) || allVariants[0];
 
   const [loading, setLoading] = useState(false);
-  const [attributeGroups, setAttributeGroups] = useState<Record<number, AttributeGroup>>({});
 
-  // Construir grupos de atributos al montar el componente
-  useEffect(() => {
-
-
-    if (allVariants && allVariants.length > 0 && currentVariant) {
-      buildAttributeGroups(allVariants);
-    }
-  }, [currentVariant?.id, allVariants]);
-
-  // Construir grupos de atributos desde todas las variantes
-  const buildAttributeGroups = (variants: ProductVariantWithAttributeOptions[]) => {
+  // Calcular grupos de atributos inmediatamente usando useMemo
+  const attributeGroups = useMemo(() => {
     const groups: Record<number, AttributeGroup> = {};
+
+    if (!allVariants || allVariants.length === 0 || !currentVariant) {
+      return groups;
+    }
 
     // Primero, identificar todos los atributos únicos desde la variante actual
     currentVariant?.variantAttributeOptions?.forEach((vao) => {
@@ -75,13 +68,12 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
       }
     });
 
-
     // Llenar opciones disponibles para cada atributo desde todas las variantes
     Object.keys(groups).forEach(attrIdStr => {
       const attributeId = parseInt(attrIdStr);
       const optionsSet = new Set<string>();
 
-      variants.forEach((v) => {
+      allVariants.forEach((v) => {
         if (!v?.variantAttributeOptions) {
           return;
         }
@@ -95,7 +87,6 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
           const optionKey = `${vao.attributeOption.id}-${vao.attributeOption.value}`;
           if (!optionsSet.has(optionKey)) {
             optionsSet.add(optionKey);
-
 
             // Buscar imagen para esta opción desde attributeOptionImages
             const optionImage = vao.attributeOption.attributeOptionImages?.[0];
@@ -114,8 +105,8 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
       });
     });
 
-    setAttributeGroups(groups);
-  };
+    return groups;
+  }, [allVariants, currentVariant?.id]);
 
   // Manejar cambio de atributo
   const handleAttributeChange = async (attributeId: number, optionId: number) => {

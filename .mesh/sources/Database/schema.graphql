@@ -81,9 +81,9 @@ type attribute_option_images {
   """Imagen thumbnail 140x140 para selector de atributo"""
   image_url_thumb: String!
   """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String
+  image_url_normal: String!
   """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String
+  image_url_zoom: String!
   """Texto alternativo"""
   alt_text: String
   created_at: Timestamp!
@@ -1046,9 +1046,9 @@ input attribute_option_images_InsertInput {
   """Imagen thumbnail 140x140 para selector de atributo"""
   image_url_thumb: String!
   """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String
+  image_url_normal: String!
   """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String
+  image_url_zoom: String!
   """Texto alternativo"""
   alt_text: String
   created_at: Timestamp

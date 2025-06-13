@@ -7,11 +7,12 @@ import {
   findPrimaryImageIndex,
   getImageTypeLabel
 } from "../ProductVariant.helpers";
-import { AttributeOptionImagesSlider } from "./ProductImage.interfaces";
+// import { AttributeOptionImagesSlider } from "./ProductImage.interfaces";
+import { ItemImage } from "@/shared";
 import { useImageNavigation } from "./useImageNavigation";
 
 interface ProductImageSliderProps {
-  images: AttributeOptionImagesSlider[];
+  images: ItemImage[];
   productName: string;
   onImageZoom?: (imageUrl: string) => void;
 }

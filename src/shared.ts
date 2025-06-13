@@ -1,3 +1,5 @@
+import { AttributeOptionImages, VariantImages } from '@/types/domain'
+
 export enum SEARCH_SORT {
   PRICE_ASC = 'price_asc',
   PRICE_DESC = 'price_desc',
@@ -22,4 +24,15 @@ export interface SearchParams {
   sort?: string
   page?: string
   [key: string]: string | string[] | undefined
+}
+
+type ItemImageMix = AttributeOptionImages | VariantImages
+
+export type ItemImageOmit = Omit<
+  ItemImageMix,
+  'attributeOptionId' | 'createdAt' | 'updatedAt' | 'displayOrder'
+>
+
+export interface ItemImage extends ItemImageOmit {
+  displayOrder: number
 }

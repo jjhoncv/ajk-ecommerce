@@ -1,32 +1,25 @@
 import { ProductVariantData } from '@/services/product/productVariant'
+import { ProductVariants } from '@/types/domain'
 import { Metadata } from 'next'
 
 export const generateProductVariantMetadata = (
-  data: ProductVariantData | null
+  data: ProductVariantData | null,
+  variantId: number
 ): Metadata => {
-  if (!data || !data.variant || !data.product) {
+  if (!data || !data.product) {
     return {
       title: 'Producto no encontrado',
       description: 'El producto que buscas no existe o ha sido eliminado.'
     }
   }
 
-  const { variant, product } = data
+  const { product } = data
 
-  // Construir el título con los atributos de la variante
-  const attributeValues = variant.variantAttributeOptions
-    ?.map((vao: any) => vao.attributeOptions?.[0]?.value)
-    .filter(Boolean)
-    .join(' - ')
-
-  const title = attributeValues
-    ? `${product.name} - ${attributeValues}`
-    : product.name
-
-  // Obtener la primera imagen disponible
-  const firstImage =
-    variant.attributeImages?.[0]?.imageUrlNormal ||
-    variant.variantImages?.[0]?.imageUrlNormal
+  const variant = product.productVariants?.find((pv) => pv?.id === variantId)
+  let title = product.name
+  if (variant) {
+    title = getVariantTitle({ name: product.name }, variant)
+  }
 
   return {
     title,
@@ -34,8 +27,7 @@ export const generateProductVariantMetadata = (
     openGraph: {
       title,
       description:
-        product.description || `${title} - Compra online en TechStore`,
-      images: firstImage ? [firstImage] : []
+        product.description || `${title} - Compra online en TechStore`
     }
   }
 }
@@ -45,4 +37,30 @@ export const generateErrorMetadata = (error: string): Metadata => {
     title: 'Error',
     description: error
   }
+}
+
+export const getVariantTitle = (
+  product: { name: string },
+  selectedVariant: ProductVariants
+) => {
+  const baseTitle = product.name
+
+  // Obtener los atributos de la variante
+  const variantAttributes = selectedVariant.variantAttributeOptions
+    ?.map((variantAttr) => {
+      // Verificar que variantAttr no sea null
+      if (!variantAttr) return null
+      // Obtener el valor del atributo desde attributeOptions
+      const attributeOption = variantAttr.attributeOption
+      return attributeOption?.value
+    })
+    .filter(Boolean) // Filtrar valores undefined/null
+    .join(' - ')
+
+  // Si hay atributos, agregarlos al título
+  if (variantAttributes && variantAttributes.length > 0) {
+    return `${baseTitle} - ${variantAttributes}`
+  }
+
+  return baseTitle
 }

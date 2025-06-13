@@ -1,19 +1,19 @@
 "use client";
-import { ProductVariantWithAttributeOptions } from '@/backend/product-variant';
+import ImageZoomModal from '@/components/ui/ImageZoomModal';
+import { getVariantTitle } from '@/helpers/productVariant.helpers';
 import { ProductVariantData } from '@/services/product/productVariant';
+import { ItemImage } from '@/shared';
+import { ProductVariants } from '@/types/domain';
 import React, { useState } from 'react';
 import ProductImageSlider from './ProductImageSlider';
-import { AttributeOptionImagesSlider } from './ProductImageSlider/ProductImage.interfaces';
 import ProductVariantActions from './ProductVariantActions';
 import ProductVariantAttributeSelector from './ProductVariantAttributeSelector';
 
 interface ProductVariantInteractiveProps {
   initialData: ProductVariantData;
-  allVariants: ProductVariantWithAttributeOptions[];
+  allVariants: ProductVariants[];
   currentVariantId: number;
 }
-
-
 
 const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
   initialData,
@@ -22,6 +22,8 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
 }) => {
   const [data, setData] = useState<ProductVariantData>(initialData);
   const { product } = data;
+  const [zoomImageUrl, setZoomImageUrl] = useState<string>("");
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
 
   // Obtener la variante actual desde allVariants usando el ID pasado como prop
   const currentVariant = allVariants.find((v) => v.id === currentVariantId) || allVariants[0];
@@ -36,7 +38,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
 
   // Obtener imágenes de la variante actual (desde attributeOptionImages)
   const getVariantImages = () => {
-    const images: AttributeOptionImagesSlider[] = [];
+    const images: ItemImage[] = [];
 
     // Buscar imágenes en las opciones de atributos de la variante actual
     currentVariant?.variantAttributeOptions?.forEach((vao) => {
@@ -52,7 +54,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
             altText: img.altText || "",
             imageType: img.imageType,
             displayOrder: Number(img.displayOrder),
-            isPrimary: Boolean(img.isPrimary)
+            isPrimary: img.isPrimary
           });
         });
       }
@@ -81,11 +83,21 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
     setData(newData);
   };
 
+  const handleImageZoom = (imageUrl: string) => {
+    setZoomImageUrl(imageUrl);
+    setIsZoomModalOpen(true);
+  };
+
+  const closeZoomModal = () => {
+    setIsZoomModalOpen(false);
+    setZoomImageUrl("");
+  };
+
   return (
     <>
       {/* Columna 1: Galería de imágenes (4 columnas) */}
       <div className="xl:col-span-4">
-        <ProductImageSlider images={getVariantImages()} productName={product.name} />
+        <ProductImageSlider images={getVariantImages()} productName={product.name} onImageZoom={handleImageZoom} />
       </div>
 
       {/* Columna 2: Información del producto (5 columnas) */}
@@ -93,7 +105,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
         {/* Título y SKU */}
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {product.name}
+            {getVariantTitle(product, currentVariant)}
           </h1>
           <p className="text-gray-600">
             SKU: {currentVariant?.sku}
@@ -151,7 +163,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
 
         {/* Selector de atributos */}
         <div className="border-t border-gray-200 pt-6">
-          <ProductVariantAttributeSelector data={data} allVariants={allVariants} onVariantChange={handleVariantChange} />
+          <ProductVariantAttributeSelector data={data} allVariants={allVariants} currentVariantId={currentVariantId} onVariantChange={handleVariantChange} />
         </div>
 
         {/* Descripción */}
@@ -237,6 +249,13 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
             </div>
           </div>
         </div>
+        {/* Modal de zoom de imagen */}
+        <ImageZoomModal
+          isOpen={isZoomModalOpen}
+          imageUrl={zoomImageUrl}
+          altText={product.name}
+          onClose={closeZoomModal}
+        />
       </div>
     </>
   );

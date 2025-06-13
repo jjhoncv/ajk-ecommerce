@@ -1,8 +1,9 @@
 "use client";
+import { getVariantTitle } from "@/helpers/productVariant.helpers";
 import Link from "next/link";
 import React from "react";
 import ButtonAddToCart from "../ButtonAddToCart";
-import { getThumbImage, getVariantImages, getVariantTitle, hasPromotion } from "./ProductCard.helpers";
+import { getImagesToProductCard, getThumbImage, hasPromotion } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
 import ProductCardPrice from "./ProductCardPrice";
 import ProductCardSlider from "./ProductCardSlider";
@@ -40,13 +41,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
           className={`block`}
         >
           <ProductCardSlider
-            images={getVariantImages(selectedVariant, product)}
+            images={getImagesToProductCard(selectedVariant)}
           />
         </Link>
 
         <ButtonAddToCart
           id={product.variantId}
-          image={getThumbImage(selectedVariant, product)}
+          image={getThumbImage(selectedVariant)}
           name={product.name}
           price={product.variantPrice || selectedVariant.price}
         />

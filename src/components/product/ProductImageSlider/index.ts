@@ -1,2 +1,2 @@
-export { default } from './ProductImageSlider';
-export { useImageNavigation } from './useImageNavigation';
+export { default } from './ProductImageSlider'
+export { useImageNavigation } from './useImageNavigation'

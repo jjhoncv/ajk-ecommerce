@@ -1,5 +1,6 @@
 import { ProductComplete } from '@/backend/product'
 import { ProductVariantComplete } from '@/backend/product-variant'
+import { ItemImage } from '@/shared'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {
@@ -18,13 +19,7 @@ export interface ProductCardPromotionProps {
   layout?: 'grid' | 'list'
 }
 
-interface ImageInterface {
-  alt: string
-  url: string
-  isPrimary: boolean
-}
-
 export interface ProductCardSliderProps {
-  images: ImageInterface[]
+  images: ItemImage[]
   onFavoriteClick?: () => void
 }

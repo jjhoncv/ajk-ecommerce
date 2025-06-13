@@ -70,11 +70,11 @@ export interface AttributeOptionImages {
   id: Scalars['Int']['output'];
   image_type: AttributeOptionImagesImageType;
   /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: Maybe<Scalars['String']['output']>;
+  image_url_normal: Scalars['String']['output'];
   /** Imagen thumbnail 140x140 para selector de atributo */
   image_url_thumb: Scalars['String']['output'];
   /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: Maybe<Scalars['String']['output']>;
+  image_url_zoom: Scalars['String']['output'];
   is_primary?: Maybe<Scalars['Int']['output']>;
   updated_at: Scalars['Timestamp']['output'];
 }

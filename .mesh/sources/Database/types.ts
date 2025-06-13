@@ -432,9 +432,9 @@ export type attribute_option_images = {
   /** Imagen thumbnail 140x140 para selector de atributo */
   image_url_thumb: Scalars['String']['output'];
   /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: Maybe<Scalars['String']['output']>;
+  image_url_normal: Scalars['String']['output'];
   /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: Maybe<Scalars['String']['output']>;
+  image_url_zoom: Scalars['String']['output'];
   /** Texto alternativo */
   alt_text?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
@@ -2099,9 +2099,9 @@ export type attribute_option_images_InsertInput = {
   /** Imagen thumbnail 140x140 para selector de atributo */
   image_url_thumb: Scalars['String']['input'];
   /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: InputMaybe<Scalars['String']['input']>;
+  image_url_normal: Scalars['String']['input'];
   /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: InputMaybe<Scalars['String']['input']>;
+  image_url_zoom: Scalars['String']['input'];
   /** Texto alternativo */
   alt_text?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
