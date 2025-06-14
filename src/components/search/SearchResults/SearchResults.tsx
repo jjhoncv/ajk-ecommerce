@@ -22,6 +22,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   currentFilters: filters
 }) => {
 
+
   if (products.length === 0) {
     return <SearchNotFound />
   }

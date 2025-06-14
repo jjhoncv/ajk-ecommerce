@@ -1,7 +1,11 @@
 import { ProductVariantComplete } from '@/backend/product-variant'
 import { ProductDTO, ProductVariantDTO } from '@/dto'
 import { ItemImage } from '@/shared'
-import { AttributeOptionImages } from '@/types/domain'
+import {
+  AttributeOptionImages,
+  ProductVariants,
+  VariantImages
+} from '@/types/domain'
 
 /**
  * Calcula el precio mínimo de las variantes de un producto
@@ -93,21 +97,7 @@ export const findMainImage = (
  * @returns true si la variante tiene promoción
  */
 export const hasPromotion = (variant: ProductVariantComplete): boolean => {
-  return !!variant.promotion
-}
-
-/**
- * Calcula el precio final de una variante considerando promociones
- * @param variant Variante a calcular
- * @returns El precio final de la variante
- */
-export const calculateFinalPrice = (
-  variant: ProductVariantComplete
-): number => {
-  if (variant.promotion && variant.promotion.promotionPrice !== null) {
-    return Number(variant.promotion.promotionPrice)
-  }
-  return Number(variant.price)
+  return !!variant?.promotionVariants?.length
 }
 
 /**
@@ -153,75 +143,101 @@ export const getPromotionDiscount = (
   return discountPercentage
 }
 
-export const getVariantImagesOrAttributeOptionImages = (
-  variant: ProductVariantComplete
-): ItemImage[] => {
+export const getVariantImages = (variant: ProductVariants): ItemImage[] => {
+  let images: ItemImage[] = []
+
+  // 1. Primero intentar obtener imágenes directas de la variante
   if (variant.variantImages && variant.variantImages.length > 0) {
-    const sortImages = variant.variantImages
-      .sort((a, b) => {
-        if (a.imageType === 'front' && b.imageType !== 'front') return -1
-        if (b.imageType === 'front' && a.imageType !== 'front') return 1
-        return (a.displayOrder || 0) - (b.displayOrder || 0)
-      })
-      .map((img) => ({ ...img, displayOrder: Number(img.displayOrder) }))
-    return sortImages
+    const variantImages = variant.variantImages
+      .filter((img): img is VariantImages => !!img)
+      .map(
+        (img): ItemImage => ({
+          ...img,
+          displayOrder: Number(img.displayOrder || 0)
+        })
+      )
+
+    images = [...images, ...variantImages]
   }
 
-  // Si no hay variantImages, filtrar attributeImages según los atributos de la variante
+  // 2. Luego obtener imágenes de attributeOptionImages
   if (
-    variant.attributeImages &&
-    variant.attributeImages.length > 0 &&
     variant.variantAttributeOptions &&
     variant.variantAttributeOptions.length > 0
   ) {
-    // Obtener los attributeOptionIds de la variante
-    const variantAttributeOptionIds = variant.variantAttributeOptions.map(
-      (attr) => attr.attributeOptionId
-    )
+    const attributeImages: ItemImage[] = []
 
-    // Filtrar solo las imágenes que corresponden a los atributos de esta variante
-    const filteredImages = variant.attributeImages.filter(
-      (img: AttributeOptionImages) =>
-        variantAttributeOptionIds.includes(img.attributeOptionId)
-    )
+    variant.variantAttributeOptions.forEach((variantAttrOption) => {
+      if (variantAttrOption?.attributeOption?.attributeOptionImages) {
+        const attrOptionImages =
+          variantAttrOption.attributeOption.attributeOptionImages
+            .filter((img): img is AttributeOptionImages => !!img)
+            .map(
+              (img): ItemImage => ({
+                // Omitir las propiedades que no están en ItemImage
+                altText: img.altText,
+                id: img.id,
+                imageType: img.imageType,
+                imageUrlNormal: img.imageUrlNormal,
+                imageUrlThumb: img.imageUrlThumb,
+                imageUrlZoom: img.imageUrlZoom,
+                isPrimary: img.isPrimary,
+                displayOrder: Number(img.displayOrder || 0)
+              })
+            )
 
-    if (filteredImages.length > 0) {
-      // Ordenar: front primero, luego por displayOrder
-      const sortedImages = filteredImages
-        .sort((a: AttributeOptionImages, b: AttributeOptionImages) => {
-          if (a.imageType === 'front' && b.imageType !== 'front') return -1
-          if (b.imageType === 'front' && a.imageType !== 'front') return 1
-          return (a.displayOrder || 0) - (b.displayOrder || 0)
-        })
-        .map((img) => ({ ...img, displayOrder: Number(img.displayOrder) }))
+        attributeImages.push(...attrOptionImages)
+      }
+    })
 
-      return sortedImages
-    }
+    images = [...images, ...attributeImages]
   }
 
-  return [
-    {
-      imageType: 'front',
-      id: 0,
-      imageUrlNormal: '/no-image.webp',
-      imageUrlThumb: '/no-image.webp',
-      imageUrlZoom: '/no-image.webp',
-      displayOrder: 0
-    }
-  ]
+  // 3. Si no hay imágenes, devolver imagen por defecto
+  if (images.length === 0) {
+    return [
+      {
+        imageType: 'front', // Ajusta según tu enum
+        id: 0,
+        imageUrlNormal: '/no-image.webp',
+        imageUrlThumb: '/no-image.webp',
+        imageUrlZoom: '/no-image.webp',
+        displayOrder: 0,
+        altText: null,
+        isPrimary: null
+      }
+    ]
+  }
+
+  // 4. Eliminar duplicados por id (en caso de que haya imágenes repetidas)
+  const uniqueImages = images.filter(
+    (img, index, self) => index === self.findIndex((i) => i.id === img.id)
+  )
+
+  // 5. Ordenar: front primero, luego por displayOrder
+  const sortedImages = uniqueImages.sort((a, b) => {
+    // Priorizar imágenes tipo 'front'
+    if (a.imageType === 'front' && b.imageType !== 'front') return -1
+    if (b.imageType === 'front' && a.imageType !== 'front') return 1
+
+    // Luego ordenar por displayOrder
+    return a.displayOrder - b.displayOrder
+  })
+
+  return sortedImages
 }
 
 export const getImagesToProductCard = (
   variant: ProductVariantComplete
 ): ItemImage[] => {
-  const images = getVariantImagesOrAttributeOptionImages(variant)
+  const images = getVariantImages(variant)
   return images
 }
 
 export const getThumbImageToProductCard = (
   variant: ProductVariantComplete
 ): string => {
-  const images = getVariantImagesOrAttributeOptionImages(variant)
+  const images = getVariantImages(variant)
   if (images.length === 0) return '/no-image.webp'
   return images.find((img) => img.imageUrlThumb)?.imageUrlThumb || ''
 }

@@ -32,10 +32,9 @@ export class SearchModel {
     const productSearchItems = await Promise.all(
       mappedResults.map(async (variantResult) => {
         // Obtener detalles completos de la variante
-        const variantDetail =
-          await oProductVariantModel.getProductVariantComplete(
-            variantResult.variantId
-          )
+        const variantDetail = await oProductVariantModel.getProductVariant(
+          variantResult.variantId
+        )
 
         if (!variantDetail) {
           return null

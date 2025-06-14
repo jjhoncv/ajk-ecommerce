@@ -2,15 +2,6 @@
 import { Products as ProductRaw } from '@/types/database'
 import { Products as Product } from '@/types/domain'
 
-// import {
-//   ProductComplete,
-//   ProductSearchFilters,
-//   ProductSearchResult,
-//   ProductWithBrand,
-//   ProductWithCategories,
-//   ProductWithVariants
-// } from '@/types/search'
-
 // me
 import { ProductMapper, ProductsMapper } from './Product.mapper'
 import oProductRep from './Product.repository'
@@ -78,9 +69,13 @@ export class ProductModel {
             attributeOption: option.attributeOption
           })) || []
 
+        // Obtener imágenes de la variante
+        const images = await variantImageModel.getVariantImages(id)
+
         return {
           ...productVariant,
-          variantAttributeOptions: attributeOptions
+          variantAttributeOptions: attributeOptions,
+          variantImages: images
         }
       })
     )

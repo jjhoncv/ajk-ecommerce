@@ -1,80 +1,135 @@
-import { NextRequest, NextResponse } from "next/server";
-import RatingModel from "@/models/RatingModel";
+import variantRatingModel from '@/backend/variant-rating'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json()
+    const {
+      variantId,
+      customerId,
+      rating,
+      review,
+      title,
+      verifiedPurchase = false,
+      images = [] // Para futuras implementaciones con imágenes
+    } = body
 
-    console.log("Datos recibidos:", body);
-
-    // Validar datos requeridos
-    if (!body.variantId || !body.customerId || !body.rating) {
+    // Validaciones
+    if (!variantId || !customerId || !rating) {
       return NextResponse.json(
-        { error: "Faltan datos requeridos" },
+        { error: 'variantId, customerId y rating son requeridos' },
         { status: 400 }
-      );
+      )
     }
 
-    // Validar rating (1-5)
-    if (body.rating < 1 || body.rating > 5) {
+    if (rating < 1 || rating > 5) {
       return NextResponse.json(
-        { error: "La valoración debe estar entre 1 y 5" },
+        { error: 'El rating debe estar entre 1 y 5' },
         { status: 400 }
-      );
+      )
     }
 
-    // Para fines de demostración, simulamos la creación de una valoración
-    // en lugar de usar la base de datos real
-    const mockRating = {
-      id: Math.floor(Math.random() * 1000),
-      variantId: body.variantId,
-      customerId: body.customerId,
-      customerName: "Usuario Demo",
-      customerPhoto: null,
-      rating: body.rating,
-      review: body.review || null,
-      title: body.title || null,
-      verifiedPurchase: body.verifiedPurchase || false,
-      createdAt: new Date(),
-      images: body.images
-        ? body.images.map((url: string, index: number) => ({
-            id: index + 1,
-            ratingId: Math.floor(Math.random() * 1000),
-            imageUrl: url,
-          }))
-        : [],
-    };
+    // Verificar si el cliente ya ha valorado esta variante
+    const hasRated = await variantRatingModel.hasCustomerRatedVariant(
+      customerId,
+      variantId
+    )
 
-    return NextResponse.json(mockRating);
+    if (hasRated) {
+      return NextResponse.json(
+        { error: 'Ya has valorado esta variante' },
+        { status: 409 }
+      )
+    }
+
+    // Crear la nueva valoración
+    const newRating = await variantRatingModel.createRating(
+      variantId,
+      customerId,
+      rating,
+      review || undefined,
+      title || undefined,
+      verifiedPurchase
+    )
+
+    if (!newRating) {
+      return NextResponse.json(
+        { error: 'Error al crear la valoración' },
+        { status: 500 }
+      )
+    }
+
+    // TODO: Si hay imágenes, procesarlas y guardarlas
+    // if (images && images.length > 0) {
+    //   await processRatingImages(newRating.id, images)
+    // }
+
+    return NextResponse.json(newRating, { status: 201 })
   } catch (error) {
-    console.error("Error al crear valoración:", error);
+    console.error('Error al crear valoración:', error)
+
+    // Manejar errores específicos del modelo
+    if (
+      error instanceof Error &&
+      error.message === 'Rating must be between 1 and 5'
+    ) {
+      return NextResponse.json({ error: error.message }, { status: 400 })
+    }
+
     return NextResponse.json(
-      { error: "Error al crear valoración" },
+      { error: 'Error interno del servidor' },
       { status: 500 }
-    );
+    )
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const url = new URL(request.url);
-    const id = parseInt(url.searchParams.get("id") || "");
+    const url = new URL(request.url)
+    const variantId = url.searchParams.get('variantId')
+    const customerId = url.searchParams.get('customerId')
 
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { error: "ID de valoración inválido" },
-        { status: 400 }
-      );
+    if (variantId) {
+      // Obtener valoraciones por variante
+      const ratings = await variantRatingModel.getVariantRatingsByVariantId(
+        parseInt(variantId)
+      )
+      return NextResponse.json(ratings || [])
     }
 
-    await RatingModel.deleteRating(id);
+    if (customerId) {
+      // Obtener valoraciones por cliente
+      const ratings = await variantRatingModel.getVariantRatingsByCustomerId(
+        parseInt(customerId)
+      )
+      return NextResponse.json(ratings || [])
+    }
 
-    return NextResponse.json({ success: true });
+    // Obtener todas las valoraciones (con paginación)
+    const page = parseInt(url.searchParams.get('page') || '1')
+    const limit = parseInt(url.searchParams.get('limit') || '10')
+
+    const allRatings = await variantRatingModel.getVariantRatings()
+
+    // Implementar paginación manual si el modelo no la tiene
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    const paginatedRatings = allRatings?.slice(startIndex, endIndex) || []
+
+    const totalCount = allRatings?.length || 0
+    const totalPages = Math.ceil(totalCount / limit)
+
+    return NextResponse.json({
+      ratings: paginatedRatings,
+      totalCount,
+      page,
+      totalPages
+    })
   } catch (error) {
-    console.error("Error al eliminar valoración:", error);
+    console.error('Error al obtener valoraciones:', error)
     return NextResponse.json(
-      { error: "Error al eliminar valoración" },
+      { error: 'Error al obtener valoraciones' },
       { status: 500 }
-    );
+    )
   }
 }

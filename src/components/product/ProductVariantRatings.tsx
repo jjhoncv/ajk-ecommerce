@@ -1,31 +1,49 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Star, User, Check } from "lucide-react";
-import { RatingDTO, RatingSearchResultDTO } from "@/dto/rating.dto";
+import { Products, ProductVariants, RatingImages, VariantRatings } from "@/types/domain";
+import { Check, Star, User } from "lucide-react";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import AddRating from "./AddRating";
 
-interface ProductRatingsProps {
-  variantId: number;
-  productId: number;
+// Interfaces para el resumen de valoraciones
+interface RatingSummary {
+  averageRating: number;
+  totalRatings: number;
+  oneStar: number;
+  twoStar: number;
+  threeStar: number;
+  fourStar: number;
+  fiveStar: number;
 }
 
-const ProductRatings: React.FC<ProductRatingsProps> = ({
-  variantId,
-  productId,
+interface RatingSearchResultDTO {
+  ratings: VariantRatings[];
+  summary: RatingSummary;
+  totalPages: number;
+  currentPage: number;
+}
+
+interface ProductVariantRatingsProps {
+  variant: ProductVariants;
+  product: Products;
+}
+
+const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
+  variant,
+  product
 }) => {
   const [ratings, setRatings] = useState<RatingSearchResultDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"variant" | "product">("variant");
   const [page, setPage] = useState(1);
 
+
   // Función para cargar valoraciones
   const fetchRatings = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/ratings/${activeTab === "variant" ? "variant" : "product"}/${
-          activeTab === "variant" ? variantId : productId
+        `/api/ratings/${activeTab === "variant" ? "variant" : "product"}/${activeTab === "variant" ? variant.id : variant.productId
         }?page=${page}`
       );
       if (response.ok) {
@@ -43,7 +61,7 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
 
   useEffect(() => {
     fetchRatings();
-  }, [variantId, productId, activeTab, page]);
+  }, [variant.id, variant.productId, activeTab, page]);
 
   const handleTabChange = (tab: "variant" | "product") => {
     setActiveTab(tab);
@@ -61,11 +79,10 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`h-4 w-4 ${
-              star <= rating
-                ? "fill-yellow-400 text-yellow-400"
-                : "text-gray-300"
-            }`}
+            className={`h-4 w-4 ${star <= rating
+              ? "fill-yellow-400 text-yellow-400"
+              : "text-gray-300"
+              }`}
           />
         ))}
       </div>
@@ -94,15 +111,20 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
   };
 
   // Renderizar una valoración individual
-  const renderRating = (rating: RatingDTO) => {
+  const renderRating = (rating: VariantRatings) => {
+    const customer = rating.customer;
+    const customerName = customer
+      ? `${customer.name || ''} ${customer.lastname || ''}`.trim() || customer.username
+      : 'Usuario anónimo';
+
     return (
       <div key={rating.id} className="border-b border-gray-200 py-4">
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center gap-2">
-            {rating.customerPhoto ? (
+            {customer?.photo ? (
               <Image
-                src={rating.customerPhoto}
-                alt={rating.customerName}
+                src={customer.photo}
+                alt={customerName}
                 width={32}
                 height={32}
                 className="rounded-full"
@@ -113,7 +135,7 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
               </div>
             )}
             <div>
-              <p className="font-medium">{rating.customerName}</p>
+              <p className="font-medium">{customerName}</p>
               <div className="flex items-center gap-1">
                 {renderStars(rating.rating)}
                 <span className="text-xs text-gray-500 ml-1">
@@ -122,7 +144,7 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
               </div>
             </div>
           </div>
-          {rating.verifiedPurchase && (
+          {rating.verifiedPurchase === 1 && (
             <div className="flex items-center text-xs text-green-600">
               <Check className="h-3 w-3 mr-1" />
               Compra verificada
@@ -138,22 +160,24 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
           <p className="text-gray-700 text-sm mb-3">{rating.review}</p>
         )}
 
-        {rating.images && rating.images.length > 0 && (
+        {rating.ratingImages && rating.ratingImages.length > 0 && (
           <div className="flex gap-2 mt-2 overflow-x-auto pb-2">
-            {rating.images.map((image) => (
-              <div
-                key={image.id}
-                className="relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0"
-              >
-                <Image
-                  src={image.imageUrl}
-                  alt="Imagen de valoración"
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+            {rating.ratingImages
+              .filter((image): image is RatingImages => !!image)
+              .map((image) => (
+                <div
+                  key={image.id}
+                  className="relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0"
+                >
+                  <Image
+                    src={image.imageUrl}
+                    alt="Imagen de valoración"
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
           </div>
         )}
       </div>
@@ -191,7 +215,7 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 border-t border-gray-200 pt-8">
       <h2 className="text-xl font-bold mb-6">Valoraciones</h2>
 
       {/* Resumen de valoraciones */}
@@ -245,22 +269,20 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
       <div className="border-b border-gray-200 mb-4">
         <div className="flex">
           <button
-            className={`py-2 px-4 font-medium text-sm ${
-              activeTab === "variant"
-                ? "border-b-2 border-indigo-600 text-indigo-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`py-2 px-4 font-medium text-sm ${activeTab === "variant"
+              ? "border-b-2 border-indigo-600 text-indigo-600"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
             onClick={() => handleTabChange("variant")}
           >
             Esta variante (
             {activeTab === "variant" ? ratings.summary.totalRatings : 0})
           </button>
           <button
-            className={`py-2 px-4 font-medium text-sm ${
-              activeTab === "product"
-                ? "border-b-2 border-indigo-600 text-indigo-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`py-2 px-4 font-medium text-sm ${activeTab === "product"
+              ? "border-b-2 border-indigo-600 text-indigo-600"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
             onClick={() => handleTabChange("product")}
           >
             Todas las variantes (
@@ -270,7 +292,7 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
       </div>
 
       {/* Lista de valoraciones */}
-      <div className="space-y-4 border-t border-gray-200 pt-6">
+      <div className="space-y-4">
         {ratings.ratings.length > 0 ? (
           <>
             <div className="space-y-0">{ratings.ratings.map(renderRating)}</div>
@@ -282,11 +304,10 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
                   <button
                     onClick={() => handlePageChange(page - 1)}
                     disabled={page === 1}
-                    className={`px-3 py-1 rounded border ${
-                      page === 1
-                        ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                        : "text-gray-700 border-gray-300 hover:bg-gray-50"
-                    }`}
+                    className={`px-3 py-1 rounded border ${page === 1
+                      ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                      : "text-gray-700 border-gray-300 hover:bg-gray-50"
+                      }`}
                   >
                     Anterior
                   </button>
@@ -298,11 +319,10 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
                     <button
                       key={pageNum}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`px-3 py-1 rounded border ${
-                        page === pageNum
-                          ? "bg-indigo-600 text-white border-indigo-600"
-                          : "text-gray-700 border-gray-300 hover:bg-gray-50"
-                      }`}
+                      className={`px-3 py-1 rounded border ${page === pageNum
+                        ? "bg-indigo-600 text-white border-indigo-600"
+                        : "text-gray-700 border-gray-300 hover:bg-gray-50"
+                        }`}
                     >
                       {pageNum}
                     </button>
@@ -311,11 +331,10 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
                   <button
                     onClick={() => handlePageChange(page + 1)}
                     disabled={page === ratings.totalPages}
-                    className={`px-3 py-1 rounded border ${
-                      page === ratings.totalPages
-                        ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                        : "text-gray-700 border-gray-300 hover:bg-gray-50"
-                    }`}
+                    className={`px-3 py-1 rounded border ${page === ratings.totalPages
+                      ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                      : "text-gray-700 border-gray-300 hover:bg-gray-50"
+                      }`}
                   >
                     Siguiente
                   </button>
@@ -332,9 +351,13 @@ const ProductRatings: React.FC<ProductRatingsProps> = ({
       </div>
 
       {/* Formulario para añadir valoración */}
-      <AddRating variantId={variantId} onRatingAdded={handleRatingAdded} />
+      <AddRating
+        variant={variant}
+        product={product}
+        onRatingAdded={handleRatingAdded}
+      />
     </div>
   );
 };
 
-export default ProductRatings;
+export default ProductVariantRatings;

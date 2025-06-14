@@ -3,6 +3,7 @@ import { getVariantImages } from '@/components/product/ProductImageSlider/Produc
 import { ProductInfo } from '@/components/product/ProductInfo';
 import ProductVariantAttributeSelector from '@/components/product/ProductVariantAttributeSelector';
 import { ProductVariantPurchase } from '@/components/product/ProductVariantPurchase';
+import ProductVariantRatings from '@/components/product/ProductVariantRatings';
 import { ProductVariantData } from '@/services/product/productVariant';
 import { ProductVariants } from '@/types/domain';
 import React, { useState } from 'react';
@@ -62,7 +63,12 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
             </div>
           </div>
         </div>
-        <div>content</div>
+        <div>
+          <ProductVariantRatings
+            product={product}
+            variant={variant}
+          />
+        </div>
       </div>
 
       <div className="xl:col-span-3">

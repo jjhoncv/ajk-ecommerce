@@ -209,7 +209,7 @@ export class ProductVariantModel {
     }
   }
 
-  public async getProductVariantComplete(
+  public async getProductVariant(
     id: number
   ): Promise<ProductVariantComplete | undefined> {
     const variantRaw = await oProductVariantRep.getProductVariantById(id)
@@ -223,22 +223,29 @@ export class ProductVariantModel {
         id
       )
 
+    const attributeOptionsImages = await this.getAttributeImagesForVariant(
+      variant.id,
+      variant.productId
+    )
+
     // Construir variantAttributeOptions con datos completos
     const attributeOptions: VariantAttributeOption[] =
       variantAttributeOptionWithDetails?.map((option) => ({
         variantId: option.variantId,
         attributeOptionId: option.attributeOptionId,
-        attributeOption: option.attributeOption
+        attributeOption: {
+          ...option.attributeOption,
+          attributeId: Number(option.attributeOption?.attributeId),
+          value: option.attributeOption?.value || '',
+          id: Number(option.attributeOption?.id),
+          attributeOptionImages: attributeOptionsImages.filter(
+            (aoi) => aoi.attributeOptionId === option.attributeOption?.id
+          )
+        }
       })) || []
 
     // Obtener imágenes de la variante
     const images = await oVariantImageModel.getVariantImages(id)
-
-    // Obtener imágenes de atributos usando composición
-    const attributeImages = await this.getAttributeImagesForVariant(
-      id,
-      variant.productId
-    )
 
     // Obtener promoción usando composición
     const bestPromotion =
@@ -250,36 +257,36 @@ export class ProductVariantModel {
     const result: ProductVariantComplete = {
       ...variant,
       variantAttributeOptions: attributeOptions || [],
-      variantImages: images,
-      attributeImages
+      variantImages: images
     }
 
     // Añadir promoción si existe
     if (bestPromotion) {
-      let promotionPrice = bestPromotion.promotionPrice
-
-      if (promotionPrice === null || promotionPrice === undefined) {
-        // Calcular precio promocional basado en el tipo de descuento
-        // Nota: Necesitaríamos acceso a la información de promoción para hacer este cálculo
-        // Por ahora, usamos el precio promocional del objeto si existe
-        promotionPrice = bestPromotion.promotionPrice || Number(variant.price)
-      }
-
-      result.promotion = {
-        id: bestPromotion.promotionId,
-        name: `Promotion ${bestPromotion.promotionId}`, // Placeholder
-        discountType: 'percentage', // Placeholder
-        discountValue: 0, // Placeholder
-        promotionPrice: promotionPrice,
-        startDate: new Date(), // Placeholder
-        endDate: new Date(), // Placeholder
-        stockLimit: bestPromotion.stockLimit ?? null
-      }
+      result.promotionVariants = [
+        {
+          ...bestPromotion,
+          promotion: {
+            id: Number(bestPromotion.promotion?.id),
+            name: bestPromotion.promotion?.name || '',
+            discountType: bestPromotion.promotion?.discountType || 'percentage',
+            discountValue: 0,
+            startDate: bestPromotion.promotion?.startDate || new Date(),
+            endDate: bestPromotion.promotion?.endDate || new Date(),
+            createdAt: bestPromotion.promotion?.createdAt || new Date(),
+            updatedAt: bestPromotion.promotion?.updatedAt || new Date()
+          },
+          createdAt: bestPromotion.createdAt,
+          promotionId: bestPromotion.promotionId,
+          variantId: bestPromotion.variantId,
+          promotionPrice: bestPromotion.promotionPrice
+        }
+      ]
     }
 
     // Añadir ratings si existen
     if (ratingSummary && ratingSummary.totalRatings > 0) {
-      result.ratings = {
+      result.variantRatingSummary = {
+        variantId: ratingSummary.variantId,
         totalRatings: ratingSummary.totalRatings,
         averageRating: ratingSummary.averageRating,
         fiveStar: ratingSummary.fiveStar,
@@ -372,7 +379,7 @@ export class ProductVariantModel {
   }
 
   public async getVariantById(id: number) {
-    return await this.getProductVariantComplete(id)
+    return await this.getProductVariant(id)
   }
 
   public async getVariantsByProductId(productId: number) {

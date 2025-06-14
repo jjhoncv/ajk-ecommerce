@@ -1,14 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import { ProductVariants, Products } from "@/types/domain";
 import { Star, Upload, X } from "lucide-react";
 import Image from "next/image";
+import React, { useState } from "react";
 
 interface AddRatingProps {
-  variantId: number;
+  variant: ProductVariants;
+  product: Products;
   onRatingAdded: () => void;
 }
 
-const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
+const AddRating: React.FC<AddRatingProps> = ({
+  variant,
+  product,
+  onRatingAdded
+}) => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [title, setTitle] = useState("");
@@ -50,7 +56,7 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
 
     try {
       // En un caso real, obtendríamos el customerId del usuario autenticado
-      const customerId = 1; // Usuario de prueba
+      const customerId = 3; // Usuario de prueba
 
       const response = await fetch("/api/ratings", {
         method: "POST",
@@ -58,13 +64,17 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          variantId,
+          variantId: variant.id,
+          productId: variant.productId,
           customerId,
           rating,
           title: title.trim() || undefined,
           review: review.trim() || undefined,
-          verifiedPurchase: true, // Simulamos que es una compra verificada
+          verifiedPurchase: 1, // 1 para true, siguiendo tu schema GraphQL
           images: images.length > 0 ? images : undefined,
+          // Información adicional que puede ser útil
+          productName: product.name,
+          variantSku: variant.sku,
         }),
       });
 
@@ -98,9 +108,35 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
     }
   };
 
+  // Obtener el nombre completo de la variante para mostrar en el formulario
+  const getVariantDisplayName = () => {
+    let displayName = product.name;
+
+    if (variant.variantAttributeOptions && variant.variantAttributeOptions.length > 0) {
+      const attributes = variant.variantAttributeOptions
+        .filter(attr => attr?.attributeOption?.value)
+        .map(attr => attr!.attributeOption!.value)
+        .join(", ");
+
+      if (attributes) {
+        displayName += ` - ${attributes}`;
+      }
+    }
+
+    return displayName;
+  };
+
   return (
     <div className="border-t border-gray-200 pt-6 mt-8">
-      <h2 className="text-xl font-bold mb-4">Deja tu valoración</h2>
+      <div className="mb-4">
+        <h2 className="text-xl font-bold mb-2">Deja tu valoración</h2>
+        <div className="text-sm text-gray-600">
+          Producto: <span className="font-medium">{getVariantDisplayName()}</span>
+        </div>
+        <div className="text-sm text-gray-500">
+          SKU: {variant.sku} | Precio: ${Number(variant.price).toFixed(2)}
+        </div>
+      </div>
 
       {success ? (
         <div className="bg-green-50 text-green-700 p-4 rounded-lg mb-6">
@@ -125,15 +161,23 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
                   className="p-1"
                 >
                   <Star
-                    className={`h-8 w-8 ${
-                      (hoverRating || rating) >= star
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-300"
-                    }`}
+                    className={`h-8 w-8 ${(hoverRating || rating) >= star
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-300"
+                      }`}
                   />
                 </button>
               ))}
             </div>
+            {rating > 0 && (
+              <div className="mt-1 text-sm text-gray-600">
+                {rating === 1 && "Muy malo"}
+                {rating === 2 && "Malo"}
+                {rating === 3 && "Regular"}
+                {rating === 4 && "Bueno"}
+                {rating === 5 && "Excelente"}
+              </div>
+            )}
           </div>
 
           {/* Título */}
@@ -150,8 +194,12 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Resume tu experiencia en una frase"
+              maxLength={100}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
+            <div className="text-xs text-gray-500 mt-1">
+              {title.length}/100 caracteres
+            </div>
           </div>
 
           {/* Comentario */}
@@ -168,8 +216,12 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
               onChange={(e) => setReview(e.target.value)}
               rows={4}
               placeholder="¿Qué te gustó o no te gustó? ¿Para qué usaste este producto?"
+              maxLength={500}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
+            <div className="text-xs text-gray-500 mt-1">
+              {review.length}/500 caracteres
+            </div>
           </div>
 
           {/* Imágenes */}
@@ -218,7 +270,18 @@ const AddRating: React.FC<AddRatingProps> = ({ variantId, onRatingAdded }) => {
           </div>
 
           {/* Mensaje de error */}
-          {error && <div className="text-red-600 text-sm">{error}</div>}
+          {error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Información de stock para contexto */}
+          {variant.stock !== undefined && (
+            <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+              Stock disponible: {variant.stock} unidades
+            </div>
+          )}
 
           {/* Botón de envío */}
           <div>

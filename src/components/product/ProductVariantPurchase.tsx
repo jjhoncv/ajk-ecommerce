@@ -51,15 +51,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
           >
             Comprar
           </button>
-
           <ProductVariantButtonAddToCart quantity={quantity} stock={variant.stock} price={finalPrice} id={variant.id} name={getVariantTitle(product.name, variant)} image={getVariantImages(variant)[0].imageUrlThumb} />
-
-          {/* <button
-            className="w-full border border-gray-300 text-gray-700 py-3 px-4 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={(variant?.stock || 0) === 0}
-          >
-            Agregar al carrito
-          </button> */}
         </div>
       </div>
     </div>

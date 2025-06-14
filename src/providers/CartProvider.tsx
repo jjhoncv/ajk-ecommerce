@@ -1,11 +1,12 @@
 "use client";
-import React, { createContext, useContext } from "react";
 import useCart, { CartItem } from "@/hooks/useCart";
+import React, { createContext, useContext } from "react";
 
 // Tipo para el contexto del carrito
+
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => void;
+  addItem: (item: Omit<CartItem, "quantity">, initialQuantity?: number) => void
   removeItem: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   incrementQuantity: (id: number) => void;
