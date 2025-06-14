@@ -23,7 +23,7 @@ export async function generateMetadata({
     }
 
     const data = await ProductService.getProductVariant(variantId)
-    return generateProductVariantMetadata(data)
+    return generateProductVariantMetadata(data, variantId)
   } catch (error) {
     console.error('Error generating metadata:', error)
     return generateErrorMetadata('Error al cargar el producto')
@@ -47,12 +47,16 @@ export default async function ProductVariantPage({
     return <ProductVariantNotFound />
   }
 
-  // Ahora las variantes vienen completas con variantAttributeOptions
   const allVariants = (data.product.productVariants || []).filter(v => v !== null)
+  const variant = allVariants.find(variant => variant.id === variantId)
+
+  if (!variant) {
+    return <ProductVariantNotFound />
+  }
 
   return (
     <Layout>
-      <ProductVariantView data={data} allVariants={allVariants} currentVariantId={variantId} />
+      <ProductVariantView data={data} allVariants={allVariants} variant={variant} />
     </Layout>
   )
 }

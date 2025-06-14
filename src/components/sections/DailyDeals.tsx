@@ -23,7 +23,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
           <span className="text-gray-600">Termina en:</span>
           <div className="flex gap-2">
             {["10d", "22h", "57m", "28s"].map((time, index) => (
-              <div key={index} className="text-gray-700 px-0 py-1 rounded-lg">
+              <div key={index} className="text-gray-700 px-0 py-1 ">
                 {index === 0 ? <></> : <span className="pr-2">:</span>}
                 <span className="font-bold">{time}</span>
               </div>
@@ -35,7 +35,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Banner */}
         <div className="md:col-span-2">
-          <div className="relative rounded-lg overflow-hidden h-[400px] md:h-full">
+          <div className="relative  overflow-hidden h-[400px] md:h-full">
             <Image
               src={bannerImage}
               alt="Daily Deals"
@@ -48,7 +48,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
               <h3 className="text-white text-2xl font-bold mb-2">
                 {bannerTitle}
               </h3>
-              <button className="border border-white text-white px-6 py-2 rounded-lg hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2">
+              <button className="border border-white text-white px-6 py-2  hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2">
                 Comprar ahora
                 <ChevronRight className="h-4 w-4" />
               </button>

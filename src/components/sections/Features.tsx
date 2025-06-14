@@ -56,7 +56,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
         {features.map((feature, index) => (
           <div
             key={index}
-            className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg"
+            className="flex items-center gap-4 bg-gray-50 p-4 "
           >
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
               {renderIcon(feature.icon)}

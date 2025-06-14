@@ -18,7 +18,7 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
         {categories.map((category, index) => (
           <div
             key={index}
-            className="relative rounded-lg overflow-hidden group h-48"
+            className="relative  overflow-hidden group h-48"
           >
 
             <Image
@@ -42,7 +42,7 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
                     .toLowerCase()
                     .replace(/\s+/g, "-")}`
                 }
-                className="mt-4 px-4 py-2 text-white border border-white rounded-lg 
+                className="mt-4 px-4 py-2 text-white border border-white  
                   hover:bg-white hover:text-black transition-colors inline-flex items-center gap-2 w-fit"
               >
                 Comprar ahora

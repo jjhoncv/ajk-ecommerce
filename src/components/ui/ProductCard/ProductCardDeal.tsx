@@ -2,8 +2,8 @@
 import { Clock } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import ButtonAddToCart from "../ButtonAddToCart";
 import { ProductCardDealProps } from "./ProductCard.interfaces";
+import ButtonAddToCart from "./ProductCardButtonAddToCart";
 
 const ProductCardDeal: React.FC<ProductCardDealProps> = ({
   product,
@@ -18,9 +18,8 @@ const ProductCardDeal: React.FC<ProductCardDealProps> = ({
       }
     >
       <div
-        className={`relative aspect-square mb-4 ${
-          layout === "list" ? "md:w-1/3" : ""
-        }`}
+        className={`relative aspect-square mb-4 ${layout === "list" ? "md:w-1/3" : ""
+          }`}
       >
         {/* Usar una imagen estática o una imagen optimizada según la URL */}
         {product.image.includes("?") ? (

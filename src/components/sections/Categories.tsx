@@ -28,7 +28,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
           <Link
             key={category.name}
             href={`/categoria/${category.name.toLowerCase()}`}
-            className="group bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+            className="group bg-white  p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
           >
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 p-4 bg-gray-50 rounded-full group-hover:bg-primary/10 transition-colors">
@@ -38,7 +38,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
                     src="/no-image.webp"
                     width={60}
                     height={60}
-                    className="rounded-lg"
+                    className=""
                   />
                 ) : (
                   <Image
@@ -46,7 +46,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
                     width={60}
                     height={60}
                     alt={category.name}
-                    className="rounded-lg group-hover:scale-110 transition-transform duration-300"
+                    className=" group-hover:scale-110 transition-transform duration-300"
                   />
                 )}
               </div>

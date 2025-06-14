@@ -154,45 +154,46 @@ export const getPromotionDiscount = (
 }
 
 export const getVariantImagesOrAttributeOptionImages = (
-  productVariant: ProductVariantComplete
+  variant: ProductVariantComplete
 ): ItemImage[] => {
-  if (productVariant.variantImages && productVariant.variantImages.length > 0) {
-    const sortImages = productVariant.variantImages.sort((a, b) => {
-      if (a.imageType === 'front' && b.imageType !== 'front') return -1
-      if (b.imageType === 'front' && a.imageType !== 'front') return 1
-      return (a.displayOrder || 0) - (b.displayOrder || 0)
-    })
+  if (variant.variantImages && variant.variantImages.length > 0) {
+    const sortImages = variant.variantImages
+      .sort((a, b) => {
+        if (a.imageType === 'front' && b.imageType !== 'front') return -1
+        if (b.imageType === 'front' && a.imageType !== 'front') return 1
+        return (a.displayOrder || 0) - (b.displayOrder || 0)
+      })
+      .map((img) => ({ ...img, displayOrder: Number(img.displayOrder) }))
     return sortImages
   }
 
   // Si no hay variantImages, filtrar attributeImages según los atributos de la variante
   if (
-    productVariant.attributeImages &&
-    productVariant.attributeImages.length > 0 &&
-    productVariant.variantAttributeOptions &&
-    productVariant.variantAttributeOptions.length > 0
+    variant.attributeImages &&
+    variant.attributeImages.length > 0 &&
+    variant.variantAttributeOptions &&
+    variant.variantAttributeOptions.length > 0
   ) {
     // Obtener los attributeOptionIds de la variante
-    const variantAttributeOptionIds =
-      productVariant.variantAttributeOptions.map(
-        (attr) => attr.attributeOptionId
-      )
+    const variantAttributeOptionIds = variant.variantAttributeOptions.map(
+      (attr) => attr.attributeOptionId
+    )
 
     // Filtrar solo las imágenes que corresponden a los atributos de esta variante
-    const filteredImages = productVariant.attributeImages.filter(
+    const filteredImages = variant.attributeImages.filter(
       (img: AttributeOptionImages) =>
         variantAttributeOptionIds.includes(img.attributeOptionId)
     )
 
     if (filteredImages.length > 0) {
       // Ordenar: front primero, luego por displayOrder
-      const sortedImages = filteredImages.sort(
-        (a: AttributeOptionImages, b: AttributeOptionImages) => {
+      const sortedImages = filteredImages
+        .sort((a: AttributeOptionImages, b: AttributeOptionImages) => {
           if (a.imageType === 'front' && b.imageType !== 'front') return -1
           if (b.imageType === 'front' && a.imageType !== 'front') return 1
           return (a.displayOrder || 0) - (b.displayOrder || 0)
-        }
-      )
+        })
+        .map((img) => ({ ...img, displayOrder: Number(img.displayOrder) }))
 
       return sortedImages
     }
@@ -204,22 +205,23 @@ export const getVariantImagesOrAttributeOptionImages = (
       id: 0,
       imageUrlNormal: '/no-image.webp',
       imageUrlThumb: '/no-image.webp',
-      imageUrlZoom: '/no-image.webp'
+      imageUrlZoom: '/no-image.webp',
+      displayOrder: 0
     }
   ]
 }
 
 export const getImagesToProductCard = (
-  productVariant: ProductVariantComplete
+  variant: ProductVariantComplete
 ): ItemImage[] => {
-  const images = getVariantImagesOrAttributeOptionImages(productVariant)
+  const images = getVariantImagesOrAttributeOptionImages(variant)
   return images
 }
 
-export const getThumbImage = (
-  productVariant: ProductVariantComplete
+export const getThumbImageToProductCard = (
+  variant: ProductVariantComplete
 ): string => {
-  const images = getVariantImagesOrAttributeOptionImages(productVariant)
+  const images = getVariantImagesOrAttributeOptionImages(variant)
   if (images.length === 0) return '/no-image.webp'
   return images.find((img) => img.imageUrlThumb)?.imageUrlThumb || ''
 }

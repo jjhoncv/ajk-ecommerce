@@ -18,7 +18,7 @@ export const generateProductVariantMetadata = (
   const variant = product.productVariants?.find((pv) => pv?.id === variantId)
   let title = product.name
   if (variant) {
-    title = getVariantTitle({ name: product.name }, variant)
+    title = getVariantTitle(product.name, variant)
   }
 
   return {
@@ -40,13 +40,15 @@ export const generateErrorMetadata = (error: string): Metadata => {
 }
 
 export const getVariantTitle = (
-  product: { name: string },
-  selectedVariant: ProductVariants
-) => {
-  const baseTitle = product.name
+  name: string,
+  variant?: ProductVariants
+): string => {
+  const baseTitle = name
+
+  if (!variant) return baseTitle
 
   // Obtener los atributos de la variante
-  const variantAttributes = selectedVariant.variantAttributeOptions
+  const variantAttributes = variant.variantAttributeOptions
     ?.map((variantAttr) => {
       // Verificar que variantAttr no sea null
       if (!variantAttr) return null

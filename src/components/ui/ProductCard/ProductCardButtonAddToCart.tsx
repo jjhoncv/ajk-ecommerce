@@ -3,14 +3,14 @@ import { useCartContext } from "@/providers/CartProvider";
 import { ShoppingCart } from "lucide-react";
 import React from "react";
 
-interface ButtonAddToCartProps {
+interface ProductCardButtonAddToCartProps {
   id: number;
   name: string;
   image: string;
   price: number;
 }
 
-const ButtonAddToCart: React.FC<ButtonAddToCartProps> = ({
+const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
   id,
   name,
   price,
@@ -38,4 +38,4 @@ const ButtonAddToCart: React.FC<ButtonAddToCartProps> = ({
   );
 };
 
-export default ButtonAddToCart;
+export default ProductCardButtonAddToCart;

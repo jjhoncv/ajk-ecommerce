@@ -6,7 +6,7 @@ const Newsletter: React.FC = () => {
   return (
     <section className="bg-gray-100 py-16">
       <div className="max-w-screen-4xl mx-auto px-12">
-        <div className="bg-secondary rounded-2xl p-8 md:p-12 relative overflow-hidden">
+        <div className="bg-secondary  p-8 md:p-12 relative overflow-hidden">
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Mantente en casa y consigue tu entrega diaria desde nuestra tienda
@@ -19,9 +19,9 @@ const Newsletter: React.FC = () => {
                 <input
                   type="email"
                   placeholder="Tu dirección de email"
-                  className="w-full px-4 py-3 rounded-lg"
+                  className="w-full px-4 py-3 "
                 />
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors">
+                <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-accent text-white px-6 py-2  hover:bg-accent/90 transition-colors">
                   Suscribirse
                 </button>
               </div>

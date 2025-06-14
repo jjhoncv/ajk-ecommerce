@@ -36,7 +36,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
       <div className="max-w-screen-4xl mx-auto px-12 py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Slider */}
-          <div className="col-span-8 relative rounded-lg overflow-hidden h-[400px]">
+          <div className="col-span-8 relative  overflow-hidden h-[400px]">
             {slides.map((slide, index) => (
               <div
                 key={index}
@@ -63,7 +63,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                       <p className="text-gray-200 mb-6">{slide.description}</p>
                       <Link
                         href={slide.ctaLink}
-                        className="inline-block  bg-secondary border border-secondary text-white px-8 py-3 rounded-lg hover:bg-transparent hover:border-secondary hover:border transition-colors"
+                        className="inline-block  bg-secondary border border-secondary text-white px-8 py-3  hover:bg-transparent hover:border-secondary hover:border transition-colors"
                       >
                         {slide.cta}
                       </Link>
@@ -106,7 +106,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
               {sideBanners.map((banner, index) => (
                 <div
                   key={index}
-                  className="relative rounded-lg overflow-hidden h-[192px]"
+                  className="relative  overflow-hidden h-[192px]"
                 >
                   <Image
                     src={banner.image}

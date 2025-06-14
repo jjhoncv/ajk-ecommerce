@@ -8,7 +8,7 @@ import React, { useMemo, useState } from "react";
 interface ProductVariantAttributeSelectorProps {
   data: ProductVariantData;
   allVariants: ProductVariants[];
-  currentVariantId: number;
+  variant?: ProductVariants;
   onVariantChange?: (newData: ProductVariantData) => void;
 }
 
@@ -31,13 +31,13 @@ interface AttributeGroup {
 
 const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorProps> = ({
   allVariants,
-  currentVariantId,
+  variant,
   onVariantChange,
 }) => {
   const router = useRouter();
 
   // Obtener la variante actual desde las variantes del producto usando el ID pasado como prop
-  const currentVariant = allVariants.find((v) => v.id === currentVariantId) || allVariants[0];
+  const currentVariant = variant || allVariants[0];
 
   const [loading, setLoading] = useState(false);
 
@@ -199,9 +199,9 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
                     key={option.optionId}
                     onClick={() => isAvailable && handleAttributeChange(group.attributeId, option.optionId)}
                     disabled={!isAvailable || loading}
-                    className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 ${isSelected
-                      ? "border-black"
-                      : "border-gray-200 hover:border-gray-300"
+                    className={`relative w-16 h-16 overflow-hidden border-2 ${isSelected
+                      ? "border-primary"
+                      : "border-gray-200 hover:border-gray-500"
                       } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""} ${loading ? "opacity-50" : ""}`}
                     title={option.value}
                   >
@@ -215,11 +215,6 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
                     ) : (
                       <div className="w-full h-full bg-gray-100 flex items-center justify-center text-xs text-gray-500">
                         {option.value}
-                      </div>
-                    )}
-                    {isSelected && (
-                      <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                        <div className="w-3 h-3 bg-black rounded-full" />
                       </div>
                     )}
                   </button>
@@ -247,8 +242,8 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
                     key={option.optionId}
                     onClick={() => isAvailable && handleAttributeChange(group.attributeId, option.optionId)}
                     disabled={!isAvailable || loading}
-                    className={`px-4 py-2 border rounded-md text-sm font-medium ${isSelected
-                      ? "border-black bg-black text-white"
+                    className={`px-4 py-2 border text-sm font-medium ${isSelected
+                      ? "border-primary bg-primary text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                       } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""} ${loading ? "opacity-50" : ""}`}
                   >
@@ -279,7 +274,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
                     onClick={() => isAvailable && handleAttributeChange(group.attributeId, option.optionId)}
                     disabled={!isAvailable || loading}
                     className={`px-3 py-2 border rounded text-sm ${isSelected
-                      ? "border-black bg-black text-white"
+                      ? "border-primary bg-black text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                       } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""} ${loading ? "opacity-50" : ""}`}
                   >
@@ -301,7 +296,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
               value={group.selectedOptionId}
               onChange={(e) => handleAttributeChange(group.attributeId, parseInt(e.target.value))}
               disabled={loading}
-              className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black disabled:opacity-50"
+              className="block w-full py-2 px-3 border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-black focus:border-black disabled:opacity-50"
             >
               {group.availableOptions.map((option) => {
                 const isAvailable = isOptionAvailable(group.attributeId, option.optionId);

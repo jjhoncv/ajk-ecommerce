@@ -2,9 +2,9 @@
 import { getVariantTitle } from "@/helpers/productVariant.helpers";
 import Link from "next/link";
 import React from "react";
-import ButtonAddToCart from "../ButtonAddToCart";
-import { getImagesToProductCard, getThumbImage, hasPromotion } from "./ProductCard.helpers";
+import { getImagesToProductCard, getThumbImageToProductCard, hasPromotion } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
+import ProductCardButtonAddToCart from "./ProductCardButtonAddToCart";
 import ProductCardPrice from "./ProductCardPrice";
 import ProductCardSlider from "./ProductCardSlider";
 
@@ -45,9 +45,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           />
         </Link>
 
-        <ButtonAddToCart
+        <ProductCardButtonAddToCart
           id={product.variantId}
-          image={getThumbImage(selectedVariant)}
+          image={getThumbImageToProductCard(selectedVariant)}
           name={product.name}
           price={product.variantPrice || selectedVariant.price}
         />
@@ -58,12 +58,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <h3 className="font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
             {/* Promoción */}
             {hasDiscount && (
-              <span className="bg-red-500 text-[11px] leading-[11px] inline-block text-white px-[3px] py-[2px] mr-[1px]">
+              <span className="bg-gradient-to-r from-red-500 to-red-700 text-[11px] leading-[11px] inline-block text-white px-[3px] py-[2px] mr-[1px]">
                 Promo
               </span>
             )}
 
-            {getVariantTitle(product, selectedVariant)}
+            {getVariantTitle(product.name, selectedVariant)}
           </h3>
         </Link>
 

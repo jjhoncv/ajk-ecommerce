@@ -1,4 +1,5 @@
-import { AttributeOptionImagesSlider } from './ProductImageSlider/ProductImage.interfaces'
+import { ItemImage } from '@/shared'
+import { ProductVariants, PromotionVariants } from '@/types/domain'
 
 export interface CleanImage {
   id: number
@@ -17,7 +18,7 @@ export interface CleanImage {
  * @returns Array de imágenes limpias y validadas
  */
 export const cleanAndValidateImages = (
-  images: AttributeOptionImagesSlider[],
+  images: ItemImage[],
   productName: string
 ): CleanImage[] => {
   if (!images || images.length === 0) {
@@ -68,4 +69,30 @@ export const getImageTypeLabel = (imageType: string): string => {
   }
 
   return typeLabels[imageType] || 'Vista'
+}
+
+export const getPriceIfHasPromotion = (
+  variant: ProductVariants
+): {
+  hasPromotion: boolean
+  finalPrice: number
+  originalPrice: number
+  currentPromotion?: PromotionVariants | null
+} => {
+  // Obtener promoción activa de la variante actual
+  const currentPromotion = variant?.promotionVariants?.[0]
+
+  // Calcular precio con promoción
+  const originalPrice = Number(variant?.price || 0)
+  const promotionPrice = currentPromotion
+    ? Number(currentPromotion.promotionPrice)
+    : null
+  const finalPrice = promotionPrice || originalPrice
+
+  return {
+    finalPrice,
+    hasPromotion: Boolean(currentPromotion),
+    originalPrice,
+    currentPromotion
+  }
 }

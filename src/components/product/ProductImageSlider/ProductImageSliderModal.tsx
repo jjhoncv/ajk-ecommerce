@@ -1,15 +1,24 @@
 "use client";
+import { ItemImage } from "@/shared";
 import { X } from "lucide-react";
 import React, { useEffect, useRef } from "react";
+import { ProductImageSlider } from "./ProductImageSlider";
 
-interface ModalProps {
+interface ProductImageSliderModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
-  children: React.ReactNode;
+  images: ItemImage[];
+  productName: string;
+  initialImageIndex?: number;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = ({
+  isOpen,
+  onClose,
+  images,
+  productName,
+  initialImageIndex = 0
+}) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Cerrar al hacer clic fuera
@@ -58,31 +67,43 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 
   if (!isOpen) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       <div
         ref={modalRef}
-        className="bg-white shadow-xl w-full max-w-md overflow-hidden px-10 py-5"
+        className="bg-white shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden relative"
       >
-        {title && (
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">{title}</h2>
-              <button
-                onClick={onClose}
-                className="p-2 rounded-full hover:bg-gray-100"
-                aria-label="Cerrar"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Header con botón de cerrar */}
+        <div className="flex justify-end items-center p-4 bg-white">
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Cerrar galería"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
 
-        <div className="p-4">{children}</div>
+        {/* Contenido del modal con el slider */}
+        <div className="p-6 pt-0 bg-white">
+          <ProductImageSlider
+            images={images}
+            productName={productName}
+            initialImageIndex={initialImageIndex}
+            isInModal={true}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-export default Modal;

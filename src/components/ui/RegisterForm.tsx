@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -92,10 +92,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
   return (
     <div className="w-full">
-      <h3 className="text-lg font-medium mb-4">Crear cuenta</h3>
-
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4">
+        <div className="bg-red-50 text-red-600 p-3  mb-4">
           {error}
         </div>
       )}
@@ -113,7 +111,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="juanperez"
             disabled={isLoading}
           />
@@ -131,7 +129,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="Juan"
             disabled={isLoading}
           />
@@ -149,7 +147,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="text"
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="Pérez"
             disabled={isLoading}
           />
@@ -167,7 +165,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="usuario@ejemplo.com"
             disabled={isLoading}
           />
@@ -185,7 +183,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -203,7 +201,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -211,7 +209,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-primary text-white py-2 px-4  hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={isLoading}
         >
           {isLoading ? (

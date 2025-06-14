@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -53,7 +53,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <div className="w-full">
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4">
+        <div className="bg-red-50 text-red-600 p-3  mb-4">
           {error}
         </div>
       )}
@@ -71,7 +71,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="usuario@ejemplo.com"
             disabled={isLoading}
           />
@@ -89,7 +89,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="••••••••"
             disabled={isLoading}
           />
@@ -119,7 +119,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-primary text-white py-2 px-4  hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -158,13 +158,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             type="button"
-            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300  shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             <span>Google</span>
           </button>
           <button
             type="button"
-            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300  shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             <span>Facebook</span>
           </button>
