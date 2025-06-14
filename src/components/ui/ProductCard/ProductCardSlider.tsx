@@ -7,6 +7,8 @@ import { ProductCardSliderProps } from "./ProductCard.interfaces";
 const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
   images,
 }) => {
+
+  console.log("imagesxxx", images)
   return (
     <div
       className="relative mb-2 group"

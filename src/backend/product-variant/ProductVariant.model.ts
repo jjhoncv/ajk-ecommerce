@@ -3,7 +3,9 @@ import oAttributeOptionImageModel from '@/backend/attribute-option-image'
 import oPromotionVariantModel from '@/backend/promotion-variant'
 import oVariantAttributeOptionModel from '@/backend/variant-attribute-option'
 import oVariantImageModel from '@/backend/variant-image'
-import oVariantRatingModel from '@/backend/variant-rating'
+import oVariantRatingModel, {
+  VariantRatingWithCustomer
+} from '@/backend/variant-rating'
 
 //me
 import {
@@ -17,9 +19,13 @@ import { ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
   AttributeOptionImages,
   ProductVariants as ProductVariant,
-  VariantAttributeOptions as VariantAttributeOption
+  VariantAttributeOptions as VariantAttributeOption,
+  VariantAttributeOptions
 } from '@/types/domain'
 
+import attributeOptionImageModel from '@/backend/attribute-option-image'
+import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import variantRatingModel from '@/backend/variant-rating'
 import {
   ProductVariantComplete,
   ProductVariantWithAttributeOptions,
@@ -209,6 +215,40 @@ export class ProductVariantModel {
     }
   }
 
+  public async getVariantAttributeOptions(
+    variantId: number
+  ): Promise<VariantAttributeOptions[] | undefined> {
+    const variantAttributeOptionWithDetails =
+      await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+        variantId
+      )
+
+    const attributeOptions: VariantAttributeOptions[] = await Promise.all(
+      variantAttributeOptionWithDetails?.map(async (option) => ({
+        variantId: option.variantId,
+        attributeOptionId: option.attributeOptionId,
+        attributeOption: {
+          ...option.attributeOption,
+          attributeOptionImages:
+            await attributeOptionImageModel.getAttributeOptionImages(
+              option.attributeOptionId
+            ),
+          attributeId: Number(option.attributeOption?.attributeId),
+          id: Number(option.attributeOption?.id),
+          value: option.attributeOption?.value || '',
+          attribute: {
+            ...option.attributeOption?.attribute,
+            id: Number(option.attributeOption?.attribute?.id),
+            displayType:
+              option.attributeOption?.attribute?.displayType || 'color',
+            name: option.attributeOption?.attribute?.name || ''
+          }
+        }
+      })) || []
+    )
+    return attributeOptions
+  }
+
   public async getProductVariant(
     id: number
   ): Promise<ProductVariantComplete | undefined> {
@@ -217,35 +257,11 @@ export class ProductVariantModel {
 
     const variant = ProductVariantMapper(variantRaw)
 
-    // Obtener atributos usando composición con datos completos
-    const variantAttributeOptionWithDetails =
-      await oVariantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
-        id
-      )
-
-    const attributeOptionsImages = await this.getAttributeImagesForVariant(
-      variant.id,
-      variant.productId
-    )
-
-    // Construir variantAttributeOptions con datos completos
-    const attributeOptions: VariantAttributeOption[] =
-      variantAttributeOptionWithDetails?.map((option) => ({
-        variantId: option.variantId,
-        attributeOptionId: option.attributeOptionId,
-        attributeOption: {
-          ...option.attributeOption,
-          attributeId: Number(option.attributeOption?.attributeId),
-          value: option.attributeOption?.value || '',
-          id: Number(option.attributeOption?.id),
-          attributeOptionImages: attributeOptionsImages.filter(
-            (aoi) => aoi.attributeOptionId === option.attributeOption?.id
-          )
-        }
-      })) || []
+    const variantAttributeOptions =
+      await productVariantModel.getVariantAttributeOptions(id)
 
     // Obtener imágenes de la variante
-    const images = await oVariantImageModel.getVariantImages(id)
+    const variantImages = await oVariantImageModel.getVariantImages(id)
 
     // Obtener promoción usando composición
     const bestPromotion =
@@ -254,10 +270,19 @@ export class ProductVariantModel {
     // Obtener ratings usando composición
     const ratingSummary = await oVariantRatingModel.getVariantRatingSummary(id)
 
+    const variantRatingSearch =
+      await variantRatingModel.getRatingsByVariantId(id)
+
+    const variantRatings: VariantRatingWithCustomer[] =
+      variantRatingSearch.ratings.map((rating) => ({
+        ...rating
+      }))
+
     const result: ProductVariantComplete = {
       ...variant,
-      variantAttributeOptions: attributeOptions || [],
-      variantImages: images
+      variantAttributeOptions: variantAttributeOptions,
+      variantImages: variantImages,
+      variantRatings: variantRatings
     }
 
     // Añadir promoción si existe

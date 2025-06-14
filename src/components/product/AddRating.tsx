@@ -1,6 +1,10 @@
 "use client";
+import LoginForm from "@/components/ui/LoginForm";
+import Modal from "@/components/ui/Modal";
+import RegisterForm from "@/components/ui/RegisterForm";
 import { ProductVariants, Products } from "@/types/domain";
-import { Star, Upload, X } from "lucide-react";
+import { Star, Upload, User, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -15,6 +19,7 @@ const AddRating: React.FC<AddRatingProps> = ({
   product,
   onRatingAdded
 }) => {
+  const { status } = useSession();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [title, setTitle] = useState("");
@@ -23,6 +28,11 @@ const AddRating: React.FC<AddRatingProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const isAuthenticated = status === "authenticated";
+  const isLoading = status === "loading";
 
   // Simular la carga de imágenes
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +56,11 @@ const AddRating: React.FC<AddRatingProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isAuthenticated) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
     if (rating === 0) {
       setError("Por favor, selecciona una valoración");
       return;
@@ -55,9 +70,6 @@ const AddRating: React.FC<AddRatingProps> = ({
     setError("");
 
     try {
-      // En un caso real, obtendríamos el customerId del usuario autenticado
-      const customerId = 3; // Usuario de prueba
-
       const response = await fetch("/api/ratings", {
         method: "POST",
         headers: {
@@ -66,7 +78,6 @@ const AddRating: React.FC<AddRatingProps> = ({
         body: JSON.stringify({
           variantId: variant.id,
           productId: variant.productId,
-          customerId,
           rating,
           title: title.trim() || undefined,
           review: review.trim() || undefined,
@@ -127,21 +138,47 @@ const AddRating: React.FC<AddRatingProps> = ({
   };
 
   return (
-    <div className="border-t border-gray-200 pt-6 mt-8">
+    <div className="pt-6 mt-8">
       <div className="mb-4">
         <h2 className="text-xl font-bold mb-2">Deja tu valoración</h2>
         <div className="text-sm text-gray-600">
           Producto: <span className="font-medium">{getVariantDisplayName()}</span>
         </div>
-        <div className="text-sm text-gray-500">
-          SKU: {variant.sku} | Precio: ${Number(variant.price).toFixed(2)}
-        </div>
       </div>
 
-      {success ? (
+      {!isAuthenticated ? (
+        // Mostrar mensaje de autenticación requerida
+        <div className="bg-blue-50 border border-blue-200 p-6 text-center">
+          <User className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Inicia sesión para valorar este producto
+          </h3>
+          <p className="text-gray-600 mb-4">
+            Necesitas tener una cuenta para poder dejar tu valoración y ayudar a otros usuarios.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md font-medium transition-colors"
+            >
+              Iniciar sesión
+            </button>
+            <button
+              onClick={() => setIsRegisterModalOpen(true)}
+              className="bg-white hover:bg-gray-50 text-indigo-600 border border-indigo-600 px-6 py-2 rounded-md font-medium transition-colors"
+            >
+              Crear cuenta
+            </button>
+          </div>
+        </div>
+      ) : success ? (
         <div className="bg-green-50 text-green-700 p-4 rounded-lg mb-6">
           ¡Gracias por tu valoración! Tu opinión es muy importante para
           nosotros.
+        </div>
+      ) : isLoading ? (
+        <div className="bg-gray-50 p-4 rounded-lg text-center">
+          <p className="text-gray-500">Cargando...</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -295,6 +332,44 @@ const AddRating: React.FC<AddRatingProps> = ({
           </div>
         </form>
       )}
+
+      {/* Modal de login */}
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        title="Iniciar sesión"
+      >
+        <LoginForm
+          onSuccess={() => {
+            setIsLoginModalOpen(false);
+            // La sesión se actualizará automáticamente
+          }}
+          onClose={() => setIsLoginModalOpen(false)}
+          onSwitchToRegister={() => {
+            setIsLoginModalOpen(false);
+            setIsRegisterModalOpen(true);
+          }}
+        />
+      </Modal>
+
+      {/* Modal de registro */}
+      <Modal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        title="Crear cuenta"
+      >
+        <RegisterForm
+          onSuccess={() => {
+            setIsRegisterModalOpen(false);
+            // La sesión se actualizará automáticamente
+          }}
+          onClose={() => setIsRegisterModalOpen(false)}
+          onSwitchToLogin={() => {
+            setIsRegisterModalOpen(false);
+            setIsLoginModalOpen(true);
+          }}
+        />
+      </Modal>
     </div>
   );
 };

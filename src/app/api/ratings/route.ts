@@ -1,23 +1,34 @@
 import variantRatingModel from '@/backend/variant-rating'
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: 'Debes iniciar sesión para valorar productos' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const {
       variantId,
-      customerId,
       rating,
       review,
       title,
-      verifiedPurchase = false,
-      images = [] // Para futuras implementaciones con imágenes
+      verifiedPurchase = false
+      // images = [] // Para futuras implementaciones con imágenes
     } = body
 
+    // Usar el ID del usuario autenticado
+    const customerId = parseInt(session.user.id || '0')
     // Validaciones
     if (!variantId || !customerId || !rating) {
       return NextResponse.json(
-        { error: 'variantId, customerId y rating son requeridos' },
+        { error: 'variantId y rating son requeridos' },
         { status: 400 }
       )
     }

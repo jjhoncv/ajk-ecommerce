@@ -15,7 +15,8 @@ export const AttributeOptionImageMapper = (
     displayOrder: data.display_order ?? undefined,
     createdAt: data.created_at,
     updatedAt: data.updated_at,
-    attributeOptions: undefined // Se llena en el modelo si es necesario
+    isPrimary: data.is_primary,
+    attributeOption: undefined // Se llena en el modelo si es necesario
   }
 }
 

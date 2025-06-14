@@ -1,13 +1,12 @@
 // generated
 import { Products as ProductRaw } from '@/types/database'
-import { Products as Product } from '@/types/domain'
+import { Products as Product, VariantAttributeOptions } from '@/types/domain'
 
 // me
 import { ProductMapper, ProductsMapper } from './Product.mapper'
 import oProductRep from './Product.repository'
 
 // others
-import attributeOptionImageModel from '@/backend/attribute-option-image'
 import brandModel from '@/backend/brand'
 import categoryModel from '@/backend/category'
 import filtersModel from '@/backend/filters'
@@ -23,7 +22,6 @@ import variantImageModel from '@/backend/variant-image'
 import variantRatingModel, {
   VariantRatingWithCustomer
 } from '@/backend/variant-rating'
-import { VariantAttributeOption } from '@/interfaces/models'
 
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {
@@ -62,7 +60,7 @@ export class ProductModel {
             productVariant.id
           )
 
-        const attributeOptions: VariantAttributeOption[] =
+        const attributeOptions: VariantAttributeOptions[] =
           variantAttributeOptionWithDetails?.map((option) => ({
             variantId: option.variantId,
             attributeOptionId: option.attributeOptionId,
@@ -114,24 +112,10 @@ export class ProductModel {
 
     product.productVariants = await Promise.all(
       productVariants.map(async (productVariant) => {
-        const variantAttributeOptionWithDetails =
-          await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+        const variantAttributeOptions =
+          await productVariantModel.getVariantAttributeOptions(
             productVariant.id
           )
-
-        const attributeOptions: VariantAttributeOption[] = await Promise.all(
-          variantAttributeOptionWithDetails?.map(async (option) => ({
-            variantId: option.variantId,
-            attributeOptionId: option.attributeOptionId,
-            attributeOption: {
-              ...option.attributeOption,
-              attributeOptionImages:
-                await attributeOptionImageModel.getAttributeOptionImages(
-                  option.attributeOptionId
-                )
-            }
-          })) || []
-        )
 
         const promotionVariantsByVariantId =
           await promotionVariantModel.getPromotionVariantsByVariantId(
@@ -169,7 +153,7 @@ export class ProductModel {
 
         return {
           ...productVariant,
-          variantAttributeOptions: attributeOptions,
+          variantAttributeOptions: variantAttributeOptions,
           promotionVariants: promotionVariants,
           variantImages: variantImages,
           variantRatings: variantRatings

@@ -1,3 +1,4 @@
+import customerModel from '@/backend/customer'
 import variantRatingModel from '@/backend/variant-rating'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -32,9 +33,11 @@ export async function GET(
       limit
     )
 
+    console.log("ratingsResult", ratingsResult)
+
     // Transformar el resultado para que coincida con la estructura esperada por el frontend
     const response = {
-      ratings: ratingsResult.ratings.map((rating) => ({
+      ratings: await Promise.all(ratingsResult.ratings.map(async(rating) => ({
         id: rating.id,
         variantId: rating.variantId,
         customerId: rating.customerId,
@@ -49,17 +52,8 @@ export async function GET(
         // Agregar imágenes de rating si las hay
         ratingImages: rating.ratingImages || [],
         // Información del customer si está disponible
-        customer: rating.customer
-          ? {
-              id: rating.customer.id,
-              name: rating.customer.name,
-              lastname: rating.customer.lastname,
-              username: rating.customer.username,
-              photo: rating.customer.photo,
-              email: rating.customer.email
-            }
-          : null
-      })),
+        customer: await customerModel.getCustomer(rating.customerId)
+      }))),
       summary: {
         totalRatings: ratingsResult.summary.totalRatings,
         averageRating: ratingsResult.summary.averageRating,

@@ -16,7 +16,6 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
   const [quantity, setQuantity] = useState(1)
   const { finalPrice } = getPriceIfHasPromotion(variant)
 
-  // Costo base de envío por unidad
   const baseShippingCost = 21.65
   const shippingCost = baseShippingCost * quantity
 
@@ -25,10 +24,8 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
   }
 
   return (
-    <div className="bg-white shadow-sm border border-gray-200 overflow-hidden w-full xl:max-w-96">
-
+    <div className="bg-white sticky top-40 shadow-sm border border-gray-200 overflow-hidden w-full xl:max-w-96">
       <ProductVariantShipping shippingCost={shippingCost} />
-
       <div className="px-6 py-4">
         <h3 className="font-medium text-gray-900 mb-2 text-sm">Cantidad</h3>
         <div className="flex items-center space-x-4 mb-3">

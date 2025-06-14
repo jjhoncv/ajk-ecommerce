@@ -31,6 +31,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const hasDiscount = hasPromotion(selectedVariant);
 
+  console.log("selectedVariant", selectedVariant)
+
   return (
     <div
       className={`bg-white relative hover:shadow-lg transition-shadow pb-2`}
