@@ -1,8 +1,18 @@
-import { ItemImage } from '@/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+// Tipo base para imágenes compatibles
+export interface BaseImage {
+  id: number
+  imageUrlNormal: string
+  imageUrlThumb: string
+  imageUrlZoom: string
+  altText?: string
+  imageType?: string
+  displayOrder?: number
+}
+
 export interface UseImageCarouselProps {
-  images: ItemImage[]
+  images: BaseImage[] // ✅ Más flexible, acepta ItemImage, CleanImage, etc.
   initialIndex?: number
   autoSlideInterval?: number
   autoSlideOnHover?: boolean
@@ -13,7 +23,7 @@ export interface UseImageCarouselProps {
 export interface UseImageCarouselReturn {
   // Estado actual
   currentImageIndex: number
-  currentImage: ItemImage | null
+  currentImage: BaseImage | null // ✅ Cambiar tipo
   hasMultipleImages: boolean
   isPlaying: boolean
 
@@ -32,7 +42,7 @@ export interface UseImageCarouselReturn {
   handleMouseLeave: () => void
 
   // Utilidades
-  getImageAtIndex: (index: number) => ItemImage | null
+  getImageAtIndex: (index: number) => BaseImage | null // ✅ Cambiar tipo
   isFirstImage: boolean
   isLastImage: boolean
   totalImages: number
@@ -166,7 +176,7 @@ export const useImageCarousel = ({
 
   // Utilidad para obtener imagen por índice
   const getImageAtIndex = useCallback(
-    (index: number): ItemImage | null => {
+    (index: number): BaseImage | null => {
       return images[index] || null
     },
     [images]

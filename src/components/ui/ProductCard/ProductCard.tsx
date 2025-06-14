@@ -44,6 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         >
           <ProductCardSlider
             images={getImagesToProductCard(selectedVariant)}
+            productName={product.name}
           />
         </Link>
 

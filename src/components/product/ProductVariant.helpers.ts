@@ -9,6 +9,7 @@ export interface CleanImage {
   altText: string
   imageType: string
   isPrimary?: boolean
+  displayOrder: number // ✅ Agregado
 }
 
 /**
@@ -25,19 +26,24 @@ export const cleanAndValidateImages = (
     return []
   }
 
-  return images
-    .filter((image) => image && image.imageUrlNormal) // Filtrar imágenes válidas
-    .map((image, index) => ({
-      id: image.id,
-      imageUrlNormal: image.imageUrlNormal || '/no-image.webp',
-      imageUrlThumb:
-        image.imageUrlThumb || image.imageUrlNormal || '/no-image.webp',
-      imageUrlZoom:
-        image.imageUrlZoom || image.imageUrlNormal || '/no-image.webp',
-      altText: image.altText || `${productName} - Imagen ${index + 1}`,
-      imageType: image.imageType || 'front',
-      isPrimary: Boolean(image.isPrimary)
-    }))
+  return (
+    images
+      .filter((image) => image && image.imageUrlNormal) // Filtrar imágenes válidas
+      .map((image, index) => ({
+        id: image.id,
+        imageUrlNormal: image.imageUrlNormal || '/no-image.webp',
+        imageUrlThumb:
+          image.imageUrlThumb || image.imageUrlNormal || '/no-image.webp',
+        imageUrlZoom:
+          image.imageUrlZoom || image.imageUrlNormal || '/no-image.webp',
+        altText: image.altText || `${productName} - Imagen ${index + 1}`,
+        imageType: image.imageType || 'front',
+        isPrimary: Boolean(image.isPrimary),
+        displayOrder: image.displayOrder
+      }))
+      // ordenar por displayOrder
+      .sort((a, b) => a.displayOrder - b.displayOrder)
+  )
 }
 
 /**
@@ -55,8 +61,9 @@ export const findPrimaryImageIndex = (images: CleanImage[]): number => {
  * @param imageType Tipo de imagen
  * @returns Texto en español del tipo de imagen
  */
-export const getImageTypeLabel = (imageType: string): string => {
-  const typeLabels: Record<string, string> = {
+export const getImageTypeLabel = (imageType?: string): string => {
+  if (!imageType) return ''
+  const labels: Record<string, string> = {
     front: 'Frontal',
     back: 'Trasera',
     left: 'Lateral Izq.',
@@ -68,7 +75,7 @@ export const getImageTypeLabel = (imageType: string): string => {
     packaging: 'Empaque'
   }
 
-  return typeLabels[imageType] || 'Vista'
+  return labels[imageType || 'front'] || 'Imagen'
 }
 
 export const getPriceIfHasPromotion = (

@@ -73,6 +73,11 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
     }
   };
 
+  const handleImageZoom = (imageUrl: string) => {
+    // Abrir imagen en nueva ventana para zoom máximo
+    window.open(imageUrl, '_blank');
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
@@ -80,10 +85,13 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
     >
       <div
         ref={modalRef}
-        className="bg-white shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden relative"
+        className="bg-white shadow-xl w-full max-w-7xl max-h-[95vh] overflow-hidden relative rounded-lg"
       >
         {/* Header con botón de cerrar */}
-        <div className="flex justify-end items-center p-4 bg-white">
+        <div className="flex justify-between items-center p-4 bg-white border-b">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Galería de {productName}
+          </h2>
           <button
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -94,16 +102,26 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
         </div>
 
         {/* Contenido del modal con el slider */}
-        <div className="p-6 pt-0 bg-white">
+        <div className="p-6 bg-white overflow-y-auto max-h-[calc(95vh-80px)]">
           <ProductImageSlider
             images={images}
             productName={productName}
             initialImageIndex={initialImageIndex}
             isInModal={true}
+            onImageZoom={handleImageZoom}
+            showImageType={true}
+            thumbsPosition="left"
           />
+        </div>
+
+        {/* Footer con información adicional */}
+        <div className="bg-gray-50 px-6 py-3 border-t">
+          <p className="text-sm text-gray-600">
+            Usa las flechas de navegación o haz clic en las miniaturas para cambiar de imagen.
+            Haz clic en la imagen principal para zoom completo.
+          </p>
         </div>
       </div>
     </div>
   );
 };
-
