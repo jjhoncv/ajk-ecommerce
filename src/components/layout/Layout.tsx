@@ -13,8 +13,7 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const footer = await getFooter();
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* <TopBar /> */}
+    <div className="min-h-screen bg-white transition-all duration-300 ease-in-out" id="content-page">
       <Header categories={categories || []} />
       {children}
       <Footer

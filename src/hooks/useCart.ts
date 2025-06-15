@@ -56,34 +56,37 @@ export function useCart() {
   }, [toastMessage])
 
   // Agregar un item al carrito
-  const addItem = (item: Omit<CartItem, 'quantity'>) => {
+  const addItem = (
+    item: Omit<CartItem, 'quantity'>,
+    initialQuantity: number = 1
+  ) => {
     setItems((prevItems) => {
       // Verificar si el item ya existe en el carrito
       const existingItemIndex = prevItems.findIndex((i) => i.id === item.id)
 
       if (existingItemIndex >= 0) {
-        // Si existe, incrementar la cantidad
+        // Si existe, incrementar la cantidad por la cantidad inicial
         const updatedItems = [...prevItems]
-        updatedItems[existingItemIndex].quantity += 1
+        updatedItems[existingItemIndex].quantity += initialQuantity
         return updatedItems
       } else {
-        // Si no existe, agregarlo con cantidad 1
-        return [...prevItems, { ...item, quantity: 1 }]
+        // Si no existe, agregarlo con la cantidad inicial
+        return [...prevItems, { ...item, quantity: initialQuantity }]
       }
     })
 
     // Mostrar mensaje toast
-    setToastMessage(`¡${item.name} agregado al carrito!`)
+    // setToastMessage(`¡${item.name} agregado al carrito!`)
   }
 
   // Eliminar un item del carrito
   const removeItem = (id: number) => {
-    const itemToRemove = items.find((item) => item.id === id)
+    // const itemToRemove = items.find((item) => item.id === id)
     setItems((prevItems) => prevItems.filter((item) => item.id !== id))
 
-    if (itemToRemove) {
-      setToastMessage(`${itemToRemove.name} eliminado del carrito`)
-    }
+    // if (itemToRemove) {
+    //   setToastMessage(`${itemToRemove.name} eliminado del carrito`)
+    // }
   }
 
   // Actualizar la cantidad de un item
@@ -129,7 +132,7 @@ export function useCart() {
   // Vaciar el carrito
   const clearCart = () => {
     setItems([])
-    setToastMessage('Carrito vaciado')
+    // setToastMessage('Carrito vaciado')
   }
 
   // Abrir el carrito

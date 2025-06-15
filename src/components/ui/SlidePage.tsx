@@ -104,7 +104,6 @@ const SlidePage: React.FC<SlidePageProps> = ({
           </div>
         )}
         {children}
-        {/* <div className="h-full"></div> */}
       </div>
     </div>
   );

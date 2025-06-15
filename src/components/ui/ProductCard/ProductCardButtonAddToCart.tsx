@@ -18,7 +18,7 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
   image,
   stock
 }) => {
-  const { addItem } = useCartContext();
+  const { addItem, openCart } = useCartContext();
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -29,6 +29,7 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
       image,
       stock
     });
+    openCart()
   };
 
   return (

@@ -6,7 +6,7 @@ import React, { createContext, useContext } from "react";
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">, initialQuantity?: number) => void
+  addItem: (item: Omit<CartItem, "quantity">, initialQuantity?: number) => void // 👈 Agregar parámetro opcional
   removeItem: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   incrementQuantity: (id: number) => void;

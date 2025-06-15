@@ -53,7 +53,17 @@ export class SearchRepository {
             additionalJoins.push('LEFT JOIN brands b ON p.brand_id = b.id')
           }
 
-          if (searchTerms.length === 1) {
+          // ESTRATEGIA SIMPLIFICADA: Solo usar el término más significativo para búsquedas complejas
+          // Esto evita problemas con términos cortos como "xx" que pueden existir pero ser irrelevantes
+          const significantTerms = searchTerms.filter(
+            (term) => term.length >= 3
+          )
+          const finalSearchTerms =
+            significantTerms.length > 0
+              ? [significantTerms[0]]
+              : [searchTerms[0]]
+
+          if (finalSearchTerms.length === 1 || searchTerms.length === 1) {
             // Búsqueda simple - un solo término
             whereConditions.push(`
               (LOWER(p.name) LIKE LOWER(?) OR 
@@ -223,20 +233,11 @@ export class SearchRepository {
       query += ' LIMIT ? OFFSET ?'
       queryParams.push(limit, offset)
 
-      console.log('=== DEBUG SEARCH QUERY ===')
-      console.log('Query:', query)
-      console.log('Params:', queryParams)
-      console.log('Filters:', JSON.stringify(filters, null, 2))
-
       // === EJECUTAR CONSULTA PRINCIPAL ===
       const results = await executeQuery<VariantSearchResultRaw[]>({
         query,
         values: queryParams
       })
-
-      console.log('=== DEBUG SEARCH RESULTS ===')
-      console.log('Results count:', results.length)
-      console.log('Total count:', totalCount)
 
       return { results, totalCount }
     } catch (error) {
@@ -258,6 +259,7 @@ export class SearchRepository {
         return []
       }
 
+      // Solo tomar términos de 2+ caracteres, sin filtros complicados
       const searchTerms = query
         .trim()
         .toLowerCase()
@@ -268,11 +270,9 @@ export class SearchRepository {
         return []
       }
 
-      if (searchTerms.length === 1) {
-        return this.getSingleTermSuggestions(searchTerms[0], limit)
-      } else {
-        return this.getMultiTermSuggestions(searchTerms, limit)
-      }
+      // Siempre usar búsqueda simple con el primer término válido
+      // Esto es más estable y predecible
+      return this.getSingleTermSuggestions(searchTerms[0], limit)
     } catch (error) {
       console.error('Error in getSearchSuggestions:', error)
       return []

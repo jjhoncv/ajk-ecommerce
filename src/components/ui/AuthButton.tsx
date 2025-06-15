@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
 import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Modal from "./Modal";
+import React, { useState } from "react";
 import LoginForm from "./LoginForm";
+import Modal from "./Modal/Modal";
 import RegisterForm from "./RegisterForm";
 import UserMenu from "./UserMenu";
 

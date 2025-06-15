@@ -1,6 +1,8 @@
 "use client";
 import LoginForm from "@/components/ui/LoginForm";
-import Modal from "@/components/ui/Modal";
+import { Modal } from "@/components/ui/Modal";
+import { ModalContent } from "@/components/ui/Modal/ModalContent";
+import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
 import RegisterForm from "@/components/ui/RegisterForm";
 import { ProductVariants, Products } from "@/types/domain";
 import { useSession } from "next-auth/react";
@@ -78,26 +80,30 @@ export const ProductVariantRatingAdd: React.FC<ProductVariantRatingAddProps> = (
       <Modal
         isOpen={isLoginModalOpen}
         onClose={closeAllModals}
-        title="Iniciar sesión"
       >
-        <LoginForm
-          onSuccess={closeAllModals}
-          onClose={closeAllModals}
-          onSwitchToRegister={switchToRegister}
-        />
+        <ModalTitle onClose={closeAllModals} title="Iniciar sesión" />
+        <ModalContent>
+          <LoginForm
+            onSuccess={closeAllModals}
+            onClose={closeAllModals}
+            onSwitchToRegister={switchToRegister}
+          />
+        </ModalContent>
       </Modal>
 
       {/* Modal de registro */}
       <Modal
         isOpen={isRegisterModalOpen}
         onClose={closeAllModals}
-        title="Crear cuenta"
       >
-        <RegisterForm
-          onSuccess={closeAllModals}
-          onClose={closeAllModals}
-          onSwitchToLogin={switchToLogin}
-        />
+        <ModalTitle onClose={closeAllModals} title="Crear cuenta" />
+        <ModalContent>
+          <RegisterForm
+            onSuccess={closeAllModals}
+            onClose={closeAllModals}
+            onSwitchToLogin={switchToLogin}
+          />
+        </ModalContent>
       </Modal>
     </div>
   );

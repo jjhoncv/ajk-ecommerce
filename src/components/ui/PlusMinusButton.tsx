@@ -8,10 +8,12 @@ interface PlusMinusButtonProps {
   maxQuantity?: number
   minQuantity?: number
   onQuantityChange?: (quantity: number) => void
+  onRemoveRequest?: () => void // Nueva prop para manejar solicitud de eliminación
   disabled?: boolean
   size?: 'sm' | 'md' | 'lg'
   className?: string
   stock: number
+  allowRemove?: boolean
 }
 
 export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
@@ -19,7 +21,9 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   initialQuantity = 1,
   maxQuantity,
   minQuantity = 1,
+  allowRemove = false,
   onQuantityChange,
+  onRemoveRequest, // Nueva prop
   disabled = false,
   size = 'md',
   className
@@ -28,6 +32,11 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
   // Determinar la cantidad máxima
   const effectiveMaxQuantity = maxQuantity || stock || 999
+
+  // Sincronizar con initialQuantity cuando cambie
+  useEffect(() => {
+    setQuantity(initialQuantity)
+  }, [initialQuantity])
 
   // Asegurar que la cantidad inicial esté en el rango válido
   useEffect(() => {
@@ -49,18 +58,42 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   }
 
   const decreaseQuantity = () => {
-    if (quantity > minQuantity && !disabled) {
-      const newQuantity = quantity - 1
-      setQuantity(newQuantity)
-      onQuantityChange?.(newQuantity)
+    if (!disabled) {
+      // Si allowRemove es true y quantity es 1, mostrar confirmación
+      if (allowRemove && quantity === 1) {
+        onRemoveRequest?.() // Llamar al callback de confirmación
+        return // No actualizar quantity aquí
+      }
+
+      // Si allowRemove es false, no permitir bajar de minQuantity
+      const minimumAllowed = allowRemove ? 0 : minQuantity
+
+      if (quantity > minimumAllowed) {
+        const newQuantity = quantity - 1
+        setQuantity(newQuantity)
+        onQuantityChange?.(newQuantity)
+      }
     }
   }
 
+  // Determinar si el botón de disminuir debe estar deshabilitado
+  const isDecreaseDisabled = () => {
+    if (disabled) return true
+
+    // Si allowRemove es false, deshabilitar cuando llegue al mínimo
+    if (!allowRemove) {
+      return quantity <= minQuantity
+    }
+
+    // Si allowRemove es true, nunca deshabilitar (siempre permitir hasta mostrar confirmación)
+    return false
+  }
+
   // Variantes de tamaño
-  const sizeVariants = {
+  const sizeStyles = {
     sm: {
       button: "w-6 h-6 text-xs",
-      display: "w-8 h-6 text-xs",
+      display: "w-8 h-6 text-sm",
       container: ""
     },
     md: {
@@ -75,20 +108,20 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
     }
   }
 
-  const currentSize = sizeVariants[size]
+  const currentSize = sizeStyles[size]
 
   return (
     <div className={cn(
-      "flex items-center border border-gray-300",
+      "flex items-center",
       currentSize.container,
       disabled && "opacity-50",
       className
     )}>
       <button
         onClick={decreaseQuantity}
-        disabled={quantity <= minQuantity || disabled}
+        disabled={isDecreaseDisabled()}
         className={cn(
-          "flex items-center justify-center text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+          "flex items-center font-semibold rounded-full bg-gray-100 justify-center text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
           currentSize.button
         )}
         aria-label="Disminuir cantidad"
@@ -97,7 +130,7 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
       </button>
 
       <div className={cn(
-        "flex items-center justify-center font-medium text-gray-900 border-x border-gray-300",
+        "flex items-center justify-center font-bold text-gray-900",
         currentSize.display
       )}>
         {quantity}
@@ -107,7 +140,7 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
         onClick={increaseQuantity}
         disabled={quantity >= effectiveMaxQuantity || disabled}
         className={cn(
-          "flex items-center justify-center text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+          "flex items-center justify-center font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
           currentSize.button
         )}
         aria-label="Aumentar cantidad"

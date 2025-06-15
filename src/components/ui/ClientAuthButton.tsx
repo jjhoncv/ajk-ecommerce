@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import { ModalContent } from "@/components/ui/Modal/ModalContent";
+import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
 import { User } from "lucide-react";
 import { Session } from "next-auth";
-import Modal from "./Modal";
+import React, { useState } from "react";
 import LoginForm from "./LoginForm";
+import { Modal } from "./Modal";
 import RegisterForm from "./RegisterForm";
 import UserMenu from "./UserMenu";
 
@@ -58,40 +60,43 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
       <Modal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
-        title="Iniciar sesión"
       >
-        <LoginForm
-          onSuccess={() => {
-            setIsLoginModalOpen(false);
-            // Recargar la página para actualizar la sesión
-            window.location.reload();
-          }}
-          onClose={() => setIsLoginModalOpen(false)}
-          onSwitchToRegister={() => {
-            setIsLoginModalOpen(false);
-            setIsRegisterModalOpen(true);
-          }}
-        />
+        <ModalTitle onClose={() => { setIsLoginModalOpen(false) }} title="Iniciar sesión" />
+        <ModalContent>
+          <LoginForm
+            onSuccess={() => {
+              setIsLoginModalOpen(false);
+              // Recargar la página para actualizar la sesión
+              window.location.reload();
+            }}
+            onClose={() => setIsLoginModalOpen(false)}
+            onSwitchToRegister={() => {
+              setIsLoginModalOpen(false);
+              setIsRegisterModalOpen(true);
+            }}
+          />
+        </ModalContent>
       </Modal>
 
       {/* Modal de registro */}
       <Modal
         isOpen={isRegisterModalOpen}
         onClose={() => setIsRegisterModalOpen(false)}
-        title="Crear cuenta"
       >
-        <RegisterForm
-          onSuccess={() => {
-            setIsRegisterModalOpen(false);
-            // Recargar la página para actualizar la sesión
-            window.location.reload();
-          }}
-          onClose={() => setIsRegisterModalOpen(false)}
-          onSwitchToLogin={() => {
-            setIsRegisterModalOpen(false);
-            setIsLoginModalOpen(true);
-          }}
-        />
+        <ModalTitle onClose={() => { setIsLoginModalOpen(false) }} title="Crear cuenta" />
+        <ModalContent>
+          <RegisterForm
+            onSuccess={() => {
+              setIsRegisterModalOpen(false);
+              window.location.reload();
+            }}
+            onClose={() => setIsRegisterModalOpen(false)}
+            onSwitchToLogin={() => {
+              setIsRegisterModalOpen(false);
+              setIsLoginModalOpen(true);
+            }}
+          />
+        </ModalContent>
       </Modal>
 
       {/* Menú de usuario */}
