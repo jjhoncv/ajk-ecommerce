@@ -1,7 +1,7 @@
 import { getPriceIfHasPromotion } from "@/components/product/ProductVariant.helpers"
 import ProductVariantButtonAddToCart from "@/components/product/ProductVariantButtonAddToCart"
-import { ProductVariantButtonPlusMinus } from "@/components/product/ProductVariantButtonPlusMinus"
 import { ProductVariantShipping } from "@/components/product/ProductVariantShipping"
+import { PlusMinusButton } from "@/components/ui/PlusMinusButton"
 import { getVariantImages } from "@/helpers/image.helpers"
 import { getVariantTitle } from "@/helpers/productVariant.helpers"
 import { Products, ProductVariants as ProductVariant } from "@/types/domain"
@@ -29,8 +29,8 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
       <div className="px-6 py-4">
         <h3 className="font-medium text-gray-900 mb-2 text-sm">Cantidad</h3>
         <div className="flex items-center space-x-4 mb-3">
-          <ProductVariantButtonPlusMinus
-            variant={variant}
+          <PlusMinusButton
+            stock={variant.stock}
             initialQuantity={1}
             onQuantityChange={handleQuantityChange}
             size="md"

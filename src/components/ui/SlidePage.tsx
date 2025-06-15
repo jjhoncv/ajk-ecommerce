@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useRef, ReactNode } from "react";
 import { X } from "lucide-react";
+import React, { ReactNode, useEffect, useRef } from "react";
 
 interface SlidePageProps {
   isOpen: boolean;
@@ -73,8 +73,8 @@ const SlidePage: React.FC<SlidePageProps> = ({
         ? "translateX(0)"
         : "translateX(100%)"
       : isOpen
-      ? "translateX(0)"
-      : "translateX(-100%)";
+        ? "translateX(0)"
+        : "translateX(-100%)";
 
   const positionStyle = direction === "right" ? { right: 0 } : { left: 0 };
 
@@ -103,8 +103,8 @@ const SlidePage: React.FC<SlidePageProps> = ({
             </div>
           </div>
         )}
-
-        <div className="h-full">{children}</div>
+        {children}
+        {/* <div className="h-full"></div> */}
       </div>
     </div>
   );

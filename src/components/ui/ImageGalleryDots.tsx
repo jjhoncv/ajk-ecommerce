@@ -1,19 +1,18 @@
 "use client";
+import { CleanImage } from "@/components/product/ProductVariant.helpers";
 import { useImageCarousel } from "@/hooks/useImageCarousel";
 import { cn } from "@/lib/utils";
-import { ItemImage } from "@/shared";
 import Image from "next/image";
 import React from "react";
 
 interface ImageGalleryDotsProps {
-  images: ItemImage[];
+  images: CleanImage[];
   productName: string;
   className?: string;
   autoSlideInterval?: number;
   autoSlideOnHover?: boolean;
   showDotsIndicator?: boolean;
   showImageCounter?: boolean;
-  // initialImageIndex?: number;
   onImageClick?: (imageIndex: number) => void;
 }
 
@@ -24,7 +23,6 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
   autoSlideInterval = 2000,
   autoSlideOnHover = true,
   showDotsIndicator = true,
-  // initialImageIndex = 0,
   showImageCounter = false,
   onImageClick,
 }) => {

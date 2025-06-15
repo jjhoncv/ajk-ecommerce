@@ -125,7 +125,7 @@ export class ProductModel {
         if (!promotionVariantsByVariantId)
           return {
             ...productVariant,
-            variantAttributeOptions: attributeOptions,
+            variantAttributeOptions: variantAttributeOptions,
             promotionVariants: []
           }
 

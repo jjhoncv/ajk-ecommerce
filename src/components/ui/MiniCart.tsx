@@ -1,17 +1,16 @@
 "use client";
-import React from "react";
-import { useCartContext } from "@/providers/CartProvider";
-import SlidePage from "@/components/ui/SlidePage";
 import CartContent from "@/components/ui/CartContent";
+import SlidePage from "@/components/ui/SlidePage";
 import Toast from "@/components/ui/Toast";
+import { useCartContext } from "@/providers/CartProvider";
+import React from "react";
 
 const MiniCart: React.FC = () => {
   const {
     items,
     totalPrice,
     removeItem,
-    incrementQuantity,
-    decrementQuantity,
+    updateQuantity,
     isCartOpen,
     closeCart,
     toastMessage,
@@ -22,16 +21,16 @@ const MiniCart: React.FC = () => {
       <SlidePage
         isOpen={isCartOpen}
         onClose={closeCart}
-        title="Tu Carrito"
+        // title="Tu Carrito"
         direction="right"
         width={400}
+
       >
         <CartContent
           items={items}
           totalPrice={totalPrice}
           removeItem={removeItem}
-          incrementQuantity={incrementQuantity}
-          decrementQuantity={decrementQuantity}
+          updateQuantity={updateQuantity}
           onClose={closeCart}
         />
       </SlidePage>

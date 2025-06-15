@@ -4,14 +4,15 @@
  * @param currency - La moneda (por defecto PEN)
  * @returns El precio formateado
  */
-export function formatPrice(price: number, currency: string = "PEN"): string {
-  const formatter = new Intl.NumberFormat("es-PE", {
-    style: "currency",
+export function formatPrice(price: number, currency: string = 'PEN'): string {
+  const formatter = new Intl.NumberFormat('es-PE', {
+    style: 'currency',
     currency,
-    minimumFractionDigits: 0,
-  });
+    minimumFractionDigits: 2, // ✅ Mínimo 2 decimales
+    maximumFractionDigits: 2
+  }) // ✅ Máximo 2 decimales  })
 
-  return formatter.format(price);
+  return formatter.format(price)
 }
 
 /**
@@ -24,11 +25,11 @@ export function calculateDiscount(
   originalPrice: number,
   discountedPrice: number
 ): number {
-  if (originalPrice <= 0 || discountedPrice <= 0) return 0;
-  if (discountedPrice >= originalPrice) return 0;
+  if (originalPrice <= 0 || discountedPrice <= 0) return 0
+  if (discountedPrice >= originalPrice) return 0
 
-  const discount = ((originalPrice - discountedPrice) / originalPrice) * 100;
-  return Math.round(discount);
+  const discount = ((originalPrice - discountedPrice) / originalPrice) * 100
+  return Math.round(discount)
 }
 
 /**
@@ -38,8 +39,8 @@ export function calculateDiscount(
  * @returns El texto truncado
  */
 export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + "...";
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
 }
 
 /**
@@ -50,8 +51,8 @@ export function truncateText(text: string, maxLength: number): string {
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^\w ]+/g, "")
-    .replace(/ +/g, "-");
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-')
 }
 
 /**
@@ -67,15 +68,15 @@ export function getImageUrl(
   height: number
 ): string {
   // Si la URL ya contiene parámetros de dimensiones, los reemplazamos
-  if (url.includes("?w=") || url.includes("&w=")) {
-    return url.replace(/([?&])(w=\d+)(&h=\d+)?/g, `$1w=${width}&h=${height}`);
+  if (url.includes('?w=') || url.includes('&w=')) {
+    return url.replace(/([?&])(w=\d+)(&h=\d+)?/g, `$1w=${width}&h=${height}`)
   }
 
   // Si la URL ya tiene parámetros, agregamos las dimensiones
-  if (url.includes("?")) {
-    return `${url}&w=${width}&h=${height}`;
+  if (url.includes('?')) {
+    return `${url}&w=${width}&h=${height}`
   }
 
   // Si la URL no tiene parámetros, agregamos las dimensiones
-  return `${url}?w=${width}&h=${height}`;
+  return `${url}?w=${width}&h=${height}`
 }

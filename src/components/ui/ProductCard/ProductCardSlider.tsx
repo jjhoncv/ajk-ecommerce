@@ -24,21 +24,12 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
   autoSlideOnHover = true,
   className = "relative mb-2 group"
 }) => {
-
   const cleanImages = cleanAndValidateImages(images, productName);
-
-
-  console.log("cleanImages", cleanImages)
-  // Encontrar índice de imagen principal  
-  // const defaultInitialIndex = findPrimaryImageIndex(cleanImages);
-  // const actualInitialIndex = initialImageIndex !== undefined ? initialImageIndex : defaultInitialIndex;
 
   return (
 
     <div className={className}>
-      {/* Galería de imágenes con dots */}
       <ImageGalleryDots
-        // initialImageIndex={defaultInitialIndex}
         images={cleanImages}
         productName={productName}
         autoSlideInterval={autoSlideInterval}
@@ -56,7 +47,6 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            // Aquí puedes agregar la lógica de favoritos
           }}
         >
           <Heart className="h-4 w-4" />

@@ -1,9 +1,9 @@
 "use client";
 import { getVariantImages } from '@/components/product/ProductImageSlider/ProductImageSlider.helpers';
-import { ProductInfo } from '@/components/product/ProductInfo';
 import ProductVariantAttributeSelector from '@/components/product/ProductVariantAttributeSelector';
+import { ProductVariantInfo } from '@/components/product/ProductVariantInfo';
 import { ProductVariantPurchase } from '@/components/product/ProductVariantPurchase';
-import ProductVariantRatings from '@/components/product/ProductVariantRatings';
+import { ProductVariantRatings } from '@/components/product/ProductVariantRating';
 import { ProductVariantData } from '@/services/product/productVariant';
 import { ProductVariants } from '@/types/domain';
 import React, { useState } from 'react';
@@ -53,7 +53,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
             />
           </div>
           <div className='xl:col-span-1 space-y-5'>
-            <ProductInfo product={product} variant={variant} />
+            <ProductVariantInfo product={product} variant={variant} />
             <div className="border-t border-gray-200 pt-6">
               <ProductVariantAttributeSelector
                 data={data}

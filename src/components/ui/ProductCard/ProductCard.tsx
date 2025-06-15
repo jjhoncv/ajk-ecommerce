@@ -23,15 +23,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   // Buscar la variante específica por variantId
-  const selectedVariant = product.variants.find(v => v.id === product.variantId) || product.variants[0];
-  if (!selectedVariant) {
+  const variant = product.variants.find(v => v.id === product.variantId) || product.variants[0];
+  if (!variant) {
     console.error("ProductCard: Variante no encontrada:", product);
     return null;
   }
 
-  const hasDiscount = hasPromotion(selectedVariant);
-
-  console.log("selectedVariant", selectedVariant)
+  const hasDiscount = hasPromotion(variant);
 
   return (
     <div
@@ -39,25 +37,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       <div className="relative">
         <Link
-          href={`/productos/variante/${selectedVariant.id}`}
+          href={`/productos/variante/${variant.id}`}
           className={`block`}
         >
           <ProductCardSlider
-            images={getImagesToProductCard(selectedVariant)}
+            images={getImagesToProductCard(variant)}
             productName={product.name}
           />
         </Link>
 
         <ProductCardButtonAddToCart
           id={product.variantId}
-          image={getThumbImageToProductCard(selectedVariant)}
+          image={getThumbImageToProductCard(variant)}
           name={product.name}
-          price={product.variantPrice || selectedVariant.price}
+          price={product.variantPrice || variant.price}
+          stock={variant.stock}
         />
       </div>
 
       <div className="px-1">
-        <Link href={`/productos/variante/${selectedVariant.id}`}>
+        <Link href={`/productos/variante/${variant.id}`}>
           <h3 className="font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
             {/* Promoción */}
             {hasDiscount && (
@@ -66,13 +65,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </span>
             )}
 
-            {getVariantTitle(product.name, selectedVariant)}
+            {getVariantTitle(product.name, variant)}
           </h3>
         </Link>
 
         {/* Precio */}
         <div className="space-y-2">
-          <ProductCardPrice variantProduct={selectedVariant} />
+          <ProductCardPrice variant={variant} />
         </div>
       </div>
     </div>

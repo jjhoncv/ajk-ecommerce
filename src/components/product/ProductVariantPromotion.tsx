@@ -12,7 +12,7 @@ export const ProductVariantPromotion: FC<ProductVariantPromotionProps> = ({ vari
     <>
       {hasPromotion && (
         <div className="text-sm flex items-center p-3 bg-gradient-to-r from-red-500 to-red-700 ">
-          <p className="font-bold text-[17px] leading-[17px] text-white">
+          <p className="font-bold text-[17px] leading-[17px] text-white line-clamp-1">
             {currentPromotion?.promotion?.name}: {currentPromotion?.promotion?.description}
           </p>
         </div>

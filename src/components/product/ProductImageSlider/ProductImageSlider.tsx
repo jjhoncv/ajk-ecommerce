@@ -32,10 +32,6 @@ export const ProductImageSlider: React.FC<ProductImageSliderProps> = ({
   // Limpiar y validar imágenes usando el helper
   const cleanImages = cleanAndValidateImages(images, productName);
 
-  // Encontrar índice de imagen principal  
-  // const defaultInitialIndex = findPrimaryImageIndex(cleanImages);
-  // const actualInitialIndex = initialImageIndex !== undefined ? initialImageIndex : defaultInitialIndex;
-
   return (
     <ImageGalleryThumbs
       images={cleanImages}

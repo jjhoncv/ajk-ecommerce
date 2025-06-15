@@ -1,3 +1,4 @@
+import { formatPrice } from "@/helpers/utils"
 import { ChevronRight, MapPin, Package, RotateCcw, Shield } from "lucide-react"
 import { FC } from "react"
 
@@ -24,7 +25,7 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({ shippi
             <Package className="w-4 h-4 text-gray-600" />
             <div>
               <div className="text-sm font-medium text-gray-900">
-                Envío: PEN{shippingCost.toFixed(2)}
+                Envío: {formatPrice(shippingCost)}
               </div>
               <div className="text-xs text-gray-600">
                 Entrega: <span className="font-medium">28 de JUN. - 11 de JUL.</span>

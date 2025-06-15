@@ -2,6 +2,7 @@
 import { ProductComplete } from '@/backend/product'
 import { ProductVariantComplete } from '@/backend/product-variant'
 import { ItemImage } from '@/shared'
+import { ProductVariants } from '@/types/domain'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {
@@ -10,8 +11,7 @@ export interface ProductCardProps {
 
 // Props para el componente ProductCardVariants
 export interface ProductCardVariantsProps {
-  variantProduct: ProductVariantComplete
-  layout?: 'grid' | 'list'
+  variant: ProductVariants
 }
 
 // Props para el componente ProductCardPromotion

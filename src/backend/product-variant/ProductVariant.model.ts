@@ -24,6 +24,7 @@ import {
 } from '@/types/domain'
 
 import attributeOptionImageModel from '@/backend/attribute-option-image'
+import promotionModel from '@/backend/promotion'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import variantRatingModel from '@/backend/variant-rating'
 import {
@@ -290,16 +291,9 @@ export class ProductVariantModel {
       result.promotionVariants = [
         {
           ...bestPromotion,
-          promotion: {
-            id: Number(bestPromotion.promotion?.id),
-            name: bestPromotion.promotion?.name || '',
-            discountType: bestPromotion.promotion?.discountType || 'percentage',
-            discountValue: 0,
-            startDate: bestPromotion.promotion?.startDate || new Date(),
-            endDate: bestPromotion.promotion?.endDate || new Date(),
-            createdAt: bestPromotion.promotion?.createdAt || new Date(),
-            updatedAt: bestPromotion.promotion?.updatedAt || new Date()
-          },
+          promotion: await promotionModel.getPromotionById(
+            bestPromotion.promotionId
+          ),
           createdAt: bestPromotion.createdAt,
           promotionId: bestPromotion.promotionId,
           variantId: bestPromotion.variantId,

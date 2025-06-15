@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import { ProductVariants } from "@/types/domain"
 import { FC, useEffect, useState } from "react"
 
-interface ProductVariantButtonPlusMinusProps {
+interface PlusMinusButtonProps {
   variant?: ProductVariants
   initialQuantity?: number
   maxQuantity?: number
@@ -11,10 +11,11 @@ interface ProductVariantButtonPlusMinusProps {
   disabled?: boolean
   size?: 'sm' | 'md' | 'lg'
   className?: string
+  stock: number
 }
 
-export const ProductVariantButtonPlusMinus: FC<ProductVariantButtonPlusMinusProps> = ({
-  variant,
+export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
+  stock,
   initialQuantity = 1,
   maxQuantity,
   minQuantity = 1,
@@ -26,7 +27,7 @@ export const ProductVariantButtonPlusMinus: FC<ProductVariantButtonPlusMinusProp
   const [quantity, setQuantity] = useState(initialQuantity)
 
   // Determinar la cantidad máxima
-  const effectiveMaxQuantity = maxQuantity || variant?.stock || 999
+  const effectiveMaxQuantity = maxQuantity || stock || 999
 
   // Asegurar que la cantidad inicial esté en el rango válido
   useEffect(() => {

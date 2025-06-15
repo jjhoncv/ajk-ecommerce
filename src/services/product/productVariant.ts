@@ -5,7 +5,6 @@ import productVariantModel, {
 import { Products as Product } from '@/types/domain'
 
 export interface ProductVariantData {
-  // variant: ProductVariantComplete
   product: Product
 }
 
@@ -19,8 +18,6 @@ export const getProductVariant = async (
     if (!variant) {
       return null
     }
-
-    // console.log('variant', variant)
 
     // Obtener el producto completo
     const product = await productModel.getProductById(variant.productId)

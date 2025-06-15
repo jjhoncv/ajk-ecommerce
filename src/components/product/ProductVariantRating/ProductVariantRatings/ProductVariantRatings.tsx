@@ -3,7 +3,7 @@ import { Products, ProductVariants, RatingImages, VariantRatings } from "@/types
 import { Check, Star, User } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import AddRating from "./AddRating";
+import { ProductVariantRatingAdd } from "../ProductVariantRatingAdd/ProductVariantRatingAdd";
 
 // Interfaces para el resumen de valoraciones
 interface RatingSummary {
@@ -28,7 +28,7 @@ interface ProductVariantRatingsProps {
   product: Products;
 }
 
-const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
+export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
   variant,
   product
 }) => {
@@ -36,9 +36,6 @@ const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"variant" | "product">("variant");
   const [page, setPage] = useState(1);
-
-  console.log("ratings", ratings)
-
 
   // Función para cargar valoraciones
   const fetchRatings = async () => {
@@ -202,7 +199,7 @@ const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
           <p className="text-gray-500">Cargando valoraciones...</p>
         </div>
         {/* Formulario para añadir valoración */}
-        <AddRating
+        <ProductVariantRatingAdd
           variant={variant}
           product={product}
           onRatingAdded={handleRatingAdded}
@@ -365,7 +362,7 @@ const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
       )}
 
       {/* Formulario para añadir valoración - SIEMPRE se muestra */}
-      <AddRating
+      <ProductVariantRatingAdd
         variant={variant}
         product={product}
         onRatingAdded={handleRatingAdded}
@@ -374,4 +371,3 @@ const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
   );
 };
 
-export default ProductVariantRatings;

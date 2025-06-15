@@ -22,10 +22,6 @@ export async function GET(
     const page = parseInt(url.searchParams.get('page') || '1')
     const limit = parseInt(url.searchParams.get('limit') || '10')
 
-    console.log(
-      `Obteniendo valoraciones para variante ${variantId}, página ${page}, límite ${limit}`
-    )
-
     // Usar el modelo para obtener las valoraciones con paginación
     const ratingsResult = await variantRatingModel.getRatingsByVariantId(
       variantId,
@@ -33,27 +29,27 @@ export async function GET(
       limit
     )
 
-    console.log("ratingsResult", ratingsResult)
-
     // Transformar el resultado para que coincida con la estructura esperada por el frontend
     const response = {
-      ratings: await Promise.all(ratingsResult.ratings.map(async(rating) => ({
-        id: rating.id,
-        variantId: rating.variantId,
-        customerId: rating.customerId,
-        rating: rating.rating,
-        review: rating.review,
-        title: rating.title,
-        verifiedPurchase: rating.verifiedPurchase === 1,
-        createdAt: rating.createdAt,
-        updatedAt: rating.updatedAt,
-        customerName: rating.customerName,
-        customerPhoto: rating.customerPhoto || null,
-        // Agregar imágenes de rating si las hay
-        ratingImages: rating.ratingImages || [],
-        // Información del customer si está disponible
-        customer: await customerModel.getCustomer(rating.customerId)
-      }))),
+      ratings: await Promise.all(
+        ratingsResult.ratings.map(async (rating) => ({
+          id: rating.id,
+          variantId: rating.variantId,
+          customerId: rating.customerId,
+          rating: rating.rating,
+          review: rating.review,
+          title: rating.title,
+          verifiedPurchase: rating.verifiedPurchase === 1,
+          createdAt: rating.createdAt,
+          updatedAt: rating.updatedAt,
+          customerName: rating.customerName,
+          customerPhoto: rating.customerPhoto || null,
+          // Agregar imágenes de rating si las hay
+          ratingImages: rating.ratingImages || [],
+          // Información del customer si está disponible
+          customer: await customerModel.getCustomer(rating.customerId)
+        }))
+      ),
       summary: {
         totalRatings: ratingsResult.summary.totalRatings,
         averageRating: ratingsResult.summary.averageRating,

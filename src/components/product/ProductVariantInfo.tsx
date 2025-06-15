@@ -5,12 +5,12 @@ import { getVariantTitle } from "@/helpers/productVariant.helpers"
 import { Products as Product, ProductVariants as ProductVariant } from "@/types/domain"
 import { FC } from "react"
 
-interface ProductInfoProps {
+interface ProductVariantInfoProps {
   product: Product
   variant: ProductVariant
 }
 
-export const ProductInfo: FC<ProductInfoProps> = ({ product, variant }) => {
+export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({ product, variant }) => {
   return (
     <>
       <div className="flex flex-col gap-2.5">

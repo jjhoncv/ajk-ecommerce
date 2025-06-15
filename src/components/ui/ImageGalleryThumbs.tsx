@@ -1,13 +1,13 @@
 "use client";
+import { CleanImage } from "@/components/product/ProductVariant.helpers";
 import { useImageCarousel } from "@/hooks/useImageCarousel";
 import { cn } from "@/lib/utils";
-import { ItemImage } from "@/shared";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
 interface ImageGalleryThumbsProps {
-  images: ItemImage[];
+  images: CleanImage[];
   productName: string;
   className?: string;
   onImageClick?: (imageIndex: number) => void;

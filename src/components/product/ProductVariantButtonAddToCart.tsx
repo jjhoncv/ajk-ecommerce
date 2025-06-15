@@ -34,7 +34,8 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
       id,
       image,
       name,
-      price
+      price,
+      stock
     })
   };
 
