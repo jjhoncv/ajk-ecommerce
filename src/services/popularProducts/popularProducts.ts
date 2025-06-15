@@ -9,6 +9,7 @@ export const getPopularProducts = async (): Promise<ProductComplete[]> => {
       limit: 7,
       sort: 'newest'
     })
+
     return hydratePopularProducts(popularSearchResult.products)
   } catch (error) {
     throw new Error(

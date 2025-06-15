@@ -24,7 +24,6 @@ import {
 } from '@/types/domain'
 
 import attributeOptionImageModel from '@/backend/attribute-option-image'
-import promotionModel from '@/backend/promotion'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import variantRatingModel from '@/backend/variant-rating'
 import {
@@ -265,8 +264,8 @@ export class ProductVariantModel {
     const variantImages = await oVariantImageModel.getVariantImages(id)
 
     // Obtener promoción usando composición
-    const bestPromotion =
-      await oPromotionVariantModel.getBestPromotionForVariant(id)
+    const promotionsVariant =
+      await oPromotionVariantModel.getPromotionsForVariant(id)
 
     // Obtener ratings usando composición
     const ratingSummary = await oVariantRatingModel.getVariantRatingSummary(id)
@@ -287,20 +286,9 @@ export class ProductVariantModel {
     }
 
     // Añadir promoción si existe
-    if (bestPromotion) {
-      result.promotionVariants = [
-        {
-          ...bestPromotion,
-          promotion: await promotionModel.getPromotionById(
-            bestPromotion.promotionId
-          ),
-          createdAt: bestPromotion.createdAt,
-          promotionId: bestPromotion.promotionId,
-          variantId: bestPromotion.variantId,
-          promotionPrice: bestPromotion.promotionPrice
-        }
-      ]
-    }
+    // if (bestPromotion) {
+    result.promotionVariants = promotionsVariant
+    // }
 
     // Añadir ratings si existen
     if (ratingSummary && ratingSummary.totalRatings > 0) {

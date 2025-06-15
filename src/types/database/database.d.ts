@@ -188,7 +188,7 @@ export interface PromotionVariants {
   created_at: Scalars['Timestamp']['output'];
   promotion_id: Scalars['Int']['output'];
   promotion_price?: Maybe<Scalars['Float']['output']>;
-  stock_limit?: Maybe<Scalars['Int']['output']>;
+  stock_limit: Scalars['Int']['output'];
   variant_id: Scalars['Int']['output'];
 }
 

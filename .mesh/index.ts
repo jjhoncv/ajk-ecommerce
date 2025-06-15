@@ -1345,7 +1345,7 @@ export type PromotionVariants = {
   promotionId: Scalars['Int']['output'];
   variantId: Scalars['Int']['output'];
   promotionPrice?: Maybe<Scalars['Float']['output']>;
-  stockLimit?: Maybe<Scalars['Int']['output']>;
+  stockLimit: Scalars['Int']['output'];
   createdAt: Scalars['Timestamp']['output'];
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
   promotions?: Maybe<Array<Maybe<Promotions>>>;
@@ -2356,7 +2356,7 @@ export type PromotionVariantsInsertInput = {
   promotionId: Scalars['Int']['input'];
   variantId: Scalars['Int']['input'];
   promotionPrice?: InputMaybe<Scalars['Float']['input']>;
-  stockLimit?: InputMaybe<Scalars['Int']['input']>;
+  stockLimit: Scalars['Int']['input'];
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
@@ -3298,7 +3298,7 @@ export type PromotionVariantsResolvers<ContextType = MeshContext, ParentType ext
   promotionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   promotionPrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  stockLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  stockLimit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<PromotionVariantsproductVariantsArgs>>;
   promotions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Promotions']>>>, ParentType, ContextType, Partial<PromotionVariantspromotionsArgs>>;

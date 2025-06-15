@@ -836,7 +836,7 @@ export type promotion_variants = {
   promotion_id: Scalars['Int']['output'];
   variant_id: Scalars['Int']['output'];
   promotion_price?: Maybe<Scalars['Float']['output']>;
-  stock_limit?: Maybe<Scalars['Int']['output']>;
+  stock_limit: Scalars['Int']['output'];
   created_at: Scalars['Timestamp']['output'];
   product_variants?: Maybe<Array<Maybe<product_variants>>>;
   promotions?: Maybe<Array<Maybe<promotions>>>;
@@ -2344,7 +2344,7 @@ export type promotion_variants_InsertInput = {
   promotion_id: Scalars['Int']['input'];
   variant_id: Scalars['Int']['input'];
   promotion_price?: InputMaybe<Scalars['Float']['input']>;
-  stock_limit?: InputMaybe<Scalars['Int']['input']>;
+  stock_limit: Scalars['Int']['input'];
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 

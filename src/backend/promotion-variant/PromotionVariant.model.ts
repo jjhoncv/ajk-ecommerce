@@ -2,6 +2,7 @@ import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
 import { PromotionVariants as PromotionVariant } from '@/types/domain'
 
 // me
+import promotionModel from '@/backend/promotion/Promotion.model'
 import {
   PromotionMetrics,
   PromotionSummaryForVariant
@@ -117,6 +118,55 @@ export class PromotionVariantModel {
   // LÓGICA DE NEGOCIO
   // ============================================================================
 
+  public async getPromotionsForVariant(
+    variantId: number
+  ): Promise<PromotionVariant[] | undefined> {
+    const promotionsVariant =
+      await this.getPromotionVariantsByVariantId(variantId)
+
+    const promotions = await Promise.all(
+      (promotionsVariant ?? []).map(async (promotionVariant) => {
+        return {
+          ...promotionVariant,
+          createdAt: promotionVariant.createdAt,
+          stockLimit: promotionVariant.stockLimit,
+          promotionId: promotionVariant.promotionId,
+          promotion: await promotionModel.getPromotionById(
+            promotionVariant?.promotionId
+          )
+        }
+      })
+    )
+
+    if (!promotions || promotions.length === 0) return undefined
+
+    const promotionsActive: PromotionVariant[] = promotions.filter(
+      (promotion) => promotion.promotion?.isActive
+    )
+
+    const promotionsWithStock: PromotionVariant[] = promotionsActive.filter(
+      (promotion) => promotion.stockLimit > 0
+    )
+
+    const promotionsAvailable: PromotionVariant[] = promotionsWithStock.filter(
+      (promotionVariant) => {
+        // if (promotionVariant.promotion) return false
+        if (promotionVariant.promotion) {
+          // const now > Date(promotion.promotion?.startDate)
+          const now = new Date()
+          const startDate = new Date(promotionVariant.promotion.startDate)
+          const endDate = new Date(promotionVariant.promotion.endDate)
+
+          if (now > startDate && now < endDate) {
+            return promotionVariant
+          }
+        }
+      }
+    )
+
+    return promotionsAvailable
+  }
+
   public async getBestPromotionForVariant(
     variantId: number
   ): Promise<PromotionVariant | undefined> {
@@ -124,13 +174,41 @@ export class PromotionVariantModel {
 
     if (!promotions || promotions.length === 0) return undefined
 
-    return promotions.reduce((best, current) => {
-      if (!best.promotionPrice && current.promotionPrice) return current
-      if (best.promotionPrice && !current.promotionPrice) return best
-      if (!best.promotionPrice && !current.promotionPrice) return best
+    const promotionsActive: PromotionVariant[] = promotions.filter(
+      (promotion) => promotion.promotion?.isActive
+    )
 
-      return current.promotionPrice! < best.promotionPrice! ? current : best
-    })
+    const promotionsWithStock: PromotionVariant[] = promotionsActive.filter(
+      (promotion) => promotion.stockLimit > 0
+    )
+
+    const promotionsAvailable: PromotionVariant[] = promotionsWithStock.filter(
+      (promotionVariant) => {
+        // if (promotionVariant.promotion) return false
+        if (promotionVariant.promotion) {
+          // const now > Date(promotion.promotion?.startDate)
+          const now = new Date()
+          const startDate = new Date(promotionVariant.promotion.startDate)
+          const endDate = new Date(promotionVariant.promotion.endDate)
+
+          if (now > startDate && now < endDate) {
+            return promotionVariant
+          }
+        }
+      }
+    )
+
+    if (promotionsAvailable.length === 0) return undefined
+
+    return promotionsAvailable
+
+    // return promotionsAvailable.reduce((best, current) => {
+    //   if (!best.promotionPrice && current.promotionPrice) return current
+    //   if (best.promotionPrice && !current.promotionPrice) return best
+    //   if (!best.promotionPrice && !current.promotionPrice) return best
+
+    //   return current.promotionPrice! < best.promotionPrice! ? current : best
+    // })
   }
 
   public async getPromotionsWithStock(

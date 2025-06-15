@@ -210,6 +210,7 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
                         src={option.image.imageUrlThumb}
                         alt={option.image.altText || option.value}
                         fill
+                        sizes="64px"
                         className="object-cover"
                       />
                     ) : (

@@ -11,7 +11,6 @@ import brandModel from '@/backend/brand'
 import categoryModel from '@/backend/category'
 import filtersModel from '@/backend/filters'
 import productVariantModel from '@/backend/product-variant'
-import promotionModel from '@/backend/promotion'
 import promotionVariantModel from '@/backend/promotion-variant'
 import searchModel, {
   ProductSearchFilters,
@@ -117,27 +116,8 @@ export class ProductModel {
             productVariant.id
           )
 
-        const promotionVariantsByVariantId =
-          await promotionVariantModel.getPromotionVariantsByVariantId(
-            productVariant.id
-          )
-
-        if (!promotionVariantsByVariantId)
-          return {
-            ...productVariant,
-            variantAttributeOptions: variantAttributeOptions,
-            promotionVariants: []
-          }
-
-        const promotionVariants =
-          (await Promise.all(
-            promotionVariantsByVariantId.map(async (promotionVariant) => ({
-              ...promotionVariant,
-              promotion: await promotionModel.getPromotionById(
-                promotionVariant.promotionId
-              )
-            }))
-          )) || []
+        const promotionsVariant =
+          await promotionVariantModel.getPromotionsForVariant(productVariant.id)
 
         const variantImages = await variantImageModel.getVariantImages(
           productVariant.id
@@ -154,7 +134,7 @@ export class ProductModel {
         return {
           ...productVariant,
           variantAttributeOptions: variantAttributeOptions,
-          promotionVariants: promotionVariants,
+          promotionVariants: promotionsVariant,
           variantImages: variantImages,
           variantRatings: variantRatings
         }
@@ -425,102 +405,6 @@ export class ProductModel {
 
   public async getAvailableFilters() {
     return await filtersModel.getAvailableFilters()
-  }
-
-  // ============================================================================
-  // MÉTODOS PARA COMPATIBILIDAD CON ProductModel.ts ORIGINAL
-  // ============================================================================
-
-  public async ProductMapperToDTO(product: Product) {
-    const brand = await brandModel.getBrandById(product.brandId || 0)
-    const categories = await categoryModel.getCategoriesByProductId(product.id)
-
-    let variants =
-      await productVariantModel.getProductVariantsByProductIdWithAttributeOptions(
-        product.id
-      )
-
-    if (variants) {
-      variants = await Promise.all(
-        variants.map(async (variant) => {
-          const bestPromotion =
-            await promotionVariantModel.getBestPromotionForVariant(variant.id)
-
-          if (bestPromotion) {
-            let promotionPrice = bestPromotion.promotionPrice
-
-            if (promotionPrice === null || promotionPrice === undefined) {
-              // Usar el precio promocional del objeto si existe
-              promotionPrice =
-                bestPromotion.promotionPrice || Number(variant.price)
-            }
-
-            return {
-              ...variant,
-              promotion: {
-                id: bestPromotion.promotionId,
-                name: `Promotion ${bestPromotion.promotionId}`,
-                discountType: 'percentage' as const,
-                discountValue: 0,
-                promotionPrice: promotionPrice,
-                startDate: new Date(),
-                endDate: new Date(),
-                stockLimit: bestPromotion.stockLimit ?? null
-              }
-            }
-          }
-
-          return variant
-        })
-      )
-    }
-
-    let mainImage: string | undefined
-    if (
-      variants &&
-      variants.length > 0 &&
-      variants[0].variantImages &&
-      variants[0].variantImages.length > 0
-    ) {
-      const primaryImage = variants[0].variantImages.find(
-        (img) => img?.isPrimary
-      )
-      mainImage = primaryImage
-        ? primaryImage.imageUrlNormal
-        : variants[0].variantImages[0]?.imageUrlNormal
-    }
-
-    const prices =
-      variants?.map((variant) => {
-        const variantWithPromotion = variant as any
-        if (
-          variantWithPromotion.promotion &&
-          variantWithPromotion.promotion.promotionPrice !== null
-        ) {
-          return Number(variantWithPromotion.promotion.promotionPrice)
-        }
-        return Number(variant.price)
-      }) || []
-
-    const minVariantPrice =
-      prices.length > 0 ? Math.min(...prices) : Number(product.basePrice)
-
-    return {
-      id: Number(product.id),
-      name: product.name,
-      description: product.description,
-      brandId: Number(product.brandId),
-      brandName: brand?.name || '',
-      basePrice: Number(product.basePrice),
-      minVariantPrice,
-      categories:
-        categories?.map((cat) => ({
-          id: Number(cat.id),
-          name: cat.name
-        })) || [],
-      variants: variants || [],
-      mainImage
-    }
   }
 }
 

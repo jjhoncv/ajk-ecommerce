@@ -340,7 +340,7 @@ type promotion_variants {
   promotion_id: Int!
   variant_id: Int!
   promotion_price: Float
-  stock_limit: Int
+  stock_limit: Int!
   created_at: Timestamp!
   product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
   promotions(where: promotions_WhereInput, orderBy: promotions_OrderByInput, limit: Int, offset: Int): [promotions] @mysqlSelect(subgraph: "Database", table: "promotions", columnMap: [["id", "promotion_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "promotion_id")
@@ -1291,7 +1291,7 @@ input promotion_variants_InsertInput {
   promotion_id: Int!
   variant_id: Int!
   promotion_price: Float
-  stock_limit: Int
+  stock_limit: Int!
   created_at: Timestamp
 }
 

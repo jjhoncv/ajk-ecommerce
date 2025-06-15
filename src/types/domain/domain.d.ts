@@ -203,7 +203,7 @@ export interface PromotionVariants {
   promotion?: Maybe<Promotions>;
   promotionId: Scalars['Int']['output'];
   promotionPrice?: Maybe<Scalars['Float']['output']>;
-  stockLimit?: Maybe<Scalars['Int']['output']>;
+  stockLimit: Scalars['Int']['output'];
   variantId: Scalars['Int']['output'];
 }
 
