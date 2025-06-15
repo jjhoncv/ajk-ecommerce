@@ -110,6 +110,13 @@ export class SearchModel {
     return await this.searchProducts(filters)
   }
 
+  public async getSearchSuggestions(
+    query: string,
+    limit: number = 10
+  ): Promise<string[]> {
+    return await oSearchRep.getSearchSuggestions(query, limit)
+  }
+
   // Método privado para generar filtros con contadores
   private async generateFiltersFromProducts(
     products: ProductSearchItem[]

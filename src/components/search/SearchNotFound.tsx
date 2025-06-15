@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export const SearchNotFound = () => {
   return (
-    <div className="bg-white rounded-lg shadow p-8 text-center">
+    <div className="bg-white p-8 text-center">
       <div className="text-gray-400 mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"

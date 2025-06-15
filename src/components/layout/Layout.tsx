@@ -12,7 +12,6 @@ const Layout: React.FC<LayoutProps> = async ({ children }) => {
   const categories = await getHeader();
   const footer = await getFooter();
 
-
   return (
     <div className="min-h-screen bg-white">
       {/* <TopBar /> */}

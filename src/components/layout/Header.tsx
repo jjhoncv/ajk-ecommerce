@@ -11,9 +11,6 @@ interface HeaderProps {
 }
 
 const Header = async ({ categories }: HeaderProps) => {
-  // Aquí podrías hacer fetch de datos adicionales si fuera necesario
-  // const additionalData = await fetchAdditionalData();
-
   return (
     <header className="border-b border-gray-200 sticky top-0 bg-white z-50 border-none">
       <div className="max-w-screen-4xl mx-auto px-12 py-4">

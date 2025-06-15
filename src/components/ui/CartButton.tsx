@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
-import { ShoppingCart } from "lucide-react";
 import { useCartContext } from "@/providers/CartProvider";
+import { ShoppingCart } from "lucide-react";
+import React from "react";
 
 const CartButton: React.FC = () => {
   const { totalItems, toggleCart } = useCartContext();
