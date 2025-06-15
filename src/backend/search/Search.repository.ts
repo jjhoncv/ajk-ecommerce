@@ -223,11 +223,20 @@ export class SearchRepository {
       query += ' LIMIT ? OFFSET ?'
       queryParams.push(limit, offset)
 
+      console.log('=== DEBUG SEARCH QUERY ===')
+      console.log('Query:', query)
+      console.log('Params:', queryParams)
+      console.log('Filters:', JSON.stringify(filters, null, 2))
+
       // === EJECUTAR CONSULTA PRINCIPAL ===
       const results = await executeQuery<VariantSearchResultRaw[]>({
         query,
         values: queryParams
       })
+
+      console.log('=== DEBUG SEARCH RESULTS ===')
+      console.log('Results count:', results.length)
+      console.log('Total count:', totalCount)
 
       return { results, totalCount }
     } catch (error) {
