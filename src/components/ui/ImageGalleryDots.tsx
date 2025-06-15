@@ -9,10 +9,10 @@ interface ImageGalleryDotsProps {
   images: CleanImage[];
   productName: string;
   className?: string;
-  autoSlideInterval?: number;
-  autoSlideOnHover?: boolean;
+  mouseZoneDetection?: boolean; // ✅ Nueva prop
   showDotsIndicator?: boolean;
   showImageCounter?: boolean;
+  showZoneIndicator?: boolean; // Para debugging
   onImageClick?: (imageIndex: number) => void;
 }
 
@@ -20,10 +20,10 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
   images,
   productName,
   className = "w-full aspect-square overflow-hidden relative bg-gray-50 rounded",
-  autoSlideInterval = 2000,
-  autoSlideOnHover = true,
+  mouseZoneDetection = false, // ✅ Por defecto desactivado
   showDotsIndicator = true,
   showImageCounter = false,
+  showZoneIndicator = false,
   onImageClick,
 }) => {
   const {
@@ -32,13 +32,16 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
     hasMultipleImages,
     handleMouseEnter,
     handleMouseLeave,
+    handleMouseMove, // ✅ Nuevo handler
     goToImage,
-    totalImages
+    totalImages,
+    containerRef, // ✅ Ref que necesitas usar
+    currentZone,
+    isHovering
   } = useImageCarousel({
     images,
     initialIndex: 0,
-    autoSlideInterval,
-    autoSlideOnHover,
+    mouseZoneDetection, // ✅ Pasar la prop
     loop: true,
     preloadImages: true
   });
@@ -60,14 +63,16 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
 
   return (
     <div
+      ref={containerRef} // ✅ AQUÍ usas el containerRef
       className={className}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove} // ✅ Agregar el handler de mouse move
     >
       {/* Imagen actual */}
       {currentImage && (
         <div
-          className="w-full h-full cursor-pointer"
+          className="w-full h-full cursor-pointer relative"
           onClick={handleClick}
         >
           <Image
@@ -75,7 +80,7 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
             alt={currentImage.altText || `${productName} - Imagen ${currentImageIndex + 1}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain transition-opacity duration-300"
+            className="object-contain transition-opacity duration-200"
             priority={currentImageIndex === 0}
           />
         </div>
@@ -96,9 +101,11 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
         )
       ))}
 
+
+
       {/* Indicadores de puntos */}
       {showDotsIndicator && hasMultipleImages && (
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5 bg-black/20 rounded-full px-2 py-1">
+        <div className="absolute z-40 bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5 bg-black/20 rounded-full px-2 py-1">
           {images.map((_, idx) => (
             <button
               key={idx}
@@ -111,6 +118,7 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
               onClick={(e) => {
                 e.stopPropagation();
                 goToImage(idx);
+                e.preventDefault()
               }}
               aria-label={`Ver imagen ${idx + 1}`}
             />
@@ -125,12 +133,7 @@ export const ImageGalleryDots: React.FC<ImageGalleryDotsProps> = ({
         </div>
       )}
 
-      {/* Indicador de hover para cambio de imagen */}
-      <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-        <div className="absolute top-2 left-2 bg-white/90 text-gray-800 text-xs px-2 py-1 rounded shadow">
-          Hover para cambiar
-        </div>
-      </div>
+
     </div>
   );
 };

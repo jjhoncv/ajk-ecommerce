@@ -1,6 +1,6 @@
 "use client";
 import { searchSuggestionsService } from '@/services/search/searchSuggestions';
-import { Search, X } from 'lucide-react';
+import { ArrowUpLeft, Search } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface SearchSuggestionsProps {
@@ -186,17 +186,15 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
               }
             }}
             placeholder={placeholder}
-            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
-          {query && (
-            <button
-              type="button"
-              onClick={clearSearch}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          )}
+          <button
+            type="submit"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-primary text-white p-2 rounded-full hover:bg-secondary transition-colors flex items-center justify-center w-10 h-10"
+          >
+            <Search className="h-5 w-5" />
+          </button>
+
         </div>
       </form>
 
@@ -204,7 +202,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
       {showSuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-1 max-h-64 overflow-y-auto"
+          className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-sm shadow-lg z-50 mt-1 max-h-64 overflow-y-auto"
         >
           {isLoading ? (
             <div className="p-3 text-center text-gray-500">
@@ -221,11 +219,14 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
                     className={`w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-colors ${index === selectedIndex ? 'bg-gray-100' : ''
                       }`}
                   >
-                    <div className="flex items-center">
-                      <Search className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
-                      <span className="text-gray-700 truncate">
-                        {highlightMatch(suggestion, query)}
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className='flex items-center'>
+                        <Search className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
+                        <span className="text-gray-700 truncate">
+                          {highlightMatch(suggestion, query)}
+                        </span>
+                      </div>
+                      <ArrowUpLeft className="h-5 w-5 text-gray-500 stroke-1" />
                     </div>
                   </button>
                 </li>

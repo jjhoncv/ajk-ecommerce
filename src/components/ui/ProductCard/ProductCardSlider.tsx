@@ -10,8 +10,8 @@ interface ProductCardSliderProps {
   productName: string;
   onImageClick?: (imageIndex: number) => void;
   showFavoriteButton?: boolean;
-  autoSlideInterval?: number;
-  autoSlideOnHover?: boolean;
+  mouseZoneDetection?: boolean; // ✅ Nueva prop (reemplaza autoSlideInterval y autoSlideOnHover)
+  showZoneIndicator?: boolean; // ✅ Para debugging
   className?: string;
 }
 
@@ -20,20 +20,19 @@ const ProductCardSlider: React.FC<ProductCardSliderProps> = ({
   productName,
   onImageClick,
   showFavoriteButton = true,
-  autoSlideInterval = 2000,
-  autoSlideOnHover = true,
+  mouseZoneDetection = true, // ✅ Por defecto activado para cards de producto
+  showZoneIndicator = false, // ✅ Para debugging, por defecto false
   className = "relative mb-2 group"
 }) => {
   const cleanImages = cleanAndValidateImages(images, productName);
 
   return (
-
     <div className={className}>
       <ImageGalleryDots
         images={cleanImages}
         productName={productName}
-        autoSlideInterval={autoSlideInterval}
-        autoSlideOnHover={autoSlideOnHover}
+        mouseZoneDetection={mouseZoneDetection} // ✅ Nueva prop
+        showZoneIndicator={showZoneIndicator} // ✅ Para debugging
         showDotsIndicator={true}
         showImageCounter={false}
         onImageClick={onImageClick}

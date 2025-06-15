@@ -12,10 +12,9 @@ export interface BaseImage {
 }
 
 export interface UseImageCarouselProps {
-  images: BaseImage[] // ✅ Más flexible, acepta ItemImage, CleanImage, etc.
+  images: BaseImage[]
   initialIndex?: number
-  autoSlideInterval?: number
-  autoSlideOnHover?: boolean
+  mouseZoneDetection?: boolean // ✅ Prop para activar detección por zonas
   loop?: boolean
   preloadImages?: boolean
 }
@@ -23,49 +22,48 @@ export interface UseImageCarouselProps {
 export interface UseImageCarouselReturn {
   // Estado actual
   currentImageIndex: number
-  currentImage: BaseImage | null // ✅ Cambiar tipo
+  currentImage: BaseImage | null
   hasMultipleImages: boolean
-  isPlaying: boolean
 
   // Navegación
   goToNextImage: () => void
   goToPrevImage: () => void
   goToImage: (index: number) => void
 
-  // Control de auto-slide
-  startAutoSlide: () => void
-  stopAutoSlide: () => void
-  toggleAutoSlide: () => void
-
-  // Handlers para eventos
-  handleMouseEnter: () => void
+  // Handlers para eventos (detección por zonas o básicos)
+  handleMouseEnter: (event?: React.MouseEvent<HTMLDivElement>) => void
   handleMouseLeave: () => void
+  handleMouseMove: (event: React.MouseEvent<HTMLDivElement>) => void
 
   // Utilidades
-  getImageAtIndex: (index: number) => BaseImage | null // ✅ Cambiar tipo
+  getImageAtIndex: (index: number) => BaseImage | null
   isFirstImage: boolean
   isLastImage: boolean
   totalImages: number
+
+  // Propiedades para detección por zonas
+  containerRef: React.RefObject<HTMLDivElement>
+  currentZone: number
+  isHovering: boolean
 }
 
 export const useImageCarousel = ({
   images,
   initialIndex = 0,
-  autoSlideInterval = 2000,
-  autoSlideOnHover = true,
+  mouseZoneDetection = false,
   loop = true,
   preloadImages = true
 }: UseImageCarouselProps): UseImageCarouselReturn => {
   const [currentImageIndex, setCurrentImageIndex] = useState(() => {
-    // Validar índice inicial
     if (images.length === 0) return 0
     const validIndex = Math.max(0, Math.min(initialIndex, images.length - 1))
     return validIndex
   })
 
-  const [isPlaying, setIsPlaying] = useState(false)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [isHovering, setIsHovering] = useState(false)
+  const [currentZone, setCurrentZone] = useState(0)
   const preloadedRef = useRef<Set<number>>(new Set())
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // Propiedades derivadas
   const hasMultipleImages = images.length > 1
@@ -85,6 +83,23 @@ export const useImageCarousel = ({
       preloadedRef.current.add(index)
     },
     [images, preloadImages]
+  )
+
+  // ✅ Utilidades para detección por zonas
+  const getZoneWidth = useCallback((): number => {
+    if (!containerRef.current || totalImages <= 0) return 0
+    return containerRef.current.offsetWidth / totalImages
+  }, [totalImages])
+
+  const getZoneForPosition = useCallback(
+    (x: number): number => {
+      const zoneWidth = getZoneWidth()
+      if (zoneWidth <= 0) return 0
+
+      const zone = Math.floor(x / zoneWidth)
+      return Math.max(0, Math.min(zone, totalImages - 1))
+    },
+    [getZoneWidth, totalImages]
   )
 
   // Navegación básica
@@ -129,50 +144,65 @@ export const useImageCarousel = ({
     }
   }, [currentImageIndex, isFirstImage, loop, goToImage, images.length])
 
-  // Control de auto-slide
-  const clearAutoSlide = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-  }, [])
+  // ✅ Handlers para eventos (con detección por zonas)
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!mouseZoneDetection || !containerRef.current || !hasMultipleImages)
+        return
 
-  const startAutoSlide = useCallback(() => {
-    if (!hasMultipleImages || autoSlideInterval <= 0) return
+      // Obtener posición relativa dentro del contenedor
+      const rect = containerRef.current.getBoundingClientRect()
+      const x = event.clientX - rect.left
 
-    clearAutoSlide()
-    setIsPlaying(true)
+      // Calcular zona actual
+      const newZone = getZoneForPosition(x)
 
-    intervalRef.current = setInterval(() => {
-      goToNextImage()
-    }, autoSlideInterval)
-  }, [hasMultipleImages, autoSlideInterval, clearAutoSlide, goToNextImage])
+      // Solo actualizar si cambió la zona
+      if (newZone !== currentZone) {
+        setCurrentZone(newZone)
+        goToImage(newZone) // ✅ Cambiar imagen cuando cambie la zona
+      }
+    },
+    [
+      mouseZoneDetection,
+      hasMultipleImages,
+      currentZone,
+      getZoneForPosition,
+      goToImage
+    ]
+  )
 
-  const stopAutoSlide = useCallback(() => {
-    clearAutoSlide()
-    setIsPlaying(false)
-  }, [clearAutoSlide])
+  const handleMouseEnter = useCallback(
+    (event?: React.MouseEvent<HTMLDivElement>) => {
+      setIsHovering(true)
 
-  const toggleAutoSlide = useCallback(() => {
-    if (isPlaying) {
-      stopAutoSlide()
-    } else {
-      startAutoSlide()
-    }
-  }, [isPlaying, startAutoSlide, stopAutoSlide])
+      // Si está activada la detección por zonas, calcular zona inicial
+      if (
+        mouseZoneDetection &&
+        event &&
+        containerRef.current &&
+        hasMultipleImages
+      ) {
+        const rect = containerRef.current.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const initialZone = getZoneForPosition(x)
 
-  // Handlers para eventos del mouse
-  const handleMouseEnter = useCallback(() => {
-    if (autoSlideOnHover && hasMultipleImages) {
-      startAutoSlide()
-    }
-  }, [autoSlideOnHover, hasMultipleImages, startAutoSlide])
+        setCurrentZone(initialZone)
+        goToImage(initialZone)
+      }
+    },
+    [mouseZoneDetection, hasMultipleImages, getZoneForPosition, goToImage]
+  )
 
   const handleMouseLeave = useCallback(() => {
-    if (autoSlideOnHover) {
-      stopAutoSlide()
+    setIsHovering(false)
+
+    // Opcionalmente resetear a la primera imagen al salir
+    if (mouseZoneDetection) {
+      setCurrentZone(0)
+      goToImage(0)
     }
-  }, [autoSlideOnHover, stopAutoSlide])
+  }, [mouseZoneDetection, goToImage])
 
   // Utilidad para obtener imagen por índice
   const getImageAtIndex = useCallback(
@@ -182,18 +212,10 @@ export const useImageCarousel = ({
     [images]
   )
 
-  // Efecto para limpiar intervalo al desmontar
-  useEffect(() => {
-    return () => {
-      clearAutoSlide()
-    }
-  }, [clearAutoSlide])
-
   // Efecto para actualizar índice cuando cambian las imágenes
   useEffect(() => {
     if (images.length === 0) {
       setCurrentImageIndex(0)
-      stopAutoSlide()
       return
     }
 
@@ -206,7 +228,7 @@ export const useImageCarousel = ({
     if (preloadImages && images.length > 0) {
       preloadImage(0)
     }
-  }, [images, currentImageIndex, stopAutoSlide, preloadImage, preloadImages])
+  }, [images, currentImageIndex, preloadImage, preloadImages])
 
   // Efecto para manejar cambios en initialIndex
   useEffect(() => {
@@ -224,26 +246,26 @@ export const useImageCarousel = ({
     currentImageIndex,
     currentImage,
     hasMultipleImages,
-    isPlaying,
 
     // Navegación
     goToNextImage,
     goToPrevImage,
     goToImage,
 
-    // Control de auto-slide
-    startAutoSlide,
-    stopAutoSlide,
-    toggleAutoSlide,
-
     // Handlers para eventos
     handleMouseEnter,
     handleMouseLeave,
+    handleMouseMove,
 
     // Utilidades
     getImageAtIndex,
     isFirstImage,
     isLastImage,
-    totalImages
+    totalImages,
+
+    // Propiedades para detección por zonas
+    containerRef,
+    currentZone,
+    isHovering
   }
 }
