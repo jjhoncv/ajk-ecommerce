@@ -52,6 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           name={product.name}
           price={product.variantPrice || variant.price}
           stock={variant.stock}
+          quantity={1}
         />
       </div>
 

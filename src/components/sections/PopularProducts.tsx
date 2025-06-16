@@ -24,7 +24,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
           <ChevronRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid grid-cols-7 gap-6">
+      <div className="grid grid-cols-6 gap-6">
         {products?.map((item) => (
           <ProductCard
             key={item.variantId}

@@ -58,7 +58,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
 
         {/* Products Grid */}
         <div className="md:col-span-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             {products?.map((item) => (
               <ProductCard
                 key={item.variantId || item.id}

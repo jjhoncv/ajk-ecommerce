@@ -6,7 +6,7 @@ export const getPopularProducts = async (): Promise<ProductComplete[]> => {
   try {
     const popularSearchResult = await searchModel.searchProducts({
       page: 1,
-      limit: 7,
+      limit: 6,
       sort: 'newest'
     })
 

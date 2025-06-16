@@ -22,9 +22,8 @@ const Toast: React.FC<ToastProps> = ({ message }) => {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 bg-secondary text-white px-4 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-      }`}
+      className={`fixed bottom-4 right-4 bg-primary text-white px-4 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+        }`}
     >
       <div className="flex items-center">
         <svg

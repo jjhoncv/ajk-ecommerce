@@ -76,17 +76,17 @@ export function useCart() {
     })
 
     // Mostrar mensaje toast
-    // setToastMessage(`¡${item.name} agregado al carrito!`)
+    setToastMessage(`Añadido a la cesta!`)
   }
 
   // Eliminar un item del carrito
   const removeItem = (id: number) => {
-    // const itemToRemove = items.find((item) => item.id === id)
+    const itemToRemove = items.find((item) => item.id === id)
     setItems((prevItems) => prevItems.filter((item) => item.id !== id))
 
-    // if (itemToRemove) {
-    //   setToastMessage(`${itemToRemove.name} eliminado del carrito`)
-    // }
+    if (itemToRemove) {
+      setToastMessage(`correcto`)
+    }
   }
 
   // Actualizar la cantidad de un item
@@ -99,6 +99,9 @@ export function useCart() {
     setItems((prevItems) =>
       prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
     )
+
+    // Mostrar mensaje toast
+    setToastMessage(`Añadido a la cesta!`)
   }
 
   // Incrementar cantidad
@@ -132,7 +135,7 @@ export function useCart() {
   // Vaciar el carrito
   const clearCart = () => {
     setItems([])
-    // setToastMessage('Carrito vaciado')
+    setToastMessage('Carrito vaciado')
   }
 
   // Abrir el carrito

@@ -5,7 +5,7 @@ export const getDealsProducts = async (): Promise<ProductSearchItem[]> => {
   try {
     const dealsSearchResult = await searchModel.searchProducts({
       page: 1,
-      limit: 6,
+      limit: 5,
       sort: 'price_desc'
     })
     return hydrateDealsProducts(dealsSearchResult.products)

@@ -1,15 +1,20 @@
 "use client";
 import { useCartContext } from "@/providers/CartProvider";
 import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const CartButton: React.FC = () => {
-  const { totalItems, toggleCart } = useCartContext();
+  const { totalItems } = useCartContext();
+  const router = useRouter()
+  const handleGoToPageCart = () => {
+    router.push("/cart")
+  }
 
   return (
     <button
       className="flex flex-col items-center relative"
-      onClick={toggleCart}
+      onClick={handleGoToPageCart}
       aria-label="Abrir carrito"
     >
       <ShoppingCart className="h-6 w-6" />

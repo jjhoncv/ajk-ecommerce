@@ -1,12 +1,12 @@
 "use client";
 import MiniCart from "@/components/ui/MiniCart";
 import { SessionProvider } from "next-auth/react";
-import React from "react";
+import { ReactNode } from "react";
 import { CartProvider } from "./CartProvider";
 import { ThemeProvider } from "./ThemeProvider";
 
 interface ProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function Providers({ children }: ProvidersProps) {

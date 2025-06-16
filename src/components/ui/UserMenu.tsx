@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
-import { User, ShoppingBag, Heart, MapPin, LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { Heart, LogOut, MapPin, ShoppingBag, User } from "lucide-react";
 import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
+import React from "react";
 import SlidePage from "./SlidePage";
 
 interface UserMenuProps {
@@ -15,8 +15,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
   const handleSignOut = async () => {
     await signOut({ redirect: false });
     onClose();
-    // Recargar la página para actualizar la interfaz
-    window.location.reload();
   };
 
   const menuItems = [
@@ -62,7 +60,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
             </div>
           </div>
         </div>
-
         <div className="flex-grow">
           <nav className="mt-2">
             <ul>
@@ -80,7 +77,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
             </ul>
           </nav>
         </div>
-
         <div className="p-4 border-t border-gray-200">
           <button
             onClick={handleSignOut}

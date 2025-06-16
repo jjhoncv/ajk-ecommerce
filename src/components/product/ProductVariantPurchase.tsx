@@ -45,16 +45,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
           />
         </div>
         <div className="text-sm text-gray-600 mb-6">
-          {currentCartQuantity > 0 ? (
-            <>
-              {variant.stock} en stock •
-              <span className="text-blue-600">
-                {currentCartQuantity} en carrito
-              </span>
-            </>
-          ) : (
-            `${variant?.stock || 0} en stock`
-          )}
+          {variant.stock} en stock
         </div>
 
         {/* Botones de acción */}

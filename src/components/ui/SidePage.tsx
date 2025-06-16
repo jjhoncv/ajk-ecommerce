@@ -14,25 +14,27 @@ const SidePage: React.FC<SidePageProps> = ({
   direction = "right",
   width = 400,
 }) => {
-  // Manejar el margin del contenido principal
+  // Manejar el margin del body completo
   useEffect(() => {
-    const contentPage = document.getElementById("content-page");
-    if (!contentPage) return;
+    const body = document.body;
 
     if (isOpen) {
       const marginProperty = direction === "right" ? "marginRight" : "marginLeft";
-      contentPage.style[marginProperty] = `${width}px`;
+      body.style[marginProperty] = `${width}px`;
+      body.style.transition = "margin 300ms ease-in-out";
     } else {
       // Remover márgenes cuando se cierra
-      contentPage.style.marginLeft = "0";
-      contentPage.style.marginRight = "0";
+      body.style.marginLeft = "0";
+      body.style.marginRight = "0";
+      body.style.transition = "margin 300ms ease-in-out";
     }
 
     // Cleanup function
     return () => {
-      if (contentPage) {
-        contentPage.style.marginLeft = "";
-        contentPage.style.marginRight = "";
+      if (body) {
+        body.style.marginLeft = "";
+        body.style.marginRight = "";
+        body.style.transition = "";
       }
     };
   }, [isOpen, width, direction]);
@@ -41,7 +43,11 @@ const SidePage: React.FC<SidePageProps> = ({
 
   return (
     <div
-      className={`fixed z-50 top-0 h-full bg-white shadow-xl transition-transform duration-300 ease-in-out overflow-auto ${positionClass} ${isOpen ? "translate-x-0" : direction === "right" ? "translate-x-full" : "-translate-x-full"
+      className={`fixed z-40 top-0 h-full bg-white shadow-xl transition-transform duration-300 ease-in-out overflow-auto ${positionClass} ${isOpen
+        ? "translate-x-0"
+        : direction === "right"
+          ? "translate-x-full"
+          : "-translate-x-full"
         }`}
       style={{ width: `${width}px` }}
     >
