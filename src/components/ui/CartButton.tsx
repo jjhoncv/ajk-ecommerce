@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 const CartButton: React.FC = () => {
-  const { totalItems } = useCartContext();
+  const { totalItems } = useCartContext(); // 👈 Usar useCart directamente
   const router = useRouter()
   const handleGoToPageCart = () => {
     router.push("/cart")

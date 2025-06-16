@@ -1,5 +1,5 @@
 "use client";
-import useCart, { CartItem } from "@/hooks/useCart";
+import { CartItem, useCart } from "@/hooks/useCart";
 import React, { createContext, useContext } from "react";
 
 // Tipo para el contexto del carrito

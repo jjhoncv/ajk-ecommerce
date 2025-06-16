@@ -58,7 +58,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <div className="px-1">
         <Link href={`/productos/variante/${variant.id}`}>
-          <h3 className="font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
+          <h3 className="-tracking-wide font-medium mb-1 text-[14px] leading-[14px] hover:text-primary transition-colors line-clamp-1">
             {/* Promoción */}
             {hasDiscount && (
               <span className="bg-gradient-to-r from-red-500 to-red-700 text-[11px] leading-[11px] inline-block text-white px-[3px] py-[2px] mr-[1px]">
