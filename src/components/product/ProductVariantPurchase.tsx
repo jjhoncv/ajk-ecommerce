@@ -4,7 +4,7 @@ import { ProductVariantShipping } from "@/components/product/ProductVariantShipp
 import { PlusMinusButton } from "@/components/ui/PlusMinusButton"
 import { getVariantImages } from "@/helpers/image.helpers"
 import { getVariantTitle } from "@/helpers/productVariant.helpers"
-import { useCartContext } from "@/providers/CartProvider"
+import { useCartContext } from "@/providers/cart"
 import { Products, ProductVariants as ProductVariant } from "@/types/domain"
 import { FC, useState } from "react"
 
@@ -15,7 +15,7 @@ interface ProductVariantPurchaseProps {
 
 export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ product, variant }) => {
   const [quantity, setQuantity] = useState(1)
-  const { finalPrice } = getPriceIfHasPromotion(variant)
+  const { originalPrice } = getPriceIfHasPromotion(variant)
   const { items } = useCartContext()
 
   // Información del carrito
@@ -28,6 +28,10 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
   const handleQuantityChange = (newQuantity: number) => {
     setQuantity(newQuantity)
   }
+
+  const images = getVariantImages(variant)
+
+  const thumbImage = images.sort((a, b) => a.displayOrder - b.displayOrder)[0].imageUrlThumb
 
   return (
     <div className="bg-white sticky top-40 shadow-sm border border-gray-200 overflow-hidden w-full xl:max-w-96">
@@ -51,7 +55,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
         {/* Botones de acción */}
         <div className="space-y-3 mb-6">
           <button
-            className="w-full bg-slate-700 text-white py-3 px-4 font-medium hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-secondary text-white py-3 px-4 font-medium hover:bg-secondary-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={variant.stock === 0}
           >
             {variant.stock === 0 ? 'Sin stock' : 'Comprar'}
@@ -59,10 +63,12 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
           <ProductVariantButtonAddToCart
             quantity={quantity}
             stock={variant.stock}
-            price={finalPrice}
+            price={originalPrice}
             id={variant.id}
             name={getVariantTitle(product.name, variant)}
-            image={getVariantImages(variant)[0].imageUrlThumb}
+            image={thumbImage}
+            promotionVariants={variant.promotionVariants}
+
           />
         </div>
       </div>

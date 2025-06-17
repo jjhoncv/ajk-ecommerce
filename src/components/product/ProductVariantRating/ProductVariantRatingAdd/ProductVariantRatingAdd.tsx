@@ -1,14 +1,8 @@
 "use client";
-import LoginForm from "@/components/ui/LoginForm";
-import { Modal } from "@/components/ui/Modal";
-import { ModalContent } from "@/components/ui/Modal/ModalContent";
-import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
-import RegisterForm from "@/components/ui/RegisterForm";
 import { ProductVariants, Products } from "@/types/domain";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { AuthPrompt } from "./AuthPrompt";
-import { useAuthModals } from "./hooks/useAuthModals";
 import { useVariantDisplay } from "./hooks/useVariantDisplay";
 import { RatingForm } from "./RatingForm";
 
@@ -23,19 +17,10 @@ export const ProductVariantRatingAdd: React.FC<ProductVariantRatingAddProps> = (
   product,
   onRatingAdded
 }) => {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const { getVariantDisplayName } = useVariantDisplay(variant, product);
-  const {
-    isLoginModalOpen,
-    isRegisterModalOpen,
-    openLoginModal,
-    openRegisterModal,
-    closeAllModals,
-    switchToRegister,
-    switchToLogin,
-  } = useAuthModals();
 
-  const isAuthenticated = status === "authenticated";
+  const isAuthenticated = !!session;
   const isLoading = status === "loading";
 
   const renderContent = () => {
@@ -48,12 +33,7 @@ export const ProductVariantRatingAdd: React.FC<ProductVariantRatingAddProps> = (
     }
 
     if (!isAuthenticated) {
-      return (
-        <AuthPrompt
-          onLogin={openLoginModal}
-          onRegister={openRegisterModal}
-        />
-      );
+      return <AuthPrompt />; {/* 👈 Sin props, usa el provider interno */ }
     }
 
     return (
@@ -73,38 +53,7 @@ export const ProductVariantRatingAdd: React.FC<ProductVariantRatingAddProps> = (
           Producto: <span className="font-medium">{getVariantDisplayName()}</span>
         </div>
       </div>
-
       {renderContent()}
-
-      {/* Modal de login */}
-      <Modal
-        isOpen={isLoginModalOpen}
-        onClose={closeAllModals}
-      >
-        <ModalTitle onClose={closeAllModals} title="Iniciar sesión" />
-        <ModalContent>
-          <LoginForm
-            onSuccess={closeAllModals}
-            onClose={closeAllModals}
-            onSwitchToRegister={switchToRegister}
-          />
-        </ModalContent>
-      </Modal>
-
-      {/* Modal de registro */}
-      <Modal
-        isOpen={isRegisterModalOpen}
-        onClose={closeAllModals}
-      >
-        <ModalTitle onClose={closeAllModals} title="Crear cuenta" />
-        <ModalContent>
-          <RegisterForm
-            onSuccess={closeAllModals}
-            onClose={closeAllModals}
-            onSwitchToLogin={switchToLogin}
-          />
-        </ModalContent>
-      </Modal>
     </div>
   );
 };

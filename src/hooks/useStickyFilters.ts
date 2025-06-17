@@ -9,7 +9,7 @@ interface UseStickyFiltersReturn {
 }
 
 export const useStickyFilters = (): UseStickyFiltersReturn => {
-  const [topPosition, setTopPosition] = useState('128px')
+  const [topPosition, setTopPosition] = useState('82px') // header
   const [maxHeight, setMaxHeight] = useState('70vh')
   const [minHeight, setMinHeight] = useState('400px')
   const [bottomConstraint, setBottomConstraint] = useState('auto')

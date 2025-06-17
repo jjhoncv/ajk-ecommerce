@@ -106,6 +106,7 @@ export class ProductModel {
 
     product.productVariants = productVariants.map((productVariant) => ({
       ...productVariant,
+      price: productVariant.price,
       id: productVariant.id
     }))
 

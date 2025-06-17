@@ -1,5 +1,7 @@
 "use client";
-import { useCartContext } from "@/providers/CartProvider";
+import { getPromotions } from "@/helpers/utils";
+import { useCartContext } from "@/providers/cart";
+import { PromotionVariants } from "@/types/domain";
 import { ShoppingCart } from "lucide-react";
 import React from "react";
 
@@ -10,6 +12,7 @@ interface ProductCardButtonAddToCartProps {
   price: number;
   stock: number
   quantity: number;
+  promotionVariants?: (PromotionVariants | null)[] | null
 }
 
 const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
@@ -18,7 +21,8 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
   name,
   price,
   image,
-  stock
+  stock,
+  promotionVariants: pvs
 }) => {
   const { updateQuantity, items, addItem, openCart } = useCartContext();
 
@@ -37,6 +41,10 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    const promotionVariants = getPromotions(pvs)
+
+    console.log("promotionVariants", promotionVariants)
+
     if (isDisabled) return;
 
     if (existingItem) {
@@ -49,7 +57,8 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
         image,
         name,
         price,
-        stock
+        stock,
+        promotionVariants
       }, quantity);
       openCart()
     }

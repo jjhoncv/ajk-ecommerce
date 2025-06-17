@@ -5,89 +5,73 @@ import { ModalContent } from "@/components/ui/Modal/ModalContent";
 import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
 import SidePage from "@/components/ui/SidePage";
 import Toast from "@/components/ui/Toast";
-import { useCartContext } from "@/providers/CartProvider";
-import React, { useState } from "react";
+import { useCartContext } from "@/providers/cart";
+import React from "react";
 
 const MiniCart: React.FC = () => {
   const {
     items,
     totalPrice,
     updateQuantity,
-    removeItem, // 👈 Asegúrate de incluir esto
     isCartOpen,
     closeCart,
     toastMessage,
+    canShowMinicart, // 👈 Tu función del hook
+    deleteConfirmation,
+    openDeleteConfirmation,
+    closeDeleteConfirmation,
+    confirmDelete,
   } = useCartContext();
-
-  // Estados para el modal de confirmación
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState<{ id: number; name: string } | null>(null);
-
-  // Función para mostrar el modal de confirmación
-  const handleDeleteConfirmation = (id: number, name: string) => {
-    setProductToDelete({ id, name });
-    setIsDeleteModalOpen(true);
-  };
-
-  // 👈 Aquí está la función confirmDelete
-  const confirmDelete = () => {
-    if (productToDelete) {
-      removeItem(productToDelete.id); // Elimina el item del carrito
-      setIsDeleteModalOpen(false);    // Cierra el modal
-      setProductToDelete(null);       // Limpia el estado
-    }
-  };
-
-  // Función para cancelar la eliminación
-  const cancelDelete = () => {
-    setIsDeleteModalOpen(false);
-    setProductToDelete(null);
-  };
 
   return (
     <>
-      <SidePage
-        isOpen={isCartOpen}
-        direction="right"
-        width={215}
-      >
-        <CartContentThin
-          items={items}
-          totalPrice={totalPrice}
-          updateQuantity={updateQuantity}
-          onDelete={handleDeleteConfirmation} // Pasa la función para mostrar confirmación
-          onClose={closeCart}
-        />
-      </SidePage>
+      {canShowMinicart() &&
+        <SidePage isOpen={isCartOpen} direction="right" width={215}>
+          <CartContentThin
+            items={items}
+            totalPrice={totalPrice}
+            updateQuantity={updateQuantity}
+            onDelete={openDeleteConfirmation} // 👈 Usar la función del provider
+            onClose={closeCart}
+          />
+        </SidePage>}
 
       {toastMessage && <Toast message={toastMessage} />}
 
-      {/* Modal de confirmación */}
+      {/* 👈 MODAL DE CONFIRMACIÓN */}
       <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={cancelDelete}
+        isOpen={deleteConfirmation.isOpen}
+        onClose={closeDeleteConfirmation}
+        className="p-4 pt-4"
       >
         <ModalTitle
-          onClose={cancelDelete}
-          title="Eliminar producto"
-        />
-        <ModalContent>
+          onClose={closeDeleteConfirmation}
+          className="p-0 mb-5"
+        >
+          <p className="font-bold pl-2">Quitar articulo</p>
+        </ModalTitle>
+        <ModalContent className="p-0">
           <div className="space-y-4">
-            <p className="text-gray-700">
-              ¿Estás seguro de eliminar <strong>{productToDelete?.name}</strong> del carrito?
-            </p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex items-center gap-3">
+              <div>
+                <p className="text-gray-700 text-sm">
+                  ¿Estás seguro de que quieres eliminar el artículo de tu cesta?
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end pt-2">
               <button
-                onClick={cancelDelete}
-                className="px-4 py-2 border border-gray-300 hover:bg-gray-50 transition-colors"
+                onClick={closeDeleteConfirmation}
+                className="px-4 py-2 text-gray-700 border font-semibol text-sm border-gray-300 hover:bg-gray-50 transition-colors"
               >
                 Cancelar
               </button>
               <button
-                onClick={confirmDelete} // 👈 Aquí se llama la función
-                className="px-4 py-2 bg-primary text-white hover:bg-red-700 transition-colors"
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white font-semibold text-sm hover:bg-red-700 transition-colors"
               >
-                Sí, eliminar
+                Quitar
               </button>
             </div>
           </div>

@@ -51,7 +51,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
   };
 
   return (
-    <section className="max-w-screen-4xl mx-auto px-12 py-6">
+    <section className="max-w-screen-4xl mx-auto py-6">
       <div className="grid grid-cols-4 gap-6">
         {features.map((feature, index) => (
           <div

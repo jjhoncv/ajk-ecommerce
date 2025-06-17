@@ -16,6 +16,30 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
   onDelete
 }) => {
 
+
+  // const variant: ProductVariants = item?.promotionVariants?.find(pv => pv?.variantId === item.id)
+
+  // const getVariant = (promotionVariants?: (PromotionVariants | null)[] | null | undefined): ProductVariants | null => {
+
+
+
+  //   const variant = item?.promotionVariants?.find(pv => pv?.variantId === item.id)
+  //   return variant
+  // }
+
+  const getPrice = (): number => {
+    // const variant = getVariant(item.promotionVariants);
+    if (!item?.promotionVariants) return item.price
+    const promotionPrice = item?.promotionVariants[0]?.promotionPrice
+    if (!promotionPrice) return item.price
+    return promotionPrice
+  }
+
+
+  const price = getPrice()
+
+
+
   const handleQuantityChange = (quantity: number) => {
     updateQuantity(item.id, quantity);
   };
@@ -36,7 +60,7 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
           className="object-cover"
         />
       </div>
-      <p className="text-primary font-bold text-sm">{formatPrice(item.price)}</p>
+      <p className="text-primary font-bold text-sm">{formatPrice(price)}</p>
       <div className="flex items-center mt-2">
         <PlusMinusButton
           allowRemove={true}

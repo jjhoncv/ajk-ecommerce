@@ -1,5 +1,7 @@
 import { CartPageInteractive } from "@/components/cart/CartPageInteractive";
+import Header from "@/components/layout/Header";
 import Layout from "@/components/layout/Layout";
+import { LayoutContent } from "@/components/layout/LayoutContent";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +12,10 @@ export const metadata: Metadata = {
 export default function CartPage() {
   return (
     <Layout>
-      <CartPageInteractive />
+      <Header />
+      <LayoutContent>
+        <CartPageInteractive />
+      </LayoutContent>
     </Layout>
   );
 }

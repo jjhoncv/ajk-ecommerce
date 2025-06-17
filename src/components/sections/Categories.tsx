@@ -10,7 +10,7 @@ interface CategoriesProps {
 
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {
   return (
-    <section className="max-w-[1920px] mx-auto px-12 py-12 bg-gray-50">
+    <section className="py-12 bg-gray-50">
       <div className="text-center mb-10">
         <div className="flex items-center justify-center gap-3 mb-4">
           <ShoppingBag className="h-8 w-8 text-primary" />

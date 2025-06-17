@@ -4,7 +4,7 @@ import Link from "next/link"
 export const ProductVariantNotFound = () => {
   return (
     <Layout>
-      <main className="max-w-[1920px] mx-auto px-12 py-8">
+      <main className="py-8">
         <div className="text-center py-12">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
             Producto no encontrado

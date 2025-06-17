@@ -79,7 +79,10 @@ export const getImageTypeLabel = (imageType?: string): string => {
 }
 
 export const getPriceIfHasPromotion = (
-  variant: ProductVariants
+  variant: Omit<
+    ProductVariants,
+    'productId' | 'sku' | 'createdAt' | 'updatedAt'
+  >
 ): {
   hasPromotion: boolean
   finalPrice: number

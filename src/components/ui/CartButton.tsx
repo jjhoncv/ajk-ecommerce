@@ -1,5 +1,5 @@
 "use client";
-import { useCartContext } from "@/providers/CartProvider";
+import { useCartContext } from "@/providers/cart";
 import { ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";

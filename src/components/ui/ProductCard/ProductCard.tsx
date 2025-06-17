@@ -1,8 +1,10 @@
 "use client";
+import { getPriceIfHasPromotion } from "@/components/product/ProductVariant.helpers";
+import { getVariantImages } from "@/helpers/image.helpers";
 import { getVariantTitle } from "@/helpers/productVariant.helpers";
 import Link from "next/link";
 import React from "react";
-import { getImagesToProductCard, getThumbImageToProductCard, hasPromotion } from "./ProductCard.helpers";
+import { hasPromotion } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
 import ProductCardButtonAddToCart from "./ProductCardButtonAddToCart";
 import ProductCardPrice from "./ProductCardPrice";
@@ -30,6 +32,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   const hasDiscount = hasPromotion(variant);
+  const images = getVariantImages(variant)
+
+  const thumbImage = images.sort((a, b) => a.displayOrder - b.displayOrder)[0].imageUrlThumb
+
+  const { originalPrice } = getPriceIfHasPromotion(variant)
+
 
   return (
     <div
@@ -41,18 +49,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
           className={`block`}
         >
           <ProductCardSlider
-            images={getImagesToProductCard(variant)}
+            images={images}
             productName={product.name}
           />
         </Link>
 
         <ProductCardButtonAddToCart
           id={product.variantId}
-          image={getThumbImageToProductCard(variant)}
-          name={product.name}
-          price={product.variantPrice || variant.price}
+          image={thumbImage}
+          name={getVariantTitle(product.name, variant)}
+          price={originalPrice}
           stock={variant.stock}
           quantity={1}
+          promotionVariants={variant.promotionVariants}
         />
       </div>
 

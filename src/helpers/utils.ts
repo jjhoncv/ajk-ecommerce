@@ -1,3 +1,5 @@
+import { PromotionVariants } from '@/types/domain'
+
 /**
  * Formatea un precio en formato de moneda
  * @param price - El precio a formatear
@@ -79,4 +81,12 @@ export function getImageUrl(
 
   // Si la URL no tiene parámetros, agregamos las dimensiones
   return `${url}?w=${width}&h=${height}`
+}
+
+export const getPromotions = (
+  _pvs?: (PromotionVariants | null)[] | null
+): PromotionVariants[] | undefined => {
+  if (!_pvs) return []
+  const pvsNotEmpty: PromotionVariants[] = _pvs.filter((pv) => !!pv)
+  return pvsNotEmpty
 }

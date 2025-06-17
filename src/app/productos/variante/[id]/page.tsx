@@ -1,4 +1,6 @@
+import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
+import { LayoutContent } from '@/components/layout/LayoutContent'
 import { ProductVariantNotFound } from '@/components/product/ProductVariantNotFound'
 import ProductVariantView from '@/components/product/ProductVariantView'
 import { generateErrorMetadata, generateProductVariantMetadata } from '@/helpers/productVariant.helpers'
@@ -56,7 +58,10 @@ export default async function ProductVariantPage({
 
   return (
     <Layout>
-      <ProductVariantView data={data} allVariants={allVariants} variant={variant} />
+      <Header />
+      <LayoutContent>
+        <ProductVariantView data={data} allVariants={allVariants} variant={variant} />
+      </LayoutContent>
     </Layout>
   )
 }

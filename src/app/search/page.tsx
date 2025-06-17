@@ -1,4 +1,6 @@
+import Header from "@/components/layout/Header";
 import Layout from "@/components/layout/Layout";
+import { LayoutContent } from "@/components/layout/LayoutContent";
 import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
 import StickyFilters from "@/components/search/StickyFilters";
@@ -27,7 +29,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <Layout>
-      <div className="max-w-screen-4xl mx-auto px-12 py-8">
+      <Header />
+      <LayoutContent>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filtros laterales */}
           <div className="lg:min-w-56 lg:max-w-56">
@@ -50,7 +53,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             />
           </div>
         </div>
-      </div>
+      </LayoutContent>
+
     </Layout>
   );
 }

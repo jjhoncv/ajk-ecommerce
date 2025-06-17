@@ -1,12 +1,8 @@
 "use client";
-import { ModalContent } from "@/components/ui/Modal/ModalContent";
-import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
+import { useAuthModal } from "@/providers/auth-modal";
 import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import LoginForm from "./LoginForm";
-import { Modal } from "./Modal";
-import RegisterForm from "./RegisterForm";
 import UserMenu from "./UserMenu";
 
 interface ClientAuthButtonProps {
@@ -23,8 +19,7 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
   initialUserId,
 }) => {
   const { data: session, status } = useSession();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const { openLogin } = useAuthModal(); // 👈 Usar el provider centralizado
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   // 👈 ESTADO HÍBRIDO: Usar valores iniciales del servidor hasta que el cliente se hidrate
@@ -43,6 +38,11 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
     const newIsAuthenticated = !!session;
 
     if (newIsAuthenticated !== authState.isAuthenticated) {
+      console.log('🔄 Auth state changed:', {
+        from: authState.isAuthenticated,
+        to: newIsAuthenticated
+      });
+
       setAuthState({
         isAuthenticated: newIsAuthenticated,
         userName: session?.user?.name || "",
@@ -64,9 +64,12 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
 
   const handleAuthClick = () => {
     if (authState.isAuthenticated) {
+      console.log('👤 Opening user menu');
       setIsUserMenuOpen(true);
     } else {
-      setIsLoginModalOpen(true);
+      console.log('🔐 User not authenticated, opening login modal');
+      // 👈 USAR EL PROVIDER CENTRALIZADO - Sin callbacks especiales para el header
+      openLogin();
     }
   };
 
@@ -82,54 +85,7 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
         </span>
       </button>
 
-      {/* Modal de login */}
-      <Modal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      >
-        <ModalTitle
-          onClose={() => setIsLoginModalOpen(false)}
-          title="Iniciar sesión"
-        />
-        <ModalContent>
-          <LoginForm
-            onSuccess={() => {
-              setIsLoginModalOpen(false);
-              // La sesión se actualizará automáticamente vía useSession
-            }}
-            onClose={() => setIsLoginModalOpen(false)}
-            onSwitchToRegister={() => {
-              setIsLoginModalOpen(false);
-              setIsRegisterModalOpen(true);
-            }}
-          />
-        </ModalContent>
-      </Modal>
-
-      {/* Modal de registro */}
-      <Modal
-        isOpen={isRegisterModalOpen}
-        onClose={() => setIsRegisterModalOpen(false)}
-      >
-        <ModalTitle
-          onClose={() => setIsRegisterModalOpen(false)}
-          title="Crear cuenta"
-        />
-        <ModalContent>
-          <RegisterForm
-            onSuccess={() => {
-              setIsRegisterModalOpen(false);
-            }}
-            onClose={() => setIsRegisterModalOpen(false)}
-            onSwitchToLogin={() => {
-              setIsRegisterModalOpen(false);
-              setIsLoginModalOpen(true);
-            }}
-          />
-        </ModalContent>
-      </Modal>
-
-      {/* Menú de usuario */}
+      {/* Menú de usuario - Solo se renderiza si está autenticado */}
       {authState.isAuthenticated && sessionData && (
         <UserMenu
           isOpen={isUserMenuOpen}

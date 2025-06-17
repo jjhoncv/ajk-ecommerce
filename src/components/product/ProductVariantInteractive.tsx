@@ -42,7 +42,8 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
   };
 
   return (
-    <>
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+
       <div className="xl:col-span-9">
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           <div className="xl:col-span-1">
@@ -83,7 +84,7 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
         productName={product.name}
         initialImageIndex={initialModalImageIndex}
       />
-    </>
+    </div>
   );
 };
 

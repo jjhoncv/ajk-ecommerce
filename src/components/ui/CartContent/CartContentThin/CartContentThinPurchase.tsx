@@ -28,9 +28,5 @@ export const CartContentThinPurchase: FC<CartContentThinPurchaseProps> = ({ tota
       </div>
       <div className="border-b border-gray-200"></div>
     </>
-
-
-
-
   )
 }

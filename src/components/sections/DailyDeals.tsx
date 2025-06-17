@@ -16,7 +16,7 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
   products,
 }) => {
   return (
-    <section className="max-w-screen-4xl mx-auto px-12 py-8">
+    <section className="py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Mejores Ventas del Día</h2>
         <div className="flex items-center gap-4">

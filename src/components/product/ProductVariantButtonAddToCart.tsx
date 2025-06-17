@@ -1,5 +1,7 @@
 "use client";
-import { useCartContext } from "@/providers/CartProvider";
+import { getPromotions } from "@/helpers/utils";
+import { useCartContext } from "@/providers/cart";
+import { PromotionVariants } from "@/types/domain";
 import React from "react";
 
 interface ProductVariantButtonAddToCartProps {
@@ -9,6 +11,8 @@ interface ProductVariantButtonAddToCartProps {
   price: number;
   stock: number;
   quantity: number;
+  promotionVariants?: (PromotionVariants | null)[] | null
+
 }
 
 const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps> = ({
@@ -17,9 +21,12 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
   image,
   name,
   price,
-  stock
+  stock,
+  promotionVariants: pvs
 }) => {
   const { updateQuantity, items, addItem, openCart } = useCartContext();
+
+  const promotionVariants = getPromotions(pvs)
 
   // Encontrar el item en el carrito si existe
   const existingItem = items.find(item => item.id === id);
@@ -48,7 +55,8 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
         image,
         name,
         price,
-        stock
+        stock,
+        promotionVariants
       }, quantity);
       openCart()
     }

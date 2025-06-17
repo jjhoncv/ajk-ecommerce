@@ -1,16 +1,15 @@
-import { Categories } from "@/types/domain";
 import { Heart } from "lucide-react";
+import { ReactNode } from "react";
 import CartButton from "../ui/CartButton";
 import Logo from "../ui/Logo";
-import Navigation from "../ui/Navigation";
 import SearchBar from "../ui/SearchBar";
 import ServerAuthButton from "../ui/ServerAuthButton";
 
 interface HeaderProps {
-  categories: Categories[];
+  children?: ReactNode
 }
 
-const Header = async ({ categories }: HeaderProps) => {
+const Header = async ({ children }: HeaderProps) => {
   return (
     <header className="border-b border-gray-200 sticky top-0 bg-white z-50 border-none">
       <div className="max-w-screen-4xl mx-auto px-12 py-4">
@@ -31,8 +30,9 @@ const Header = async ({ categories }: HeaderProps) => {
           </div>
         </div>
       </div>
+      {children}
 
-      <Navigation categories={categories} />
+      {/* <Navigation categories={categories} /> */}
     </header>
   );
 };

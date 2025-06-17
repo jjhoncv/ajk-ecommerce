@@ -13,7 +13,7 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
 }) => {
 
   return (
-    <section className="max-w-screen-4xl mx-auto px-12 py-8">
+    <section className="py-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Productos Populares</h2>
         <Link

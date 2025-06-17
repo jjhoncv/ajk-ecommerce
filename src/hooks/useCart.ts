@@ -1,7 +1,8 @@
-// hooks/useCart.ts - SIN AUTO-APERTURA, SOLO VALIDACIONES DE RUTA
+// hooks/useCart.ts - Limpio, solo manejo del carrito principal
 'use client'
+import { PromotionVariants } from '@/types/domain'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface CartItem {
   id: number
@@ -10,11 +11,19 @@ export interface CartItem {
   image: string
   quantity: number
   stock: number
+  promotionVariants?: (PromotionVariants | null)[] | null
 }
 
-// 👈 CONFIGURACIÓN DE RUTAS DONDE SE PERMITE EL MINICART
+// Tipos para delete confirmation
+interface DeleteConfirmation {
+  isOpen: boolean
+  productId: number | null
+  productName: string
+  onConfirm: (() => void) | null
+}
+
+// 👈 CONFIGURACIÓN DE RUTAS SIMPLIFICADA
 const ALLOWED_MINICART_ROUTES = [
-  // '/', // Homepage
   '/products', // Página de productos
   '/categories', // Página de categorías
   '/search', // Página de búsqueda
@@ -22,12 +31,12 @@ const ALLOWED_MINICART_ROUTES = [
   '/category', // Página de categoría específica
   '/productos', // Base de productos
   '/productos/variante' // PDP con variantes
-  // Agregar más rutas según necesites
 ]
 
-// 👈 RUTAS DONDE NO SE DEBE MOSTRAR EL MINICART
-const BLOCKED_MINICART_ROUTES = [
-  '/cart', // Página del carrito (ya estás ahí)
+// 👈 RUTAS DONDE NO SE DEBE MOSTRAR EL MINICART (incluyendo home y cart)
+const NO_MINICART_ROUTES = [
+  '/', // Homepage - NO abrir minicart
+  '/cart', // Página del carrito - NO abrir minicart
   '/checkout', // Página de checkout
   '/login', // Página de login
   '/register', // Página de registro
@@ -35,6 +44,27 @@ const BLOCKED_MINICART_ROUTES = [
   '/profile', // Perfil de usuario
   '/orders' // Órdenes del usuario
 ]
+
+// 👈 FUNCIÓN SIMPLIFICADA PARA VERIFICAR SI DEBE ABRIR MINICART
+const shouldOpenMinicart = (currentPath: string): boolean => {
+  // Verificar rutas donde NO se debe abrir minicart
+  const shouldNotOpen = NO_MINICART_ROUTES.some((route) => {
+    return currentPath === route || currentPath.startsWith(route + '/')
+  })
+
+  if (shouldNotOpen) {
+    return false
+  }
+
+  // Verificar rutas permitidas para minicart
+  const isAllowed = ALLOWED_MINICART_ROUTES.some((allowedRoute) => {
+    return (
+      currentPath === allowedRoute || currentPath.startsWith(allowedRoute + '/')
+    )
+  })
+
+  return isAllowed
+}
 
 export function useCart() {
   const router = useRouter()
@@ -50,36 +80,18 @@ export function useCart() {
   const hasLoadedRef = useRef(false)
   const isMountedRef = useRef(true)
 
-  // 👈 FUNCIÓN PARA VERIFICAR SI LA RUTA PERMITE MINICART
+  // 🆕 ESTADO PARA DELETE CONFIRMATION
+  const [deleteConfirmation, setDeleteConfirmation] =
+    useState<DeleteConfirmation>({
+      isOpen: false,
+      productId: null,
+      productName: '',
+      onConfirm: null
+    })
+
+  // 👈 FUNCIÓN PARA VERIFICAR SI LA RUTA PERMITE MINICART (para otros componentes)
   const isMinicartAllowedOnRoute = (currentPath: string): boolean => {
-    // Verificar rutas bloqueadas primero (más específicas)
-    const isBlocked = BLOCKED_MINICART_ROUTES.some((blockedRoute) => {
-      return (
-        currentPath === blockedRoute ||
-        currentPath.startsWith(blockedRoute + '/')
-      )
-    })
-
-    if (isBlocked) {
-      console.log('🚫 Minicart blocked on route:', currentPath)
-      return false
-    }
-
-    // Verificar rutas permitidas
-    const isAllowed = ALLOWED_MINICART_ROUTES.some((allowedRoute) => {
-      return (
-        currentPath === allowedRoute ||
-        currentPath.startsWith(allowedRoute + '/')
-      )
-    })
-
-    console.log(
-      '✅ Minicart allowed on route:',
-      currentPath,
-      '- Allowed:',
-      isAllowed
-    )
-    return isAllowed
+    return shouldOpenMinicart(currentPath)
   }
 
   // 👈 CERRAR MINICART AL CAMBIAR A RUTA BLOQUEADA
@@ -176,43 +188,15 @@ export function useCart() {
     }
   }, [toastMessage])
 
-  // 👈 FUNCIONES DEL CARRITO
   const addItem = (
     item: Omit<CartItem, 'quantity'>,
     initialQuantity: number = 1
   ) => {
     console.log('➕ Adding item:', item.name, 'Qty:', initialQuantity)
 
-    // 👈 LÓGICA ESPECIAL: Si estamos en ruta bloqueada, redirigir a /cart
-    if (!isMinicartAllowedOnRoute(pathname)) {
-      console.log(
-        '🚫 Adding item on blocked route, will redirect to /cart after adding'
-      )
-
-      // Agregar el item primero
-      setItems((prevItems) => {
-        const existingItemIndex = prevItems.findIndex((i) => i.id === item.id)
-        if (existingItemIndex >= 0) {
-          const updatedItems = [...prevItems]
-          updatedItems[existingItemIndex].quantity += initialQuantity
-          return updatedItems
-        } else {
-          return [...prevItems, { ...item, quantity: initialQuantity }]
-        }
-      })
-
-      setToastMessage(`Producto añadido! Redirigiendo al carrito...`)
-      setTimeout(() => {
-        router.push('/cart')
-      }, 1500)
-
-      return
-    }
-
-    // Flujo normal para rutas permitidas
+    // Agregar el item al estado SIEMPRE
     setItems((prevItems) => {
       const existingItemIndex = prevItems.findIndex((i) => i.id === item.id)
-
       if (existingItemIndex >= 0) {
         const updatedItems = [...prevItems]
         updatedItems[existingItemIndex].quantity += initialQuantity
@@ -228,13 +212,17 @@ export function useCart() {
       }
     })
 
+    // Mostrar toast SIEMPRE
     setToastMessage(`Añadido a la cesta!`)
 
-    // 👈 NUEVO: Abrir minicart después de agregar producto en ruta válida
-    console.log('✨ Opening minicart after adding item')
-    setIsCartOpen(true)
+    // Abrir minicart solo si la ruta lo permite
+    if (shouldOpenMinicart(pathname)) {
+      console.log('✨ Opening minicart after adding item on route:', pathname)
+      setIsCartOpen(true)
+    } else {
+      console.log('🚫 Not opening minicart on route:', pathname)
+    }
   }
-
   const removeItem = (id: number) => {
     console.log('🗑️ Removing item ID:', id)
     const itemToRemove = items.find((item) => item.id === id)
@@ -258,6 +246,7 @@ export function useCart() {
       return
     }
 
+    // Actualizar la cantidad SIEMPRE
     setItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === id) {
@@ -268,12 +257,18 @@ export function useCart() {
       })
     )
 
+    // Mostrar toast SIEMPRE
     setToastMessage(`Cantidad actualizada`)
 
-    // 👈 NUEVO: Abrir minicart después de actualizar cantidad en ruta válida
-    if (isMinicartAllowedOnRoute(pathname)) {
-      console.log('✨ Opening minicart after updating quantity')
+    // Abrir minicart solo si la ruta lo permite
+    if (shouldOpenMinicart(pathname)) {
+      console.log(
+        '✨ Opening minicart after updating quantity on route:',
+        pathname
+      )
       setIsCartOpen(true)
+    } else {
+      console.log('🚫 Not opening minicart on route:', pathname)
     }
   }
 
@@ -351,6 +346,38 @@ export function useCart() {
     router.push('/cart')
   }
 
+  // 🆕 FUNCIONES DE DELETE CONFIRMATION
+  const openDeleteConfirmation = useCallback(
+    (id: number, name: string, onConfirm?: () => void) => {
+      console.log('🗑️ Opening delete confirmation:', { id, name })
+      setDeleteConfirmation({
+        isOpen: true,
+        productId: id,
+        productName: name,
+        onConfirm: onConfirm || (() => removeItem(id))
+      })
+    },
+    []
+  )
+
+  const closeDeleteConfirmation = useCallback(() => {
+    console.log('❌ Closing delete confirmation')
+    setDeleteConfirmation({
+      isOpen: false,
+      productId: null,
+      productName: '',
+      onConfirm: null
+    })
+  }, [])
+
+  const confirmDelete = useCallback(() => {
+    console.log('✅ Confirming delete')
+    if (deleteConfirmation.onConfirm) {
+      deleteConfirmation.onConfirm()
+    }
+    closeDeleteConfirmation()
+  }, [deleteConfirmation.onConfirm, closeDeleteConfirmation])
+
   // DEBUG INFO
   useEffect(() => {
     console.log('📊 Cart State Summary:', {
@@ -365,6 +392,7 @@ export function useCart() {
   }, [items, totalItems, totalPrice, isInitialized, pathname])
 
   return {
+    // Funcionalidad principal del carrito
     items,
     addItem,
     removeItem,
@@ -382,14 +410,20 @@ export function useCart() {
     canShowMinicart,
     toastMessage,
     setToastMessage,
-    isInitialized
+    isInitialized,
+
+    // Funcionalidad de delete confirmation
+    deleteConfirmation,
+    openDeleteConfirmation,
+    closeDeleteConfirmation,
+    confirmDelete
   }
 }
 
 // 👈 CONFIGURACIÓN EXPORTADA
 export const CART_ROUTE_CONFIG = {
   ALLOWED_ROUTES: ALLOWED_MINICART_ROUTES,
-  BLOCKED_ROUTES: BLOCKED_MINICART_ROUTES
+  BLOCKED_ROUTES: NO_MINICART_ROUTES
 }
 
 export default useCart

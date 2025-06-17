@@ -33,7 +33,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
   return (
     <section className="relative">
-      <div className="max-w-screen-4xl mx-auto px-12 py-6">
+      <div className="max-w-screen-4xl mx-auto py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Slider */}
           <div className="col-span-8 relative  overflow-hidden h-[400px]">

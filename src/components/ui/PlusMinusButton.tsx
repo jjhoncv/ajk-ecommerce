@@ -8,8 +8,9 @@ interface PlusMinusButtonProps {
   maxQuantity?: number
   minQuantity?: number
   onQuantityChange?: (quantity: number) => void
-  onRemoveRequest?: () => void // Nueva prop para manejar solicitud de eliminación
+  onRemoveRequest?: () => void
   disabled?: boolean
+  forceEnabled?: boolean // 👈 SOLO ESTA PROP ES NECESARIA
   size?: 'sm' | 'md' | 'lg'
   className?: string
   stock: number
@@ -23,8 +24,9 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   minQuantity = 1,
   allowRemove = false,
   onQuantityChange,
-  onRemoveRequest, // Nueva prop
+  onRemoveRequest,
   disabled = false,
+  forceEnabled = false, // 👈 SIMPLE Y DIRECTO
   size = 'md',
   className
 }) => {
@@ -32,6 +34,9 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
   // Determinar la cantidad máxima
   const effectiveMaxQuantity = maxQuantity || stock || 999
+
+  // 👈 LÓGICA SIMPLE: forceEnabled override disabled
+  const effectiveDisabled = forceEnabled ? false : disabled
 
   // Sincronizar con initialQuantity cuando cambie
   useEffect(() => {
@@ -50,7 +55,7 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   }, [initialQuantity, minQuantity, effectiveMaxQuantity])
 
   const increaseQuantity = () => {
-    if (quantity < effectiveMaxQuantity && !disabled) {
+    if (quantity < effectiveMaxQuantity && !effectiveDisabled) {
       const newQuantity = quantity + 1
       setQuantity(newQuantity)
       onQuantityChange?.(newQuantity)
@@ -58,11 +63,11 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   }
 
   const decreaseQuantity = () => {
-    if (!disabled) {
+    if (!effectiveDisabled) {
       // Si allowRemove es true y quantity es 1, mostrar confirmación
       if (allowRemove && quantity === 1) {
-        onRemoveRequest?.() // Llamar al callback de confirmación
-        return // No actualizar quantity aquí
+        onRemoveRequest?.()
+        return
       }
 
       // Si allowRemove es false, no permitir bajar de minQuantity
@@ -78,14 +83,14 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
   // Determinar si el botón de disminuir debe estar deshabilitado
   const isDecreaseDisabled = () => {
-    if (disabled) return true
+    if (effectiveDisabled) return true
 
     // Si allowRemove es false, deshabilitar cuando llegue al mínimo
     if (!allowRemove) {
       return quantity <= minQuantity
     }
 
-    // Si allowRemove es true, nunca deshabilitar (siempre permitir hasta mostrar confirmación)
+    // Si allowRemove es true, nunca deshabilitar
     return false
   }
 
@@ -114,7 +119,7 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
     <div className={cn(
       "flex items-center",
       currentSize.container,
-      disabled && "opacity-50",
+      effectiveDisabled && "opacity-50",
       className
     )}>
       <button
@@ -138,7 +143,7 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
       <button
         onClick={increaseQuantity}
-        disabled={quantity >= effectiveMaxQuantity || disabled}
+        disabled={quantity >= effectiveMaxQuantity || effectiveDisabled}
         className={cn(
           "flex items-center justify-center font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
           currentSize.button

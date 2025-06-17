@@ -1,7 +1,8 @@
+import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
 
-export const ModalContent = ({ children }: { children: ReactNode }) => {
+export const ModalContent = ({ children, className }: { children: ReactNode, className?: string }) => {
   return (
-    <div className="p-4">{children}</div>
+    <div className={cn("p-4", className)}>{children}</div>
   )
 }

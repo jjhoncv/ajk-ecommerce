@@ -1,16 +1,24 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  className?: string
+  className?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // 👈 ASEGURAR QUE ESTAMOS EN EL CLIENTE
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   // Cerrar al hacer clic fuera
   useEffect(() => {
@@ -56,17 +64,26 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, classNa
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  // 👈 NO RENDERIZAR SI NO ESTÁ MONTADO O NO ESTÁ ABIERTO
+  if (!mounted || !isOpen) return null;
 
-  return (
+  // 👈 CONTENIDO DEL MODAL
+  const modalContent = (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div
         ref={modalRef}
-        className={cn("bg-white shadow-xl w-full max-w-md overflow-hidden px-10 py-5", className)}
+        className={cn(
+          "bg-white shadow-xl w-full max-w-md overflow-hidden px-10 py-5",
+          className
+        )}
+        role="dialog"
+        aria-modal="true"
       >
         {children}
       </div>
     </div>
   );
-};
 
+  // 👈 USAR PORTAL PARA RENDERIZAR EN document.body
+  return createPortal(modalContent, document.body);
+};
