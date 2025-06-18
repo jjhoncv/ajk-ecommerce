@@ -43,7 +43,6 @@ const ProductCardButtonAddToCart: React.FC<ProductCardButtonAddToCartProps> = ({
 
     const promotionVariants = getPromotions(pvs)
 
-    console.log("promotionVariants", promotionVariants)
 
     if (isDisabled) return;
 

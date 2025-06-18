@@ -1,41 +1,44 @@
-// SidePage.tsx - Versión mejorada
+// SidePage.tsx - Con onClose handler
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 
 interface SidePageProps {
   isOpen: boolean;
+  onClose: () => void; // 👈 AGREGADO
   children: ReactNode;
   direction?: "left" | "right";
   width?: number;
-  preventInitialAnimation?: boolean; // 👈 NUEVO
+  preventInitialAnimation?: boolean;
+  closeOnEscape?: boolean; // 👈 OPCIONAL
+  closeOnClickOutside?: boolean; // 👈 OPCIONAL
 }
 
 const SidePage: React.FC<SidePageProps> = ({
   isOpen,
+  onClose, // 👈 AGREGADO
   children,
   direction = "right",
   width = 400,
-  preventInitialAnimation = false, // 👈 NUEVO
+  preventInitialAnimation = false,
+  closeOnEscape = true, // 👈 NUEVO
+  closeOnClickOutside = true, // 👈 NUEVO
 }) => {
-  const [hasInteracted, setHasInteracted] = useState(!preventInitialAnimation)
+  const [hasInteracted, setHasInteracted] = useState(!preventInitialAnimation);
+  const sidePageRef = useRef<HTMLDivElement>(null); // 👈 REF PARA CLICK OUTSIDE
 
   useEffect(() => {
     const body = document.body;
-
-    // 👈 Solo aplicar transición si ya hubo interacción del usuario
-    const shouldAnimate = hasInteracted || !preventInitialAnimation
+    const shouldAnimate = hasInteracted || !preventInitialAnimation;
 
     if (isOpen) {
       const marginProperty = direction === "right" ? "marginRight" : "marginLeft";
       body.style[marginProperty] = `${width}px`;
 
-      // 👈 Transición más rápida y sutil
       if (shouldAnimate) {
-        body.style.transition = "margin 150ms ease-out"; // Más rápido
+        body.style.transition = "margin 150ms ease-out";
       } else {
-        body.style.transition = "none"; // Sin transición en primera carga
-        // Marcar que ya hubo primera interacción
-        setTimeout(() => setHasInteracted(true), 100)
+        body.style.transition = "none";
+        setTimeout(() => setHasInteracted(true), 100);
       }
     } else {
       body.style.marginLeft = "0";
@@ -45,9 +48,8 @@ const SidePage: React.FC<SidePageProps> = ({
         body.style.transition = "margin 150ms ease-out";
       }
 
-      // Marcar interacción al cerrar
       if (!hasInteracted) {
-        setHasInteracted(true)
+        setHasInteracted(true);
       }
     }
 
@@ -60,10 +62,50 @@ const SidePage: React.FC<SidePageProps> = ({
     };
   }, [isOpen, width, direction, hasInteracted, preventInitialAnimation]);
 
+  // 👈 MANEJAR TECLA ESCAPE
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen && closeOnEscape) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose, closeOnEscape]);
+
+  // 👈 MANEJAR CLICK OUTSIDE
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        closeOnClickOutside &&
+        sidePageRef.current &&
+        !sidePageRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose, closeOnClickOutside]);
+
   const positionClass = direction === "right" ? "right-0" : "left-0";
 
   return (
     <div
+      ref={sidePageRef} // 👈 REF AGREGADA
       className={`fixed z-40 top-0 h-full bg-white shadow-xl transition-transform duration-150 ease-out overflow-auto ${positionClass} ${isOpen
           ? "translate-x-0"
           : direction === "right"

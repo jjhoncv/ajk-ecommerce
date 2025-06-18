@@ -41,6 +41,8 @@ const SlidePage: React.FC<SlidePageProps> = ({
 
   // Prevenir scroll del body cuando está abierto
   useEffect(() => {
+    console.log("SlidePage isOpen", isOpen)
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {

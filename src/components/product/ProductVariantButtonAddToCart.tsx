@@ -12,7 +12,7 @@ interface ProductVariantButtonAddToCartProps {
   stock: number;
   quantity: number;
   promotionVariants?: (PromotionVariants | null)[] | null
-
+  onCartAction?: () => void
 }
 
 const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps> = ({
@@ -22,7 +22,8 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
   name,
   price,
   stock,
-  promotionVariants: pvs
+  promotionVariants: pvs,
+  onCartAction
 }) => {
   const { updateQuantity, items, addItem, openCart } = useCartContext();
 
@@ -60,6 +61,7 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
       }, quantity);
       openCart()
     }
+    onCartAction?.();
   };
 
   return (

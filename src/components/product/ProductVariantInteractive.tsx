@@ -13,12 +13,18 @@ interface ProductVariantInteractiveProps {
   initialData: ProductVariantData;
   allVariants: ProductVariants[];
   variant: ProductVariants;
+  preview?: boolean
+  handleVariantChangePreview?: (attributeId: number, optionId: number) => void;
+  onCartAction?: () => void
 }
 
 const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
   initialData,
   allVariants,
-  variant
+  variant,
+  preview = false,
+  handleVariantChangePreview,
+  onCartAction
 }) => {
   const [data, setData] = useState<ProductVariantData>(initialData);
   const { product } = data;
@@ -43,7 +49,6 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-
       <div className="xl:col-span-9">
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           <div className="xl:col-span-1">
@@ -58,32 +63,38 @@ const ProductVariantInteractive: React.FC<ProductVariantInteractiveProps> = ({
             <div className="border-t border-gray-200 pt-6">
               <ProductVariantAttributeSelector
                 data={data}
+                preview={preview}
                 allVariants={allVariants}
                 variant={variant}
-                onVariantChange={handleVariantChange} />
+                onVariantChange={handleVariantChange}
+                handleVariantChangePreview={handleVariantChangePreview}
+              />
             </div>
           </div>
         </div>
-        <div>
-          <ProductVariantRatings
-            product={product}
-            variant={variant}
-          />
-        </div>
+        {!preview &&
+          <div>
+            <ProductVariantRatings
+              product={product}
+              variant={variant}
+            />
+          </div>
+        }
       </div>
 
       <div className="xl:col-span-3">
-        <ProductVariantPurchase product={product} variant={variant} />
+        <ProductVariantPurchase onCartAction={onCartAction} preview={preview} product={product} variant={variant} />
       </div>
 
       {/* Modal de galería de imágenes */}
-      <ProductImageSliderModal
+      {!preview && <ProductImageSliderModal
         isOpen={isGalleryModalOpen}
         onClose={closeGalleryModal}
         images={getVariantImages(variant)}
         productName={product.name}
         initialImageIndex={initialModalImageIndex}
-      />
+      />}
+
     </div>
   );
 };

@@ -46,6 +46,42 @@ export type AttributesDisplayType =
   | 'radio'
   | 'select';
 
+export type OrderSummaryPaymentStatus =
+  | 'failed'
+  | 'paid'
+  | 'pending'
+  | 'refunded';
+
+export type OrderSummaryStatus =
+  | 'cancelled'
+  | 'delivered'
+  | 'pending'
+  | 'processing'
+  | 'refunded'
+  | 'shipped';
+
+export type OrderTrackingStatus =
+  | 'delivered'
+  | 'failed_delivery'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'preparing'
+  | 'shipped';
+
+export type OrdersPaymentStatus =
+  | 'failed'
+  | 'paid'
+  | 'pending'
+  | 'refunded';
+
+export type OrdersStatus =
+  | 'cancelled'
+  | 'delivered'
+  | 'pending'
+  | 'processing'
+  | 'refunded'
+  | 'shipped';
+
 export type PromotionsDiscountType =
   | 'fixed_amount'
   | 'percentage';
@@ -120,23 +156,138 @@ export interface Categories {
 export interface Customers {
   address_id?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
+  /** Documento de identidad  */
+  dni: Scalars['String']['output'];
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Int']['output']>;
   lastname: Scalars['String']['output'];
   name?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
+  /** numero de celular */
+  phone: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['Timestamp']['output'];
-  username: Scalars['String']['output'];
 }
 
 export interface CustomersAddresses {
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias: Scalars['String']['output'];
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
-  description?: Maybe<Scalars['String']['output']>;
+  department: Scalars['String']['output'];
+  district: Scalars['String']['output'];
   id: Scalars['Int']['output'];
-  id_customer?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+  id_customer: Scalars['Int']['output'];
+  /** 1 = dirección por defecto */
+  is_default?: Maybe<Scalars['Int']['output']>;
+  /** Latitud GPS */
+  latitude?: Maybe<Scalars['Float']['output']>;
+  /** Longitud GPS */
+  longitude?: Maybe<Scalars['Float']['output']>;
+  province: Scalars['String']['output'];
+  /** Nombre de la avenida/calle/jirón */
+  street_name: Scalars['String']['output'];
+  /** Número de la dirección */
+  street_number: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface OrderItems {
+  /** Descuento aplicado a este item */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  /** Nombre del producto al momento de compra */
+  product_name: Scalars['String']['output'];
+  quantity: Scalars['Int']['output'];
+  /** Precio total (quantity * unit_price) */
+  total_price: Scalars['Float']['output'];
+  /** Precio unitario al momento de compra */
+  unit_price: Scalars['Float']['output'];
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: Maybe<Scalars['JSON']['output']>;
+  /** Variante del producto comprada */
+  variant_id: Scalars['Int']['output'];
+  /** SKU de la variante */
+  variant_sku: Scalars['String']['output'];
+}
+
+export interface OrderSummary {
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  customer_email?: Maybe<Scalars['String']['output']>;
+  customer_id: Scalars['Int']['output'];
+  customer_name?: Maybe<Scalars['String']['output']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['output'];
+  payment_status: OrderSummaryPaymentStatus;
+  status: OrderSummaryStatus;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['output'];
+  total_items: Scalars['BigInt']['output'];
+  total_quantity?: Maybe<Scalars['Float']['output']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: Maybe<Scalars['String']['output']>;
+}
+
+export interface OrderTracking {
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  /** Ubicación actual del paquete */
+  current_location?: Maybe<Scalars['String']['output']>;
+  delivered_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Nombre de quien recibió */
+  delivered_to?: Maybe<Scalars['String']['output']>;
+  /** Notas de entrega */
+  delivery_notes?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  shipped_at?: Maybe<Scalars['Timestamp']['output']>;
+  status: OrderTrackingStatus;
+  /** Número de seguimiento del courier */
+  tracking_number?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface Orders {
+  /** Notas internas del admin */
+  admin_notes?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  customer_id: Scalars['Int']['output'];
+  /** Notas del cliente */
+  customer_notes?: Maybe<Scalars['String']['output']>;
+  /** Descuento aplicado */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['output'];
+  /** Fecha de pago confirmado */
+  paid_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Método de pago usado */
+  payment_method?: Maybe<Scalars['String']['output']>;
+  payment_status: OrdersPaymentStatus;
+  /** Dirección de envío */
+  shipping_address_id: Scalars['Int']['output'];
+  /** Costo de envío */
+  shipping_cost?: Maybe<Scalars['Float']['output']>;
+  /** Método de envío */
+  shipping_method?: Maybe<Scalars['String']['output']>;
+  status: OrdersStatus;
+  /** Subtotal antes de descuentos */
+  subtotal: Scalars['Float']['output'];
+  /** Impuestos (IGV) */
+  tax_amount?: Maybe<Scalars['Float']['output']>;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['output'];
   updated_at: Scalars['Timestamp']['output'];
 }
 

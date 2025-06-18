@@ -34,6 +34,14 @@ type Query {
   countCustomers(where: CustomersWhereInput): Int @mysqlCount(subgraph: "Database", table: "customers")
   customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses")
   countCustomersAddresses(where: CustomersAddressesWhereInput): Int @mysqlCount(subgraph: "Database", table: "customers_addresses")
+  orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items")
+  countOrderItems(where: OrderItemsWhereInput): Int @mysqlCount(subgraph: "Database", table: "order_items")
+  orderSummary(limit: Int, offset: Int, where: OrderSummaryWhereInput, orderBy: OrderSummaryOrderByInput): [OrderSummary] @mysqlSelect(subgraph: "Database", table: "order_summary")
+  countOrderSummary(where: OrderSummaryWhereInput): Int @mysqlCount(subgraph: "Database", table: "order_summary")
+  orderTracking(limit: Int, offset: Int, where: OrderTrackingWhereInput, orderBy: OrderTrackingOrderByInput): [OrderTracking] @mysqlSelect(subgraph: "Database", table: "order_tracking")
+  countOrderTracking(where: OrderTrackingWhereInput): Int @mysqlCount(subgraph: "Database", table: "order_tracking")
+  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders")
+  countOrders(where: OrdersWhereInput): Int @mysqlCount(subgraph: "Database", table: "orders")
   permissions(limit: Int, offset: Int, where: PermissionsWhereInput, orderBy: PermissionsOrderByInput): [Permissions] @mysqlSelect(subgraph: "Database", table: "permissions")
   countPermissions(where: PermissionsWhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
   productCategories(limit: Int, offset: Int, where: ProductCategoriesWhereInput, orderBy: ProductCategoriesOrderByInput): [ProductCategories] @mysqlSelect(subgraph: "Database", table: "product_categories")
@@ -97,6 +105,18 @@ type Mutation {
   insertCustomersAddresses(customers_addresses: CustomersAddressesInsertInput!): CustomersAddresses @mysqlInsert(subgraph: "Database", table: "customers_addresses", primaryKeys: ["id"])
   updateCustomersAddresses(customers_addresses: CustomersAddressesUpdateInput!, where: CustomersAddressesWhereInput): CustomersAddresses @mysqlUpdate(subgraph: "Database", table: "customers_addresses")
   deleteCustomersAddresses(where: CustomersAddressesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "customers_addresses")
+  insertOrderItems(order_items: OrderItemsInsertInput!): OrderItems @mysqlInsert(subgraph: "Database", table: "order_items", primaryKeys: ["id"])
+  updateOrderItems(order_items: OrderItemsUpdateInput!, where: OrderItemsWhereInput): OrderItems @mysqlUpdate(subgraph: "Database", table: "order_items")
+  deleteOrderItems(where: OrderItemsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "order_items")
+  insertOrderSummary(order_summary: OrderSummaryInsertInput!): OrderSummary @mysqlInsert(subgraph: "Database", table: "order_summary", primaryKeys: [])
+  updateOrderSummary(order_summary: OrderSummaryUpdateInput!, where: OrderSummaryWhereInput): OrderSummary @mysqlUpdate(subgraph: "Database", table: "order_summary")
+  deleteOrderSummary(where: OrderSummaryWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "order_summary")
+  insertOrderTracking(order_tracking: OrderTrackingInsertInput!): OrderTracking @mysqlInsert(subgraph: "Database", table: "order_tracking", primaryKeys: ["id"])
+  updateOrderTracking(order_tracking: OrderTrackingUpdateInput!, where: OrderTrackingWhereInput): OrderTracking @mysqlUpdate(subgraph: "Database", table: "order_tracking")
+  deleteOrderTracking(where: OrderTrackingWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "order_tracking")
+  insertOrders(orders: OrdersInsertInput!): Orders @mysqlInsert(subgraph: "Database", table: "orders", primaryKeys: ["id"])
+  updateOrders(orders: OrdersUpdateInput!, where: OrdersWhereInput): Orders @mysqlUpdate(subgraph: "Database", table: "orders")
+  deleteOrders(where: OrdersWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "orders")
   insertPermissions(permissions: PermissionsInsertInput!): Permissions @mysqlInsert(subgraph: "Database", table: "permissions", primaryKeys: ["id"])
   updatePermissions(permissions: PermissionsUpdateInput!, where: PermissionsWhereInput): Permissions @mysqlUpdate(subgraph: "Database", table: "permissions")
   deletePermissions(where: PermissionsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "permissions")
@@ -299,11 +319,497 @@ type ProductVariants {
   stock: Int!
   createdAt: Timestamp!
   updatedAt: Timestamp!
+  orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["variant_id", "id"]])
   products(where: ProductsWhereInput, orderBy: ProductsOrderByInput, limit: Int, offset: Int): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
   promotionVariants(limit: Int, offset: Int, where: PromotionVariantsWhereInput, orderBy: PromotionVariantsOrderByInput): [PromotionVariants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["variant_id", "id"]])
   variantAttributeOptions(limit: Int, offset: Int, where: VariantAttributeOptionsWhereInput, orderBy: VariantAttributeOptionsOrderByInput): [VariantAttributeOptions] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["variant_id", "id"]])
   variantImages(limit: Int, offset: Int, where: VariantImagesWhereInput, orderBy: VariantImagesOrderByInput): [VariantImages] @mysqlSelect(subgraph: "Database", table: "variant_images", columnMap: [["variant_id", "id"]])
   variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["variant_id", "id"]])
+}
+
+"""Items/productos de cada orden"""
+type OrderItems {
+  id: Int!
+  orderId: Int!
+  """Variante del producto comprada"""
+  variantId: Int!
+  """Nombre del producto al momento de compra"""
+  productName: String!
+  """SKU de la variante"""
+  variantSku: String!
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: JSON
+  quantity: Int!
+  """Precio unitario al momento de compra"""
+  unitPrice: Float!
+  """Precio total (quantity * unit_price)"""
+  totalPrice: Float!
+  """Descuento aplicado a este item"""
+  discountAmount: Float
+  orders(where: OrdersWhereInput, orderBy: OrdersOrderByInput, limit: Int, offset: Int): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+"""Órdenes principales del ecommerce"""
+type Orders {
+  id: Int!
+  customerId: Int!
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String!
+  status: OrdersStatus!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  """Subtotal antes de descuentos"""
+  subtotal: Float!
+  """Descuento aplicado"""
+  discountAmount: Float
+  """Costo de envío"""
+  shippingCost: Float
+  """Impuestos (IGV)"""
+  taxAmount: Float
+  """Total final a pagar"""
+  totalAmount: Float!
+  """Dirección de envío"""
+  shippingAddressId: Int!
+  """Método de envío"""
+  shippingMethod: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  """Método de pago usado"""
+  paymentMethod: String
+  paymentStatus: OrdersPaymentStatus!
+  """Fecha de pago confirmado"""
+  paidAt: Timestamp
+  """Notas del cliente"""
+  customerNotes: String
+  """Notas internas del admin"""
+  adminNotes: String
+  orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["order_id", "id"]])
+  orderTracking(limit: Int, offset: Int, where: OrderTrackingWhereInput, orderBy: OrderTrackingOrderByInput): [OrderTracking] @mysqlSelect(subgraph: "Database", table: "order_tracking", columnMap: [["order_id", "id"]])
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
+  customersAddresses(where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput, limit: Int, offset: Int): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id", "shipping_address_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_address_id")
+}
+
+enum OrdersStatus {
+  pending
+  processing
+  shipped
+  delivered
+  cancelled
+  refunded
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+enum OrdersPaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+"""Items/productos de cada orden"""
+input OrderItemsWhereInput {
+  id: String
+  orderId: String
+  """Variante del producto comprada"""
+  variantId: String
+  """Nombre del producto al momento de compra"""
+  productName: String
+  """SKU de la variante"""
+  variantSku: String
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: String
+  quantity: String
+  """Precio unitario al momento de compra"""
+  unitPrice: String
+  """Precio total (quantity * unit_price)"""
+  totalPrice: String
+  """Descuento aplicado a este item"""
+  discountAmount: String
+}
+
+"""Items/productos de cada orden"""
+input OrderItemsOrderByInput {
+  id: OrderBy
+  orderId: OrderBy
+  """Variante del producto comprada"""
+  variantId: OrderBy
+  """Nombre del producto al momento de compra"""
+  productName: OrderBy
+  """SKU de la variante"""
+  variantSku: OrderBy
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: OrderBy
+  quantity: OrderBy
+  """Precio unitario al momento de compra"""
+  unitPrice: OrderBy
+  """Precio total (quantity * unit_price)"""
+  totalPrice: OrderBy
+  """Descuento aplicado a este item"""
+  discountAmount: OrderBy
+}
+
+"""Seguimiento de envíos"""
+type OrderTracking {
+  id: Int!
+  orderId: Int!
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+  status: OrderTrackingStatus!
+  """Ubicación actual del paquete"""
+  currentLocation: String
+  shippedAt: Timestamp
+  deliveredAt: Timestamp
+  """Nombre de quien recibió"""
+  deliveredTo: String
+  """Notas de entrega"""
+  deliveryNotes: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  orders(where: OrdersWhereInput, orderBy: OrdersOrderByInput, limit: Int, offset: Int): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+}
+
+enum OrderTrackingStatus {
+  preparing
+  shipped
+  in_transit
+  out_for_delivery
+  delivered
+  failed_delivery
+}
+
+"""Órdenes principales del ecommerce"""
+input OrdersWhereInput {
+  id: String
+  customerId: String
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String
+  status: String
+  createdAt: String
+  updatedAt: String
+  """Subtotal antes de descuentos"""
+  subtotal: String
+  """Descuento aplicado"""
+  discountAmount: String
+  """Costo de envío"""
+  shippingCost: String
+  """Impuestos (IGV)"""
+  taxAmount: String
+  """Total final a pagar"""
+  totalAmount: String
+  """Dirección de envío"""
+  shippingAddressId: String
+  """Método de envío"""
+  shippingMethod: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: String
+  """Método de pago usado"""
+  paymentMethod: String
+  paymentStatus: String
+  """Fecha de pago confirmado"""
+  paidAt: String
+  """Notas del cliente"""
+  customerNotes: String
+  """Notas internas del admin"""
+  adminNotes: String
+}
+
+"""Órdenes principales del ecommerce"""
+input OrdersOrderByInput {
+  id: OrderBy
+  customerId: OrderBy
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: OrderBy
+  status: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  """Subtotal antes de descuentos"""
+  subtotal: OrderBy
+  """Descuento aplicado"""
+  discountAmount: OrderBy
+  """Costo de envío"""
+  shippingCost: OrderBy
+  """Impuestos (IGV)"""
+  taxAmount: OrderBy
+  """Total final a pagar"""
+  totalAmount: OrderBy
+  """Dirección de envío"""
+  shippingAddressId: OrderBy
+  """Método de envío"""
+  shippingMethod: OrderBy
+  """Fecha estimada de entrega"""
+  estimatedDelivery: OrderBy
+  """Método de pago usado"""
+  paymentMethod: OrderBy
+  paymentStatus: OrderBy
+  """Fecha de pago confirmado"""
+  paidAt: OrderBy
+  """Notas del cliente"""
+  customerNotes: OrderBy
+  """Notas internas del admin"""
+  adminNotes: OrderBy
+}
+
+"""Seguimiento de envíos"""
+input OrderTrackingWhereInput {
+  id: String
+  orderId: String
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+  status: String
+  """Ubicación actual del paquete"""
+  currentLocation: String
+  shippedAt: String
+  deliveredAt: String
+  """Nombre de quien recibió"""
+  deliveredTo: String
+  """Notas de entrega"""
+  deliveryNotes: String
+  createdAt: String
+  updatedAt: String
+}
+
+"""Seguimiento de envíos"""
+input OrderTrackingOrderByInput {
+  id: OrderBy
+  orderId: OrderBy
+  """Número de seguimiento del courier"""
+  trackingNumber: OrderBy
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: OrderBy
+  status: OrderBy
+  """Ubicación actual del paquete"""
+  currentLocation: OrderBy
+  shippedAt: OrderBy
+  deliveredAt: OrderBy
+  """Nombre de quien recibió"""
+  deliveredTo: OrderBy
+  """Notas de entrega"""
+  deliveryNotes: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+type Customers {
+  id: Int!
+  email: String!
+  password: String!
+  addressId: Int
+  isActive: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  lastname: String!
+  photo: String
+  name: String
+  """numero de celular"""
+  phone: String!
+  """Documento de identidad """
+  dni: String!
+  customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
+  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
+  variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
+}
+
+type CustomersAddresses {
+  id: Int!
+  idCustomer: Int!
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String!
+  department: String!
+  province: String!
+  district: String!
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String!
+  """Número de la dirección"""
+  streetNumber: String!
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  """Latitud GPS"""
+  latitude: Float
+  """Longitud GPS"""
+  longitude: Float
+  """1 = dirección por defecto"""
+  isDefault: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
+  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["shipping_address_id", "id"]])
+}
+
+input CustomersWhereInput {
+  id: String
+  email: String
+  password: String
+  addressId: String
+  isActive: String
+  createdAt: String
+  updatedAt: String
+  lastname: String
+  photo: String
+  name: String
+  """numero de celular"""
+  phone: String
+  """Documento de identidad """
+  dni: String
+}
+
+input CustomersOrderByInput {
+  id: OrderBy
+  email: OrderBy
+  password: OrderBy
+  addressId: OrderBy
+  isActive: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  lastname: OrderBy
+  photo: OrderBy
+  name: OrderBy
+  """numero de celular"""
+  phone: OrderBy
+  """Documento de identidad """
+  dni: OrderBy
+}
+
+input CustomersAddressesWhereInput {
+  id: String
+  idCustomer: String
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String
+  department: String
+  province: String
+  district: String
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String
+  """Número de la dirección"""
+  streetNumber: String
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  """Latitud GPS"""
+  latitude: String
+  """Longitud GPS"""
+  longitude: String
+  """1 = dirección por defecto"""
+  isDefault: String
+  createdAt: String
+  updatedAt: String
+}
+
+input CustomersAddressesOrderByInput {
+  id: OrderBy
+  idCustomer: OrderBy
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: OrderBy
+  department: OrderBy
+  province: OrderBy
+  district: OrderBy
+  """Nombre de la avenida/calle/jirón"""
+  streetName: OrderBy
+  """Número de la dirección"""
+  streetNumber: OrderBy
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: OrderBy
+  """Latitud GPS"""
+  latitude: OrderBy
+  """Longitud GPS"""
+  longitude: OrderBy
+  """1 = dirección por defecto"""
+  isDefault: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+type VariantRatings {
+  id: Int!
+  variantId: Int!
+  customerId: Int!
+  rating: Int!
+  review: String
+  title: String
+  verifiedPurchase: Int!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  ratingImages(limit: Int, offset: Int, where: RatingImagesWhereInput, orderBy: RatingImagesOrderByInput): [RatingImages] @mysqlSelect(subgraph: "Database", table: "rating_images", columnMap: [["rating_id", "id"]])
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
+  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+}
+
+type RatingImages {
+  id: Int!
+  ratingId: Int!
+  imageUrl: String!
+  createdAt: Timestamp!
+  variantRatings(where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput, limit: Int, offset: Int): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["id", "rating_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "rating_id")
+}
+
+input VariantRatingsWhereInput {
+  id: String
+  variantId: String
+  customerId: String
+  rating: String
+  review: String
+  title: String
+  verifiedPurchase: String
+  createdAt: String
+  updatedAt: String
+}
+
+input VariantRatingsOrderByInput {
+  id: OrderBy
+  variantId: OrderBy
+  customerId: OrderBy
+  rating: OrderBy
+  review: OrderBy
+  title: OrderBy
+  verifiedPurchase: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+input RatingImagesWhereInput {
+  id: String
+  ratingId: String
+  imageUrl: String
+  createdAt: String
+}
+
+input RatingImagesOrderByInput {
+  id: OrderBy
+  ratingId: OrderBy
+  imageUrl: OrderBy
+  createdAt: OrderBy
+}
+
+input ProductVariantsWhereInput {
+  id: String
+  productId: String
+  sku: String
+  price: String
+  stock: String
+  createdAt: String
+  updatedAt: String
+}
+
+input ProductVariantsOrderByInput {
+  id: OrderBy
+  productId: OrderBy
+  sku: OrderBy
+  price: OrderBy
+  stock: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
 }
 
 type Products {
@@ -379,26 +885,6 @@ input ProductsOrderByInput {
   createdAt: OrderBy
   updatedAt: OrderBy
   basePrice: OrderBy
-}
-
-input ProductVariantsWhereInput {
-  id: String
-  productId: String
-  sku: String
-  price: String
-  stock: String
-  createdAt: String
-  updatedAt: String
-}
-
-input ProductVariantsOrderByInput {
-  id: OrderBy
-  productId: OrderBy
-  sku: OrderBy
-  price: OrderBy
-  stock: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
 }
 
 type Brands {
@@ -582,139 +1068,6 @@ input VariantImagesOrderByInput {
   updatedAt: OrderBy
 }
 
-type VariantRatings {
-  id: Int!
-  variantId: Int!
-  customerId: Int!
-  rating: Int!
-  review: String
-  title: String
-  verifiedPurchase: Int!
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  ratingImages(limit: Int, offset: Int, where: RatingImagesWhereInput, orderBy: RatingImagesOrderByInput): [RatingImages] @mysqlSelect(subgraph: "Database", table: "rating_images", columnMap: [["rating_id", "id"]])
-  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
-  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
-}
-
-type RatingImages {
-  id: Int!
-  ratingId: Int!
-  imageUrl: String!
-  createdAt: Timestamp!
-  variantRatings(where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput, limit: Int, offset: Int): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["id", "rating_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "rating_id")
-}
-
-input VariantRatingsWhereInput {
-  id: String
-  variantId: String
-  customerId: String
-  rating: String
-  review: String
-  title: String
-  verifiedPurchase: String
-  createdAt: String
-  updatedAt: String
-}
-
-input VariantRatingsOrderByInput {
-  id: OrderBy
-  variantId: OrderBy
-  customerId: OrderBy
-  rating: OrderBy
-  review: OrderBy
-  title: OrderBy
-  verifiedPurchase: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-}
-
-input RatingImagesWhereInput {
-  id: String
-  ratingId: String
-  imageUrl: String
-  createdAt: String
-}
-
-input RatingImagesOrderByInput {
-  id: OrderBy
-  ratingId: OrderBy
-  imageUrl: OrderBy
-  createdAt: OrderBy
-}
-
-type Customers {
-  id: Int!
-  username: String!
-  email: String!
-  password: String!
-  addressId: Int
-  isActive: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  lastname: String!
-  photo: String
-  name: String
-  customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
-  variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
-}
-
-type CustomersAddresses {
-  id: Int!
-  name: String
-  description: String
-  idCustomer: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
-}
-
-input CustomersWhereInput {
-  id: String
-  username: String
-  email: String
-  password: String
-  addressId: String
-  isActive: String
-  createdAt: String
-  updatedAt: String
-  lastname: String
-  photo: String
-  name: String
-}
-
-input CustomersOrderByInput {
-  id: OrderBy
-  username: OrderBy
-  email: OrderBy
-  password: OrderBy
-  addressId: OrderBy
-  isActive: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-  lastname: OrderBy
-  photo: OrderBy
-  name: OrderBy
-}
-
-input CustomersAddressesWhereInput {
-  id: String
-  name: String
-  description: String
-  idCustomer: String
-  createdAt: String
-  updatedAt: String
-}
-
-input CustomersAddressesOrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  idCustomer: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-}
-
 type Banner {
   id: Int!
   title: String!
@@ -751,6 +1104,96 @@ input BannerOrderByInput {
   imageUrl: OrderBy
 }
 
+"""VIEW"""
+type OrderSummary {
+  id: Int!
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String!
+  customerId: Int!
+  customerName: String
+  customerEmail: String
+  status: OrderSummaryStatus!
+  paymentStatus: OrderSummaryPaymentStatus!
+  """Total final a pagar"""
+  totalAmount: Float!
+  createdAt: Timestamp!
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  totalItems: BigInt!
+  totalQuantity: Float
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+}
+
+enum OrderSummaryStatus {
+  pending
+  processing
+  shipped
+  delivered
+  cancelled
+  refunded
+}
+
+enum OrderSummaryPaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+"""VIEW"""
+input OrderSummaryWhereInput {
+  id: String
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String
+  customerId: String
+  customerName: String
+  customerEmail: String
+  status: String
+  paymentStatus: String
+  """Total final a pagar"""
+  totalAmount: String
+  createdAt: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: String
+  totalItems: String
+  totalQuantity: String
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+}
+
+"""VIEW"""
+input OrderSummaryOrderByInput {
+  id: OrderBy
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: OrderBy
+  customerId: OrderBy
+  customerName: OrderBy
+  customerEmail: OrderBy
+  status: OrderBy
+  paymentStatus: OrderBy
+  """Total final a pagar"""
+  totalAmount: OrderBy
+  createdAt: OrderBy
+  """Fecha estimada de entrega"""
+  estimatedDelivery: OrderBy
+  totalItems: OrderBy
+  totalQuantity: OrderBy
+  """Número de seguimiento del courier"""
+  trackingNumber: OrderBy
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: OrderBy
+}
+
 type Permissions {
   id: Int!
   name: String!
@@ -784,11 +1227,6 @@ type ProductRatingSummary {
   oneStar: Float
   verifiedPurchases: Float
 }
-
-"""
-The `BigInt` scalar type represents non-fractional signed whole numeric values.
-"""
-scalar BigInt
 
 """VIEW"""
 input ProductRatingSummaryWhereInput {
@@ -1153,7 +1591,6 @@ input CategoriesUpdateInput {
 
 input CustomersInsertInput {
   id: Int
-  username: String!
   email: String!
   password: String!
   addressId: Int
@@ -1163,11 +1600,14 @@ input CustomersInsertInput {
   lastname: String!
   photo: String
   name: String
+  """numero de celular"""
+  phone: String!
+  """Documento de identidad """
+  dni: String!
 }
 
 input CustomersUpdateInput {
   id: Int
-  username: String
   email: String
   password: String
   addressId: Int
@@ -1177,24 +1617,260 @@ input CustomersUpdateInput {
   lastname: String
   photo: String
   name: String
+  """numero de celular"""
+  phone: String
+  """Documento de identidad """
+  dni: String
 }
 
 input CustomersAddressesInsertInput {
   id: Int
-  name: String
-  description: String
-  idCustomer: Int
+  idCustomer: Int!
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String!
+  department: String
+  province: String
+  district: String!
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String!
+  """Número de la dirección"""
+  streetNumber: String!
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  """Latitud GPS"""
+  latitude: Float
+  """Longitud GPS"""
+  longitude: Float
+  """1 = dirección por defecto"""
+  isDefault: Int
   createdAt: Timestamp
   updatedAt: Timestamp
 }
 
 input CustomersAddressesUpdateInput {
   id: Int
-  name: String
-  description: String
   idCustomer: Int
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String
+  department: String
+  province: String
+  district: String
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String
+  """Número de la dirección"""
+  streetNumber: String
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  """Latitud GPS"""
+  latitude: Float
+  """Longitud GPS"""
+  longitude: Float
+  """1 = dirección por defecto"""
+  isDefault: Int
   createdAt: Timestamp
   updatedAt: Timestamp
+}
+
+"""Items/productos de cada orden"""
+input OrderItemsInsertInput {
+  id: Int
+  orderId: Int!
+  """Variante del producto comprada"""
+  variantId: Int!
+  """Nombre del producto al momento de compra"""
+  productName: String!
+  """SKU de la variante"""
+  variantSku: String!
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: JSON
+  quantity: Int
+  """Precio unitario al momento de compra"""
+  unitPrice: Float!
+  """Precio total (quantity * unit_price)"""
+  totalPrice: Float!
+  """Descuento aplicado a este item"""
+  discountAmount: Float
+}
+
+"""Items/productos de cada orden"""
+input OrderItemsUpdateInput {
+  id: Int
+  orderId: Int
+  """Variante del producto comprada"""
+  variantId: Int
+  """Nombre del producto al momento de compra"""
+  productName: String
+  """SKU de la variante"""
+  variantSku: String
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: JSON
+  quantity: Int
+  """Precio unitario al momento de compra"""
+  unitPrice: Float
+  """Precio total (quantity * unit_price)"""
+  totalPrice: Float
+  """Descuento aplicado a este item"""
+  discountAmount: Float
+}
+
+"""VIEW"""
+input OrderSummaryInsertInput {
+  id: Int
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String!
+  customerId: Int!
+  customerName: String
+  customerEmail: String
+  status: OrderSummaryStatus
+  paymentStatus: OrderSummaryPaymentStatus
+  """Total final a pagar"""
+  totalAmount: Float!
+  createdAt: Timestamp
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  totalItems: BigInt
+  totalQuantity: Float
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+}
+
+"""VIEW"""
+input OrderSummaryUpdateInput {
+  id: Int
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String
+  customerId: Int
+  customerName: String
+  customerEmail: String
+  status: OrderSummaryStatus
+  paymentStatus: OrderSummaryPaymentStatus
+  """Total final a pagar"""
+  totalAmount: Float
+  createdAt: Timestamp
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  totalItems: BigInt
+  totalQuantity: Float
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+}
+
+"""Seguimiento de envíos"""
+input OrderTrackingInsertInput {
+  id: Int
+  orderId: Int!
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+  status: OrderTrackingStatus
+  """Ubicación actual del paquete"""
+  currentLocation: String
+  shippedAt: Timestamp
+  deliveredAt: Timestamp
+  """Nombre de quien recibió"""
+  deliveredTo: String
+  """Notas de entrega"""
+  deliveryNotes: String
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+"""Seguimiento de envíos"""
+input OrderTrackingUpdateInput {
+  id: Int
+  orderId: Int
+  """Número de seguimiento del courier"""
+  trackingNumber: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courierCompany: String
+  status: OrderTrackingStatus
+  """Ubicación actual del paquete"""
+  currentLocation: String
+  shippedAt: Timestamp
+  deliveredAt: Timestamp
+  """Nombre de quien recibió"""
+  deliveredTo: String
+  """Notas de entrega"""
+  deliveryNotes: String
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+"""Órdenes principales del ecommerce"""
+input OrdersInsertInput {
+  id: Int
+  customerId: Int!
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String!
+  status: OrdersStatus
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  """Subtotal antes de descuentos"""
+  subtotal: Float!
+  """Descuento aplicado"""
+  discountAmount: Float
+  """Costo de envío"""
+  shippingCost: Float
+  """Impuestos (IGV)"""
+  taxAmount: Float
+  """Total final a pagar"""
+  totalAmount: Float!
+  """Dirección de envío"""
+  shippingAddressId: Int!
+  """Método de envío"""
+  shippingMethod: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  """Método de pago usado"""
+  paymentMethod: String
+  paymentStatus: OrdersPaymentStatus
+  """Fecha de pago confirmado"""
+  paidAt: Timestamp
+  """Notas del cliente"""
+  customerNotes: String
+  """Notas internas del admin"""
+  adminNotes: String
+}
+
+"""Órdenes principales del ecommerce"""
+input OrdersUpdateInput {
+  id: Int
+  customerId: Int
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String
+  status: OrdersStatus
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  """Subtotal antes de descuentos"""
+  subtotal: Float
+  """Descuento aplicado"""
+  discountAmount: Float
+  """Costo de envío"""
+  shippingCost: Float
+  """Impuestos (IGV)"""
+  taxAmount: Float
+  """Total final a pagar"""
+  totalAmount: Float
+  """Dirección de envío"""
+  shippingAddressId: Int
+  """Método de envío"""
+  shippingMethod: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  """Método de pago usado"""
+  paymentMethod: String
+  paymentStatus: OrdersPaymentStatus
+  """Fecha de pago confirmado"""
+  paidAt: Timestamp
+  """Notas del cliente"""
+  customerNotes: String
+  """Notas internas del admin"""
+  adminNotes: String
 }
 
 input PermissionsInsertInput {

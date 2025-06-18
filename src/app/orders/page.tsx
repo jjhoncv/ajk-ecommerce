@@ -1,11 +1,10 @@
-import React from "react";
+import categoryModel from "@/backend/category";
+import Header from "@/components/layout/Header";
+import Layout from "@/components/layout/Layout";
+import Navigation from "@/components/ui/Navigation";
+import { AlertCircle, CheckCircle, Clock, Package } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import TopBar from "@/components/layout/TopBar";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { getHomeData } from "@/services/homeService";
-import { Package, Clock, CheckCircle, AlertCircle } from "lucide-react";
 
 // Datos de ejemplo para pedidos
 const mockOrders = [
@@ -66,12 +65,13 @@ export default async function OrdersPage() {
   }
 
   // Obtener datos para el header y footer
-  const data = await getHomeData();
+  const categories = await categoryModel.getCategories()
 
   return (
-    <div className="min-h-screen bg-white">
-      <TopBar />
-      <Header megaMenuCategories={data.megaMenuCategories} />
+    <Layout>
+      <Header navigationType="mini" >
+        <Navigation type="mini" categories={categories || []} />
+      </Header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Mis Pedidos</h1>
@@ -152,8 +152,6 @@ export default async function OrdersPage() {
           )}
         </div>
       </main>
-
-      <Footer sections={data.footerSections} socialLinks={data.socialLinks} />
-    </div>
+    </Layout>
   );
 }

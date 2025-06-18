@@ -7,7 +7,7 @@ import { FC } from "react"
 interface CartContentThinItemProps {
   item: CartItem;
   updateQuantity: (id: number, quantity: number) => void;
-  onDelete: (id: number, name: string) => void; // Nueva prop
+  onDelete: (id: number) => void; // Nueva prop
 }
 
 export const CartContentThinItem: FC<CartContentThinItemProps> = ({
@@ -45,8 +45,7 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
   };
 
   const handleRemoveRequest = () => {
-    // Mostrar modal de confirmación
-    onDelete(item.id, item.name);
+    onDelete(item.id);
   };
 
   return (

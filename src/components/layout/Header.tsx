@@ -7,14 +7,16 @@ import ServerAuthButton from "../ui/ServerAuthButton";
 
 interface HeaderProps {
   children?: ReactNode
+  navigationType?: "mini" | "normal"
 }
 
-const Header = async ({ children }: HeaderProps) => {
+const Header = async ({ children, navigationType = "normal" }: HeaderProps) => {
   return (
     <header className="border-b border-gray-200 sticky top-0 bg-white z-50 border-none">
       <div className="max-w-screen-4xl mx-auto px-12 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-6">
           <Logo />
+          {navigationType === "mini" && children}
 
           {/* Search */}
           <SearchBar />
@@ -30,7 +32,7 @@ const Header = async ({ children }: HeaderProps) => {
           </div>
         </div>
       </div>
-      {children}
+      {navigationType === "normal" && children}
 
       {/* <Navigation categories={categories} /> */}
     </header>

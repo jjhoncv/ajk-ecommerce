@@ -7,7 +7,7 @@ import { useSummaryCart } from "@/hooks/useSummaryCart";
 import { useCartContext } from "@/providers/cart";
 
 export default function CartPageContent() {
-  const { items, totalItems, isInitialized } = useCartContext();
+  const { items, totalItems, isInitialized, openDeleteConfirmation, removeItem } = useCartContext();
 
   // 🆕 Hook dedicado para el manejo de la selección del resumen
   const summaryCart = useSummaryCart(items);
@@ -20,6 +20,17 @@ export default function CartPageContent() {
   // Mostrar página vacía si no hay items
   if (items.length === 0) {
     return <CartPageEmpty />;
+  }
+
+  const handleRemoveSelectedItems = () => {
+    const selectedItems = summaryCart.selectedItems;
+    openDeleteConfirmation(
+      -1,
+      '¿Estás seguro de que quieres eliminar los artículo(s) de tu cesta?',
+      () => {
+        selectedItems.forEach(item => removeItem(item.id));
+      }
+    );
   }
 
   return (
@@ -50,22 +61,13 @@ export default function CartPageContent() {
               </label>
               <button
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium disabled:text-gray-400 disabled:cursor-not-allowed"
-                onClick={() => {
-                  // Eliminar todos los items seleccionados del carrito principal
-                  summaryCart.selectedItems.forEach(item => {
-                    // Usar la función del carrito principal para eliminar
-                  });
-                }}
+                onClick={handleRemoveSelectedItems}
                 disabled={summaryCart.getSelectedCount() === 0}
               >
                 Borrar artículos seleccionados ({summaryCart.getSelectedCount()})
               </button>
             </div>
           </div>
-
-          {/* Promoción */}
-          {/* <CartPageActivePromotions selectedItems={summaryCart.selectedItems} /> */}
-
 
           {/* Productos */}
           <div className="space-y-4">

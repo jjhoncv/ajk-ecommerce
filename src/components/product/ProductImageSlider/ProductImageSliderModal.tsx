@@ -1,7 +1,8 @@
 "use client";
+import { Modal } from "@/components/ui/Modal"; // 👈 USAR TU MODAL
 import { ItemImage } from "@/shared";
 import { X } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { ProductImageSlider } from "./ProductImageSlider";
 
 interface ProductImageSliderModalProps {
@@ -17,76 +18,23 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
   onClose,
   images,
   productName,
-  initialImageIndex = 0
+  initialImageIndex = 0,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
 
-  // Cerrar al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isOpen &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
-
-  // Prevenir scroll del body cuando está abierto
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
-
-  // Manejar tecla Escape para cerrar
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleEscape);
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const handleImageZoom = (imageUrl: string) => {
-    // Abrir imagen en nueva ventana para zoom máximo
-    window.open(imageUrl, '_blank');
-  };
+  // const handleImageZoom = (imageUrl: string) => {
+  //   // Abrir imagen en nueva ventana para zoom máximo
+  //   // window.open(imageUrl, '_blank');
+  // };
 
   return (
-    <div
-      className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      // 👈 CLASES PERSONALIZADAS PARA ESTE MODAL ESPECÍFICO
+      className="max-w-7xl max-h-[95vh] p-0 overflow-hidden rounded-lg"
     >
-      <div
-        ref={modalRef}
-        className="bg-white shadow-xl w-full max-w-7xl max-h-[95vh] overflow-hidden relative rounded-lg"
-      >
+      {/* 👈 CONTENIDO DEL MODAL SIN EL BACKDROP (YA LO MANEJA Modal) */}
+      <>
         {/* Header con botón de cerrar */}
         <div className="flex justify-between items-center p-4 bg-white border-b">
           <h2 className="text-lg font-semibold text-gray-900">
@@ -108,7 +56,6 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
             productName={productName}
             initialImageIndex={initialImageIndex}
             isInModal={true}
-            onImageZoom={handleImageZoom}
             showImageType={true}
             thumbsPosition="left"
           />
@@ -121,7 +68,7 @@ export const ProductImageSliderModal: React.FC<ProductImageSliderModalProps> = (
             Haz clic en la imagen principal para zoom completo.
           </p>
         </div>
-      </div>
-    </div>
+      </>
+    </Modal>
   );
 };

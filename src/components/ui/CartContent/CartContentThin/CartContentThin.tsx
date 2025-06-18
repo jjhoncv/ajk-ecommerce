@@ -10,7 +10,7 @@ interface CartContentThinProps {
   items: CartItem[];
   totalPrice: number;
   updateQuantity: (id: number, quantity: number) => void;
-  onDelete: (id: number, name: string) => void; // Nueva prop
+  onDelete: (id: number) => void; // Nueva prop
   onClose: () => void;
 }
 

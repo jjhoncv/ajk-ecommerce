@@ -1,3 +1,4 @@
+import categoryModel from "@/backend/category";
 import Header from "@/components/layout/Header";
 import Layout from "@/components/layout/Layout";
 import { LayoutContent } from "@/components/layout/LayoutContent";
@@ -15,7 +16,6 @@ import { getBanner } from "@/services/banner";
 import { getDealsProducts } from "@/services/dealsProducts";
 import { getFeaturedCategories } from "@/services/featuredCategories";
 import { getFeatures } from "@/services/features/features";
-import { getHeader } from "@/services/header";
 import { getHero } from "@/services/hero";
 import { getMainCategories } from "@/services/mainCategories";
 import { getPopularProducts } from "@/services/popularProducts";
@@ -35,7 +35,7 @@ export default async function HomePage() {
   const banners = await getBanner()
   const features = await getFeatures()
   const featureCategories = await getFeaturedCategories()
-  const categories = await getHeader();
+  const categories = await categoryModel.getCategories()
 
   return (
     <Layout>

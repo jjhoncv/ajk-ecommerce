@@ -1,9 +1,11 @@
+import categoryModel from "@/backend/category";
 import Header from "@/components/layout/Header";
 import Layout from "@/components/layout/Layout";
 import { LayoutContent } from "@/components/layout/LayoutContent";
 import SearchFilters from "@/components/search/SearchFilters";
 import SearchResults from "@/components/search/SearchResults";
 import StickyFilters from "@/components/search/StickyFilters";
+import Navigation from "@/components/ui/Navigation";
 import { getFilters } from "@/helpers/search.helpers";
 import SearchService from "@/services/search";
 import { SearchParams } from "@/shared";
@@ -27,9 +29,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   // Obtener resultados de búsqueda directamente del modelo
   const { page, products, totalPages, filters: availableFilters } = await SearchService.getSearchParams(filters)
 
+
+  const categories = await categoryModel.getCategories()
+
   return (
     <Layout>
-      <Header />
+      <Header navigationType="mini" >
+        <Navigation type="mini" categories={categories || []} />
+      </Header>
       <LayoutContent>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filtros laterales */}

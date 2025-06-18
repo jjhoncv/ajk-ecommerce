@@ -6,18 +6,46 @@ import React, { useState } from "react";
 import CategoriesMenu from "./CategoriesMenu";
 import SlidePage from "./SlidePage";
 
+type ButtonType = "mini" | "normal"
 interface NavigationProps {
   categories: Categories[];
+  type?: ButtonType
 }
 
-const Navigation: React.FC<NavigationProps> = ({ categories }) => {
+const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) => {
   const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
+
+  if (type === "mini") {
+    return (
+      <>
+        <button
+          className="bg-primary text-white px-2 py-2 rounded-sm flex items-center gap-2 hover:bg-primary/90 transition-colors"
+          onClick={() => setIsCategoriesMenuOpen(true)}
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+        <SlidePage
+          isOpen={isCategoriesMenuOpen}
+          onClose={() => setIsCategoriesMenuOpen(false)}
+          title="Categorías"
+          direction="left"
+          width={400}
+        >
+          <CategoriesMenu
+            categories={categories}
+            onClose={() => setIsCategoriesMenuOpen(false)}
+          />
+        </SlidePage>
+      </>
+    )
+  }
 
   return (
     <div className="bg-gray-100 border-t border-gray-200 border-none">
       <div className="max-w-screen-4xl mx-auto px-12">
         <div className="flex items-center">
           {/* Botón de categorías que abre el SlidePage */}
+
           <div className="relative">
             <button
               className="bg-primary text-white px-6 py-3 flex items-center gap-2 hover:bg-primary/90 transition-colors"

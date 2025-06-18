@@ -10,6 +10,8 @@ interface ProductVariantAttributeSelectorProps {
   allVariants: ProductVariants[];
   variant?: ProductVariants;
   onVariantChange?: (newData: ProductVariantData) => void;
+  handleVariantChangePreview?: (attributeId: number, optionId: number) => void;
+  preview?: boolean
 }
 
 interface AttributeGroup {
@@ -33,6 +35,8 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
   allVariants,
   variant,
   onVariantChange,
+  preview = false,
+  handleVariantChangePreview
 }) => {
   const router = useRouter();
 
@@ -110,6 +114,12 @@ const ProductVariantAttributeSelector: React.FC<ProductVariantAttributeSelectorP
 
   // Manejar cambio de atributo
   const handleAttributeChange = async (attributeId: number, optionId: number) => {
+
+    if (preview) {
+      handleVariantChangePreview?.(attributeId, optionId)
+      return
+    }
+
     // Encontrar la variante que tiene esta opción específica
     const targetVariant = allVariants.find((v) => {
       return v?.variantAttributeOptions?.some((vao) =>

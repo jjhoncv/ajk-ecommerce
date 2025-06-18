@@ -2,6 +2,7 @@
 import { useAuthModal } from "@/providers/auth-modal";
 import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import UserMenu from "./UserMenu";
 
@@ -19,6 +20,7 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
   initialUserId,
 }) => {
   const { data: session, status } = useSession();
+  const router = useRouter()
   const { openLogin } = useAuthModal(); // 👈 Usar el provider centralizado
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
@@ -65,7 +67,8 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
   const handleAuthClick = () => {
     if (authState.isAuthenticated) {
       console.log('👤 Opening user menu');
-      setIsUserMenuOpen(true);
+      // setIsUserMenuOpen(true);
+      router.push("/account")
     } else {
       console.log('🔐 User not authenticated, opening login modal');
       // 👈 USAR EL PROVIDER CENTRALIZADO - Sin callbacks especiales para el header

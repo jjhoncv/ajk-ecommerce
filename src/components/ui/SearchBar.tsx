@@ -25,7 +25,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="flex-1 mx-8">
+    <div className="flex-1">
       <SearchSuggestions
         onSearch={handleSearch}
         placeholder="Buscar productos..."

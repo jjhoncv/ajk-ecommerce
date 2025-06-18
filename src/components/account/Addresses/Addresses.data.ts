@@ -1,0 +1,52 @@
+export const departments = [
+  'LIMA',
+  'AREQUIPA',
+  'CUSCO',
+  'LA LIBERTAD',
+  'PIURA',
+  'LAMBAYEQUE',
+  'ANCASH',
+  'JUNÍN',
+  'ICA',
+  'CAJAMARCA',
+  'HUÁNUCO',
+  'LORETO'
+]
+
+export const districtsByProvince = {
+  LIMA: [
+    'LIMA',
+    'BARRANCO',
+    'BREÑA',
+    'CHORRILLOS',
+    'EL AGUSTINO',
+    'JESÚS MARÍA',
+    'LA MOLINA',
+    'LA VICTORIA',
+    'LINCE',
+    'MAGDALENA DEL MAR',
+    'MIRAFLORES',
+    'PUEBLO LIBRE',
+    'RÍMAC',
+    'SAN BORJA',
+    'SAN ISIDRO',
+    'SAN LUIS',
+    'SAN MIGUEL',
+    'SANTA ANITA',
+    'SANTIAGO DE SURCO',
+    'SURQUILLO',
+    'CIENEGUILLA',
+    'CHACLACAYO',
+    'ATE',
+    'CARABAYLLO',
+    'COMAS',
+    'INDEPENDENCIA',
+    'LOS OLIVOS',
+    'PUENTE PIEDRA',
+    'SAN JUAN DE LURIGANCHO',
+    'SAN JUAN DE MIRAFLORES',
+    'SAN MARTÍN DE PORRES',
+    'VILLA EL SALVADOR',
+    'VILLA MARÍA DEL TRIUNFO'
+  ]
+}

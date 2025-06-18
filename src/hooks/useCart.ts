@@ -18,7 +18,7 @@ export interface CartItem {
 interface DeleteConfirmation {
   isOpen: boolean
   productId: number | null
-  productName: string
+  message?: string
   onConfirm: (() => void) | null
 }
 
@@ -35,7 +35,7 @@ const ALLOWED_MINICART_ROUTES = [
 
 // 👈 RUTAS DONDE NO SE DEBE MOSTRAR EL MINICART (incluyendo home y cart)
 const NO_MINICART_ROUTES = [
-  '/', // Homepage - NO abrir minicart
+  // '/', // Homepage - NO abrir minicart
   '/cart', // Página del carrito - NO abrir minicart
   '/checkout', // Página de checkout
   '/login', // Página de login
@@ -85,7 +85,7 @@ export function useCart() {
     useState<DeleteConfirmation>({
       isOpen: false,
       productId: null,
-      productName: '',
+      message: '',
       onConfirm: null
     })
 
@@ -234,7 +234,7 @@ export function useCart() {
     })
 
     if (itemToRemove) {
-      setToastMessage(`Producto eliminado: ${itemToRemove.name}`)
+      setToastMessage(`Correctamente`)
     }
   }
 
@@ -313,7 +313,7 @@ export function useCart() {
 
     if (!isMinicartAllowedOnRoute(currentPath)) {
       console.log('🚫 Minicart not allowed on this route, redirecting to /cart')
-      router.push('/cart')
+      // router.push('/cart')
       return
     }
 
@@ -348,12 +348,12 @@ export function useCart() {
 
   // 🆕 FUNCIONES DE DELETE CONFIRMATION
   const openDeleteConfirmation = useCallback(
-    (id: number, name: string, onConfirm?: () => void) => {
-      console.log('🗑️ Opening delete confirmation:', { id, name })
+    (id: number, message?: string, onConfirm?: () => void) => {
+      console.log('🗑️ Opening delete confirmation:', { id })
       setDeleteConfirmation({
         isOpen: true,
+        message,
         productId: id,
-        productName: name,
         onConfirm: onConfirm || (() => removeItem(id))
       })
     },
@@ -365,7 +365,7 @@ export function useCart() {
     setDeleteConfirmation({
       isOpen: false,
       productId: null,
-      productName: '',
+      message: '',
       onConfirm: null
     })
   }, [])

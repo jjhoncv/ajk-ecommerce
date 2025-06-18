@@ -1,12 +1,12 @@
 "use client";
 import { getPriceIfHasPromotion } from "@/components/product/ProductVariant.helpers";
+import ProductCardButtonView from "@/components/ui/ProductCard/ProductCardButtonView";
 import { getVariantImages } from "@/helpers/image.helpers";
 import { getVariantTitle } from "@/helpers/productVariant.helpers";
 import Link from "next/link";
 import React from "react";
 import { hasPromotion } from "./ProductCard.helpers";
 import { ProductCardProps } from "./ProductCard.interfaces";
-import ProductCardButtonAddToCart from "./ProductCardButtonAddToCart";
 import ProductCardPrice from "./ProductCardPrice";
 import ProductCardSlider from "./ProductCardSlider";
 
@@ -54,7 +54,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
           />
         </Link>
 
-        <ProductCardButtonAddToCart
+        {/* <button className="absolute h-10 bottom-2 right-2">
+          Addsss
+        </button> */}
+        <ProductCardButtonView variantId={product.variantId} />
+        {/* <ProductCardButtonAddToCart
           id={product.variantId}
           image={thumbImage}
           name={getVariantTitle(product.name, variant)}
@@ -62,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           stock={variant.stock}
           quantity={1}
           promotionVariants={variant.promotionVariants}
-        />
+        /> */}
       </div>
 
       <div className="px-1">

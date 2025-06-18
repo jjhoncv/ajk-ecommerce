@@ -13,12 +13,27 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, className }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   // 👈 ASEGURAR QUE ESTAMOS EN EL CLIENTE
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
   }, []);
+
+  // 👈 MANEJAR ANIMACIONES DE ENTRADA Y SALIDA
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      const timer = setTimeout(() => setIsVisible(true), 10);
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
+      const timer = setTimeout(() => setShouldRender(false), 200);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   // Cerrar al hacer clic fuera
   useEffect(() => {
@@ -64,16 +79,31 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, classNa
     };
   }, [isOpen, onClose]);
 
-  // 👈 NO RENDERIZAR SI NO ESTÁ MONTADO O NO ESTÁ ABIERTO
-  if (!mounted || !isOpen) return null;
+  if (!mounted || !shouldRender) return null;
 
-  // 👈 CONTENIDO DEL MODAL
+  // 👈 MÚLTIPLES OPCIONES PARA EL FONDO - ELIGE LA QUE FUNCIONE
   const modalContent = (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div
+      // Opción 1: Con bg-black/80 (sintaxis moderna)
+      className={cn(
+        "fixed inset-0 z-[9999] flex items-center justify-center p-4",
+        "transition-all duration-200 ease-out",
+        isVisible ? "bg-black/98" : "bg-transparent"
+      )}
+
+      // 👈 OPCIÓN 2: Forzar con style inline (garantizado)
+      style={{
+        backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.7)' : 'transparent'
+      }}
+    >
       <div
         ref={modalRef}
         className={cn(
           "bg-white shadow-xl w-full max-w-md overflow-hidden px-10 py-5",
+          "transition-all duration-200 ease-out transform",
+          isVisible
+            ? "scale-100 opacity-100 translate-y-0"
+            : "scale-95 opacity-0 translate-y-4",
           className
         )}
         role="dialog"
@@ -84,6 +114,5 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, classNa
     </div>
   );
 
-  // 👈 USAR PORTAL PARA RENDERIZAR EN document.body
   return createPortal(modalContent, document.body);
 };

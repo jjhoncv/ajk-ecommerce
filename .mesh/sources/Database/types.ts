@@ -24,6 +24,10 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
   Timestamp: { input: Date | string | number; output: Date | string | number; }
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: { input: any; output: any; }
+  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  Date: { input: Date | string; output: Date | string; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: Date | string; output: Date | string; }
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
@@ -47,6 +51,14 @@ export type Query = {
   count_customers?: Maybe<Scalars['Int']['output']>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
   count_customers_addresses?: Maybe<Scalars['Int']['output']>;
+  order_items?: Maybe<Array<Maybe<order_items>>>;
+  count_order_items?: Maybe<Scalars['Int']['output']>;
+  order_summary?: Maybe<Array<Maybe<order_summary>>>;
+  count_order_summary?: Maybe<Scalars['Int']['output']>;
+  order_tracking?: Maybe<Array<Maybe<order_tracking>>>;
+  count_order_tracking?: Maybe<Scalars['Int']['output']>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+  count_orders?: Maybe<Scalars['Int']['output']>;
   permissions?: Maybe<Array<Maybe<permissions>>>;
   count_permissions?: Maybe<Scalars['Int']['output']>;
   product_categories?: Maybe<Array<Maybe<product_categories>>>;
@@ -187,6 +199,58 @@ export type Querycustomers_addressesArgs = {
 
 export type Querycount_customers_addressesArgs = {
   where?: InputMaybe<customers_addresses_WhereInput>;
+};
+
+
+export type Queryorder_itemsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_items_WhereInput>;
+  orderBy?: InputMaybe<order_items_OrderByInput>;
+};
+
+
+export type Querycount_order_itemsArgs = {
+  where?: InputMaybe<order_items_WhereInput>;
+};
+
+
+export type Queryorder_summaryArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_summary_WhereInput>;
+  orderBy?: InputMaybe<order_summary_OrderByInput>;
+};
+
+
+export type Querycount_order_summaryArgs = {
+  where?: InputMaybe<order_summary_WhereInput>;
+};
+
+
+export type Queryorder_trackingArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_tracking_WhereInput>;
+  orderBy?: InputMaybe<order_tracking_OrderByInput>;
+};
+
+
+export type Querycount_order_trackingArgs = {
+  where?: InputMaybe<order_tracking_WhereInput>;
+};
+
+
+export type QueryordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+};
+
+
+export type Querycount_ordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
 };
 
 
@@ -618,11 +682,20 @@ export type product_variants = {
   stock: Scalars['Int']['output'];
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
+  order_items?: Maybe<Array<Maybe<order_items>>>;
   products?: Maybe<Array<Maybe<products>>>;
   promotion_variants?: Maybe<Array<Maybe<promotion_variants>>>;
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
   variant_images?: Maybe<Array<Maybe<variant_images>>>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type product_variantsorder_itemsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_items_WhereInput>;
+  orderBy?: InputMaybe<order_items_OrderByInput>;
 };
 
 
@@ -663,6 +736,613 @@ export type product_variantsvariant_ratingsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<variant_ratings_WhereInput>;
   orderBy?: InputMaybe<variant_ratings_OrderByInput>;
+};
+
+/** Items/productos de cada orden */
+export type order_items = {
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  /** Variante del producto comprada */
+  variant_id: Scalars['Int']['output'];
+  /** Nombre del producto al momento de compra */
+  product_name: Scalars['String']['output'];
+  /** SKU de la variante */
+  variant_sku: Scalars['String']['output'];
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: Maybe<Scalars['JSON']['output']>;
+  quantity: Scalars['Int']['output'];
+  /** Precio unitario al momento de compra */
+  unit_price: Scalars['Float']['output'];
+  /** Precio total (quantity * unit_price) */
+  total_price: Scalars['Float']['output'];
+  /** Descuento aplicado a este item */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+};
+
+
+/** Items/productos de cada orden */
+export type order_itemsordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Items/productos de cada orden */
+export type order_itemsproduct_variantsArgs = {
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders = {
+  id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['output'];
+  status: orders_status;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  /** Subtotal antes de descuentos */
+  subtotal: Scalars['Float']['output'];
+  /** Descuento aplicado */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  /** Costo de envío */
+  shipping_cost?: Maybe<Scalars['Float']['output']>;
+  /** Impuestos (IGV) */
+  tax_amount?: Maybe<Scalars['Float']['output']>;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['output'];
+  /** Dirección de envío */
+  shipping_address_id: Scalars['Int']['output'];
+  /** Método de envío */
+  shipping_method?: Maybe<Scalars['String']['output']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: Maybe<Scalars['Date']['output']>;
+  /** Método de pago usado */
+  payment_method?: Maybe<Scalars['String']['output']>;
+  payment_status: orders_payment_status;
+  /** Fecha de pago confirmado */
+  paid_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Notas del cliente */
+  customer_notes?: Maybe<Scalars['String']['output']>;
+  /** Notas internas del admin */
+  admin_notes?: Maybe<Scalars['String']['output']>;
+  order_items?: Maybe<Array<Maybe<order_items>>>;
+  order_tracking?: Maybe<Array<Maybe<order_tracking>>>;
+  customers?: Maybe<Array<Maybe<customers>>>;
+  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type ordersorder_itemsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_items_WhereInput>;
+  orderBy?: InputMaybe<order_items_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type ordersorder_trackingArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_tracking_WhereInput>;
+  orderBy?: InputMaybe<order_tracking_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscustomers_addressesArgs = {
+  where?: InputMaybe<customers_addresses_WhereInput>;
+  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type orders_status =
+  | 'pending'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
+
+export type orders_payment_status =
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded';
+
+/** Items/productos de cada orden */
+export type order_items_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  /** Variante del producto comprada */
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del producto al momento de compra */
+  product_name?: InputMaybe<Scalars['String']['input']>;
+  /** SKU de la variante */
+  variant_sku?: InputMaybe<Scalars['String']['input']>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Precio unitario al momento de compra */
+  unit_price?: InputMaybe<Scalars['String']['input']>;
+  /** Precio total (quantity * unit_price) */
+  total_price?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Items/productos de cada orden */
+export type order_items_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  /** Variante del producto comprada */
+  variant_id?: InputMaybe<OrderBy>;
+  /** Nombre del producto al momento de compra */
+  product_name?: InputMaybe<OrderBy>;
+  /** SKU de la variante */
+  variant_sku?: InputMaybe<OrderBy>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<OrderBy>;
+  quantity?: InputMaybe<OrderBy>;
+  /** Precio unitario al momento de compra */
+  unit_price?: InputMaybe<OrderBy>;
+  /** Precio total (quantity * unit_price) */
+  total_price?: InputMaybe<OrderBy>;
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<OrderBy>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking = {
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  /** Número de seguimiento del courier */
+  tracking_number?: Maybe<Scalars['String']['output']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: Maybe<Scalars['String']['output']>;
+  status: order_tracking_status;
+  /** Ubicación actual del paquete */
+  current_location?: Maybe<Scalars['String']['output']>;
+  shipped_at?: Maybe<Scalars['Timestamp']['output']>;
+  delivered_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Nombre de quien recibió */
+  delivered_to?: Maybe<Scalars['String']['output']>;
+  /** Notas de entrega */
+  delivery_notes?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  orders?: Maybe<Array<Maybe<orders>>>;
+};
+
+
+/** Seguimiento de envíos */
+export type order_trackingordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type order_tracking_status =
+  | 'preparing'
+  | 'shipped'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'delivered'
+  | 'failed_delivery';
+
+/** Órdenes principales del ecommerce */
+export type orders_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<Scalars['String']['input']>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Dirección de envío */
+  shipping_address_id?: InputMaybe<Scalars['String']['input']>;
+  /** Método de envío */
+  shipping_method?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['String']['input']>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<Scalars['String']['input']>;
+  payment_status?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<Scalars['String']['input']>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<Scalars['String']['input']>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<OrderBy>;
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<OrderBy>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<OrderBy>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<OrderBy>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<OrderBy>;
+  /** Dirección de envío */
+  shipping_address_id?: InputMaybe<OrderBy>;
+  /** Método de envío */
+  shipping_method?: InputMaybe<OrderBy>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<OrderBy>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<OrderBy>;
+  payment_status?: InputMaybe<OrderBy>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<OrderBy>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<OrderBy>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<OrderBy>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<Scalars['String']['input']>;
+  shipped_at?: InputMaybe<Scalars['String']['input']>;
+  delivered_at?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<Scalars['String']['input']>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<OrderBy>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<OrderBy>;
+  shipped_at?: InputMaybe<OrderBy>;
+  delivered_at?: InputMaybe<OrderBy>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<OrderBy>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type customers = {
+  id: Scalars['Int']['output'];
+  email: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  address_id?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  lastname: Scalars['String']['output'];
+  photo?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  /** numero de celular */
+  phone: Scalars['String']['output'];
+  /** Documento de identidad  */
+  dni: Scalars['String']['output'];
+  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type customerscustomers_addressesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<customers_addresses_WhereInput>;
+  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
+};
+
+
+export type customersordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+};
+
+
+export type customersvariant_ratingsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<variant_ratings_WhereInput>;
+  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
+};
+
+export type customers_addresses = {
+  id: Scalars['Int']['output'];
+  id_customer: Scalars['Int']['output'];
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias: Scalars['String']['output'];
+  department: Scalars['String']['output'];
+  province: Scalars['String']['output'];
+  district: Scalars['String']['output'];
+  /** Nombre de la avenida/calle/jirón */
+  street_name: Scalars['String']['output'];
+  /** Número de la dirección */
+  street_number: Scalars['String']['output'];
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: Maybe<Scalars['String']['output']>;
+  /** Latitud GPS */
+  latitude?: Maybe<Scalars['Float']['output']>;
+  /** Longitud GPS */
+  longitude?: Maybe<Scalars['Float']['output']>;
+  /** 1 = dirección por defecto */
+  is_default?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  customers?: Maybe<Array<Maybe<customers>>>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+};
+
+
+export type customers_addressescustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type customers_addressesordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+};
+
+export type customers_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  address_id?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  photo?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** numero de celular */
+  phone?: InputMaybe<Scalars['String']['input']>;
+  /** Documento de identidad  */
+  dni?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type customers_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  password?: InputMaybe<OrderBy>;
+  address_id?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  lastname?: InputMaybe<OrderBy>;
+  photo?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  /** numero de celular */
+  phone?: InputMaybe<OrderBy>;
+  /** Documento de identidad  */
+  dni?: InputMaybe<OrderBy>;
+};
+
+export type customers_addresses_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_customer?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<Scalars['String']['input']>;
+  department?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name?: InputMaybe<Scalars['String']['input']>;
+  /** Número de la dirección */
+  street_number?: InputMaybe<Scalars['String']['input']>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<Scalars['String']['input']>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<Scalars['String']['input']>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<Scalars['String']['input']>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type customers_addresses_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  id_customer?: InputMaybe<OrderBy>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<OrderBy>;
+  department?: InputMaybe<OrderBy>;
+  province?: InputMaybe<OrderBy>;
+  district?: InputMaybe<OrderBy>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name?: InputMaybe<OrderBy>;
+  /** Número de la dirección */
+  street_number?: InputMaybe<OrderBy>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<OrderBy>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<OrderBy>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<OrderBy>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type variant_ratings = {
+  id: Scalars['Int']['output'];
+  variant_id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  rating: Scalars['Int']['output'];
+  review?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  verified_purchase: Scalars['Int']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  rating_images?: Maybe<Array<Maybe<rating_images>>>;
+  customers?: Maybe<Array<Maybe<customers>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+};
+
+
+export type variant_ratingsrating_imagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<rating_images_WhereInput>;
+  orderBy?: InputMaybe<rating_images_OrderByInput>;
+};
+
+
+export type variant_ratingscustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type variant_ratingsproduct_variantsArgs = {
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type rating_images = {
+  id: Scalars['Int']['output'];
+  rating_id: Scalars['Int']['output'];
+  image_url: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type rating_imagesvariant_ratingsArgs = {
+  where?: InputMaybe<variant_ratings_WhereInput>;
+  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type variant_ratings_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  verified_purchase?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type variant_ratings_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  variant_id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  rating?: InputMaybe<OrderBy>;
+  review?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  verified_purchase?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type rating_images_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  rating_id?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type rating_images_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  rating_id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
+export type product_variants_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  product_id?: InputMaybe<Scalars['String']['input']>;
+  sku?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['String']['input']>;
+  stock?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type product_variants_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  product_id?: InputMaybe<OrderBy>;
+  sku?: InputMaybe<OrderBy>;
+  price?: InputMaybe<OrderBy>;
+  stock?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
 };
 
 export type products = {
@@ -786,26 +1466,6 @@ export type products_OrderByInput = {
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   base_price?: InputMaybe<OrderBy>;
-};
-
-export type product_variants_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  product_id?: InputMaybe<Scalars['String']['input']>;
-  sku?: InputMaybe<Scalars['String']['input']>;
-  price?: InputMaybe<Scalars['String']['input']>;
-  stock?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type product_variants_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  product_id?: InputMaybe<OrderBy>;
-  sku?: InputMaybe<OrderBy>;
-  price?: InputMaybe<OrderBy>;
-  stock?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
 };
 
 export type brands = {
@@ -1023,195 +1683,6 @@ export type variant_images_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
-export type variant_ratings = {
-  id: Scalars['Int']['output'];
-  variant_id: Scalars['Int']['output'];
-  customer_id: Scalars['Int']['output'];
-  rating: Scalars['Int']['output'];
-  review?: Maybe<Scalars['String']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  verified_purchase: Scalars['Int']['output'];
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  rating_images?: Maybe<Array<Maybe<rating_images>>>;
-  customers?: Maybe<Array<Maybe<customers>>>;
-  product_variants?: Maybe<Array<Maybe<product_variants>>>;
-};
-
-
-export type variant_ratingsrating_imagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<rating_images_WhereInput>;
-  orderBy?: InputMaybe<rating_images_OrderByInput>;
-};
-
-
-export type variant_ratingscustomersArgs = {
-  where?: InputMaybe<customers_WhereInput>;
-  orderBy?: InputMaybe<customers_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type variant_ratingsproduct_variantsArgs = {
-  where?: InputMaybe<product_variants_WhereInput>;
-  orderBy?: InputMaybe<product_variants_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type rating_images = {
-  id: Scalars['Int']['output'];
-  rating_id: Scalars['Int']['output'];
-  image_url: Scalars['String']['output'];
-  created_at: Scalars['Timestamp']['output'];
-  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
-};
-
-
-export type rating_imagesvariant_ratingsArgs = {
-  where?: InputMaybe<variant_ratings_WhereInput>;
-  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type variant_ratings_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  variant_id?: InputMaybe<Scalars['String']['input']>;
-  customer_id?: InputMaybe<Scalars['String']['input']>;
-  rating?: InputMaybe<Scalars['String']['input']>;
-  review?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  verified_purchase?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type variant_ratings_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  variant_id?: InputMaybe<OrderBy>;
-  customer_id?: InputMaybe<OrderBy>;
-  rating?: InputMaybe<OrderBy>;
-  review?: InputMaybe<OrderBy>;
-  title?: InputMaybe<OrderBy>;
-  verified_purchase?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
-export type rating_images_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  rating_id?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type rating_images_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  rating_id?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-};
-
-export type customers = {
-  id: Scalars['Int']['output'];
-  username: Scalars['String']['output'];
-  email: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  address_id?: Maybe<Scalars['Int']['output']>;
-  is_active?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  lastname: Scalars['String']['output'];
-  photo?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
-  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
-};
-
-
-export type customerscustomers_addressesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<customers_addresses_WhereInput>;
-  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
-};
-
-
-export type customersvariant_ratingsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<variant_ratings_WhereInput>;
-  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
-};
-
-export type customers_addresses = {
-  id: Scalars['Int']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
-  id_customer?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  customers?: Maybe<Array<Maybe<customers>>>;
-};
-
-
-export type customers_addressescustomersArgs = {
-  where?: InputMaybe<customers_WhereInput>;
-  orderBy?: InputMaybe<customers_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type customers_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
-  address_id?: InputMaybe<Scalars['String']['input']>;
-  is_active?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  lastname?: InputMaybe<Scalars['String']['input']>;
-  photo?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type customers_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  username?: InputMaybe<OrderBy>;
-  email?: InputMaybe<OrderBy>;
-  password?: InputMaybe<OrderBy>;
-  address_id?: InputMaybe<OrderBy>;
-  is_active?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  lastname?: InputMaybe<OrderBy>;
-  photo?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-};
-
-export type customers_addresses_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id_customer?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type customers_addresses_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  id_customer?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
 export type banner = {
   id: Scalars['Int']['output'];
   title: Scalars['String']['output'];
@@ -1246,6 +1717,89 @@ export type banner_OrderByInput = {
   display_order?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   image_url?: InputMaybe<OrderBy>;
+};
+
+/** VIEW */
+export type order_summary = {
+  id: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['output'];
+  customer_id: Scalars['Int']['output'];
+  customer_name?: Maybe<Scalars['String']['output']>;
+  customer_email?: Maybe<Scalars['String']['output']>;
+  status: order_summary_status;
+  payment_status: order_summary_payment_status;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  /** Fecha estimada de entrega */
+  estimated_delivery?: Maybe<Scalars['Date']['output']>;
+  total_items: Scalars['BigInt']['output'];
+  total_quantity?: Maybe<Scalars['Float']['output']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: Maybe<Scalars['String']['output']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: Maybe<Scalars['String']['output']>;
+};
+
+export type order_summary_status =
+  | 'pending'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
+
+export type order_summary_payment_status =
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded';
+
+/** VIEW */
+export type order_summary_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  customer_name?: InputMaybe<Scalars['String']['input']>;
+  customer_email?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  payment_status?: InputMaybe<Scalars['String']['input']>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['String']['input']>;
+  total_items?: InputMaybe<Scalars['String']['input']>;
+  total_quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type order_summary_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  customer_name?: InputMaybe<OrderBy>;
+  customer_email?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  payment_status?: InputMaybe<OrderBy>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<OrderBy>;
+  total_items?: InputMaybe<OrderBy>;
+  total_quantity?: InputMaybe<OrderBy>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<OrderBy>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<OrderBy>;
 };
 
 export type permissions = {
@@ -1618,6 +2172,18 @@ export type Mutation = {
   insert_customers_addresses?: Maybe<customers_addresses>;
   update_customers_addresses?: Maybe<customers_addresses>;
   delete_customers_addresses?: Maybe<Scalars['Boolean']['output']>;
+  insert_order_items?: Maybe<order_items>;
+  update_order_items?: Maybe<order_items>;
+  delete_order_items?: Maybe<Scalars['Boolean']['output']>;
+  insert_order_summary?: Maybe<order_summary>;
+  update_order_summary?: Maybe<order_summary>;
+  delete_order_summary?: Maybe<Scalars['Boolean']['output']>;
+  insert_order_tracking?: Maybe<order_tracking>;
+  update_order_tracking?: Maybe<order_tracking>;
+  delete_order_tracking?: Maybe<Scalars['Boolean']['output']>;
+  insert_orders?: Maybe<orders>;
+  update_orders?: Maybe<orders>;
+  delete_orders?: Maybe<Scalars['Boolean']['output']>;
   insert_permissions?: Maybe<permissions>;
   update_permissions?: Maybe<permissions>;
   delete_permissions?: Maybe<Scalars['Boolean']['output']>;
@@ -1800,6 +2366,70 @@ export type Mutationupdate_customers_addressesArgs = {
 
 export type Mutationdelete_customers_addressesArgs = {
   where?: InputMaybe<customers_addresses_WhereInput>;
+};
+
+
+export type Mutationinsert_order_itemsArgs = {
+  order_items: order_items_InsertInput;
+};
+
+
+export type Mutationupdate_order_itemsArgs = {
+  order_items: order_items_UpdateInput;
+  where?: InputMaybe<order_items_WhereInput>;
+};
+
+
+export type Mutationdelete_order_itemsArgs = {
+  where?: InputMaybe<order_items_WhereInput>;
+};
+
+
+export type Mutationinsert_order_summaryArgs = {
+  order_summary: order_summary_InsertInput;
+};
+
+
+export type Mutationupdate_order_summaryArgs = {
+  order_summary: order_summary_UpdateInput;
+  where?: InputMaybe<order_summary_WhereInput>;
+};
+
+
+export type Mutationdelete_order_summaryArgs = {
+  where?: InputMaybe<order_summary_WhereInput>;
+};
+
+
+export type Mutationinsert_order_trackingArgs = {
+  order_tracking: order_tracking_InsertInput;
+};
+
+
+export type Mutationupdate_order_trackingArgs = {
+  order_tracking: order_tracking_UpdateInput;
+  where?: InputMaybe<order_tracking_WhereInput>;
+};
+
+
+export type Mutationdelete_order_trackingArgs = {
+  where?: InputMaybe<order_tracking_WhereInput>;
+};
+
+
+export type Mutationinsert_ordersArgs = {
+  orders: orders_InsertInput;
+};
+
+
+export type Mutationupdate_ordersArgs = {
+  orders: orders_UpdateInput;
+  where?: InputMaybe<orders_WhereInput>;
+};
+
+
+export type Mutationdelete_ordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
 };
 
 
@@ -2206,7 +2836,6 @@ export type categories_UpdateInput = {
 
 export type customers_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username: Scalars['String']['input'];
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
   address_id?: InputMaybe<Scalars['Int']['input']>;
@@ -2216,11 +2845,14 @@ export type customers_InsertInput = {
   lastname: Scalars['String']['input'];
   photo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  /** numero de celular */
+  phone: Scalars['String']['input'];
+  /** Documento de identidad  */
+  dni: Scalars['String']['input'];
 };
 
 export type customers_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   address_id?: InputMaybe<Scalars['Int']['input']>;
@@ -2230,24 +2862,260 @@ export type customers_UpdateInput = {
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  /** numero de celular */
+  phone?: InputMaybe<Scalars['String']['input']>;
+  /** Documento de identidad  */
+  dni?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type customers_addresses_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  id_customer?: InputMaybe<Scalars['Int']['input']>;
+  id_customer: Scalars['Int']['input'];
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias: Scalars['String']['input'];
+  department?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  district: Scalars['String']['input'];
+  /** Nombre de la avenida/calle/jirón */
+  street_name: Scalars['String']['input'];
+  /** Número de la dirección */
+  street_number: Scalars['String']['input'];
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<Scalars['String']['input']>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<Scalars['Float']['input']>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<Scalars['Float']['input']>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type customers_addresses_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
   id_customer?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<Scalars['String']['input']>;
+  department?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name?: InputMaybe<Scalars['String']['input']>;
+  /** Número de la dirección */
+  street_number?: InputMaybe<Scalars['String']['input']>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<Scalars['String']['input']>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<Scalars['Float']['input']>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<Scalars['Float']['input']>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Items/productos de cada orden */
+export type order_items_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id: Scalars['Int']['input'];
+  /** Variante del producto comprada */
+  variant_id: Scalars['Int']['input'];
+  /** Nombre del producto al momento de compra */
+  product_name: Scalars['String']['input'];
+  /** SKU de la variante */
+  variant_sku: Scalars['String']['input'];
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<Scalars['JSON']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio unitario al momento de compra */
+  unit_price: Scalars['Float']['input'];
+  /** Precio total (quantity * unit_price) */
+  total_price: Scalars['Float']['input'];
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** Items/productos de cada orden */
+export type order_items_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Variante del producto comprada */
+  variant_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre del producto al momento de compra */
+  product_name?: InputMaybe<Scalars['String']['input']>;
+  /** SKU de la variante */
+  variant_sku?: InputMaybe<Scalars['String']['input']>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<Scalars['JSON']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio unitario al momento de compra */
+  unit_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio total (quantity * unit_price) */
+  total_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** VIEW */
+export type order_summary_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['input'];
+  customer_id: Scalars['Int']['input'];
+  customer_name?: InputMaybe<Scalars['String']['input']>;
+  customer_email?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<order_summary_status>;
+  payment_status?: InputMaybe<order_summary_payment_status>;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['input'];
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['Date']['input']>;
+  total_items?: InputMaybe<Scalars['BigInt']['input']>;
+  total_quantity?: InputMaybe<Scalars['Float']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type order_summary_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['Int']['input']>;
+  customer_name?: InputMaybe<Scalars['String']['input']>;
+  customer_email?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<order_summary_status>;
+  payment_status?: InputMaybe<order_summary_payment_status>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<Scalars['Float']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['Date']['input']>;
+  total_items?: InputMaybe<Scalars['BigInt']['input']>;
+  total_quantity?: InputMaybe<Scalars['Float']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id: Scalars['Int']['input'];
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<order_tracking_status>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<Scalars['String']['input']>;
+  shipped_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  delivered_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<Scalars['String']['input']>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<order_tracking_status>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<Scalars['String']['input']>;
+  shipped_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  delivered_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<Scalars['String']['input']>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  customer_id: Scalars['Int']['input'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['input'];
+  status?: InputMaybe<orders_status>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Subtotal antes de descuentos */
+  subtotal: Scalars['Float']['input'];
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<Scalars['Float']['input']>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['input'];
+  /** Dirección de envío */
+  shipping_address_id: Scalars['Int']['input'];
+  /** Método de envío */
+  shipping_method?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['Date']['input']>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<Scalars['String']['input']>;
+  payment_status?: InputMaybe<orders_payment_status>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<Scalars['String']['input']>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  customer_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<orders_status>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<Scalars['Float']['input']>;
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<Scalars['Float']['input']>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Dirección de envío */
+  shipping_address_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Método de envío */
+  shipping_method?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['Date']['input']>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<Scalars['String']['input']>;
+  payment_status?: InputMaybe<orders_payment_status>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<Scalars['String']['input']>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type permissions_InsertInput = {
@@ -2650,6 +3518,22 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_customers_addresses: InContextSdkMethod<Query['count_customers_addresses'], Querycount_customers_addressesArgs, MeshContext>,
   /** undefined **/
+  order_items: InContextSdkMethod<Query['order_items'], Queryorder_itemsArgs, MeshContext>,
+  /** undefined **/
+  count_order_items: InContextSdkMethod<Query['count_order_items'], Querycount_order_itemsArgs, MeshContext>,
+  /** undefined **/
+  order_summary: InContextSdkMethod<Query['order_summary'], Queryorder_summaryArgs, MeshContext>,
+  /** undefined **/
+  count_order_summary: InContextSdkMethod<Query['count_order_summary'], Querycount_order_summaryArgs, MeshContext>,
+  /** undefined **/
+  order_tracking: InContextSdkMethod<Query['order_tracking'], Queryorder_trackingArgs, MeshContext>,
+  /** undefined **/
+  count_order_tracking: InContextSdkMethod<Query['count_order_tracking'], Querycount_order_trackingArgs, MeshContext>,
+  /** undefined **/
+  orders: InContextSdkMethod<Query['orders'], QueryordersArgs, MeshContext>,
+  /** undefined **/
+  count_orders: InContextSdkMethod<Query['count_orders'], Querycount_ordersArgs, MeshContext>,
+  /** undefined **/
   permissions: InContextSdkMethod<Query['permissions'], QuerypermissionsArgs, MeshContext>,
   /** undefined **/
   count_permissions: InContextSdkMethod<Query['count_permissions'], Querycount_permissionsArgs, MeshContext>,
@@ -2772,6 +3656,30 @@ export type variant_ratings_UpdateInput = {
   update_customers_addresses: InContextSdkMethod<Mutation['update_customers_addresses'], Mutationupdate_customers_addressesArgs, MeshContext>,
   /** undefined **/
   delete_customers_addresses: InContextSdkMethod<Mutation['delete_customers_addresses'], Mutationdelete_customers_addressesArgs, MeshContext>,
+  /** undefined **/
+  insert_order_items: InContextSdkMethod<Mutation['insert_order_items'], Mutationinsert_order_itemsArgs, MeshContext>,
+  /** undefined **/
+  update_order_items: InContextSdkMethod<Mutation['update_order_items'], Mutationupdate_order_itemsArgs, MeshContext>,
+  /** undefined **/
+  delete_order_items: InContextSdkMethod<Mutation['delete_order_items'], Mutationdelete_order_itemsArgs, MeshContext>,
+  /** undefined **/
+  insert_order_summary: InContextSdkMethod<Mutation['insert_order_summary'], Mutationinsert_order_summaryArgs, MeshContext>,
+  /** undefined **/
+  update_order_summary: InContextSdkMethod<Mutation['update_order_summary'], Mutationupdate_order_summaryArgs, MeshContext>,
+  /** undefined **/
+  delete_order_summary: InContextSdkMethod<Mutation['delete_order_summary'], Mutationdelete_order_summaryArgs, MeshContext>,
+  /** undefined **/
+  insert_order_tracking: InContextSdkMethod<Mutation['insert_order_tracking'], Mutationinsert_order_trackingArgs, MeshContext>,
+  /** undefined **/
+  update_order_tracking: InContextSdkMethod<Mutation['update_order_tracking'], Mutationupdate_order_trackingArgs, MeshContext>,
+  /** undefined **/
+  delete_order_tracking: InContextSdkMethod<Mutation['delete_order_tracking'], Mutationdelete_order_trackingArgs, MeshContext>,
+  /** undefined **/
+  insert_orders: InContextSdkMethod<Mutation['insert_orders'], Mutationinsert_ordersArgs, MeshContext>,
+  /** undefined **/
+  update_orders: InContextSdkMethod<Mutation['update_orders'], Mutationupdate_ordersArgs, MeshContext>,
+  /** undefined **/
+  delete_orders: InContextSdkMethod<Mutation['delete_orders'], Mutationdelete_ordersArgs, MeshContext>,
   /** undefined **/
   insert_permissions: InContextSdkMethod<Mutation['insert_permissions'], Mutationinsert_permissionsArgs, MeshContext>,
   /** undefined **/

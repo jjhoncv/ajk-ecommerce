@@ -26,7 +26,7 @@ const MiniCart: React.FC = () => {
   return (
     <>
       {canShowMinicart() &&
-        <SidePage isOpen={isCartOpen} direction="right" width={215}>
+        <SidePage closeOnClickOutside={false} onClose={closeCart} isOpen={isCartOpen} direction="right" width={215}>
           <CartContentThin
             items={items}
             totalPrice={totalPrice}
@@ -36,7 +36,7 @@ const MiniCart: React.FC = () => {
           />
         </SidePage>}
 
-      {toastMessage && <Toast message={toastMessage} />}
+      {toastMessage && <Toast message={toastMessage} position="bottom-right" />}
 
       {/* 👈 MODAL DE CONFIRMACIÓN */}
       <Modal
@@ -55,7 +55,7 @@ const MiniCart: React.FC = () => {
             <div className="flex items-center gap-3">
               <div>
                 <p className="text-gray-700 text-sm">
-                  ¿Estás seguro de que quieres eliminar el artículo de tu cesta?
+                  {deleteConfirmation.message || `¿Estás seguro de que quieres eliminar el artículo de tu cesta?`}
                 </p>
               </div>
             </div>

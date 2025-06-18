@@ -1,51 +1,80 @@
-import { CustomersAddresses as CustomerAddressRaw } from '@/types/database'
-import { CustomersAddresses as CustomerAddress } from '@/types/domain'
-
-// me
+// backend/customerAddress/CustomerAddress.model.ts
+import { CustomersAddresses } from '@/types/domain'
 import {
   CustomerAddressMapper,
   CustomerAddressesMapper
 } from './CustomerAddress.mapper'
-import oCustomerAddressRep from './CustomerAddress.repository'
+import customerAddressRepository from './CustomerAddress.repository'
 
 export class CustomerAddressModel {
-  public async getAddress(id: number): Promise<CustomerAddress | undefined> {
-    const addressRaw = await oCustomerAddressRep.getAddress(id)
+  public async getAddress(id: number): Promise<CustomersAddresses | undefined> {
+    const addressRaw = await customerAddressRepository.getAddress(id)
     if (!addressRaw) return undefined
     return CustomerAddressMapper(addressRaw)
   }
 
   public async getAddressByCustomer(
-    id: number
-  ): Promise<CustomerAddress[] | undefined> {
-    const addressesRaw = await oCustomerAddressRep.getAddressByCustomer(id)
+    customerId: number
+  ): Promise<CustomersAddresses[] | undefined> {
+    const addressesRaw =
+      await customerAddressRepository.getAddressByCustomer(customerId)
     return CustomerAddressesMapper(addressesRaw)
   }
 
-  public async getAddresses(): Promise<CustomerAddress[] | undefined> {
-    const addressesRaw = await oCustomerAddressRep.getAddresses()
+  public async getAddresses(): Promise<CustomersAddresses[] | undefined> {
+    const addressesRaw = await customerAddressRepository.getAddresses()
     return CustomerAddressesMapper(addressesRaw)
   }
 
-  public async createAddress(
-    addressData: Omit<CustomerAddressRaw, 'id' | 'created_at' | 'updated_at'>
-  ): Promise<CustomerAddress | undefined> {
-    const created = await oCustomerAddressRep.createAddress(addressData)
+  public async createAddress(data: {
+    idCustomer: number
+    alias: string
+    department: string
+    province: string
+    district: string
+    streetName: string
+    streetNumber: string
+    apartment?: string
+    latitude?: number
+    longitude?: number
+    isDefault?: boolean
+  }): Promise<CustomersAddresses | undefined> {
+    const created = await customerAddressRepository.createAddress(data)
     if (!created) return undefined
     return CustomerAddressMapper(created)
   }
 
   public async updateAddress(
-    addressData: Omit<CustomerAddressRaw, 'id' | 'created_at' | 'updated_at'>,
-    id: number
-  ): Promise<CustomerAddress | undefined> {
-    const updated = await oCustomerAddressRep.updateAddress(addressData, id)
+    id: number,
+    data: {
+      alias?: string
+      department?: string
+      province?: string
+      district?: string
+      streetName?: string
+      streetNumber?: string
+      apartment?: string
+      latitude?: number
+      longitude?: number
+    }
+  ): Promise<CustomersAddresses | undefined> {
+    const updated = await customerAddressRepository.updateAddress(id, data)
     if (!updated) return undefined
     return CustomerAddressMapper(updated)
   }
 
   public async deleteAddress(id: number): Promise<void> {
-    return await oCustomerAddressRep.deleteAddress(id)
+    return await customerAddressRepository.deleteAddress(id)
+  }
+
+  public async setDefaultAddress(
+    customerId: number,
+    addressId: number
+  ): Promise<void> {
+    return await customerAddressRepository.setDefaultAddress(
+      customerId,
+      addressId
+    )
   }
 }
 

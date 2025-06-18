@@ -4,6 +4,7 @@ import { ProductVariantShipping } from "@/components/product/ProductVariantShipp
 import { PlusMinusButton } from "@/components/ui/PlusMinusButton"
 import { getVariantImages } from "@/helpers/image.helpers"
 import { getVariantTitle } from "@/helpers/productVariant.helpers"
+import { cn } from "@/lib/utils"
 import { useCartContext } from "@/providers/cart"
 import { Products, ProductVariants as ProductVariant } from "@/types/domain"
 import { FC, useState } from "react"
@@ -11,9 +12,11 @@ import { FC, useState } from "react"
 interface ProductVariantPurchaseProps {
   variant: ProductVariant
   product: Products
+  preview: boolean
+  onCartAction?: () => void
 }
 
-export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ product, variant }) => {
+export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ product, variant, preview = false, onCartAction }) => {
   const [quantity, setQuantity] = useState(1)
   const { originalPrice } = getPriceIfHasPromotion(variant)
   const { items } = useCartContext()
@@ -34,7 +37,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
   const thumbImage = images.sort((a, b) => a.displayOrder - b.displayOrder)[0].imageUrlThumb
 
   return (
-    <div className="bg-white sticky top-40 shadow-sm border border-gray-200 overflow-hidden w-full xl:max-w-96">
+    <div className={cn("bg-white sticky shadow-sm border border-gray-200 overflow-hidden w-full xl:max-w-96 top-24", { 'top-0': preview })}>
       <ProductVariantShipping shippingCost={shippingCost} />
       <div className="px-6 py-4">
         <h3 className="font-medium text-gray-900 mb-2 text-sm">Cantidad</h3>
@@ -68,7 +71,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({ produc
             name={getVariantTitle(product.name, variant)}
             image={thumbImage}
             promotionVariants={variant.promotionVariants}
-
+            onCartAction={onCartAction}
           />
         </div>
       </div>
