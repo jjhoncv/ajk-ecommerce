@@ -2,7 +2,8 @@ import { formatPrice } from "@/helpers/utils";
 import { CartItem } from "@/hooks/useCart";
 import { ShieldCheck } from "lucide-react";
 import Image from "next/image";
-import { FC } from "react";
+import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
 
 // Helper para obtener precio con promoción
 const getPriceIfHasPromotion = (item: CartItem) => {
@@ -50,6 +51,31 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
   const totals = calculateTotalsWithPromotions(summaryCart.selectedItems);
   const totalDiscount = totals.originalTotal - totals.finalTotal;
   const hasDiscounts = totalDiscount > 0;
+
+  const router = useRouter()
+  const [isNavigating, setIsNavigating] = useState(false)
+
+  const handleContinueToCheckout = async () => {
+    if (!summaryCart.hasSelectedItems()) return
+
+    setIsNavigating(true)
+
+    try {
+      // Guardar items seleccionados en localStorage para el checkout
+      const selectedItems = summaryCart.selectedItems
+
+      // Opcional: También puedes filtrar el carrito para que solo tenga los items seleccionados
+      localStorage.setItem('cart', JSON.stringify(selectedItems))
+
+      // Navegar al checkout
+      router.push('/checkout')
+
+    } catch (error) {
+      console.error('Error navigating to checkout:', error)
+      setIsNavigating(false)
+    }
+  }
+
 
   if (!summaryCart.hasSelectedItems()) {
     return (
@@ -163,11 +189,19 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
       </div>
 
       <button
+        onClick={handleContinueToCheckout}
         className="w-full font-bold bg-red-600 text-white py-3 hover:bg-red-700 transition-colors mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={!summaryCart.hasSelectedItems()}
+        disabled={!summaryCart.hasSelectedItems() || isNavigating}
       >
         <div className="flex items-center justify-center gap-2">
-          <span>Continuar ({totals.totalItems})</span>
+          {isNavigating ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <span>Redirigiendo...</span>
+            </>
+          ) : (
+            <span>Continuar ({totals.totalItems})</span>
+          )}
         </div>
       </button>
 

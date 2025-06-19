@@ -59,6 +59,10 @@ export type Query = {
   countBrands?: Maybe<Scalars['Int']['output']>;
   categories?: Maybe<Array<Maybe<Categories>>>;
   countCategories?: Maybe<Scalars['Int']['output']>;
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
+  countCouponUsage?: Maybe<Scalars['Int']['output']>;
+  coupons?: Maybe<Array<Maybe<Coupons>>>;
+  countCoupons?: Maybe<Scalars['Int']['output']>;
   customers?: Maybe<Array<Maybe<Customers>>>;
   countCustomers?: Maybe<Scalars['Int']['output']>;
   customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
@@ -71,6 +75,10 @@ export type Query = {
   countOrderTracking?: Maybe<Scalars['Int']['output']>;
   orders?: Maybe<Array<Maybe<Orders>>>;
   countOrders?: Maybe<Scalars['Int']['output']>;
+  paymentMethods?: Maybe<Array<Maybe<PaymentMethods>>>;
+  countPaymentMethods?: Maybe<Scalars['Int']['output']>;
+  paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
+  countPaymentTransactions?: Maybe<Scalars['Int']['output']>;
   permissions?: Maybe<Array<Maybe<Permissions>>>;
   countPermissions?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
@@ -97,6 +105,12 @@ export type Query = {
   countServices?: Maybe<Scalars['Int']['output']>;
   servicesImages?: Maybe<Array<Maybe<ServicesImages>>>;
   countServicesImages?: Maybe<Scalars['Int']['output']>;
+  shippingMethods?: Maybe<Array<Maybe<ShippingMethods>>>;
+  countShippingMethods?: Maybe<Scalars['Int']['output']>;
+  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+  countShippingZoneMethods?: Maybe<Scalars['Int']['output']>;
+  shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
+  countShippingZones?: Maybe<Scalars['Int']['output']>;
   users?: Maybe<Array<Maybe<Users>>>;
   countUsers?: Maybe<Scalars['Int']['output']>;
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
@@ -188,6 +202,32 @@ export type QuerycountCategoriesArgs = {
 };
 
 
+export type QuerycouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
+};
+
+
+export type QuerycountCouponUsageArgs = {
+  where?: InputMaybe<CouponUsageWhereInput>;
+};
+
+
+export type QuerycouponsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponsWhereInput>;
+  orderBy?: InputMaybe<CouponsOrderByInput>;
+};
+
+
+export type QuerycountCouponsArgs = {
+  where?: InputMaybe<CouponsWhereInput>;
+};
+
+
 export type QuerycustomersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -263,6 +303,32 @@ export type QueryordersArgs = {
 
 export type QuerycountOrdersArgs = {
   where?: InputMaybe<OrdersWhereInput>;
+};
+
+
+export type QuerypaymentMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PaymentMethodsWhereInput>;
+  orderBy?: InputMaybe<PaymentMethodsOrderByInput>;
+};
+
+
+export type QuerycountPaymentMethodsArgs = {
+  where?: InputMaybe<PaymentMethodsWhereInput>;
+};
+
+
+export type QuerypaymentTransactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
+  orderBy?: InputMaybe<PaymentTransactionsOrderByInput>;
+};
+
+
+export type QuerycountPaymentTransactionsArgs = {
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
 };
 
 
@@ -435,6 +501,45 @@ export type QuerycountServicesImagesArgs = {
 };
 
 
+export type QueryshippingMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingMethodsOrderByInput>;
+};
+
+
+export type QuerycountShippingMethodsArgs = {
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+};
+
+
+export type QueryshippingZoneMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
+};
+
+
+export type QuerycountShippingZoneMethodsArgs = {
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+};
+
+
+export type QueryshippingZonesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZonesWhereInput>;
+  orderBy?: InputMaybe<ShippingZonesOrderByInput>;
+};
+
+
+export type QuerycountShippingZonesArgs = {
+  where?: InputMaybe<ShippingZonesWhereInput>;
+};
+
+
 export type QueryusersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -518,6 +623,12 @@ export type Mutation = {
   insertCategories?: Maybe<Categories>;
   updateCategories?: Maybe<Categories>;
   deleteCategories?: Maybe<Scalars['Boolean']['output']>;
+  insertCouponUsage?: Maybe<CouponUsage>;
+  updateCouponUsage?: Maybe<CouponUsage>;
+  deleteCouponUsage?: Maybe<Scalars['Boolean']['output']>;
+  insertCoupons?: Maybe<Coupons>;
+  updateCoupons?: Maybe<Coupons>;
+  deleteCoupons?: Maybe<Scalars['Boolean']['output']>;
   insertCustomers?: Maybe<Customers>;
   updateCustomers?: Maybe<Customers>;
   deleteCustomers?: Maybe<Scalars['Boolean']['output']>;
@@ -536,6 +647,12 @@ export type Mutation = {
   insertOrders?: Maybe<Orders>;
   updateOrders?: Maybe<Orders>;
   deleteOrders?: Maybe<Scalars['Boolean']['output']>;
+  insertPaymentMethods?: Maybe<PaymentMethods>;
+  updatePaymentMethods?: Maybe<PaymentMethods>;
+  deletePaymentMethods?: Maybe<Scalars['Boolean']['output']>;
+  insertPaymentTransactions?: Maybe<PaymentTransactions>;
+  updatePaymentTransactions?: Maybe<PaymentTransactions>;
+  deletePaymentTransactions?: Maybe<Scalars['Boolean']['output']>;
   insertPermissions?: Maybe<Permissions>;
   updatePermissions?: Maybe<Permissions>;
   deletePermissions?: Maybe<Scalars['Boolean']['output']>;
@@ -575,6 +692,15 @@ export type Mutation = {
   insertServicesImages?: Maybe<ServicesImages>;
   updateServicesImages?: Maybe<ServicesImages>;
   deleteServicesImages?: Maybe<Scalars['Boolean']['output']>;
+  insertShippingMethods?: Maybe<ShippingMethods>;
+  updateShippingMethods?: Maybe<ShippingMethods>;
+  deleteShippingMethods?: Maybe<Scalars['Boolean']['output']>;
+  insertShippingZoneMethods?: Maybe<ShippingZoneMethods>;
+  updateShippingZoneMethods?: Maybe<ShippingZoneMethods>;
+  deleteShippingZoneMethods?: Maybe<Scalars['Boolean']['output']>;
+  insertShippingZones?: Maybe<ShippingZones>;
+  updateShippingZones?: Maybe<ShippingZones>;
+  deleteShippingZones?: Maybe<Scalars['Boolean']['output']>;
   insertUsers?: Maybe<Users>;
   updateUsers?: Maybe<Users>;
   deleteUsers?: Maybe<Scalars['Boolean']['output']>;
@@ -689,6 +815,38 @@ export type MutationdeleteCategoriesArgs = {
 };
 
 
+export type MutationinsertCouponUsageArgs = {
+  coupon_usage: CouponUsageInsertInput;
+};
+
+
+export type MutationupdateCouponUsageArgs = {
+  coupon_usage: CouponUsageUpdateInput;
+  where?: InputMaybe<CouponUsageWhereInput>;
+};
+
+
+export type MutationdeleteCouponUsageArgs = {
+  where?: InputMaybe<CouponUsageWhereInput>;
+};
+
+
+export type MutationinsertCouponsArgs = {
+  coupons: CouponsInsertInput;
+};
+
+
+export type MutationupdateCouponsArgs = {
+  coupons: CouponsUpdateInput;
+  where?: InputMaybe<CouponsWhereInput>;
+};
+
+
+export type MutationdeleteCouponsArgs = {
+  where?: InputMaybe<CouponsWhereInput>;
+};
+
+
 export type MutationinsertCustomersArgs = {
   customers: CustomersInsertInput;
 };
@@ -782,6 +940,38 @@ export type MutationupdateOrdersArgs = {
 
 export type MutationdeleteOrdersArgs = {
   where?: InputMaybe<OrdersWhereInput>;
+};
+
+
+export type MutationinsertPaymentMethodsArgs = {
+  payment_methods: PaymentMethodsInsertInput;
+};
+
+
+export type MutationupdatePaymentMethodsArgs = {
+  payment_methods: PaymentMethodsUpdateInput;
+  where?: InputMaybe<PaymentMethodsWhereInput>;
+};
+
+
+export type MutationdeletePaymentMethodsArgs = {
+  where?: InputMaybe<PaymentMethodsWhereInput>;
+};
+
+
+export type MutationinsertPaymentTransactionsArgs = {
+  payment_transactions: PaymentTransactionsInsertInput;
+};
+
+
+export type MutationupdatePaymentTransactionsArgs = {
+  payment_transactions: PaymentTransactionsUpdateInput;
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
+};
+
+
+export type MutationdeletePaymentTransactionsArgs = {
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
 };
 
 
@@ -990,6 +1180,54 @@ export type MutationupdateServicesImagesArgs = {
 
 export type MutationdeleteServicesImagesArgs = {
   where?: InputMaybe<ServicesImagesWhereInput>;
+};
+
+
+export type MutationinsertShippingMethodsArgs = {
+  shipping_methods: ShippingMethodsInsertInput;
+};
+
+
+export type MutationupdateShippingMethodsArgs = {
+  shipping_methods: ShippingMethodsUpdateInput;
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+};
+
+
+export type MutationdeleteShippingMethodsArgs = {
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+};
+
+
+export type MutationinsertShippingZoneMethodsArgs = {
+  shipping_zone_methods: ShippingZoneMethodsInsertInput;
+};
+
+
+export type MutationupdateShippingZoneMethodsArgs = {
+  shipping_zone_methods: ShippingZoneMethodsUpdateInput;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+};
+
+
+export type MutationdeleteShippingZoneMethodsArgs = {
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+};
+
+
+export type MutationinsertShippingZonesArgs = {
+  shipping_zones: ShippingZonesInsertInput;
+};
+
+
+export type MutationupdateShippingZonesArgs = {
+  shipping_zones: ShippingZonesUpdateInput;
+  where?: InputMaybe<ShippingZonesWhereInput>;
+};
+
+
+export type MutationdeleteShippingZonesArgs = {
+  where?: InputMaybe<ShippingZonesWhereInput>;
 };
 
 
@@ -1398,10 +1636,21 @@ export type Orders = {
   customerNotes?: Maybe<Scalars['String']['output']>;
   /** Notas internas del admin */
   adminNotes?: Maybe<Scalars['String']['output']>;
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
   orderTracking?: Maybe<Array<Maybe<OrderTracking>>>;
   customers?: Maybe<Array<Maybe<Customers>>>;
   customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
+  paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrderscouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
 };
 
 
@@ -1440,6 +1689,15 @@ export type OrderscustomersAddressesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+/** Órdenes principales del ecommerce */
+export type OrderspaymentTransactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
+  orderBy?: InputMaybe<PaymentTransactionsOrderByInput>;
+};
+
 export type OrdersStatus =
   | 'pending'
   | 'processing'
@@ -1454,197 +1712,137 @@ export type OrdersPaymentStatus =
   | 'failed'
   | 'refunded';
 
-/** Items/productos de cada orden */
-export type OrderItemsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  orderId?: InputMaybe<Scalars['String']['input']>;
-  /** Variante del producto comprada */
-  variantId?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre del producto al momento de compra */
-  productName?: InputMaybe<Scalars['String']['input']>;
-  /** SKU de la variante */
-  variantSku?: InputMaybe<Scalars['String']['input']>;
-  /** Atributos de la variante (color, talla, etc.) */
-  variantAttributes?: InputMaybe<Scalars['String']['input']>;
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  /** Precio unitario al momento de compra */
-  unitPrice?: InputMaybe<Scalars['String']['input']>;
-  /** Precio total (quantity * unit_price) */
-  totalPrice?: InputMaybe<Scalars['String']['input']>;
-  /** Descuento aplicado a este item */
-  discountAmount?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Items/productos de cada orden */
-export type OrderItemsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  orderId?: InputMaybe<OrderBy>;
-  /** Variante del producto comprada */
-  variantId?: InputMaybe<OrderBy>;
-  /** Nombre del producto al momento de compra */
-  productName?: InputMaybe<OrderBy>;
-  /** SKU de la variante */
-  variantSku?: InputMaybe<OrderBy>;
-  /** Atributos de la variante (color, talla, etc.) */
-  variantAttributes?: InputMaybe<OrderBy>;
-  quantity?: InputMaybe<OrderBy>;
-  /** Precio unitario al momento de compra */
-  unitPrice?: InputMaybe<OrderBy>;
-  /** Precio total (quantity * unit_price) */
-  totalPrice?: InputMaybe<OrderBy>;
-  /** Descuento aplicado a este item */
-  discountAmount?: InputMaybe<OrderBy>;
-};
-
-/** Seguimiento de envíos */
-export type OrderTracking = {
+export type CouponUsage = {
   id: Scalars['Int']['output'];
+  couponId: Scalars['Int']['output'];
+  customerId: Scalars['Int']['output'];
   orderId: Scalars['Int']['output'];
-  /** Número de seguimiento del courier */
-  trackingNumber?: Maybe<Scalars['String']['output']>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courierCompany?: Maybe<Scalars['String']['output']>;
-  status: OrderTrackingStatus;
-  /** Ubicación actual del paquete */
-  currentLocation?: Maybe<Scalars['String']['output']>;
-  shippedAt?: Maybe<Scalars['Timestamp']['output']>;
-  deliveredAt?: Maybe<Scalars['Timestamp']['output']>;
-  /** Nombre de quien recibió */
-  deliveredTo?: Maybe<Scalars['String']['output']>;
-  /** Notas de entrega */
-  deliveryNotes?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
+  discountAmount: Scalars['Float']['output'];
+  usedAt: Scalars['Timestamp']['output'];
+  coupons?: Maybe<Array<Maybe<Coupons>>>;
+  customers?: Maybe<Array<Maybe<Customers>>>;
   orders?: Maybe<Array<Maybe<Orders>>>;
 };
 
 
-/** Seguimiento de envíos */
-export type OrderTrackingordersArgs = {
+export type CouponUsagecouponsArgs = {
+  where?: InputMaybe<CouponsWhereInput>;
+  orderBy?: InputMaybe<CouponsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CouponUsagecustomersArgs = {
+  where?: InputMaybe<CustomersWhereInput>;
+  orderBy?: InputMaybe<CustomersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CouponUsageordersArgs = {
   where?: InputMaybe<OrdersWhereInput>;
   orderBy?: InputMaybe<OrdersOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type OrderTrackingStatus =
-  | 'preparing'
-  | 'shipped'
-  | 'in_transit'
-  | 'out_for_delivery'
-  | 'delivered'
-  | 'failed_delivery';
+export type Coupons = {
+  id: Scalars['Int']['output'];
+  code: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  discountType: CouponsDiscountType;
+  discountValue: Scalars['Float']['output'];
+  minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
+  maxDiscountAmount?: Maybe<Scalars['Float']['output']>;
+  usageLimit?: Maybe<Scalars['Int']['output']>;
+  usageLimitPerCustomer?: Maybe<Scalars['Int']['output']>;
+  usedCount?: Maybe<Scalars['Int']['output']>;
+  startDate: Scalars['DateTime']['output'];
+  endDate: Scalars['DateTime']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  applicableTo?: Maybe<CouponsApplicableTo>;
+  applicableIds?: Maybe<Scalars['JSON']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
+};
 
-/** Órdenes principales del ecommerce */
-export type OrdersWhereInput = {
+
+export type CouponscouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
+};
+
+export type CouponsDiscountType =
+  | 'fixed_amount'
+  | 'percentage';
+
+export type CouponsApplicableTo =
+  | 'all'
+  | 'categories'
+  | 'products';
+
+export type CouponUsageWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
+  couponId?: InputMaybe<Scalars['String']['input']>;
   customerId?: InputMaybe<Scalars['String']['input']>;
-  /** Número único de orden (ORD-2025-001234) */
-  orderNumber?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  /** Subtotal antes de descuentos */
-  subtotal?: InputMaybe<Scalars['String']['input']>;
-  /** Descuento aplicado */
-  discountAmount?: InputMaybe<Scalars['String']['input']>;
-  /** Costo de envío */
-  shippingCost?: InputMaybe<Scalars['String']['input']>;
-  /** Impuestos (IGV) */
-  taxAmount?: InputMaybe<Scalars['String']['input']>;
-  /** Total final a pagar */
-  totalAmount?: InputMaybe<Scalars['String']['input']>;
-  /** Dirección de envío */
-  shippingAddressId?: InputMaybe<Scalars['String']['input']>;
-  /** Método de envío */
-  shippingMethod?: InputMaybe<Scalars['String']['input']>;
-  /** Fecha estimada de entrega */
-  estimatedDelivery?: InputMaybe<Scalars['String']['input']>;
-  /** Método de pago usado */
-  paymentMethod?: InputMaybe<Scalars['String']['input']>;
-  paymentStatus?: InputMaybe<Scalars['String']['input']>;
-  /** Fecha de pago confirmado */
-  paidAt?: InputMaybe<Scalars['String']['input']>;
-  /** Notas del cliente */
-  customerNotes?: InputMaybe<Scalars['String']['input']>;
-  /** Notas internas del admin */
-  adminNotes?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Órdenes principales del ecommerce */
-export type OrdersOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  customerId?: InputMaybe<OrderBy>;
-  /** Número único de orden (ORD-2025-001234) */
-  orderNumber?: InputMaybe<OrderBy>;
-  status?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  /** Subtotal antes de descuentos */
-  subtotal?: InputMaybe<OrderBy>;
-  /** Descuento aplicado */
-  discountAmount?: InputMaybe<OrderBy>;
-  /** Costo de envío */
-  shippingCost?: InputMaybe<OrderBy>;
-  /** Impuestos (IGV) */
-  taxAmount?: InputMaybe<OrderBy>;
-  /** Total final a pagar */
-  totalAmount?: InputMaybe<OrderBy>;
-  /** Dirección de envío */
-  shippingAddressId?: InputMaybe<OrderBy>;
-  /** Método de envío */
-  shippingMethod?: InputMaybe<OrderBy>;
-  /** Fecha estimada de entrega */
-  estimatedDelivery?: InputMaybe<OrderBy>;
-  /** Método de pago usado */
-  paymentMethod?: InputMaybe<OrderBy>;
-  paymentStatus?: InputMaybe<OrderBy>;
-  /** Fecha de pago confirmado */
-  paidAt?: InputMaybe<OrderBy>;
-  /** Notas del cliente */
-  customerNotes?: InputMaybe<OrderBy>;
-  /** Notas internas del admin */
-  adminNotes?: InputMaybe<OrderBy>;
-};
-
-/** Seguimiento de envíos */
-export type OrderTrackingWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
   orderId?: InputMaybe<Scalars['String']['input']>;
-  /** Número de seguimiento del courier */
-  trackingNumber?: InputMaybe<Scalars['String']['input']>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courierCompany?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  /** Ubicación actual del paquete */
-  currentLocation?: InputMaybe<Scalars['String']['input']>;
-  shippedAt?: InputMaybe<Scalars['String']['input']>;
-  deliveredAt?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de quien recibió */
-  deliveredTo?: InputMaybe<Scalars['String']['input']>;
-  /** Notas de entrega */
-  deliveryNotes?: InputMaybe<Scalars['String']['input']>;
+  discountAmount?: InputMaybe<Scalars['String']['input']>;
+  usedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CouponUsageOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  couponId?: InputMaybe<OrderBy>;
+  customerId?: InputMaybe<OrderBy>;
+  orderId?: InputMaybe<OrderBy>;
+  discountAmount?: InputMaybe<OrderBy>;
+  usedAt?: InputMaybe<OrderBy>;
+};
+
+export type CouponsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  discountType?: InputMaybe<Scalars['String']['input']>;
+  discountValue?: InputMaybe<Scalars['String']['input']>;
+  minPurchaseAmount?: InputMaybe<Scalars['String']['input']>;
+  maxDiscountAmount?: InputMaybe<Scalars['String']['input']>;
+  usageLimit?: InputMaybe<Scalars['String']['input']>;
+  usageLimitPerCustomer?: InputMaybe<Scalars['String']['input']>;
+  usedCount?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  applicableTo?: InputMaybe<Scalars['String']['input']>;
+  applicableIds?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Seguimiento de envíos */
-export type OrderTrackingOrderByInput = {
+export type CouponsOrderByInput = {
   id?: InputMaybe<OrderBy>;
-  orderId?: InputMaybe<OrderBy>;
-  /** Número de seguimiento del courier */
-  trackingNumber?: InputMaybe<OrderBy>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courierCompany?: InputMaybe<OrderBy>;
-  status?: InputMaybe<OrderBy>;
-  /** Ubicación actual del paquete */
-  currentLocation?: InputMaybe<OrderBy>;
-  shippedAt?: InputMaybe<OrderBy>;
-  deliveredAt?: InputMaybe<OrderBy>;
-  /** Nombre de quien recibió */
-  deliveredTo?: InputMaybe<OrderBy>;
-  /** Notas de entrega */
-  deliveryNotes?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  discountType?: InputMaybe<OrderBy>;
+  discountValue?: InputMaybe<OrderBy>;
+  minPurchaseAmount?: InputMaybe<OrderBy>;
+  maxDiscountAmount?: InputMaybe<OrderBy>;
+  usageLimit?: InputMaybe<OrderBy>;
+  usageLimitPerCustomer?: InputMaybe<OrderBy>;
+  usedCount?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  endDate?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  applicableTo?: InputMaybe<OrderBy>;
+  applicableIds?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
 };
@@ -1664,9 +1862,18 @@ export type Customers = {
   phone: Scalars['String']['output'];
   /** Documento de identidad  */
   dni: Scalars['String']['output'];
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
   customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
   orders?: Maybe<Array<Maybe<Orders>>>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
+};
+
+
+export type CustomerscouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
 };
 
 
@@ -1767,6 +1974,78 @@ export type CustomersOrderByInput = {
   phone?: InputMaybe<OrderBy>;
   /** Documento de identidad  */
   dni?: InputMaybe<OrderBy>;
+};
+
+/** Órdenes principales del ecommerce */
+export type OrdersWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  orderNumber?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado */
+  discountAmount?: InputMaybe<Scalars['String']['input']>;
+  /** Costo de envío */
+  shippingCost?: InputMaybe<Scalars['String']['input']>;
+  /** Impuestos (IGV) */
+  taxAmount?: InputMaybe<Scalars['String']['input']>;
+  /** Total final a pagar */
+  totalAmount?: InputMaybe<Scalars['String']['input']>;
+  /** Dirección de envío */
+  shippingAddressId?: InputMaybe<Scalars['String']['input']>;
+  /** Método de envío */
+  shippingMethod?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimatedDelivery?: InputMaybe<Scalars['String']['input']>;
+  /** Método de pago usado */
+  paymentMethod?: InputMaybe<Scalars['String']['input']>;
+  paymentStatus?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha de pago confirmado */
+  paidAt?: InputMaybe<Scalars['String']['input']>;
+  /** Notas del cliente */
+  customerNotes?: InputMaybe<Scalars['String']['input']>;
+  /** Notas internas del admin */
+  adminNotes?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type OrdersOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  customerId?: InputMaybe<OrderBy>;
+  /** Número único de orden (ORD-2025-001234) */
+  orderNumber?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<OrderBy>;
+  /** Descuento aplicado */
+  discountAmount?: InputMaybe<OrderBy>;
+  /** Costo de envío */
+  shippingCost?: InputMaybe<OrderBy>;
+  /** Impuestos (IGV) */
+  taxAmount?: InputMaybe<OrderBy>;
+  /** Total final a pagar */
+  totalAmount?: InputMaybe<OrderBy>;
+  /** Dirección de envío */
+  shippingAddressId?: InputMaybe<OrderBy>;
+  /** Método de envío */
+  shippingMethod?: InputMaybe<OrderBy>;
+  /** Fecha estimada de entrega */
+  estimatedDelivery?: InputMaybe<OrderBy>;
+  /** Método de pago usado */
+  paymentMethod?: InputMaybe<OrderBy>;
+  paymentStatus?: InputMaybe<OrderBy>;
+  /** Fecha de pago confirmado */
+  paidAt?: InputMaybe<OrderBy>;
+  /** Notas del cliente */
+  customerNotes?: InputMaybe<OrderBy>;
+  /** Notas internas del admin */
+  adminNotes?: InputMaybe<OrderBy>;
 };
 
 export type CustomersAddressesWhereInput = {
@@ -1926,6 +2205,279 @@ export type ProductVariantsOrderByInput = {
   sku?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   stock?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Items/productos de cada orden */
+export type OrderItemsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  orderId?: InputMaybe<Scalars['String']['input']>;
+  /** Variante del producto comprada */
+  variantId?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del producto al momento de compra */
+  productName?: InputMaybe<Scalars['String']['input']>;
+  /** SKU de la variante */
+  variantSku?: InputMaybe<Scalars['String']['input']>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variantAttributes?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Precio unitario al momento de compra */
+  unitPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Precio total (quantity * unit_price) */
+  totalPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado a este item */
+  discountAmount?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Items/productos de cada orden */
+export type OrderItemsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  orderId?: InputMaybe<OrderBy>;
+  /** Variante del producto comprada */
+  variantId?: InputMaybe<OrderBy>;
+  /** Nombre del producto al momento de compra */
+  productName?: InputMaybe<OrderBy>;
+  /** SKU de la variante */
+  variantSku?: InputMaybe<OrderBy>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variantAttributes?: InputMaybe<OrderBy>;
+  quantity?: InputMaybe<OrderBy>;
+  /** Precio unitario al momento de compra */
+  unitPrice?: InputMaybe<OrderBy>;
+  /** Precio total (quantity * unit_price) */
+  totalPrice?: InputMaybe<OrderBy>;
+  /** Descuento aplicado a este item */
+  discountAmount?: InputMaybe<OrderBy>;
+};
+
+/** Seguimiento de envíos */
+export type OrderTracking = {
+  id: Scalars['Int']['output'];
+  orderId: Scalars['Int']['output'];
+  /** Número de seguimiento del courier */
+  trackingNumber?: Maybe<Scalars['String']['output']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courierCompany?: Maybe<Scalars['String']['output']>;
+  status: OrderTrackingStatus;
+  /** Ubicación actual del paquete */
+  currentLocation?: Maybe<Scalars['String']['output']>;
+  shippedAt?: Maybe<Scalars['Timestamp']['output']>;
+  deliveredAt?: Maybe<Scalars['Timestamp']['output']>;
+  /** Nombre de quien recibió */
+  deliveredTo?: Maybe<Scalars['String']['output']>;
+  /** Notas de entrega */
+  deliveryNotes?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  orders?: Maybe<Array<Maybe<Orders>>>;
+};
+
+
+/** Seguimiento de envíos */
+export type OrderTrackingordersArgs = {
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type OrderTrackingStatus =
+  | 'preparing'
+  | 'shipped'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'delivered'
+  | 'failed_delivery';
+
+/** Seguimiento de envíos */
+export type OrderTrackingWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  orderId?: InputMaybe<Scalars['String']['input']>;
+  /** Número de seguimiento del courier */
+  trackingNumber?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courierCompany?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Ubicación actual del paquete */
+  currentLocation?: InputMaybe<Scalars['String']['input']>;
+  shippedAt?: InputMaybe<Scalars['String']['input']>;
+  deliveredAt?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de quien recibió */
+  deliveredTo?: InputMaybe<Scalars['String']['input']>;
+  /** Notas de entrega */
+  deliveryNotes?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Seguimiento de envíos */
+export type OrderTrackingOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  orderId?: InputMaybe<OrderBy>;
+  /** Número de seguimiento del courier */
+  trackingNumber?: InputMaybe<OrderBy>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courierCompany?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  /** Ubicación actual del paquete */
+  currentLocation?: InputMaybe<OrderBy>;
+  shippedAt?: InputMaybe<OrderBy>;
+  deliveredAt?: InputMaybe<OrderBy>;
+  /** Nombre de quien recibió */
+  deliveredTo?: InputMaybe<OrderBy>;
+  /** Notas de entrega */
+  deliveryNotes?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type PaymentTransactions = {
+  id: Scalars['Int']['output'];
+  orderId: Scalars['Int']['output'];
+  paymentMethodId: Scalars['Int']['output'];
+  transactionId?: Maybe<Scalars['String']['output']>;
+  referenceNumber?: Maybe<Scalars['String']['output']>;
+  amount: Scalars['Float']['output'];
+  processingFee?: Maybe<Scalars['Float']['output']>;
+  netAmount: Scalars['Float']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<PaymentTransactionsStatus>;
+  paymentData?: Maybe<Scalars['JSON']['output']>;
+  gatewayResponse?: Maybe<Scalars['JSON']['output']>;
+  processedAt?: Maybe<Scalars['Timestamp']['output']>;
+  expiresAt?: Maybe<Scalars['Timestamp']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  orders?: Maybe<Array<Maybe<Orders>>>;
+  paymentMethods?: Maybe<Array<Maybe<PaymentMethods>>>;
+};
+
+
+export type PaymentTransactionsordersArgs = {
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type PaymentTransactionspaymentMethodsArgs = {
+  where?: InputMaybe<PaymentMethodsWhereInput>;
+  orderBy?: InputMaybe<PaymentMethodsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type PaymentTransactionsStatus =
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
+  | 'refunded';
+
+export type PaymentMethods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  code: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  iconUrl?: Maybe<Scalars['String']['output']>;
+  processingFeeType?: Maybe<PaymentMethodsProcessingFeeType>;
+  processingFeeValue?: Maybe<Scalars['Float']['output']>;
+  minAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  requiresVerification?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  settings?: Maybe<Scalars['JSON']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
+};
+
+
+export type PaymentMethodspaymentTransactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
+  orderBy?: InputMaybe<PaymentTransactionsOrderByInput>;
+};
+
+export type PaymentMethodsProcessingFeeType =
+  | 'fixed'
+  | 'percentage';
+
+export type PaymentTransactionsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  orderId?: InputMaybe<Scalars['String']['input']>;
+  paymentMethodId?: InputMaybe<Scalars['String']['input']>;
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  referenceNumber?: InputMaybe<Scalars['String']['input']>;
+  amount?: InputMaybe<Scalars['String']['input']>;
+  processingFee?: InputMaybe<Scalars['String']['input']>;
+  netAmount?: InputMaybe<Scalars['String']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  paymentData?: InputMaybe<Scalars['String']['input']>;
+  gatewayResponse?: InputMaybe<Scalars['String']['input']>;
+  processedAt?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PaymentTransactionsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  orderId?: InputMaybe<OrderBy>;
+  paymentMethodId?: InputMaybe<OrderBy>;
+  transactionId?: InputMaybe<OrderBy>;
+  referenceNumber?: InputMaybe<OrderBy>;
+  amount?: InputMaybe<OrderBy>;
+  processingFee?: InputMaybe<OrderBy>;
+  netAmount?: InputMaybe<OrderBy>;
+  currency?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  paymentData?: InputMaybe<OrderBy>;
+  gatewayResponse?: InputMaybe<OrderBy>;
+  processedAt?: InputMaybe<OrderBy>;
+  expiresAt?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type PaymentMethodsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  iconUrl?: InputMaybe<Scalars['String']['input']>;
+  processingFeeType?: InputMaybe<Scalars['String']['input']>;
+  processingFeeValue?: InputMaybe<Scalars['String']['input']>;
+  minAmount?: InputMaybe<Scalars['String']['input']>;
+  maxAmount?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  requiresVerification?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  settings?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PaymentMethodsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  iconUrl?: InputMaybe<OrderBy>;
+  processingFeeType?: InputMaybe<OrderBy>;
+  processingFeeValue?: InputMaybe<OrderBy>;
+  minAmount?: InputMaybe<OrderBy>;
+  maxAmount?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  requiresVerification?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  settings?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
 };
@@ -2693,6 +3245,150 @@ export type ServicesImagesOrderByInput = {
   imageUrl?: InputMaybe<OrderBy>;
 };
 
+export type ShippingMethods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  baseCost: Scalars['Float']['output'];
+  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
+  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
+  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+};
+
+
+export type ShippingMethodsshippingZoneMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
+};
+
+export type ShippingZoneMethods = {
+  id: Scalars['Int']['output'];
+  shippingMethodId: Scalars['Int']['output'];
+  shippingZoneId: Scalars['Int']['output'];
+  cost: Scalars['Float']['output'];
+  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
+  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
+  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingMethods?: Maybe<Array<Maybe<ShippingMethods>>>;
+  shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
+};
+
+
+export type ShippingZoneMethodsshippingMethodsArgs = {
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingMethodsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ShippingZoneMethodsshippingZonesArgs = {
+  where?: InputMaybe<ShippingZonesWhereInput>;
+  orderBy?: InputMaybe<ShippingZonesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ShippingMethodsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  baseCost?: InputMaybe<Scalars['String']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingMethodsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  baseCost?: InputMaybe<OrderBy>;
+  freeShippingThreshold?: InputMaybe<OrderBy>;
+  estimatedDaysMin?: InputMaybe<OrderBy>;
+  estimatedDaysMax?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZones = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  districts: Scalars['JSON']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+};
+
+
+export type ShippingZonesshippingZoneMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
+};
+
+export type ShippingZoneMethodsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  shippingMethodId?: InputMaybe<Scalars['String']['input']>;
+  shippingZoneId?: InputMaybe<Scalars['String']['input']>;
+  cost?: InputMaybe<Scalars['String']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingZoneMethodsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  shippingMethodId?: InputMaybe<OrderBy>;
+  shippingZoneId?: InputMaybe<OrderBy>;
+  cost?: InputMaybe<OrderBy>;
+  freeShippingThreshold?: InputMaybe<OrderBy>;
+  estimatedDaysMin?: InputMaybe<OrderBy>;
+  estimatedDaysMax?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZonesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingZonesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  districts?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
 /** VIEW */
 export type VariantRatingSummary = {
   variantId: Scalars['Int']['output'];
@@ -2844,6 +3540,66 @@ export type CategoriesUpdateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['Int']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CouponUsageInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  couponId: Scalars['Int']['input'];
+  customerId: Scalars['Int']['input'];
+  orderId: Scalars['Int']['input'];
+  discountAmount: Scalars['Float']['input'];
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type CouponUsageUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  couponId?: InputMaybe<Scalars['Int']['input']>;
+  customerId?: InputMaybe<Scalars['Int']['input']>;
+  orderId?: InputMaybe<Scalars['Int']['input']>;
+  discountAmount?: InputMaybe<Scalars['Float']['input']>;
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type CouponsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  code: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  discountType: CouponsDiscountType;
+  discountValue: Scalars['Float']['input'];
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  maxDiscountAmount?: InputMaybe<Scalars['Float']['input']>;
+  usageLimit?: InputMaybe<Scalars['Int']['input']>;
+  usageLimitPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  usedCount?: InputMaybe<Scalars['Int']['input']>;
+  startDate: Scalars['DateTime']['input'];
+  endDate: Scalars['DateTime']['input'];
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  applicableTo?: InputMaybe<CouponsApplicableTo>;
+  applicableIds?: InputMaybe<Scalars['JSON']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type CouponsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  discountType?: InputMaybe<CouponsDiscountType>;
+  discountValue?: InputMaybe<Scalars['Float']['input']>;
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  maxDiscountAmount?: InputMaybe<Scalars['Float']['input']>;
+  usageLimit?: InputMaybe<Scalars['Int']['input']>;
+  usageLimitPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  usedCount?: InputMaybe<Scalars['Int']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  applicableTo?: InputMaybe<CouponsApplicableTo>;
+  applicableIds?: InputMaybe<Scalars['JSON']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type CustomersInsertInput = {
@@ -3130,6 +3886,80 @@ export type OrdersUpdateInput = {
   adminNotes?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type PaymentMethodsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  code: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  iconUrl?: InputMaybe<Scalars['String']['input']>;
+  processingFeeType?: InputMaybe<PaymentMethodsProcessingFeeType>;
+  processingFeeValue?: InputMaybe<Scalars['Float']['input']>;
+  minAmount?: InputMaybe<Scalars['Float']['input']>;
+  maxAmount?: InputMaybe<Scalars['Float']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  requiresVerification?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  settings?: InputMaybe<Scalars['JSON']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type PaymentMethodsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  iconUrl?: InputMaybe<Scalars['String']['input']>;
+  processingFeeType?: InputMaybe<PaymentMethodsProcessingFeeType>;
+  processingFeeValue?: InputMaybe<Scalars['Float']['input']>;
+  minAmount?: InputMaybe<Scalars['Float']['input']>;
+  maxAmount?: InputMaybe<Scalars['Float']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  requiresVerification?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  settings?: InputMaybe<Scalars['JSON']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type PaymentTransactionsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  orderId: Scalars['Int']['input'];
+  paymentMethodId: Scalars['Int']['input'];
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  referenceNumber?: InputMaybe<Scalars['String']['input']>;
+  amount: Scalars['Float']['input'];
+  processingFee?: InputMaybe<Scalars['Float']['input']>;
+  netAmount: Scalars['Float']['input'];
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<PaymentTransactionsStatus>;
+  paymentData?: InputMaybe<Scalars['JSON']['input']>;
+  gatewayResponse?: InputMaybe<Scalars['JSON']['input']>;
+  processedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  expiresAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type PaymentTransactionsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  orderId?: InputMaybe<Scalars['Int']['input']>;
+  paymentMethodId?: InputMaybe<Scalars['Int']['input']>;
+  transactionId?: InputMaybe<Scalars['String']['input']>;
+  referenceNumber?: InputMaybe<Scalars['String']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  processingFee?: InputMaybe<Scalars['Float']['input']>;
+  netAmount?: InputMaybe<Scalars['Float']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<PaymentTransactionsStatus>;
+  paymentData?: InputMaybe<Scalars['JSON']['input']>;
+  gatewayResponse?: InputMaybe<Scalars['JSON']['input']>;
+  processedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  expiresAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type PermissionsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -3366,6 +4196,78 @@ export type ServicesImagesUpdateInput = {
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
   idService?: InputMaybe<Scalars['Int']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingMethodsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  baseCost?: InputMaybe<Scalars['Float']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['Float']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['Int']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingMethodsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  baseCost?: InputMaybe<Scalars['Float']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['Float']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['Int']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingZoneMethodsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  shippingMethodId: Scalars['Int']['input'];
+  shippingZoneId: Scalars['Int']['input'];
+  cost?: InputMaybe<Scalars['Float']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['Float']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['Int']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingZoneMethodsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  shippingMethodId?: InputMaybe<Scalars['Int']['input']>;
+  shippingZoneId?: InputMaybe<Scalars['Int']['input']>;
+  cost?: InputMaybe<Scalars['Float']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['Float']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['Int']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingZonesInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  districts: Scalars['JSON']['input'];
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingZonesUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['JSON']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type UsersInsertInput = {
@@ -3608,18 +4510,21 @@ export type ResolversTypes = ResolversObject<{
   OrdersStatus: OrdersStatus;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   OrdersPaymentStatus: OrdersPaymentStatus;
-  OrderItemsWhereInput: OrderItemsWhereInput;
-  OrderItemsOrderByInput: OrderItemsOrderByInput;
-  OrderTracking: ResolverTypeWrapper<OrderTracking>;
-  OrderTrackingStatus: OrderTrackingStatus;
-  OrdersWhereInput: OrdersWhereInput;
-  OrdersOrderByInput: OrdersOrderByInput;
-  OrderTrackingWhereInput: OrderTrackingWhereInput;
-  OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  CouponUsage: ResolverTypeWrapper<CouponUsage>;
+  Coupons: ResolverTypeWrapper<Coupons>;
+  CouponsDiscountType: CouponsDiscountType;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  CouponsApplicableTo: CouponsApplicableTo;
+  CouponUsageWhereInput: CouponUsageWhereInput;
+  CouponUsageOrderByInput: CouponUsageOrderByInput;
+  CouponsWhereInput: CouponsWhereInput;
+  CouponsOrderByInput: CouponsOrderByInput;
   Customers: ResolverTypeWrapper<Customers>;
   CustomersAddresses: ResolverTypeWrapper<CustomersAddresses>;
   CustomersWhereInput: CustomersWhereInput;
   CustomersOrderByInput: CustomersOrderByInput;
+  OrdersWhereInput: OrdersWhereInput;
+  OrdersOrderByInput: OrdersOrderByInput;
   CustomersAddressesWhereInput: CustomersAddressesWhereInput;
   CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
   VariantRatings: ResolverTypeWrapper<VariantRatings>;
@@ -3630,6 +4535,20 @@ export type ResolversTypes = ResolversObject<{
   RatingImagesOrderByInput: RatingImagesOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
+  OrderItemsWhereInput: OrderItemsWhereInput;
+  OrderItemsOrderByInput: OrderItemsOrderByInput;
+  OrderTracking: ResolverTypeWrapper<OrderTracking>;
+  OrderTrackingStatus: OrderTrackingStatus;
+  OrderTrackingWhereInput: OrderTrackingWhereInput;
+  OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  PaymentTransactions: ResolverTypeWrapper<PaymentTransactions>;
+  PaymentTransactionsStatus: PaymentTransactionsStatus;
+  PaymentMethods: ResolverTypeWrapper<PaymentMethods>;
+  PaymentMethodsProcessingFeeType: PaymentMethodsProcessingFeeType;
+  PaymentTransactionsWhereInput: PaymentTransactionsWhereInput;
+  PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
+  PaymentMethodsWhereInput: PaymentMethodsWhereInput;
+  PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
   Products: ResolverTypeWrapper<Products>;
   ProductCategories: ResolverTypeWrapper<ProductCategories>;
   Categories: ResolverTypeWrapper<Categories>;
@@ -3644,7 +4563,6 @@ export type ResolversTypes = ResolversObject<{
   BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: ResolverTypeWrapper<PromotionVariants>;
   Promotions: ResolverTypeWrapper<Promotions>;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   PromotionsDiscountType: PromotionsDiscountType;
   PromotionVariantsWhereInput: PromotionVariantsWhereInput;
   PromotionVariantsOrderByInput: PromotionVariantsOrderByInput;
@@ -3689,6 +4607,15 @@ export type ResolversTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
+  ShippingMethods: ResolverTypeWrapper<ShippingMethods>;
+  ShippingZoneMethods: ResolverTypeWrapper<ShippingZoneMethods>;
+  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
+  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
+  ShippingZones: ResolverTypeWrapper<ShippingZones>;
+  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
+  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
+  ShippingZonesWhereInput: ShippingZonesWhereInput;
+  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
   VariantRatingSummary: ResolverTypeWrapper<VariantRatingSummary>;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
@@ -3705,6 +4632,10 @@ export type ResolversTypes = ResolversObject<{
   BrandsUpdateInput: BrandsUpdateInput;
   CategoriesInsertInput: CategoriesInsertInput;
   CategoriesUpdateInput: CategoriesUpdateInput;
+  CouponUsageInsertInput: CouponUsageInsertInput;
+  CouponUsageUpdateInput: CouponUsageUpdateInput;
+  CouponsInsertInput: CouponsInsertInput;
+  CouponsUpdateInput: CouponsUpdateInput;
   CustomersInsertInput: CustomersInsertInput;
   CustomersUpdateInput: CustomersUpdateInput;
   CustomersAddressesInsertInput: CustomersAddressesInsertInput;
@@ -3717,6 +4648,10 @@ export type ResolversTypes = ResolversObject<{
   OrderTrackingUpdateInput: OrderTrackingUpdateInput;
   OrdersInsertInput: OrdersInsertInput;
   OrdersUpdateInput: OrdersUpdateInput;
+  PaymentMethodsInsertInput: PaymentMethodsInsertInput;
+  PaymentMethodsUpdateInput: PaymentMethodsUpdateInput;
+  PaymentTransactionsInsertInput: PaymentTransactionsInsertInput;
+  PaymentTransactionsUpdateInput: PaymentTransactionsUpdateInput;
   PermissionsInsertInput: PermissionsInsertInput;
   PermissionsUpdateInput: PermissionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
@@ -3743,6 +4678,12 @@ export type ResolversTypes = ResolversObject<{
   ServicesUpdateInput: ServicesUpdateInput;
   ServicesImagesInsertInput: ServicesImagesInsertInput;
   ServicesImagesUpdateInput: ServicesImagesUpdateInput;
+  ShippingMethodsInsertInput: ShippingMethodsInsertInput;
+  ShippingMethodsUpdateInput: ShippingMethodsUpdateInput;
+  ShippingZoneMethodsInsertInput: ShippingZoneMethodsInsertInput;
+  ShippingZoneMethodsUpdateInput: ShippingZoneMethodsUpdateInput;
+  ShippingZonesInsertInput: ShippingZonesInsertInput;
+  ShippingZonesUpdateInput: ShippingZonesUpdateInput;
   UsersInsertInput: UsersInsertInput;
   UsersUpdateInput: UsersUpdateInput;
   VariantAttributeOptionsInsertInput: VariantAttributeOptionsInsertInput;
@@ -3778,17 +4719,19 @@ export type ResolversParentTypes = ResolversObject<{
   JSON: Scalars['JSON']['output'];
   Orders: Orders;
   Date: Scalars['Date']['output'];
-  OrderItemsWhereInput: OrderItemsWhereInput;
-  OrderItemsOrderByInput: OrderItemsOrderByInput;
-  OrderTracking: OrderTracking;
-  OrdersWhereInput: OrdersWhereInput;
-  OrdersOrderByInput: OrdersOrderByInput;
-  OrderTrackingWhereInput: OrderTrackingWhereInput;
-  OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  CouponUsage: CouponUsage;
+  Coupons: Coupons;
+  DateTime: Scalars['DateTime']['output'];
+  CouponUsageWhereInput: CouponUsageWhereInput;
+  CouponUsageOrderByInput: CouponUsageOrderByInput;
+  CouponsWhereInput: CouponsWhereInput;
+  CouponsOrderByInput: CouponsOrderByInput;
   Customers: Customers;
   CustomersAddresses: CustomersAddresses;
   CustomersWhereInput: CustomersWhereInput;
   CustomersOrderByInput: CustomersOrderByInput;
+  OrdersWhereInput: OrdersWhereInput;
+  OrdersOrderByInput: OrdersOrderByInput;
   CustomersAddressesWhereInput: CustomersAddressesWhereInput;
   CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
   VariantRatings: VariantRatings;
@@ -3799,6 +4742,17 @@ export type ResolversParentTypes = ResolversObject<{
   RatingImagesOrderByInput: RatingImagesOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
+  OrderItemsWhereInput: OrderItemsWhereInput;
+  OrderItemsOrderByInput: OrderItemsOrderByInput;
+  OrderTracking: OrderTracking;
+  OrderTrackingWhereInput: OrderTrackingWhereInput;
+  OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  PaymentTransactions: PaymentTransactions;
+  PaymentMethods: PaymentMethods;
+  PaymentTransactionsWhereInput: PaymentTransactionsWhereInput;
+  PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
+  PaymentMethodsWhereInput: PaymentMethodsWhereInput;
+  PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
   Products: Products;
   ProductCategories: ProductCategories;
   Categories: Categories;
@@ -3813,7 +4767,6 @@ export type ResolversParentTypes = ResolversObject<{
   BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: PromotionVariants;
   Promotions: Promotions;
-  DateTime: Scalars['DateTime']['output'];
   PromotionVariantsWhereInput: PromotionVariantsWhereInput;
   PromotionVariantsOrderByInput: PromotionVariantsOrderByInput;
   PromotionsWhereInput: PromotionsWhereInput;
@@ -3854,6 +4807,15 @@ export type ResolversParentTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
+  ShippingMethods: ShippingMethods;
+  ShippingZoneMethods: ShippingZoneMethods;
+  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
+  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
+  ShippingZones: ShippingZones;
+  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
+  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
+  ShippingZonesWhereInput: ShippingZonesWhereInput;
+  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
   VariantRatingSummary: VariantRatingSummary;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
@@ -3870,6 +4832,10 @@ export type ResolversParentTypes = ResolversObject<{
   BrandsUpdateInput: BrandsUpdateInput;
   CategoriesInsertInput: CategoriesInsertInput;
   CategoriesUpdateInput: CategoriesUpdateInput;
+  CouponUsageInsertInput: CouponUsageInsertInput;
+  CouponUsageUpdateInput: CouponUsageUpdateInput;
+  CouponsInsertInput: CouponsInsertInput;
+  CouponsUpdateInput: CouponsUpdateInput;
   CustomersInsertInput: CustomersInsertInput;
   CustomersUpdateInput: CustomersUpdateInput;
   CustomersAddressesInsertInput: CustomersAddressesInsertInput;
@@ -3882,6 +4848,10 @@ export type ResolversParentTypes = ResolversObject<{
   OrderTrackingUpdateInput: OrderTrackingUpdateInput;
   OrdersInsertInput: OrdersInsertInput;
   OrdersUpdateInput: OrdersUpdateInput;
+  PaymentMethodsInsertInput: PaymentMethodsInsertInput;
+  PaymentMethodsUpdateInput: PaymentMethodsUpdateInput;
+  PaymentTransactionsInsertInput: PaymentTransactionsInsertInput;
+  PaymentTransactionsUpdateInput: PaymentTransactionsUpdateInput;
   PermissionsInsertInput: PermissionsInsertInput;
   PermissionsUpdateInput: PermissionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
@@ -3908,6 +4878,12 @@ export type ResolversParentTypes = ResolversObject<{
   ServicesUpdateInput: ServicesUpdateInput;
   ServicesImagesInsertInput: ServicesImagesInsertInput;
   ServicesImagesUpdateInput: ServicesImagesUpdateInput;
+  ShippingMethodsInsertInput: ShippingMethodsInsertInput;
+  ShippingMethodsUpdateInput: ShippingMethodsUpdateInput;
+  ShippingZoneMethodsInsertInput: ShippingZoneMethodsInsertInput;
+  ShippingZoneMethodsUpdateInput: ShippingZoneMethodsUpdateInput;
+  ShippingZonesInsertInput: ShippingZonesInsertInput;
+  ShippingZonesUpdateInput: ShippingZonesUpdateInput;
   UsersInsertInput: UsersInsertInput;
   UsersUpdateInput: UsersUpdateInput;
   VariantAttributeOptionsInsertInput: VariantAttributeOptionsInsertInput;
@@ -3986,6 +4962,10 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countBrands?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountBrandsArgs>>;
   categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<QuerycategoriesArgs>>;
   countCategories?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCategoriesArgs>>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<QuerycouponUsageArgs>>;
+  countCouponUsage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCouponUsageArgs>>;
+  coupons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Coupons']>>>, ParentType, ContextType, Partial<QuerycouponsArgs>>;
+  countCoupons?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCouponsArgs>>;
   customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<QuerycustomersArgs>>;
   countCustomers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCustomersArgs>>;
   customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<QuerycustomersAddressesArgs>>;
@@ -3998,6 +4978,10 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countOrderTracking?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOrderTrackingArgs>>;
   orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<QueryordersArgs>>;
   countOrders?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOrdersArgs>>;
+  paymentMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentMethods']>>>, ParentType, ContextType, Partial<QuerypaymentMethodsArgs>>;
+  countPaymentMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPaymentMethodsArgs>>;
+  paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<QuerypaymentTransactionsArgs>>;
+  countPaymentTransactions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPaymentTransactionsArgs>>;
   permissions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Permissions']>>>, ParentType, ContextType, Partial<QuerypermissionsArgs>>;
   countPermissions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPermissionsArgs>>;
   productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<QueryproductCategoriesArgs>>;
@@ -4024,6 +5008,12 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countServices?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountServicesArgs>>;
   servicesImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['ServicesImages']>>>, ParentType, ContextType, Partial<QueryservicesImagesArgs>>;
   countServicesImages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountServicesImagesArgs>>;
+  shippingMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingMethods']>>>, ParentType, ContextType, Partial<QueryshippingMethodsArgs>>;
+  countShippingMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingMethodsArgs>>;
+  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<QueryshippingZoneMethodsArgs>>;
+  countShippingZoneMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingZoneMethodsArgs>>;
+  shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<QueryshippingZonesArgs>>;
+  countShippingZones?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingZonesArgs>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<QueryusersArgs>>;
   countUsers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountUsersArgs>>;
   variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<QueryvariantAttributeOptionsArgs>>;
@@ -4055,6 +5045,12 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertCategories?: Resolver<Maybe<ResolversTypes['Categories']>, ParentType, ContextType, RequireFields<MutationinsertCategoriesArgs, 'categories'>>;
   updateCategories?: Resolver<Maybe<ResolversTypes['Categories']>, ParentType, ContextType, RequireFields<MutationupdateCategoriesArgs, 'categories'>>;
   deleteCategories?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteCategoriesArgs>>;
+  insertCouponUsage?: Resolver<Maybe<ResolversTypes['CouponUsage']>, ParentType, ContextType, RequireFields<MutationinsertCouponUsageArgs, 'coupon_usage'>>;
+  updateCouponUsage?: Resolver<Maybe<ResolversTypes['CouponUsage']>, ParentType, ContextType, RequireFields<MutationupdateCouponUsageArgs, 'coupon_usage'>>;
+  deleteCouponUsage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteCouponUsageArgs>>;
+  insertCoupons?: Resolver<Maybe<ResolversTypes['Coupons']>, ParentType, ContextType, RequireFields<MutationinsertCouponsArgs, 'coupons'>>;
+  updateCoupons?: Resolver<Maybe<ResolversTypes['Coupons']>, ParentType, ContextType, RequireFields<MutationupdateCouponsArgs, 'coupons'>>;
+  deleteCoupons?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteCouponsArgs>>;
   insertCustomers?: Resolver<Maybe<ResolversTypes['Customers']>, ParentType, ContextType, RequireFields<MutationinsertCustomersArgs, 'customers'>>;
   updateCustomers?: Resolver<Maybe<ResolversTypes['Customers']>, ParentType, ContextType, RequireFields<MutationupdateCustomersArgs, 'customers'>>;
   deleteCustomers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteCustomersArgs>>;
@@ -4073,6 +5069,12 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertOrders?: Resolver<Maybe<ResolversTypes['Orders']>, ParentType, ContextType, RequireFields<MutationinsertOrdersArgs, 'orders'>>;
   updateOrders?: Resolver<Maybe<ResolversTypes['Orders']>, ParentType, ContextType, RequireFields<MutationupdateOrdersArgs, 'orders'>>;
   deleteOrders?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOrdersArgs>>;
+  insertPaymentMethods?: Resolver<Maybe<ResolversTypes['PaymentMethods']>, ParentType, ContextType, RequireFields<MutationinsertPaymentMethodsArgs, 'payment_methods'>>;
+  updatePaymentMethods?: Resolver<Maybe<ResolversTypes['PaymentMethods']>, ParentType, ContextType, RequireFields<MutationupdatePaymentMethodsArgs, 'payment_methods'>>;
+  deletePaymentMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePaymentMethodsArgs>>;
+  insertPaymentTransactions?: Resolver<Maybe<ResolversTypes['PaymentTransactions']>, ParentType, ContextType, RequireFields<MutationinsertPaymentTransactionsArgs, 'payment_transactions'>>;
+  updatePaymentTransactions?: Resolver<Maybe<ResolversTypes['PaymentTransactions']>, ParentType, ContextType, RequireFields<MutationupdatePaymentTransactionsArgs, 'payment_transactions'>>;
+  deletePaymentTransactions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePaymentTransactionsArgs>>;
   insertPermissions?: Resolver<Maybe<ResolversTypes['Permissions']>, ParentType, ContextType, RequireFields<MutationinsertPermissionsArgs, 'permissions'>>;
   updatePermissions?: Resolver<Maybe<ResolversTypes['Permissions']>, ParentType, ContextType, RequireFields<MutationupdatePermissionsArgs, 'permissions'>>;
   deletePermissions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePermissionsArgs>>;
@@ -4112,6 +5114,15 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertServicesImages?: Resolver<Maybe<ResolversTypes['ServicesImages']>, ParentType, ContextType, RequireFields<MutationinsertServicesImagesArgs, 'services_images'>>;
   updateServicesImages?: Resolver<Maybe<ResolversTypes['ServicesImages']>, ParentType, ContextType, RequireFields<MutationupdateServicesImagesArgs, 'services_images'>>;
   deleteServicesImages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteServicesImagesArgs>>;
+  insertShippingMethods?: Resolver<Maybe<ResolversTypes['ShippingMethods']>, ParentType, ContextType, RequireFields<MutationinsertShippingMethodsArgs, 'shipping_methods'>>;
+  updateShippingMethods?: Resolver<Maybe<ResolversTypes['ShippingMethods']>, ParentType, ContextType, RequireFields<MutationupdateShippingMethodsArgs, 'shipping_methods'>>;
+  deleteShippingMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingMethodsArgs>>;
+  insertShippingZoneMethods?: Resolver<Maybe<ResolversTypes['ShippingZoneMethods']>, ParentType, ContextType, RequireFields<MutationinsertShippingZoneMethodsArgs, 'shipping_zone_methods'>>;
+  updateShippingZoneMethods?: Resolver<Maybe<ResolversTypes['ShippingZoneMethods']>, ParentType, ContextType, RequireFields<MutationupdateShippingZoneMethodsArgs, 'shipping_zone_methods'>>;
+  deleteShippingZoneMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingZoneMethodsArgs>>;
+  insertShippingZones?: Resolver<Maybe<ResolversTypes['ShippingZones']>, ParentType, ContextType, RequireFields<MutationinsertShippingZonesArgs, 'shipping_zones'>>;
+  updateShippingZones?: Resolver<Maybe<ResolversTypes['ShippingZones']>, ParentType, ContextType, RequireFields<MutationupdateShippingZonesArgs, 'shipping_zones'>>;
+  deleteShippingZones?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingZonesArgs>>;
   insertUsers?: Resolver<Maybe<ResolversTypes['Users']>, ParentType, ContextType, RequireFields<MutationinsertUsersArgs, 'users'>>;
   updateUsers?: Resolver<Maybe<ResolversTypes['Users']>, ParentType, ContextType, RequireFields<MutationupdateUsersArgs, 'users'>>;
   deleteUsers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteUsersArgs>>;
@@ -4233,10 +5244,12 @@ export type OrdersResolvers<ContextType = MeshContext, ParentType extends Resolv
   paidAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
   customerNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   adminNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<OrderscouponUsageArgs>>;
   orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<OrdersorderItemsArgs>>;
   orderTracking?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderTracking']>>>, ParentType, ContextType, Partial<OrdersorderTrackingArgs>>;
   customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<OrderscustomersArgs>>;
   customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<OrderscustomersAddressesArgs>>;
+  paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<OrderspaymentTransactionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4244,22 +5257,45 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
-export type OrderTrackingResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OrderTracking'] = ResolversParentTypes['OrderTracking']> = ResolversObject<{
+export type CouponUsageResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['CouponUsage'] = ResolversParentTypes['CouponUsage']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  couponId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  customerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  trackingNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  courierCompany?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OrderTrackingStatus'], ParentType, ContextType>;
-  currentLocation?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  shippedAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  deliveredAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  deliveredTo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  deliveryNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OrderTrackingordersArgs>>;
+  discountAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  usedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  coupons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Coupons']>>>, ParentType, ContextType, Partial<CouponUsagecouponsArgs>>;
+  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<CouponUsagecustomersArgs>>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CouponUsageordersArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
+
+export type CouponsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Coupons'] = ResolversParentTypes['Coupons']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  discountType?: Resolver<ResolversTypes['CouponsDiscountType'], ParentType, ContextType>;
+  discountValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  minPurchaseAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  maxDiscountAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  usageLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  usageLimitPerCustomer?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  usedCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  applicableTo?: Resolver<Maybe<ResolversTypes['CouponsApplicableTo']>, ParentType, ContextType>;
+  applicableIds?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CouponscouponUsageArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type CustomersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Customers'] = ResolversParentTypes['Customers']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -4274,6 +5310,7 @@ export type CustomersResolvers<ContextType = MeshContext, ParentType extends Res
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   phone?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   dni?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CustomerscouponUsageArgs>>;
   customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<CustomerscustomersAddressesArgs>>;
   orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersordersArgs>>;
   variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<CustomersvariantRatingsArgs>>;
@@ -4322,6 +5359,65 @@ export type RatingImagesResolvers<ContextType = MeshContext, ParentType extends 
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<RatingImagesvariantRatingsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type OrderTrackingResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OrderTracking'] = ResolversParentTypes['OrderTracking']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  trackingNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  courierCompany?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OrderTrackingStatus'], ParentType, ContextType>;
+  currentLocation?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  shippedAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  deliveredAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  deliveredTo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  deliveryNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OrderTrackingordersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PaymentTransactionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PaymentTransactions'] = ResolversParentTypes['PaymentTransactions']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  paymentMethodId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  transactionId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  referenceNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  processingFee?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  netAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  currency?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['PaymentTransactionsStatus']>, ParentType, ContextType>;
+  paymentData?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  gatewayResponse?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  processedAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  expiresAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<PaymentTransactionsordersArgs>>;
+  paymentMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentMethods']>>>, ParentType, ContextType, Partial<PaymentTransactionspaymentMethodsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PaymentMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PaymentMethods'] = ResolversParentTypes['PaymentMethods']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  iconUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  processingFeeType?: Resolver<Maybe<ResolversTypes['PaymentMethodsProcessingFeeType']>, ParentType, ContextType>;
+  processingFeeValue?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  minAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  maxAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  requiresVerification?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  settings?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<PaymentMethodspaymentTransactionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -4390,10 +5486,6 @@ export type PromotionsResolvers<ContextType = MeshContext, ParentType extends Re
   promotionVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['PromotionVariants']>>>, ParentType, ContextType, Partial<PromotionspromotionVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
-
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
-}
 
 export type VariantImagesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantImages'] = ResolversParentTypes['VariantImages']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -4539,6 +5631,49 @@ export type ServicesImagesResolvers<ContextType = MeshContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ShippingMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingMethods'] = ResolversParentTypes['ShippingMethods']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  baseCost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  freeShippingThreshold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingMethodsshippingZoneMethodsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingZoneMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZoneMethods'] = ResolversParentTypes['ShippingZoneMethods']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shippingMethodId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shippingZoneId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  cost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  freeShippingThreshold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingMethods']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingMethodsArgs>>;
+  shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingZonesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingZonesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZones'] = ResolversParentTypes['ShippingZones']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  districts?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingZonesshippingZoneMethodsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type VariantRatingSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantRatingSummary'] = ResolversParentTypes['VariantRatingSummary']> = ResolversObject<{
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   totalRatings?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -4565,18 +5700,22 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   JSON?: GraphQLScalarType;
   Orders?: OrdersResolvers<ContextType>;
   Date?: GraphQLScalarType;
-  OrderTracking?: OrderTrackingResolvers<ContextType>;
+  CouponUsage?: CouponUsageResolvers<ContextType>;
+  Coupons?: CouponsResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   Customers?: CustomersResolvers<ContextType>;
   CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
   VariantRatings?: VariantRatingsResolvers<ContextType>;
   RatingImages?: RatingImagesResolvers<ContextType>;
+  OrderTracking?: OrderTrackingResolvers<ContextType>;
+  PaymentTransactions?: PaymentTransactionsResolvers<ContextType>;
+  PaymentMethods?: PaymentMethodsResolvers<ContextType>;
   Products?: ProductsResolvers<ContextType>;
   ProductCategories?: ProductCategoriesResolvers<ContextType>;
   Categories?: CategoriesResolvers<ContextType>;
   Brands?: BrandsResolvers<ContextType>;
   PromotionVariants?: PromotionVariantsResolvers<ContextType>;
   Promotions?: PromotionsResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
   VariantImages?: VariantImagesResolvers<ContextType>;
   Banner?: BannerResolvers<ContextType>;
   OrderSummary?: OrderSummaryResolvers<ContextType>;
@@ -4589,6 +5728,9 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Users?: UsersResolvers<ContextType>;
   Services?: ServicesResolvers<ContextType>;
   ServicesImages?: ServicesImagesResolvers<ContextType>;
+  ShippingMethods?: ShippingMethodsResolvers<ContextType>;
+  ShippingZoneMethods?: ShippingZoneMethodsResolvers<ContextType>;
+  ShippingZones?: ShippingZonesResolvers<ContextType>;
   VariantRatingSummary?: VariantRatingSummaryResolvers<ContextType>;
 }>;
 

@@ -30,6 +30,10 @@ type Query {
   count_brands(where: brands_WhereInput): Int @mysqlCount(subgraph: "Database", table: "brands")
   categories(limit: Int, offset: Int, where: categories_WhereInput, orderBy: categories_OrderByInput): [categories] @mysqlSelect(subgraph: "Database", table: "categories")
   count_categories(where: categories_WhereInput): Int @mysqlCount(subgraph: "Database", table: "categories")
+  coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage")
+  count_coupon_usage(where: coupon_usage_WhereInput): Int @mysqlCount(subgraph: "Database", table: "coupon_usage")
+  coupons(limit: Int, offset: Int, where: coupons_WhereInput, orderBy: coupons_OrderByInput): [coupons] @mysqlSelect(subgraph: "Database", table: "coupons")
+  count_coupons(where: coupons_WhereInput): Int @mysqlCount(subgraph: "Database", table: "coupons")
   customers(limit: Int, offset: Int, where: customers_WhereInput, orderBy: customers_OrderByInput): [customers] @mysqlSelect(subgraph: "Database", table: "customers")
   count_customers(where: customers_WhereInput): Int @mysqlCount(subgraph: "Database", table: "customers")
   customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses")
@@ -42,6 +46,10 @@ type Query {
   count_order_tracking(where: order_tracking_WhereInput): Int @mysqlCount(subgraph: "Database", table: "order_tracking")
   orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders")
   count_orders(where: orders_WhereInput): Int @mysqlCount(subgraph: "Database", table: "orders")
+  payment_methods(limit: Int, offset: Int, where: payment_methods_WhereInput, orderBy: payment_methods_OrderByInput): [payment_methods] @mysqlSelect(subgraph: "Database", table: "payment_methods")
+  count_payment_methods(where: payment_methods_WhereInput): Int @mysqlCount(subgraph: "Database", table: "payment_methods")
+  payment_transactions(limit: Int, offset: Int, where: payment_transactions_WhereInput, orderBy: payment_transactions_OrderByInput): [payment_transactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions")
+  count_payment_transactions(where: payment_transactions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "payment_transactions")
   permissions(limit: Int, offset: Int, where: permissions_WhereInput, orderBy: permissions_OrderByInput): [permissions] @mysqlSelect(subgraph: "Database", table: "permissions")
   count_permissions(where: permissions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
   product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories")
@@ -68,6 +76,12 @@ type Query {
   count_services(where: services_WhereInput): Int @mysqlCount(subgraph: "Database", table: "services")
   services_images(limit: Int, offset: Int, where: services_images_WhereInput, orderBy: services_images_OrderByInput): [services_images] @mysqlSelect(subgraph: "Database", table: "services_images")
   count_services_images(where: services_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "services_images")
+  shipping_methods(limit: Int, offset: Int, where: shipping_methods_WhereInput, orderBy: shipping_methods_OrderByInput): [shipping_methods] @mysqlSelect(subgraph: "Database", table: "shipping_methods")
+  count_shipping_methods(where: shipping_methods_WhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_methods")
+  shipping_zone_methods(limit: Int, offset: Int, where: shipping_zone_methods_WhereInput, orderBy: shipping_zone_methods_OrderByInput): [shipping_zone_methods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods")
+  count_shipping_zone_methods(where: shipping_zone_methods_WhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_zone_methods")
+  shipping_zones(limit: Int, offset: Int, where: shipping_zones_WhereInput, orderBy: shipping_zones_OrderByInput): [shipping_zones] @mysqlSelect(subgraph: "Database", table: "shipping_zones")
+  count_shipping_zones(where: shipping_zones_WhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_zones")
   users(limit: Int, offset: Int, where: users_WhereInput, orderBy: users_OrderByInput): [users] @mysqlSelect(subgraph: "Database", table: "users")
   count_users(where: users_WhereInput): Int @mysqlCount(subgraph: "Database", table: "users")
   variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options")
@@ -296,10 +310,12 @@ type orders {
   customer_notes: String
   """Notas internas del admin"""
   admin_notes: String
+  coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["order_id", "id"]])
   order_items(limit: Int, offset: Int, where: order_items_WhereInput, orderBy: order_items_OrderByInput): [order_items] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["order_id", "id"]])
   order_tracking(limit: Int, offset: Int, where: order_tracking_WhereInput, orderBy: order_tracking_OrderByInput): [order_tracking] @mysqlSelect(subgraph: "Database", table: "order_tracking", columnMap: [["order_id", "id"]])
   customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
   customers_addresses(where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput, limit: Int, offset: Int): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id", "shipping_address_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_address_id")
+  payment_transactions(limit: Int, offset: Int, where: payment_transactions_WhereInput, orderBy: payment_transactions_OrderByInput): [payment_transactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions", columnMap: [["order_id", "id"]])
 }
 
 enum orders_status {
@@ -323,77 +339,195 @@ enum orders_payment_status {
   refunded
 }
 
-"""Items/productos de cada orden"""
-input order_items_WhereInput {
-  id: String
-  order_id: String
-  """Variante del producto comprada"""
-  variant_id: String
-  """Nombre del producto al momento de compra"""
-  product_name: String
-  """SKU de la variante"""
-  variant_sku: String
-  """Atributos de la variante (color, talla, etc.)"""
-  variant_attributes: String
-  quantity: String
-  """Precio unitario al momento de compra"""
-  unit_price: String
-  """Precio total (quantity * unit_price)"""
-  total_price: String
-  """Descuento aplicado a este item"""
-  discount_amount: String
-}
-
-"""Items/productos de cada orden"""
-input order_items_OrderByInput {
-  id: OrderBy
-  order_id: OrderBy
-  """Variante del producto comprada"""
-  variant_id: OrderBy
-  """Nombre del producto al momento de compra"""
-  product_name: OrderBy
-  """SKU de la variante"""
-  variant_sku: OrderBy
-  """Atributos de la variante (color, talla, etc.)"""
-  variant_attributes: OrderBy
-  quantity: OrderBy
-  """Precio unitario al momento de compra"""
-  unit_price: OrderBy
-  """Precio total (quantity * unit_price)"""
-  total_price: OrderBy
-  """Descuento aplicado a este item"""
-  discount_amount: OrderBy
-}
-
-"""Seguimiento de envíos"""
-type order_tracking {
+type coupon_usage {
   id: Int!
+  coupon_id: Int!
+  customer_id: Int!
   order_id: Int!
-  """Número de seguimiento del courier"""
-  tracking_number: String
-  """Empresa de courier (Olva, Shalom, etc.)"""
-  courier_company: String
-  status: order_tracking_status!
-  """Ubicación actual del paquete"""
-  current_location: String
-  shipped_at: Timestamp
-  delivered_at: Timestamp
-  """Nombre de quien recibió"""
-  delivered_to: String
-  """Notas de entrega"""
-  delivery_notes: String
-  created_at: Timestamp!
-  updated_at: Timestamp!
+  discount_amount: Float!
+  used_at: Timestamp!
+  coupons(where: coupons_WhereInput, orderBy: coupons_OrderByInput, limit: Int, offset: Int): [coupons] @mysqlSelect(subgraph: "Database", table: "coupons", columnMap: [["id", "coupon_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "coupon_id")
+  customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
   orders(where: orders_WhereInput, orderBy: orders_OrderByInput, limit: Int, offset: Int): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
 }
 
-enum order_tracking_status {
-  preparing
-  shipped
-  in_transit
-  out_for_delivery
-  delivered
-  failed_delivery
+type coupons {
+  id: Int!
+  code: String!
+  name: String!
+  description: String
+  discount_type: coupons_discount_type!
+  discount_value: Float!
+  min_purchase_amount: Float
+  max_discount_amount: Float
+  usage_limit: Int
+  usage_limit_per_customer: Int
+  used_count: Int
+  start_date: DateTime!
+  end_date: DateTime!
+  is_active: Int
+  applicable_to: coupons_applicable_to
+  applicable_ids: JSON
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["coupon_id", "id"]])
+}
+
+enum coupons_discount_type {
+  fixed_amount
+  percentage
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum coupons_applicable_to {
+  all
+  categories
+  products
+}
+
+input coupon_usage_WhereInput {
+  id: String
+  coupon_id: String
+  customer_id: String
+  order_id: String
+  discount_amount: String
+  used_at: String
+}
+
+input coupon_usage_OrderByInput {
+  id: OrderBy
+  coupon_id: OrderBy
+  customer_id: OrderBy
+  order_id: OrderBy
+  discount_amount: OrderBy
+  used_at: OrderBy
+}
+
+input coupons_WhereInput {
+  id: String
+  code: String
+  name: String
+  description: String
+  discount_type: String
+  discount_value: String
+  min_purchase_amount: String
+  max_discount_amount: String
+  usage_limit: String
+  usage_limit_per_customer: String
+  used_count: String
+  start_date: String
+  end_date: String
+  is_active: String
+  applicable_to: String
+  applicable_ids: String
+  created_at: String
+  updated_at: String
+}
+
+input coupons_OrderByInput {
+  id: OrderBy
+  code: OrderBy
+  name: OrderBy
+  description: OrderBy
+  discount_type: OrderBy
+  discount_value: OrderBy
+  min_purchase_amount: OrderBy
+  max_discount_amount: OrderBy
+  usage_limit: OrderBy
+  usage_limit_per_customer: OrderBy
+  used_count: OrderBy
+  start_date: OrderBy
+  end_date: OrderBy
+  is_active: OrderBy
+  applicable_to: OrderBy
+  applicable_ids: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type customers {
+  id: Int!
+  email: String!
+  password: String!
+  address_id: Int
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  lastname: String!
+  photo: String
+  name: String
+  """numero de celular"""
+  phone: String!
+  """Documento de identidad """
+  dni: String!
+  coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["customer_id", "id"]])
+  customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
+  orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
+  variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
+}
+
+type customers_addresses {
+  id: Int!
+  id_customer: Int!
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String!
+  department: String!
+  province: String!
+  district: String!
+  """Nombre de la avenida/calle/jirón"""
+  street_name: String!
+  """Número de la dirección"""
+  street_number: String!
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  """Latitud GPS"""
+  latitude: Float
+  """Longitud GPS"""
+  longitude: Float
+  """1 = dirección por defecto"""
+  is_default: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
+  orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["shipping_address_id", "id"]])
+}
+
+input customers_WhereInput {
+  id: String
+  email: String
+  password: String
+  address_id: String
+  is_active: String
+  created_at: String
+  updated_at: String
+  lastname: String
+  photo: String
+  name: String
+  """numero de celular"""
+  phone: String
+  """Documento de identidad """
+  dni: String
+}
+
+input customers_OrderByInput {
+  id: OrderBy
+  email: OrderBy
+  password: OrderBy
+  address_id: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  lastname: OrderBy
+  photo: OrderBy
+  name: OrderBy
+  """numero de celular"""
+  phone: OrderBy
+  """Documento de identidad """
+  dni: OrderBy
 }
 
 """Órdenes principales del ecommerce"""
@@ -466,128 +600,6 @@ input orders_OrderByInput {
   customer_notes: OrderBy
   """Notas internas del admin"""
   admin_notes: OrderBy
-}
-
-"""Seguimiento de envíos"""
-input order_tracking_WhereInput {
-  id: String
-  order_id: String
-  """Número de seguimiento del courier"""
-  tracking_number: String
-  """Empresa de courier (Olva, Shalom, etc.)"""
-  courier_company: String
-  status: String
-  """Ubicación actual del paquete"""
-  current_location: String
-  shipped_at: String
-  delivered_at: String
-  """Nombre de quien recibió"""
-  delivered_to: String
-  """Notas de entrega"""
-  delivery_notes: String
-  created_at: String
-  updated_at: String
-}
-
-"""Seguimiento de envíos"""
-input order_tracking_OrderByInput {
-  id: OrderBy
-  order_id: OrderBy
-  """Número de seguimiento del courier"""
-  tracking_number: OrderBy
-  """Empresa de courier (Olva, Shalom, etc.)"""
-  courier_company: OrderBy
-  status: OrderBy
-  """Ubicación actual del paquete"""
-  current_location: OrderBy
-  shipped_at: OrderBy
-  delivered_at: OrderBy
-  """Nombre de quien recibió"""
-  delivered_to: OrderBy
-  """Notas de entrega"""
-  delivery_notes: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-}
-
-type customers {
-  id: Int!
-  email: String!
-  password: String!
-  address_id: Int
-  is_active: Int
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  lastname: String!
-  photo: String
-  name: String
-  """numero de celular"""
-  phone: String!
-  """Documento de identidad """
-  dni: String!
-  customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
-  orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
-  variant_ratings(limit: Int, offset: Int, where: variant_ratings_WhereInput, orderBy: variant_ratings_OrderByInput): [variant_ratings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
-}
-
-type customers_addresses {
-  id: Int!
-  id_customer: Int!
-  """Nombre de la dirección (Casa, Oficina, etc.)"""
-  alias: String!
-  department: String!
-  province: String!
-  district: String!
-  """Nombre de la avenida/calle/jirón"""
-  street_name: String!
-  """Número de la dirección"""
-  street_number: String!
-  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
-  apartment: String
-  """Latitud GPS"""
-  latitude: Float
-  """Longitud GPS"""
-  longitude: Float
-  """1 = dirección por defecto"""
-  is_default: Int
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  customers(where: customers_WhereInput, orderBy: customers_OrderByInput, limit: Int, offset: Int): [customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
-  orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["shipping_address_id", "id"]])
-}
-
-input customers_WhereInput {
-  id: String
-  email: String
-  password: String
-  address_id: String
-  is_active: String
-  created_at: String
-  updated_at: String
-  lastname: String
-  photo: String
-  name: String
-  """numero de celular"""
-  phone: String
-  """Documento de identidad """
-  dni: String
-}
-
-input customers_OrderByInput {
-  id: OrderBy
-  email: OrderBy
-  password: OrderBy
-  address_id: OrderBy
-  is_active: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-  lastname: OrderBy
-  photo: OrderBy
-  name: OrderBy
-  """numero de celular"""
-  phone: OrderBy
-  """Documento de identidad """
-  dni: OrderBy
 }
 
 input customers_addresses_WhereInput {
@@ -719,6 +731,249 @@ input product_variants_OrderByInput {
   updated_at: OrderBy
 }
 
+"""Items/productos de cada orden"""
+input order_items_WhereInput {
+  id: String
+  order_id: String
+  """Variante del producto comprada"""
+  variant_id: String
+  """Nombre del producto al momento de compra"""
+  product_name: String
+  """SKU de la variante"""
+  variant_sku: String
+  """Atributos de la variante (color, talla, etc.)"""
+  variant_attributes: String
+  quantity: String
+  """Precio unitario al momento de compra"""
+  unit_price: String
+  """Precio total (quantity * unit_price)"""
+  total_price: String
+  """Descuento aplicado a este item"""
+  discount_amount: String
+}
+
+"""Items/productos de cada orden"""
+input order_items_OrderByInput {
+  id: OrderBy
+  order_id: OrderBy
+  """Variante del producto comprada"""
+  variant_id: OrderBy
+  """Nombre del producto al momento de compra"""
+  product_name: OrderBy
+  """SKU de la variante"""
+  variant_sku: OrderBy
+  """Atributos de la variante (color, talla, etc.)"""
+  variant_attributes: OrderBy
+  quantity: OrderBy
+  """Precio unitario al momento de compra"""
+  unit_price: OrderBy
+  """Precio total (quantity * unit_price)"""
+  total_price: OrderBy
+  """Descuento aplicado a este item"""
+  discount_amount: OrderBy
+}
+
+"""Seguimiento de envíos"""
+type order_tracking {
+  id: Int!
+  order_id: Int!
+  """Número de seguimiento del courier"""
+  tracking_number: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courier_company: String
+  status: order_tracking_status!
+  """Ubicación actual del paquete"""
+  current_location: String
+  shipped_at: Timestamp
+  delivered_at: Timestamp
+  """Nombre de quien recibió"""
+  delivered_to: String
+  """Notas de entrega"""
+  delivery_notes: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  orders(where: orders_WhereInput, orderBy: orders_OrderByInput, limit: Int, offset: Int): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+}
+
+enum order_tracking_status {
+  preparing
+  shipped
+  in_transit
+  out_for_delivery
+  delivered
+  failed_delivery
+}
+
+"""Seguimiento de envíos"""
+input order_tracking_WhereInput {
+  id: String
+  order_id: String
+  """Número de seguimiento del courier"""
+  tracking_number: String
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courier_company: String
+  status: String
+  """Ubicación actual del paquete"""
+  current_location: String
+  shipped_at: String
+  delivered_at: String
+  """Nombre de quien recibió"""
+  delivered_to: String
+  """Notas de entrega"""
+  delivery_notes: String
+  created_at: String
+  updated_at: String
+}
+
+"""Seguimiento de envíos"""
+input order_tracking_OrderByInput {
+  id: OrderBy
+  order_id: OrderBy
+  """Número de seguimiento del courier"""
+  tracking_number: OrderBy
+  """Empresa de courier (Olva, Shalom, etc.)"""
+  courier_company: OrderBy
+  status: OrderBy
+  """Ubicación actual del paquete"""
+  current_location: OrderBy
+  shipped_at: OrderBy
+  delivered_at: OrderBy
+  """Nombre de quien recibió"""
+  delivered_to: OrderBy
+  """Notas de entrega"""
+  delivery_notes: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type payment_transactions {
+  id: Int!
+  order_id: Int!
+  payment_method_id: Int!
+  transaction_id: String
+  reference_number: String
+  amount: Float!
+  processing_fee: Float
+  net_amount: Float!
+  currency: String
+  status: payment_transactions_status
+  payment_data: JSON
+  gateway_response: JSON
+  processed_at: Timestamp
+  expires_at: Timestamp
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  orders(where: orders_WhereInput, orderBy: orders_OrderByInput, limit: Int, offset: Int): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+  payment_methods(where: payment_methods_WhereInput, orderBy: payment_methods_OrderByInput, limit: Int, offset: Int): [payment_methods] @mysqlSelect(subgraph: "Database", table: "payment_methods", columnMap: [["id", "payment_method_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "payment_method_id")
+}
+
+enum payment_transactions_status {
+  pending
+  processing
+  completed
+  failed
+  cancelled
+  refunded
+}
+
+type payment_methods {
+  id: Int!
+  name: String!
+  code: String!
+  description: String
+  icon_url: String
+  processing_fee_type: payment_methods_processing_fee_type
+  processing_fee_value: Float
+  min_amount: Float
+  max_amount: Float
+  is_active: Int
+  requires_verification: Int
+  display_order: Int
+  settings: JSON
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  payment_transactions(limit: Int, offset: Int, where: payment_transactions_WhereInput, orderBy: payment_transactions_OrderByInput): [payment_transactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions", columnMap: [["payment_method_id", "id"]])
+}
+
+enum payment_methods_processing_fee_type {
+  fixed
+  percentage
+}
+
+input payment_transactions_WhereInput {
+  id: String
+  order_id: String
+  payment_method_id: String
+  transaction_id: String
+  reference_number: String
+  amount: String
+  processing_fee: String
+  net_amount: String
+  currency: String
+  status: String
+  payment_data: String
+  gateway_response: String
+  processed_at: String
+  expires_at: String
+  created_at: String
+  updated_at: String
+}
+
+input payment_transactions_OrderByInput {
+  id: OrderBy
+  order_id: OrderBy
+  payment_method_id: OrderBy
+  transaction_id: OrderBy
+  reference_number: OrderBy
+  amount: OrderBy
+  processing_fee: OrderBy
+  net_amount: OrderBy
+  currency: OrderBy
+  status: OrderBy
+  payment_data: OrderBy
+  gateway_response: OrderBy
+  processed_at: OrderBy
+  expires_at: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+input payment_methods_WhereInput {
+  id: String
+  name: String
+  code: String
+  description: String
+  icon_url: String
+  processing_fee_type: String
+  processing_fee_value: String
+  min_amount: String
+  max_amount: String
+  is_active: String
+  requires_verification: String
+  display_order: String
+  settings: String
+  created_at: String
+  updated_at: String
+}
+
+input payment_methods_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  code: OrderBy
+  description: OrderBy
+  icon_url: OrderBy
+  processing_fee_type: OrderBy
+  processing_fee_value: OrderBy
+  min_amount: OrderBy
+  max_amount: OrderBy
+  is_active: OrderBy
+  requires_verification: OrderBy
+  display_order: OrderBy
+  settings: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
 type products {
   id: Int!
   name: String!
@@ -834,11 +1089,6 @@ type promotions {
   updated_at: Timestamp!
   promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
 }
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
 
 enum promotions_discount_type {
   percentage
@@ -1343,6 +1593,118 @@ input services_images_OrderByInput {
   image_url: OrderBy
 }
 
+type shipping_methods {
+  id: Int!
+  name: String!
+  description: String
+  base_cost: Float!
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  display_order: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  shipping_zone_methods(limit: Int, offset: Int, where: shipping_zone_methods_WhereInput, orderBy: shipping_zone_methods_OrderByInput): [shipping_zone_methods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_method_id", "id"]])
+}
+
+type shipping_zone_methods {
+  id: Int!
+  shipping_method_id: Int!
+  shipping_zone_id: Int!
+  cost: Float!
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  shipping_methods(where: shipping_methods_WhereInput, orderBy: shipping_methods_OrderByInput, limit: Int, offset: Int): [shipping_methods] @mysqlSelect(subgraph: "Database", table: "shipping_methods", columnMap: [["id", "shipping_method_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_method_id")
+  shipping_zones(where: shipping_zones_WhereInput, orderBy: shipping_zones_OrderByInput, limit: Int, offset: Int): [shipping_zones] @mysqlSelect(subgraph: "Database", table: "shipping_zones", columnMap: [["id", "shipping_zone_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_zone_id")
+}
+
+input shipping_methods_WhereInput {
+  id: String
+  name: String
+  description: String
+  base_cost: String
+  free_shipping_threshold: String
+  estimated_days_min: String
+  estimated_days_max: String
+  is_active: String
+  display_order: String
+  created_at: String
+  updated_at: String
+}
+
+input shipping_methods_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  base_cost: OrderBy
+  free_shipping_threshold: OrderBy
+  estimated_days_min: OrderBy
+  estimated_days_max: OrderBy
+  is_active: OrderBy
+  display_order: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type shipping_zones {
+  id: Int!
+  name: String!
+  districts: JSON!
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  shipping_zone_methods(limit: Int, offset: Int, where: shipping_zone_methods_WhereInput, orderBy: shipping_zone_methods_OrderByInput): [shipping_zone_methods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_zone_id", "id"]])
+}
+
+input shipping_zone_methods_WhereInput {
+  id: String
+  shipping_method_id: String
+  shipping_zone_id: String
+  cost: String
+  free_shipping_threshold: String
+  estimated_days_min: String
+  estimated_days_max: String
+  is_active: String
+  created_at: String
+  updated_at: String
+}
+
+input shipping_zone_methods_OrderByInput {
+  id: OrderBy
+  shipping_method_id: OrderBy
+  shipping_zone_id: OrderBy
+  cost: OrderBy
+  free_shipping_threshold: OrderBy
+  estimated_days_min: OrderBy
+  estimated_days_max: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+input shipping_zones_WhereInput {
+  id: String
+  name: String
+  districts: String
+  is_active: String
+  created_at: String
+  updated_at: String
+}
+
+input shipping_zones_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  districts: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
 """VIEW"""
 type variant_rating_summary {
   variant_id: Int!
@@ -1401,6 +1763,12 @@ type Mutation {
   insert_categories(categories: categories_InsertInput!): categories @mysqlInsert(subgraph: "Database", table: "categories", primaryKeys: ["id"])
   update_categories(categories: categories_UpdateInput!, where: categories_WhereInput): categories @mysqlUpdate(subgraph: "Database", table: "categories")
   delete_categories(where: categories_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "categories")
+  insert_coupon_usage(coupon_usage: coupon_usage_InsertInput!): coupon_usage @mysqlInsert(subgraph: "Database", table: "coupon_usage", primaryKeys: ["id"])
+  update_coupon_usage(coupon_usage: coupon_usage_UpdateInput!, where: coupon_usage_WhereInput): coupon_usage @mysqlUpdate(subgraph: "Database", table: "coupon_usage")
+  delete_coupon_usage(where: coupon_usage_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "coupon_usage")
+  insert_coupons(coupons: coupons_InsertInput!): coupons @mysqlInsert(subgraph: "Database", table: "coupons", primaryKeys: ["id"])
+  update_coupons(coupons: coupons_UpdateInput!, where: coupons_WhereInput): coupons @mysqlUpdate(subgraph: "Database", table: "coupons")
+  delete_coupons(where: coupons_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "coupons")
   insert_customers(customers: customers_InsertInput!): customers @mysqlInsert(subgraph: "Database", table: "customers", primaryKeys: ["id"])
   update_customers(customers: customers_UpdateInput!, where: customers_WhereInput): customers @mysqlUpdate(subgraph: "Database", table: "customers")
   delete_customers(where: customers_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "customers")
@@ -1419,6 +1787,12 @@ type Mutation {
   insert_orders(orders: orders_InsertInput!): orders @mysqlInsert(subgraph: "Database", table: "orders", primaryKeys: ["id"])
   update_orders(orders: orders_UpdateInput!, where: orders_WhereInput): orders @mysqlUpdate(subgraph: "Database", table: "orders")
   delete_orders(where: orders_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "orders")
+  insert_payment_methods(payment_methods: payment_methods_InsertInput!): payment_methods @mysqlInsert(subgraph: "Database", table: "payment_methods", primaryKeys: ["id"])
+  update_payment_methods(payment_methods: payment_methods_UpdateInput!, where: payment_methods_WhereInput): payment_methods @mysqlUpdate(subgraph: "Database", table: "payment_methods")
+  delete_payment_methods(where: payment_methods_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "payment_methods")
+  insert_payment_transactions(payment_transactions: payment_transactions_InsertInput!): payment_transactions @mysqlInsert(subgraph: "Database", table: "payment_transactions", primaryKeys: ["id"])
+  update_payment_transactions(payment_transactions: payment_transactions_UpdateInput!, where: payment_transactions_WhereInput): payment_transactions @mysqlUpdate(subgraph: "Database", table: "payment_transactions")
+  delete_payment_transactions(where: payment_transactions_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "payment_transactions")
   insert_permissions(permissions: permissions_InsertInput!): permissions @mysqlInsert(subgraph: "Database", table: "permissions", primaryKeys: ["id"])
   update_permissions(permissions: permissions_UpdateInput!, where: permissions_WhereInput): permissions @mysqlUpdate(subgraph: "Database", table: "permissions")
   delete_permissions(where: permissions_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "permissions")
@@ -1458,6 +1832,15 @@ type Mutation {
   insert_services_images(services_images: services_images_InsertInput!): services_images @mysqlInsert(subgraph: "Database", table: "services_images", primaryKeys: ["id"])
   update_services_images(services_images: services_images_UpdateInput!, where: services_images_WhereInput): services_images @mysqlUpdate(subgraph: "Database", table: "services_images")
   delete_services_images(where: services_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "services_images")
+  insert_shipping_methods(shipping_methods: shipping_methods_InsertInput!): shipping_methods @mysqlInsert(subgraph: "Database", table: "shipping_methods", primaryKeys: ["id"])
+  update_shipping_methods(shipping_methods: shipping_methods_UpdateInput!, where: shipping_methods_WhereInput): shipping_methods @mysqlUpdate(subgraph: "Database", table: "shipping_methods")
+  delete_shipping_methods(where: shipping_methods_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_methods")
+  insert_shipping_zone_methods(shipping_zone_methods: shipping_zone_methods_InsertInput!): shipping_zone_methods @mysqlInsert(subgraph: "Database", table: "shipping_zone_methods", primaryKeys: ["id"])
+  update_shipping_zone_methods(shipping_zone_methods: shipping_zone_methods_UpdateInput!, where: shipping_zone_methods_WhereInput): shipping_zone_methods @mysqlUpdate(subgraph: "Database", table: "shipping_zone_methods")
+  delete_shipping_zone_methods(where: shipping_zone_methods_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_zone_methods")
+  insert_shipping_zones(shipping_zones: shipping_zones_InsertInput!): shipping_zones @mysqlInsert(subgraph: "Database", table: "shipping_zones", primaryKeys: ["id"])
+  update_shipping_zones(shipping_zones: shipping_zones_UpdateInput!, where: shipping_zones_WhereInput): shipping_zones @mysqlUpdate(subgraph: "Database", table: "shipping_zones")
+  delete_shipping_zones(where: shipping_zones_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_zones")
   insert_users(users: users_InsertInput!): users @mysqlInsert(subgraph: "Database", table: "users", primaryKeys: ["id"])
   update_users(users: users_UpdateInput!, where: users_WhereInput): users @mysqlUpdate(subgraph: "Database", table: "users")
   delete_users(where: users_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "users")
@@ -1587,6 +1970,66 @@ input categories_UpdateInput {
   description: String
   parent_id: Int
   image_url: String
+}
+
+input coupon_usage_InsertInput {
+  id: Int
+  coupon_id: Int!
+  customer_id: Int!
+  order_id: Int!
+  discount_amount: Float!
+  used_at: Timestamp
+}
+
+input coupon_usage_UpdateInput {
+  id: Int
+  coupon_id: Int
+  customer_id: Int
+  order_id: Int
+  discount_amount: Float
+  used_at: Timestamp
+}
+
+input coupons_InsertInput {
+  id: Int
+  code: String!
+  name: String!
+  description: String
+  discount_type: coupons_discount_type!
+  discount_value: Float!
+  min_purchase_amount: Float
+  max_discount_amount: Float
+  usage_limit: Int
+  usage_limit_per_customer: Int
+  used_count: Int
+  start_date: DateTime!
+  end_date: DateTime!
+  is_active: Int
+  applicable_to: coupons_applicable_to
+  applicable_ids: JSON
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input coupons_UpdateInput {
+  id: Int
+  code: String
+  name: String
+  description: String
+  discount_type: coupons_discount_type
+  discount_value: Float
+  min_purchase_amount: Float
+  max_discount_amount: Float
+  usage_limit: Int
+  usage_limit_per_customer: Int
+  used_count: Int
+  start_date: DateTime
+  end_date: DateTime
+  is_active: Int
+  applicable_to: coupons_applicable_to
+  applicable_ids: JSON
+  created_at: Timestamp
+  updated_at: Timestamp
 }
 
 input customers_InsertInput {
@@ -1873,6 +2316,80 @@ input orders_UpdateInput {
   admin_notes: String
 }
 
+input payment_methods_InsertInput {
+  id: Int
+  name: String!
+  code: String!
+  description: String
+  icon_url: String
+  processing_fee_type: payment_methods_processing_fee_type
+  processing_fee_value: Float
+  min_amount: Float
+  max_amount: Float
+  is_active: Int
+  requires_verification: Int
+  display_order: Int
+  settings: JSON
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input payment_methods_UpdateInput {
+  id: Int
+  name: String
+  code: String
+  description: String
+  icon_url: String
+  processing_fee_type: payment_methods_processing_fee_type
+  processing_fee_value: Float
+  min_amount: Float
+  max_amount: Float
+  is_active: Int
+  requires_verification: Int
+  display_order: Int
+  settings: JSON
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input payment_transactions_InsertInput {
+  id: Int
+  order_id: Int!
+  payment_method_id: Int!
+  transaction_id: String
+  reference_number: String
+  amount: Float!
+  processing_fee: Float
+  net_amount: Float!
+  currency: String
+  status: payment_transactions_status
+  payment_data: JSON
+  gateway_response: JSON
+  processed_at: Timestamp
+  expires_at: Timestamp
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input payment_transactions_UpdateInput {
+  id: Int
+  order_id: Int
+  payment_method_id: Int
+  transaction_id: String
+  reference_number: String
+  amount: Float
+  processing_fee: Float
+  net_amount: Float
+  currency: String
+  status: payment_transactions_status
+  payment_data: JSON
+  gateway_response: JSON
+  processed_at: Timestamp
+  expires_at: Timestamp
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
 input permissions_InsertInput {
   id: Int
   name: String!
@@ -2109,6 +2626,78 @@ input services_images_UpdateInput {
   display_order: Int
   id_service: Int
   image_url: String
+}
+
+input shipping_methods_InsertInput {
+  id: Int
+  name: String!
+  description: String
+  base_cost: Float
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input shipping_methods_UpdateInput {
+  id: Int
+  name: String
+  description: String
+  base_cost: Float
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input shipping_zone_methods_InsertInput {
+  id: Int
+  shipping_method_id: Int!
+  shipping_zone_id: Int!
+  cost: Float
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input shipping_zone_methods_UpdateInput {
+  id: Int
+  shipping_method_id: Int
+  shipping_zone_id: Int
+  cost: Float
+  free_shipping_threshold: Float
+  estimated_days_min: Int
+  estimated_days_max: Int
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input shipping_zones_InsertInput {
+  id: Int
+  name: String!
+  districts: JSON!
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+input shipping_zones_UpdateInput {
+  id: Int
+  name: String
+  districts: JSON
+  is_active: Int
+  created_at: Timestamp
+  updated_at: Timestamp
 }
 
 input users_InsertInput {

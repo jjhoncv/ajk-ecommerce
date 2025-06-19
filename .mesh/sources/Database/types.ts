@@ -47,6 +47,10 @@ export type Query = {
   count_brands?: Maybe<Scalars['Int']['output']>;
   categories?: Maybe<Array<Maybe<categories>>>;
   count_categories?: Maybe<Scalars['Int']['output']>;
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
+  count_coupon_usage?: Maybe<Scalars['Int']['output']>;
+  coupons?: Maybe<Array<Maybe<coupons>>>;
+  count_coupons?: Maybe<Scalars['Int']['output']>;
   customers?: Maybe<Array<Maybe<customers>>>;
   count_customers?: Maybe<Scalars['Int']['output']>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
@@ -59,6 +63,10 @@ export type Query = {
   count_order_tracking?: Maybe<Scalars['Int']['output']>;
   orders?: Maybe<Array<Maybe<orders>>>;
   count_orders?: Maybe<Scalars['Int']['output']>;
+  payment_methods?: Maybe<Array<Maybe<payment_methods>>>;
+  count_payment_methods?: Maybe<Scalars['Int']['output']>;
+  payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
+  count_payment_transactions?: Maybe<Scalars['Int']['output']>;
   permissions?: Maybe<Array<Maybe<permissions>>>;
   count_permissions?: Maybe<Scalars['Int']['output']>;
   product_categories?: Maybe<Array<Maybe<product_categories>>>;
@@ -85,6 +93,12 @@ export type Query = {
   count_services?: Maybe<Scalars['Int']['output']>;
   services_images?: Maybe<Array<Maybe<services_images>>>;
   count_services_images?: Maybe<Scalars['Int']['output']>;
+  shipping_methods?: Maybe<Array<Maybe<shipping_methods>>>;
+  count_shipping_methods?: Maybe<Scalars['Int']['output']>;
+  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
+  count_shipping_zone_methods?: Maybe<Scalars['Int']['output']>;
+  shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
+  count_shipping_zones?: Maybe<Scalars['Int']['output']>;
   users?: Maybe<Array<Maybe<users>>>;
   count_users?: Maybe<Scalars['Int']['output']>;
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
@@ -176,6 +190,32 @@ export type Querycount_categoriesArgs = {
 };
 
 
+export type Querycoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
+};
+
+
+export type Querycount_coupon_usageArgs = {
+  where?: InputMaybe<coupon_usage_WhereInput>;
+};
+
+
+export type QuerycouponsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupons_WhereInput>;
+  orderBy?: InputMaybe<coupons_OrderByInput>;
+};
+
+
+export type Querycount_couponsArgs = {
+  where?: InputMaybe<coupons_WhereInput>;
+};
+
+
 export type QuerycustomersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -251,6 +291,32 @@ export type QueryordersArgs = {
 
 export type Querycount_ordersArgs = {
   where?: InputMaybe<orders_WhereInput>;
+};
+
+
+export type Querypayment_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<payment_methods_WhereInput>;
+  orderBy?: InputMaybe<payment_methods_OrderByInput>;
+};
+
+
+export type Querycount_payment_methodsArgs = {
+  where?: InputMaybe<payment_methods_WhereInput>;
+};
+
+
+export type Querypayment_transactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<payment_transactions_WhereInput>;
+  orderBy?: InputMaybe<payment_transactions_OrderByInput>;
+};
+
+
+export type Querycount_payment_transactionsArgs = {
+  where?: InputMaybe<payment_transactions_WhereInput>;
 };
 
 
@@ -420,6 +486,45 @@ export type Queryservices_imagesArgs = {
 
 export type Querycount_services_imagesArgs = {
   where?: InputMaybe<services_images_WhereInput>;
+};
+
+
+export type Queryshipping_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_methods_OrderByInput>;
+};
+
+
+export type Querycount_shipping_methodsArgs = {
+  where?: InputMaybe<shipping_methods_WhereInput>;
+};
+
+
+export type Queryshipping_zone_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
+};
+
+
+export type Querycount_shipping_zone_methodsArgs = {
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+};
+
+
+export type Queryshipping_zonesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zones_WhereInput>;
+  orderBy?: InputMaybe<shipping_zones_OrderByInput>;
+};
+
+
+export type Querycount_shipping_zonesArgs = {
+  where?: InputMaybe<shipping_zones_WhereInput>;
 };
 
 
@@ -813,10 +918,21 @@ export type orders = {
   customer_notes?: Maybe<Scalars['String']['output']>;
   /** Notas internas del admin */
   admin_notes?: Maybe<Scalars['String']['output']>;
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
   order_items?: Maybe<Array<Maybe<order_items>>>;
   order_tracking?: Maybe<Array<Maybe<order_tracking>>>;
   customers?: Maybe<Array<Maybe<customers>>>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+  payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
 };
 
 
@@ -855,6 +971,15 @@ export type orderscustomers_addressesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
+/** Órdenes principales del ecommerce */
+export type orderspayment_transactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<payment_transactions_WhereInput>;
+  orderBy?: InputMaybe<payment_transactions_OrderByInput>;
+};
+
 export type orders_status =
   | 'pending'
   | 'processing'
@@ -869,197 +994,137 @@ export type orders_payment_status =
   | 'failed'
   | 'refunded';
 
-/** Items/productos de cada orden */
-export type order_items_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  order_id?: InputMaybe<Scalars['String']['input']>;
-  /** Variante del producto comprada */
-  variant_id?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre del producto al momento de compra */
-  product_name?: InputMaybe<Scalars['String']['input']>;
-  /** SKU de la variante */
-  variant_sku?: InputMaybe<Scalars['String']['input']>;
-  /** Atributos de la variante (color, talla, etc.) */
-  variant_attributes?: InputMaybe<Scalars['String']['input']>;
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  /** Precio unitario al momento de compra */
-  unit_price?: InputMaybe<Scalars['String']['input']>;
-  /** Precio total (quantity * unit_price) */
-  total_price?: InputMaybe<Scalars['String']['input']>;
-  /** Descuento aplicado a este item */
-  discount_amount?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Items/productos de cada orden */
-export type order_items_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  order_id?: InputMaybe<OrderBy>;
-  /** Variante del producto comprada */
-  variant_id?: InputMaybe<OrderBy>;
-  /** Nombre del producto al momento de compra */
-  product_name?: InputMaybe<OrderBy>;
-  /** SKU de la variante */
-  variant_sku?: InputMaybe<OrderBy>;
-  /** Atributos de la variante (color, talla, etc.) */
-  variant_attributes?: InputMaybe<OrderBy>;
-  quantity?: InputMaybe<OrderBy>;
-  /** Precio unitario al momento de compra */
-  unit_price?: InputMaybe<OrderBy>;
-  /** Precio total (quantity * unit_price) */
-  total_price?: InputMaybe<OrderBy>;
-  /** Descuento aplicado a este item */
-  discount_amount?: InputMaybe<OrderBy>;
-};
-
-/** Seguimiento de envíos */
-export type order_tracking = {
+export type coupon_usage = {
   id: Scalars['Int']['output'];
+  coupon_id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
   order_id: Scalars['Int']['output'];
-  /** Número de seguimiento del courier */
-  tracking_number?: Maybe<Scalars['String']['output']>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courier_company?: Maybe<Scalars['String']['output']>;
-  status: order_tracking_status;
-  /** Ubicación actual del paquete */
-  current_location?: Maybe<Scalars['String']['output']>;
-  shipped_at?: Maybe<Scalars['Timestamp']['output']>;
-  delivered_at?: Maybe<Scalars['Timestamp']['output']>;
-  /** Nombre de quien recibió */
-  delivered_to?: Maybe<Scalars['String']['output']>;
-  /** Notas de entrega */
-  delivery_notes?: Maybe<Scalars['String']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
+  discount_amount: Scalars['Float']['output'];
+  used_at: Scalars['Timestamp']['output'];
+  coupons?: Maybe<Array<Maybe<coupons>>>;
+  customers?: Maybe<Array<Maybe<customers>>>;
   orders?: Maybe<Array<Maybe<orders>>>;
 };
 
 
-/** Seguimiento de envíos */
-export type order_trackingordersArgs = {
+export type coupon_usagecouponsArgs = {
+  where?: InputMaybe<coupons_WhereInput>;
+  orderBy?: InputMaybe<coupons_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type coupon_usagecustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type coupon_usageordersArgs = {
   where?: InputMaybe<orders_WhereInput>;
   orderBy?: InputMaybe<orders_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type order_tracking_status =
-  | 'preparing'
-  | 'shipped'
-  | 'in_transit'
-  | 'out_for_delivery'
-  | 'delivered'
-  | 'failed_delivery';
+export type coupons = {
+  id: Scalars['Int']['output'];
+  code: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  discount_type: coupons_discount_type;
+  discount_value: Scalars['Float']['output'];
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  max_discount_amount?: Maybe<Scalars['Float']['output']>;
+  usage_limit?: Maybe<Scalars['Int']['output']>;
+  usage_limit_per_customer?: Maybe<Scalars['Int']['output']>;
+  used_count?: Maybe<Scalars['Int']['output']>;
+  start_date: Scalars['DateTime']['output'];
+  end_date: Scalars['DateTime']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  applicable_to?: Maybe<coupons_applicable_to>;
+  applicable_ids?: Maybe<Scalars['JSON']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
+};
 
-/** Órdenes principales del ecommerce */
-export type orders_WhereInput = {
+
+export type couponscoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
+};
+
+export type coupons_discount_type =
+  | 'fixed_amount'
+  | 'percentage';
+
+export type coupons_applicable_to =
+  | 'all'
+  | 'categories'
+  | 'products';
+
+export type coupon_usage_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
+  coupon_id?: InputMaybe<Scalars['String']['input']>;
   customer_id?: InputMaybe<Scalars['String']['input']>;
-  /** Número único de orden (ORD-2025-001234) */
-  order_number?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  /** Subtotal antes de descuentos */
-  subtotal?: InputMaybe<Scalars['String']['input']>;
-  /** Descuento aplicado */
-  discount_amount?: InputMaybe<Scalars['String']['input']>;
-  /** Costo de envío */
-  shipping_cost?: InputMaybe<Scalars['String']['input']>;
-  /** Impuestos (IGV) */
-  tax_amount?: InputMaybe<Scalars['String']['input']>;
-  /** Total final a pagar */
-  total_amount?: InputMaybe<Scalars['String']['input']>;
-  /** Dirección de envío */
-  shipping_address_id?: InputMaybe<Scalars['String']['input']>;
-  /** Método de envío */
-  shipping_method?: InputMaybe<Scalars['String']['input']>;
-  /** Fecha estimada de entrega */
-  estimated_delivery?: InputMaybe<Scalars['String']['input']>;
-  /** Método de pago usado */
-  payment_method?: InputMaybe<Scalars['String']['input']>;
-  payment_status?: InputMaybe<Scalars['String']['input']>;
-  /** Fecha de pago confirmado */
-  paid_at?: InputMaybe<Scalars['String']['input']>;
-  /** Notas del cliente */
-  customer_notes?: InputMaybe<Scalars['String']['input']>;
-  /** Notas internas del admin */
-  admin_notes?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Órdenes principales del ecommerce */
-export type orders_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  customer_id?: InputMaybe<OrderBy>;
-  /** Número único de orden (ORD-2025-001234) */
-  order_number?: InputMaybe<OrderBy>;
-  status?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  /** Subtotal antes de descuentos */
-  subtotal?: InputMaybe<OrderBy>;
-  /** Descuento aplicado */
-  discount_amount?: InputMaybe<OrderBy>;
-  /** Costo de envío */
-  shipping_cost?: InputMaybe<OrderBy>;
-  /** Impuestos (IGV) */
-  tax_amount?: InputMaybe<OrderBy>;
-  /** Total final a pagar */
-  total_amount?: InputMaybe<OrderBy>;
-  /** Dirección de envío */
-  shipping_address_id?: InputMaybe<OrderBy>;
-  /** Método de envío */
-  shipping_method?: InputMaybe<OrderBy>;
-  /** Fecha estimada de entrega */
-  estimated_delivery?: InputMaybe<OrderBy>;
-  /** Método de pago usado */
-  payment_method?: InputMaybe<OrderBy>;
-  payment_status?: InputMaybe<OrderBy>;
-  /** Fecha de pago confirmado */
-  paid_at?: InputMaybe<OrderBy>;
-  /** Notas del cliente */
-  customer_notes?: InputMaybe<OrderBy>;
-  /** Notas internas del admin */
-  admin_notes?: InputMaybe<OrderBy>;
-};
-
-/** Seguimiento de envíos */
-export type order_tracking_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
   order_id?: InputMaybe<Scalars['String']['input']>;
-  /** Número de seguimiento del courier */
-  tracking_number?: InputMaybe<Scalars['String']['input']>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courier_company?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  /** Ubicación actual del paquete */
-  current_location?: InputMaybe<Scalars['String']['input']>;
-  shipped_at?: InputMaybe<Scalars['String']['input']>;
-  delivered_at?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de quien recibió */
-  delivered_to?: InputMaybe<Scalars['String']['input']>;
-  /** Notas de entrega */
-  delivery_notes?: InputMaybe<Scalars['String']['input']>;
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+  used_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type coupon_usage_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  coupon_id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  discount_amount?: InputMaybe<OrderBy>;
+  used_at?: InputMaybe<OrderBy>;
+};
+
+export type coupons_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  discount_type?: InputMaybe<Scalars['String']['input']>;
+  discount_value?: InputMaybe<Scalars['String']['input']>;
+  min_purchase_amount?: InputMaybe<Scalars['String']['input']>;
+  max_discount_amount?: InputMaybe<Scalars['String']['input']>;
+  usage_limit?: InputMaybe<Scalars['String']['input']>;
+  usage_limit_per_customer?: InputMaybe<Scalars['String']['input']>;
+  used_count?: InputMaybe<Scalars['String']['input']>;
+  start_date?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  applicable_to?: InputMaybe<Scalars['String']['input']>;
+  applicable_ids?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Seguimiento de envíos */
-export type order_tracking_OrderByInput = {
+export type coupons_OrderByInput = {
   id?: InputMaybe<OrderBy>;
-  order_id?: InputMaybe<OrderBy>;
-  /** Número de seguimiento del courier */
-  tracking_number?: InputMaybe<OrderBy>;
-  /** Empresa de courier (Olva, Shalom, etc.) */
-  courier_company?: InputMaybe<OrderBy>;
-  status?: InputMaybe<OrderBy>;
-  /** Ubicación actual del paquete */
-  current_location?: InputMaybe<OrderBy>;
-  shipped_at?: InputMaybe<OrderBy>;
-  delivered_at?: InputMaybe<OrderBy>;
-  /** Nombre de quien recibió */
-  delivered_to?: InputMaybe<OrderBy>;
-  /** Notas de entrega */
-  delivery_notes?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  discount_type?: InputMaybe<OrderBy>;
+  discount_value?: InputMaybe<OrderBy>;
+  min_purchase_amount?: InputMaybe<OrderBy>;
+  max_discount_amount?: InputMaybe<OrderBy>;
+  usage_limit?: InputMaybe<OrderBy>;
+  usage_limit_per_customer?: InputMaybe<OrderBy>;
+  used_count?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  applicable_to?: InputMaybe<OrderBy>;
+  applicable_ids?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
 };
@@ -1079,9 +1144,18 @@ export type customers = {
   phone: Scalars['String']['output'];
   /** Documento de identidad  */
   dni: Scalars['String']['output'];
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
   orders?: Maybe<Array<Maybe<orders>>>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type customerscoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
 };
 
 
@@ -1182,6 +1256,78 @@ export type customers_OrderByInput = {
   phone?: InputMaybe<OrderBy>;
   /** Documento de identidad  */
   dni?: InputMaybe<OrderBy>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<Scalars['String']['input']>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Dirección de envío */
+  shipping_address_id?: InputMaybe<Scalars['String']['input']>;
+  /** Método de envío */
+  shipping_method?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<Scalars['String']['input']>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<Scalars['String']['input']>;
+  payment_status?: InputMaybe<Scalars['String']['input']>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<Scalars['String']['input']>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<Scalars['String']['input']>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  /** Número único de orden (ORD-2025-001234) */
+  order_number?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  /** Subtotal antes de descuentos */
+  subtotal?: InputMaybe<OrderBy>;
+  /** Descuento aplicado */
+  discount_amount?: InputMaybe<OrderBy>;
+  /** Costo de envío */
+  shipping_cost?: InputMaybe<OrderBy>;
+  /** Impuestos (IGV) */
+  tax_amount?: InputMaybe<OrderBy>;
+  /** Total final a pagar */
+  total_amount?: InputMaybe<OrderBy>;
+  /** Dirección de envío */
+  shipping_address_id?: InputMaybe<OrderBy>;
+  /** Método de envío */
+  shipping_method?: InputMaybe<OrderBy>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: InputMaybe<OrderBy>;
+  /** Método de pago usado */
+  payment_method?: InputMaybe<OrderBy>;
+  payment_status?: InputMaybe<OrderBy>;
+  /** Fecha de pago confirmado */
+  paid_at?: InputMaybe<OrderBy>;
+  /** Notas del cliente */
+  customer_notes?: InputMaybe<OrderBy>;
+  /** Notas internas del admin */
+  admin_notes?: InputMaybe<OrderBy>;
 };
 
 export type customers_addresses_WhereInput = {
@@ -1341,6 +1487,279 @@ export type product_variants_OrderByInput = {
   sku?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   stock?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** Items/productos de cada orden */
+export type order_items_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  /** Variante del producto comprada */
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del producto al momento de compra */
+  product_name?: InputMaybe<Scalars['String']['input']>;
+  /** SKU de la variante */
+  variant_sku?: InputMaybe<Scalars['String']['input']>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Precio unitario al momento de compra */
+  unit_price?: InputMaybe<Scalars['String']['input']>;
+  /** Precio total (quantity * unit_price) */
+  total_price?: InputMaybe<Scalars['String']['input']>;
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Items/productos de cada orden */
+export type order_items_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  /** Variante del producto comprada */
+  variant_id?: InputMaybe<OrderBy>;
+  /** Nombre del producto al momento de compra */
+  product_name?: InputMaybe<OrderBy>;
+  /** SKU de la variante */
+  variant_sku?: InputMaybe<OrderBy>;
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: InputMaybe<OrderBy>;
+  quantity?: InputMaybe<OrderBy>;
+  /** Precio unitario al momento de compra */
+  unit_price?: InputMaybe<OrderBy>;
+  /** Precio total (quantity * unit_price) */
+  total_price?: InputMaybe<OrderBy>;
+  /** Descuento aplicado a este item */
+  discount_amount?: InputMaybe<OrderBy>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking = {
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  /** Número de seguimiento del courier */
+  tracking_number?: Maybe<Scalars['String']['output']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: Maybe<Scalars['String']['output']>;
+  status: order_tracking_status;
+  /** Ubicación actual del paquete */
+  current_location?: Maybe<Scalars['String']['output']>;
+  shipped_at?: Maybe<Scalars['Timestamp']['output']>;
+  delivered_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Nombre de quien recibió */
+  delivered_to?: Maybe<Scalars['String']['output']>;
+  /** Notas de entrega */
+  delivery_notes?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  orders?: Maybe<Array<Maybe<orders>>>;
+};
+
+
+/** Seguimiento de envíos */
+export type order_trackingordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type order_tracking_status =
+  | 'preparing'
+  | 'shipped'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'delivered'
+  | 'failed_delivery';
+
+/** Seguimiento de envíos */
+export type order_tracking_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<Scalars['String']['input']>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<Scalars['String']['input']>;
+  shipped_at?: InputMaybe<Scalars['String']['input']>;
+  delivered_at?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<Scalars['String']['input']>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Seguimiento de envíos */
+export type order_tracking_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  /** Número de seguimiento del courier */
+  tracking_number?: InputMaybe<OrderBy>;
+  /** Empresa de courier (Olva, Shalom, etc.) */
+  courier_company?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  /** Ubicación actual del paquete */
+  current_location?: InputMaybe<OrderBy>;
+  shipped_at?: InputMaybe<OrderBy>;
+  delivered_at?: InputMaybe<OrderBy>;
+  /** Nombre de quien recibió */
+  delivered_to?: InputMaybe<OrderBy>;
+  /** Notas de entrega */
+  delivery_notes?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type payment_transactions = {
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  payment_method_id: Scalars['Int']['output'];
+  transaction_id?: Maybe<Scalars['String']['output']>;
+  reference_number?: Maybe<Scalars['String']['output']>;
+  amount: Scalars['Float']['output'];
+  processing_fee?: Maybe<Scalars['Float']['output']>;
+  net_amount: Scalars['Float']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<payment_transactions_status>;
+  payment_data?: Maybe<Scalars['JSON']['output']>;
+  gateway_response?: Maybe<Scalars['JSON']['output']>;
+  processed_at?: Maybe<Scalars['Timestamp']['output']>;
+  expires_at?: Maybe<Scalars['Timestamp']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  orders?: Maybe<Array<Maybe<orders>>>;
+  payment_methods?: Maybe<Array<Maybe<payment_methods>>>;
+};
+
+
+export type payment_transactionsordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type payment_transactionspayment_methodsArgs = {
+  where?: InputMaybe<payment_methods_WhereInput>;
+  orderBy?: InputMaybe<payment_methods_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type payment_transactions_status =
+  | 'pending'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
+  | 'refunded';
+
+export type payment_methods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  code: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  icon_url?: Maybe<Scalars['String']['output']>;
+  processing_fee_type?: Maybe<payment_methods_processing_fee_type>;
+  processing_fee_value?: Maybe<Scalars['Float']['output']>;
+  min_amount?: Maybe<Scalars['Float']['output']>;
+  max_amount?: Maybe<Scalars['Float']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  requires_verification?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  settings?: Maybe<Scalars['JSON']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
+};
+
+
+export type payment_methodspayment_transactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<payment_transactions_WhereInput>;
+  orderBy?: InputMaybe<payment_transactions_OrderByInput>;
+};
+
+export type payment_methods_processing_fee_type =
+  | 'fixed'
+  | 'percentage';
+
+export type payment_transactions_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  payment_method_id?: InputMaybe<Scalars['String']['input']>;
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  reference_number?: InputMaybe<Scalars['String']['input']>;
+  amount?: InputMaybe<Scalars['String']['input']>;
+  processing_fee?: InputMaybe<Scalars['String']['input']>;
+  net_amount?: InputMaybe<Scalars['String']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  payment_data?: InputMaybe<Scalars['String']['input']>;
+  gateway_response?: InputMaybe<Scalars['String']['input']>;
+  processed_at?: InputMaybe<Scalars['String']['input']>;
+  expires_at?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type payment_transactions_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  payment_method_id?: InputMaybe<OrderBy>;
+  transaction_id?: InputMaybe<OrderBy>;
+  reference_number?: InputMaybe<OrderBy>;
+  amount?: InputMaybe<OrderBy>;
+  processing_fee?: InputMaybe<OrderBy>;
+  net_amount?: InputMaybe<OrderBy>;
+  currency?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  payment_data?: InputMaybe<OrderBy>;
+  gateway_response?: InputMaybe<OrderBy>;
+  processed_at?: InputMaybe<OrderBy>;
+  expires_at?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type payment_methods_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  icon_url?: InputMaybe<Scalars['String']['input']>;
+  processing_fee_type?: InputMaybe<Scalars['String']['input']>;
+  processing_fee_value?: InputMaybe<Scalars['String']['input']>;
+  min_amount?: InputMaybe<Scalars['String']['input']>;
+  max_amount?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  requires_verification?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  settings?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type payment_methods_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  icon_url?: InputMaybe<OrderBy>;
+  processing_fee_type?: InputMaybe<OrderBy>;
+  processing_fee_value?: InputMaybe<OrderBy>;
+  min_amount?: InputMaybe<OrderBy>;
+  max_amount?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  requires_verification?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  settings?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
 };
@@ -2108,6 +2527,150 @@ export type services_images_OrderByInput = {
   image_url?: InputMaybe<OrderBy>;
 };
 
+export type shipping_methods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  base_cost: Scalars['Float']['output'];
+  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
+};
+
+
+export type shipping_methodsshipping_zone_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
+};
+
+export type shipping_zone_methods = {
+  id: Scalars['Int']['output'];
+  shipping_method_id: Scalars['Int']['output'];
+  shipping_zone_id: Scalars['Int']['output'];
+  cost: Scalars['Float']['output'];
+  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_methods?: Maybe<Array<Maybe<shipping_methods>>>;
+  shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
+};
+
+
+export type shipping_zone_methodsshipping_methodsArgs = {
+  where?: InputMaybe<shipping_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_methods_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type shipping_zone_methodsshipping_zonesArgs = {
+  where?: InputMaybe<shipping_zones_WhereInput>;
+  orderBy?: InputMaybe<shipping_zones_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type shipping_methods_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  base_cost?: InputMaybe<Scalars['String']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_methods_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  base_cost?: InputMaybe<OrderBy>;
+  free_shipping_threshold?: InputMaybe<OrderBy>;
+  estimated_days_min?: InputMaybe<OrderBy>;
+  estimated_days_max?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zones = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  districts: Scalars['JSON']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
+};
+
+
+export type shipping_zonesshipping_zone_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
+};
+
+export type shipping_zone_methods_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  shipping_method_id?: InputMaybe<Scalars['String']['input']>;
+  shipping_zone_id?: InputMaybe<Scalars['String']['input']>;
+  cost?: InputMaybe<Scalars['String']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_zone_methods_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  shipping_method_id?: InputMaybe<OrderBy>;
+  shipping_zone_id?: InputMaybe<OrderBy>;
+  cost?: InputMaybe<OrderBy>;
+  free_shipping_threshold?: InputMaybe<OrderBy>;
+  estimated_days_min?: InputMaybe<OrderBy>;
+  estimated_days_max?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zones_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_zones_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  districts?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
 /** VIEW */
 export type variant_rating_summary = {
   variant_id: Scalars['Int']['output'];
@@ -2166,6 +2729,12 @@ export type Mutation = {
   insert_categories?: Maybe<categories>;
   update_categories?: Maybe<categories>;
   delete_categories?: Maybe<Scalars['Boolean']['output']>;
+  insert_coupon_usage?: Maybe<coupon_usage>;
+  update_coupon_usage?: Maybe<coupon_usage>;
+  delete_coupon_usage?: Maybe<Scalars['Boolean']['output']>;
+  insert_coupons?: Maybe<coupons>;
+  update_coupons?: Maybe<coupons>;
+  delete_coupons?: Maybe<Scalars['Boolean']['output']>;
   insert_customers?: Maybe<customers>;
   update_customers?: Maybe<customers>;
   delete_customers?: Maybe<Scalars['Boolean']['output']>;
@@ -2184,6 +2753,12 @@ export type Mutation = {
   insert_orders?: Maybe<orders>;
   update_orders?: Maybe<orders>;
   delete_orders?: Maybe<Scalars['Boolean']['output']>;
+  insert_payment_methods?: Maybe<payment_methods>;
+  update_payment_methods?: Maybe<payment_methods>;
+  delete_payment_methods?: Maybe<Scalars['Boolean']['output']>;
+  insert_payment_transactions?: Maybe<payment_transactions>;
+  update_payment_transactions?: Maybe<payment_transactions>;
+  delete_payment_transactions?: Maybe<Scalars['Boolean']['output']>;
   insert_permissions?: Maybe<permissions>;
   update_permissions?: Maybe<permissions>;
   delete_permissions?: Maybe<Scalars['Boolean']['output']>;
@@ -2223,6 +2798,15 @@ export type Mutation = {
   insert_services_images?: Maybe<services_images>;
   update_services_images?: Maybe<services_images>;
   delete_services_images?: Maybe<Scalars['Boolean']['output']>;
+  insert_shipping_methods?: Maybe<shipping_methods>;
+  update_shipping_methods?: Maybe<shipping_methods>;
+  delete_shipping_methods?: Maybe<Scalars['Boolean']['output']>;
+  insert_shipping_zone_methods?: Maybe<shipping_zone_methods>;
+  update_shipping_zone_methods?: Maybe<shipping_zone_methods>;
+  delete_shipping_zone_methods?: Maybe<Scalars['Boolean']['output']>;
+  insert_shipping_zones?: Maybe<shipping_zones>;
+  update_shipping_zones?: Maybe<shipping_zones>;
+  delete_shipping_zones?: Maybe<Scalars['Boolean']['output']>;
   insert_users?: Maybe<users>;
   update_users?: Maybe<users>;
   delete_users?: Maybe<Scalars['Boolean']['output']>;
@@ -2337,6 +2921,38 @@ export type Mutationdelete_categoriesArgs = {
 };
 
 
+export type Mutationinsert_coupon_usageArgs = {
+  coupon_usage: coupon_usage_InsertInput;
+};
+
+
+export type Mutationupdate_coupon_usageArgs = {
+  coupon_usage: coupon_usage_UpdateInput;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+};
+
+
+export type Mutationdelete_coupon_usageArgs = {
+  where?: InputMaybe<coupon_usage_WhereInput>;
+};
+
+
+export type Mutationinsert_couponsArgs = {
+  coupons: coupons_InsertInput;
+};
+
+
+export type Mutationupdate_couponsArgs = {
+  coupons: coupons_UpdateInput;
+  where?: InputMaybe<coupons_WhereInput>;
+};
+
+
+export type Mutationdelete_couponsArgs = {
+  where?: InputMaybe<coupons_WhereInput>;
+};
+
+
 export type Mutationinsert_customersArgs = {
   customers: customers_InsertInput;
 };
@@ -2430,6 +3046,38 @@ export type Mutationupdate_ordersArgs = {
 
 export type Mutationdelete_ordersArgs = {
   where?: InputMaybe<orders_WhereInput>;
+};
+
+
+export type Mutationinsert_payment_methodsArgs = {
+  payment_methods: payment_methods_InsertInput;
+};
+
+
+export type Mutationupdate_payment_methodsArgs = {
+  payment_methods: payment_methods_UpdateInput;
+  where?: InputMaybe<payment_methods_WhereInput>;
+};
+
+
+export type Mutationdelete_payment_methodsArgs = {
+  where?: InputMaybe<payment_methods_WhereInput>;
+};
+
+
+export type Mutationinsert_payment_transactionsArgs = {
+  payment_transactions: payment_transactions_InsertInput;
+};
+
+
+export type Mutationupdate_payment_transactionsArgs = {
+  payment_transactions: payment_transactions_UpdateInput;
+  where?: InputMaybe<payment_transactions_WhereInput>;
+};
+
+
+export type Mutationdelete_payment_transactionsArgs = {
+  where?: InputMaybe<payment_transactions_WhereInput>;
 };
 
 
@@ -2641,6 +3289,54 @@ export type Mutationdelete_services_imagesArgs = {
 };
 
 
+export type Mutationinsert_shipping_methodsArgs = {
+  shipping_methods: shipping_methods_InsertInput;
+};
+
+
+export type Mutationupdate_shipping_methodsArgs = {
+  shipping_methods: shipping_methods_UpdateInput;
+  where?: InputMaybe<shipping_methods_WhereInput>;
+};
+
+
+export type Mutationdelete_shipping_methodsArgs = {
+  where?: InputMaybe<shipping_methods_WhereInput>;
+};
+
+
+export type Mutationinsert_shipping_zone_methodsArgs = {
+  shipping_zone_methods: shipping_zone_methods_InsertInput;
+};
+
+
+export type Mutationupdate_shipping_zone_methodsArgs = {
+  shipping_zone_methods: shipping_zone_methods_UpdateInput;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+};
+
+
+export type Mutationdelete_shipping_zone_methodsArgs = {
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+};
+
+
+export type Mutationinsert_shipping_zonesArgs = {
+  shipping_zones: shipping_zones_InsertInput;
+};
+
+
+export type Mutationupdate_shipping_zonesArgs = {
+  shipping_zones: shipping_zones_UpdateInput;
+  where?: InputMaybe<shipping_zones_WhereInput>;
+};
+
+
+export type Mutationdelete_shipping_zonesArgs = {
+  where?: InputMaybe<shipping_zones_WhereInput>;
+};
+
+
 export type Mutationinsert_usersArgs = {
   users: users_InsertInput;
 };
@@ -2832,6 +3528,66 @@ export type categories_UpdateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type coupon_usage_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  coupon_id: Scalars['Int']['input'];
+  customer_id: Scalars['Int']['input'];
+  order_id: Scalars['Int']['input'];
+  discount_amount: Scalars['Float']['input'];
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type coupon_usage_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  coupon_id?: InputMaybe<Scalars['Int']['input']>;
+  customer_id?: InputMaybe<Scalars['Int']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type coupons_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  code: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  discount_type: coupons_discount_type;
+  discount_value: Scalars['Float']['input'];
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  max_discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  usage_limit?: InputMaybe<Scalars['Int']['input']>;
+  usage_limit_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  used_count?: InputMaybe<Scalars['Int']['input']>;
+  start_date: Scalars['DateTime']['input'];
+  end_date: Scalars['DateTime']['input'];
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  applicable_to?: InputMaybe<coupons_applicable_to>;
+  applicable_ids?: InputMaybe<Scalars['JSON']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type coupons_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  discount_type?: InputMaybe<coupons_discount_type>;
+  discount_value?: InputMaybe<Scalars['Float']['input']>;
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  max_discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  usage_limit?: InputMaybe<Scalars['Int']['input']>;
+  usage_limit_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  used_count?: InputMaybe<Scalars['Int']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  applicable_to?: InputMaybe<coupons_applicable_to>;
+  applicable_ids?: InputMaybe<Scalars['JSON']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type customers_InsertInput = {
@@ -3118,6 +3874,80 @@ export type orders_UpdateInput = {
   admin_notes?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type payment_methods_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  code: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  icon_url?: InputMaybe<Scalars['String']['input']>;
+  processing_fee_type?: InputMaybe<payment_methods_processing_fee_type>;
+  processing_fee_value?: InputMaybe<Scalars['Float']['input']>;
+  min_amount?: InputMaybe<Scalars['Float']['input']>;
+  max_amount?: InputMaybe<Scalars['Float']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  requires_verification?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  settings?: InputMaybe<Scalars['JSON']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type payment_methods_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  icon_url?: InputMaybe<Scalars['String']['input']>;
+  processing_fee_type?: InputMaybe<payment_methods_processing_fee_type>;
+  processing_fee_value?: InputMaybe<Scalars['Float']['input']>;
+  min_amount?: InputMaybe<Scalars['Float']['input']>;
+  max_amount?: InputMaybe<Scalars['Float']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  requires_verification?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  settings?: InputMaybe<Scalars['JSON']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type payment_transactions_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id: Scalars['Int']['input'];
+  payment_method_id: Scalars['Int']['input'];
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  reference_number?: InputMaybe<Scalars['String']['input']>;
+  amount: Scalars['Float']['input'];
+  processing_fee?: InputMaybe<Scalars['Float']['input']>;
+  net_amount: Scalars['Float']['input'];
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<payment_transactions_status>;
+  payment_data?: InputMaybe<Scalars['JSON']['input']>;
+  gateway_response?: InputMaybe<Scalars['JSON']['input']>;
+  processed_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  expires_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type payment_transactions_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
+  payment_method_id?: InputMaybe<Scalars['Int']['input']>;
+  transaction_id?: InputMaybe<Scalars['String']['input']>;
+  reference_number?: InputMaybe<Scalars['String']['input']>;
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  processing_fee?: InputMaybe<Scalars['Float']['input']>;
+  net_amount?: InputMaybe<Scalars['Float']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<payment_transactions_status>;
+  payment_data?: InputMaybe<Scalars['JSON']['input']>;
+  gateway_response?: InputMaybe<Scalars['JSON']['input']>;
+  processed_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  expires_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type permissions_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -3356,6 +4186,78 @@ export type services_images_UpdateInput = {
   image_url?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type shipping_methods_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  base_cost?: InputMaybe<Scalars['Float']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['Float']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['Int']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_methods_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  base_cost?: InputMaybe<Scalars['Float']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['Float']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['Int']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_zone_methods_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  shipping_method_id: Scalars['Int']['input'];
+  shipping_zone_id: Scalars['Int']['input'];
+  cost?: InputMaybe<Scalars['Float']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['Float']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['Int']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_zone_methods_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  shipping_method_id?: InputMaybe<Scalars['Int']['input']>;
+  shipping_zone_id?: InputMaybe<Scalars['Int']['input']>;
+  cost?: InputMaybe<Scalars['Float']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['Float']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['Int']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_zones_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  districts: Scalars['JSON']['input'];
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_zones_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['JSON']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type users_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   username: Scalars['String']['input'];
@@ -3510,6 +4412,14 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_categories: InContextSdkMethod<Query['count_categories'], Querycount_categoriesArgs, MeshContext>,
   /** undefined **/
+  coupon_usage: InContextSdkMethod<Query['coupon_usage'], Querycoupon_usageArgs, MeshContext>,
+  /** undefined **/
+  count_coupon_usage: InContextSdkMethod<Query['count_coupon_usage'], Querycount_coupon_usageArgs, MeshContext>,
+  /** undefined **/
+  coupons: InContextSdkMethod<Query['coupons'], QuerycouponsArgs, MeshContext>,
+  /** undefined **/
+  count_coupons: InContextSdkMethod<Query['count_coupons'], Querycount_couponsArgs, MeshContext>,
+  /** undefined **/
   customers: InContextSdkMethod<Query['customers'], QuerycustomersArgs, MeshContext>,
   /** undefined **/
   count_customers: InContextSdkMethod<Query['count_customers'], Querycount_customersArgs, MeshContext>,
@@ -3533,6 +4443,14 @@ export type variant_ratings_UpdateInput = {
   orders: InContextSdkMethod<Query['orders'], QueryordersArgs, MeshContext>,
   /** undefined **/
   count_orders: InContextSdkMethod<Query['count_orders'], Querycount_ordersArgs, MeshContext>,
+  /** undefined **/
+  payment_methods: InContextSdkMethod<Query['payment_methods'], Querypayment_methodsArgs, MeshContext>,
+  /** undefined **/
+  count_payment_methods: InContextSdkMethod<Query['count_payment_methods'], Querycount_payment_methodsArgs, MeshContext>,
+  /** undefined **/
+  payment_transactions: InContextSdkMethod<Query['payment_transactions'], Querypayment_transactionsArgs, MeshContext>,
+  /** undefined **/
+  count_payment_transactions: InContextSdkMethod<Query['count_payment_transactions'], Querycount_payment_transactionsArgs, MeshContext>,
   /** undefined **/
   permissions: InContextSdkMethod<Query['permissions'], QuerypermissionsArgs, MeshContext>,
   /** undefined **/
@@ -3585,6 +4503,18 @@ export type variant_ratings_UpdateInput = {
   services_images: InContextSdkMethod<Query['services_images'], Queryservices_imagesArgs, MeshContext>,
   /** undefined **/
   count_services_images: InContextSdkMethod<Query['count_services_images'], Querycount_services_imagesArgs, MeshContext>,
+  /** undefined **/
+  shipping_methods: InContextSdkMethod<Query['shipping_methods'], Queryshipping_methodsArgs, MeshContext>,
+  /** undefined **/
+  count_shipping_methods: InContextSdkMethod<Query['count_shipping_methods'], Querycount_shipping_methodsArgs, MeshContext>,
+  /** undefined **/
+  shipping_zone_methods: InContextSdkMethod<Query['shipping_zone_methods'], Queryshipping_zone_methodsArgs, MeshContext>,
+  /** undefined **/
+  count_shipping_zone_methods: InContextSdkMethod<Query['count_shipping_zone_methods'], Querycount_shipping_zone_methodsArgs, MeshContext>,
+  /** undefined **/
+  shipping_zones: InContextSdkMethod<Query['shipping_zones'], Queryshipping_zonesArgs, MeshContext>,
+  /** undefined **/
+  count_shipping_zones: InContextSdkMethod<Query['count_shipping_zones'], Querycount_shipping_zonesArgs, MeshContext>,
   /** undefined **/
   users: InContextSdkMethod<Query['users'], QueryusersArgs, MeshContext>,
   /** undefined **/
@@ -3645,6 +4575,18 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   delete_categories: InContextSdkMethod<Mutation['delete_categories'], Mutationdelete_categoriesArgs, MeshContext>,
   /** undefined **/
+  insert_coupon_usage: InContextSdkMethod<Mutation['insert_coupon_usage'], Mutationinsert_coupon_usageArgs, MeshContext>,
+  /** undefined **/
+  update_coupon_usage: InContextSdkMethod<Mutation['update_coupon_usage'], Mutationupdate_coupon_usageArgs, MeshContext>,
+  /** undefined **/
+  delete_coupon_usage: InContextSdkMethod<Mutation['delete_coupon_usage'], Mutationdelete_coupon_usageArgs, MeshContext>,
+  /** undefined **/
+  insert_coupons: InContextSdkMethod<Mutation['insert_coupons'], Mutationinsert_couponsArgs, MeshContext>,
+  /** undefined **/
+  update_coupons: InContextSdkMethod<Mutation['update_coupons'], Mutationupdate_couponsArgs, MeshContext>,
+  /** undefined **/
+  delete_coupons: InContextSdkMethod<Mutation['delete_coupons'], Mutationdelete_couponsArgs, MeshContext>,
+  /** undefined **/
   insert_customers: InContextSdkMethod<Mutation['insert_customers'], Mutationinsert_customersArgs, MeshContext>,
   /** undefined **/
   update_customers: InContextSdkMethod<Mutation['update_customers'], Mutationupdate_customersArgs, MeshContext>,
@@ -3680,6 +4622,18 @@ export type variant_ratings_UpdateInput = {
   update_orders: InContextSdkMethod<Mutation['update_orders'], Mutationupdate_ordersArgs, MeshContext>,
   /** undefined **/
   delete_orders: InContextSdkMethod<Mutation['delete_orders'], Mutationdelete_ordersArgs, MeshContext>,
+  /** undefined **/
+  insert_payment_methods: InContextSdkMethod<Mutation['insert_payment_methods'], Mutationinsert_payment_methodsArgs, MeshContext>,
+  /** undefined **/
+  update_payment_methods: InContextSdkMethod<Mutation['update_payment_methods'], Mutationupdate_payment_methodsArgs, MeshContext>,
+  /** undefined **/
+  delete_payment_methods: InContextSdkMethod<Mutation['delete_payment_methods'], Mutationdelete_payment_methodsArgs, MeshContext>,
+  /** undefined **/
+  insert_payment_transactions: InContextSdkMethod<Mutation['insert_payment_transactions'], Mutationinsert_payment_transactionsArgs, MeshContext>,
+  /** undefined **/
+  update_payment_transactions: InContextSdkMethod<Mutation['update_payment_transactions'], Mutationupdate_payment_transactionsArgs, MeshContext>,
+  /** undefined **/
+  delete_payment_transactions: InContextSdkMethod<Mutation['delete_payment_transactions'], Mutationdelete_payment_transactionsArgs, MeshContext>,
   /** undefined **/
   insert_permissions: InContextSdkMethod<Mutation['insert_permissions'], Mutationinsert_permissionsArgs, MeshContext>,
   /** undefined **/
@@ -3758,6 +4712,24 @@ export type variant_ratings_UpdateInput = {
   update_services_images: InContextSdkMethod<Mutation['update_services_images'], Mutationupdate_services_imagesArgs, MeshContext>,
   /** undefined **/
   delete_services_images: InContextSdkMethod<Mutation['delete_services_images'], Mutationdelete_services_imagesArgs, MeshContext>,
+  /** undefined **/
+  insert_shipping_methods: InContextSdkMethod<Mutation['insert_shipping_methods'], Mutationinsert_shipping_methodsArgs, MeshContext>,
+  /** undefined **/
+  update_shipping_methods: InContextSdkMethod<Mutation['update_shipping_methods'], Mutationupdate_shipping_methodsArgs, MeshContext>,
+  /** undefined **/
+  delete_shipping_methods: InContextSdkMethod<Mutation['delete_shipping_methods'], Mutationdelete_shipping_methodsArgs, MeshContext>,
+  /** undefined **/
+  insert_shipping_zone_methods: InContextSdkMethod<Mutation['insert_shipping_zone_methods'], Mutationinsert_shipping_zone_methodsArgs, MeshContext>,
+  /** undefined **/
+  update_shipping_zone_methods: InContextSdkMethod<Mutation['update_shipping_zone_methods'], Mutationupdate_shipping_zone_methodsArgs, MeshContext>,
+  /** undefined **/
+  delete_shipping_zone_methods: InContextSdkMethod<Mutation['delete_shipping_zone_methods'], Mutationdelete_shipping_zone_methodsArgs, MeshContext>,
+  /** undefined **/
+  insert_shipping_zones: InContextSdkMethod<Mutation['insert_shipping_zones'], Mutationinsert_shipping_zonesArgs, MeshContext>,
+  /** undefined **/
+  update_shipping_zones: InContextSdkMethod<Mutation['update_shipping_zones'], Mutationupdate_shipping_zonesArgs, MeshContext>,
+  /** undefined **/
+  delete_shipping_zones: InContextSdkMethod<Mutation['delete_shipping_zones'], Mutationdelete_shipping_zonesArgs, MeshContext>,
   /** undefined **/
   insert_users: InContextSdkMethod<Mutation['insert_users'], Mutationinsert_usersArgs, MeshContext>,
   /** undefined **/

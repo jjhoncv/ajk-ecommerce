@@ -46,6 +46,15 @@ export type AttributesDisplayType =
   | 'radio'
   | 'select';
 
+export type CouponsApplicableTo =
+  | 'all'
+  | 'categories'
+  | 'products';
+
+export type CouponsDiscountType =
+  | 'fixed_amount'
+  | 'percentage';
+
 export type OrderSummaryPaymentStatus =
   | 'failed'
   | 'paid'
@@ -81,6 +90,18 @@ export type OrdersStatus =
   | 'processing'
   | 'refunded'
   | 'shipped';
+
+export type PaymentMethodsProcessingFeeType =
+  | 'fixed'
+  | 'percentage';
+
+export type PaymentTransactionsStatus =
+  | 'cancelled'
+  | 'completed'
+  | 'failed'
+  | 'pending'
+  | 'processing'
+  | 'refunded';
 
 export type PromotionsDiscountType =
   | 'fixed_amount'
@@ -151,6 +172,36 @@ export interface Categories {
   image_url?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id?: Maybe<Scalars['Int']['output']>;
+}
+
+export interface CouponUsage {
+  coupon_id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  discount_amount: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  used_at: Scalars['Timestamp']['output'];
+}
+
+export interface Coupons {
+  applicable_ids?: Maybe<Scalars['JSON']['output']>;
+  applicable_to?: Maybe<CouponsApplicableTo>;
+  code: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  discount_type: CouponsDiscountType;
+  discount_value: Scalars['Float']['output'];
+  end_date: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  max_discount_amount?: Maybe<Scalars['Float']['output']>;
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+  start_date: Scalars['DateTime']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  usage_limit?: Maybe<Scalars['Int']['output']>;
+  usage_limit_per_customer?: Maybe<Scalars['Int']['output']>;
+  used_count?: Maybe<Scalars['Int']['output']>;
 }
 
 export interface Customers {
@@ -291,6 +342,43 @@ export interface Orders {
   updated_at: Scalars['Timestamp']['output'];
 }
 
+export interface PaymentMethods {
+  code: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  icon_url?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  max_amount?: Maybe<Scalars['Float']['output']>;
+  min_amount?: Maybe<Scalars['Float']['output']>;
+  name: Scalars['String']['output'];
+  processing_fee_type?: Maybe<PaymentMethodsProcessingFeeType>;
+  processing_fee_value?: Maybe<Scalars['Float']['output']>;
+  requires_verification?: Maybe<Scalars['Int']['output']>;
+  settings?: Maybe<Scalars['JSON']['output']>;
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface PaymentTransactions {
+  amount: Scalars['Float']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
+  expires_at?: Maybe<Scalars['Timestamp']['output']>;
+  gateway_response?: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['Int']['output'];
+  net_amount: Scalars['Float']['output'];
+  order_id: Scalars['Int']['output'];
+  payment_data?: Maybe<Scalars['JSON']['output']>;
+  payment_method_id: Scalars['Int']['output'];
+  processed_at?: Maybe<Scalars['Timestamp']['output']>;
+  processing_fee?: Maybe<Scalars['Float']['output']>;
+  reference_number?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<PaymentTransactionsStatus>;
+  transaction_id?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['Timestamp']['output'];
+}
+
 export interface Permissions {
   created_at: Scalars['Timestamp']['output'];
   id: Scalars['Int']['output'];
@@ -406,6 +494,42 @@ export interface ServicesImages {
   image_url?: Maybe<Scalars['String']['output']>;
   subtitle?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface ShippingMethods {
+  base_cost: Scalars['Float']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface ShippingZoneMethods {
+  cost: Scalars['Float']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  shipping_method_id: Scalars['Int']['output'];
+  shipping_zone_id: Scalars['Int']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface ShippingZones {
+  created_at: Scalars['Timestamp']['output'];
+  districts: Scalars['JSON']['output'];
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
   updated_at: Scalars['Timestamp']['output'];
 }
 
