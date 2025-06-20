@@ -1,21 +1,23 @@
-"use client";
-import { getPromotions } from "@/helpers/utils";
-import { useCartContext } from "@/providers/cart";
-import { PromotionVariants } from "@/types/domain";
-import React from "react";
+'use client'
+import { getPromotions } from '@/helpers/utils'
+import { useCartContext } from '@/providers/cart'
+import { PromotionVariants } from '@/types/domain'
+import React from 'react'
 
 interface ProductVariantButtonAddToCartProps {
-  id: number;
-  name: string;
-  image: string;
-  price: number;
-  stock: number;
-  quantity: number;
+  id: number
+  name: string
+  image: string
+  price: number
+  stock: number
+  quantity: number
   promotionVariants?: (PromotionVariants | null)[] | null
   onCartAction?: () => void
 }
 
-const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps> = ({
+const ProductVariantButtonAddToCart: React.FC<
+  ProductVariantButtonAddToCartProps
+> = ({
   id,
   quantity,
   image,
@@ -25,54 +27,57 @@ const ProductVariantButtonAddToCart: React.FC<ProductVariantButtonAddToCartProps
   promotionVariants: pvs,
   onCartAction
 }) => {
-  const { updateQuantity, items, addItem, openCart } = useCartContext();
+  const { updateQuantity, items, addItem, openCart } = useCartContext()
 
   const promotionVariants = getPromotions(pvs)
 
   // Encontrar el item en el carrito si existe
-  const existingItem = items.find(item => item.id === id);
+  const existingItem = items.find((item) => item.id === id)
   // const currentCartQuantity = existingItem?.quantity || 0;
 
   // Verificaciones
-  const isOutOfStock = stock === 0;
-  const exceedsStock = quantity > stock;
+  const isOutOfStock = stock === 0
+  const exceedsStock = quantity > stock
   // const sameAsCart = existingItem && currentCartQuantity === quantity;
 
   // El botón se deshabilita si no hay stock, excede stock, o ya tiene esa cantidad
-  const isDisabled = isOutOfStock || exceedsStock;
+  const isDisabled = isOutOfStock || exceedsStock
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (isDisabled) return;
+    if (isDisabled) return
 
     if (existingItem) {
       // Establecer la cantidad total (no sumar)
-      updateQuantity(id, quantity);
+      updateQuantity(id, quantity)
     } else {
       // Agregar nuevo item
-      addItem({
-        id,
-        image,
-        name,
-        price,
-        stock,
-        promotionVariants
-      }, quantity);
+      addItem(
+        {
+          id,
+          image,
+          name,
+          price,
+          stock,
+          promotionVariants
+        },
+        quantity
+      )
       openCart()
     }
-    onCartAction?.();
-  };
+    onCartAction?.()
+  }
 
   return (
     <button
       onClick={handleAddToCart}
-      className={`border border-gray-300 text-gray-700 hover:bg-gray-50 w-full py-3 px-4 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+      className={`w-full border border-gray-300 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50`}
       disabled={isDisabled}
     >
       Agregar al carrito
     </button>
-  );
-};
+  )
+}
 
-export default ProductVariantButtonAddToCart;
+export default ProductVariantButtonAddToCart

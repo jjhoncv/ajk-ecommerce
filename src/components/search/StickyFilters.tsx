@@ -7,11 +7,12 @@ interface StickyFiltersProps {
 }
 
 const StickyFilters: FC<StickyFiltersProps> = ({ children }) => {
-  const { topPosition, maxHeight, minHeight, bottomConstraint } = useStickyFilters()
+  const { topPosition, maxHeight, minHeight, bottomConstraint } =
+    useStickyFilters()
 
   return (
     <div
-      className="sticky left-12 w-56 overflow-y-auto z-10"
+      className="sticky left-12 z-10 w-56 overflow-y-auto"
       style={{
         top: topPosition,
         maxHeight: maxHeight,

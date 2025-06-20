@@ -137,7 +137,7 @@ export class VariantAttributeOptionModel {
     const options = VariantAttributeOptionsWithDetailMapper(
       attributeOptionsFlatRaw
     )
-    
+
     return options
   }
 

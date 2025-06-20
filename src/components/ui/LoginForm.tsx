@@ -1,68 +1,64 @@
-"use client";
-import { Loader2 } from "lucide-react";
-import { signIn } from "next-auth/react";
-import React, { useState } from "react";
+'use client'
+import { Loader2 } from 'lucide-react'
+import { signIn } from 'next-auth/react'
+import React, { useState } from 'react'
 
 interface LoginFormProps {
-  onSuccess?: () => void;
-  onClose?: () => void;
-  onSwitchToRegister?: () => void;
+  onSuccess?: () => void
+  onClose?: () => void
+  onSwitchToRegister?: () => void
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
   onSuccess,
   onClose,
-  onSwitchToRegister,
+  onSwitchToRegister
 }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email || !password) {
-      setError("Por favor, completa todos los campos");
-      return;
+      setError('Por favor, completa todos los campos')
+      return
     }
 
-    setIsLoading(true);
-    setError("");
+    setIsLoading(true)
+    setError('')
 
     try {
-      const result = await signIn("credentials", {
+      const result = await signIn('credentials', {
         redirect: false,
         email,
-        password,
-      });
+        password
+      })
 
       if (result?.error) {
-        setError("Credenciales incorrectas");
+        setError('Credenciales incorrectas')
       } else if (result?.ok) {
-        if (onSuccess) onSuccess();
-        if (onClose) onClose();
+        if (onSuccess) onSuccess()
+        if (onClose) onClose()
       }
     } catch {
-      setError("Ocurrió un error al iniciar sesión");
+      setError('Ocurrió un error al iniciar sesión')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="w-full">
-      {error && (
-        <div className="bg-red-50 text-red-600 p-3  mb-4">
-          {error}
-        </div>
-      )}
+      {error && <div className="mb-4 bg-red-50 p-3 text-red-600">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="mb-1 block text-sm font-medium text-gray-700"
           >
             Email
           </label>
@@ -71,7 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="usuario@ejemplo.com"
             disabled={isLoading}
           />
@@ -80,7 +76,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <div className="mb-6">
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="mb-1 block text-sm font-medium text-gray-700"
           >
             Contraseña
           </label>
@@ -89,18 +85,18 @@ const LoginForm: React.FC<LoginFormProps> = ({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="••••••••"
             disabled={isLoading}
           />
         </div>
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center">
             <input
               id="remember"
               type="checkbox"
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
             <label
               htmlFor="remember"
@@ -119,26 +115,26 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-2 px-4  hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-primary px-4 py-2 text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? (
             <span className="flex items-center justify-center">
-              <Loader2 className="animate-spin h-5 w-5 mr-2" />
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Iniciando sesión...
             </span>
           ) : (
-            "Iniciar sesión"
+            'Iniciar sesión'
           )}
         </button>
       </form>
 
       <div className="mt-6">
         <p className="text-center text-sm text-gray-600">
-          ¿No tienes una cuenta?{" "}
+          ¿No tienes una cuenta?{' '}
           <button
             onClick={onSwitchToRegister}
-            className="text-primary hover:text-primary/80 font-medium"
+            className="font-medium text-primary hover:text-primary/80"
           >
             Regístrate
           </button>
@@ -151,27 +147,27 @@ const LoginForm: React.FC<LoginFormProps> = ({
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">O continúa con</span>
+            <span className="bg-white px-2 text-gray-500">O continúa con</span>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             type="button"
-            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300  shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex w-full justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
           >
             <span>Google</span>
           </button>
           <button
             type="button"
-            className="w-full inline-flex justify-center py-2 px-4 border border-gray-300  shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex w-full justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
           >
             <span>Facebook</span>
           </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

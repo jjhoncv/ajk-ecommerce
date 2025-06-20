@@ -1,35 +1,41 @@
-import StockValidationModal from "@/components/checkout/StockValidationModal";
-import { useCheckoutNavigation } from "@/components/checkout/useStockValidation";
-import { formatPrice } from "@/helpers/utils";
-import { CartItem } from "@/hooks/useCart";
-import { ShieldCheck } from "lucide-react";
-import Image from "next/image";
-import { FC, useState } from "react";
+import StockValidationModal from '@/components/checkout/StockValidationModal'
+import { useCheckoutNavigation } from '@/components/checkout/useStockValidation'
+import { formatPrice } from '@/helpers/utils'
+import { CartItem } from '@/hooks/useCart'
+import { ShieldCheck } from 'lucide-react'
+import Image from 'next/image'
+import { FC, useState } from 'react'
 
 // Helper para obtener precio con promoción
 const getPriceIfHasPromotion = (item: CartItem) => {
-  const currentPromotion = item.promotionVariants?.[0];
-  const originalPrice = Number(item.price);
-  const promotionPrice = currentPromotion ? Number(currentPromotion.promotionPrice) : null;
-  const finalPrice = promotionPrice || originalPrice;
+  const currentPromotion = item.promotionVariants?.[0]
+  const originalPrice = Number(item.price)
+  const promotionPrice = currentPromotion
+    ? Number(currentPromotion.promotionPrice)
+    : null
+  const finalPrice = promotionPrice || originalPrice
 
   return {
     finalPrice,
     hasPromotion: Boolean(currentPromotion),
     originalPrice,
     currentPromotion
-  };
-};
+  }
+}
 
 interface CartPageSummaryProps {
   summaryCart: {
-    selectedItems: CartItem[];
-    selectedTotalItems: number;
-    selectedTotalPrice: number;
-    hasSelectedItems: () => boolean;
-  };
-  onCartUpdate?: (adjustedItems: Array<{ id: number; quantity: number }>) => void; // Callback para actualizar carrito
-  onStockInfoReceived?: (stockInfo: Array<{ id: number; availableStock: number }>) => void; // 🆕 Callback para recibir stock info
+    selectedItems: CartItem[]
+    selectedTotalItems: number
+    selectedTotalPrice: number
+    hasSelectedItems: () => boolean
+  }
+  onCartUpdate?: (
+    adjustedItems: Array<{ id: number; quantity: number }>
+  ) => void // Callback para actualizar carrito
+  onStockInfoReceived?: (
+    stockInfo: Array<{ id: number; availableStock: number }>
+  ) => void // 🆕 Callback para recibir stock info
 }
 
 export const CartPageSummary: FC<CartPageSummaryProps> = ({
@@ -41,23 +47,23 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
   const calculateTotalsWithPromotions = (items: CartItem[]) => {
     return items.reduce(
       (acc, item) => {
-        const { finalPrice, originalPrice } = getPriceIfHasPromotion(item);
-        const itemOriginalTotal = originalPrice * item.quantity;
-        const itemFinalTotal = finalPrice * item.quantity;
+        const { finalPrice, originalPrice } = getPriceIfHasPromotion(item)
+        const itemOriginalTotal = originalPrice * item.quantity
+        const itemFinalTotal = finalPrice * item.quantity
 
-        acc.originalTotal += itemOriginalTotal;
-        acc.finalTotal += itemFinalTotal;
-        acc.totalItems += item.quantity;
+        acc.originalTotal += itemOriginalTotal
+        acc.finalTotal += itemFinalTotal
+        acc.totalItems += item.quantity
 
-        return acc;
+        return acc
       },
       { originalTotal: 0, finalTotal: 0, totalItems: 0 }
-    );
-  };
+    )
+  }
 
-  const totals = calculateTotalsWithPromotions(summaryCart.selectedItems);
-  const totalDiscount = totals.originalTotal - totals.finalTotal;
-  const hasDiscounts = totalDiscount > 0;
+  const totals = calculateTotalsWithPromotions(summaryCart.selectedItems)
+  const totalDiscount = totals.originalTotal - totals.finalTotal
+  const hasDiscounts = totalDiscount > 0
 
   const [isNavigating, setIsNavigating] = useState(false)
 
@@ -72,21 +78,23 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
     try {
       // 🆕 Preparar items para validación
-      const cartItems = summaryCart.selectedItems.map(item => ({
+      const cartItems = summaryCart.selectedItems.map((item) => ({
         id: item.id,
         name: item.name,
         quantity: item.quantity
       }))
 
       // 🆕 Callback para recibir información de stock (SOLO INFORMATIVO)
-      const handleStockInfoReceived = (stockInfo: Array<{ id: number; availableStock: number }>) => {
-        console.log('📦 Stock info received in CartPageSummary:', stockInfo);
+      const handleStockInfoReceived = (
+        stockInfo: Array<{ id: number; availableStock: number }>
+      ) => {
+        console.log('📦 Stock info received in CartPageSummary:', stockInfo)
 
         // 🆕 Enviar información de stock al padre para mostrar en CartPageItem
         if (onStockInfoReceived) {
-          onStockInfoReceived(stockInfo);
+          onStockInfoReceived(stockInfo)
         }
-      };
+      }
 
       // 🆕 Validar stock y proceder al checkout
       const success = await proceedFromCart(cartItems, handleStockInfoReceived)
@@ -96,7 +104,6 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
         setIsNavigating(false)
       }
       // Si fue exitoso, el usuario ya está en /checkout (manejado por el hook)
-
     } catch (error) {
       console.error('Error navigating to checkout:', error)
       setIsNavigating(false)
@@ -109,11 +116,11 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
   if (!summaryCart.hasSelectedItems()) {
     return (
       <>
-        <div className="bg-white border border-gray-200 p-4 sticky top-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Resumen</h2>
+        <div className="sticky top-4 border border-gray-200 bg-white p-4">
+          <h2 className="mb-6 text-lg font-semibold text-gray-900">Resumen</h2>
 
           {/* Total cuando no hay items seleccionados */}
-          <div className="border-t pt-4 mb-6">
+          <div className="mb-6 border-t pt-4">
             <div className="flex justify-between text-lg font-bold">
               <span>Estimación total</span>
               <span>{formatPrice(0)}</span>
@@ -122,7 +129,7 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
           {/* Botón deshabilitado */}
           <button
-            className="w-full bg-gray-400 text-white py-3 cursor-not-allowed font-medium mb-6"
+            className="mb-6 w-full cursor-not-allowed bg-gray-400 py-3 font-medium text-white"
             disabled
           >
             <div className="flex items-center justify-center gap-2">
@@ -133,22 +140,33 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
           {/* Métodos de pago */}
           <div className="mb-6">
-            <p className="text-sm font-medium text-gray-900 mb-2">Paga con</p>
+            <p className="mb-2 text-sm font-medium text-gray-900">Paga con</p>
             <div className="flex gap-2">
-              <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>
-              <div className="w-8 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold">MC</div>
-              <div className="w-8 h-5 bg-green-600 rounded text-white text-xs flex items-center justify-center font-bold">JCB</div>
-              <div className="w-8 h-5 bg-blue-500 rounded text-white text-xs flex items-center justify-center font-bold">AMEX</div>
+              <div className="flex h-5 w-8 items-center justify-center rounded bg-blue-600 text-xs font-bold text-white">
+                VISA
+              </div>
+              <div className="flex h-5 w-8 items-center justify-center rounded bg-red-500 text-xs font-bold text-white">
+                MC
+              </div>
+              <div className="flex h-5 w-8 items-center justify-center rounded bg-green-600 text-xs font-bold text-white">
+                JCB
+              </div>
+              <div className="flex h-5 w-8 items-center justify-center rounded bg-blue-500 text-xs font-bold text-white">
+                AMEX
+              </div>
             </div>
           </div>
 
           {/* Protección del comprador */}
           <div className="border-t pt-4">
-            <h3 className="text-sm font-medium text-gray-900 mb-2">Protección del comprador</h3>
+            <h3 className="mb-2 text-sm font-medium text-gray-900">
+              Protección del comprador
+            </h3>
             <div className="flex items-start gap-2">
-              <ShieldCheck className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+              <ShieldCheck className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />
               <p className="text-xs text-gray-600">
-                Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
+                Recibe un reembolso de tu dinero si el artículo no llega o es
+                diferente al de la descripción.
               </p>
             </div>
           </div>
@@ -160,45 +178,51 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
           onCancel={modal.onCancel}
         />
       </>
-
-    );
+    )
   }
 
   return (
-    <div className="bg-white border border-gray-200 p-4 sticky top-4">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumen</h2>
+    <div className="sticky top-4 border border-gray-200 bg-white p-4">
+      <h2 className="mb-4 text-lg font-semibold text-gray-900">Resumen</h2>
 
       {/* Imágenes pequeñas de productos seleccionados */}
-      <div className="flex gap-2 mb-4">
+      <div className="mb-4 flex gap-2">
         {summaryCart.selectedItems.slice(0, 3).map((item) => (
-          <div key={item.id} className="w-12 h-12 bg-gray-100 rounded overflow-hidden">
+          <div
+            key={item.id}
+            className="h-12 w-12 overflow-hidden rounded bg-gray-100"
+          >
             <Image
               src={item.image}
               alt={item.name}
               width={48}
               height={48}
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
           </div>
         ))}
         {summaryCart.selectedItems.length > 3 && (
-          <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">
+          <div className="flex h-12 w-12 items-center justify-center rounded bg-gray-100 text-xs text-gray-500">
             +{summaryCart.selectedItems.length - 3}
           </div>
         )}
       </div>
 
       {/* Cálculos basados en productos seleccionados CON promociones */}
-      <div className="space-y-3 mb-4">
+      <div className="mb-4 space-y-3">
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Total de artículos</span>
-          <span className="font-medium">{formatPrice(totals.originalTotal)}</span>
+          <span className="font-medium">
+            {formatPrice(totals.originalTotal)}
+          </span>
         </div>
 
         {hasDiscounts && (
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Descuento de artículos</span>
-            <span className="text-red-600 font-medium">-{formatPrice(totalDiscount)}</span>
+            <span className="font-medium text-red-600">
+              -{formatPrice(totalDiscount)}
+            </span>
           </div>
         )}
 
@@ -209,7 +233,7 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Envío</span>
-          <span className="text-green-600 font-medium">Gratis</span>
+          <span className="font-medium text-green-600">Gratis</span>
         </div>
 
         {hasDiscounts && (
@@ -219,7 +243,7 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
         )}
       </div>
 
-      <div className="border-t pt-4 mb-4">
+      <div className="mb-4 border-t pt-4">
         <div className="flex justify-between text-lg font-bold">
           <span>Estimación total</span>
           <span>{formatPrice(totals.finalTotal)}</span>
@@ -229,13 +253,13 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
       {/* 🆕 Botón actualizado con estados de validación */}
       <button
         onClick={handleContinueToCheckout}
-        className="w-full font-bold bg-red-600 text-white py-3 hover:bg-red-700 transition-colors mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="mb-3 w-full bg-red-600 py-3 font-bold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-400"
         disabled={!summaryCart.hasSelectedItems() || isLoading}
       >
         <div className="flex items-center justify-center gap-2">
           {isLoading ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>
               <span>
                 {isValidating ? 'Validando stock...' : 'Redirigiendo...'}
               </span>
@@ -248,29 +272,40 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
       {/* 🆕 Mensaje informativo durante la validación */}
       {isValidating && (
-        <div className="text-xs text-center text-gray-600 mb-3">
+        <div className="mb-3 text-center text-xs text-gray-600">
           Verificando disponibilidad de productos...
         </div>
       )}
 
       {/* Métodos de pago */}
       <div className="mb-4">
-        <p className="text-sm font-medium text-gray-900 mb-2">Paga con</p>
+        <p className="mb-2 text-sm font-medium text-gray-900">Paga con</p>
         <div className="flex gap-2">
-          <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>
-          <div className="w-8 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold">MC</div>
-          <div className="w-8 h-5 bg-green-600 rounded text-white text-xs flex items-center justify-center font-bold">JCB</div>
-          <div className="w-8 h-5 bg-blue-500 rounded text-white text-xs flex items-center justify-center font-bold">AMEX</div>
+          <div className="flex h-5 w-8 items-center justify-center rounded bg-blue-600 text-xs font-bold text-white">
+            VISA
+          </div>
+          <div className="flex h-5 w-8 items-center justify-center rounded bg-red-500 text-xs font-bold text-white">
+            MC
+          </div>
+          <div className="flex h-5 w-8 items-center justify-center rounded bg-green-600 text-xs font-bold text-white">
+            JCB
+          </div>
+          <div className="flex h-5 w-8 items-center justify-center rounded bg-blue-500 text-xs font-bold text-white">
+            AMEX
+          </div>
         </div>
       </div>
 
       {/* Protección del comprador */}
       <div className="border-t pt-4">
-        <h3 className="text-sm font-medium text-gray-900 mb-2">Protección del comprador</h3>
+        <h3 className="mb-2 text-sm font-medium text-gray-900">
+          Protección del comprador
+        </h3>
         <div className="flex items-start gap-2">
-          <ShieldCheck className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+          <ShieldCheck className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />
           <p className="text-xs text-gray-600">
-            Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
+            Recibe un reembolso de tu dinero si el artículo no llega o es
+            diferente al de la descripción.
           </p>
         </div>
       </div>
@@ -285,5 +320,5 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
         onCancel={modal.onCancel}
       />
     </div>
-  );
-};
+  )
+}

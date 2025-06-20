@@ -21,8 +21,11 @@ export default function ShippingStep({
   onNext,
   loading
 }: ShippingStepProps) {
-  const [selectedShippingMethod, setSelectedShippingMethod] = useState<number | null>(null)
-  const currentAddressId = selectedAddressId || user.defaultAddressId || user.addresses[0]?.id
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState<
+    number | null
+  >(null)
+  const currentAddressId =
+    selectedAddressId || user.defaultAddressId || user.addresses[0]?.id
 
   const handleShippingMethodSelect = (option: ShippingOption) => {
     setSelectedShippingMethod(option.methodId)
@@ -31,17 +34,17 @@ export default function ShippingStep({
 
   const canProceed = currentAddressId && selectedShippingMethod
 
-  console.log("summary.shippingOptions", summary.shippingOptions)
+  console.log('summary.shippingOptions', summary.shippingOptions)
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+      <h2 className="mb-6 text-xl font-semibold text-gray-900">
         Información de envío
       </h2>
 
       {/* Direcciones */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
+        <h3 className="mb-4 text-lg font-medium text-gray-900">
           Dirección de entrega
         </h3>
 
@@ -49,13 +52,11 @@ export default function ShippingStep({
           {user.addresses.map((address) => (
             <div
               key={address.id}
-              className={`
-                relative rounded-lg border p-4 cursor-pointer transition-colors
-                ${currentAddressId === address.id
+              className={`relative cursor-pointer rounded-lg border p-4 transition-colors ${
+                currentAddressId === address.id
                   ? 'border-indigo-600 bg-indigo-50'
                   : 'border-gray-200 hover:border-gray-300'
-                }
-              `}
+              } `}
               onClick={() => onAddressChange(address.id)}
             >
               <div className="flex items-center">
@@ -102,7 +103,7 @@ export default function ShippingStep({
       {/* Métodos de envío */}
       {summary.shippingOptions.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
+          <h3 className="mb-4 text-lg font-medium text-gray-900">
             Método de envío
           </h3>
 
@@ -110,13 +111,11 @@ export default function ShippingStep({
             {summary.shippingOptions.map((option) => (
               <div
                 key={option.methodId}
-                className={`
-                  relative rounded-lg border p-4 cursor-pointer transition-colors
-                  ${selectedShippingMethod === option.methodId
+                className={`relative cursor-pointer rounded-lg border p-4 transition-colors ${
+                  selectedShippingMethod === option.methodId
                     ? 'border-indigo-600 bg-indigo-50'
                     : 'border-gray-200 hover:border-gray-300'
-                  }
-                `}
+                } `}
                 onClick={() => handleShippingMethodSelect(option)}
               >
                 <div className="flex items-center">
@@ -147,7 +146,8 @@ export default function ShippingStep({
                     </div>
                     <div className="mt-1 flex items-center justify-between">
                       <p className="text-sm text-gray-600">
-                        Entrega estimada: {option.estimatedDays.min}-{option.estimatedDays.max} días
+                        Entrega estimada: {option.estimatedDays.min}-
+                        {option.estimatedDays.max} días
                       </p>
                       {option.description && (
                         <span className="text-xs text-green-600">
@@ -169,12 +169,7 @@ export default function ShippingStep({
           type="button"
           onClick={onNext}
           disabled={!canProceed || loading}
-          className="
-            rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm
-            hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600
-            disabled:opacity-50 disabled:cursor-not-allowed
-          "
+          className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? 'Cargando...' : 'Continuar al pago'}
         </button>

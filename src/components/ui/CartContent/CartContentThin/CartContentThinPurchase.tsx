@@ -1,27 +1,33 @@
-import { formatPrice } from "@/helpers/utils";
-import Link from "next/link";
-import { FC } from "react";
+import { formatPrice } from '@/helpers/utils'
+import Link from 'next/link'
+import { FC } from 'react'
 
 interface CartContentThinPurchaseProps {
   totalPrice: number
-  onClose: () => void;
+  onClose: () => void
 }
 
-export const CartContentThinPurchase: FC<CartContentThinPurchaseProps> = ({ totalPrice }) => {
+export const CartContentThinPurchase: FC<CartContentThinPurchaseProps> = ({
+  totalPrice
+}) => {
   return (
     <>
       <div>
-        <div className="flex justify-center mb-2">
+        <div className="mb-2 flex justify-center">
           {/* <span className="font-medium">Subtotal:</span> */}
-          <span className="font-bold text-sm">{formatPrice(Number(totalPrice))}</span>
+          <span className="text-sm font-bold">
+            {formatPrice(Number(totalPrice))}
+          </span>
         </div>
-        <Link href="/checkout"
-          className="w-full flex justify-center bg-primary text-[15px] font-semibold text-white py-1.5 hover:bg-primary/90 transition-colors"
+        <Link
+          href="/checkout"
+          className="flex w-full justify-center bg-primary py-1.5 text-[15px] font-semibold text-white transition-colors hover:bg-primary/90"
         >
           Continuar
         </Link>
-        <Link href="/cart"
-          className="w-full flex justify-center mt-2 border text-[15px] border-gray-300 font-semibold py-1.5 hover:bg-gray-50 transition-colors"
+        <Link
+          href="/cart"
+          className="mt-2 flex w-full justify-center border border-gray-300 py-1.5 text-[15px] font-semibold transition-colors hover:bg-gray-50"
         >
           Ir al carrito
         </Link>

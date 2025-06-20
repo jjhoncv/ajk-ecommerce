@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Customers } from "@/types/domain";
-import { CreditCard, Mail, Phone, Save, User } from "lucide-react";
-import { useEditProfile } from "./use-edit-profile.hook";
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/Label'
+import { Customers } from '@/types/domain'
+import { CreditCard, Mail, Phone, Save, User } from 'lucide-react'
+import { useEditProfile } from './use-edit-profile.hook'
 
 interface EditProfileProps {
-  customer: Customers;
+  customer: Customers
 }
 
 export default function EditProfile({ customer }: EditProfileProps) {
@@ -21,18 +21,18 @@ export default function EditProfile({ customer }: EditProfileProps) {
     handleInputChange,
     hasChanges,
     resetForm
-  } = useEditProfile({ customer });
+  } = useEditProfile({ customer })
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-8">
+      <div className="mb-8 flex items-center gap-2">
         <User className="h-5 w-5" />
         <h2 className="text-xl font-bold">Datos personales</h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
+      <form onSubmit={handleSubmit} className="max-w-md space-y-6">
         {/* Nombre y Apellido */}
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="name">Nombre</Label>
             <Input
@@ -41,12 +41,12 @@ export default function EditProfile({ customer }: EditProfileProps) {
               type="text"
               value={formData.name}
               onChange={handleInputChange}
-              className={`${errors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="Ingresa tu nombre"
             />
             {errors.name && (
-              <p className="text-sm text-red-600 flex items-center gap-1">
-                <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+              <p className="flex items-center gap-1 text-sm text-red-600">
+                <span className="h-1 w-1 rounded-full bg-red-600"></span>
                 {errors.name}
               </p>
             )}
@@ -60,12 +60,12 @@ export default function EditProfile({ customer }: EditProfileProps) {
               type="text"
               value={formData.lastname}
               onChange={handleInputChange}
-              className={`${errors.lastname ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.lastname ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="Ingresa tu apellido"
             />
             {errors.lastname && (
-              <p className="text-sm text-red-600 flex items-center gap-1">
-                <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+              <p className="flex items-center gap-1 text-sm text-red-600">
+                <span className="h-1 w-1 rounded-full bg-red-600"></span>
                 {errors.lastname}
               </p>
             )}
@@ -84,19 +84,19 @@ export default function EditProfile({ customer }: EditProfileProps) {
             type="email"
             value={formData.email}
             onChange={handleInputChange}
-            className={`${errors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+            className={`${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
             placeholder="correo@ejemplo.com"
           />
           {errors.email && (
-            <p className="text-sm text-red-600 flex items-center gap-1">
-              <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+            <p className="flex items-center gap-1 text-sm text-red-600">
+              <span className="h-1 w-1 rounded-full bg-red-600"></span>
               {errors.email}
             </p>
           )}
         </div>
 
         {/* Teléfono y DNI */}
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="phone" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
@@ -108,17 +108,19 @@ export default function EditProfile({ customer }: EditProfileProps) {
               type="tel"
               value={formData.phone}
               onChange={handleInputChange}
-              className={`${errors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="987654321"
               maxLength={9}
             />
             {errors.phone && (
-              <p className="text-sm text-red-600 flex items-center gap-1">
-                <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+              <p className="flex items-center gap-1 text-sm text-red-600">
+                <span className="h-1 w-1 rounded-full bg-red-600"></span>
                 {errors.phone}
               </p>
             )}
-            <p className="text-xs text-gray-500">9 dígitos, debe empezar con 9</p>
+            <p className="text-xs text-gray-500">
+              9 dígitos, debe empezar con 9
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -132,13 +134,13 @@ export default function EditProfile({ customer }: EditProfileProps) {
               type="text"
               value={formData.dni}
               onChange={handleInputChange}
-              className={`${errors.dni ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.dni ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="12345678"
               maxLength={8}
             />
             {errors.dni && (
-              <p className="text-sm text-red-600 flex items-center gap-1">
-                <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+              <p className="flex items-center gap-1 text-sm text-red-600">
+                <span className="h-1 w-1 rounded-full bg-red-600"></span>
                 {errors.dni}
               </p>
             )}
@@ -148,19 +150,25 @@ export default function EditProfile({ customer }: EditProfileProps) {
 
         {/* Message */}
         {message && (
-          <div className={`p-4 rounded-lg ${message.includes("Error") || message.includes("error")
-            ? "bg-red-50 text-red-700 border border-red-200"
-            : message.includes("No hay cambios")
-              ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
-              : "bg-green-50 text-green-700 border border-green-200"
-            }`}>
+          <div
+            className={`rounded-lg p-4 ${
+              message.includes('Error') || message.includes('error')
+                ? 'border border-red-200 bg-red-50 text-red-700'
+                : message.includes('No hay cambios')
+                  ? 'border border-yellow-200 bg-yellow-50 text-yellow-700'
+                  : 'border border-green-200 bg-green-50 text-green-700'
+            }`}
+          >
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${message.includes("Error") || message.includes("error")
-                ? "bg-red-600"
-                : message.includes("No hay cambios")
-                  ? "bg-yellow-600"
-                  : "bg-green-600"
-                }`}></div>
+              <div
+                className={`h-2 w-2 rounded-full ${
+                  message.includes('Error') || message.includes('error')
+                    ? 'bg-red-600'
+                    : message.includes('No hay cambios')
+                      ? 'bg-yellow-600'
+                      : 'bg-green-600'
+                }`}
+              ></div>
               {message}
             </div>
           </div>
@@ -171,16 +179,16 @@ export default function EditProfile({ customer }: EditProfileProps) {
           <Button
             type="submit"
             disabled={isLoading || !hasChanges()}
-            className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save className="h-4 w-4" />
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                 Guardando...
               </div>
             ) : (
-              "Guardar Cambios"
+              'Guardar Cambios'
             )}
           </Button>
 
@@ -190,7 +198,7 @@ export default function EditProfile({ customer }: EditProfileProps) {
               variant="outline"
               onClick={resetForm}
               disabled={isLoading}
-              className="px-6 py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="border-gray-300 px-6 py-3 text-gray-700 hover:bg-gray-50"
             >
               Cancelar
             </Button>
@@ -198,5 +206,5 @@ export default function EditProfile({ customer }: EditProfileProps) {
         </div>
       </form>
     </div>
-  );
+  )
 }

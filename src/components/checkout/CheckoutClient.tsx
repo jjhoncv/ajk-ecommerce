@@ -30,7 +30,10 @@ interface CheckoutClientProps {
   paymentMethods: PaymentMethods[]
 }
 
-export default function CheckoutClient({ user, paymentMethods }: CheckoutClientProps) {
+export default function CheckoutClient({
+  user,
+  paymentMethods
+}: CheckoutClientProps) {
   const router = useRouter()
 
   const [state, setState] = useState<CheckoutState>({
@@ -67,8 +70,11 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
   }, [router])
 
   // Obtener datos del checkout desde la API
-  const fetchCheckoutData = async (items: CartItem[], shippingAddressId?: number) => {
-    setState(prev => ({ ...prev, loading: true }))
+  const fetchCheckoutData = async (
+    items: CartItem[],
+    shippingAddressId?: number
+  ) => {
+    setState((prev) => ({ ...prev, loading: true }))
 
     try {
       const response = await fetch('/api/checkout/data', {
@@ -86,21 +92,20 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
       const data = await response.json()
       setSummary(data.summary)
-
     } catch (error) {
       console.error('Error fetching checkout data:', error)
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         error: 'Error cargando datos del checkout'
       }))
     } finally {
-      setState(prev => ({ ...prev, loading: false }))
+      setState((prev) => ({ ...prev, loading: false }))
     }
   }
 
   // Manejar cambio de dirección de envío
   const handleShippingAddressChange = (addressId: number) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       data: { ...prev.data, shippingAddressId: addressId }
     }))
@@ -110,7 +115,7 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
   // Manejar cambio de método de envío
   const handleShippingMethodChange = (option: ShippingOption) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -123,7 +128,11 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
       const updatedCalculation = {
         ...summary.calculation,
         shippingCost: option.cost,
-        totalAmount: summary.calculation.subtotal - summary.calculation.discountAmount + option.cost + summary.calculation.taxAmount
+        totalAmount:
+          summary.calculation.subtotal -
+          summary.calculation.discountAmount +
+          option.cost +
+          summary.calculation.taxAmount
       }
 
       setSummary({
@@ -136,7 +145,7 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
   // Manejar cambio de método de pago
   const handlePaymentMethodChange = (option: PaymentOption) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -155,38 +164,50 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
   // Avanzar al siguiente paso
   const nextStep = () => {
-    const steps: CheckoutStep[] = ['shipping', 'payment', 'review', 'processing']
+    const steps: CheckoutStep[] = [
+      'shipping',
+      'payment',
+      'review',
+      'processing'
+    ]
     const currentIndex = steps.indexOf(state.step)
 
     if (currentIndex < steps.length - 1) {
-      setState(prev => ({ ...prev, step: steps[currentIndex + 1] }))
+      setState((prev) => ({ ...prev, step: steps[currentIndex + 1] }))
     }
   }
 
   // Retroceder al paso anterior
   const prevStep = () => {
-    const steps: CheckoutStep[] = ['shipping', 'payment', 'review', 'processing']
+    const steps: CheckoutStep[] = [
+      'shipping',
+      'payment',
+      'review',
+      'processing'
+    ]
     const currentIndex = steps.indexOf(state.step)
 
     if (currentIndex > 0) {
-      setState(prev => ({ ...prev, step: steps[currentIndex - 1] }))
+      setState((prev) => ({ ...prev, step: steps[currentIndex - 1] }))
     }
   }
 
   // Procesar el checkout
   const processCheckout = async () => {
+    console.log('summary?.selectedShipping', summary?.selectedShipping)
+    console.log('summary?.selectedPayment', summary?.selectedPayment)
+    console.log('state.data.shippingAddressId', state.data.shippingAddressId)
 
-    console.log("summary?.selectedShipping", summary?.selectedShipping)
-    console.log("summary?.selectedPayment", summary?.selectedPayment)
-    console.log("state.data.shippingAddressId", state.data.shippingAddressId)
-
-
-    if (!summary?.selectedShipping || !summary?.selectedPayment || !state.data.shippingAddressId) {
-      setState(prev => ({ ...prev, error: 'Faltan datos requeridos' }))
+    if (
+      !summary?.selectedShipping ||
+      !summary?.selectedPayment ||
+      !state.data.shippingAddressId
+    ) {
+      setState((prev) => ({ ...prev, error: 'Faltan datos requeridos' }))
       return
     }
 
-    setState(prev => ({ ...prev, step: 'processing', loading: true }))
+    setState((prev) => ({ ...prev, step: 'processing', loading: true }))
 
     try {
       const checkoutData = {
@@ -201,7 +222,7 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
         paymentData: state.data.paymentData
       }
 
-      console.log("checkoutData", checkoutData)
+      console.log('checkoutData', checkoutData)
 
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -211,7 +232,7 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
       const result: CheckoutResponse = await response.json()
 
-      console.log("result", result)
+      console.log('result', result)
 
       if (result.success) {
         // Limpiar carrito
@@ -224,35 +245,34 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
           router.push(`/orders/${result.orderNumber}`)
         }
       } else {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           error: result.error || 'Error procesando el checkout',
           step: 'review'
         }))
       }
-
     } catch (error) {
       console.error('Error processing checkout:', error)
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         error: 'Error procesando el checkout',
         step: 'review'
       }))
     } finally {
-      setState(prev => ({ ...prev, loading: false }))
+      setState((prev) => ({ ...prev, loading: false }))
     }
   }
 
   if (cartItems.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <p className="text-gray-600">Cargando...</p>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
       {/* Columna principal - Pasos del checkout */}
       <div className="lg:col-span-2">
         <StepIndicator currentStep={state.step} />
@@ -298,9 +318,7 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
           />
         )}
 
-        {state.step === 'processing' && (
-          <ProcessingStep />
-        )}
+        {state.step === 'processing' && <ProcessingStep />}
       </div>
 
       {/* Columna lateral - Resumen del carrito */}

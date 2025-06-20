@@ -1,16 +1,22 @@
-import { ProductVariantPrice } from "@/components/product/ProductVariantPrice"
-import { ProductVariantPromotion } from "@/components/product/ProductVariantPromotion"
-import { ProductVariantRating } from "@/components/product/ProductVariantRating"
-import { getVariantTitle } from "@/helpers/productVariant.helpers"
-import { Products as Product, ProductVariants as ProductVariant } from "@/types/domain"
-import { FC } from "react"
+import { ProductVariantPrice } from '@/components/product/ProductVariantPrice'
+import { ProductVariantPromotion } from '@/components/product/ProductVariantPromotion'
+import { ProductVariantRating } from '@/components/product/ProductVariantRating'
+import { getVariantTitle } from '@/helpers/productVariant.helpers'
+import {
+  Products as Product,
+  ProductVariants as ProductVariant
+} from '@/types/domain'
+import { FC } from 'react'
 
 interface ProductVariantInfoProps {
   product: Product
   variant: ProductVariant
 }
 
-export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({ product, variant }) => {
+export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({
+  product,
+  variant
+}) => {
   return (
     <>
       <div className="flex flex-col gap-2.5">
@@ -20,12 +26,14 @@ export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({ product, varia
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-base leading-4 font-bold text-gray-900 ">
+          <h1 className="text-base font-bold leading-4 text-gray-900">
             {getVariantTitle(product.name, variant)}
           </h1>
 
           {product.description && (
-            <p className="text-gray-900 text-sm leading-relaxed">{product.description}</p>
+            <p className="text-sm leading-relaxed text-gray-900">
+              {product.description}
+            </p>
           )}
         </div>
         <ProductVariantRating variant={variant} />

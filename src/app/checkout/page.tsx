@@ -48,7 +48,7 @@ export default async function CheckoutPage() {
     email: customer.email,
     phone: customer.phone,
     addresses,
-    defaultAddressId: addresses.find(addr => addr.isDefault === 1)?.id
+    defaultAddressId: addresses.find((addr) => addr.isDefault === 1)?.id
   }
 
   return (

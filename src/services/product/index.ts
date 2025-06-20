@@ -1,4 +1,7 @@
-import { getProductVariant, getProductVariantsByProductId } from './productVariant'
+import {
+  getProductVariant,
+  getProductVariantsByProductId
+} from './productVariant'
 
 const productService = {
   getProductVariant,

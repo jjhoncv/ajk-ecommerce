@@ -1,25 +1,28 @@
-"use client";
-import { Categories } from "@/types/domain";
-import { Menu, Percent } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
-import CategoriesMenu from "./CategoriesMenu";
-import SlidePage from "./SlidePage";
+'use client'
+import { Categories } from '@/types/domain'
+import { Menu, Percent } from 'lucide-react'
+import Link from 'next/link'
+import React, { useState } from 'react'
+import CategoriesMenu from './CategoriesMenu'
+import SlidePage from './SlidePage'
 
-type ButtonType = "mini" | "normal"
+type ButtonType = 'mini' | 'normal'
 interface NavigationProps {
-  categories: Categories[];
+  categories: Categories[]
   type?: ButtonType
 }
 
-const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) => {
-  const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false);
+const Navigation: React.FC<NavigationProps> = ({
+  categories,
+  type = 'normal'
+}) => {
+  const [isCategoriesMenuOpen, setIsCategoriesMenuOpen] = useState(false)
 
-  if (type === "mini") {
+  if (type === 'mini') {
     return (
       <>
         <button
-          className="bg-primary text-white px-2 py-2 rounded-sm flex items-center gap-2 hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 rounded-sm bg-primary px-2 py-2 text-white transition-colors hover:bg-primary/90"
           onClick={() => setIsCategoriesMenuOpen(true)}
         >
           <Menu className="h-5 w-5" />
@@ -41,14 +44,14 @@ const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) 
   }
 
   return (
-    <div className="bg-gray-100 border-t border-gray-200 border-none">
-      <div className="max-w-screen-4xl mx-auto px-12">
+    <div className="border-t border-none border-gray-200 bg-gray-100">
+      <div className="mx-auto max-w-screen-4xl px-12">
         <div className="flex items-center">
           {/* Botón de categorías que abre el SlidePage */}
 
           <div className="relative">
             <button
-              className="bg-primary text-white px-6 py-3 flex items-center gap-2 hover:bg-primary/90 transition-colors"
+              className="flex items-center gap-2 bg-primary px-6 py-3 text-white transition-colors hover:bg-primary/90"
               onClick={() => setIsCategoriesMenuOpen(true)}
             >
               <Menu className="h-5 w-5" />
@@ -80,7 +83,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) 
             </Link> */}
             <Link
               href="/ofertas"
-              className="text-gray-700 hover:text-primary transition-colors duration-300 flex items-center gap-2"
+              className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-primary"
             >
               <Percent className="h-4 w-4" />
               Ofertas
@@ -91,7 +94,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) 
                 <Link
                   key={index}
                   href={`/categoria/${categorie.id}`}
-                  className="text-gray-700 hover:text-primary transition-colors duration-300"
+                  className="text-gray-700 transition-colors duration-300 hover:text-primary"
                 >
                   {categorie.name}
                 </Link>
@@ -145,7 +148,7 @@ const Navigation: React.FC<NavigationProps> = ({ categories, type = "normal" }) 
         />
       </SlidePage>
     </div>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

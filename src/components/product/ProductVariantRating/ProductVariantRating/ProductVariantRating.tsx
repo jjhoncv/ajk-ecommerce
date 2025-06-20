@@ -1,23 +1,28 @@
-import { ProductVariants as ProductVariant } from "@/types/domain";
-import { FC } from "react";
+import { ProductVariants as ProductVariant } from '@/types/domain'
+import { FC } from 'react'
 
 interface ProductVariantRatingProps {
   variant: ProductVariant
 }
 
-export const ProductVariantRating: FC<ProductVariantRatingProps> = ({ variant }) => {
+export const ProductVariantRating: FC<ProductVariantRatingProps> = ({
+  variant
+}) => {
   const calculateAverageRating = () => {
-    const ratings = variant?.variantRatings || [];
-    if (ratings.length === 0) return null;
+    const ratings = variant?.variantRatings || []
+    if (ratings.length === 0) return null
 
-    const sum = ratings.reduce((acc: number, rating: any) => acc + rating.rating, 0);
+    const sum = ratings.reduce(
+      (acc: number, rating: any) => acc + rating.rating,
+      0
+    )
     return {
       averageRating: sum / ratings.length,
       totalRatings: ratings.length
-    };
-  };
+    }
+  }
 
-  const ratingData = calculateAverageRating();
+  const ratingData = calculateAverageRating()
 
   return (
     <>
@@ -28,7 +33,7 @@ export const ProductVariantRating: FC<ProductVariantRatingProps> = ({ variant })
             {[...Array(5)].map((_, i) => (
               <svg
                 key={i}
-                className={`w-5 h-5 ${i < Math.floor(ratingData.averageRating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                className={`h-5 w-5 ${i < Math.floor(ratingData.averageRating) ? 'text-yellow-400' : 'text-gray-300'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -37,7 +42,8 @@ export const ProductVariantRating: FC<ProductVariantRatingProps> = ({ variant })
             ))}
           </div>
           <span className="text-sm text-gray-600">
-            {ratingData.averageRating.toFixed(1)} ({ratingData.totalRatings} reseñas)
+            {ratingData.averageRating.toFixed(1)} ({ratingData.totalRatings}{' '}
+            reseñas)
           </span>
         </div>
       )}

@@ -1,18 +1,18 @@
-import { ProductVariants } from "@/types/domain";
-import { useRatingForm } from "./hooks/useRatingForm";
-import { ImageUpload } from "./ImageUpload";
-import { RatingStars } from "./RatingStars";
+import { ProductVariants } from '@/types/domain'
+import { useRatingForm } from './hooks/useRatingForm'
+import { ImageUpload } from './ImageUpload'
+import { RatingStars } from './RatingStars'
 
 interface RatingFormProps {
-  variant: ProductVariants;
-  productName: string;
-  onRatingAdded: () => void;
+  variant: ProductVariants
+  productName: string
+  onRatingAdded: () => void
 }
 
 export const RatingForm: React.FC<RatingFormProps> = ({
   variant,
   productName,
-  onRatingAdded,
+  onRatingAdded
 }) => {
   const {
     rating,
@@ -30,21 +30,21 @@ export const RatingForm: React.FC<RatingFormProps> = ({
     handleImageUpload,
     removeImage,
     handleSubmit,
-    getRatingText,
+    getRatingText
   } = useRatingForm({
     onRatingAdded,
     variantId: variant.id,
     productId: variant.productId,
     productName,
-    variantSku: variant.sku,
-  });
+    variantSku: variant.sku
+  })
 
   if (success) {
     return (
-      <div className="bg-green-50 text-green-700 p-4 rounded-lg mb-6">
+      <div className="mb-6 rounded-lg bg-green-50 p-4 text-green-700">
         ¡Gracias por tu valoración! Tu opinión es muy importante para nosotros.
       </div>
-    );
+    )
   }
 
   return (
@@ -62,7 +62,7 @@ export const RatingForm: React.FC<RatingFormProps> = ({
       <div>
         <label
           htmlFor="rating-title"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           Título
         </label>
@@ -73,9 +73,9 @@ export const RatingForm: React.FC<RatingFormProps> = ({
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Resume tu experiencia en una frase"
           maxLength={100}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
         />
-        <div className="text-xs text-gray-500 mt-1">
+        <div className="mt-1 text-xs text-gray-500">
           {title.length}/100 caracteres
         </div>
       </div>
@@ -84,7 +84,7 @@ export const RatingForm: React.FC<RatingFormProps> = ({
       <div>
         <label
           htmlFor="rating-review"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           Comentario
         </label>
@@ -95,9 +95,9 @@ export const RatingForm: React.FC<RatingFormProps> = ({
           rows={4}
           placeholder="¿Qué te gustó o no te gustó? ¿Para qué usaste este producto?"
           maxLength={500}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
         />
-        <div className="text-xs text-gray-500 mt-1">
+        <div className="mt-1 text-xs text-gray-500">
           {review.length}/500 caracteres
         </div>
       </div>
@@ -110,14 +110,14 @@ export const RatingForm: React.FC<RatingFormProps> = ({
 
       {/* Mensaje de error */}
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+        <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
           {error}
         </div>
       )}
 
       {/* Información de stock */}
       {variant.stock !== undefined && (
-        <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+        <div className="rounded bg-gray-50 p-2 text-xs text-gray-500">
           Stock disponible: {variant.stock} unidades
         </div>
       )}
@@ -127,11 +127,11 @@ export const RatingForm: React.FC<RatingFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isSubmitting ? "Enviando..." : "Enviar valoración"}
+          {isSubmitting ? 'Enviando...' : 'Enviar valoración'}
         </button>
       </div>
     </form>
-  );
-};
+  )
+}

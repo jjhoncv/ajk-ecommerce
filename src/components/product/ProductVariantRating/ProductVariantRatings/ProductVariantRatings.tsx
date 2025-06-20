@@ -1,17 +1,17 @@
-"use client";
-import { Products, ProductVariants } from "@/types/domain";
-import React from "react";
-import { ProductVariantRatingAdd } from "../ProductVariantRatingAdd/ProductVariantRatingAdd";
-import { EmptyRatings } from "./EmptyRatings";
-import { useRatingsData } from "./hooks/useRatingsData";
-import { LoadingState } from "./LoadingState";
-import { RatingList } from "./RatingList";
-import { RatingSummary } from "./RatingSummary";
-import { RatingTabs } from "./RatingTabs";
+'use client'
+import { Products, ProductVariants } from '@/types/domain'
+import React from 'react'
+import { ProductVariantRatingAdd } from '../ProductVariantRatingAdd/ProductVariantRatingAdd'
+import { EmptyRatings } from './EmptyRatings'
+import { useRatingsData } from './hooks/useRatingsData'
+import { LoadingState } from './LoadingState'
+import { RatingList } from './RatingList'
+import { RatingSummary } from './RatingSummary'
+import { RatingTabs } from './RatingTabs'
 
 interface ProductVariantRatingsProps {
-  variant: ProductVariants;
-  product: Products;
+  variant: ProductVariants
+  product: Products
 }
 
 export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
@@ -26,22 +26,22 @@ export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
     hasNoRatings,
     handleTabChange,
     handlePageChange,
-    handleRatingAdded,
+    handleRatingAdded
   } = useRatingsData({
     variantId: variant.id,
-    productId: variant.productId,
-  });
+    productId: variant.productId
+  })
 
   const renderContent = () => {
     if (loading && !ratings) {
-      return <LoadingState />;
+      return <LoadingState />
     }
 
     if (hasNoRatings) {
-      return <EmptyRatings />;
+      return <EmptyRatings />
     }
 
-    if (!ratings) return null;
+    if (!ratings) return null
 
     return (
       <>
@@ -50,8 +50,12 @@ export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
         <RatingTabs
           activeTab={activeTab}
           onTabChange={handleTabChange}
-          variantCount={activeTab === "variant" ? ratings.summary.totalRatings : 0}
-          productCount={activeTab === "product" ? ratings.summary.totalRatings : 0}
+          variantCount={
+            activeTab === 'variant' ? ratings.summary.totalRatings : 0
+          }
+          productCount={
+            activeTab === 'product' ? ratings.summary.totalRatings : 0
+          }
         />
 
         <RatingList
@@ -62,12 +66,12 @@ export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
           activeTab={activeTab}
         />
       </>
-    );
-  };
+    )
+  }
 
   return (
     <div className="mt-8 border-t border-gray-200 pt-8">
-      <h2 className="text-xl font-bold mb-6">Valoraciones</h2>
+      <h2 className="mb-6 text-xl font-bold">Valoraciones</h2>
 
       {renderContent()}
 
@@ -78,5 +82,5 @@ export const ProductVariantRatings: React.FC<ProductVariantRatingsProps> = ({
         onRatingAdded={handleRatingAdded}
       />
     </div>
-  );
-};
+  )
+}

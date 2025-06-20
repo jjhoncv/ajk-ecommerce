@@ -1,13 +1,13 @@
-import { VariantRatings } from "@/types/domain";
-import { RatingItem } from "./RatingItem";
-import { RatingPagination } from "./RatingPagination";
+import { VariantRatings } from '@/types/domain'
+import { RatingItem } from './RatingItem'
+import { RatingPagination } from './RatingPagination'
 
 interface RatingListProps {
-  ratings: VariantRatings[];
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  activeTab: "variant" | "product";
+  ratings: VariantRatings[]
+  currentPage: number
+  totalPages: number
+  onPageChange: (page: number) => void
+  activeTab: 'variant' | 'product'
 }
 
 export const RatingList: React.FC<RatingListProps> = ({
@@ -15,15 +15,15 @@ export const RatingList: React.FC<RatingListProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-  activeTab,
+  activeTab
 }) => {
   if (ratings.length === 0) {
     return (
-      <p className="text-center text-gray-500 py-4">
-        No hay valoraciones disponibles para{" "}
-        {activeTab === "variant" ? "esta variante" : "este producto"}.
+      <p className="py-4 text-center text-gray-500">
+        No hay valoraciones disponibles para{' '}
+        {activeTab === 'variant' ? 'esta variante' : 'este producto'}.
       </p>
-    );
+    )
   }
 
   return (
@@ -40,5 +40,5 @@ export const RatingList: React.FC<RatingListProps> = ({
         onPageChange={onPageChange}
       />
     </div>
-  );
-};
+  )
+}

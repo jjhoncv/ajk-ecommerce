@@ -1,29 +1,29 @@
-import { Upload, X } from "lucide-react";
-import Image from "next/image";
+import { Upload, X } from 'lucide-react'
+import Image from 'next/image'
 
 interface ImageUploadProps {
-  images: string[];
-  onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onRemoveImage: (index: number) => void;
-  maxImages?: number;
+  images: string[]
+  onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onRemoveImage: (index: number) => void
+  maxImages?: number
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
   images,
   onImageUpload,
   onRemoveImage,
-  maxImages = 5,
+  maxImages = 5
 }) => {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="mb-1 block text-sm font-medium text-gray-700">
         Añadir imágenes
       </label>
-      <div className="flex flex-wrap gap-2 mb-2">
+      <div className="mb-2 flex flex-wrap gap-2">
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative w-20 h-20 border border-gray-200 rounded-md overflow-hidden"
+            className="relative h-20 w-20 overflow-hidden rounded-md border border-gray-200"
           >
             <Image
               src={image}
@@ -34,14 +34,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             <button
               type="button"
               onClick={() => onRemoveImage(index)}
-              className="absolute top-1 right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100"
+              className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm hover:bg-gray-100"
             >
               <X className="h-3 w-3" />
             </button>
           </div>
         ))}
         {images.length < maxImages && (
-          <label className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
+          <label className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 hover:bg-gray-50">
             <Upload className="h-6 w-6 text-gray-400" />
             <span className="mt-1 text-xs text-gray-500">Subir</span>
             <input
@@ -58,5 +58,5 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         Puedes subir hasta {maxImages} imágenes (opcional)
       </p>
     </div>
-  );
-};
+  )
+}

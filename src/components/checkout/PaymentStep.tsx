@@ -22,7 +22,6 @@ export default function PaymentStep({
   onPrev,
   loading
 }: PaymentStepProps) {
-
   const [selectedMethodId, setSelectedMethodId] = useState<number | null>(
     selectedPayment?.methodId || null
   )
@@ -31,8 +30,8 @@ export default function PaymentStep({
     setSelectedMethodId(methodId)
 
     // Buscar el método completo
-    const method = paymentMethods.find(m => m.id === methodId)
-    const option = paymentOptions.find(o => o.methodId === methodId)
+    const method = paymentMethods.find((m) => m.id === methodId)
+    const option = paymentOptions.find((o) => o.methodId === methodId)
 
     if (method && option) {
       onPaymentMethodChange({
@@ -49,32 +48,31 @@ export default function PaymentStep({
   const canProceed = selectedMethodId !== null
 
   // Obtener métodos de pago disponibles combinando ambas fuentes
-  const availableMethods = paymentMethods.filter(method =>
-    method.isActive === 1 &&
-    paymentOptions.some(option => option.methodId === method.id)
+  const availableMethods = paymentMethods.filter(
+    (method) =>
+      method.isActive === 1 &&
+      paymentOptions.some((option) => option.methodId === method.id)
   )
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">
+      <h2 className="mb-6 text-xl font-semibold text-gray-900">
         Método de pago
       </h2>
 
-      <div className="space-y-4 mb-8">
+      <div className="mb-8 space-y-4">
         {availableMethods.map((method) => {
-          const option = paymentOptions.find(o => o.methodId === method.id)
+          const option = paymentOptions.find((o) => o.methodId === method.id)
           if (!option) return null
 
           return (
             <div
               key={method.id}
-              className={`
-                relative rounded-lg border p-4 cursor-pointer transition-colors
-                ${selectedMethodId === method.id
+              className={`relative cursor-pointer rounded-lg border p-4 transition-colors ${
+                selectedMethodId === method.id
                   ? 'border-indigo-600 bg-indigo-50'
                   : 'border-gray-200 hover:border-gray-300'
-                }
-              `}
+              } `}
               onClick={() => handlePaymentMethodSelect(method.id)}
             >
               <div className="flex items-center">
@@ -116,7 +114,8 @@ export default function PaymentStep({
                             S/ {Number(option.baseAmount).toFixed(2)}
                           </p>
                           <p className="text-xs text-orange-600">
-                            + S/ {Number(option.processingFee).toFixed(2)} comisión
+                            + S/ {Number(option.processingFee).toFixed(2)}{' '}
+                            comisión
                           </p>
                           <p className="text-sm font-medium text-gray-900">
                             Total: S/ {Number(option.finalAmount).toFixed(2)}
@@ -133,21 +132,29 @@ export default function PaymentStep({
                   {/* Límites de monto */}
                   {(method.minAmount || method.maxAmount) && (
                     <div className="mt-2 text-xs text-gray-500">
-                      {method.minAmount && method.maxAmount ? (
-                        `Monto entre S/ ${method.minAmount} - S/ ${method.maxAmount}`
-                      ) : method.minAmount ? (
-                        `Monto mínimo: S/ ${method.minAmount}`
-                      ) : method.maxAmount ? (
-                        `Monto máximo: S/ ${method.maxAmount}`
-                      ) : null}
+                      {method.minAmount && method.maxAmount
+                        ? `Monto entre S/ ${method.minAmount} - S/ ${method.maxAmount}`
+                        : method.minAmount
+                          ? `Monto mínimo: S/ ${method.minAmount}`
+                          : method.maxAmount
+                            ? `Monto máximo: S/ ${method.maxAmount}`
+                            : null}
                     </div>
                   )}
 
                   {/* Verificación requerida */}
                   {method.requiresVerification === 1 && (
                     <div className="mt-2 flex items-center space-x-1">
-                      <svg className="h-4 w-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      <svg
+                        className="h-4 w-4 text-yellow-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       <span className="text-xs text-yellow-700">
                         Requiere verificación adicional
@@ -159,7 +166,7 @@ export default function PaymentStep({
 
               {/* Formulario específico del método de pago */}
               {selectedMethodId === method.id && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-4 border-t border-gray-200 pt-4">
                   {renderPaymentForm(method)}
                 </div>
               )}
@@ -171,15 +178,22 @@ export default function PaymentStep({
       {/* Información de seguridad */}
       <div className="mb-6 rounded-md bg-green-50 p-4">
         <div className="flex">
-          <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 1L5 6v6l5 5 5-5V6l-5-5zM8.5 6L10 4.5 11.5 6 13 7.5 11.5 9 10 7.5 8.5 6z" clipRule="evenodd" />
+          <svg
+            className="h-5 w-5 text-green-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 1L5 6v6l5 5 5-5V6l-5-5zM8.5 6L10 4.5 11.5 6 13 7.5 11.5 9 10 7.5 8.5 6z"
+              clipRule="evenodd"
+            />
           </svg>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-green-800">
-              Pago seguro
-            </h3>
+            <h3 className="text-sm font-medium text-green-800">Pago seguro</h3>
             <p className="mt-1 text-sm text-green-700">
-              Tu información de pago está protegida con encriptación SSL de 256 bits.
+              Tu información de pago está protegida con encriptación SSL de 256
+              bits.
             </p>
           </div>
         </div>
@@ -190,11 +204,7 @@ export default function PaymentStep({
         <button
           type="button"
           onClick={onPrev}
-          className="
-            rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm
-            hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-gray-600
-          "
+          className="rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
         >
           Volver al envío
         </button>
@@ -203,12 +213,7 @@ export default function PaymentStep({
           type="button"
           onClick={onNext}
           disabled={!canProceed || loading}
-          className="
-            rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm
-            hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600
-            disabled:opacity-50 disabled:cursor-not-allowed
-          "
+          className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? 'Cargando...' : 'Revisar pedido'}
         </button>
@@ -284,7 +289,8 @@ function renderPaymentForm(method: PaymentMethods) {
           </div>
           <div className="rounded-md bg-blue-50 p-3">
             <p className="text-sm text-blue-700">
-              Recibirás una notificación en tu app de {method.name} para confirmar el pago.
+              Recibirás una notificación en tu app de {method.name} para
+              confirmar el pago.
             </p>
           </div>
         </div>
@@ -294,16 +300,24 @@ function renderPaymentForm(method: PaymentMethods) {
       return (
         <div className="rounded-md bg-yellow-50 p-4">
           <div className="flex">
-            <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            <svg
+              className="h-5 w-5 text-yellow-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
             </svg>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-yellow-800">
                 Transferencia bancaria
               </h3>
               <p className="mt-1 text-sm text-yellow-700">
-                Recibirás los datos bancarios por email después de confirmar el pedido.
-                Tienes 24 horas para realizar la transferencia.
+                Recibirás los datos bancarios por email después de confirmar el
+                pedido. Tienes 24 horas para realizar la transferencia.
               </p>
             </div>
           </div>
@@ -314,17 +328,25 @@ function renderPaymentForm(method: PaymentMethods) {
       return (
         <div className="rounded-md bg-green-50 p-4">
           <div className="flex">
-            <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+            <svg
+              className="h-5 w-5 text-green-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
               <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-              <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                clipRule="evenodd"
+              />
             </svg>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-green-800">
                 Pago contra entrega
               </h3>
               <p className="mt-1 text-sm text-green-700">
-                Pagarás en efectivo al recibir tu pedido.
-                Asegúrate de tener el monto exacto.
+                Pagarás en efectivo al recibir tu pedido. Asegúrate de tener el
+                monto exacto.
               </p>
             </div>
           </div>

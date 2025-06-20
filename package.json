@@ -8,7 +8,9 @@
     "start": "next start",
     "generate-domain-types": "node scripts/generate-domain-types.mjs",
     "generate-database-types": "node scripts/generate-database-types.mjs",
-    "generate": "pnpm generate-domain-types && pnpm generate-database-types"
+    "generate": "pnpm generate-domain-types && pnpm generate-database-types",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

@@ -1,7 +1,7 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { siteConfig } from "@/config";
+'use client'
+import Image from 'next/image'
+import Link from 'next/link'
+import { siteConfig } from '@/config'
 
 const Logo = () => {
   return (
@@ -10,14 +10,14 @@ const Logo = () => {
         width={32}
         height={32}
         alt="logo"
-        src={"/Logo.svg"}
-        className="w-auto h-auto mr-2"
+        src={'/Logo.svg'}
+        className="mr-2 h-auto w-auto"
       />
       <span className="text-2xl font-extralight text-black md:text-4xl">
         {siteConfig.name}
       </span>
     </Link>
-  );
-};
+  )
+}
 
-export default Logo;
+export default Logo

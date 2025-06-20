@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { useChangePassword } from "@/components/account/ChangePassword/use-change-password.hook";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { useChangePassword } from '@/components/account/ChangePassword/use-change-password.hook'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/Label'
+import { Eye, EyeOff, Lock } from 'lucide-react'
 
 export default function ChangePassword() {
   const {
@@ -17,16 +17,16 @@ export default function ChangePassword() {
     handleSubmit,
     handleInputChange,
     getPasswordCriteriaStatus
-  } = useChangePassword();
+  } = useChangePassword()
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-8">
+      <div className="mb-8 flex items-center gap-2">
         <Lock className="h-5 w-5" />
         <h2 className="text-xl font-bold">Cambiar Contraseña</h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
+      <form onSubmit={handleSubmit} className="max-w-md space-y-6">
         {/* Current Password */}
         <div className="space-y-2">
           <Label htmlFor="currentPassword">Contraseña actual</Label>
@@ -34,23 +34,27 @@ export default function ChangePassword() {
             <Input
               id="currentPassword"
               name="currentPassword"
-              type={showPasswords.current ? "text" : "password"}
+              type={showPasswords.current ? 'text' : 'password'}
               value={formData.currentPassword}
               onChange={handleInputChange}
-              className={`${errors.currentPassword ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.currentPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="Ingresa tu contraseña actual"
             />
             <button
               type="button"
               onClick={() => togglePasswordVisibility('current')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
             >
-              {showPasswords.current ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPasswords.current ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.currentPassword && (
-            <p className="text-sm text-red-600 flex items-center gap-1">
-              <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+            <p className="flex items-center gap-1 text-sm text-red-600">
+              <span className="h-1 w-1 rounded-full bg-red-600"></span>
               {errors.currentPassword}
             </p>
           )}
@@ -63,49 +67,75 @@ export default function ChangePassword() {
             <Input
               id="newPassword"
               name="newPassword"
-              type={showPasswords.new ? "text" : "password"}
+              type={showPasswords.new ? 'text' : 'password'}
               value={formData.newPassword}
               onChange={handleInputChange}
-              className={`${errors.newPassword ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.newPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="Ingresa tu nueva contraseña"
             />
             <button
               type="button"
               onClick={() => togglePasswordVisibility('new')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
             >
-              {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPasswords.new ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.newPassword && (
-            <p className="text-sm text-red-600 flex items-center gap-1">
-              <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+            <p className="flex items-center gap-1 text-sm text-red-600">
+              <span className="h-1 w-1 rounded-full bg-red-600"></span>
               {errors.newPassword}
             </p>
           )}
 
           {/* Password Requirements */}
           <div className="mt-3 space-y-2">
-            <p className="text-sm font-medium text-gray-700">Requisitos de la contraseña:</p>
+            <p className="text-sm font-medium text-gray-700">
+              Requisitos de la contraseña:
+            </p>
             <div className="space-y-1">
-              <div className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('length') ? 'text-green-600' : 'text-gray-500'}`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${getPasswordCriteriaStatus('length') ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+              <div
+                className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('length') ? 'text-green-600' : 'text-gray-500'}`}
+              >
+                <div
+                  className={`h-1.5 w-1.5 rounded-full ${getPasswordCriteriaStatus('length') ? 'bg-green-600' : 'bg-gray-300'}`}
+                ></div>
                 Al menos 8 caracteres
               </div>
-              <div className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('uppercase') ? 'text-green-600' : 'text-gray-500'}`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${getPasswordCriteriaStatus('uppercase') ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+              <div
+                className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('uppercase') ? 'text-green-600' : 'text-gray-500'}`}
+              >
+                <div
+                  className={`h-1.5 w-1.5 rounded-full ${getPasswordCriteriaStatus('uppercase') ? 'bg-green-600' : 'bg-gray-300'}`}
+                ></div>
                 Una letra mayúscula
               </div>
-              <div className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('lowercase') ? 'text-green-600' : 'text-gray-500'}`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${getPasswordCriteriaStatus('lowercase') ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+              <div
+                className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('lowercase') ? 'text-green-600' : 'text-gray-500'}`}
+              >
+                <div
+                  className={`h-1.5 w-1.5 rounded-full ${getPasswordCriteriaStatus('lowercase') ? 'bg-green-600' : 'bg-gray-300'}`}
+                ></div>
                 Una letra minúscula
               </div>
-              <div className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('number') ? 'text-green-600' : 'text-gray-500'}`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${getPasswordCriteriaStatus('number') ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+              <div
+                className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('number') ? 'text-green-600' : 'text-gray-500'}`}
+              >
+                <div
+                  className={`h-1.5 w-1.5 rounded-full ${getPasswordCriteriaStatus('number') ? 'bg-green-600' : 'bg-gray-300'}`}
+                ></div>
                 Un número
               </div>
-              <div className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('special') ? 'text-green-600' : 'text-gray-500'}`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${getPasswordCriteriaStatus('special') ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+              <div
+                className={`flex items-center gap-2 text-xs ${getPasswordCriteriaStatus('special') ? 'text-green-600' : 'text-gray-500'}`}
+              >
+                <div
+                  className={`h-1.5 w-1.5 rounded-full ${getPasswordCriteriaStatus('special') ? 'bg-green-600' : 'bg-gray-300'}`}
+                ></div>
                 Un carácter especial (!@#$%^&*)
               </div>
             </div>
@@ -119,42 +149,52 @@ export default function ChangePassword() {
             <Input
               id="confirmPassword"
               name="confirmPassword"
-              type={showPasswords.confirm ? "text" : "password"}
+              type={showPasswords.confirm ? 'text' : 'password'}
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className={`${errors.confirmPassword ? "border-red-500 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"} focus:ring-2`}
+              className={`${errors.confirmPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
               placeholder="Confirma tu nueva contraseña"
             />
             <button
               type="button"
               onClick={() => togglePasswordVisibility('confirm')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
             >
-              {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPasswords.confirm ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="text-sm text-red-600 flex items-center gap-1">
-              <span className="w-1 h-1 bg-red-600 rounded-full"></span>
+            <p className="flex items-center gap-1 text-sm text-red-600">
+              <span className="h-1 w-1 rounded-full bg-red-600"></span>
               {errors.confirmPassword}
             </p>
           )}
-          {formData.confirmPassword && formData.newPassword === formData.confirmPassword && (
-            <p className="text-sm text-green-600 flex items-center gap-1">
-              <span className="w-1 h-1 bg-green-600 rounded-full"></span>
-              Las contraseñas coinciden
-            </p>
-          )}
+          {formData.confirmPassword &&
+            formData.newPassword === formData.confirmPassword && (
+              <p className="flex items-center gap-1 text-sm text-green-600">
+                <span className="h-1 w-1 rounded-full bg-green-600"></span>
+                Las contraseñas coinciden
+              </p>
+            )}
         </div>
 
         {/* Message */}
         {message && (
-          <div className={`p-4 rounded-lg ${message.includes("Error") || message.includes("error")
-            ? "bg-red-50 text-red-700 border border-red-200"
-            : "bg-green-50 text-green-700 border border-green-200"
-            }`}>
+          <div
+            className={`rounded-lg p-4 ${
+              message.includes('Error') || message.includes('error')
+                ? 'border border-red-200 bg-red-50 text-red-700'
+                : 'border border-green-200 bg-green-50 text-green-700'
+            }`}
+          >
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${message.includes("Error") || message.includes("error") ? "bg-red-600" : "bg-green-600"}`}></div>
+              <div
+                className={`h-2 w-2 rounded-full ${message.includes('Error') || message.includes('error') ? 'bg-red-600' : 'bg-green-600'}`}
+              ></div>
               {message}
             </div>
           </div>
@@ -164,18 +204,18 @@ export default function ChangePassword() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-black hover:bg-gray-800 text-white px-6 py-3 font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-black px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
               Cambiando Contraseña...
             </div>
           ) : (
-            "Cambiar Contraseña"
+            'Cambiar Contraseña'
           )}
         </Button>
       </form>
     </div>
-  );
+  )
 }

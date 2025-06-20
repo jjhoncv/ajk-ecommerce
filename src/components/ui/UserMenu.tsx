@@ -1,44 +1,44 @@
-"use client";
-import { Heart, LogOut, MapPin, ShoppingBag, User } from "lucide-react";
-import { Session } from "next-auth";
-import { signOut } from "next-auth/react";
-import React from "react";
-import SlidePage from "./SlidePage";
+'use client'
+import { Heart, LogOut, MapPin, ShoppingBag, User } from 'lucide-react'
+import { Session } from 'next-auth'
+import { signOut } from 'next-auth/react'
+import React from 'react'
+import SlidePage from './SlidePage'
 
 interface UserMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-  session: Session;
+  isOpen: boolean
+  onClose: () => void
+  session: Session
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
-    onClose();
-  };
+    await signOut({ redirect: false })
+    onClose()
+  }
 
   const menuItems = [
     {
       icon: <User className="h-5 w-5" />,
-      label: "Mi cuenta",
-      href: "/account",
+      label: 'Mi cuenta',
+      href: '/account'
     },
     {
       icon: <ShoppingBag className="h-5 w-5" />,
-      label: "Mis pedidos",
-      href: "/orders",
+      label: 'Mis pedidos',
+      href: '/orders'
     },
     {
       icon: <Heart className="h-5 w-5" />,
-      label: "Mis favoritos",
-      href: "/favorites",
+      label: 'Mis favoritos',
+      href: '/favorites'
     },
     {
       icon: <MapPin className="h-5 w-5" />,
-      label: "Mis direcciones",
-      href: "/addresses",
-    },
-  ];
+      label: 'Mis direcciones',
+      href: '/addresses'
+    }
+  ]
 
   return (
     <SlidePage
@@ -48,10 +48,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
       direction="right"
       width={320}
     >
-      <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-gray-200">
+      <div className="flex h-full flex-col">
+        <div className="border-b border-gray-200 p-4">
           <div className="flex items-center space-x-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
               <User className="h-6 w-6 text-primary" />
             </div>
             <div>
@@ -77,18 +77,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ isOpen, onClose, session }) => {
             </ul>
           </nav>
         </div>
-        <div className="p-4 border-t border-gray-200">
+        <div className="border-t border-gray-200 p-4">
           <button
             onClick={handleSignOut}
-            className="flex items-center w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-md"
+            className="flex w-full items-center rounded-md px-4 py-2 text-left text-red-600 hover:bg-red-50"
           >
-            <LogOut className="h-5 w-5 mr-3" />
+            <LogOut className="mr-3 h-5 w-5" />
             Cerrar sesión
           </button>
         </div>
       </div>
     </SlidePage>
-  );
-};
+  )
+}
 
-export default UserMenu;
+export default UserMenu

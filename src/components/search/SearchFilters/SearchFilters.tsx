@@ -1,10 +1,10 @@
-"use client";
-import { AvailableFilters } from "@/backend/filters";
-import { ProductSearchFilters } from "@/backend/search";
-import ActiveFilters from "@/components/search/ActiveFilters";
-import AttributeFilter from "@/components/search/AttributeFilter";
-import PriceRangeFilter from "@/components/search/PriceRangeFilter";
-import React from "react";
+'use client'
+import { AvailableFilters } from '@/backend/filters'
+import { ProductSearchFilters } from '@/backend/search'
+import ActiveFilters from '@/components/search/ActiveFilters'
+import AttributeFilter from '@/components/search/AttributeFilter'
+import PriceRangeFilter from '@/components/search/PriceRangeFilter'
+import React from 'react'
 
 interface SearchFiltersProps {
   availableFilters: AvailableFilters
@@ -13,10 +13,10 @@ interface SearchFiltersProps {
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({
   availableFilters,
-  currentFilters,
+  currentFilters
 }) => {
   return (
-    <div className="bg-white py-6 rounded-lg">
+    <div className="rounded-lg bg-white py-6">
       {/* <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">Filtros</h3>
         <ClearFiltersButton currentFilters={currentFilters} />
@@ -27,7 +27,6 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         availableFilters={availableFilters}
         currentFilters={currentFilters}
       />
-
 
       {/* Categorías */}
       {/* <CategoryFilter
@@ -41,14 +40,11 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         currentFilters={currentFilters}
       /> */}
 
-
-
       {/* Atributos */}
       <AttributeFilter
         availableFilters={availableFilters}
         currentFilters={currentFilters}
       />
-
 
       {/* Rango de precios */}
       <PriceRangeFilter
@@ -56,7 +52,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         currentFilters={currentFilters}
       />
     </div>
-  );
-};
+  )
+}
 
-export default SearchFilters;
+export default SearchFilters

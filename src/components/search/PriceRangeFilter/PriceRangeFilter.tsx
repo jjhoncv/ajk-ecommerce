@@ -33,7 +33,7 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
     <CollapsibleSection title="Precio" className="mb-0">
       <div className="space-y-3">
         <div className="flex items-center gap-1">
-          <div className='flex items-center gap-0.5'>
+          <div className="flex items-center gap-0.5">
             <div className="flex-1">
               <InputPrice
                 value={minPrice}
@@ -43,7 +43,7 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
                 hasError={!!error}
               />
             </div>
-            <span className="text-gray-500 flex-shrink-0">-</span>
+            <span className="flex-shrink-0 text-gray-500">-</span>
             <div className="flex-1">
               <InputPrice
                 value={maxPrice}
@@ -56,12 +56,12 @@ const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
           </div>
           <button
             onClick={applyPriceFilter}
-            className="bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors flex-shrink-0"
+            className="flex-shrink-0 rounded bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800"
           >
             OK
           </button>
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+        {error && <p className="text-sm text-red-500">{error}</p>}
       </div>
     </CollapsibleSection>
   )

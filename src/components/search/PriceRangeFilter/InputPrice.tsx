@@ -32,7 +32,7 @@ const InputPrice: React.FC<InputPriceProps> = ({
       (e.key === 'a' && e.ctrlKey) || // Ctrl+A
       (e.key === 'c' && e.ctrlKey) || // Ctrl+C
       (e.key === 'v' && e.ctrlKey) || // Ctrl+V
-      (e.key === 'x' && e.ctrlKey)    // Ctrl+X
+      (e.key === 'x' && e.ctrlKey) // Ctrl+X
     ) {
       return
     }
@@ -76,8 +76,9 @@ const InputPrice: React.FC<InputPriceProps> = ({
       value={value}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
-      className={`w-full border rounded-sm px-3 py-2 text-sm ${hasError ? 'border-red-500' : 'border-gray-300'
-        }`}
+      className={`w-full rounded-sm border px-3 py-2 text-sm ${
+        hasError ? 'border-red-500' : 'border-gray-300'
+      }`}
       placeholder={placeholder}
     />
   )

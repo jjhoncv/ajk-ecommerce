@@ -9,10 +9,18 @@ interface ProductVariantViewProps {
   variant: ProductVariants
 }
 
-const ProductVariantView: React.FC<ProductVariantViewProps> = ({ data, allVariants, variant }) => {
+const ProductVariantView: React.FC<ProductVariantViewProps> = ({
+  data,
+  allVariants,
+  variant
+}) => {
   return (
     <main className="mx-auto py-6">
-      <ProductVariantInteractive initialData={data} allVariants={allVariants} variant={variant} />
+      <ProductVariantInteractive
+        initialData={data}
+        allVariants={allVariants}
+        variant={variant}
+      />
     </main>
   )
 }

@@ -32,20 +32,20 @@ export default function ReviewStep({
     console.log('Aplicar cupón:', couponCode)
   }
 
-  const canProceed = acceptTerms && selectedAddress && selectedShipping && selectedPayment
-
+  const canProceed =
+    acceptTerms && selectedAddress && selectedShipping && selectedPayment
 
   return (
     <div className="space-y-6">
       {/* Resumen del pedido */}
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="mb-6 text-xl font-semibold text-gray-900">
           Revisar pedido
         </h2>
 
         {/* Items del pedido */}
         <div className="mb-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
+          <h3 className="mb-4 text-lg font-medium text-gray-900">
             Productos ({summary.itemCount})
           </h3>
 
@@ -55,10 +55,11 @@ export default function ReviewStep({
 
               // Mostrar precio promocional si existe
               if (item.promotionVariants && item.promotionVariants.length > 0) {
-                const activePromotion = item.promotionVariants.find((pv: any) =>
-                  pv.promotion.isActive === 1 &&
-                  new Date() >= new Date(pv.promotion.startDate) &&
-                  new Date() <= new Date(pv.promotion.endDate)
+                const activePromotion = item.promotionVariants.find(
+                  (pv: any) =>
+                    pv.promotion.isActive === 1 &&
+                    new Date() >= new Date(pv.promotion.startDate) &&
+                    new Date() <= new Date(pv.promotion.endDate)
                 )
 
                 if (activePromotion) {
@@ -75,8 +76,8 @@ export default function ReviewStep({
                       className="h-20 w-20 rounded-md object-cover object-center"
                     />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-gray-900 line-clamp-2">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="line-clamp-2 text-sm font-medium text-gray-900">
                       {item.name}
                     </h4>
                     <div className="mt-1 flex items-center space-x-2">
@@ -89,7 +90,9 @@ export default function ReviewStep({
                         S/ {displayPrice.toFixed(2)}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-500">Cantidad: {item.quantity}</p>
+                    <p className="text-sm text-gray-500">
+                      Cantidad: {item.quantity}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">
@@ -105,20 +108,21 @@ export default function ReviewStep({
         {/* Información de envío */}
         {selectedAddress && selectedShipping && (
           <div className="mb-6 border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="mb-4 text-lg font-medium text-gray-900">
               Información de envío
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
+                <h4 className="mb-2 text-sm font-medium text-gray-900">
                   Dirección de entrega
                 </h4>
                 <div className="text-sm text-gray-600">
                   <p className="font-medium">{selectedAddress.alias}</p>
                   <p>
                     {selectedAddress.streetName} {selectedAddress.streetNumber}
-                    {selectedAddress.apartment && `, ${selectedAddress.apartment}`}
+                    {selectedAddress.apartment &&
+                      `, ${selectedAddress.apartment}`}
                   </p>
                   <p>
                     {selectedAddress.district}, {selectedAddress.province}
@@ -128,16 +132,19 @@ export default function ReviewStep({
               </div>
 
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
+                <h4 className="mb-2 text-sm font-medium text-gray-900">
                   Método de envío
                 </h4>
                 <div className="text-sm text-gray-600">
                   <p className="font-medium">{selectedShipping.methodName}</p>
                   <p>
-                    Entrega en {selectedShipping.estimatedDays.min}-{selectedShipping.estimatedDays.max} días
+                    Entrega en {selectedShipping.estimatedDays.min}-
+                    {selectedShipping.estimatedDays.max} días
                   </p>
                   <p className="font-medium">
-                    {selectedShipping.isFree ? 'Gratis' : `S/ ${selectedShipping.cost.toFixed(2)}`}
+                    {selectedShipping.isFree
+                      ? 'Gratis'
+                      : `S/ ${selectedShipping.cost.toFixed(2)}`}
                   </p>
                 </div>
               </div>
@@ -148,7 +155,7 @@ export default function ReviewStep({
         {/* Información de pago */}
         {selectedPayment && (
           <div className="mb-6 border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="mb-4 text-lg font-medium text-gray-900">
               Método de pago
             </h3>
 
@@ -156,7 +163,8 @@ export default function ReviewStep({
               <p className="font-medium">{selectedPayment.methodName}</p>
               {selectedPayment.processingFee > 0 && (
                 <p className="text-orange-600">
-                  Incluye comisión de S/ {Number(selectedPayment.processingFee).toFixed(2)}
+                  Incluye comisión de S/{' '}
+                  {Number(selectedPayment.processingFee).toFixed(2)}
                 </p>
               )}
             </div>
@@ -165,7 +173,7 @@ export default function ReviewStep({
 
         {/* Cupón de descuento */}
         <div className="mb-6 border-t border-gray-200 pt-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
+          <h3 className="mb-4 text-lg font-medium text-gray-900">
             Cupón de descuento
           </h3>
 
@@ -183,11 +191,7 @@ export default function ReviewStep({
               type="button"
               onClick={handleApplyCoupon}
               disabled={!couponCode.trim()}
-              className="
-                rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm
-                hover:bg-gray-50 focus:outline-focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                disabled:opacity-50 disabled:cursor-not-allowed
-              "
+              className="focus:outline-focus:ring-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Aplicar
             </button>
@@ -196,7 +200,7 @@ export default function ReviewStep({
 
         {/* Notas del cliente */}
         <div className="mb-6 border-t border-gray-200 pt-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
+          <h3 className="mb-4 text-lg font-medium text-gray-900">
             Notas del pedido (opcional)
           </h3>
 
@@ -231,8 +235,7 @@ export default function ReviewStep({
               <span>
                 {summary.calculation.shippingCost === 0
                   ? 'Gratis'
-                  : `S/ ${Number(summary.calculation.shippingCost).toFixed(2)}`
-                }
+                  : `S/ ${Number(summary.calculation.shippingCost).toFixed(2)}`}
               </span>
             </div>
 
@@ -253,7 +256,9 @@ export default function ReviewStep({
             <div className="border-t border-gray-200 pt-2">
               <div className="flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>S/ {Number(summary.calculation.totalAmount).toFixed(2)}</span>
+                <span>
+                  S/ {Number(summary.calculation.totalAmount).toFixed(2)}
+                </span>
               </div>
             </div>
           </div>
@@ -272,11 +277,17 @@ export default function ReviewStep({
           />
           <label htmlFor="accept-terms" className="ml-3 text-sm text-gray-600">
             Acepto los{' '}
-            <a href="/terms" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <a
+              href="/terms"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               términos y condiciones
             </a>{' '}
             y la{' '}
-            <a href="/privacy" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <a
+              href="/privacy"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               política de privacidad
             </a>
           </label>
@@ -288,11 +299,7 @@ export default function ReviewStep({
         <button
           type="button"
           onClick={onPrev}
-          className="
-            rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm
-            hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-gray-600
-          "
+          className="rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
         >
           Volver al pago
         </button>
@@ -301,12 +308,7 @@ export default function ReviewStep({
           type="button"
           onClick={onProcess}
           disabled={!canProceed || loading}
-          className="
-            rounded-md bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-sm
-            hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600
-            disabled:opacity-50 disabled:cursor-not-allowed
-          "
+          className="rounded-md bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? 'Procesando...' : 'Confirmar pedido'}
         </button>

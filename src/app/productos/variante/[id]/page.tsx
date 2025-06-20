@@ -4,7 +4,10 @@ import { LayoutContent } from '@/components/layout/LayoutContent'
 import { ProductVariantNotFound } from '@/components/product/ProductVariantNotFound'
 import ProductVariantView from '@/components/product/ProductVariantView'
 import Navigation from '@/components/ui/Navigation'
-import { generateErrorMetadata, generateProductVariantMetadata } from '@/helpers/productVariant.helpers'
+import {
+  generateErrorMetadata,
+  generateProductVariantMetadata
+} from '@/helpers/productVariant.helpers'
 import { getHeader } from '@/services/header'
 import ProductService from '@/services/product'
 import { Metadata } from 'next'
@@ -51,22 +54,28 @@ export default async function ProductVariantPage({
     return <ProductVariantNotFound />
   }
 
-  const allVariants = (data.product.productVariants || []).filter(v => v !== null)
-  const variant = allVariants.find(variant => variant.id === variantId)
+  const allVariants = (data.product.productVariants || []).filter(
+    (v) => v !== null
+  )
+  const variant = allVariants.find((variant) => variant.id === variantId)
 
   if (!variant) {
     return <ProductVariantNotFound />
   }
 
-  const categories = await getHeader();
+  const categories = await getHeader()
 
   return (
     <Layout>
-      <Header navigationType="mini" >
+      <Header navigationType="mini">
         <Navigation type="mini" categories={categories || []} />
       </Header>
       <LayoutContent>
-        <ProductVariantView data={data} allVariants={allVariants} variant={variant} />
+        <ProductVariantView
+          data={data}
+          allVariants={allVariants}
+          variant={variant}
+        />
       </LayoutContent>
     </Layout>
   )

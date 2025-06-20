@@ -1,12 +1,12 @@
-import { Star } from "lucide-react";
+import { Star } from 'lucide-react'
 
 interface RatingStarsProps {
-  rating: number;
-  hoverRating: number;
-  onRatingClick: (rating: number) => void;
-  onMouseEnter: (rating: number) => void;
-  onMouseLeave: () => void;
-  getRatingText: () => string;
+  rating: number
+  hoverRating: number
+  onRatingClick: (rating: number) => void
+  onMouseEnter: (rating: number) => void
+  onMouseLeave: () => void
+  getRatingText: () => string
 }
 
 export const RatingStars: React.FC<RatingStarsProps> = ({
@@ -15,11 +15,11 @@ export const RatingStars: React.FC<RatingStarsProps> = ({
   onRatingClick,
   onMouseEnter,
   onMouseLeave,
-  getRatingText,
+  getRatingText
 }) => {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="mb-1 block text-sm font-medium text-gray-700">
         ¿Cómo valorarías este producto?*
       </label>
       <div className="flex">
@@ -33,19 +33,18 @@ export const RatingStars: React.FC<RatingStarsProps> = ({
             className="p-1"
           >
             <Star
-              className={`h-8 w-8 ${(hoverRating || rating) >= star
-                ? "fill-yellow-400 text-yellow-400"
-                : "text-gray-300"
-                }`}
+              className={`h-8 w-8 ${
+                (hoverRating || rating) >= star
+                  ? 'fill-yellow-400 text-yellow-400'
+                  : 'text-gray-300'
+              }`}
             />
           </button>
         ))}
       </div>
       {rating > 0 && (
-        <div className="mt-1 text-sm text-gray-600">
-          {getRatingText()}
-        </div>
+        <div className="mt-1 text-sm text-gray-600">{getRatingText()}</div>
       )}
     </div>
-  );
-};
+  )
+}

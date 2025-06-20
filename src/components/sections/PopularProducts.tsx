@@ -1,24 +1,21 @@
-import { ProductComplete } from "@/backend/product";
-import ProductCard from "@/components/ui/ProductCard";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { ProductComplete } from '@/backend/product'
+import ProductCard from '@/components/ui/ProductCard'
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import React from 'react'
 
 interface PopularProductsProps {
   products: ProductComplete[]
 }
 
-const PopularProducts: React.FC<PopularProductsProps> = ({
-  products,
-}) => {
-
+const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
   return (
     <section className="py-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Productos Populares</h2>
         <Link
           href="/populares"
-          className="text-primary hover:text-secondary flex items-center gap-1"
+          className="flex items-center gap-1 text-primary hover:text-secondary"
         >
           Ver todos
           <ChevronRight className="h-4 w-4" />
@@ -26,18 +23,15 @@ const PopularProducts: React.FC<PopularProductsProps> = ({
       </div>
       <div className="grid grid-cols-6 gap-6">
         {products?.map((item) => (
-          <ProductCard
-            key={item.variantId}
-            product={item}
-          />
+          <ProductCard key={item.variantId} product={item} />
         )) || (
-            <div className="col-span-5 text-center py-8 text-gray-500">
-              No hay productos disponibles
-            </div>
-          )}
+          <div className="col-span-5 py-8 text-center text-gray-500">
+            No hay productos disponibles
+          </div>
+        )}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default PopularProducts;
+export default PopularProducts

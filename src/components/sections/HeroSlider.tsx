@@ -1,47 +1,48 @@
-"use client";
-import { Hero } from "@/services/hero";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
+'use client'
+import { Hero } from '@/services/hero'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
 interface SideBanner {
-  title: string;
-  subtitle: string;
-  image: string;
-  link: string;
+  title: string
+  subtitle: string
+  image: string
+  link: string
 }
 
 interface HeroSliderProps {
-  slides: Hero[];
-  sideBanners?: SideBanner[];
+  slides: Hero[]
+  sideBanners?: SideBanner[]
 }
 
 const HeroSlider: React.FC<HeroSliderProps> = ({
   slides,
-  sideBanners = [],
+  sideBanners = []
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0)
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
 
   return (
     <section className="relative">
-      <div className="max-w-screen-4xl mx-auto py-6">
+      <div className="mx-auto max-w-screen-4xl py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Slider */}
-          <div className="col-span-8 relative  overflow-hidden h-[400px]">
+          <div className="relative col-span-8 h-[400px] overflow-hidden">
             {slides.map((slide, index) => (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-500 ${index === currentSlide ? "opacity-100" : "opacity-0"
-                  }`}
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  index === currentSlide ? 'opacity-100' : 'opacity-0'
+                }`}
               >
                 <Image
                   src={slide.image}
@@ -52,18 +53,18 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent">
-                  <div className="h-full flex items-center px-12">
+                  <div className="flex h-full items-center px-12">
                     <div className="max-w-lg">
-                      <div className="text-yellow-400 font-medium mb-2">
+                      <div className="mb-2 font-medium text-yellow-400">
                         {slide.subtitle}
                       </div>
-                      <h1 className="text-5xl font-bold text-white mb-4">
+                      <h1 className="mb-4 text-5xl font-bold text-white">
                         {slide.title}
                       </h1>
-                      <p className="text-gray-200 mb-6">{slide.description}</p>
+                      <p className="mb-6 text-gray-200">{slide.description}</p>
                       <Link
                         href={slide.ctaLink}
-                        className="inline-block  bg-secondary border border-secondary text-white px-8 py-3  hover:bg-transparent hover:border-secondary hover:border transition-colors"
+                        className="inline-block border border-secondary bg-secondary px-8 py-3 text-white transition-colors hover:border hover:border-secondary hover:bg-transparent"
                       >
                         {slide.cta}
                       </Link>
@@ -76,25 +77,26 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
             {/* Slider Controls */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 hover:bg-white"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 hover:bg-white"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
 
             {/* Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
               {slides.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full ${index === currentSlide ? "bg-white" : "bg-white/50"
-                    }`}
+                  className={`h-3 w-3 rounded-full ${
+                    index === currentSlide ? 'bg-white' : 'bg-white/50'
+                  }`}
                 />
               ))}
             </div>
@@ -104,10 +106,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
           {sideBanners.length > 0 && (
             <div className="col-span-4 space-y-4">
               {sideBanners.map((banner, index) => (
-                <div
-                  key={index}
-                  className="relative  overflow-hidden h-[192px]"
-                >
+                <div key={index} className="relative h-[192px] overflow-hidden">
                   <Image
                     src={banner.image}
                     alt={banner.title}
@@ -116,10 +115,10 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent p-6">
-                    <div className="text-yellow-400 font-medium mb-1">
+                    <div className="mb-1 font-medium text-yellow-400">
                       {banner.subtitle}
                     </div>
-                    <h3 className="text-white text-xl font-bold mb-2">
+                    <h3 className="mb-2 text-xl font-bold text-white">
                       {banner.title}
                     </h3>
                     <Link
@@ -136,7 +135,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default HeroSlider;
+export default HeroSlider

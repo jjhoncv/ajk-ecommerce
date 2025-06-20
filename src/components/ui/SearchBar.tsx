@@ -1,28 +1,28 @@
-"use client";
-import { useRouter } from "next/navigation";
-import SearchSuggestions from "../search/SearchSuggestions";
+'use client'
+import { useRouter } from 'next/navigation'
+import SearchSuggestions from '../search/SearchSuggestions'
 
 export default function SearchBar() {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSearch = (query?: string) => {
     // Construir URL de búsqueda
-    const searchUrl = "/search";
-    const params = new URLSearchParams();
+    const searchUrl = '/search'
+    const params = new URLSearchParams()
 
     if (query === undefined) {
-      router.push(`${searchUrl}`);
+      router.push(`${searchUrl}`)
       return
     }
 
     // Añadir query si existe
     if (query.trim()) {
-      params.set("q", query.trim());
+      params.set('q', query.trim())
     }
 
     // Navegar a la página de búsqueda
-    router.push(`${searchUrl}?${params.toString()}`);
-  };
+    router.push(`${searchUrl}?${params.toString()}`)
+  }
 
   return (
     <div className="flex-1">
@@ -32,5 +32,5 @@ export default function SearchBar() {
         className="w-full"
       />
     </div>
-  );
+  )
 }

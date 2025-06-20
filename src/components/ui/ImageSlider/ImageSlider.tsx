@@ -1,33 +1,29 @@
-"use client";
-import { ItemImage } from "@/shared";
-import Image from "next/image";
-import React from "react";
-import { useImageSlider } from "./useImageSlider"; // Ajusta la ruta según tu estructura
+'use client'
+import { ItemImage } from '@/shared'
+import Image from 'next/image'
+import React from 'react'
+import { useImageSlider } from './useImageSlider' // Ajusta la ruta según tu estructura
 
 interface ImageSliderProps {
-  images: ItemImage[];
-  defaultImage?: string;
-  className?: string;
-  autoSlideInterval?: number;
-  showIndicators?: boolean;
+  images: ItemImage[]
+  defaultImage?: string
+  className?: string
+  autoSlideInterval?: number
+  showIndicators?: boolean
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({
   images,
-  defaultImage = "/no-image.webp",
-  className = "w-full aspect-square overflow-hidden relative bg-gray-50",
+  defaultImage = '/no-image.webp',
+  className = 'w-full aspect-square overflow-hidden relative bg-gray-50',
   autoSlideInterval = 2000,
-  showIndicators = true,
+  showIndicators = true
 }) => {
-  const {
-    currentImageIndex,
-    goToImage,
-    startSlider,
-    stopSlider,
-  } = useImageSlider({
-    imagesLength: images.length,
-    autoSlideInterval
-  });
+  const { currentImageIndex, goToImage, startSlider, stopSlider } =
+    useImageSlider({
+      imagesLength: images.length,
+      autoSlideInterval
+    })
 
   // Si no hay imágenes, mostrar imagen por defecto
   if (images.length === 0) {
@@ -42,7 +38,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           priority
         />
       </div>
-    );
+    )
   }
 
   return (
@@ -55,12 +51,13 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
       {images.map((image, idx) => (
         <div
           key={idx}
-          className={`absolute inset-0 transition-opacity duration-500 ${currentImageIndex === idx ? "opacity-100" : "opacity-0"
-            }`}
+          className={`absolute inset-0 transition-opacity duration-500 ${
+            currentImageIndex === idx ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           <Image
             src={image.imageUrlNormal || defaultImage}
-            alt={image.altText || ""}
+            alt={image.altText || ''}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-contain"
@@ -75,20 +72,19 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           {images.map((_, idx) => (
             <button
               key={idx}
-              className={`w-2 h-2 rounded-full transition-colors ${currentImageIndex === idx
-                ? "bg-gray-800"
-                : "bg-gray-300"
-                }`}
+              className={`h-2 w-2 rounded-full transition-colors ${
+                currentImageIndex === idx ? 'bg-gray-800' : 'bg-gray-300'
+              }`}
               onClick={(e) => {
-                e.preventDefault();
-                goToImage(idx);
+                e.preventDefault()
+                goToImage(idx)
               }}
             />
           ))}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ImageSlider;
+export default ImageSlider

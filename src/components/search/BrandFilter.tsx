@@ -1,10 +1,10 @@
-"use client";
-import CollapsibleSection from "@/components/ui/CollapsibleSection";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+'use client'
+import CollapsibleSection from '@/components/ui/CollapsibleSection'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
 
-import { AvailableFilters } from '@/backend/filters';
-import { ProductSearchFilters } from '@/backend/search';
+import { AvailableFilters } from '@/backend/filters'
+import { ProductSearchFilters } from '@/backend/search'
 
 interface BrandFilterProps {
   availableFilters: AvailableFilters
@@ -13,27 +13,27 @@ interface BrandFilterProps {
 
 const BrandFilter: React.FC<BrandFilterProps> = ({
   availableFilters,
-  currentFilters,
+  currentFilters
 }) => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
   const updateFilter = (key: string, value: string | null) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams.toString())
 
-    if (value === null || value === "") {
-      params.delete(key);
+    if (value === null || value === '') {
+      params.delete(key)
     } else {
-      params.set(key, value);
+      params.set(key, value)
     }
 
-    params.set("page", "1"); // Reset to first page when filtering
-    router.push(`${pathname}?${params.toString()}`);
-  };
+    params.set('page', '1') // Reset to first page when filtering
+    router.push(`${pathname}?${params.toString()}`)
+  }
 
   if (!availableFilters?.brands || availableFilters.brands.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -47,7 +47,7 @@ const BrandFilter: React.FC<BrandFilterProps> = ({
               value={brand.id}
               checked={currentFilters.brandId === brand.id}
               onChange={(e) =>
-                updateFilter("brand", e.target.checked ? e.target.value : null)
+                updateFilter('brand', e.target.checked ? e.target.value : null)
               }
               className="mr-2"
             />
@@ -58,7 +58,7 @@ const BrandFilter: React.FC<BrandFilterProps> = ({
         ))}
       </div>
     </CollapsibleSection>
-  );
-};
+  )
+}
 
-export default BrandFilter;
+export default BrandFilter

@@ -1,24 +1,24 @@
-import { siteConfig } from "@/config";
-import { Clock, MapPin, Monitor } from "lucide-react";
-import Link from "next/link";
+import { siteConfig } from '@/config'
+import { Clock, MapPin, Monitor } from 'lucide-react'
+import Link from 'next/link'
 
 interface FooterSection {
-  title: string;
+  title: string
   links: {
-    name: string;
-    href: string;
-  }[];
+    name: string
+    href: string
+  }[]
 }
 
 interface SocialLink {
-  name: string;
-  icon: string;
-  href: string;
+  name: string
+  icon: string
+  href: string
 }
 
 interface FooterProps {
-  sections: FooterSection[];
-  socialLinks: SocialLink[];
+  sections: FooterSection[]
+  socialLinks: SocialLink[]
 }
 
 const Footer = async ({ sections, socialLinks }: FooterProps) => {
@@ -26,19 +26,19 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
   // const additionalData = await fetchAdditionalData();
 
   return (
-    <footer className="bg-white border-t border-gray-300">
-      <div className="max-w-screen-4xl mx-auto px-12 py-12">
+    <footer className="border-t border-gray-300 bg-white">
+      <div className="mx-auto max-w-screen-4xl px-12 py-12">
         <div className="grid grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="mb-4 flex items-center gap-2">
               <Monitor className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold text-primary">
                 {siteConfig.name}
               </span>
             </Link>
-            <p className="text-gray-600 mb-4">{siteConfig.description}</p>
-            <div className="space-y-2 mb-6">
+            <p className="mb-4 text-gray-600">{siteConfig.description}</p>
+            <div className="mb-6 space-y-2">
               <p className="flex items-center gap-2 text-gray-600">
                 <MapPin className="h-4 w-4" />
                 {siteConfig.contact.address}
@@ -53,7 +53,7 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="w-10 h-10 text-white rounded-full flex items-center justify-center bg-secondary hover:bg-opacity-90"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-white hover:bg-opacity-90"
                   aria-label={link.name}
                   dangerouslySetInnerHTML={{ __html: link.icon }}
                 />
@@ -64,13 +64,13 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
           {/* Footer Sections */}
           {sections.map((section) => (
             <div key={section.title}>
-              <h3 className="font-bold text-gray-900 mb-4">{section.title}</h3>
+              <h3 className="mb-4 font-bold text-gray-900">{section.title}</h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 hover:text-primary transition-colors duration-300"
+                      className="text-gray-600 transition-colors duration-300 hover:text-primary"
                     >
                       {link.name}
                     </Link>
@@ -82,9 +82,9 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
 
           {/* Install App */}
           <div>
-            <h3 className="font-bold text-gray-900 mb-4">Instalar App</h3>
-            <p className="text-gray-600 mb-4">Desde App Store o Google Play</p>
-            <div className="space-y-3 mb-6">
+            <h3 className="mb-4 font-bold text-gray-900">Instalar App</h3>
+            <p className="mb-4 text-gray-600">Desde App Store o Google Play</p>
+            <div className="mb-6 space-y-3">
               <a href="#" className="block">
                 <img
                   src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
@@ -100,7 +100,7 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
                 />
               </a>
             </div>
-            <p className="text-gray-600 mb-2">Medios de pago seguros</p>
+            <p className="mb-2 text-gray-600">Medios de pago seguros</p>
             <div className="flex gap-2">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
@@ -123,11 +123,11 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
       </div>
       {/* Bottom Footer */}
       <div className="border-t border-gray-300">
-        <div className="max-w-screen-4xl mx-auto px-12 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-600 mb-4 md:mb-0">
-              © {new Date().getFullYear()} {siteConfig.name}. Todos los derechos
-              reservados
+        <div className="mx-auto max-w-screen-4xl px-12 py-4">
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <p className="mb-4 text-gray-600 md:mb-0">
+              © {new Date().getFullYear()} {siteConfig.name}. Todos los
+              derechos reservados
             </p>
             <div className="flex items-center gap-4">
               <p className="text-gray-600">
@@ -139,7 +139,7 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

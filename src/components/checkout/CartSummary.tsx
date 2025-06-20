@@ -1,5 +1,9 @@
 import { CartItem } from '@/hooks/useCart'
-import { OrderCalculation, PaymentOption, ShippingOption } from '@/types/checkout'
+import {
+  OrderCalculation,
+  PaymentOption,
+  ShippingOption
+} from '@/types/checkout'
 import { PromotionVariants } from '@/types/domain'
 
 interface CartSummaryProps {
@@ -17,23 +21,24 @@ export default function CartSummary({
 }: CartSummaryProps) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-medium text-gray-900 mb-4">
+      <h2 className="mb-4 text-lg font-medium text-gray-900">
         Resumen del pedido
       </h2>
 
       {/* Items */}
-      <div className="space-y-4 mb-6">
+      <div className="mb-6 space-y-4">
         {items.map((item) => {
           let displayPrice = item.price
 
           // Mostrar precio promocional si existe
           if (item.promotionVariants && item.promotionVariants.length > 0) {
             const activePromotion = item.promotionVariants
-              .filter(pv => !!pv)
-              .find((pv: PromotionVariants) =>
-                pv?.promotion?.isActive === 1 &&
-                new Date() >= new Date(pv.promotion.startDate) &&
-                new Date() <= new Date(pv.promotion.endDate)
+              .filter((pv) => !!pv)
+              .find(
+                (pv: PromotionVariants) =>
+                  pv?.promotion?.isActive === 1 &&
+                  new Date() >= new Date(pv.promotion.startDate) &&
+                  new Date() <= new Date(pv.promotion.endDate)
               )
 
             if (activePromotion) {
@@ -50,8 +55,8 @@ export default function CartSummary({
                   className="h-16 w-16 rounded-md object-cover object-center"
                 />
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-900 line-clamp-2">
+              <div className="min-w-0 flex-1">
+                <h3 className="line-clamp-2 text-sm font-medium text-gray-900">
                   {item.name}
                 </h3>
                 <div className="mt-1 flex items-center space-x-2">
@@ -64,7 +69,9 @@ export default function CartSummary({
                     S/ {Number(displayPrice.toFixed(2))}
                   </span>
                 </div>
-                <p className="text-sm text-gray-500">Cantidad: {item.quantity}</p>
+                <p className="text-sm text-gray-500">
+                  Cantidad: {item.quantity}
+                </p>
               </div>
             </div>
           )
@@ -73,7 +80,7 @@ export default function CartSummary({
 
       {/* Métodos seleccionados */}
       {selectedShipping && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-md">
+        <div className="mb-4 rounded-md bg-gray-50 p-3">
           <div className="flex justify-between">
             <span className="text-sm text-gray-600">Envío:</span>
             <span className="text-sm font-medium">
@@ -81,13 +88,13 @@ export default function CartSummary({
             </span>
           </div>
           {selectedShipping.isFree && (
-            <p className="text-xs text-green-600 mt-1">¡Envío gratis!</p>
+            <p className="mt-1 text-xs text-green-600">¡Envío gratis!</p>
           )}
         </div>
       )}
 
       {selectedPayment && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-md">
+        <div className="mb-4 rounded-md bg-gray-50 p-3">
           <div className="flex justify-between">
             <span className="text-sm text-gray-600">Pago:</span>
             <span className="text-sm font-medium">
@@ -95,7 +102,7 @@ export default function CartSummary({
             </span>
           </div>
           {selectedPayment.processingFee > 0 && (
-            <p className="text-xs text-orange-600 mt-1">
+            <p className="mt-1 text-xs text-orange-600">
               Comisión: S/ {Number(selectedPayment.processingFee).toFixed(2)}
             </p>
           )}
@@ -103,7 +110,7 @@ export default function CartSummary({
       )}
 
       {/* Totales */}
-      <div className="border-t border-gray-200 pt-4 space-y-2">
+      <div className="space-y-2 border-t border-gray-200 pt-4">
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Subtotal</span>
           <span>S/ {Number(calculation.subtotal).toFixed(2)}</span>
@@ -121,7 +128,9 @@ export default function CartSummary({
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Envío</span>
           <span>
-            {calculation.shippingCost === 0 ? 'Gratis' : `S/ ${Number(calculation.shippingCost).toFixed(2)}`}
+            {calculation.shippingCost === 0
+              ? 'Gratis'
+              : `S/ ${Number(calculation.shippingCost).toFixed(2)}`}
           </span>
         </div>
 

@@ -1,18 +1,18 @@
-"use client";
-import LoginForm from "@/components/ui/LoginForm";
-import { Modal } from "@/components/ui/Modal";
-import { ModalContent } from "@/components/ui/Modal/ModalContent";
-import { ModalTitle } from "@/components/ui/Modal/ModalTitle";
-import RegisterForm from "@/components/ui/RegisterForm";
+'use client'
+import LoginForm from '@/components/ui/LoginForm'
+import { Modal } from '@/components/ui/Modal'
+import { ModalContent } from '@/components/ui/Modal/ModalContent'
+import { ModalTitle } from '@/components/ui/Modal/ModalTitle'
+import RegisterForm from '@/components/ui/RegisterForm'
 
 interface AuthModalsProps {
-  isLoginOpen: boolean;
-  isRegisterOpen: boolean;
-  closeAll: () => void;
-  onLoginSuccess: () => void;
-  onRegisterSuccess: () => void;
-  onSwitchToRegister: () => void;
-  onSwitchToLogin: () => void;
+  isLoginOpen: boolean
+  isRegisterOpen: boolean
+  closeAll: () => void
+  onLoginSuccess: () => void
+  onRegisterSuccess: () => void
+  onSwitchToRegister: () => void
+  onSwitchToLogin: () => void
 }
 
 export function AuthModals({
@@ -22,15 +22,11 @@ export function AuthModals({
   onLoginSuccess,
   onRegisterSuccess,
   onSwitchToRegister,
-  onSwitchToLogin,
+  onSwitchToLogin
 }: AuthModalsProps) {
   return (
     <>
-      <Modal
-        isOpen={isLoginOpen}
-        onClose={closeAll}
-        className="max-w-lg"
-      >
+      <Modal isOpen={isLoginOpen} onClose={closeAll} className="max-w-lg">
         <ModalTitle onClose={closeAll} title="Iniciar sesión" />
         <ModalContent>
           <LoginForm
@@ -40,11 +36,7 @@ export function AuthModals({
           />
         </ModalContent>
       </Modal>
-      <Modal
-        isOpen={isRegisterOpen}
-        onClose={closeAll}
-        className="max-w-lg"
-      >
+      <Modal isOpen={isRegisterOpen} onClose={closeAll} className="max-w-lg">
         <ModalTitle onClose={closeAll} title="Crear cuenta" />
         <ModalContent>
           <RegisterForm
@@ -55,5 +47,5 @@ export function AuthModals({
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }

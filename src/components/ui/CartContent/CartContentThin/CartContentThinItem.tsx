@@ -1,13 +1,13 @@
-import { PlusMinusButton } from "@/components/ui/PlusMinusButton"
-import { formatPrice } from "@/helpers/utils"
-import { CartItem } from "@/hooks/useCart"
-import Image from "next/image"
-import { FC } from "react"
+import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
+import { formatPrice } from '@/helpers/utils'
+import { CartItem } from '@/hooks/useCart'
+import Image from 'next/image'
+import { FC } from 'react'
 
 interface CartContentThinItemProps {
-  item: CartItem;
-  updateQuantity: (id: number, quantity: number) => void;
-  onDelete: (id: number) => void; // Nueva prop
+  item: CartItem
+  updateQuantity: (id: number, quantity: number) => void
+  onDelete: (id: number) => void // Nueva prop
 }
 
 export const CartContentThinItem: FC<CartContentThinItemProps> = ({
@@ -15,13 +15,9 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
   updateQuantity,
   onDelete
 }) => {
-
-
   // const variant: ProductVariants = item?.promotionVariants?.find(pv => pv?.variantId === item.id)
 
   // const getVariant = (promotionVariants?: (PromotionVariants | null)[] | null | undefined): ProductVariants | null => {
-
-
 
   //   const variant = item?.promotionVariants?.find(pv => pv?.variantId === item.id)
   //   return variant
@@ -35,22 +31,19 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
     return promotionPrice
   }
 
-
   const price = getPrice()
 
-
-
   const handleQuantityChange = (quantity: number) => {
-    updateQuantity(item.id, quantity);
-  };
+    updateQuantity(item.id, quantity)
+  }
 
   const handleRemoveRequest = () => {
-    onDelete(item.id);
-  };
+    onDelete(item.id)
+  }
 
   return (
-    <div key={item.id} className="flex flex-col space-y-2 items-center">
-      <div className="w-20 h-20 relative flex-shrink-0">
+    <div key={item.id} className="flex flex-col items-center space-y-2">
+      <div className="relative h-20 w-20 flex-shrink-0">
         <Image
           src={item.image}
           alt={item.name}
@@ -59,8 +52,8 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
           className="object-cover"
         />
       </div>
-      <p className="text-primary font-bold text-sm">{formatPrice(price)}</p>
-      <div className="flex items-center mt-2">
+      <p className="text-sm font-bold text-primary">{formatPrice(price)}</p>
+      <div className="mt-2 flex items-center">
         <PlusMinusButton
           allowRemove={true}
           stock={item.stock}

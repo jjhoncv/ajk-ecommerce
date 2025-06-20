@@ -13,7 +13,7 @@ const steps = [
 
 export default function StepIndicator({ currentStep }: StepIndicatorProps) {
   const getCurrentStepNumber = () => {
-    return steps.find(step => step.key === currentStep)?.number || 1
+    return steps.find((step) => step.key === currentStep)?.number || 1
   }
 
   const currentStepNumber = getCurrentStepNumber()
@@ -23,33 +23,53 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
       <nav aria-label="Progress">
         <ol className="grid grid-cols-4">
           {steps.map((step) => (
-            <li key={step.key} className="relative flex flex-col w-full justify-center text-center items-center">
+            <li
+              key={step.key}
+              className="relative flex w-full flex-col items-center justify-center text-center"
+            >
               {step.number < currentStepNumber ? (
-                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
+                <div
+                  className="absolute inset-0 bottom-5 flex items-center"
+                  aria-hidden="true"
+                >
                   <div className="h-0.5 w-full bg-indigo-600" />
                 </div>
               ) : step.number === currentStepNumber ? (
-                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
+                <div
+                  className="absolute inset-0 bottom-5 flex items-center"
+                  aria-hidden="true"
+                >
                   <div className="h-0.5 w-full bg-gray-200" />
                 </div>
               ) : (
-                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
+                <div
+                  className="absolute inset-0 bottom-5 flex items-center"
+                  aria-hidden="true"
+                >
                   <div className="h-0.5 w-full bg-gray-200" />
                 </div>
               )}
 
-              <div className={`
-                relative flex h-8 w-8 items-center justify-center rounded-full
-                ${step.number < currentStepNumber
-                  ? 'bg-indigo-600 text-white'
-                  : step.number === currentStepNumber
-                    ? 'border-2 border-indigo-600 bg-white text-indigo-600'
-                    : 'border-2 border-gray-300 bg-white text-gray-500'
-                }
-              `}>
+              <div
+                className={`relative flex h-8 w-8 items-center justify-center rounded-full ${
+                  step.number < currentStepNumber
+                    ? 'bg-indigo-600 text-white'
+                    : step.number === currentStepNumber
+                      ? 'border-2 border-indigo-600 bg-white text-indigo-600'
+                      : 'border-2 border-gray-300 bg-white text-gray-500'
+                } `}
+              >
                 {step.number < currentStepNumber ? (
-                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 ) : (
                   <span>{step.number}</span>
