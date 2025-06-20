@@ -1,4 +1,4 @@
-// hooks/useCart.ts - Limpio, solo manejo del carrito principal
+// hooks/useCart.ts - Con sincronización de localStorage
 'use client'
 import { PromotionVariants } from '@/types/domain'
 import { usePathname, useRouter } from 'next/navigation'
@@ -93,6 +93,44 @@ export function useCart() {
   const isMinicartAllowedOnRoute = (currentPath: string): boolean => {
     return shouldOpenMinicart(currentPath)
   }
+
+  // 🆕 FUNCIÓN PARA SINCRONIZAR CON LOCALSTORAGE
+  const syncWithLocalStorage = useCallback(() => {
+    try {
+      const savedCart = localStorage.getItem('cart')
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart)
+        console.log('🔄 Syncing cart with localStorage:', parsedCart)
+        setItems(parsedCart)
+      }
+    } catch (error) {
+      console.error('❌ Error syncing with localStorage:', error)
+    }
+  }, [])
+
+  // 🆕 LISTENER PARA EVENTOS DE ACTUALIZACIÓN DEL CARRITO
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      console.log('📡 Received cart update event')
+      syncWithLocalStorage()
+    }
+
+    // Escuchar evento personalizado
+    window.addEventListener('cartUpdated', handleCartUpdate)
+
+    // También escuchar cambios en localStorage (para tabs múltiples)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'cart') {
+        console.log('📡 localStorage cart changed in another tab')
+        syncWithLocalStorage()
+      }
+    })
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate)
+      window.removeEventListener('storage', handleCartUpdate)
+    }
+  }, [syncWithLocalStorage])
 
   // 👈 CERRAR MINICART AL CAMBIAR A RUTA BLOQUEADA
   useEffect(() => {
@@ -223,6 +261,7 @@ export function useCart() {
       console.log('🚫 Not opening minicart on route:', pathname)
     }
   }
+
   const removeItem = (id: number) => {
     console.log('🗑️ Removing item ID:', id)
     const itemToRemove = items.find((item) => item.id === id)
@@ -246,16 +285,55 @@ export function useCart() {
       return
     }
 
-    // Actualizar la cantidad SIEMPRE
-    setItems((prevItems) =>
-      prevItems.map((item) => {
+    // ✅ NUEVA LÓGICA: Leer desde localStorage para preservar stock actualizado
+    setItems((prevItems) => {
+      // 🔍 Obtener datos actuales de localStorage
+      const currentCartData = localStorage.getItem('cart')
+      let localStorageItems: CartItem[] = []
+
+      if (currentCartData) {
+        try {
+          localStorageItems = JSON.parse(currentCartData)
+          console.log('📦 Current localStorage cart:', localStorageItems)
+        } catch (error) {
+          console.error('❌ Error parsing localStorage cart:', error)
+          // Fallback al estado actual si falla el parsing
+          localStorageItems = prevItems
+        }
+      } else {
+        // Fallback al estado actual si no hay localStorage
+        localStorageItems = prevItems
+      }
+
+      // 🔄 Actualizar solo la cantidad, preservando otros datos de localStorage
+      const updatedItems = localStorageItems.map((item) => {
         if (item.id === id) {
-          console.log('📝 Updated item quantity:', item.name, quantity)
-          return { ...item, quantity }
+          const itemFromLocalStorage = localStorageItems.find(
+            (lsItem) => lsItem.id === id
+          )
+          console.log('📝 Updating item:', {
+            name: item.name,
+            oldQuantity: item.quantity,
+            newQuantity: quantity,
+            stockFromLS: itemFromLocalStorage?.stock || item.stock,
+            stockFromState: item.stock
+          })
+
+          // ✅ Preservar todos los datos de localStorage, solo cambiar quantity
+          return {
+            ...item, // Usar datos de localStorage (incluye stock actualizado)
+            quantity // Solo actualizar la cantidad
+          }
         }
         return item
       })
-    )
+
+      console.log(
+        '✅ Updated items with preserved localStorage data:',
+        updatedItems
+      )
+      return updatedItems
+    })
 
     // Mostrar toast SIEMPRE
     setToastMessage(`Cantidad actualizada`)

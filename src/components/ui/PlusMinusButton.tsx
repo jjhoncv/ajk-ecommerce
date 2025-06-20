@@ -10,11 +10,13 @@ interface PlusMinusButtonProps {
   onQuantityChange?: (quantity: number) => void
   onRemoveRequest?: () => void
   disabled?: boolean
-  forceEnabled?: boolean // 👈 SOLO ESTA PROP ES NECESARIA
+  forceEnabled?: boolean
   size?: 'sm' | 'md' | 'lg'
   className?: string
   stock: number
   allowRemove?: boolean
+  // 🆕 Nueva prop para preservar la cantidad del usuario
+  preserveQuantity?: boolean
 }
 
 export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
@@ -26,16 +28,17 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
   onQuantityChange,
   onRemoveRequest,
   disabled = false,
-  forceEnabled = false, // 👈 SIMPLE Y DIRECTO
+  forceEnabled = false,
   size = 'md',
-  className
+  className,
+  preserveQuantity = false // 🆕 Por defecto false (comportamiento original)
 }) => {
   const [quantity, setQuantity] = useState(initialQuantity)
 
   // Determinar la cantidad máxima
   const effectiveMaxQuantity = maxQuantity || stock || 999
 
-  // 👈 LÓGICA SIMPLE: forceEnabled override disabled
+  // Lógica simple: forceEnabled override disabled
   const effectiveDisabled = forceEnabled ? false : disabled
 
   // Sincronizar con initialQuantity cuando cambie
@@ -43,22 +46,37 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
     setQuantity(initialQuantity)
   }, [initialQuantity])
 
-  // Asegurar que la cantidad inicial esté en el rango válido
+  // 🆕 Asegurar que la cantidad inicial esté en el rango válido
+  // SOLO si preserveQuantity es false
   useEffect(() => {
-    if (initialQuantity < minQuantity) {
-      setQuantity(minQuantity)
-    } else if (initialQuantity > effectiveMaxQuantity) {
-      setQuantity(effectiveMaxQuantity)
+    if (!preserveQuantity) {
+      // ✅ Comportamiento original: ajustar automáticamente
+      if (initialQuantity < minQuantity) {
+        setQuantity(minQuantity)
+      } else if (initialQuantity > effectiveMaxQuantity) {
+        setQuantity(effectiveMaxQuantity)
+      } else {
+        setQuantity(initialQuantity)
+      }
     } else {
+      // ✅ Preservar cantidad: NO hacer ajustes automáticos
       setQuantity(initialQuantity)
+      console.log(`🔒 Preserving user quantity: ${initialQuantity} (max available: ${effectiveMaxQuantity})`)
     }
-  }, [initialQuantity, minQuantity, effectiveMaxQuantity])
+  }, [initialQuantity, minQuantity, effectiveMaxQuantity, preserveQuantity])
 
   const increaseQuantity = () => {
-    if (quantity < effectiveMaxQuantity && !effectiveDisabled) {
-      const newQuantity = quantity + 1
-      setQuantity(newQuantity)
-      onQuantityChange?.(newQuantity)
+    // ✅ Con preserveQuantity, permitir aumentar incluso si excede stock
+    // El control se hace mediante advertencias visuales, no bloqueando la acción
+    if (!effectiveDisabled) {
+      if (preserveQuantity || quantity < effectiveMaxQuantity) {
+        const newQuantity = quantity + 1
+        console.log(`➕ Increasing quantity: ${quantity} → ${newQuantity} (max: ${effectiveMaxQuantity}, preserve: ${preserveQuantity})`);
+        setQuantity(newQuantity)
+        onQuantityChange?.(newQuantity)
+      } else {
+        console.log(`🚫 Cannot increase: ${quantity} >= ${effectiveMaxQuantity} (preserve: ${preserveQuantity})`);
+      }
     }
   }
 
@@ -75,8 +93,11 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
       if (quantity > minimumAllowed) {
         const newQuantity = quantity - 1
+        console.log(`➖ Decreasing quantity: ${quantity} → ${newQuantity} (min: ${minimumAllowed})`);
         setQuantity(newQuantity)
         onQuantityChange?.(newQuantity)
+      } else {
+        console.log(`🚫 Cannot decrease: ${quantity} <= ${minimumAllowed}`);
       }
     }
   }
@@ -92,6 +113,17 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
     // Si allowRemove es true, nunca deshabilitar
     return false
+  }
+
+  // 🆕 Determinar si el botón de aumentar debe estar deshabilitado
+  const isIncreaseDisabled = () => {
+    if (effectiveDisabled) return true
+
+    // Si preserveQuantity es true, permitir aumentar libremente (advertencias se muestran visualmente)
+    if (preserveQuantity) return false
+
+    // Si preserveQuantity es false, comportamiento normal (respetar stock)
+    return quantity >= effectiveMaxQuantity
   }
 
   // Variantes de tamaño
@@ -136,14 +168,16 @@ export const PlusMinusButton: FC<PlusMinusButtonProps> = ({
 
       <div className={cn(
         "flex items-center justify-center font-bold text-gray-900",
-        currentSize.display
+        currentSize.display,
+        // 🆕 Indicador visual cuando la cantidad excede el stock disponible
+        preserveQuantity && quantity > effectiveMaxQuantity && "text-orange-600"
       )}>
         {quantity}
       </div>
 
       <button
         onClick={increaseQuantity}
-        disabled={quantity >= effectiveMaxQuantity || effectiveDisabled}
+        disabled={isIncreaseDisabled()}
         className={cn(
           "flex items-center justify-center font-semibold rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
           currentSize.button

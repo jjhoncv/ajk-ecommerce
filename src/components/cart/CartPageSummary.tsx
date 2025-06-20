@@ -1,8 +1,9 @@
+import StockValidationModal from "@/components/checkout/StockValidationModal";
+import { useCheckoutNavigation } from "@/components/checkout/useStockValidation";
 import { formatPrice } from "@/helpers/utils";
 import { CartItem } from "@/hooks/useCart";
 import { ShieldCheck } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 
 // Helper para obtener precio con promoción
@@ -27,9 +28,15 @@ interface CartPageSummaryProps {
     selectedTotalPrice: number;
     hasSelectedItems: () => boolean;
   };
+  onCartUpdate?: (adjustedItems: Array<{ id: number; quantity: number }>) => void; // Callback para actualizar carrito
+  onStockInfoReceived?: (stockInfo: Array<{ id: number; availableStock: number }>) => void; // 🆕 Callback para recibir stock info
 }
 
-export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
+export const CartPageSummary: FC<CartPageSummaryProps> = ({
+  summaryCart,
+  onCartUpdate,
+  onStockInfoReceived // 🆕 Nuevo callback
+}) => {
   // Calcular totales considerando promociones
   const calculateTotalsWithPromotions = (items: CartItem[]) => {
     return items.reduce(
@@ -52,23 +59,43 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
   const totalDiscount = totals.originalTotal - totals.finalTotal;
   const hasDiscounts = totalDiscount > 0;
 
-  const router = useRouter()
   const [isNavigating, setIsNavigating] = useState(false)
 
+  // 🆕 Hook para validación de stock
+  const { proceedFromCart, isValidating, modal } = useCheckoutNavigation()
+
+  // 🆕 Función actualizada con validación de stock
   const handleContinueToCheckout = async () => {
     if (!summaryCart.hasSelectedItems()) return
 
     setIsNavigating(true)
 
     try {
-      // Guardar items seleccionados en localStorage para el checkout
-      const selectedItems = summaryCart.selectedItems
+      // 🆕 Preparar items para validación
+      const cartItems = summaryCart.selectedItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity
+      }))
 
-      // Opcional: También puedes filtrar el carrito para que solo tenga los items seleccionados
-      localStorage.setItem('cart', JSON.stringify(selectedItems))
+      // 🆕 Callback para recibir información de stock (SOLO INFORMATIVO)
+      const handleStockInfoReceived = (stockInfo: Array<{ id: number; availableStock: number }>) => {
+        console.log('📦 Stock info received in CartPageSummary:', stockInfo);
 
-      // Navegar al checkout
-      router.push('/checkout')
+        // 🆕 Enviar información de stock al padre para mostrar en CartPageItem
+        if (onStockInfoReceived) {
+          onStockInfoReceived(stockInfo);
+        }
+      };
+
+      // 🆕 Validar stock y proceder al checkout
+      const success = await proceedFromCart(cartItems, handleStockInfoReceived)
+
+      // Si el usuario canceló la validación, restaurar el estado
+      if (!success) {
+        setIsNavigating(false)
+      }
+      // Si fue exitoso, el usuario ya está en /checkout (manejado por el hook)
 
     } catch (error) {
       console.error('Error navigating to checkout:', error)
@@ -76,53 +103,64 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
     }
   }
 
+  // 🆕 Estado combinado de loading
+  const isLoading = isNavigating || isValidating
 
   if (!summaryCart.hasSelectedItems()) {
     return (
-      <div className="bg-white border border-gray-200 p-4 sticky top-4">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Resumen</h2>
+      <>
+        <div className="bg-white border border-gray-200 p-4 sticky top-4">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Resumen</h2>
 
-        {/* Total cuando no hay items seleccionados */}
-        <div className="border-t pt-4 mb-6">
-          <div className="flex justify-between text-lg font-bold">
-            <span>Estimación total</span>
-            <span>{formatPrice(0)}</span>
+          {/* Total cuando no hay items seleccionados */}
+          <div className="border-t pt-4 mb-6">
+            <div className="flex justify-between text-lg font-bold">
+              <span>Estimación total</span>
+              <span>{formatPrice(0)}</span>
+            </div>
+          </div>
+
+          {/* Botón deshabilitado */}
+          <button
+            className="w-full bg-gray-400 text-white py-3 cursor-not-allowed font-medium mb-6"
+            disabled
+          >
+            <div className="flex items-center justify-center gap-2">
+              <span>Continuar (0)</span>
+            </div>
+            <div className="text-xs opacity-90">🚚 Envío gratis!</div>
+          </button>
+
+          {/* Métodos de pago */}
+          <div className="mb-6">
+            <p className="text-sm font-medium text-gray-900 mb-2">Paga con</p>
+            <div className="flex gap-2">
+              <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>
+              <div className="w-8 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold">MC</div>
+              <div className="w-8 h-5 bg-green-600 rounded text-white text-xs flex items-center justify-center font-bold">JCB</div>
+              <div className="w-8 h-5 bg-blue-500 rounded text-white text-xs flex items-center justify-center font-bold">AMEX</div>
+            </div>
+          </div>
+
+          {/* Protección del comprador */}
+          <div className="border-t pt-4">
+            <h3 className="text-sm font-medium text-gray-900 mb-2">Protección del comprador</h3>
+            <div className="flex items-start gap-2">
+              <ShieldCheck className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+              <p className="text-xs text-gray-600">
+                Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
+              </p>
+            </div>
           </div>
         </div>
+        <StockValidationModal
+          isOpen={modal.isOpen}
+          result={modal.result}
+          onConfirm={modal.onConfirm}
+          onCancel={modal.onCancel}
+        />
+      </>
 
-        {/* Botón deshabilitado */}
-        <button
-          className="w-full bg-gray-400 text-white py-3 cursor-not-allowed font-medium mb-6"
-          disabled
-        >
-          <div className="flex items-center justify-center gap-2">
-            <span>Continuar (0)</span>
-          </div>
-          <div className="text-xs opacity-90">🚚 Envío gratis!</div>
-        </button>
-
-        {/* Métodos de pago */}
-        <div className="mb-6">
-          <p className="text-sm font-medium text-gray-900 mb-2">Paga con</p>
-          <div className="flex gap-2">
-            <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold">VISA</div>
-            <div className="w-8 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold">MC</div>
-            <div className="w-8 h-5 bg-green-600 rounded text-white text-xs flex items-center justify-center font-bold">JCB</div>
-            <div className="w-8 h-5 bg-blue-500 rounded text-white text-xs flex items-center justify-center font-bold">AMEX</div>
-          </div>
-        </div>
-
-        {/* Protección del comprador */}
-        <div className="border-t pt-4">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Protección del comprador</h3>
-          <div className="flex items-start gap-2">
-            <ShieldCheck className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-            <p className="text-xs text-gray-600">
-              Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
-            </p>
-          </div>
-        </div>
-      </div>
     );
   }
 
@@ -188,22 +226,32 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
         </div>
       </div>
 
+      {/* 🆕 Botón actualizado con estados de validación */}
       <button
         onClick={handleContinueToCheckout}
         className="w-full font-bold bg-red-600 text-white py-3 hover:bg-red-700 transition-colors mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={!summaryCart.hasSelectedItems() || isNavigating}
+        disabled={!summaryCart.hasSelectedItems() || isLoading}
       >
         <div className="flex items-center justify-center gap-2">
-          {isNavigating ? (
+          {isLoading ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-              <span>Redirigiendo...</span>
+              <span>
+                {isValidating ? 'Validando stock...' : 'Redirigiendo...'}
+              </span>
             </>
           ) : (
             <span>Continuar ({totals.totalItems})</span>
           )}
         </div>
       </button>
+
+      {/* 🆕 Mensaje informativo durante la validación */}
+      {isValidating && (
+        <div className="text-xs text-center text-gray-600 mb-3">
+          Verificando disponibilidad de productos...
+        </div>
+      )}
 
       {/* Métodos de pago */}
       <div className="mb-4">
@@ -222,13 +270,20 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({ summaryCart }) => {
         <div className="flex items-start gap-2">
           <ShieldCheck className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
           <p className="text-xs text-gray-600">
-            Recibe un reembolso de tu dinero si el artículo not llega o es diferente al de la descripción.
+            Recibe un reembolso de tu dinero si el artículo no llega o es diferente al de la descripción.
           </p>
         </div>
       </div>
 
       {/* Resumen de promociones aplicadas (si las hay) */}
       {/* <CartPageSummaryPromotions /> */}
+
+      <StockValidationModal
+        isOpen={modal.isOpen}
+        result={modal.result}
+        onConfirm={modal.onConfirm}
+        onCancel={modal.onCancel}
+      />
     </div>
   );
 };

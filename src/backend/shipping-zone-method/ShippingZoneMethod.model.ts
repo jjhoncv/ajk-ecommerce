@@ -117,11 +117,15 @@ export class ShippingZoneMethodModel {
     orderValue: number
   ): Promise<ShippingCalculation[] | undefined> {
     // Buscar la zona que corresponde a la dirección
+
+    console.log({ district, province, department })
+
     const zone = await oShippingZoneRep.getShippingZoneByDistrict(
       district,
       province,
       department
     )
+
     if (!zone) return undefined
 
     // Obtener métodos disponibles para esta zona

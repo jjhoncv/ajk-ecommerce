@@ -31,21 +31,20 @@ export class ShippingZoneRepository {
 
   public async getShippingZoneByDistrict(
     district: string,
-    province: string,
-    department: string
+    province?: string,
+    department?: string
   ): Promise<ShippingZoneRaw | null> {
     const zones = await executeQuery<ShippingZoneRaw[]>({
       query: `
         SELECT * FROM shipping_zones 
-        WHERE JSON_CONTAINS(
-          districts, 
-          JSON_OBJECT('district', ?, 'province', ?, 'department', ?)
-        )
+        WHERE JSON_CONTAINS(districts, ?) 
         AND is_active = 1
         LIMIT 1
       `,
-      values: [district, province, department]
+      values: [JSON.stringify(district)]
     })
+
+    console.log('zones', zones)
 
     if (zones.length === 0) return null
     return zones[0]

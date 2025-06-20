@@ -413,6 +413,85 @@ export class ProductVariantModel {
   public async deleteVariant(id: number) {
     return await this.deleteProductVariant(id)
   }
+
+  /**
+   * Actualizar stock de una variante (puede ser positivo o negativo)
+   * @param id - ID de la variante
+   * @param quantityChange - Cambio en el stock (negativo para reducir, positivo para aumentar)
+   */
+  public async updateStock(
+    id: number,
+    quantityChange: number
+  ): Promise<ProductVariant | undefined> {
+    const updated = await oProductVariantRep.updateStock(id, quantityChange)
+    if (!updated) return undefined
+    return ProductVariantMapper(updated)
+  }
+
+  /**
+   * Establecer stock exacto de una variante
+   * @param id - ID de la variante
+   * @param newStock - Nuevo stock
+   */
+  public async setStock(
+    id: number,
+    newStock: number
+  ): Promise<ProductVariant | undefined> {
+    const updated = await oProductVariantRep.setStock(id, newStock)
+    if (!updated) return undefined
+    return ProductVariantMapper(updated)
+  }
+
+  /**
+   * Reducir stock de una variante
+   * @param id - ID de la variante
+   * @param quantity - Cantidad a reducir
+   */
+  public async reduceStock(
+    id: number,
+    quantity: number
+  ): Promise<ProductVariant | undefined> {
+    return await this.updateStock(id, -quantity)
+  }
+
+  /**
+   * Aumentar stock de una variante
+   * @param id - ID de la variante
+   * @param quantity - Cantidad a aumentar
+   */
+  public async increaseStock(
+    id: number,
+    quantity: number
+  ): Promise<ProductVariant | undefined> {
+    return await this.updateStock(id, quantity)
+  }
+
+  /**
+   * Verificar si hay stock suficiente
+   * @param id - ID de la variante
+   * @param requiredQuantity - Cantidad requerida
+   */
+  public async hasEnoughStock(
+    id: number,
+    requiredQuantity: number
+  ): Promise<boolean> {
+    const variant = await this.getProductVariantById(id)
+    if (!variant) return false
+    return variant.stock >= requiredQuantity
+  }
+
+  /**
+   * Obtener variantes con stock bajo
+   * @param threshold - Umbral de stock bajo (por defecto 10)
+   */
+  public async getVariantsWithLowStock(
+    threshold: number = 10
+  ): Promise<ProductVariant[] | undefined> {
+    // Necesitarías agregar este método al repository también
+    const variantsRaw =
+      await oProductVariantRep.getVariantsWithLowStock(threshold)
+    return ProductVariantsMapper(variantsRaw)
+  }
 }
 
 const productVariantModel = new ProductVariantModel()
