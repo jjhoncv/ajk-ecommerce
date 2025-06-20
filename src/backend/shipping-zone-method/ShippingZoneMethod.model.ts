@@ -118,8 +118,6 @@ export class ShippingZoneMethodModel {
   ): Promise<ShippingCalculation[] | undefined> {
     // Buscar la zona que corresponde a la dirección
 
-    console.log({ district, province, department })
-
     const zone = await oShippingZoneRep.getShippingZoneByDistrict(
       district,
       province,
@@ -145,7 +143,15 @@ export class ShippingZoneMethodModel {
 
       // Calcular si el envío es gratis
       const threshold = zoneMethod.free_shipping_threshold
-      const isFree = threshold !== null && orderValue >= threshold
+
+      console.log('threshold', Number(orderValue), '>=', Number(threshold))
+      let isFree = false
+      if (threshold) {
+        isFree = orderValue >= threshold
+      }
+
+      console.log('isFree', isFree)
+      // const isFree = threshold !== null && orderValue >= threshold
 
       // Calcular costo final
       const finalCost = isFree ? 0 : zoneMethod.cost

@@ -189,13 +189,8 @@ export const CartPageItem: FC<CartPageItemProps> = ({
                       // 🆕 Preservar cantidad del usuario cuando hay validación de stock
                       preserveQuantity={Boolean(stockInfo)}
                     />
-
-
                   </div>
-
-
                 </div>
-
               </div>
               {/* ✅ Advertencia de stock (solo se muestra cuando hay problemas Y stockInfo) */}
               {stockInfo && hasStockIssue && (

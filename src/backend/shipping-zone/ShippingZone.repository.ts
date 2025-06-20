@@ -44,7 +44,7 @@ export class ShippingZoneRepository {
       values: [JSON.stringify(district)]
     })
 
-    console.log('zones', zones)
+    // console.log('zones', zones)
 
     if (zones.length === 0) return null
     return zones[0]

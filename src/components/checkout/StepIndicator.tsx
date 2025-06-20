@@ -21,19 +21,19 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
   return (
     <div className="mb-8">
       <nav aria-label="Progress">
-        <ol className="flex items-center">
-          {steps.map((step, stepIdx) => (
-            <li key={step.key} className={`${stepIdx !== steps.length - 1 ? 'pr-8 sm:pr-20' : ''} relative`}>
+        <ol className="grid grid-cols-4">
+          {steps.map((step) => (
+            <li key={step.key} className="relative flex flex-col w-full justify-center text-center items-center">
               {step.number < currentStepNumber ? (
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
                   <div className="h-0.5 w-full bg-indigo-600" />
                 </div>
               ) : step.number === currentStepNumber ? (
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
                   <div className="h-0.5 w-full bg-gray-200" />
                 </div>
               ) : (
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                <div className="absolute bottom-5 inset-0 flex items-center" aria-hidden="true">
                   <div className="h-0.5 w-full bg-gray-200" />
                 </div>
               )}

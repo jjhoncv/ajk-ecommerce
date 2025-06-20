@@ -155,6 +155,7 @@ export class PaymentMethodModel {
     amount: number
   ): PaymentCalculation {
     // Validar límites de monto
+
     const isValidAmount = this.isValidAmountForMethod(method, amount)
 
     let processingFee = 0
@@ -210,7 +211,7 @@ export class PaymentMethodModel {
     const validMethods: PaymentCalculation[] = []
 
     for (const method of methods) {
-      const calculation = this.calculatePaymentFee(method, amount)
+      const calculation = this.calculatePaymentFee(method, Number(amount))
       if (calculation.isValid) {
         validMethods.push(calculation)
       }

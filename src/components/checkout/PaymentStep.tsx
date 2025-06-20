@@ -22,6 +22,7 @@ export default function PaymentStep({
   onPrev,
   loading
 }: PaymentStepProps) {
+
   const [selectedMethodId, setSelectedMethodId] = useState<number | null>(
     selectedPayment?.methodId || null
   )

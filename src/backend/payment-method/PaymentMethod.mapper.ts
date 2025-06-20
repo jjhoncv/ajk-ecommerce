@@ -10,13 +10,13 @@ export const PaymentMethodMapper = (data: PaymentMethodRaw): PaymentMethod => {
     description: data.description,
     iconUrl: data.icon_url,
     isActive: data.is_active,
-    minAmount: data.min_amount,
-    maxAmount: data.max_amount,
+    minAmount: Number(data.min_amount),
+    maxAmount: Number(data.max_amount),
     processingFeeType: data.processing_fee_type,
-    processingFeeValue: data.processing_fee_value,
+    processingFeeValue: Number(data.processing_fee_value),
     requiresVerification: data.requires_verification,
     settings: data.settings,
-    displayOrder: data.display_order,
+    displayOrder: Number(data.display_order),
     createdAt: data.created_at,
     updatedAt: data.updated_at
   }

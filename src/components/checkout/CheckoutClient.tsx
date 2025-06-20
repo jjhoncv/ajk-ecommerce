@@ -175,6 +175,12 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
 
   // Procesar el checkout
   const processCheckout = async () => {
+
+    console.log("summary?.selectedShipping", summary?.selectedShipping)
+    console.log("summary?.selectedPayment", summary?.selectedPayment)
+    console.log("state.data.shippingAddressId", state.data.shippingAddressId)
+
+
     if (!summary?.selectedShipping || !summary?.selectedPayment || !state.data.shippingAddressId) {
       setState(prev => ({ ...prev, error: 'Faltan datos requeridos' }))
       return
@@ -195,6 +201,8 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
         paymentData: state.data.paymentData
       }
 
+      console.log("checkoutData", checkoutData)
+
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -202,6 +210,8 @@ export default function CheckoutClient({ user, paymentMethods }: CheckoutClientP
       })
 
       const result: CheckoutResponse = await response.json()
+
+      console.log("result", result)
 
       if (result.success) {
         // Limpiar carrito

@@ -31,6 +31,8 @@ export default function ShippingStep({
 
   const canProceed = currentAddressId && selectedShippingMethod
 
+  console.log("summary.shippingOptions", summary.shippingOptions)
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -138,7 +140,7 @@ export default function ShippingStep({
                           </span>
                         ) : (
                           <span className="text-sm font-medium text-gray-900">
-                            S/ {option.cost.toFixed(2)}
+                            S/ {Number(option.cost).toFixed(2)}
                           </span>
                         )}
                       </div>

@@ -34,6 +34,7 @@ export default function ReviewStep({
 
   const canProceed = acceptTerms && selectedAddress && selectedShipping && selectedPayment
 
+
   return (
     <div className="space-y-6">
       {/* Resumen del pedido */}

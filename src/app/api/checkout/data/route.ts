@@ -103,8 +103,6 @@ export async function POST(request: NextRequest) {
         subtotal
       )
 
-    // console.log('shippingCalculations', shippingCalculations)
-
     const shippingOptions: ShippingOption[] =
       shippingCalculations?.map((calc) => ({
         methodId: calc.methodId,
