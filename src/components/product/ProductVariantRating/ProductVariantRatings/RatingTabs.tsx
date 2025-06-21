@@ -20,7 +20,7 @@ export const RatingTabs: React.FC<RatingTabsProps> = ({
               ? 'border-b-2 border-indigo-600 text-indigo-600'
               : 'text-gray-500 hover:text-gray-700'
           }`}
-          onClick={() => onTabChange('variant')}
+          onClick={() => { onTabChange('variant') }}
         >
           Esta variante ({variantCount})
         </button>
@@ -30,7 +30,7 @@ export const RatingTabs: React.FC<RatingTabsProps> = ({
               ? 'border-b-2 border-indigo-600 text-indigo-600'
               : 'text-gray-500 hover:text-gray-700'
           }`}
-          onClick={() => onTabChange('product')}
+          onClick={() => { onTabChange('product') }}
         >
           Todas las variantes ({productCount})
         </button>

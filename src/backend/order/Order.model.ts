@@ -1,4 +1,4 @@
-import { Orders as Order } from '@/types/domain'
+import { type Orders as Order } from '@/types/domain'
 
 import { OrderMapper, OrdersMapper, OrderToRawMapper } from './Order.mapper'
 import oOrderRep from './Order.repository'
@@ -51,36 +51,22 @@ export class OrderModel {
     // Convertir solo los campos que se van a actualizar
     const updateRaw: any = {}
 
-    if (orderData.customerId !== undefined)
-      updateRaw.customer_id = orderData.customerId
-    if (orderData.orderNumber !== undefined)
-      updateRaw.order_number = orderData.orderNumber
+    if (orderData.customerId !== undefined) { updateRaw.customer_id = orderData.customerId }
+    if (orderData.orderNumber !== undefined) { updateRaw.order_number = orderData.orderNumber }
     if (orderData.status !== undefined) updateRaw.status = orderData.status
-    if (orderData.subtotal !== undefined)
-      updateRaw.subtotal = orderData.subtotal
-    if (orderData.discountAmount !== undefined)
-      updateRaw.discount_amount = orderData.discountAmount
-    if (orderData.shippingCost !== undefined)
-      updateRaw.shipping_cost = orderData.shippingCost
-    if (orderData.taxAmount !== undefined)
-      updateRaw.tax_amount = orderData.taxAmount
-    if (orderData.totalAmount !== undefined)
-      updateRaw.total_amount = orderData.totalAmount
-    if (orderData.shippingAddressId !== undefined)
-      updateRaw.shipping_address_id = orderData.shippingAddressId
-    if (orderData.shippingMethod !== undefined)
-      updateRaw.shipping_method = orderData.shippingMethod
-    if (orderData.estimatedDelivery !== undefined)
-      updateRaw.estimated_delivery = orderData.estimatedDelivery
-    if (orderData.paymentMethod !== undefined)
-      updateRaw.payment_method = orderData.paymentMethod
-    if (orderData.paymentStatus !== undefined)
-      updateRaw.payment_status = orderData.paymentStatus
+    if (orderData.subtotal !== undefined) { updateRaw.subtotal = orderData.subtotal }
+    if (orderData.discountAmount !== undefined) { updateRaw.discount_amount = orderData.discountAmount }
+    if (orderData.shippingCost !== undefined) { updateRaw.shipping_cost = orderData.shippingCost }
+    if (orderData.taxAmount !== undefined) { updateRaw.tax_amount = orderData.taxAmount }
+    if (orderData.totalAmount !== undefined) { updateRaw.total_amount = orderData.totalAmount }
+    if (orderData.shippingAddressId !== undefined) { updateRaw.shipping_address_id = orderData.shippingAddressId }
+    if (orderData.shippingMethod !== undefined) { updateRaw.shipping_method = orderData.shippingMethod }
+    if (orderData.estimatedDelivery !== undefined) { updateRaw.estimated_delivery = orderData.estimatedDelivery }
+    if (orderData.paymentMethod !== undefined) { updateRaw.payment_method = orderData.paymentMethod }
+    if (orderData.paymentStatus !== undefined) { updateRaw.payment_status = orderData.paymentStatus }
     if (orderData.paidAt !== undefined) updateRaw.paid_at = orderData.paidAt
-    if (orderData.customerNotes !== undefined)
-      updateRaw.customer_notes = orderData.customerNotes
-    if (orderData.adminNotes !== undefined)
-      updateRaw.admin_notes = orderData.adminNotes
+    if (orderData.customerNotes !== undefined) { updateRaw.customer_notes = orderData.customerNotes }
+    if (orderData.adminNotes !== undefined) { updateRaw.admin_notes = orderData.adminNotes }
 
     const updated = await oOrderRep.updateOrder(updateRaw, id)
     if (!updated) return undefined
@@ -112,7 +98,7 @@ export class OrderModel {
   }
 
   public async deleteOrder(id: number): Promise<void> {
-    return await oOrderRep.deleteOrder(id)
+    await oOrderRep.deleteOrder(id)
   }
 
   public async getOrderSummary(): Promise<any[] | undefined> {

@@ -1,5 +1,5 @@
-import { AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
-import { AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
+import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
+import { type AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
 
 export const AttributeOptionImageMapper = (
   data: AttributeOptionImageRaw

@@ -1,5 +1,5 @@
-import { ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
-import { ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
+import { type ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
+import { type ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
 
 export const ShippingZoneMethodMapper = (
   data: ShippingZoneMethodRaw

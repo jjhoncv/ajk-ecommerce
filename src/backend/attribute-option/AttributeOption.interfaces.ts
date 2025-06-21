@@ -1,5 +1,5 @@
 // generated
-import { AttributeOptions as AttributeOption } from '@/types/domain'
+import { type AttributeOptions as AttributeOption } from '@/types/domain'
 
 // me
 export interface AttributeOptionWithImages extends AttributeOption {

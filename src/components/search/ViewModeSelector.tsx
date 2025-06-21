@@ -14,7 +14,7 @@ const ViewModeSelector: React.FC<ViewModeSelectorProps> = ({
   return (
     <div className="flex items-center overflow-hidden rounded-lg border">
       <button
-        onClick={() => onViewModeChange('grid')}
+        onClick={() => { onViewModeChange('grid') }}
         className={`flex items-center px-3 py-2 ${
           viewMode === 'grid'
             ? 'bg-primary text-white'
@@ -26,7 +26,7 @@ const ViewModeSelector: React.FC<ViewModeSelectorProps> = ({
         <span className="text-sm">Cuadrícula</span>
       </button>
       <button
-        onClick={() => onViewModeChange('list')}
+        onClick={() => { onViewModeChange('list') }}
         className={`flex items-center px-3 py-2 ${
           viewMode === 'list'
             ? 'bg-primary text-white'

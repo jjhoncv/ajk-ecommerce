@@ -1,13 +1,13 @@
 // 📄 PaymentTransaction.model.ts
-import { PaymentTransactions as PaymentTransactionRaw } from '@/types/database'
-import { PaymentTransactions as PaymentTransaction } from '@/types/domain'
+import { type PaymentTransactions as PaymentTransactionRaw } from '@/types/database'
+import { type PaymentTransactions as PaymentTransaction } from '@/types/domain'
 
 import oPaymentMethodRep from '@/backend/payment-method/PaymentMethod.repository'
 
 import {
-  CreateTransactionData,
-  PaymentTransactionExtended,
-  TransactionSummary
+  type CreateTransactionData,
+  type PaymentTransactionExtended,
+  type TransactionSummary
 } from './PaymentTransaction.interfaces'
 import {
   PaymentTransactionMapper,
@@ -240,7 +240,7 @@ export class PaymentTransactionModel {
   }
 
   public async deleteTransaction(id: number): Promise<void> {
-    return await oPaymentTransactionRep.deleteTransaction(id)
+    await oPaymentTransactionRep.deleteTransaction(id)
   }
 
   // Método para procesar transacciones expiradas

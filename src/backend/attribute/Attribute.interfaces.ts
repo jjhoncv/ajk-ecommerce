@@ -1,7 +1,7 @@
 // generated
 import {
-  Attributes as Attribute,
-  AttributeOptions as AttributeOption
+  type Attributes as Attribute,
+  type AttributeOptions as AttributeOption
 } from '@/types/domain'
 
 // me

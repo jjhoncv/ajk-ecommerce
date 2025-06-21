@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
+import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
 
 export class AttributeOptionImageRepository {
   public async getAttributeOptionImages(

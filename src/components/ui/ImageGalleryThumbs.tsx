@@ -1,5 +1,5 @@
 'use client'
-import { CleanImage } from '@/components/product/ProductVariant.helpers'
+import { type CleanImage } from '@/components/product/ProductVariant.helpers'
 import { useImageCarousel } from '@/hooks/useImageCarousel'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -77,14 +77,14 @@ export const ImageGalleryThumbs: React.FC<ImageGalleryThumbsProps> = ({
     setLastNavigationSource('arrow')
     goToPrevImage()
     // Reset después de un tiempo
-    setTimeout(() => setLastNavigationSource(null), 300)
+    setTimeout(() => { setLastNavigationSource(null) }, 300)
   }
 
   const handleArrowNext = () => {
     setLastNavigationSource('arrow')
     goToNextImage()
     // Reset después de un tiempo
-    setTimeout(() => setLastNavigationSource(null), 300)
+    setTimeout(() => { setLastNavigationSource(null) }, 300)
   }
 
   // Navegación con thumbnails
@@ -176,8 +176,8 @@ export const ImageGalleryThumbs: React.FC<ImageGalleryThumbsProps> = ({
             {images.map((image, index) => (
               <button
                 key={image.id}
-                onMouseEnter={() => handleThumbnailHover(index)}
-                onClick={() => handleThumbnailClick(index)}
+                onMouseEnter={() => { handleThumbnailHover(index) }}
+                onClick={() => { handleThumbnailClick(index) }}
                 className={cn(
                   'relative flex-shrink-0 overflow-hidden rounded border-2 transition-colors',
                   'h-16 w-16',
@@ -216,8 +216,8 @@ export const ImageGalleryThumbs: React.FC<ImageGalleryThumbsProps> = ({
           {images.map((image, index) => (
             <button
               key={image.id}
-              onMouseEnter={() => handleThumbnailHover(index)}
-              onClick={() => handleThumbnailClick(index)}
+              onMouseEnter={() => { handleThumbnailHover(index) }}
+              onClick={() => { handleThumbnailClick(index) }}
               className={cn(
                 'relative flex-shrink-0 overflow-hidden rounded border-2 transition-colors',
                 isInModal ? 'h-20 w-20' : 'h-16 w-16',
@@ -296,7 +296,7 @@ export const ImageGalleryThumbs: React.FC<ImageGalleryThumbsProps> = ({
               {images.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => handleThumbnailClick(index)}
+                  onClick={() => { handleThumbnailClick(index) }}
                   className={cn(
                     'h-3 w-3 rounded-full transition-colors',
                     index === currentImageIndex

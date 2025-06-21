@@ -1,14 +1,14 @@
 // 📄 backend/coupon/Coupon.model.ts
-import { CouponUsage as CouponUsageRaw } from '@/types/database'
-import { Coupons as Coupon, CouponUsage } from '@/types/domain'
+import { type CouponUsage as CouponUsageRaw } from '@/types/database'
+import { type Coupons as Coupon, type CouponUsage } from '@/types/domain'
 
 import {
-  ApplyCouponData,
-  ApplyCouponResult,
-  CouponFilters,
-  CouponStats,
-  CouponValidationResult,
-  CouponWithStats
+  type ApplyCouponData,
+  type ApplyCouponResult,
+  type CouponFilters,
+  type CouponStats,
+  type CouponValidationResult,
+  type CouponWithStats
 } from './Coupon.interfaces'
 import { CouponMapper, CouponsMapper, CouponToRawMapper } from './Coupon.mapper'
 import oCouponRep from './Coupon.repository'
@@ -68,31 +68,19 @@ export class CouponModel {
     const updateRaw: any = {}
 
     if (couponData.name !== undefined) updateRaw.name = couponData.name
-    if (couponData.description !== undefined)
-      updateRaw.description = couponData.description
+    if (couponData.description !== undefined) { updateRaw.description = couponData.description }
     if (couponData.code !== undefined) updateRaw.code = couponData.code
-    if (couponData.discountType !== undefined)
-      updateRaw.discount_type = couponData.discountType
-    if (couponData.discountValue !== undefined)
-      updateRaw.discount_value = couponData.discountValue
-    if (couponData.startDate !== undefined)
-      updateRaw.start_date = couponData.startDate
-    if (couponData.endDate !== undefined)
-      updateRaw.end_date = couponData.endDate
-    if (couponData.isActive !== undefined)
-      updateRaw.is_active = couponData.isActive
-    if (couponData.usageLimit !== undefined)
-      updateRaw.usage_limit = couponData.usageLimit
-    if (couponData.usageLimitPerCustomer !== undefined)
-      updateRaw.usage_limit_per_customer = couponData.usageLimitPerCustomer
-    if (couponData.usedCount !== undefined)
-      updateRaw.used_count = couponData.usedCount
-    if (couponData.minPurchaseAmount !== undefined)
-      updateRaw.min_purchase_amount = couponData.minPurchaseAmount
-    if (couponData.maxDiscountAmount !== undefined)
-      updateRaw.max_discount_amount = couponData.maxDiscountAmount
-    if (couponData.applicableTo !== undefined)
-      updateRaw.applicable_to = couponData.applicableTo
+    if (couponData.discountType !== undefined) { updateRaw.discount_type = couponData.discountType }
+    if (couponData.discountValue !== undefined) { updateRaw.discount_value = couponData.discountValue }
+    if (couponData.startDate !== undefined) { updateRaw.start_date = couponData.startDate }
+    if (couponData.endDate !== undefined) { updateRaw.end_date = couponData.endDate }
+    if (couponData.isActive !== undefined) { updateRaw.is_active = couponData.isActive }
+    if (couponData.usageLimit !== undefined) { updateRaw.usage_limit = couponData.usageLimit }
+    if (couponData.usageLimitPerCustomer !== undefined) { updateRaw.usage_limit_per_customer = couponData.usageLimitPerCustomer }
+    if (couponData.usedCount !== undefined) { updateRaw.used_count = couponData.usedCount }
+    if (couponData.minPurchaseAmount !== undefined) { updateRaw.min_purchase_amount = couponData.minPurchaseAmount }
+    if (couponData.maxDiscountAmount !== undefined) { updateRaw.max_discount_amount = couponData.maxDiscountAmount }
+    if (couponData.applicableTo !== undefined) { updateRaw.applicable_to = couponData.applicableTo }
     if (couponData.applicableIds !== undefined) {
       updateRaw.applicable_ids = couponData.applicableIds
         ? JSON.stringify(couponData.applicableIds)
@@ -105,15 +93,15 @@ export class CouponModel {
   }
 
   public async deleteCoupon(id: number): Promise<void> {
-    return await oCouponRep.deleteCoupon(id)
+    await oCouponRep.deleteCoupon(id)
   }
 
   public async activateCoupon(id: number): Promise<void> {
-    return await oCouponRep.activateCoupon(id)
+    await oCouponRep.activateCoupon(id)
   }
 
   public async deactivateCoupon(id: number): Promise<void> {
-    return await oCouponRep.deactivateCoupon(id)
+    await oCouponRep.deactivateCoupon(id)
   }
 
   // Validar cupón para un cliente y monto específico
@@ -312,7 +300,7 @@ export class CouponModel {
   // Calcular monto aplicable según restricciones del cupón
   private calculateApplicableAmount(
     coupon: Coupon,
-    items: Array<{ productId?: number; categoryId?: number; amount: number }>
+    items: Array<{ productId?: number, categoryId?: number, amount: number }>
   ): number {
     if (!coupon.applicableIds) return 0
 
@@ -493,7 +481,7 @@ export class CouponModel {
   public calculateDiscount(
     coupon: Coupon,
     amount: number
-  ): { discountAmount: number; finalAmount: number } {
+  ): { discountAmount: number, finalAmount: number } {
     let discountAmount = 0
 
     if (coupon.discountType === 'percentage') {

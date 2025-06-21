@@ -1,8 +1,8 @@
 import { dataMock } from './mock'
-import { Banner } from './types'
+import { type Banner } from './types'
 
 export const getBanner = async (): Promise<Banner[]> => {
-  return new Promise((resolve) => {
+  return await new Promise((resolve) => {
     resolve(dataMock)
   })
 }

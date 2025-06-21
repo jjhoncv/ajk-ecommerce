@@ -1,4 +1,4 @@
-import { Categories } from '@/types/domain'
+import { type Categories } from '@/types/domain'
 
 export interface FeaturedCategory {
   title: string

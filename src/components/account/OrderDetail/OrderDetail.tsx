@@ -96,7 +96,7 @@ interface OrderDetailModalProps {
 
 const statusLabels: Record<
   string,
-  { label: string; color: string; bgColor: string; icon: any }
+  { label: string, color: string, bgColor: string, icon: any }
 > = {
   pending: {
     label: 'Pendiente',
@@ -130,7 +130,7 @@ const statusLabels: Record<
   }
 }
 
-const paymentStatusLabels: Record<string, { label: string; color: string }> = {
+const paymentStatusLabels: Record<string, { label: string, color: string }> = {
   pending: { label: 'Pendiente', color: 'text-orange-600' },
   paid: { label: 'Pagado', color: 'text-green-600' },
   failed: { label: 'Falló', color: 'text-red-600' },
@@ -311,7 +311,7 @@ export default function OrderDetailModal({
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => setShowCancelModal(true)}
+                    onClick={() => { setShowCancelModal(true) }}
                   >
                     Cancelar orden
                   </Button>
@@ -613,11 +613,11 @@ export default function OrderDetailModal({
       {showCancelModal && (
         <Modal
           isOpen={showCancelModal}
-          onClose={() => setShowCancelModal(false)}
+          onClose={() => { setShowCancelModal(false) }}
           className="max-w-md"
         >
           <ModalTitle
-            onClose={() => setShowCancelModal(false)}
+            onClose={() => { setShowCancelModal(false) }}
             title="Cancelar orden"
           />
           <ModalContent>
@@ -634,7 +634,7 @@ export default function OrderDetailModal({
                 <Input
                   id="cancelReason"
                   value={cancelReason}
-                  onChange={(e) => setCancelReason(e.target.value)}
+                  onChange={(e) => { setCancelReason(e.target.value) }}
                   placeholder="Explica por qué deseas cancelar..."
                   className="text-sm"
                 />
@@ -643,7 +643,7 @@ export default function OrderDetailModal({
               <div className="flex gap-3 pt-4">
                 <Button
                   variant="outline"
-                  onClick={() => setShowCancelModal(false)}
+                  onClick={() => { setShowCancelModal(false) }}
                   disabled={cancelling}
                   className="flex-1 text-sm"
                 >

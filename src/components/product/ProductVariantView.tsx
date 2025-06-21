@@ -1,5 +1,5 @@
-import { ProductVariantData } from '@/services/product/productVariant'
-import { ProductVariants } from '@/types/domain'
+import { type ProductVariantData } from '@/services/product/productVariant'
+import { type ProductVariants } from '@/types/domain'
 import React from 'react'
 import ProductVariantInteractive from './ProductVariantInteractive'
 

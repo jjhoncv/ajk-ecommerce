@@ -1,5 +1,5 @@
 // 📄 PaymentMethod.interfaces.ts
-import { PaymentMethods as PaymentMethod } from '@/types/domain'
+import { type PaymentMethods as PaymentMethod } from '@/types/domain'
 
 export interface PaymentMethodExtended extends PaymentMethod {
   totalTransactions?: number

@@ -1,4 +1,4 @@
-import { VariantRatings as VariantRating } from '@/types/domain'
+import { type VariantRatings as VariantRating } from '@/types/domain'
 
 export interface VariantRatingSummary {
   variantId: number

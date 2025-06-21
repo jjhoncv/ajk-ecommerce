@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { Promotions as PromotionRaw } from '@/types/database'
+import { type Promotions as PromotionRaw } from '@/types/database'
 
 export class PromotionRepository {
   public async getPromotions(): Promise<PromotionRaw[] | null> {

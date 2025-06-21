@@ -1,5 +1,5 @@
 // 📄 ShippingZoneMethod.interfaces.ts
-import { ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
+import { type ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
 
 export interface ShippingZoneMethodExtended extends ShippingZoneMethod {
   methodName?: string

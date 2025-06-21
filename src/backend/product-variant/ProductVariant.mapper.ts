@@ -1,5 +1,5 @@
-import { ProductVariants as ProductVariantRaw } from '@/types/database'
-import { ProductVariants as ProductVariant } from '@/types/domain'
+import { type ProductVariants as ProductVariantRaw } from '@/types/database'
+import { type ProductVariants as ProductVariant } from '@/types/domain'
 
 export const ProductVariantMapper = (
   data: ProductVariantRaw

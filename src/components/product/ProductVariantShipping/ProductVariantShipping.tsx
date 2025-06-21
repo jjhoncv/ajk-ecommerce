@@ -11,18 +11,18 @@ import {
   Shield
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { AddressSelectionModal } from '../AddressSelectionModal'
 
 // Usar los tipos compartidos
 import { deliveryDates } from '@/components/product/ProductVariantShipping/ProductVariantShipping.helpers'
-import { ShippingOptionForAddress } from '@/types/shipping'
-import { ProductVariantShippingProps } from './ProductVariantShipping.interfaces'
+import { type ShippingOptionForAddress } from '@/types/shipping'
+import { type ProductVariantShippingProps } from './ProductVariantShipping.interfaces'
 import { ProductVariantShippingLogout } from './ProductVariantShippingLogout'
 import { ProductVariantShippingNotAddress } from './ProductVariantShippingNotAddress'
 import { ProductVariantShippingNotAvailable } from './ProductVariantShippingNotAvailable'
 import { ProductVariantShippingShimmer } from './ProductVariantShippingShimmer'
-import { useShipping } from './useShipping'
+import { useProductVariantShipping } from './use-product-variant-shipping.hook'
 
 export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
   productVariantId,
@@ -40,7 +40,7 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
     error,
     isInitialized,
     selectAddress
-  } = useShipping({
+  } = useProductVariantShipping({
     productVariantId,
     quantity,
     orderValue
@@ -92,7 +92,9 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
         <div className="mb-4 flex items-center justify-between">
           <span className="text-sm font-medium text-gray-900">Envío a</span>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true)
+            }}
             className="flex items-center space-x-1 text-blue-600 transition-colors hover:text-blue-700"
           >
             <MapPin className="h-4 w-4" />
@@ -128,7 +130,9 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
               </div>
             </div>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setIsModalOpen(true)
+              }}
               className="text-gray-400 hover:text-gray-600"
             >
               <ChevronRight className="h-4 w-4" />
@@ -139,7 +143,9 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
           {selectedAddress.shippingOptions.length > 1 && (
             <div className="border-t border-gray-200 pt-3">
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  setIsModalOpen(true)
+                }}
                 className="text-xs font-medium text-blue-600 hover:text-blue-700"
               >
                 Ver más opciones de envío (
@@ -175,7 +181,9 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
       {/* Modal de selección de dirección */}
       <AddressSelectionModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false)
+        }}
         addressOptions={allAddresses}
         selectedAddressId={selectedAddress.address.id}
         onSelectAddress={handleAddressChange}

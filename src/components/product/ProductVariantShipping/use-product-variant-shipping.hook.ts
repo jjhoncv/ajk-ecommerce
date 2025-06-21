@@ -1,7 +1,7 @@
-// 📄 hooks/useShipping.ts
+// 📄 hooks/useProductVariantShipping.ts
 import {
-  ShippingCalculationResponse,
-  ShippingOptionForAddress
+  type ShippingCalculationResponse,
+  type ShippingOptionForAddress
 } from '@/types/shipping'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
@@ -14,22 +14,22 @@ interface ShippingData {
   isInitialized: boolean
 }
 
-interface UseShippingParams {
+interface UseProductVariantShippingProps {
   productVariantId: number
   quantity: number
   orderValue: number
 }
 
-interface UseShippingReturn extends ShippingData {
+interface UseProductVariantShippingReturn extends ShippingData {
   selectAddress: (addressOption: ShippingOptionForAddress) => void
   retry: () => void
 }
 
-export const useShipping = ({
+export const useProductVariantShipping = ({
   productVariantId,
   quantity,
   orderValue
-}: UseShippingParams): UseShippingReturn => {
+}: UseProductVariantShippingProps): UseProductVariantShippingReturn => {
   const { data: session, status } = useSession()
 
   const [shippingData, setShippingData] = useState<ShippingData>({

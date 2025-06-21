@@ -1,5 +1,5 @@
-import { AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
-import { AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
+import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
+import { type AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
 
 // me
 import {
@@ -77,13 +77,13 @@ export class AttributeOptionImageModel {
   }
 
   public async deleteAttributeOptionImage(id: number): Promise<void> {
-    return await oAttributeOptionImageRep.deleteAttributeOptionImage(id)
+    await oAttributeOptionImageRep.deleteAttributeOptionImage(id)
   }
 
   public async deleteAttributeOptionImagesByOptionId(
     attributeOptionId: number
   ): Promise<void> {
-    return await oAttributeOptionImageRep.deleteAttributeOptionImagesByOptionId(
+    await oAttributeOptionImageRep.deleteAttributeOptionImagesByOptionId(
       attributeOptionId
     )
   }

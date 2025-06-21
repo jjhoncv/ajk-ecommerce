@@ -1,4 +1,4 @@
-import { ProductVariants } from '@/types/domain'
+import { type ProductVariants } from '@/types/domain'
 import { useRatingForm } from './hooks/useRatingForm'
 import { ImageUpload } from './ImageUpload'
 import { RatingStars } from './RatingStars'
@@ -54,7 +54,7 @@ export const RatingForm: React.FC<RatingFormProps> = ({
         hoverRating={hoverRating}
         onRatingClick={setRating}
         onMouseEnter={setHoverRating}
-        onMouseLeave={() => setHoverRating(0)}
+        onMouseLeave={() => { setHoverRating(0) }}
         getRatingText={getRatingText}
       />
 
@@ -70,7 +70,7 @@ export const RatingForm: React.FC<RatingFormProps> = ({
           type="text"
           id="rating-title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => { setTitle(e.target.value) }}
           placeholder="Resume tu experiencia en una frase"
           maxLength={100}
           className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
@@ -91,7 +91,7 @@ export const RatingForm: React.FC<RatingFormProps> = ({
         <textarea
           id="rating-review"
           value={review}
-          onChange={(e) => setReview(e.target.value)}
+          onChange={(e) => { setReview(e.target.value) }}
           rows={4}
           placeholder="¿Qué te gustó o no te gustó? ¿Para qué usaste este producto?"
           maxLength={500}

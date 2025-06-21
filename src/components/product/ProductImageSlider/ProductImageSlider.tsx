@@ -1,6 +1,6 @@
 'use client'
 import { ImageGalleryThumbs } from '@/components/ui/ImageGalleryThumbs'
-import { ItemImage } from '@/shared'
+import { type ItemImage } from '@/shared'
 import React from 'react'
 import { cleanAndValidateImages } from '../ProductVariant.helpers'
 

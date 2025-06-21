@@ -1,5 +1,5 @@
 // me
-import { AvailableFilters } from './Filters.interfaces'
+import { type AvailableFilters } from './Filters.interfaces'
 import { AvailableFiltersMapper } from './Filters.mapper'
 import oFiltersRep from './Filters.repository'
 

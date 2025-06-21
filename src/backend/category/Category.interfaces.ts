@@ -1,4 +1,4 @@
-import { Categories as Category } from '@/types/domain'
+import { type Categories as Category } from '@/types/domain'
 
 export interface CategoryWithChildren extends Category {
   children?: Category[]

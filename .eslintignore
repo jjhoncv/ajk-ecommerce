@@ -1,3 +1,25 @@
-gql
+# Build outputs
+.next/
+.cache/
+build/
+dist/
+out/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Generated files
 next-env.d.ts
-environment.d.ts
+pnpm-lock.yaml
+
+# Project specific
+public/
+coverage/
+gql/
+
+# Turbopack generated files
+**/*.turbo.*
+
+domain.d.ts
+database.d.ts

@@ -1,5 +1,5 @@
-import { Brands as BrandRaw } from '@/types/database'
-import { Brands as Brand } from '@/types/domain'
+import { type Brands as BrandRaw } from '@/types/database'
+import { type Brands as Brand } from '@/types/domain'
 
 export const BrandMapper = (data: BrandRaw): Brand => {
   return {

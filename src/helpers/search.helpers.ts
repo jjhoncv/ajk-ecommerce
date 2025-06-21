@@ -1,9 +1,9 @@
-import { ProductSearchFilters } from '@/backend/search'
+import { type ProductSearchFilters } from '@/backend/search'
 import {
   SEARCH_INITIAL_PAGE,
   SEARCH_PRODUCTS_PER_PAGE
 } from '@/constants/search.constants'
-import { FILTER_SORT, SEARCH_SORT, SearchParams } from '@/shared'
+import { type FILTER_SORT, SEARCH_SORT, type SearchParams } from '@/shared'
 
 export const formatParams = (params: SearchParams): ProductSearchFilters => {
   const filters = {
@@ -25,7 +25,7 @@ export const getFilters = (params: SearchParams): ProductSearchFilters => {
 
   // Procesar atributos desde searchParams
   // Formato esperado: attr_1=2,3&attr_2=5
-  const attributeFilters: { [attributeId: number]: number[] } = {}
+  const attributeFilters: Record<number, number[]> = {}
 
   Object.keys(params).forEach((key) => {
     if (key.startsWith('attr_')) {

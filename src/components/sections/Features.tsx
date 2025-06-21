@@ -1,4 +1,4 @@
-import { Feature } from '@/services/features'
+import { type Feature } from '@/services/features'
 import { Clock, Percent } from 'lucide-react'
 import React from 'react'
 

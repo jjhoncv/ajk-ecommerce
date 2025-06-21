@@ -1,6 +1,6 @@
 'use client'
 import { Modal } from '@/components/ui/Modal' // 👈 USAR TU MODAL
-import { ItemImage } from '@/shared'
+import { type ItemImage } from '@/shared'
 import { X } from 'lucide-react'
 import React from 'react'
 import { ProductImageSlider } from './ProductImageSlider'

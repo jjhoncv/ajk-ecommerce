@@ -1,8 +1,8 @@
 import {
-  ProductVariants as ProductVariant,
-  VariantAttributeOptions as VariantAttributeOption,
-  VariantImages as VariantImage,
-  VariantRatingSummary
+  type ProductVariants as ProductVariant,
+  type VariantAttributeOptions as VariantAttributeOption,
+  type VariantImages as VariantImage,
+  type VariantRatingSummary
 } from '@/types/domain'
 
 export interface ProductVariantWithAttributeOptions extends ProductVariant {

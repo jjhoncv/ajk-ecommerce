@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { OrderTracking as OrderTrackingRaw } from '@/types/database'
+import { type OrderTracking as OrderTrackingRaw } from '@/types/database'
 
 export class OrderTrackingRepository {
   public async getOrderTrackings(): Promise<OrderTrackingRaw[] | null> {

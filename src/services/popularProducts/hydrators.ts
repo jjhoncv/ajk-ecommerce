@@ -1,5 +1,5 @@
-import { ProductComplete } from '@/backend/product'
-import { ProductSearchItem } from '@/backend/search'
+import { type ProductComplete } from '@/backend/product'
+import { type ProductSearchItem } from '@/backend/search'
 
 export const hydratePopularProducts = (
   data: ProductSearchItem[]

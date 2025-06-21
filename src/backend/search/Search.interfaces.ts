@@ -1,5 +1,5 @@
-import { AvailableFilters } from '@/backend/filters'
-import { ProductVariantComplete } from '@/backend/product-variant'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductVariantComplete } from '@/backend/product-variant'
 
 export interface ProductSearchFilters {
   query?: string
@@ -7,9 +7,7 @@ export interface ProductSearchFilters {
   brandId?: number
   minPrice?: number
   maxPrice?: number
-  attributes?: {
-    [attributeId: number]: number[] // attributeId -> array de optionIds
-  }
+  attributes?: Record<number, number[]>
   page?: number
   limit?: number
   sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | 'newest'

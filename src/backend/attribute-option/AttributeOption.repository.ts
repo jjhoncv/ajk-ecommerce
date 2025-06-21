@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
+import { type AttributeOptions as AttributeOptionRaw } from '@/types/database'
 
 export class AttributeOptionRepository {
   // ✅ Obtener opciones por attribute ID

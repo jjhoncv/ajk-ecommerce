@@ -1,5 +1,5 @@
-import { Customers as CustomerRaw } from '@/types/database'
-import { Customers as Customer } from '@/types/domain'
+import { type Customers as CustomerRaw } from '@/types/database'
+import { type Customers as Customer } from '@/types/domain'
 
 export const CustomerMapper = (data: CustomerRaw): Customer => {
   return {

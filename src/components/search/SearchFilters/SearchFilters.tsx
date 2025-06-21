@@ -1,6 +1,6 @@
 'use client'
-import { AvailableFilters } from '@/backend/filters'
-import { ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductSearchFilters } from '@/backend/search'
 import ActiveFilters from '@/components/search/ActiveFilters'
 import AttributeFilter from '@/components/search/AttributeFilter'
 import PriceRangeFilter from '@/components/search/PriceRangeFilter'

@@ -1,8 +1,8 @@
 import {
-  AvailableFilters,
-  FilterAttribute,
-  FilterBrand,
-  FilterCategory
+  type AvailableFilters,
+  type FilterAttribute,
+  type FilterBrand,
+  type FilterCategory
 } from './Filters.interfaces'
 
 export const FilterCategoryMapper = (data: FilterCategory): FilterCategory => {
@@ -56,7 +56,7 @@ export const FilterAttributesMapper = (
 export const AvailableFiltersMapper = (
   categories: FilterCategory[],
   brands: FilterBrand[],
-  priceRange: { min: number; max: number },
+  priceRange: { min: number, max: number },
   attributes: FilterAttribute[]
 ): AvailableFilters => {
   return {

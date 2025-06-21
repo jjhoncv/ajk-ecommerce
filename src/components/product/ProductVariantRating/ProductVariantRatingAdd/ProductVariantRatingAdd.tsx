@@ -1,5 +1,5 @@
 'use client'
-import { ProductVariants, Products } from '@/types/domain'
+import { type ProductVariants, type Products } from '@/types/domain'
 import { useSession } from 'next-auth/react'
 import React from 'react'
 import { AuthPrompt } from './AuthPrompt'

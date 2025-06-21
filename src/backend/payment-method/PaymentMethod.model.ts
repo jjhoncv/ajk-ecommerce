@@ -1,11 +1,11 @@
 // 📄 PaymentMethod.model.ts
-import { PaymentMethods as PaymentMethodRaw } from '@/types/database'
-import { PaymentMethods as PaymentMethod } from '@/types/domain'
+import { type PaymentMethods as PaymentMethodRaw } from '@/types/database'
+import { type PaymentMethods as PaymentMethod } from '@/types/domain'
 
 import {
-  PaymentCalculation,
-  PaymentMethodExtended,
-  PaymentMethodFilter
+  type PaymentCalculation,
+  type PaymentMethodExtended,
+  type PaymentMethodFilter
 } from './PaymentMethod.interfaces'
 import {
   PaymentMethodMapper,
@@ -127,26 +127,26 @@ export class PaymentMethodModel {
   }
 
   public async deletePaymentMethod(id: number): Promise<void> {
-    return await oPaymentMethodRep.deletePaymentMethod(id)
+    await oPaymentMethodRep.deletePaymentMethod(id)
   }
 
   public async activatePaymentMethod(id: number): Promise<void> {
-    return await oPaymentMethodRep.activatePaymentMethod(id)
+    await oPaymentMethodRep.activatePaymentMethod(id)
   }
 
   public async deactivatePaymentMethod(id: number): Promise<void> {
-    return await oPaymentMethodRep.deactivatePaymentMethod(id)
+    await oPaymentMethodRep.deactivatePaymentMethod(id)
   }
 
   public async updateDisplayOrder(
     id: number,
     displayOrder: number
   ): Promise<void> {
-    return await oPaymentMethodRep.updateDisplayOrder(id, displayOrder)
+    await oPaymentMethodRep.updateDisplayOrder(id, displayOrder)
   }
 
   public async updateSettings(id: number, settings: any): Promise<void> {
-    return await oPaymentMethodRep.updateSettings(id, settings)
+    await oPaymentMethodRep.updateSettings(id, settings)
   }
 
   // Método para calcular comisiones y validar un método de pago
@@ -183,7 +183,7 @@ export class PaymentMethodModel {
   public isValidAmountForMethod(
     method: PaymentMethod,
     amount: number
-  ): { isValid: boolean; reason?: string } {
+  ): { isValid: boolean, reason?: string } {
     if (method.minAmount && amount < method.minAmount) {
       return {
         isValid: false,

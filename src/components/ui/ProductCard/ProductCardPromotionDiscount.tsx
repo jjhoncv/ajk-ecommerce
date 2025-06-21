@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { ProductCardPromotionProps } from './ProductCard.interfaces'
+import { type ProductCardPromotionProps } from './ProductCard.interfaces'
 
 const ProductCardPromotionDiscount: React.FC<ProductCardPromotionProps> = ({
   variant

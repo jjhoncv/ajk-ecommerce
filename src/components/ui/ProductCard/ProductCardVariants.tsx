@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { ProductCardVariantsProps } from './ProductCard.interfaces'
+import { type ProductCardVariantsProps } from './ProductCard.interfaces'
 import { groupAttributesByName } from './ProductCard.helpers'
 
 const ProductCardVariants: React.FC<ProductCardVariantsProps> = ({

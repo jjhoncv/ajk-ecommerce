@@ -8,8 +8,8 @@ import StickyFilters from '@/components/search/StickyFilters'
 import Navigation from '@/components/ui/Navigation'
 import { getFilters } from '@/helpers/search.helpers'
 import SearchService from '@/services/search'
-import { SearchParams } from '@/shared'
-import { Metadata } from 'next'
+import { type SearchParams } from '@/shared'
+import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Búsqueda de Productos | AJK E-commerce',

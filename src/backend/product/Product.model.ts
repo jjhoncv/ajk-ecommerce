@@ -1,6 +1,6 @@
 // generated
-import { Products as ProductRaw } from '@/types/database'
-import { Products as Product, VariantAttributeOptions } from '@/types/domain'
+import { type Products as ProductRaw } from '@/types/database'
+import { type Products as Product, type VariantAttributeOptions } from '@/types/domain'
 
 // me
 import { ProductMapper, ProductsMapper } from './Product.mapper'
@@ -13,13 +13,13 @@ import filtersModel from '@/backend/filters'
 import productVariantModel from '@/backend/product-variant'
 import promotionVariantModel from '@/backend/promotion-variant'
 import searchModel, {
-  ProductSearchFilters,
-  ProductSearchResult
+  type ProductSearchFilters,
+  type ProductSearchResult
 } from '@/backend/search'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import variantImageModel from '@/backend/variant-image'
 import variantRatingModel, {
-  VariantRatingWithCustomer
+  type VariantRatingWithCustomer
 } from '@/backend/variant-rating'
 
 export class ProductModel {
@@ -134,16 +134,17 @@ export class ProductModel {
 
         return {
           ...productVariant,
-          variantAttributeOptions: variantAttributeOptions,
+          variantAttributeOptions,
           promotionVariants: promotionsVariant,
-          variantImages: variantImages,
-          variantRatings: variantRatings
+          variantImages,
+          variantRatings
         }
       })
     )
 
     return product
   }
+
   public async getProductsByBrandId(
     brandId: number
   ): Promise<Product[] | undefined> {
@@ -188,7 +189,7 @@ export class ProductModel {
   }
 
   public async deleteProduct(id: number): Promise<void> {
-    return await oProductRep.deleteProduct(id)
+    await oProductRep.deleteProduct(id)
   }
 
   // ============================================================================

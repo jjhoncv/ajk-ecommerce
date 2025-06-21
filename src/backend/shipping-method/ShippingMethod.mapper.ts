@@ -1,6 +1,6 @@
 // 📄 ShippingMethod.mapper.ts
-import { ShippingMethods as ShippingMethodRaw } from '@/types/database'
-import { ShippingMethods as ShippingMethod } from '@/types/domain'
+import { type ShippingMethods as ShippingMethodRaw } from '@/types/database'
+import { type ShippingMethods as ShippingMethod } from '@/types/domain'
 
 export const ShippingMethodMapper = (
   data: ShippingMethodRaw

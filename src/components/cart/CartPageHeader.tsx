@@ -1,7 +1,7 @@
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 interface CartPageHeaderProps {
   items: CartItem[]

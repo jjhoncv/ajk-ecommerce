@@ -1,5 +1,5 @@
 'use client'
-import { Categories } from '@/types/domain'
+import { type Categories } from '@/types/domain'
 import { ChevronLeft, ChevronRight, Home } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -101,8 +101,7 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
                 <ChevronRight className="mx-1 h-3 w-3 text-gray-400" />
               )}
               <button
-                onClick={() =>
-                  setCategoryStack((prev) => prev.slice(0, index + 1))
+                onClick={() => { setCategoryStack((prev) => prev.slice(0, index + 1)) }
                 }
                 className="transition-colors hover:text-primary"
               >
@@ -141,7 +140,7 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
                   className="border-b border-gray-100 last:border-b-0"
                 >
                   <button
-                    onClick={() => handleCategoryClick(category)}
+                    onClick={() => { handleCategoryClick(category) }}
                     className="group flex w-full items-center justify-between p-3 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-center gap-3">

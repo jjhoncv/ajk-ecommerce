@@ -22,7 +22,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage }) => {
 
   // Generar array de páginas para mostrar en la paginación
   const getPageNumbers = () => {
-    const pageNumbers: (number | string)[] = []
+    const pageNumbers: Array<number | string> = []
 
     // Siempre mostrar la primera página
     pageNumbers.push(1)

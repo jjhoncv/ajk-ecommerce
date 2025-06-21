@@ -19,7 +19,7 @@ import { getFeatures } from '@/services/features/features'
 import { getHero } from '@/services/hero'
 import { getMainCategories } from '@/services/mainCategories'
 import { getPopularProducts } from '@/services/popularProducts'
-import { Metadata } from 'next'
+import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'TechStore - Tu tienda de tecnología y zapatillas',

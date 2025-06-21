@@ -1,6 +1,6 @@
 // generated
-import { Attributes as AttributeRaw } from '@/types/database'
-import { Attributes as Attribute } from '@/types/domain'
+import { type Attributes as AttributeRaw } from '@/types/database'
+import { type Attributes as Attribute } from '@/types/domain'
 
 export const AttributeMapper = (data: AttributeRaw): Attribute => {
   return {

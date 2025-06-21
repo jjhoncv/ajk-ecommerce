@@ -1,5 +1,5 @@
 // 📄 app/checkout/components/ReviewStep.tsx
-import { CheckoutData, CheckoutSummary, CheckoutUser } from '@/types/checkout'
+import { type CheckoutData, type CheckoutSummary, type CheckoutUser } from '@/types/checkout'
 import { useState } from 'react'
 
 interface ReviewStepProps {
@@ -182,7 +182,7 @@ export default function ReviewStep({
               <input
                 type="text"
                 value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+                onChange={(e) => { setCouponCode(e.target.value) }}
                 placeholder="Ingresa tu código de cupón"
                 className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
@@ -206,7 +206,7 @@ export default function ReviewStep({
 
           <textarea
             value={customerNotes}
-            onChange={(e) => setCustomerNotes(e.target.value)}
+            onChange={(e) => { setCustomerNotes(e.target.value) }}
             rows={3}
             placeholder="Instrucciones especiales para la entrega..."
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -272,7 +272,7 @@ export default function ReviewStep({
             id="accept-terms"
             type="checkbox"
             checked={acceptTerms}
-            onChange={(e) => setAcceptTerms(e.target.checked)}
+            onChange={(e) => { setAcceptTerms(e.target.checked) }}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
           <label htmlFor="accept-terms" className="ml-3 text-sm text-gray-600">

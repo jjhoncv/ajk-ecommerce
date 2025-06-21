@@ -1,5 +1,5 @@
 'use client'
-import { ItemImage } from '@/shared'
+import { type ItemImage } from '@/shared'
 import Image from 'next/image'
 import React from 'react'
 import { useImageSlider } from './useImageSlider' // Ajusta la ruta según tu estructura

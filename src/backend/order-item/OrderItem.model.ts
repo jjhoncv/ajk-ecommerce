@@ -1,4 +1,4 @@
-import { OrderItems as OrderItem } from '@/types/domain'
+import { type OrderItems as OrderItem } from '@/types/domain'
 
 import {
   OrderItemMapper,
@@ -44,7 +44,7 @@ export class OrderItemsModel {
   }
 
   public async createOrderItems(
-    orderItemsData: Omit<OrderItem, 'id'>[]
+    orderItemsData: Array<Omit<OrderItem, 'id'>>
   ): Promise<OrderItem[] | undefined> {
     const orderItemsRaw = orderItemsData.map(OrderItemToRawMapper)
     const created = await oOrderItemsRep.createOrderItems(orderItemsRaw)
@@ -58,27 +58,19 @@ export class OrderItemsModel {
     // Convertir solo los campos que se van a actualizar
     const updateRaw: any = {}
 
-    if (orderItemData.orderId !== undefined)
-      updateRaw.order_id = orderItemData.orderId
-    if (orderItemData.variantId !== undefined)
-      updateRaw.variant_id = orderItemData.variantId
-    if (orderItemData.productName !== undefined)
-      updateRaw.product_name = orderItemData.productName
-    if (orderItemData.variantSku !== undefined)
-      updateRaw.variant_sku = orderItemData.variantSku
+    if (orderItemData.orderId !== undefined) { updateRaw.order_id = orderItemData.orderId }
+    if (orderItemData.variantId !== undefined) { updateRaw.variant_id = orderItemData.variantId }
+    if (orderItemData.productName !== undefined) { updateRaw.product_name = orderItemData.productName }
+    if (orderItemData.variantSku !== undefined) { updateRaw.variant_sku = orderItemData.variantSku }
     if (orderItemData.variantAttributes !== undefined) {
       updateRaw.variant_attributes = orderItemData.variantAttributes
         ? JSON.stringify(orderItemData.variantAttributes)
         : null
     }
-    if (orderItemData.quantity !== undefined)
-      updateRaw.quantity = orderItemData.quantity
-    if (orderItemData.unitPrice !== undefined)
-      updateRaw.unit_price = orderItemData.unitPrice
-    if (orderItemData.totalPrice !== undefined)
-      updateRaw.total_price = orderItemData.totalPrice
-    if (orderItemData.discountAmount !== undefined)
-      updateRaw.discount_amount = orderItemData.discountAmount
+    if (orderItemData.quantity !== undefined) { updateRaw.quantity = orderItemData.quantity }
+    if (orderItemData.unitPrice !== undefined) { updateRaw.unit_price = orderItemData.unitPrice }
+    if (orderItemData.totalPrice !== undefined) { updateRaw.total_price = orderItemData.totalPrice }
+    if (orderItemData.discountAmount !== undefined) { updateRaw.discount_amount = orderItemData.discountAmount }
 
     const updated = await oOrderItemsRep.updateOrderItem(updateRaw, id)
     if (!updated) return undefined
@@ -86,11 +78,11 @@ export class OrderItemsModel {
   }
 
   public async deleteOrderItem(id: number): Promise<void> {
-    return await oOrderItemsRep.deleteOrderItem(id)
+    await oOrderItemsRep.deleteOrderItem(id)
   }
 
   public async deleteOrderItemsByOrderId(orderId: number): Promise<void> {
-    return await oOrderItemsRep.deleteOrderItemsByOrderId(orderId)
+    await oOrderItemsRep.deleteOrderItemsByOrderId(orderId)
   }
 
   // Métodos utilitarios

@@ -1,5 +1,5 @@
-import { Customers as CustomerRaw } from '@/types/database'
-import { Customers as Customer } from '@/types/domain'
+import { type Customers as CustomerRaw } from '@/types/database'
+import { type Customers as Customer } from '@/types/domain'
 
 // me
 import { CustomerMapper, CustomersMapper } from './Customer.mapper'
@@ -26,7 +26,7 @@ export class CustomerModel {
   }
 
   public async createCustomer(
-    customerData: Omit<CustomerRaw, 'id' | 'created_at' | 'updated_at'>
+    customerData: Omit<Customer, 'id' | 'dni' | 'phone' | 'photo'>
   ): Promise<Customer | undefined> {
     const created = await oCustomerRep.createCustomer(customerData)
     if (!created) return undefined
@@ -43,7 +43,7 @@ export class CustomerModel {
   }
 
   public async deleteCustomer(id: number): Promise<void> {
-    return await oCustomerRep.deleteCustomer(id)
+    await oCustomerRep.deleteCustomer(id)
   }
 }
 

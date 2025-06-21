@@ -1,4 +1,4 @@
-import { ThemeName } from './tailwind.theme.config'
+import { type ThemeName } from './tailwind.theme.config'
 
 export const siteConfig = {
   name: 'TechStore',

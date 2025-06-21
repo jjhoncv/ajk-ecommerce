@@ -2,7 +2,7 @@
 import MiniCart from '@/components/ui/MiniCart'
 import { AuthModalProvider } from '@/providers/auth-modal'
 import { SessionProvider } from 'next-auth/react'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { CartProvider } from './cart/CartProvider'
 import { ThemeProvider } from './theme/ThemeProvider'
 

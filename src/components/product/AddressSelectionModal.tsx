@@ -4,10 +4,10 @@
 import { Modal } from '@/components/ui/Modal'
 import { formatPrice } from '@/helpers/utils'
 import { Check, MapPin, Package, Plus, X } from 'lucide-react'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 // Usar los tipos compartidos
-import { ShippingOptionForAddress } from '@/types/shipping'
+import { type ShippingOptionForAddress } from '@/types/shipping'
 
 interface AddressSelectionModalProps {
   isOpen: boolean
@@ -60,7 +60,7 @@ export const AddressSelectionModal: FC<AddressSelectionModalProps> = ({
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200'
                 }`}
-                onClick={() => onSelectAddress(addressOption)}
+                onClick={() => { onSelectAddress(addressOption) }}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

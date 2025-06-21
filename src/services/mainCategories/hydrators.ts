@@ -1,5 +1,5 @@
-import { Categories as Category } from '@/types/domain'
-import { MainCategory } from './types'
+import { type Categories as Category } from '@/types/domain'
+import { type MainCategory } from './types'
 
 export const hydrateMainCategories = (data: Category[]): MainCategory[] => {
   return data.map((item) => ({

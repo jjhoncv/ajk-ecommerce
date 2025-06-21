@@ -2,7 +2,7 @@
 import { Clock } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
-import { ProductCardDealProps } from './ProductCard.interfaces'
+import { type ProductCardDealProps } from './ProductCard.interfaces'
 import ButtonAddToCart from './ProductCardButtonAddToCart'
 
 const ProductCardDeal: React.FC<ProductCardDealProps> = ({

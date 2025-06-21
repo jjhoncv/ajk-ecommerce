@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { Customers as CustomerRaw } from '@/types/database'
+import { type Customers as CustomerRaw } from '@/types/database'
 
 export class CustomerRepository {
   public async getCustomerByEmail(email: string): Promise<CustomerRaw | null> {

@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { AuthModalContextType } from './AuthModal.types'
+import { type AuthModalContextType } from './AuthModal.types'
 
 export const AuthModalContext = createContext<AuthModalContextType | undefined>(
   undefined

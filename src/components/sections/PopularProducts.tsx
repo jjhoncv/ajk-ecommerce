@@ -1,4 +1,4 @@
-import { ProductComplete } from '@/backend/product'
+import { type ProductComplete } from '@/backend/product'
 import ProductCard from '@/components/ui/ProductCard'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'

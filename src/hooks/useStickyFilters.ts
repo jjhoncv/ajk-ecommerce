@@ -60,8 +60,8 @@ export const useStickyFilters = (): UseStickyFiltersReturn => {
     calculateDimensions()
 
     // Recalcular en scroll y resize
-    const handleScroll = () => calculateDimensions()
-    const handleResize = () => calculateDimensions()
+    const handleScroll = () => { calculateDimensions() }
+    const handleResize = () => { calculateDimensions() }
 
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', handleResize)

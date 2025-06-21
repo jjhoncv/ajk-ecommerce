@@ -1,6 +1,6 @@
 // 📄 Checkout.interfaces.ts
-import { CartItem } from '@/hooks/useCart'
-import { Coupons, CustomersAddresses } from '@/types/domain'
+import { type CartItem } from '@/hooks/useCart'
+import { type Coupons, type CustomersAddresses } from '@/types/domain'
 
 // Datos necesarios para el checkout
 export interface CheckoutData {
@@ -12,7 +12,7 @@ export interface CheckoutData {
   shippingMethodName: string
   couponCode?: string
   customerNotes?: string
-  paymentData?: any
+  paymentData?: Partial<CheckoutData>
 }
 
 // Cálculos de la orden
@@ -75,7 +75,7 @@ export interface CreateOrderData {
   shippingMethodId: number
   couponCode?: string
   customerNotes?: string
-  paymentData?: any
+  paymentData?: Partial<CheckoutData>
 }
 
 // Respuesta del checkout

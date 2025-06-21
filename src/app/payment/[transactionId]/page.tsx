@@ -1,6 +1,6 @@
 // 📄 app/payment/[transactionId]/page.tsx (SERVER COMPONENT)
 import { PaymentPage as PaymentPageClient } from '@/components/payment/PaymentPage'
-import { Metadata } from 'next'
+import { type Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Pago Seguro',
   description: 'Completa tu pago'

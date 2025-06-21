@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { FC, ReactNode } from 'react'
+import { type FC, type ReactNode } from 'react'
 
 interface LayoutContentProps {
   children: ReactNode

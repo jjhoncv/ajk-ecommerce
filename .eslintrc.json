@@ -1,5 +1,13 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "ignorePatterns": [
+    ".next/**/*",
+    ".cache/**/*",
+    "build/**/*",
+    "dist/**/*",
+    "node_modules/**/*",
+    "**/*.turbo.*"
+  ],
   "overrides": [
     {
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],

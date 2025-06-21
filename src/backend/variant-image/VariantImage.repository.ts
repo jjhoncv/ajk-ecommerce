@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { VariantImages as VariantImagesRaw } from '@/types/database'
+import { type VariantImages as VariantImagesRaw } from '@/types/database'
 
 export class VariantImageRepository {
   public async getVariantImages(

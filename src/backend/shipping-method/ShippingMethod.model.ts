@@ -1,9 +1,9 @@
 // 📄 ShippingMethod.model.ts
-import { ShippingMethods as ShippingMethodRaw } from '@/types/database'
-import { ShippingMethods as ShippingMethod } from '@/types/domain'
+import { type ShippingMethods as ShippingMethodRaw } from '@/types/database'
+import { type ShippingMethods as ShippingMethod } from '@/types/domain'
 
 import oShippingZoneMethodRep from '@/backend/shipping-zone-method/ShippingZoneMethod.repository'
-import { ShippingMethodWithZones } from './ShippingMethod.interfaces'
+import { type ShippingMethodWithZones } from './ShippingMethod.interfaces'
 
 import {
   ShippingMethodMapper,
@@ -74,15 +74,15 @@ export class ShippingMethodModel {
   }
 
   public async deleteShippingMethod(id: number): Promise<void> {
-    return await oShippingMethodRep.deleteShippingMethod(id)
+    await oShippingMethodRep.deleteShippingMethod(id)
   }
 
   public async activateShippingMethod(id: number): Promise<void> {
-    return await oShippingMethodRep.activateShippingMethod(id)
+    await oShippingMethodRep.activateShippingMethod(id)
   }
 
   public async deactivateShippingMethod(id: number): Promise<void> {
-    return await oShippingMethodRep.deactivateShippingMethod(id)
+    await oShippingMethodRep.deactivateShippingMethod(id)
   }
 
   // Método para calcular el costo de envío para una zona específica
@@ -90,7 +90,7 @@ export class ShippingMethodModel {
     methodId: number,
     zoneId: number,
     orderValue: number
-  ): Promise<{ cost: number; isFree: boolean } | undefined> {
+  ): Promise<{ cost: number, isFree: boolean } | undefined> {
     const zoneMethod = await oShippingZoneMethodRep.getZoneMethodByIds(
       methodId,
       zoneId

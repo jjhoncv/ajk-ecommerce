@@ -459,11 +459,11 @@ type customers {
   updated_at: Timestamp!
   lastname: String!
   photo: String
-  name: String
+  name: String!
   """numero de celular"""
-  phone: String!
+  phone: String
   """Documento de identidad """
-  dni: String!
+  dni: String
   coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["customer_id", "id"]])
   customers_addresses(limit: Int, offset: Int, where: customers_addresses_WhereInput, orderBy: customers_addresses_OrderByInput): [customers_addresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
   orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
@@ -2042,11 +2042,11 @@ input customers_InsertInput {
   updated_at: Timestamp
   lastname: String!
   photo: String
-  name: String
+  name: String!
   """numero de celular"""
-  phone: String!
+  phone: String
   """Documento de identidad """
-  dni: String!
+  dni: String
 }
 
 input customers_UpdateInput {

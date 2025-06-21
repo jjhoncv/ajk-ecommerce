@@ -1,4 +1,4 @@
-import { FeaturedCategory } from './types'
+import { type FeaturedCategory } from './types'
 
 export const hydrateFeaturedCategories = (
   data: FeaturedCategory[]

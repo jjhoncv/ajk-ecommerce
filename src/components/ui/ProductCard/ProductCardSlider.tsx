@@ -1,7 +1,7 @@
 'use client'
 import { cleanAndValidateImages } from '@/components/product/ProductVariant.helpers'
 import { ImageGalleryDots } from '@/components/ui/ImageGalleryDots'
-import { ItemImage } from '@/shared'
+import { type ItemImage } from '@/shared'
 import { Heart } from 'lucide-react'
 import React from 'react'
 

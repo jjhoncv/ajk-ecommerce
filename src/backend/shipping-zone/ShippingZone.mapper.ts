@@ -1,6 +1,6 @@
 // 📄 ShippingZone.mapper.ts
-import { ShippingZones as ShippingZoneRaw } from '@/types/database'
-import { ShippingZones as ShippingZone } from '@/types/domain'
+import { type ShippingZones as ShippingZoneRaw } from '@/types/database'
+import { type ShippingZones as ShippingZone } from '@/types/domain'
 
 export const ShippingZoneMapper = (data: ShippingZoneRaw): ShippingZone => {
   return {

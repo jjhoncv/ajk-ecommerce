@@ -1,4 +1,4 @@
-import { FeaturedCategory } from '@/services/featuredCategories'
+import { type FeaturedCategory } from '@/services/featuredCategories'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

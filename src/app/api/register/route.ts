@@ -1,25 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { CustomerService } from '@/services/customerService'
+import CustomerService from '@/services/customer'
+import { type CustomerData } from '@/services/customer/types'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const body = await request.json()
-    const { username, name, lastname, email, password } = body
+    const body: CustomerData = await request.json()
+    const { name, lastname, email, password } = body
 
     // Validaciones básicas
-    if (!username || !name || !lastname || !email || !password) {
+    if (name === '' || lastname === '' || email === '' || password === '') {
       return NextResponse.json(
         { error: 'Todos los campos son requeridos' },
         { status: 400 }
       )
     }
 
-    // Usar el servicio de cliente para registrar
-    const customerService = new CustomerService()
-
     try {
-      const newCustomer = await customerService.register({
-        username,
+      const newCustomer = await CustomerService.register({
         name,
         lastname,
         email,

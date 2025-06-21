@@ -3,10 +3,10 @@ import { ProductVariantPromotion } from '@/components/product/ProductVariantProm
 import { ProductVariantRating } from '@/components/product/ProductVariantRating'
 import { getVariantTitle } from '@/helpers/productVariant.helpers'
 import {
-  Products as Product,
-  ProductVariants as ProductVariant
+  type Products as Product,
+  type ProductVariants as ProductVariant
 } from '@/types/domain'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 interface ProductVariantInfoProps {
   product: Product

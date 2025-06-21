@@ -1,12 +1,12 @@
 import { executeQuery } from '@/lib/db'
-import { VariantRatings as VariantRatingRaw } from '@/types/database'
-import { VariantRatings as VariantRating } from '@/types/domain'
+import { type VariantRatings as VariantRatingRaw } from '@/types/database'
+import { type VariantRatings as VariantRating } from '@/types/domain'
 
 // me
 import {
-  VariantRatingSearchResult,
-  VariantRatingSummary,
-  VariantRatingWithCustomer
+  type VariantRatingSearchResult,
+  type VariantRatingSummary,
+  type VariantRatingWithCustomer
 } from './VariantRating.interfaces'
 import {
   VariantRatingMapper,
@@ -68,7 +68,7 @@ export class VariantRatingModel {
   }
 
   public async deleteVariantRating(id: number): Promise<void> {
-    return await oVariantRatingRep.deleteVariantRating(id)
+    await oVariantRatingRep.deleteVariantRating(id)
   }
 
   // ============================================================================
@@ -83,10 +83,10 @@ export class VariantRatingModel {
     const offset = (page - 1) * limit
 
     const ratings = await executeQuery<
-      (VariantRatingRaw & {
+      Array<VariantRatingRaw & {
         customer_name: string
         customer_photo: string | null
-      })[]
+      }>
     >({
       query: `
         SELECT 
@@ -135,7 +135,7 @@ export class VariantRatingModel {
     variantId: number
   ): Promise<VariantRatingSummary> {
     const summary = await executeQuery<
-      {
+      Array<{
         variant_id: number
         total_ratings: number
         average_rating: number
@@ -145,7 +145,7 @@ export class VariantRatingModel {
         two_star: number
         one_star: number
         verified_purchases: number
-      }[]
+      }>
     >({
       query: 'SELECT * FROM variant_rating_summary WHERE variant_id = ?',
       values: [variantId]
@@ -286,7 +286,7 @@ export class VariantRatingModel {
   }
 
   public async deleteRating(id: number) {
-    return await this.deleteVariantRating(id)
+    await this.deleteVariantRating(id)
   }
 }
 

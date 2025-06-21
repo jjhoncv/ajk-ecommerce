@@ -12,7 +12,7 @@ import CheckoutClient from '@/components/checkout/CheckoutClient'
 
 // Types
 import { authOptions } from '@/lib/auth'
-import { CheckoutUser } from '@/types/checkout'
+import { type CheckoutUser } from '@/types/checkout'
 
 export default async function CheckoutPage() {
   // 1. Verificar autenticación

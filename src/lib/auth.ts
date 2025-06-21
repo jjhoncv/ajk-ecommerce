@@ -1,5 +1,5 @@
-import { CustomerService } from '@/services/customerService'
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import CustomerService from '@/services/customer'
+import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions: NextAuthOptions = {
@@ -11,19 +11,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Contraseña', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        if (credentials?.email == null || credentials?.password == null) {
           return null
         }
 
         try {
           // Usar el servicio de cliente para autenticar
-          const customerService = new CustomerService()
-          const customer = await customerService.login(
-            credentials.email,
-            credentials.password
-          )
+          const customer = await CustomerService.login(credentials)
 
-          if (customer) {
+          if (customer != null) {
             return {
               id: customer.id.toString(), // Asegurar que sea string
               email: customer.email,
@@ -44,6 +40,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (user) {
         token.id = user.id
         token.name = user.name
@@ -51,9 +48,11 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (session.user) {
         session.user.id = token.id as string
-        session.user.name = token.name as string
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        session.user.name = token.name!
       }
       return session
     }

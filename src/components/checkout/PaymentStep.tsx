@@ -1,6 +1,6 @@
 // 📄 app/checkout/components/PaymentStep.tsx
-import { PaymentOption } from '@/types/checkout'
-import { PaymentMethods } from '@/types/domain'
+import { type PaymentOption } from '@/types/checkout'
+import { type PaymentMethods } from '@/types/domain'
 import { useState } from 'react'
 
 interface PaymentStepProps {
@@ -73,7 +73,7 @@ export default function PaymentStep({
                   ? 'border-indigo-600 bg-indigo-50'
                   : 'border-gray-200 hover:border-gray-300'
               } `}
-              onClick={() => handlePaymentMethodSelect(method.id)}
+              onClick={() => { handlePaymentMethodSelect(method.id) }}
             >
               <div className="flex items-center">
                 <input
@@ -81,7 +81,7 @@ export default function PaymentStep({
                   name="payment-method"
                   value={method.id}
                   checked={selectedMethodId === method.id}
-                  onChange={() => handlePaymentMethodSelect(method.id)}
+                  onChange={() => { handlePaymentMethodSelect(method.id) }}
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
 

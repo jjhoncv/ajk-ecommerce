@@ -1,4 +1,4 @@
-import { VariantImages as VariantImage } from '@/types/domain'
+import { type VariantImages as VariantImage } from '@/types/domain'
 import { VariantImagesMapper } from './VariantImage.mapper'
 import oVariantImage from './VariantImage.repository'
 

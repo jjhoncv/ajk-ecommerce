@@ -1,6 +1,6 @@
 // hooks/useCart.ts - Con sincronización de localStorage
 'use client'
-import { PromotionVariants } from '@/types/domain'
+import { type PromotionVariants } from '@/types/domain'
 import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -11,7 +11,7 @@ export interface CartItem {
   image: string
   quantity: number
   stock: number
-  promotionVariants?: (PromotionVariants | null)[] | null
+  promotionVariants?: Array<PromotionVariants | null> | null
 }
 
 // Tipos para delete confirmation
@@ -222,7 +222,7 @@ export function useCart() {
       const timer = setTimeout(() => {
         setToastMessage(null)
       }, 3000)
-      return () => clearTimeout(timer)
+      return () => { clearTimeout(timer) }
     }
   }, [toastMessage])
 
@@ -251,7 +251,7 @@ export function useCart() {
     })
 
     // Mostrar toast SIEMPRE
-    setToastMessage(`Añadido a la cesta!`)
+    setToastMessage('Añadido a la cesta!')
 
     // Abrir minicart solo si la ruta lo permite
     if (shouldOpenMinicart(pathname)) {
@@ -273,7 +273,7 @@ export function useCart() {
     })
 
     if (itemToRemove) {
-      setToastMessage(`Correctamente`)
+      setToastMessage('Correctamente')
     }
   }
 
@@ -336,7 +336,7 @@ export function useCart() {
     })
 
     // Mostrar toast SIEMPRE
-    setToastMessage(`Cantidad actualizada`)
+    setToastMessage('Cantidad actualizada')
 
     // Abrir minicart solo si la ruta lo permite
     if (shouldOpenMinicart(pathname)) {
@@ -432,7 +432,7 @@ export function useCart() {
         isOpen: true,
         message,
         productId: id,
-        onConfirm: onConfirm || (() => removeItem(id))
+        onConfirm: onConfirm || (() => { removeItem(id) })
       })
     },
     []

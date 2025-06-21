@@ -1,6 +1,6 @@
 'use client'
-import { AvailableFilters } from '@/backend/filters'
-import { ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductSearchFilters } from '@/backend/search'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
@@ -61,7 +61,7 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
               <span className="inline-flex items-center rounded-full bg-primary px-2 py-1 text-xs text-white">
                 {selectedCategory.name}
                 <button
-                  onClick={() => updateFilter('category', null)}
+                  onClick={() => { updateFilter('category', null) }}
                   className="ml-1 rounded-full p-0.5 hover:bg-primary/80"
                 >
                   ×
@@ -81,7 +81,7 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
               <span className="inline-flex items-center rounded-full bg-primary px-2 py-1 text-xs text-white">
                 {selectedBrand.name}
                 <button
-                  onClick={() => updateFilter('brand', null)}
+                  onClick={() => { updateFilter('brand', null) }}
                   className="ml-1 rounded-full p-0.5 hover:bg-primary/80"
                 >
                   ×
@@ -95,7 +95,7 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
           <span className="inline-flex items-center rounded-full bg-green-500 px-2 py-1 text-xs text-white">
             Min: S/ {currentFilters.minPrice}
             <button
-              onClick={() => updateFilter('minPrice', null)}
+              onClick={() => { updateFilter('minPrice', null) }}
               className="ml-1 rounded-full p-0.5 hover:bg-green-600"
             >
               ×
@@ -108,7 +108,7 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
           <span className="inline-flex items-center rounded-full bg-green-500 px-2 py-1 text-xs text-white">
             Max: S/ {currentFilters.maxPrice}
             <button
-              onClick={() => updateFilter('maxPrice', null)}
+              onClick={() => { updateFilter('maxPrice', null) }}
               className="ml-1 rounded-full p-0.5 hover:bg-green-600"
             >
               ×

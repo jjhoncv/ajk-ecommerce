@@ -1,5 +1,5 @@
-import { Brands as BrandsRaw } from '@/types/database'
-import { Brands as Brand } from '@/types/domain'
+import { type Brands as BrandsRaw } from '@/types/database'
+import { type Brands as Brand } from '@/types/domain'
 
 // me
 import { BrandMapper, BrandsMapper } from './Brand.mapper'
@@ -35,7 +35,7 @@ export class BrandModel {
   }
 
   public async deleteBrand(id: number): Promise<void> {
-    return await oBrandRep.deleteBrand(id)
+    await oBrandRep.deleteBrand(id)
   }
 }
 

@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { Categories as CategoriesRaw } from '@/types/database'
+import { type Categories as CategoriesRaw } from '@/types/database'
 
 export class CategoryRepository {
   public async getCategories(): Promise<CategoriesRaw[] | null> {

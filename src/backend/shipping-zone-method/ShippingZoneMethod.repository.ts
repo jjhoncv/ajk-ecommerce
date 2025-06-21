@@ -1,6 +1,6 @@
 // 📄 ShippingZoneMethod.repository.ts
 import { executeQuery } from '@/lib/db'
-import { ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
+import { type ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
 
 interface ShippingZoneMethodWithDetails extends ShippingZoneMethodRaw {
   method_name?: string

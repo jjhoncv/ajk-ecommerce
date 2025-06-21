@@ -2,7 +2,7 @@ import {
   editProfileSchema,
   type EditProfileFormData
 } from '@/components/account/EditProfile/EditProfile.schema'
-import { Customers } from '@/types/domain'
+import { type Customers } from '@/types/domain'
 import { useState } from 'react'
 import { z } from 'zod'
 

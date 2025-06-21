@@ -94,7 +94,7 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
       {authState.isAuthenticated && sessionData && (
         <UserMenu
           isOpen={isUserMenuOpen}
-          onClose={() => setIsUserMenuOpen(false)}
+          onClose={() => { setIsUserMenuOpen(false) }}
           session={sessionData}
         />
       )}

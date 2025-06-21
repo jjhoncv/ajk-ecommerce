@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import productVariantModel from '@/backend/product-variant/ProductVariant.model'
 
 export async function GET(

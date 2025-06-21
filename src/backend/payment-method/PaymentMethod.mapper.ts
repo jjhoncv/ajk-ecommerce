@@ -1,6 +1,6 @@
 // 📄 PaymentMethod.mapper.ts
-import { PaymentMethods as PaymentMethodRaw } from '@/types/database'
-import { PaymentMethods as PaymentMethod } from '@/types/domain'
+import { type PaymentMethods as PaymentMethodRaw } from '@/types/database'
+import { type PaymentMethods as PaymentMethod } from '@/types/domain'
 
 export const PaymentMethodMapper = (data: PaymentMethodRaw): PaymentMethod => {
   return {

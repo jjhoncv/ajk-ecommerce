@@ -3,7 +3,7 @@ import {
   addressSchema,
   type AddressFormData
 } from '@/components/account/Addresses/Addresses.schema'
-import { CustomersAddresses } from '@/types/domain'
+import { type CustomersAddresses } from '@/types/domain'
 import { useState } from 'react'
 import { z } from 'zod'
 
@@ -218,7 +218,7 @@ export const useAddresses = ({
         closeModal()
 
         // Limpiar mensaje después de 3 segundos
-        setTimeout(() => setMessage(''), 3000)
+        setTimeout(() => { setMessage('') }, 3000)
       } else {
         const error = await response.json()
         setMessage(error.error || 'Error al guardar la dirección')
@@ -263,7 +263,7 @@ export const useAddresses = ({
         // ✅ Solo hacer fetch después de eliminar
         await loadAddresses()
         setMessage('Dirección eliminada correctamente')
-        setTimeout(() => setMessage(''), 3000)
+        setTimeout(() => { setMessage('') }, 3000)
       } else {
         const errorData = await response.json()
         setMessage(errorData.error || 'Error al eliminar la dirección')
@@ -286,7 +286,7 @@ export const useAddresses = ({
         // ✅ Solo hacer fetch después de cambiar dirección por defecto
         await loadAddresses()
         setMessage('Dirección por defecto actualizada')
-        setTimeout(() => setMessage(''), 3000)
+        setTimeout(() => { setMessage('') }, 3000)
       } else {
         const errorData = await response.json()
         setMessage(

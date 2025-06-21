@@ -63,6 +63,16 @@ function cleanTypesFile() {
         // Limpiar el bloque de fragmentos rotos
         let cleanBlock = trimmedBlock
 
+        // Eliminar campos createdAt y updatedAt
+        cleanBlock = cleanBlock.replace(
+          /^\s*createdAt: Scalars\['Timestamp'\]\['output'\];\s*$/gm,
+          ''
+        )
+        cleanBlock = cleanBlock.replace(
+          /^\s*updatedAt: Scalars\['Timestamp'\]\['output'\];\s*$/gm,
+          ''
+        )
+
         // Eliminar líneas sueltas que no pertenecen a la interface
         cleanBlock = cleanBlock.replace(
           /^\s*[a-zA-Z_][a-zA-Z0-9_]*\?\:\s*InputMaybe.*$/gm,

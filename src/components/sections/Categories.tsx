@@ -1,4 +1,4 @@
-import { MainCategory } from '@/services/mainCategories'
+import { type MainCategory } from '@/services/mainCategories'
 import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,11 +14,11 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
       <div className="mb-10 text-center">
         <div className="mb-4 flex items-center justify-center gap-3">
           <ShoppingBag className="h-8 w-8 text-primary" />
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="font-roboto text-3xl font-bold text-gray-900">
             Explora Nuestras Categorías
           </h2>
         </div>
-        <p className="mx-auto max-w-2xl text-lg text-gray-600">
+        <p className="font-roboto mx-auto max-w-2xl text-lg text-gray-600">
           Descubre la mejor tecnología organizada por categorías para encontrar
           exactamente lo que necesitas
         </p>

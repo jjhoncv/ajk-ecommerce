@@ -1,13 +1,13 @@
 // 📄 ShippingZoneMethod.model.ts
-import { ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
-import { ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
+import { type ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
+import { type ShippingZoneMethods as ShippingZoneMethod } from '@/types/domain'
 
 import oShippingMethodRep from '@/backend/shipping-method/ShippingMethod.repository'
 import oShippingZoneRep from '@/backend/shipping-zone/ShippingZone.repository'
 
 import {
-  ShippingCalculation,
-  ShippingZoneMethodExtended
+  type ShippingCalculation,
+  type ShippingZoneMethodExtended
 } from './ShippingZoneMethod.interfaces'
 import { ShippingZoneMethodMapper } from './ShippingZoneMethod.mapper'
 import oShippingZoneMethodRep from './ShippingZoneMethod.repository'
@@ -98,15 +98,15 @@ export class ShippingZoneMethodModel {
   }
 
   public async deleteZoneMethod(id: number): Promise<void> {
-    return await oShippingZoneMethodRep.deleteZoneMethod(id)
+    await oShippingZoneMethodRep.deleteZoneMethod(id)
   }
 
   public async activateZoneMethod(id: number): Promise<void> {
-    return await oShippingZoneMethodRep.activateZoneMethod(id)
+    await oShippingZoneMethodRep.activateZoneMethod(id)
   }
 
   public async deactivateZoneMethod(id: number): Promise<void> {
-    return await oShippingZoneMethodRep.deactivateZoneMethod(id)
+    await oShippingZoneMethodRep.deactivateZoneMethod(id)
   }
 
   // Método principal para calcular opciones de envío

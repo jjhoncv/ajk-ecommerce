@@ -1,6 +1,6 @@
 'use client'
-import { ProductVariantData } from '@/services/product/productVariant'
-import { ProductVariants } from '@/types/domain'
+import { type ProductVariantData } from '@/services/product/productVariant'
+import { type ProductVariants } from '@/types/domain'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useMemo, useState } from 'react'
@@ -20,7 +20,7 @@ interface AttributeGroup {
   displayType: string
   selectedValue: string
   selectedOptionId: number
-  availableOptions: {
+  availableOptions: Array<{
     optionId: number
     value: string
     variantId: number
@@ -28,7 +28,7 @@ interface AttributeGroup {
       imageUrlThumb: string
       altText?: string
     }
-  }[]
+  }>
 }
 
 const ProductVariantAttributeSelector: React.FC<
@@ -223,9 +223,10 @@ const ProductVariantAttributeSelector: React.FC<
                 return (
                   <button
                     key={option.optionId}
-                    onClick={() =>
-                      isAvailable &&
-                      handleAttributeChange(group.attributeId, option.optionId)
+                    onClick={async () => {
+ await (isAvailable &&
+                      handleAttributeChange(group.attributeId, option.optionId))
+}
                     }
                     disabled={!isAvailable || loading}
                     className={`relative h-16 w-16 overflow-hidden border-2 ${
@@ -275,9 +276,9 @@ const ProductVariantAttributeSelector: React.FC<
                 return (
                   <button
                     key={option.optionId}
-                    onClick={() =>
-                      isAvailable &&
-                      handleAttributeChange(group.attributeId, option.optionId)
+                    onClick={async () =>
+                      await (isAvailable &&
+                      handleAttributeChange(group.attributeId, option.optionId))
                     }
                     disabled={!isAvailable || loading}
                     className={`border px-4 py-2 text-sm font-medium ${
@@ -314,9 +315,9 @@ const ProductVariantAttributeSelector: React.FC<
                 return (
                   <button
                     key={option.optionId}
-                    onClick={() =>
-                      isAvailable &&
-                      handleAttributeChange(group.attributeId, option.optionId)
+                    onClick={async () =>
+                      await (isAvailable &&
+                      handleAttributeChange(group.attributeId, option.optionId))
                     }
                     disabled={!isAvailable || loading}
                     className={`rounded border px-3 py-2 text-sm ${
@@ -341,11 +342,12 @@ const ProductVariantAttributeSelector: React.FC<
             </label>
             <select
               value={group.selectedOptionId}
-              onChange={(e) =>
-                handleAttributeChange(
+              onChange={async (e) => {
+ await handleAttributeChange(
                   group.attributeId,
                   parseInt(e.target.value)
                 )
+}
               }
               disabled={loading}
               className="block w-full border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-black focus:outline-none focus:ring-black disabled:opacity-50"

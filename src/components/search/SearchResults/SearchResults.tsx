@@ -1,5 +1,5 @@
 'use client'
-import { ProductSearchFilters, ProductSearchItem } from '@/backend/search'
+import { type ProductSearchFilters, type ProductSearchItem } from '@/backend/search'
 import Pagination from '@/components/search/Pagination'
 import { SearchNotFound } from '@/components/search/SearchNotFound'
 import SearchSorting from '@/components/search/SearchSorting'

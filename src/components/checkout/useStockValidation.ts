@@ -36,9 +36,9 @@ export function useStockValidation() {
 
   // ✅ Función para validar stock (solo informativa)
   const validateAndProceedToCheckout = async (
-    items: Array<{ id: number; name: string; quantity: number }>,
+    items: Array<{ id: number, name: string, quantity: number }>,
     onStockInfoReceived?: (
-      stockInfo: Array<{ id: number; availableStock: number }>
+      stockInfo: Array<{ id: number, availableStock: number }>
     ) => void
   ): Promise<boolean> => {
     setIsValidating(true)
@@ -110,7 +110,7 @@ export function useStockValidation() {
   // Procesar errores de validación
   const processValidationErrors = (
     errors: any[],
-    originalItems: Array<{ id: number; name: string; quantity: number }>
+    originalItems: Array<{ id: number, name: string, quantity: number }>
   ): ValidationResult => {
     const stockErrors: StockError[] = errors.map((error) => {
       const originalItem = originalItems.find(
@@ -163,22 +163,22 @@ export function useCheckoutNavigation() {
   const { validateAndProceedToCheckout, ...rest } = useStockValidation()
 
   // ✅ Para usar desde el carrito (solo informativo)
-  const proceedFromCart = (
-    cartItems: Array<{ id: number; name: string; quantity: number }>,
+  const proceedFromCart = async (
+    cartItems: Array<{ id: number, name: string, quantity: number }>,
     onStockInfoReceived: (
-      stockInfo: Array<{ id: number; availableStock: number }>
+      stockInfo: Array<{ id: number, availableStock: number }>
     ) => void
   ) => {
-    return validateAndProceedToCheckout(cartItems, onStockInfoReceived)
+    return await validateAndProceedToCheckout(cartItems, onStockInfoReceived)
   }
 
   // Para usar desde PDP (compra directa)
-  const proceedFromPDP = (
+  const proceedFromPDP = async (
     productId: number,
     productName: string,
     quantity: number
   ) => {
-    return validateAndProceedToCheckout([
+    return await validateAndProceedToCheckout([
       {
         id: productId,
         name: productName,

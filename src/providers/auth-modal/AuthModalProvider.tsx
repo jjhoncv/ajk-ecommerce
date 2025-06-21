@@ -2,7 +2,7 @@
 import { AuthModals } from '@/components/auth/AuthModals'
 import React, { useState } from 'react'
 import { AuthModalContext } from './AuthModal.context'
-import { AuthCallbacks } from './AuthModal.types'
+import { type AuthCallbacks } from './AuthModal.types'
 
 interface AuthModalProviderProps {
   children: React.ReactNode

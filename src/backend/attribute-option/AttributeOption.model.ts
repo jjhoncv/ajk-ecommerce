@@ -1,6 +1,6 @@
 // generated
-import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
-import { AttributeOptions as AttributeOption } from '@/types/domain'
+import { type AttributeOptions as AttributeOptionRaw } from '@/types/database'
+import { type AttributeOptions as AttributeOption } from '@/types/domain'
 
 // others
 import attributeOptionImageModel from '@/backend/attribute-option-image'
@@ -15,9 +15,9 @@ import {
 import oAttributeOptionRep from './AttributeOption.repository'
 
 import {
-  AttributeOptionComplete,
-  AttributeOptionWithImages,
-  AttributeOptionWithVariantOptions
+  type AttributeOptionComplete,
+  type AttributeOptionWithImages,
+  type AttributeOptionWithVariantOptions
 } from './AttributeOption.interfaces'
 
 export class AttributeOptionModel {
@@ -167,14 +167,14 @@ export class AttributeOptionModel {
 
   // ✅ Eliminar option - delega al repository
   public async deleteAttributeOption(id: number): Promise<void> {
-    return await oAttributeOptionRep.deleteAttributeOption(id)
+    await oAttributeOptionRep.deleteAttributeOption(id)
   }
 
   // ✅ Eliminar todas las opciones de un atributo
   public async deleteAttributeOptionsByAttributeId(
     attributeId: number
   ): Promise<void> {
-    return await oAttributeOptionRep.deleteAttributeOptionsByAttributeId(
+    await oAttributeOptionRep.deleteAttributeOptionsByAttributeId(
       attributeId
     )
   }

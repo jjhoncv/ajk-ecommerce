@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
-import { ProductVariants } from '@/types/domain'
-import { FC, useEffect, useState } from 'react'
+import { type ProductVariants } from '@/types/domain'
+import { type FC, useEffect, useState } from 'react'
 
 interface PlusMinusButtonProps {
   variant?: ProductVariants

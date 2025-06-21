@@ -1,10 +1,10 @@
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import {
-  OrderCalculation,
-  PaymentOption,
-  ShippingOption
+  type OrderCalculation,
+  type PaymentOption,
+  type ShippingOption
 } from '@/types/checkout'
-import { PromotionVariants } from '@/types/domain'
+import { type PromotionVariants } from '@/types/domain'
 
 interface CartSummaryProps {
   items: CartItem[]

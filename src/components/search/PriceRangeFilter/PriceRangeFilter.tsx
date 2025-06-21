@@ -1,8 +1,8 @@
 'use client'
-import { AvailableFilters } from '@/backend/filters'
-import { ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductSearchFilters } from '@/backend/search'
 import CollapsibleSection from '@/components/ui/CollapsibleSection'
-import { FC } from 'react'
+import { type FC } from 'react'
 import InputPrice from './InputPrice'
 import { usePriceRangeFilter } from './usePriceRangeFilter'
 

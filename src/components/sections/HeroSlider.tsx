@@ -1,5 +1,5 @@
 'use client'
-import { Hero } from '@/services/hero'
+import { type Hero } from '@/services/hero'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -93,7 +93,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
               {slides.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentSlide(index)}
+                  onClick={() => { setCurrentSlide(index) }}
                   className={`h-3 w-3 rounded-full ${
                     index === currentSlide ? 'bg-white' : 'bg-white/50'
                   }`}

@@ -1,8 +1,8 @@
 // 📄 backend/coupon/Coupon.repository.ts
 import { executeQuery } from '@/lib/db'
 import {
-  Coupons as CouponRaw,
-  CouponUsage as CouponUsageRaw
+  type Coupons as CouponRaw,
+  type CouponUsage as CouponUsageRaw
 } from '@/types/database'
 
 export class CouponRepository {

@@ -1,11 +1,11 @@
-import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
-import { PromotionVariants as PromotionVariant } from '@/types/domain'
+import { type PromotionVariants as PromotionVariantRaw } from '@/types/database'
+import { type PromotionVariants as PromotionVariant } from '@/types/domain'
 
 // me
 import promotionModel from '@/backend/promotion/Promotion.model'
 import {
-  PromotionMetrics,
-  PromotionSummaryForVariant
+  type PromotionMetrics,
+  type PromotionSummaryForVariant
 } from './PromotionVariant.interfaces'
 import {
   PromotionVariantMapper,
@@ -362,7 +362,7 @@ export class PromotionVariantModel {
       throw new Error('Promotion variant not found')
     }
 
-    return await oPromotionVariantRep.deletePromotionVariant(
+    await oPromotionVariantRep.deletePromotionVariant(
       promotionId,
       variantId
     )
@@ -371,7 +371,7 @@ export class PromotionVariantModel {
   public async deletePromotionVariantsByVariantId(
     variantId: number
   ): Promise<void> {
-    return await oPromotionVariantRep.deletePromotionVariantsByVariantId(
+    await oPromotionVariantRep.deletePromotionVariantsByVariantId(
       variantId
     )
   }
@@ -379,7 +379,7 @@ export class PromotionVariantModel {
   public async deletePromotionVariantsByPromotionId(
     promotionId: number
   ): Promise<void> {
-    return await oPromotionVariantRep.deletePromotionVariantsByPromotionId(
+    await oPromotionVariantRep.deletePromotionVariantsByPromotionId(
       promotionId
     )
   }

@@ -1,4 +1,4 @@
-import { AttributesDisplayType } from '@/types/domain'
+import { type AttributesDisplayType } from '@/types/domain'
 
 export interface VariantAttributeOptionWithDetails {
   attributeOptionValue: string

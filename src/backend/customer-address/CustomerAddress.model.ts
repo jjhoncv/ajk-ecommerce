@@ -1,5 +1,5 @@
 // backend/customerAddress/CustomerAddress.model.ts
-import { CustomersAddresses } from '@/types/domain'
+import { type CustomersAddresses } from '@/types/domain'
 import {
   CustomerAddressMapper,
   CustomerAddressesMapper
@@ -64,14 +64,14 @@ export class CustomerAddressModel {
   }
 
   public async deleteAddress(id: number): Promise<void> {
-    return await customerAddressRepository.deleteAddress(id)
+    await customerAddressRepository.deleteAddress(id)
   }
 
   public async setDefaultAddress(
     customerId: number,
     addressId: number
   ): Promise<void> {
-    return await customerAddressRepository.setDefaultAddress(
+    await customerAddressRepository.setDefaultAddress(
       customerId,
       addressId
     )

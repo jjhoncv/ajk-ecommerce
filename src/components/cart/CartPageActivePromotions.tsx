@@ -1,6 +1,6 @@
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import { Clock, Tag } from 'lucide-react'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 // Helper para obtener promoción de un item
 const getPromotionFromItem = (item: CartItem) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { RatingSearchResultDTO } from './../types/ratings'
+import { type RatingSearchResultDTO } from './../types/ratings'
 
 interface UseRatingsDataProps {
   variantId: number

@@ -1,9 +1,10 @@
 'use client'
-import LoginForm from '@/components/ui/LoginForm'
+import LoginCustomerForm from '@/components/LoginCustomerForm'
+import RegisterCustomerForm from '@/components/RegisterCustomerForm'
 import { Modal } from '@/components/ui/Modal'
 import { ModalContent } from '@/components/ui/Modal/ModalContent'
 import { ModalTitle } from '@/components/ui/Modal/ModalTitle'
-import RegisterForm from '@/components/ui/RegisterForm'
+import { type JSX } from 'react'
 
 interface AuthModalsProps {
   isLoginOpen: boolean
@@ -23,13 +24,13 @@ export function AuthModals({
   onRegisterSuccess,
   onSwitchToRegister,
   onSwitchToLogin
-}: AuthModalsProps) {
+}: AuthModalsProps): JSX.Element {
   return (
     <>
       <Modal isOpen={isLoginOpen} onClose={closeAll} className="max-w-lg">
         <ModalTitle onClose={closeAll} title="Iniciar sesión" />
         <ModalContent>
-          <LoginForm
+          <LoginCustomerForm
             onSuccess={onLoginSuccess}
             onClose={closeAll}
             onSwitchToRegister={onSwitchToRegister}
@@ -39,7 +40,7 @@ export function AuthModals({
       <Modal isOpen={isRegisterOpen} onClose={closeAll} className="max-w-lg">
         <ModalTitle onClose={closeAll} title="Crear cuenta" />
         <ModalContent>
-          <RegisterForm
+          <RegisterCustomerForm
             onSuccess={onRegisterSuccess}
             onClose={closeAll}
             onSwitchToLogin={onSwitchToLogin}

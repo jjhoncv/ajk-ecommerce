@@ -1,6 +1,6 @@
 'use client'
 import { useStickyFilters } from '@/hooks/useStickyFilters'
-import { FC, ReactNode } from 'react'
+import { type FC, type ReactNode } from 'react'
 
 interface StickyFiltersProps {
   children: ReactNode
@@ -15,8 +15,8 @@ const StickyFilters: FC<StickyFiltersProps> = ({ children }) => {
       className="sticky left-12 z-10 w-56 overflow-y-auto"
       style={{
         top: topPosition,
-        maxHeight: maxHeight,
-        minHeight: minHeight,
+        maxHeight,
+        minHeight,
         bottom: bottomConstraint
       }}
     >

@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { Brands as BrandsRaw } from '@/types/database'
+import { type Brands as BrandsRaw } from '@/types/database'
 
 export class BrandRepository {
   public async getBrands(): Promise<BrandsRaw[] | null> {

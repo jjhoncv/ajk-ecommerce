@@ -6,8 +6,8 @@ import { getVariantImages } from '@/helpers/image.helpers'
 import { getVariantTitle } from '@/helpers/productVariant.helpers'
 import { cn } from '@/lib/utils'
 import { useCartContext } from '@/providers/cart'
-import { Products, ProductVariants as ProductVariant } from '@/types/domain'
-import { FC, useMemo, useState } from 'react'
+import { type Products, type ProductVariants as ProductVariant } from '@/types/domain'
+import { type FC, useMemo, useState } from 'react'
 
 interface ProductVariantPurchaseProps {
   variant: ProductVariant

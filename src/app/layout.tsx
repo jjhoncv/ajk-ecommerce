@@ -1,15 +1,16 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { Providers } from '@/providers/Providers'
+import type { Metadata } from 'next'
+import { Open_Sans, Roboto } from 'next/font/google'
+import { type JSX } from 'react'
 import './globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const openSans = Open_Sans({
+  variable: '--font-open-sans',
   subsets: ['latin']
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const roboto = Roboto({
+  variable: '--font-roboto',
   subsets: ['latin']
 })
 
@@ -23,12 +24,10 @@ export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>): JSX.Element {
   return (
     <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${openSans.variable} ${roboto.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

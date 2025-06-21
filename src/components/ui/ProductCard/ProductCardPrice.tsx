@@ -2,7 +2,7 @@
 import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.helpers'
 import { formatPrice } from '@/helpers/utils'
 import React from 'react'
-import { ProductCardVariantsProps } from './ProductCard.interfaces'
+import { type ProductCardVariantsProps } from './ProductCard.interfaces'
 
 const ProductCardPrice: React.FC<ProductCardVariantsProps> = ({ variant }) => {
   const { finalPrice, hasPromotion, originalPrice, currentPromotion } =

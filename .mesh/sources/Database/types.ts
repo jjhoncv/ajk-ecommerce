@@ -1139,11 +1139,11 @@ export type customers = {
   updated_at: Scalars['Timestamp']['output'];
   lastname: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   /** numero de celular */
-  phone: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
   /** Documento de identidad  */
-  dni: Scalars['String']['output'];
+  dni?: Maybe<Scalars['String']['output']>;
   coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
   orders?: Maybe<Array<Maybe<orders>>>;
@@ -3600,11 +3600,11 @@ export type customers_InsertInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   lastname: Scalars['String']['input'];
   photo?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
   /** numero de celular */
-  phone: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
   /** Documento de identidad  */
-  dni: Scalars['String']['input'];
+  dni?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type customers_UpdateInput = {

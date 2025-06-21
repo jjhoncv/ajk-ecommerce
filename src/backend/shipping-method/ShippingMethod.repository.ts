@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { ShippingMethods as ShippingMethodRaw } from '@/types/database'
+import { type ShippingMethods as ShippingMethodRaw } from '@/types/database'
 
 export class ShippingMethodRepository {
   public async getShippingMethods(): Promise<ShippingMethodRaw[] | null> {

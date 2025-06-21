@@ -1,4 +1,4 @@
-import { PromotionVariants as PromotionVariant } from '@/types/domain'
+import { type PromotionVariants as PromotionVariant } from '@/types/domain'
 
 export interface PromotionSummaryForVariant {
   totalPromotions: number

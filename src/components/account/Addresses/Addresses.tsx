@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/Label'
 import { Modal } from '@/components/ui/Modal'
 import { ModalContent } from '@/components/ui/Modal/ModalContent'
 import { ModalTitle } from '@/components/ui/Modal/ModalTitle'
-import { CustomersAddresses } from '@/types/domain'
+import { type CustomersAddresses } from '@/types/domain'
 import { Home, MapPin, MapPinHouse } from 'lucide-react'
 import { useAddresses } from './use-addresses.hook'
 
@@ -152,7 +152,7 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleEdit(address)}
+                    onClick={() => { handleEdit(address) }}
                     className="border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     EDITAR
@@ -160,16 +160,16 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleDelete(address.id)}
+                    onClick={async () => { await handleDelete(address.id) }}
                     className="border-gray-300 px-4 py-2 text-sm text-red-600 hover:border-red-300 hover:bg-red-50"
                   >
                     ELIMINAR
                   </Button>
                 </div>
 
-                {!Boolean(address.isDefault) && (
+                {!address.isDefault && (
                   <button
-                    onClick={() => handleSetDefault(address.id)}
+                    onClick={async () => { await handleSetDefault(address.id) }}
                     className="text-sm text-blue-600 underline hover:text-blue-800"
                   >
                     Establecer como predeterminada

@@ -1,6 +1,6 @@
 import searchModel, {
-  ProductSearchFilters,
-  ProductSearchResult
+  type ProductSearchFilters,
+  type ProductSearchResult
 } from '@/backend/search'
 
 export const getSearchParams = async (

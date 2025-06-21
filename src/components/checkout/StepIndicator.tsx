@@ -1,4 +1,4 @@
-import { CheckoutStep } from '@/types/checkout'
+import { type CheckoutStep } from '@/types/checkout'
 
 interface StepIndicatorProps {
   currentStep: CheckoutStep

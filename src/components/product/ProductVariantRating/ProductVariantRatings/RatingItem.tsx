@@ -1,4 +1,4 @@
-import { RatingImages, VariantRatings } from '@/types/domain'
+import { type RatingImages, type VariantRatings } from '@/types/domain'
 import { Check, User } from 'lucide-react'
 import Image from 'next/image'
 import { useRatingDisplay } from './hooks/useRatingDisplay'

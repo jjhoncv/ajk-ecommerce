@@ -10,7 +10,7 @@ import {
 } from '@/helpers/productVariant.helpers'
 import { getHeader } from '@/services/header'
 import ProductService from '@/services/product'
-import { Metadata } from 'next'
+import { type Metadata } from 'next'
 
 interface ProductVariantPageProps {
   params: Promise<{

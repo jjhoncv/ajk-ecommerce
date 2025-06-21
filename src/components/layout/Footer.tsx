@@ -4,10 +4,10 @@ import Link from 'next/link'
 
 interface FooterSection {
   title: string
-  links: {
+  links: Array<{
     name: string
     href: string
-  }[]
+  }>
 }
 
 interface SocialLink {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 // Models
 import customerModel from '@/backend/customer'
@@ -10,12 +10,12 @@ import paymentTransactionModel from '@/backend/payment-transaction'
 
 // Usar tipos del dominio
 import {
-  Customers,
-  CustomersAddresses,
-  OrderItems,
-  Orders,
-  PaymentMethods,
-  PaymentTransactions
+  type Customers,
+  type CustomersAddresses,
+  type OrderItems,
+  type Orders,
+  type PaymentMethods,
+  type PaymentTransactions
 } from '@/types/domain'
 
 interface PaymentPageData {

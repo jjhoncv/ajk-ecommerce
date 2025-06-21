@@ -1,5 +1,5 @@
-import { OrderTracking as OrderTrackingRaw } from '@/types/database'
-import { OrderTracking } from '@/types/domain'
+import { type OrderTracking as OrderTrackingRaw } from '@/types/database'
+import { type OrderTracking } from '@/types/domain'
 
 // Mapper de raw (database) a domain
 export const OrderTrackingMapper = (

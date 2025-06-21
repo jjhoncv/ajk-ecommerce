@@ -1,11 +1,11 @@
 // 📄 ShippingZone.model.ts
-import { ShippingZones as ShippingZoneRaw } from '@/types/database'
-import { ShippingZones as ShippingZone } from '@/types/domain'
+import { type ShippingZones as ShippingZoneRaw } from '@/types/database'
+import { type ShippingZones as ShippingZone } from '@/types/domain'
 
 import oShippingZoneMethodRep from '@/backend/shipping-zone-method'
 import {
-  DistrictInfo,
-  ShippingZoneWithMethods
+  type DistrictInfo,
+  type ShippingZoneWithMethods
 } from './ShippingZone.interfaces'
 import { ShippingZoneMapper, ShippingZonesMapper } from './ShippingZone.mapper'
 import oShippingZoneRep from './ShippingZone.repository'
@@ -77,29 +77,29 @@ export class ShippingZoneModel {
   }
 
   public async deleteShippingZone(id: number): Promise<void> {
-    return await oShippingZoneRep.deleteShippingZone(id)
+    await oShippingZoneRep.deleteShippingZone(id)
   }
 
   public async activateShippingZone(id: number): Promise<void> {
-    return await oShippingZoneRep.activateShippingZone(id)
+    await oShippingZoneRep.activateShippingZone(id)
   }
 
   public async deactivateShippingZone(id: number): Promise<void> {
-    return await oShippingZoneRep.deactivateShippingZone(id)
+    await oShippingZoneRep.deactivateShippingZone(id)
   }
 
   public async addDistrictToZone(
     zoneId: number,
     district: DistrictInfo
   ): Promise<void> {
-    return await oShippingZoneRep.addDistrictToZone(zoneId, district)
+    await oShippingZoneRep.addDistrictToZone(zoneId, district)
   }
 
   public async removeDistrictFromZone(
     zoneId: number,
     district: DistrictInfo
   ): Promise<void> {
-    return await oShippingZoneRep.removeDistrictFromZone(zoneId, district)
+    await oShippingZoneRep.removeDistrictFromZone(zoneId, district)
   }
 
   // Método helper para obtener distritos formateados

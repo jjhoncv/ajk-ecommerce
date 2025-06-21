@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
-import { Customers } from '@/types/domain'
+import { type Customers } from '@/types/domain'
 import { CreditCard, Mail, Phone, Save, User } from 'lucide-react'
 import { useEditProfile } from './use-edit-profile.hook'
 

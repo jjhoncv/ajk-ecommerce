@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { CustomersAddresses as CustomerAddressRaw } from '@/types/database'
+import { type CustomersAddresses as CustomerAddressRaw } from '@/types/database'
 
 export class CustomerAddressRepository {
   public async getAddress(id: number): Promise<CustomerAddressRaw | null> {

@@ -1,6 +1,6 @@
 // 📄 app/api/checkout/route.ts
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 // Models
 import couponModel from '@/backend/coupon'
@@ -16,11 +16,11 @@ import shippingZoneMethodModel from '@/backend/shipping-zone-method'
 // Types
 import { authOptions } from '@/lib/auth'
 import {
-  CheckoutResponse,
-  CouponValidation,
-  CreateOrderData,
-  OrderCalculation,
-  StockValidation
+  type CheckoutResponse,
+  type CouponValidation,
+  type CreateOrderData,
+  type OrderCalculation,
+  type StockValidation
 } from '@/types/checkout'
 
 // Función para obtener el usuario autenticado
@@ -154,7 +154,7 @@ async function calculateOrderTotals(
   }
 
   let discountAmount = 0
-  let appliedCoupon = undefined
+  let appliedCoupon
 
   // Aplicar cupón si existe
   if (couponCode && customerId) {

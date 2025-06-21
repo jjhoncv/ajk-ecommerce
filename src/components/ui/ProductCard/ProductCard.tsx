@@ -6,15 +6,14 @@ import { getVariantTitle } from '@/helpers/productVariant.helpers'
 import Link from 'next/link'
 import React from 'react'
 import { hasPromotion } from './ProductCard.helpers'
-import { ProductCardProps } from './ProductCard.interfaces'
+import { type ProductCardProps } from './ProductCard.interfaces'
 import ProductCardPrice from './ProductCardPrice'
 import ProductCardSlider from './ProductCardSlider'
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // Verificar que el producto y sus variantes existan
   if (
-    !product ||
-    !product.variants ||
+    !product?.variants ||
     product.variants.length === 0 ||
     !product.variantId
   ) {
@@ -40,9 +39,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { originalPrice } = getPriceIfHasPromotion(variant)
 
   return (
-    <div className={`relative bg-white pb-2 transition-shadow hover:shadow-lg`}>
+    <div className={'relative bg-white pb-2 transition-shadow hover:shadow-lg'}>
       <div className="relative">
-        <Link href={`/productos/variante/${variant.id}`} className={`block`}>
+        <Link href={`/productos/variante/${variant.id}`} className={'block'}>
           <ProductCardSlider images={images} productName={product.name} />
         </Link>
 

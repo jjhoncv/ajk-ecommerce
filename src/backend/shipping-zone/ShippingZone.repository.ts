@@ -1,7 +1,7 @@
 // 📄 ShippingZone.repository.ts
 import { executeQuery } from '@/lib/db'
-import { ShippingZones as ShippingZoneRaw } from '@/types/database'
-import { DistrictInfo } from './ShippingZone.interfaces'
+import { type ShippingZones as ShippingZoneRaw } from '@/types/database'
+import { type DistrictInfo } from './ShippingZone.interfaces'
 
 export class ShippingZoneRepository {
   public async getShippingZones(): Promise<ShippingZoneRaw[] | null> {

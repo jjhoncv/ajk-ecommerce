@@ -10,7 +10,7 @@ const themePreset = createTailwindPreset(currentTheme)
 
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-  presets: [themePreset as Partial<Config>],
+  presets: [themePreset],
   plugins: []
 }
 

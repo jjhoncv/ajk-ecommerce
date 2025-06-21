@@ -24,19 +24,19 @@ export const Modal: React.FC<ModalProps> = ({
   // 👈 ASEGURAR QUE ESTAMOS EN EL CLIENTE
   useEffect(() => {
     setMounted(true)
-    return () => setMounted(false)
+    return () => { setMounted(false) }
   }, [])
 
   // 👈 MANEJAR ANIMACIONES DE ENTRADA Y SALIDA
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true)
-      const timer = setTimeout(() => setIsVisible(true), 10)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => { setIsVisible(true) }, 10)
+      return () => { clearTimeout(timer) }
     } else {
       setIsVisible(false)
-      const timer = setTimeout(() => setShouldRender(false), 200)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => { setShouldRender(false) }, 200)
+      return () => { clearTimeout(timer) }
     }
   }, [isOpen])
 

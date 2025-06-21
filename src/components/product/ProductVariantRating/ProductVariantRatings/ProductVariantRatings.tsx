@@ -1,5 +1,5 @@
 'use client'
-import { Products, ProductVariants } from '@/types/domain'
+import { type Products, type ProductVariants } from '@/types/domain'
 import React from 'react'
 import { ProductVariantRatingAdd } from '../ProductVariantRatingAdd/ProductVariantRatingAdd'
 import { EmptyRatings } from './EmptyRatings'

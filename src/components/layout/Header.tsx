@@ -1,5 +1,5 @@
 import { Heart } from 'lucide-react'
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import CartButton from '../ui/CartButton'
 import Logo from '../ui/Logo'
 import SearchBar from '../ui/SearchBar'

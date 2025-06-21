@@ -1,5 +1,5 @@
 import categoryModel from '@/backend/category'
-import { Categories } from '@/types/domain'
+import { type Categories } from '@/types/domain'
 import { hydrateHeader } from './hydrators'
 
 export const getHeader = async (): Promise<Categories[] | undefined> => {

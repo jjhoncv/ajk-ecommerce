@@ -1,7 +1,7 @@
 // 📄 app/api/shipping/calculate-user/route.ts
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 // Usar tus modelos existentes
 import customerAddressModel from '@/backend/customer-address'
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
             department: address.department,
             apartment: address.apartment || undefined
           },
-          shippingOptions: shippingOptions,
+          shippingOptions,
           defaultShippingOption: defaultOption
         })
       }

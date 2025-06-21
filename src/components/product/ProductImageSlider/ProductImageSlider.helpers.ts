@@ -1,5 +1,5 @@
-import { ItemImage } from '@/shared'
-import { ProductVariants } from '@/types/domain'
+import { type ItemImage } from '@/shared'
+import { type ProductVariants } from '@/types/domain'
 
 // Obtener imágenes de la variante actual (desde attributeOptionImages)
 export const getVariantImages = (variant: ProductVariants) => {

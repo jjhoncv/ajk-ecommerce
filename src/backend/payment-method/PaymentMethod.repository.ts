@@ -1,6 +1,6 @@
 // 📄 PaymentMethod.repository.ts
 import { executeQuery } from '@/lib/db'
-import { PaymentMethods as PaymentMethodRaw } from '@/types/database'
+import { type PaymentMethods as PaymentMethodRaw } from '@/types/database'
 
 interface PaymentMethodWithStats extends PaymentMethodRaw {
   total_transactions?: number

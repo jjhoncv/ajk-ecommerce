@@ -6,18 +6,18 @@ import { useEffect, useState } from 'react'
 
 // Types
 import {
-  CheckoutResponse,
-  CheckoutState,
-  CheckoutStep,
-  CheckoutSummary,
-  CheckoutUser,
-  PaymentOption,
-  ShippingOption
+  type CheckoutResponse,
+  type CheckoutState,
+  type CheckoutStep,
+  type CheckoutSummary,
+  type CheckoutUser,
+  type PaymentOption,
+  type ShippingOption
 } from '@/types/checkout'
-import { PaymentMethods } from '@/types/domain'
+import { type PaymentMethods } from '@/types/domain'
 
 // Components
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import CartSummary from './CartSummary'
 import PaymentStep from './PaymentStep'
 import ProcessingStep from './ProcessingStep'

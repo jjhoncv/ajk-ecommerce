@@ -1,9 +1,9 @@
 // generated
-import { AttributeOptions as AttributeOptionRaw } from '@/types/database'
+import { type AttributeOptions as AttributeOptionRaw } from '@/types/database'
 import {
-  AttributeOptions as AttributeOption,
-  AttributeOptionImages,
-  VariantAttributeOptions
+  type AttributeOptions as AttributeOption,
+  type AttributeOptionImages,
+  type VariantAttributeOptions
 } from '@/types/domain'
 
 export const AttributeOptionMapper = (

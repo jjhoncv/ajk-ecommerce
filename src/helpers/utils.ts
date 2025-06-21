@@ -1,4 +1,4 @@
-import { PromotionVariants } from '@/types/domain'
+import { type PromotionVariants } from '@/types/domain'
 
 /**
  * Formatea un precio en formato de moneda
@@ -84,7 +84,7 @@ export function getImageUrl(
 }
 
 export const getPromotions = (
-  _pvs?: (PromotionVariants | null)[] | null
+  _pvs?: Array<PromotionVariants | null> | null
 ): PromotionVariants[] | undefined => {
   if (!_pvs) return []
   const pvsNotEmpty: PromotionVariants[] = _pvs.filter((pv) => !!pv)

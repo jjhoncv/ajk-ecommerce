@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { ProductVariants as ProductVariantRaw } from '@/types/database'
+import { type ProductVariants as ProductVariantRaw } from '@/types/database'
 
 export class ProductVariantRepository {
   public async getProductVariants(): Promise<ProductVariantRaw[] | null> {
@@ -118,8 +118,8 @@ export class ProductVariantRepository {
 
   public async getAttributeOptionIdsByProductId(
     productId: number
-  ): Promise<{ attribute_option_id: number }[] | null> {
-    const optionIds = await executeQuery<{ attribute_option_id: number }[]>({
+  ): Promise<Array<{ attribute_option_id: number }> | null> {
+    const optionIds = await executeQuery<Array<{ attribute_option_id: number }>>({
       query: `
         SELECT DISTINCT vao.attribute_option_id
         FROM variant_attribute_options vao 
@@ -221,7 +221,7 @@ export class ProductVariantRepository {
    * Actualizar múltiples stocks en una transacción
    */
   public async updateMultipleStocks(
-    updates: Array<{ id: number; quantityChange: number }>
+    updates: Array<{ id: number, quantityChange: number }>
   ): Promise<boolean> {
     try {
       // Verificar que todos los productos tienen stock suficiente antes de actualizar

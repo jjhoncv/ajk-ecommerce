@@ -1,5 +1,5 @@
-import { ItemImage } from '@/shared'
-import { ProductVariants, PromotionVariants } from '@/types/domain'
+import { type ItemImage } from '@/shared'
+import { type ProductVariants, type PromotionVariants } from '@/types/domain'
 
 export interface CleanImage {
   id: number

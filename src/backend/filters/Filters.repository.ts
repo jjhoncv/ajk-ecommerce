@@ -1,9 +1,9 @@
 import { executeQuery } from '@/lib/db'
 import {
-  FilterAttribute,
-  FilterBrand,
-  FilterCategory,
-  PriceRange
+  type FilterAttribute,
+  type FilterBrand,
+  type FilterCategory,
+  type PriceRange
 } from './Filters.interfaces'
 
 export class FiltersRepository {
@@ -66,7 +66,7 @@ export class FiltersRepository {
       ORDER BY a.id, count DESC
     `
     const attributeOptions = await executeQuery<
-      {
+      Array<{
         id: number
         name: string
         display_type: string
@@ -74,7 +74,7 @@ export class FiltersRepository {
         option_value: string
         additional_cost: number
         count: number
-      }[]
+      }>
     >({
       query: attributesQuery
     })

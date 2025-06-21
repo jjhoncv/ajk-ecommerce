@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { ProductSearchFilters } from './Search.interfaces'
+import { type ProductSearchFilters } from './Search.interfaces'
 
 export interface VariantSearchResultRaw {
   variant_id: number
@@ -16,7 +16,7 @@ export interface VariantSearchResultRaw {
 export class SearchRepository {
   public async searchProductVariants(
     filters: ProductSearchFilters
-  ): Promise<{ results: VariantSearchResultRaw[]; totalCount: number }> {
+  ): Promise<{ results: VariantSearchResultRaw[], totalCount: number }> {
     try {
       let query = `
         SELECT 
@@ -36,7 +36,7 @@ export class SearchRepository {
       `
 
       const whereConditions: string[] = []
-      const queryParams: (string | number)[] = []
+      const queryParams: Array<string | number> = []
       const additionalJoins: string[] = []
 
       // === BÚSQUEDA POR TEXTO MEJORADA ===
@@ -287,7 +287,7 @@ export class SearchRepository {
       const searchTerm = `%${term}%`
 
       const suggestions = await executeQuery<
-        { suggestion: string; priority: number }[]
+        Array<{ suggestion: string, priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (
@@ -365,7 +365,7 @@ export class SearchRepository {
     try {
       // Para múltiples términos, enfoque más directo y efectivo
       const suggestions = await executeQuery<
-        { suggestion: string; priority: number }[]
+        Array<{ suggestion: string, priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (
@@ -411,7 +411,7 @@ export class SearchRepository {
     } catch (error) {
       console.error('Error in getMultiTermSuggestions:', error)
       // Fallback a búsqueda simple si falla
-      return this.getSingleTermSuggestions(terms.join(' '), limit)
+      return await this.getSingleTermSuggestions(terms.join(' '), limit)
     }
   }
 }

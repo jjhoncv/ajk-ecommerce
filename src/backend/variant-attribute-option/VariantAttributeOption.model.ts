@@ -1,7 +1,7 @@
-import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
+import { type VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
 import {
-  VariantAttributeOptions as VariantAttributeOption,
-  VariantAttributeOptions
+  type VariantAttributeOptions as VariantAttributeOption,
+  type VariantAttributeOptions
 } from '@/types/domain'
 
 // me
@@ -103,7 +103,7 @@ export class VariantAttributeOptionModel {
     variantId: number,
     attributeOptionId: number
   ): Promise<void> {
-    return await oVariantAttributeOptionRep.deleteVariantAttributeOption(
+    await oVariantAttributeOptionRep.deleteVariantAttributeOption(
       variantId,
       attributeOptionId
     )
@@ -112,7 +112,7 @@ export class VariantAttributeOptionModel {
   public async deleteVariantAttributeOptionsByVariantId(
     variantId: number
   ): Promise<void> {
-    return await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByVariantId(
+    await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByVariantId(
       variantId
     )
   }
@@ -120,7 +120,7 @@ export class VariantAttributeOptionModel {
   public async deleteVariantAttributeOptionsByAttributeOptionId(
     attributeOptionId: number
   ): Promise<void> {
-    return await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByAttributeOptionId(
+    await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByAttributeOptionId(
       attributeOptionId
     )
   }
@@ -156,7 +156,7 @@ export class VariantAttributeOptionModel {
     variantId: number,
     attributeOptionId: number
   ): Promise<void> {
-    return await this.deleteVariantAttributeOption(variantId, attributeOptionId)
+    await this.deleteVariantAttributeOption(variantId, attributeOptionId)
   }
 }
 

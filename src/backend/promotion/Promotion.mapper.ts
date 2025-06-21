@@ -1,5 +1,5 @@
-import { Promotions as PromotionRaw } from '@/types/database'
-import { Promotions as Promotion } from '@/types/domain'
+import { type Promotions as PromotionRaw } from '@/types/database'
+import { type Promotions as Promotion } from '@/types/domain'
 
 export const PromotionMapper = (data: PromotionRaw): Promotion => {
   return {

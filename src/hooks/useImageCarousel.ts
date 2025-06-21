@@ -75,8 +75,7 @@ export const useImageCarousel = ({
   // Función para precargar imágenes
   const preloadImage = useCallback(
     (index: number) => {
-      if (!preloadImages || preloadedRef.current.has(index) || !images[index])
-        return
+      if (!preloadImages || preloadedRef.current.has(index) || !images[index]) { return }
 
       const img = new Image()
       img.src = images[index].imageUrlNormal
@@ -147,8 +146,7 @@ export const useImageCarousel = ({
   // ✅ Handlers para eventos (con detección por zonas)
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!mouseZoneDetection || !containerRef.current || !hasMultipleImages)
-        return
+      if (!mouseZoneDetection || !containerRef.current || !hasMultipleImages) { return }
 
       // Obtener posición relativa dentro del contenedor
       const rect = containerRef.current.getBoundingClientRect()

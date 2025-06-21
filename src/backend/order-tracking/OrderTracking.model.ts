@@ -1,4 +1,4 @@
-import { OrderTracking } from '@/types/domain'
+import { type OrderTracking } from '@/types/domain'
 
 import {
   OrderTrackingMapper,
@@ -168,11 +168,11 @@ export class OrderTrackingModel {
   }
 
   public async deleteOrderTracking(id: number): Promise<void> {
-    return await oOrderTrackingRep.deleteOrderTracking(id)
+    await oOrderTrackingRep.deleteOrderTracking(id)
   }
 
   public async deleteOrderTrackingsByOrderId(orderId: number): Promise<void> {
-    return await oOrderTrackingRep.deleteOrderTrackingsByOrderId(orderId)
+    await oOrderTrackingRep.deleteOrderTrackingsByOrderId(orderId)
   }
 
   // Métodos utilitarios

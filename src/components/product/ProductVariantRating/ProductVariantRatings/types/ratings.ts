@@ -1,4 +1,4 @@
-import { VariantRatings } from '@/types/domain'
+import { type VariantRatings } from '@/types/domain'
 
 // Interfaces para el resumen de valoraciones
 export interface RatingSummary {

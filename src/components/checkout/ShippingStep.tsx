@@ -1,5 +1,5 @@
 // 📄 app/checkout/components/ShippingStep.tsx
-import { CheckoutSummary, CheckoutUser, ShippingOption } from '@/types/checkout'
+import { type CheckoutSummary, type CheckoutUser, type ShippingOption } from '@/types/checkout'
 import { useState } from 'react'
 
 interface ShippingStepProps {
@@ -57,7 +57,7 @@ export default function ShippingStep({
                   ? 'border-indigo-600 bg-indigo-50'
                   : 'border-gray-200 hover:border-gray-300'
               } `}
-              onClick={() => onAddressChange(address.id)}
+              onClick={() => { onAddressChange(address.id) }}
             >
               <div className="flex items-center">
                 <input
@@ -65,7 +65,7 @@ export default function ShippingStep({
                   name="shipping-address"
                   value={address.id}
                   checked={currentAddressId === address.id}
-                  onChange={() => onAddressChange(address.id)}
+                  onChange={() => { onAddressChange(address.id) }}
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
                 <div className="ml-3 flex-1">
@@ -116,7 +116,7 @@ export default function ShippingStep({
                     ? 'border-indigo-600 bg-indigo-50'
                     : 'border-gray-200 hover:border-gray-300'
                 } `}
-                onClick={() => handleShippingMethodSelect(option)}
+                onClick={() => { handleShippingMethodSelect(option) }}
               >
                 <div className="flex items-center">
                   <input
@@ -124,7 +124,7 @@ export default function ShippingStep({
                     name="shipping-method"
                     value={option.methodId}
                     checked={selectedShippingMethod === option.methodId}
-                    onChange={() => handleShippingMethodSelect(option)}
+                    onChange={() => { handleShippingMethodSelect(option) }}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   <div className="ml-3 flex-1">

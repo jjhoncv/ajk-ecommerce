@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { Products as ProductRaw } from '@/types/database'
+import { type Products as ProductRaw } from '@/types/database'
 
 export class ProductRepository {
   public async getProducts(): Promise<ProductRaw[] | null> {
@@ -74,7 +74,7 @@ export class ProductRepository {
   }
 
   public async getProductsCount(): Promise<number> {
-    const result = await executeQuery<{ count: number }[]>({
+    const result = await executeQuery<Array<{ count: number }>>({
       query: 'SELECT COUNT(*) as count FROM products'
     })
 

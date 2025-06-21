@@ -1,5 +1,5 @@
 import { useRatingDisplay } from './hooks/useRatingDisplay'
-import { RatingSummary as IRatingSummary } from './types/ratings'
+import { type RatingSummary as IRatingSummary } from './types/ratings'
 
 interface RatingSummaryProps {
   summary: IRatingSummary

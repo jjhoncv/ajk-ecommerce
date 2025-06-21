@@ -5,7 +5,7 @@ import orderItemsModel from '@/backend/order-item'
 import orderTrackingModel from '@/backend/order-tracking'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 interface RouteParams {
   params: {
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     // Verificar sesión
     const session = await getServerSession(authOptions)
-    if (!session || !session.user?.id) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
@@ -188,7 +188,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     // Verificar sesión
     const session = await getServerSession(authOptions)
-    if (!session || !session.user?.id) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 

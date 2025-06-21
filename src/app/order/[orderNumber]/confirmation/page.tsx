@@ -10,10 +10,10 @@ import orderItemsModel from '@/backend/order-item'
 
 // Usar tipos del dominio
 import {
-  Customers,
-  CustomersAddresses,
-  OrderItems,
-  Orders
+  type Customers,
+  type CustomersAddresses,
+  type OrderItems,
+  type Orders
 } from '@/types/domain'
 
 // Components

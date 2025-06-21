@@ -1,18 +1,30 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Formateo automático
   "editor.formatOnSave": true,
-  "window.zoomLevel": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Acciones al guardar (combina organizar imports + ESLint)
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // ESLint configuración
+  "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
+
+  // TypeScript
   "typescript.preferences.importModuleSpecifier": "non-relative",
-  "eslint.workingDirectories": ["./src"],
+
+  // Formatters específicos por lenguaje
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -26,9 +38,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  // Tailwind CSS
   "tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Styles"],
+
+  // Spell checker
   "cSpell.language": "en,es-ES",
   "cSpell.words": [
     "apikey",
@@ -106,7 +122,7 @@
     "WHATSAPP",
     "xlarge"
   ],
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+
+  // UI
+  "window.zoomLevel": 2
 }

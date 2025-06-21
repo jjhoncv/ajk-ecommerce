@@ -1,8 +1,8 @@
 // import { ProductComplete } from '@/backend/product'
-import { ProductComplete } from '@/backend/product'
-import { ProductVariantComplete } from '@/backend/product-variant'
-import { ItemImage } from '@/shared'
-import { ProductVariants } from '@/types/domain'
+import { type ProductComplete } from '@/backend/product'
+import { type ProductVariantComplete } from '@/backend/product-variant'
+import { type ItemImage } from '@/shared'
+import { type ProductVariants } from '@/types/domain'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {

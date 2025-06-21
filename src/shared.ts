@@ -1,4 +1,4 @@
-import { AttributeOptionImages, VariantImages } from '@/types/domain'
+import { type AttributeOptionImages, type VariantImages } from '@/types/domain'
 
 export enum SEARCH_SORT {
   PRICE_ASC = 'price_asc',

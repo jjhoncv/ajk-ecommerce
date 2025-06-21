@@ -1,6 +1,6 @@
 import categoryModel from '@/backend/category'
 import { hydrateMainCategories } from './hydrators'
-import { MainCategory } from './types'
+import { type MainCategory } from './types'
 
 export const getMainCategories = async (): Promise<MainCategory[]> => {
   try {

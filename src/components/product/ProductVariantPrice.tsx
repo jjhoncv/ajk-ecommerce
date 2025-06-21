@@ -1,7 +1,7 @@
 import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.helpers'
 import { formatPrice } from '@/helpers/utils'
-import { ProductVariants } from '@/types/domain'
-import { FC } from 'react'
+import { type ProductVariants } from '@/types/domain'
+import { type FC } from 'react'
 
 interface ProductVariantPriceProps {
   variant: ProductVariants

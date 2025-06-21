@@ -1,12 +1,12 @@
 // generated
-import { Attributes as AttributeRaw } from '@/types/database'
-import { AttributeOptions as AttributeOption } from '@/types/domain'
+import { type Attributes as AttributeRaw } from '@/types/database'
+import { type AttributeOptions as AttributeOption } from '@/types/domain'
 
 // others
 import attributeOptionModel from '@/backend/attribute-option/AttributeOption.model'
 
 // me
-import { AttributeWithOptions } from './Attribute.interfaces'
+import { type AttributeWithOptions } from './Attribute.interfaces'
 import { AttributeMapper, AttributeMappers } from './Attribute.mapper'
 import oAttributeRep from './Attribute.repository'
 
@@ -19,7 +19,7 @@ export class AttributeModel {
     if (!attributes) return undefined
 
     // Para cada atributo, obtener sus opciones SIN images
-    return Promise.all(
+    return await Promise.all(
       attributes.map(async (attribute) => ({
         ...attribute,
         options: await this.getAttributeOptions(attribute.id)
@@ -37,7 +37,7 @@ export class AttributeModel {
     if (!attributes) return undefined
 
     // Para cada atributo, obtener sus opciones CON images usando el MODEL
-    return Promise.all(
+    return await Promise.all(
       attributes.map(async (attribute) => ({
         ...attribute,
         options: await attributeOptionModel.getAttributeOptionsWithImages(
@@ -118,7 +118,7 @@ export class AttributeModel {
 
   // ✅ Eliminar attribute - delega al repository
   public async deleteAttribute(id: number): Promise<void> {
-    return await oAttributeRep.deleteAttribute(id)
+    await oAttributeRep.deleteAttribute(id)
   }
 }
 

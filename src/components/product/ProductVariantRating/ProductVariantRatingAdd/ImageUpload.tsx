@@ -33,7 +33,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             />
             <button
               type="button"
-              onClick={() => onRemoveImage(index)}
+              onClick={() => { onRemoveImage(index) }}
               className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm hover:bg-gray-100"
             >
               <X className="h-3 w-3" />

@@ -4,8 +4,8 @@ import ProductVariantAttributeSelector from '@/components/product/ProductVariant
 import { ProductVariantInfo } from '@/components/product/ProductVariantInfo'
 import { ProductVariantPurchase } from '@/components/product/ProductVariantPurchase'
 import { ProductVariantRatings } from '@/components/product/ProductVariantRating'
-import { ProductVariantData } from '@/services/product/productVariant'
-import { ProductVariants } from '@/types/domain'
+import { type ProductVariantData } from '@/services/product/productVariant'
+import { type ProductVariants } from '@/types/domain'
 import React, { useState } from 'react'
 import {
   ProductImageSlider,

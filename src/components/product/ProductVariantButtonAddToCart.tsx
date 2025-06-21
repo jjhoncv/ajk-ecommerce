@@ -1,7 +1,7 @@
 'use client'
 import { getPromotions } from '@/helpers/utils'
 import { useCartContext } from '@/providers/cart'
-import { PromotionVariants } from '@/types/domain'
+import { type PromotionVariants } from '@/types/domain'
 import React from 'react'
 
 interface ProductVariantButtonAddToCartProps {
@@ -11,7 +11,7 @@ interface ProductVariantButtonAddToCartProps {
   price: number
   stock: number
   quantity: number
-  promotionVariants?: (PromotionVariants | null)[] | null
+  promotionVariants?: Array<PromotionVariants | null> | null
   onCartAction?: () => void
 }
 
@@ -72,7 +72,7 @@ const ProductVariantButtonAddToCart: React.FC<
   return (
     <button
       onClick={handleAddToCart}
-      className={`w-full border border-gray-300 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50`}
+      className={'w-full border border-gray-300 px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50'}
       disabled={isDisabled}
     >
       Agregar al carrito

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { X } from 'lucide-react'
-import { FC, ReactNode } from 'react'
+import { type FC, type ReactNode } from 'react'
 
 interface ModalTitleProps {
   onClose: () => void
@@ -18,7 +18,7 @@ export const ModalTitle: FC<ModalTitleProps> = ({
   return (
     <div className={cn('border-b border-gray-200 p-4', className)}>
       <div className="flex items-center justify-between">
-        {children ? children : <h2 className="text-xl font-bold">{title}</h2>}
+        {children || <h2 className="text-xl font-bold">{title}</h2>}
         <button
           onClick={onClose}
           className="rounded-full p-2 hover:bg-gray-100"

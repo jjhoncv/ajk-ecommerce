@@ -1,5 +1,5 @@
-import { Products as ProductRaw } from '@/types/database'
-import { Products as Product } from '@/types/domain'
+import { type Products as ProductRaw } from '@/types/database'
+import { type Products as Product } from '@/types/domain'
 
 export const ProductMapper = (data: ProductRaw): Product => {
   return {

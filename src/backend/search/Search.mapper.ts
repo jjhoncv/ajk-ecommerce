@@ -1,9 +1,9 @@
 // others
-import { ProductVariantComplete } from '@/backend/product-variant'
-import { VariantSearchResultRaw } from '@/backend/search/Search.repository'
+import { type ProductVariantComplete } from '@/backend/product-variant'
+import { type VariantSearchResultRaw } from '@/backend/search/Search.repository'
 
 // me
-import { ProductSearchItem, VariantSearchResult } from './Search.interfaces'
+import { type ProductSearchItem, type VariantSearchResult } from './Search.interfaces'
 
 export const VariantSearchResultMapper = (
   data: VariantSearchResultRaw
@@ -31,7 +31,7 @@ export const ProductSearchItemMapper = (
   variantResult: VariantSearchResult,
   variant: ProductVariantComplete,
   brandName: string,
-  categories: Array<{ id: number; name: string }>,
+  categories: Array<{ id: number, name: string }>,
   mainImage?: string
 ): ProductSearchItem => {
   return {

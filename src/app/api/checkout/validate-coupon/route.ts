@@ -3,7 +3,7 @@ import couponModel from '@/backend/coupon'
 import customerModel from '@/backend/customer'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {

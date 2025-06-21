@@ -1,8 +1,8 @@
 import { executeQuery } from '@/lib/db'
 import {
-  AttributeOptions,
-  Attributes,
-  VariantAttributeOptions as VariantAttributeOptionRaw
+  type AttributeOptions,
+  type Attributes,
+  type VariantAttributeOptions as VariantAttributeOptionRaw
 } from '@/types/database'
 
 export interface VariantAttributeOptionWithDetailsRaw

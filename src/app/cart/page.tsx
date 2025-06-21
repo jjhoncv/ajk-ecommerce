@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
 import Navigation from '@/components/ui/Navigation'
-import { Metadata } from 'next'
+import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Carrito de Compras | TechStore',

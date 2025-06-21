@@ -1,5 +1,5 @@
-import { ProductVariants as ProductVariant } from '@/types/domain'
-import { FC } from 'react'
+import { type ProductVariants as ProductVariant } from '@/types/domain'
+import { type FC } from 'react'
 
 interface ProductVariantRatingProps {
   variant: ProductVariant

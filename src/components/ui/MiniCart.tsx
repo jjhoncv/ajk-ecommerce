@@ -60,7 +60,7 @@ const MiniCart: React.FC = () => {
               <div>
                 <p className="text-sm text-gray-700">
                   {deleteConfirmation.message ||
-                    `¿Estás seguro de que quieres eliminar el artículo de tu cesta?`}
+                    '¿Estás seguro de que quieres eliminar el artículo de tu cesta?'}
                 </p>
               </div>
             </div>

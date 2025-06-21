@@ -1,12 +1,12 @@
-import { ProductVariantData } from '@/services/product/productVariant'
-import { ProductVariants } from '@/types/domain'
-import { Metadata } from 'next'
+import { type ProductVariantData } from '@/services/product/productVariant'
+import { type ProductVariants } from '@/types/domain'
+import { type Metadata } from 'next'
 
 export const generateProductVariantMetadata = (
   data: ProductVariantData | null,
   variantId: number
 ): Metadata => {
-  if (!data || !data.product) {
+  if (!data?.product) {
     return {
       title: 'Producto no encontrado',
       description: 'El producto que buscas no existe o ha sido eliminado.'

@@ -1,11 +1,11 @@
 import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
 import { formatPrice } from '@/helpers/utils'
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import { useCartContext } from '@/providers/cart'
 import { AlertTriangle, Package, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 // Helper para obtener precio con promoción
 const getPriceIfHasPromotion = (item: CartItem) => {
@@ -74,7 +74,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
       const itemBefore = cartBefore.find(
         (cartItem: any) => cartItem.id === item.id
       )
-      console.log(`📋 Item in localStorage BEFORE update:`, itemBefore)
+      console.log('📋 Item in localStorage BEFORE update:', itemBefore)
 
       updateQuantity(item.id, newQuantity)
 
@@ -84,7 +84,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
         const itemAfter = cartAfter.find(
           (cartItem: any) => cartItem.id === item.id
         )
-        console.log(`📋 Item in localStorage AFTER update:`, itemAfter)
+        console.log('📋 Item in localStorage AFTER update:', itemAfter)
       }, 50)
     } else {
       console.log(`❌ Invalid quantity: ${newQuantity} (must be >= 0)`)

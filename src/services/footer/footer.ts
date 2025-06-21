@@ -1,4 +1,4 @@
-import { FooterModel } from './'
+import { type FooterModel } from './'
 import { dataMock } from './mock'
 
 export const getFooter = async (): Promise<FooterModel> => {

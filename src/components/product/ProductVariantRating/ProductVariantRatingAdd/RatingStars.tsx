@@ -27,8 +27,8 @@ export const RatingStars: React.FC<RatingStarsProps> = ({
           <button
             key={star}
             type="button"
-            onClick={() => onRatingClick(star)}
-            onMouseEnter={() => onMouseEnter(star)}
+            onClick={() => { onRatingClick(star) }}
+            onMouseEnter={() => { onMouseEnter(star) }}
             onMouseLeave={onMouseLeave}
             className="p-1"
           >

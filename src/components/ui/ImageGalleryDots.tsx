@@ -1,5 +1,5 @@
 'use client'
-import { CleanImage } from '@/components/product/ProductVariant.helpers'
+import { type CleanImage } from '@/components/product/ProductVariant.helpers'
 import { useImageCarousel } from '@/hooks/useImageCarousel'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'

@@ -1,5 +1,5 @@
 // 📄 backend/coupon/Coupon.interfaces.ts
-import { Coupons } from '@/types/domain'
+import { type Coupons } from '@/types/domain'
 
 // Cupón con estadísticas de uso
 export interface CouponWithStats extends Coupons {

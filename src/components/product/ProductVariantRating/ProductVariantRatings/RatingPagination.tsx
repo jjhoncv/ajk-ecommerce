@@ -15,7 +15,7 @@ export const RatingPagination: React.FC<RatingPaginationProps> = ({
     <div className="mt-6 flex justify-center">
       <nav className="flex items-center space-x-2">
         <button
-          onClick={() => onPageChange(currentPage - 1)}
+          onClick={() => { onPageChange(currentPage - 1) }}
           disabled={currentPage === 1}
           className={`rounded border px-3 py-1 ${
             currentPage === 1
@@ -29,7 +29,7 @@ export const RatingPagination: React.FC<RatingPaginationProps> = ({
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
           <button
             key={pageNum}
-            onClick={() => onPageChange(pageNum)}
+            onClick={() => { onPageChange(pageNum) }}
             className={`rounded border px-3 py-1 ${
               currentPage === pageNum
                 ? 'border-indigo-600 bg-indigo-600 text-white'
@@ -41,7 +41,7 @@ export const RatingPagination: React.FC<RatingPaginationProps> = ({
         ))}
 
         <button
-          onClick={() => onPageChange(currentPage + 1)}
+          onClick={() => { onPageChange(currentPage + 1) }}
           disabled={currentPage === totalPages}
           className={`rounded border px-3 py-1 ${
             currentPage === totalPages

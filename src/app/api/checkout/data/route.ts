@@ -1,6 +1,6 @@
 // 📄 app/api/checkout/data/route.ts
 import { getServerSession } from 'next-auth'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 // Models
 import customerModel from '@/backend/customer'
@@ -11,10 +11,10 @@ import shippingZoneMethodModel from '@/backend/shipping-zone-method'
 // Types
 import { authOptions } from '@/lib/auth'
 import {
-  CheckoutSummary,
-  CheckoutUser,
-  PaymentOption,
-  ShippingOption
+  type CheckoutSummary,
+  type CheckoutUser,
+  type PaymentOption,
+  type ShippingOption
 } from '@/types/checkout'
 
 // Función para obtener el usuario autenticado

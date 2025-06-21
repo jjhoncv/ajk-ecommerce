@@ -1,5 +1,5 @@
-import { Promotions as PromotionRaw } from '@/types/database'
-import { Promotions as Promotion } from '@/types/domain'
+import { type Promotions as PromotionRaw } from '@/types/database'
+import { type Promotions as Promotion } from '@/types/domain'
 
 // me
 import { PromotionMapper, PromotionsMapper } from './Promotion.mapper'
@@ -35,7 +35,7 @@ export class PromotionModel {
   }
 
   public async deletePromotion(id: number): Promise<void> {
-    return await oPromotionRep.deletePromotion(id)
+    await oPromotionRep.deletePromotion(id)
   }
 }
 

@@ -1,10 +1,10 @@
-import { ProductVariantComplete } from '@/backend/product-variant'
-import { ProductDTO, ProductVariantDTO } from '@/dto'
-import { ItemImage } from '@/shared'
+import { type ProductVariantComplete } from '@/backend/product-variant'
+import { type ProductDTO, type ProductVariantDTO } from '@/dto'
+import { type ItemImage } from '@/shared'
 import {
-  AttributeOptionImages,
-  ProductVariants,
-  VariantImages
+  type AttributeOptionImages,
+  type ProductVariants,
+  type VariantImages
 } from '@/types/domain'
 
 /**
@@ -53,8 +53,8 @@ export const calculateMaxVariantPrice = (
  */
 export const groupAttributesByName = (
   variants: ProductDTO['variants']
-): { [key: string]: Set<string> } => {
-  const attributeGroups: { [key: string]: Set<string> } = {}
+): Record<string, Set<string>> => {
+  const attributeGroups: Record<string, Set<string>> = {}
 
   variants.forEach((variant) => {
     variant.attributes.forEach((attr) => {
@@ -78,7 +78,7 @@ export const findMainImage = (
   variant: ProductDTO['variants'][0],
   mainProductImage: string | null
 ): string => {
-  if (!variant || !variant.images || variant.images.length === 0) {
+  if (!variant?.images || variant.images.length === 0) {
     return (
       mainProductImage ||
       'https://placehold.co/600x400/e2e8f0/1e293b?text=No+Image'

@@ -1,5 +1,5 @@
 'use client'
-import { Categories } from '@/types/domain'
+import { type Categories } from '@/types/domain'
 import { Menu, Percent } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
@@ -23,20 +23,20 @@ const Navigation: React.FC<NavigationProps> = ({
       <>
         <button
           className="flex items-center gap-2 rounded-sm bg-primary px-2 py-2 text-white transition-colors hover:bg-primary/90"
-          onClick={() => setIsCategoriesMenuOpen(true)}
+          onClick={() => { setIsCategoriesMenuOpen(true) }}
         >
           <Menu className="h-5 w-5" />
         </button>
         <SlidePage
           isOpen={isCategoriesMenuOpen}
-          onClose={() => setIsCategoriesMenuOpen(false)}
+          onClose={() => { setIsCategoriesMenuOpen(false) }}
           title="Categorías"
           direction="left"
           width={400}
         >
           <CategoriesMenu
             categories={categories}
-            onClose={() => setIsCategoriesMenuOpen(false)}
+            onClose={() => { setIsCategoriesMenuOpen(false) }}
           />
         </SlidePage>
       </>
@@ -52,7 +52,7 @@ const Navigation: React.FC<NavigationProps> = ({
           <div className="relative">
             <button
               className="flex items-center gap-2 bg-primary px-6 py-3 text-white transition-colors hover:bg-primary/90"
-              onClick={() => setIsCategoriesMenuOpen(true)}
+              onClick={() => { setIsCategoriesMenuOpen(true) }}
             >
               <Menu className="h-5 w-5" />
               <span>Categorías</span>
@@ -137,14 +137,14 @@ const Navigation: React.FC<NavigationProps> = ({
       {/* SlidePage para el menú de categorías */}
       <SlidePage
         isOpen={isCategoriesMenuOpen}
-        onClose={() => setIsCategoriesMenuOpen(false)}
+        onClose={() => { setIsCategoriesMenuOpen(false) }}
         title="Categorías"
         direction="left"
         width={400}
       >
         <CategoriesMenu
           categories={categories}
-          onClose={() => setIsCategoriesMenuOpen(false)}
+          onClose={() => { setIsCategoriesMenuOpen(false) }}
         />
       </SlidePage>
     </div>

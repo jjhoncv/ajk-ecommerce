@@ -1,6 +1,6 @@
 'use client'
-import { AvailableFilters } from '@/backend/filters'
-import { ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductSearchFilters } from '@/backend/search'
 
 import CollapsibleSection from '@/components/ui/CollapsibleSection'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'

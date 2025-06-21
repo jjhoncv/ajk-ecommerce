@@ -1,5 +1,5 @@
-import { Categories as CategoryRaw } from '@/types/database'
-import { Categories as Category } from '@/types/domain'
+import { type Categories as CategoryRaw } from '@/types/database'
+import { type Categories as Category } from '@/types/domain'
 
 export const CategoryMapper = (data: CategoryRaw): Category => {
   return {

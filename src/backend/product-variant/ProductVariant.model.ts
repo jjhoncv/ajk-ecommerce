@@ -4,10 +4,10 @@ import oPromotionVariantModel from '@/backend/promotion-variant'
 import oVariantAttributeOptionModel from '@/backend/variant-attribute-option'
 import oVariantImageModel from '@/backend/variant-image'
 import oVariantRatingModel, {
-  VariantRatingWithCustomer
+  type VariantRatingWithCustomer
 } from '@/backend/variant-rating'
 
-//me
+// me
 import {
   ProductVariantMapper,
   ProductVariantsMapper
@@ -15,21 +15,21 @@ import {
 
 import oProductVariantRep from './ProductVariant.repository'
 
-import { ProductVariants as ProductVariantRaw } from '@/types/database'
+import { type ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
-  AttributeOptionImages,
-  ProductVariants as ProductVariant,
-  VariantAttributeOptions as VariantAttributeOption,
-  VariantAttributeOptions
+  type AttributeOptionImages,
+  type ProductVariants as ProductVariant,
+  type VariantAttributeOptions as VariantAttributeOption,
+  type VariantAttributeOptions
 } from '@/types/domain'
 
 import attributeOptionImageModel from '@/backend/attribute-option-image'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import variantRatingModel from '@/backend/variant-rating'
 import {
-  ProductVariantComplete,
-  ProductVariantWithAttributeOptions,
-  ProductVariantWithImages
+  type ProductVariantComplete,
+  type ProductVariantWithAttributeOptions,
+  type ProductVariantWithImages
 } from './ProductVariant.interfaces'
 
 export class ProductVariantModel {
@@ -85,13 +85,13 @@ export class ProductVariantModel {
   }
 
   public async deleteProductVariant(id: number): Promise<void> {
-    return await oProductVariantRep.deleteProductVariant(id)
+    await oProductVariantRep.deleteProductVariant(id)
   }
 
   public async deleteProductVariantsByProductId(
     productId: number
   ): Promise<void> {
-    return await oProductVariantRep.deleteProductVariantsByProductId(productId)
+    await oProductVariantRep.deleteProductVariantsByProductId(productId)
   }
 
   public async updateProductVariantStock(
@@ -153,7 +153,7 @@ export class ProductVariantModel {
 
     if (!variants) return undefined
 
-    return Promise.all(
+    return await Promise.all(
       variants.map(async (variant) => {
         // Obtener atributos usando composición con datos completos
         const variantAttributeOptionWithDetails =
@@ -280,9 +280,9 @@ export class ProductVariantModel {
 
     const result: ProductVariantComplete = {
       ...variant,
-      variantAttributeOptions: variantAttributeOptions,
-      variantImages: variantImages,
-      variantRatings: variantRatings
+      variantAttributeOptions,
+      variantImages,
+      variantRatings
     }
 
     // Añadir promoción si existe
@@ -411,7 +411,7 @@ export class ProductVariantModel {
   }
 
   public async deleteVariant(id: number) {
-    return await this.deleteProductVariant(id)
+    await this.deleteProductVariant(id)
   }
 
   /**

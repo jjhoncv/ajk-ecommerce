@@ -1,4 +1,4 @@
-import { VariantRatings } from '@/types/domain'
+import { type VariantRatings } from '@/types/domain'
 import { RatingItem } from './RatingItem'
 import { RatingPagination } from './RatingPagination'
 

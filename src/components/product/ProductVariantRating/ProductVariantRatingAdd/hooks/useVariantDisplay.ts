@@ -1,4 +1,4 @@
-import { ProductVariants, Products } from '@/types/domain'
+import { type ProductVariants, type Products } from '@/types/domain'
 
 export const useVariantDisplay = (
   variant: ProductVariants,

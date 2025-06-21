@@ -1,5 +1,5 @@
-import { OrderItems as OrderItemsRaw } from '@/types/database'
-import { OrderItems as OrderItem } from '@/types/domain'
+import { type OrderItems as OrderItemsRaw } from '@/types/database'
+import { type OrderItems as OrderItem } from '@/types/domain'
 
 export const OrderItemMapper = (orderItemRaw: OrderItemsRaw): OrderItem => {
   return {

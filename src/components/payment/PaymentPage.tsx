@@ -15,12 +15,12 @@ import { useEffect, useState } from 'react'
 
 // Usar tipos del dominio
 import {
-  Customers,
-  CustomersAddresses,
-  OrderItems,
-  Orders,
-  PaymentMethods,
-  PaymentTransactions
+  type Customers,
+  type CustomersAddresses,
+  type OrderItems,
+  type Orders,
+  type PaymentMethods,
+  type PaymentTransactions
 } from '@/types/domain'
 
 interface PaymentPageData {
@@ -67,21 +67,21 @@ const BankTransferSandbox = ({
 
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <button
-        onClick={() => onPaymentAction('approve')}
+        onClick={() => { onPaymentAction('approve') }}
         disabled={processing}
         className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
       >
         ✅ Transferencia Exitosa
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Fondos insuficientes')}
+        onClick={() => { onPaymentAction('reject', 'Fondos insuficientes') }}
         disabled={processing}
         className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
       >
         ❌ Fondos Insuficientes
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Datos incorrectos')}
+        onClick={() => { onPaymentAction('reject', 'Datos incorrectos') }}
         disabled={processing}
         className="rounded bg-orange-600 px-3 py-2 text-sm text-white hover:bg-orange-700 disabled:opacity-50"
       >
@@ -109,28 +109,28 @@ const CardSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
 
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-4">
       <button
-        onClick={() => onPaymentAction('approve')}
+        onClick={() => { onPaymentAction('approve') }}
         disabled={processing}
         className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
       >
         ✅ Aprobado
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Tarjeta rechazada')}
+        onClick={() => { onPaymentAction('reject', 'Tarjeta rechazada') }}
         disabled={processing}
         className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
       >
         ❌ Rechazada
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Tarjeta expirada')}
+        onClick={() => { onPaymentAction('reject', 'Tarjeta expirada') }}
         disabled={processing}
         className="rounded bg-orange-600 px-3 py-2 text-sm text-white hover:bg-orange-700 disabled:opacity-50"
       >
         ⏰ Expirada
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'CVV incorrecto')}
+        onClick={() => { onPaymentAction('reject', 'CVV incorrecto') }}
         disabled={processing}
         className="rounded bg-yellow-600 px-3 py-2 text-sm text-white hover:bg-yellow-700 disabled:opacity-50"
       >
@@ -156,21 +156,21 @@ const YapeSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
 
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <button
-        onClick={() => onPaymentAction('approve')}
+        onClick={() => { onPaymentAction('approve') }}
         disabled={processing}
         className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
       >
         ✅ Yape Exitoso
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Usuario canceló')}
+        onClick={() => { onPaymentAction('reject', 'Usuario canceló') }}
         disabled={processing}
         className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
       >
         ❌ Usuario Canceló
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Límite diario excedido')}
+        onClick={() => { onPaymentAction('reject', 'Límite diario excedido') }}
         disabled={processing}
         className="rounded bg-orange-600 px-3 py-2 text-sm text-white hover:bg-orange-700 disabled:opacity-50"
       >
@@ -196,21 +196,21 @@ const PlinSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
 
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <button
-        onClick={() => onPaymentAction('approve')}
+        onClick={() => { onPaymentAction('approve') }}
         disabled={processing}
         className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
       >
         ✅ Plin Exitoso
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Cuenta no encontrada')}
+        onClick={() => { onPaymentAction('reject', 'Cuenta no encontrada') }}
         disabled={processing}
         className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
       >
         ❌ Cuenta No Encontrada
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Servicio no disponible')}
+        onClick={() => { onPaymentAction('reject', 'Servicio no disponible') }}
         disabled={processing}
         className="rounded bg-orange-600 px-3 py-2 text-sm text-white hover:bg-orange-700 disabled:opacity-50"
       >
@@ -236,14 +236,14 @@ const GenericSandbox = ({
 
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
       <button
-        onClick={() => onPaymentAction('approve')}
+        onClick={() => { onPaymentAction('approve') }}
         disabled={processing}
         className="rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
       >
         ✅ Pago Exitoso
       </button>
       <button
-        onClick={() => onPaymentAction('reject', 'Pago rechazado')}
+        onClick={() => { onPaymentAction('reject', 'Pago rechazado') }}
         disabled={processing}
         className="rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
       >
@@ -295,7 +295,7 @@ export const PaymentPage = ({ transactionId }: PaymentPageClientProps) => {
 
           updateCountdown()
           const interval = setInterval(updateCountdown, 1000)
-          return () => clearInterval(interval)
+          return () => { clearInterval(interval) }
         }
       } catch (err) {
         setError(
@@ -462,7 +462,7 @@ export const PaymentPage = ({ transactionId }: PaymentPageClientProps) => {
               : 'Ocurrió un error al cargar los datos de pago.'}
           </p>
           <button
-            onClick={() => router.push('/')}
+            onClick={() => { router.push('/') }}
             className="mt-4 rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
           >
             Volver al inicio
@@ -486,7 +486,7 @@ export const PaymentPage = ({ transactionId }: PaymentPageClientProps) => {
       {/* Header */}
       <div className="mb-6">
         <button
-          onClick={() => router.back()}
+          onClick={() => { router.back() }}
           className="mb-4 flex items-center text-blue-600 hover:text-blue-700"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />

@@ -1,6 +1,6 @@
 // SidePage.tsx - Con onClose handler
 'use client'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { type ReactNode, useEffect, useRef, useState } from 'react'
 
 interface SidePageProps {
   isOpen: boolean
@@ -39,7 +39,7 @@ const SidePage: React.FC<SidePageProps> = ({
         body.style.transition = 'margin 150ms ease-out'
       } else {
         body.style.transition = 'none'
-        setTimeout(() => setHasInteracted(true), 100)
+        setTimeout(() => { setHasInteracted(true) }, 100)
       }
     } else {
       body.style.marginLeft = '0'

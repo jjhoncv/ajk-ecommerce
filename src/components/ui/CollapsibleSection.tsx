@@ -21,7 +21,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
     <div className={className}>
       <div
         className="flex cursor-pointer items-center justify-between py-4"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => { setIsExpanded(!isExpanded) }}
       >
         <h4 className="font-bold">{title}</h4>
         {isExpanded ? (

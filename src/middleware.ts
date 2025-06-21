@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
-import { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
+import { NextResponse, type NextRequest } from 'next/server'
 
 // Rutas que requieren autenticación
 const protectedRoutes = ['/account', '/orders', '/favorites', '/addresses']
@@ -8,7 +7,7 @@ const protectedRoutes = ['/account', '/orders', '/favorites', '/addresses']
 // Nota: Podríamos definir rutas públicas explícitamente, pero por ahora
 // simplemente permitimos el acceso a cualquier ruta que no esté en protectedRoutes
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl
 
   // Verificar si la ruta actual es una ruta protegida
@@ -28,7 +27,7 @@ export async function middleware(request: NextRequest) {
   })
 
   // Si el usuario no está autenticado y la ruta es protegida, redirigir al inicio
-  if (!token && isProtectedRoute) {
+  if (token === null && isProtectedRoute) {
     const url = new URL('/', request.url)
     return NextResponse.redirect(url)
   }

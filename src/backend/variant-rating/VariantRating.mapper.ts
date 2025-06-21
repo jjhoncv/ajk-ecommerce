@@ -1,5 +1,5 @@
-import { VariantRatings as VariantRatingRaw } from '@/types/database'
-import { VariantRatings as VariantRating } from '@/types/domain'
+import { type VariantRatings as VariantRatingRaw } from '@/types/database'
+import { type VariantRatings as VariantRating } from '@/types/domain'
 
 export const VariantRatingMapper = (data: VariantRatingRaw): VariantRating => {
   return {

@@ -1,9 +1,9 @@
 import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
 import { formatPrice } from '@/helpers/utils'
-import { CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart'
 import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 interface CartContentItemProps {
   item: CartItem
@@ -34,13 +34,12 @@ export const CartContentItem: FC<CartContentItemProps> = ({
           <PlusMinusButton
             stock={item.stock}
             initialQuantity={item.quantity}
-            onQuantityChange={(quantity: number) =>
-              updateQuantity(item.id, quantity)
+            onQuantityChange={(quantity: number) => { updateQuantity(item.id, quantity) }
             }
             size="sm"
           />
           <button
-            onClick={() => removeItem(item.id)}
+            onClick={() => { removeItem(item.id) }}
             className="ml-auto rounded-full p-1 text-red-500 hover:bg-red-50"
             aria-label="Eliminar producto"
           >

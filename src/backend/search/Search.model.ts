@@ -9,12 +9,12 @@ import oSearchRep from './Search.repository'
 import oAttributeModel from '@/backend/attribute'
 import oBrandModel from '@/backend/brand'
 import oCategoryModel from '@/backend/category'
-import { AvailableFilters } from '@/backend/filters'
+import { type AvailableFilters } from '@/backend/filters'
 import oProductVariantModel from '@/backend/product-variant'
 import {
-  ProductSearchFilters,
-  ProductSearchItem,
-  ProductSearchResult
+  type ProductSearchFilters,
+  type ProductSearchItem,
+  type ProductSearchResult
 } from './Search.interfaces'
 
 export class SearchModel {
@@ -129,10 +129,10 @@ export class SearchModel {
     })
 
     // Contadores para categorías
-    const categoryCount = new Map<number, { name: string; count: number }>()
+    const categoryCount = new Map<number, { name: string, count: number }>()
 
     // Contadores para marcas
-    const brandCount = new Map<number, { name: string; count: number }>()
+    const brandCount = new Map<number, { name: string, count: number }>()
 
     // Rango de precios
     let minPrice = Infinity
@@ -141,7 +141,7 @@ export class SearchModel {
     // Contadores para atributos
     const attributeCount = new Map<
       number,
-      { name: string; options: Map<number, { value: string; count: number }> }
+      { name: string, options: Map<number, { value: string, count: number }> }
     >()
 
     products.forEach((product) => {
@@ -218,7 +218,7 @@ export class SearchModel {
                   if (existingOptionEntry) {
                     // Incrementar contador de la opción existente
                     ;(
-                      existingOptionEntry[1] as { value: string; count: number }
+                      existingOptionEntry[1] as { value: string, count: number }
                     ).count++
                   } else {
                     // Crear nueva opción

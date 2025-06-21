@@ -1,7 +1,7 @@
 // 📄 app/api/payment/[transactionId]/complete/route.ts
 import orderModel from '@/backend/order'
 import paymentTransactionModel from '@/backend/payment-transaction'
-import { NextRequest, NextResponse } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
   request: NextRequest,

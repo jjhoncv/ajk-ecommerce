@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CleanImage } from '../ProductVariant.helpers'
+import { type CleanImage } from '../ProductVariant.helpers'
 
 interface UseImageNavigationProps {
   images: CleanImage[]

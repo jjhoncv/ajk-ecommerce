@@ -42,7 +42,7 @@ interface OrdersResponse {
 
 const statusLabels: Record<
   string,
-  { label: string; color: string; bgColor: string }
+  { label: string, color: string, bgColor: string }
 > = {
   pending: {
     label: 'Pendiente',
@@ -71,7 +71,7 @@ const statusLabels: Record<
   }
 }
 
-const paymentStatusLabels: Record<string, { label: string; color: string }> = {
+const paymentStatusLabels: Record<string, { label: string, color: string }> = {
   pending: { label: 'Pendiente', color: 'text-orange-600' },
   paid: { label: 'Pagado', color: 'text-green-600' },
   failed: { label: 'Falló', color: 'text-red-600' },
@@ -196,7 +196,7 @@ export default function OrdersList() {
               type="text"
               placeholder="Buscar por número de orden..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value) }}
               className="pl-10"
             />
           </div>
@@ -205,7 +205,7 @@ export default function OrdersList() {
             <Filter className="h-4 w-4 text-gray-500" />
             <select
               value={statusFilter}
-              onChange={(e) => handleStatusFilter(e.target.value)}
+              onChange={(e) => { handleStatusFilter(e.target.value) }}
               className="rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todos los estados</option>
@@ -324,7 +324,7 @@ export default function OrdersList() {
 
                   <Button variant="outline" asChild>
                     <button
-                      onClick={() => handleViewOrder(order.id)}
+                      onClick={() => { handleViewOrder(order.id) }}
                       className="flex items-center gap-2"
                     >
                       <Eye className="h-4 w-4" />
@@ -350,7 +350,7 @@ export default function OrdersList() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handlePageChange(currentPage - 1)}
+                onClick={() => { handlePageChange(currentPage - 1) }}
                 disabled={currentPage === 1}
                 className="flex items-center gap-1"
               >
@@ -371,7 +371,7 @@ export default function OrdersList() {
                         key={page}
                         variant={currentPage === page ? 'default' : 'outline'}
                         size="sm"
-                        onClick={() => handlePageChange(page)}
+                        onClick={() => { handlePageChange(page) }}
                         className="h-8 w-8 p-0"
                       >
                         {page}
@@ -394,7 +394,7 @@ export default function OrdersList() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handlePageChange(currentPage + 1)}
+                onClick={() => { handlePageChange(currentPage + 1) }}
                 disabled={currentPage === pagination.totalPages}
                 className="flex items-center gap-1"
               >

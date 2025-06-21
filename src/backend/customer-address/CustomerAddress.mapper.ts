@@ -1,5 +1,5 @@
-import { CustomersAddresses as CustomerAddressRaw } from '@/types/database'
-import { CustomersAddresses } from '@/types/domain'
+import { type CustomersAddresses as CustomerAddressRaw } from '@/types/database'
+import { type CustomersAddresses } from '@/types/domain'
 
 export const CustomerAddressMapper = (
   data: CustomerAddressRaw

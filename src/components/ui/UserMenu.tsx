@@ -1,6 +1,6 @@
 'use client'
 import { Heart, LogOut, MapPin, ShoppingBag, User } from 'lucide-react'
-import { Session } from 'next-auth'
+import { type Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import React from 'react'
 import SlidePage from './SlidePage'

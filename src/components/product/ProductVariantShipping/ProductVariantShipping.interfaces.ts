@@ -1,4 +1,4 @@
-import { ShippingOptionForAddress } from '@/types/shipping'
+import { type ShippingOptionForAddress } from '@/types/shipping'
 
 export interface ProductVariantShippingProps {
   productVariantId: number

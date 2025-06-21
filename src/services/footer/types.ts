@@ -1,11 +1,11 @@
 export interface FooterModel {
-  sections: {
+  sections: Array<{
     title: string
-    links: { name: string; href: string }[]
-  }[]
-  socialLinks: {
+    links: Array<{ name: string, href: string }>
+  }>
+  socialLinks: Array<{
     name: string
     icon: string
     href: string
-  }[]
+  }>
 }

@@ -1,7 +1,7 @@
 import { getVariantTitle } from '@/helpers/productVariant.helpers'
-import { Products, ProductVariants } from '@/types/domain'
+import { type Products, type ProductVariants } from '@/types/domain'
 import Link from 'next/link'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 interface BreadcrumbProps {
   product: Products

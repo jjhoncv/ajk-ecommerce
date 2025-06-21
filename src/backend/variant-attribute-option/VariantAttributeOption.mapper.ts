@@ -1,6 +1,6 @@
-import { VariantAttributeOptionWithDetailsRaw } from '@/backend/variant-attribute-option'
-import { VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
-import { VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
+import { type VariantAttributeOptionWithDetailsRaw } from '@/backend/variant-attribute-option'
+import { type VariantAttributeOptions as VariantAttributeOptionRaw } from '@/types/database'
+import { type VariantAttributeOptions as VariantAttributeOption } from '@/types/domain'
 
 export const VariantAttributeOptionMapper = (
   data: VariantAttributeOptionRaw

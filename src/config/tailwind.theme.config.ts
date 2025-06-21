@@ -86,6 +86,10 @@ export function createTailwindPreset(themeName: ThemeName): Partial<Config> {
   return {
     theme: {
       extend: {
+        fontFamily: {
+          roboto: ['var(--font-roboto)'],
+          'open-sans': ['var(--font-open-sans)']
+        },
         colors: {
           primary: theme.colors.primary,
           secondary: theme.colors.secondary,

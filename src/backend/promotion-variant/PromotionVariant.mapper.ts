@@ -1,5 +1,5 @@
-import { PromotionVariants as PromotionVariantRaw } from '@/types/database'
-import { PromotionVariants as PromotionVariant } from '@/types/domain'
+import { type PromotionVariants as PromotionVariantRaw } from '@/types/database'
+import { type PromotionVariants as PromotionVariant } from '@/types/domain'
 
 export const PromotionVariantMapper = (
   data: PromotionVariantRaw

@@ -1,6 +1,6 @@
 // 📄 backend/coupon/Coupon.mapper.ts
-import { Coupons as CouponRaw } from '@/types/database'
-import { Coupons as CouponDomain } from '@/types/domain'
+import { type Coupons as CouponRaw } from '@/types/database'
+import { type Coupons as CouponDomain } from '@/types/domain'
 
 export function CouponMapper(couponRaw: CouponRaw): CouponDomain {
   return {

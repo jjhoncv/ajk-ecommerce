@@ -3,8 +3,8 @@ import CollapsibleSection from '@/components/ui/CollapsibleSection'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-import { AvailableFilters } from '@/backend/filters'
-import { ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters } from '@/backend/filters'
+import { type ProductSearchFilters } from '@/backend/search'
 
 interface CategoryFilterProps {
   availableFilters: AvailableFilters
@@ -49,11 +49,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
               name="category"
               value={category.id}
               checked={currentFilters.categoryId === category.id}
-              onChange={(e) =>
-                updateFilter(
+              onChange={(e) => {
+ updateFilter(
                   'category',
                   e.target.checked ? e.target.value : null
                 )
+}
               }
               className="mr-2"
             />

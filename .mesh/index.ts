@@ -1857,11 +1857,11 @@ export type Customers = {
   updatedAt: Scalars['Timestamp']['output'];
   lastname: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   /** numero de celular */
-  phone: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
   /** Documento de identidad  */
-  dni: Scalars['String']['output'];
+  dni?: Maybe<Scalars['String']['output']>;
   couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
   customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
   orders?: Maybe<Array<Maybe<Orders>>>;
@@ -3612,11 +3612,11 @@ export type CustomersInsertInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   lastname: Scalars['String']['input'];
   photo?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
   /** numero de celular */
-  phone: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
   /** Documento de identidad  */
-  dni: Scalars['String']['input'];
+  dni?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CustomersUpdateInput = {
@@ -5307,9 +5307,9 @@ export type CustomersResolvers<ContextType = MeshContext, ParentType extends Res
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  phone?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  dni?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dni?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CustomerscouponUsageArgs>>;
   customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<CustomerscustomersAddressesArgs>>;
   orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersordersArgs>>;

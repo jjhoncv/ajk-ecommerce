@@ -29,7 +29,7 @@ const Toast: React.FC<ToastProps> = ({
   // 👈 ASEGURAR QUE ESTAMOS EN EL CLIENTE
   useEffect(() => {
     setMounted(true)
-    return () => setMounted(false)
+    return () => { setMounted(false) }
   }, [])
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Toast: React.FC<ToastProps> = ({
       setIsVisible(false)
     }, 2700) // Un poco menos que el tiempo en useCart para que la animación termine antes
 
-    return () => clearTimeout(timer)
+    return () => { clearTimeout(timer) }
   }, [message])
 
   // 👈 CLASES DE POSICIONAMIENTO
@@ -93,7 +93,7 @@ const Toast: React.FC<ToastProps> = ({
   const toastContent = (
     <div
       className={cn(
-        `fixed z-[9999] rounded-lg bg-secondary px-4 py-3 text-white shadow-lg transition-all duration-300`,
+        'fixed z-[9999] rounded-lg bg-secondary px-4 py-3 text-white shadow-lg transition-all duration-300',
         getPositionClasses(position),
         getAnimationClasses(position, isVisible),
         className

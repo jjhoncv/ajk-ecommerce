@@ -1,4 +1,4 @@
-import { ProductComplete } from '@/backend/product'
+import { type ProductComplete } from '@/backend/product'
 import searchModel from '@/backend/search'
 import { hydratePopularProducts } from './hydrators'
 

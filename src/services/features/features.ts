@@ -1,8 +1,8 @@
 import { dataMock } from './mock'
-import { Feature } from './types'
+import { type Feature } from './types'
 
 export const getFeatures = async (): Promise<Feature[]> => {
-  return new Promise((resolve) => {
+  return await new Promise((resolve) => {
     resolve(dataMock)
   })
 }

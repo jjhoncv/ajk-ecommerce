@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { VariantRatings as VariantRatingRaw } from '@/types/database'
+import { type VariantRatings as VariantRatingRaw } from '@/types/database'
 
 export class VariantRatingRepository {
   public async getVariantRatings(): Promise<VariantRatingRaw[] | null> {
@@ -99,14 +99,14 @@ export class VariantRatingRepository {
     averageRating: number
     totalRatings: number
     verifiedRatings: number
-    ratingDistribution: { rating: number; count: number }[]
+    ratingDistribution: Array<{ rating: number, count: number }>
   } | null> {
     const statsResult = await executeQuery<
-      {
+      Array<{
         average_rating: number | null
         total_ratings: number
         verified_ratings: number
-      }[]
+      }>
     >({
       query: `
         SELECT 
@@ -122,10 +122,10 @@ export class VariantRatingRepository {
     if (statsResult[0].total_ratings === 0) return null
 
     const distributionResult = await executeQuery<
-      {
+      Array<{
         rating: number
         count: number
-      }[]
+      }>
     >({
       query: `
         SELECT 
@@ -201,7 +201,7 @@ export class VariantRatingRepository {
   }
 
   public async countVariantRatings(variantId: number): Promise<number> {
-    const result = await executeQuery<{ count: number }[]>({
+    const result = await executeQuery<Array<{ count: number }>>({
       query:
         'SELECT COUNT(*) as count FROM variant_ratings WHERE variant_id = ?',
       values: [variantId]
@@ -214,7 +214,7 @@ export class VariantRatingRepository {
     customerId: number,
     variantId: number
   ): Promise<boolean> {
-    const result = await executeQuery<{ count: number }[]>({
+    const result = await executeQuery<Array<{ count: number }>>({
       query:
         'SELECT COUNT(*) as count FROM variant_ratings WHERE customer_id = ? AND variant_id = ?',
       values: [customerId, variantId]

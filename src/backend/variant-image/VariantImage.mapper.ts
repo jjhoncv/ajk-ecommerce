@@ -1,5 +1,5 @@
-import { VariantImages as VariantImageRaw } from '@/types/database'
-import { VariantImages as VariantImage } from '@/types/domain'
+import { type VariantImages as VariantImageRaw } from '@/types/database'
+import { type VariantImages as VariantImage } from '@/types/domain'
 
 export const VariantImageMapper = (img: VariantImageRaw): VariantImage => {
   return {

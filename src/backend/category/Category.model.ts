@@ -1,8 +1,8 @@
-import { Categories as CategoriesRaw } from '@/types/database'
-import { Categories as Category } from '@/types/domain'
+import { type Categories as CategoriesRaw } from '@/types/database'
+import { type Categories as Category } from '@/types/domain'
 
 // me
-import { CategoryWithChildren } from './Category.interfaces'
+import { type CategoryWithChildren } from './Category.interfaces'
 import { CategoriesMapper, CategoryMapper } from './Category.mapper'
 import oCategoryRep from './Category.repository'
 
@@ -79,21 +79,21 @@ export class CategoryModel {
   }
 
   public async deleteCategory(id: number): Promise<void> {
-    return await oCategoryRep.deleteCategory(id)
+    await oCategoryRep.deleteCategory(id)
   }
 
   public async addProductToCategory(
     productId: number,
     categoryId: number
   ): Promise<void> {
-    return await oCategoryRep.addProductToCategory(productId, categoryId)
+    await oCategoryRep.addProductToCategory(productId, categoryId)
   }
 
   public async removeProductFromCategory(
     productId: number,
     categoryId: number
   ): Promise<void> {
-    return await oCategoryRep.removeProductFromCategory(productId, categoryId)
+    await oCategoryRep.removeProductFromCategory(productId, categoryId)
   }
 }
 

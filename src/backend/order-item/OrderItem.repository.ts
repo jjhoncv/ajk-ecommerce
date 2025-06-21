@@ -1,5 +1,5 @@
 import { executeQuery } from '@/lib/db'
-import { OrderItems as OrderItemsRaw } from '@/types/database'
+import { type OrderItems as OrderItemsRaw } from '@/types/database'
 
 export class OrderItemsRepository {
   public async getOrderItems(): Promise<OrderItemsRaw[] | null> {
@@ -57,7 +57,7 @@ export class OrderItemsRepository {
   }
 
   public async createOrderItems(
-    orderItems: Omit<OrderItemsRaw, 'id'>[]
+    orderItems: Array<Omit<OrderItemsRaw, 'id'>>
   ): Promise<OrderItemsRaw[] | null> {
     const createdItems: OrderItemsRaw[] = []
 
@@ -97,7 +97,7 @@ export class OrderItemsRepository {
 
   // Métodos utilitarios
   public async getTotalByOrderId(orderId: number): Promise<number> {
-    const result = await executeQuery<{ total: number }[]>({
+    const result = await executeQuery<Array<{ total: number }>>({
       query:
         'SELECT COALESCE(SUM(total_price), 0) as total FROM order_items WHERE order_id = ?',
       values: [orderId]
@@ -107,7 +107,7 @@ export class OrderItemsRepository {
   }
 
   public async getItemCountByOrderId(orderId: number): Promise<number> {
-    const result = await executeQuery<{ count: number }[]>({
+    const result = await executeQuery<Array<{ count: number }>>({
       query: 'SELECT COUNT(*) as count FROM order_items WHERE order_id = ?',
       values: [orderId]
     })
@@ -116,7 +116,7 @@ export class OrderItemsRepository {
   }
 
   public async getQuantityTotalByOrderId(orderId: number): Promise<number> {
-    const result = await executeQuery<{ total: number }[]>({
+    const result = await executeQuery<Array<{ total: number }>>({
       query:
         'SELECT COALESCE(SUM(quantity), 0) as total FROM order_items WHERE order_id = ?',
       values: [orderId]

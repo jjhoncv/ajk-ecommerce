@@ -2,8 +2,8 @@
 import ProductVariantInteractive from '@/components/product/ProductVariantInteractive'
 import { ProductVariantInteractiveShimmer } from '@/components/product/ProductVariantInteractiveShimmer'
 import { Modal } from '@/components/ui/Modal'
-import { ProductVariantData } from '@/services/product/productVariant'
-import { ProductVariants } from '@/types/domain'
+import { type ProductVariantData } from '@/services/product/productVariant'
+import { type ProductVariants } from '@/types/domain'
 import { ShoppingCart } from 'lucide-react'
 import React, { useState } from 'react'
 
