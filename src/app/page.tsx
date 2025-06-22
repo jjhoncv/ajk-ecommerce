@@ -20,6 +20,7 @@ import { getHero } from '@/services/hero'
 import { getMainCategories } from '@/services/mainCategories'
 import { getPopularProducts } from '@/services/popularProducts'
 import { type Metadata } from 'next'
+import { type JSX } from 'react'
 
 export const metadata: Metadata = {
   title: 'TechStore - Tu tienda de tecnología y zapatillas',
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     'Encuentra los mejores productos de tecnología y zapatillas en TechStore'
 }
 
-export default async function HomePage() {
+export default async function HomePage(): Promise<JSX.Element> {
   const mainCategories = await getMainCategories()
   const popularProducts = await getPopularProducts()
   const dealsProducts = await getDealsProducts()

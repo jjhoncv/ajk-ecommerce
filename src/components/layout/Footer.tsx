@@ -1,29 +1,33 @@
+import ClientAuthButton from '@/components/ui/ClientAuthButton'
 import { siteConfig } from '@/config'
-import { Clock, MapPin, Monitor } from 'lucide-react'
+import { ICONS } from '@/constants/icons.constants'
+import { authOptions } from '@/lib/auth'
+import { Monitor } from 'lucide-react'
+import { getServerSession } from 'next-auth'
 import Link from 'next/link'
+import { type JSX } from 'react'
 
-interface FooterSection {
-  title: string
-  links: Array<{
-    name: string
-    href: string
-  }>
-}
-
-interface SocialLink {
+interface Page {
   name: string
-  icon: string
   href: string
+}
+interface Information {
+  description: string
+  icon: string
 }
 
 interface FooterProps {
-  sections: FooterSection[]
-  socialLinks: SocialLink[]
+  pages: Page[]
+  informations: Information[]
 }
 
-const Footer = async ({ sections, socialLinks }: FooterProps) => {
-  // Aquí podrías hacer fetch de datos adicionales si fuera necesario
-  // const additionalData = await fetchAdditionalData();
+const Footer = async ({
+  pages,
+  informations
+}: FooterProps): Promise<JSX.Element> => {
+  const session = await getServerSession(authOptions)
+  const isAuthenticated = session !== null
+  const user = session?.user
 
   return (
     <footer className="border-t border-gray-300 bg-white">
@@ -38,36 +42,65 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
               </span>
             </Link>
             <p className="mb-4 text-gray-600">{siteConfig.description}</p>
+
             <div className="mb-6 space-y-2">
-              <p className="flex items-center gap-2 text-gray-600">
-                <MapPin className="h-4 w-4" />
-                {siteConfig.contact.address}
-              </p>
-              <p className="flex items-center gap-2 text-gray-600">
-                <Clock className="h-4 w-4" />
-                Atención: Lun-Vie 9:00-20:00
-              </p>
+              {informations.map((information, index) => (
+                <p
+                  key={index}
+                  className="flex items-center gap-2 text-gray-600"
+                >
+                  <span
+                    className="h-4 w-4"
+                    dangerouslySetInnerHTML={{ __html: information.icon }}
+                  />
+                  {information.description}
+                </p>
+              ))}
             </div>
+
             <div className="flex gap-4">
-              {socialLinks.map((link) => (
+              {siteConfig.socials.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-white hover:bg-opacity-90"
                   aria-label={link.name}
-                  dangerouslySetInnerHTML={{ __html: link.icon }}
+                  dangerouslySetInnerHTML={{ __html: ICONS[link.type] }}
                 />
               ))}
             </div>
           </div>
 
-          {/* Footer Sections */}
-          {sections.map((section) => (
-            <div key={section.title}>
-              <h3 className="mb-4 font-bold text-gray-900">{section.title}</h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.name}>
+          <div>
+            <h3 className="mb-4 font-bold text-gray-900">Compañía</h3>
+            <ul className="space-y-2">
+              {pages.map((page, key) => (
+                <li key={key}>
+                  <Link
+                    href={page.href}
+                    className="text-gray-600 transition-colors duration-300 hover:text-primary"
+                  >
+                    {page.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-bold text-gray-900">Mi Cuenta</h3>
+            <ul className="space-y-2">
+              {isAuthenticated ? (
+                [
+                  { name: 'Mi cuenta', href: '/account' },
+                  { name: 'Ver Carrito', href: '/carrito' },
+                  { name: 'Mi Lista de Deseos', href: '/wishlist' },
+                  { name: 'Rastrear mi Pedido', href: '/tracking' },
+                  { name: 'Ayuda', href: '/ayuda' },
+
+                  { name: 'Mis Pedidos', href: '/pedidos' }
+                ].map((link) => (
+                  <li key={link.href}>
                     <Link
                       href={link.href}
                       className="text-gray-600 transition-colors duration-300 hover:text-primary"
@@ -75,10 +108,20 @@ const Footer = async ({ sections, socialLinks }: FooterProps) => {
                       {link.name}
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                ))
+              ) : (
+                <li>
+                  <ClientAuthButton
+                    initialIsAuthenticated={isAuthenticated}
+                    initialUserName={user?.name ?? ''}
+                    initialUserEmail={user?.email ?? ''}
+                    initialUserId={user?.id ?? ''}
+                    variant="footer"
+                  />
+                </li>
+              )}
+            </ul>
+          </div>
 
           {/* Install App */}
           <div>

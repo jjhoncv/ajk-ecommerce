@@ -1,5 +1,5 @@
 import { Heart } from 'lucide-react'
-import { type ReactNode } from 'react'
+import { type JSX, type ReactNode } from 'react'
 import CartButton from '../ui/CartButton'
 import Logo from '../ui/Logo'
 import SearchBar from '../ui/SearchBar'
@@ -10,7 +10,10 @@ interface HeaderProps {
   navigationType?: 'mini' | 'normal'
 }
 
-const Header = async ({ children, navigationType = 'normal' }: HeaderProps) => {
+const Header = async ({
+  children,
+  navigationType = 'normal'
+}: HeaderProps): Promise<JSX.Element> => {
   return (
     <header className="sticky top-0 z-50 border-b border-none border-gray-200 bg-white">
       <div className="mx-auto max-w-screen-4xl px-12 py-4">

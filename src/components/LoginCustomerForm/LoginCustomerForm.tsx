@@ -1,10 +1,10 @@
-// components/LoginCustomerForm.tsx
 'use client'
 
 import { Button } from '@/components/ui/Button'
 import { InputField } from '@/components/ui/InputField'
 import { PasswordField } from '@/components/ui/PasswordField'
 import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
 import { LoginCustomerFormSocial } from './LoginCustomerFormSocial'
 import { useLoginCustomerForm } from './use-login-customer-form.hook'
 
@@ -34,6 +34,8 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
     validateField
   } = useLoginCustomerForm({ onSuccess, onClose })
 
+  const [showPassword, setShowPassword] = useState(false)
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value
     setEmail(value)
@@ -45,9 +47,12 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
     validateField('password', value)
   }
 
+  const togglePasswordVisibility = (): void => {
+    setShowPassword((prev) => !prev)
+  }
+
   return (
     <div className="w-full">
-      {/* Mostrar error general del formulario */}
       {errors.form != null && (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-600">
           {errors.form}
@@ -73,8 +78,8 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
           label="Contraseña"
           value={password}
           onChange={handlePasswordChange}
-          showPassword={false}
-          onToggleVisibility={() => {}}
+          showPassword={showPassword}
+          onToggleVisibility={togglePasswordVisibility}
           error={errors.password}
           disabled={isLoading}
           required

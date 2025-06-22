@@ -3,28 +3,29 @@ import { useAuthModal } from '@/providers/auth-modal'
 import { User } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import UserMenu from './UserMenu'
+import React, { type JSX, useEffect, useState } from 'react'
 
 interface ClientAuthButtonProps {
   initialIsAuthenticated: boolean
   initialUserName: string
   initialUserEmail: string
   initialUserId: string
+  variant?: 'header' | 'footer' | 'link'
+  className?: string
 }
 
 const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
   initialIsAuthenticated,
   initialUserName,
   initialUserEmail,
-  initialUserId
+  initialUserId,
+  variant = 'header',
+  className = ''
 }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { openLogin } = useAuthModal() // 👈 Usar el provider centralizado
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+  const { openLogin } = useAuthModal()
 
-  // 👈 ESTADO HÍBRIDO: Usar valores iniciales del servidor hasta que el cliente se hidrate
   const [authState, setAuthState] = useState({
     isAuthenticated: initialIsAuthenticated,
     userName: initialUserName,
@@ -32,73 +33,64 @@ const ClientAuthButton: React.FC<ClientAuthButtonProps> = ({
     userId: initialUserId
   })
 
-  // 👈 ACTUALIZAR SOLO CUANDO LA SESIÓN CAMBIE (no durante hydration)
   useEffect(() => {
-    if (status === 'loading') return // No hacer nada mientras carga
+    if (status === 'loading') return
 
-    // Solo actualizar si hay un cambio real en la autenticación
-    const newIsAuthenticated = !!session
+    const newIsAuthenticated = session !== null
 
     if (newIsAuthenticated !== authState.isAuthenticated) {
-      console.log('🔄 Auth state changed:', {
-        from: authState.isAuthenticated,
-        to: newIsAuthenticated
-      })
-
       setAuthState({
         isAuthenticated: newIsAuthenticated,
-        userName: session?.user?.name || '',
-        userEmail: session?.user?.email || '',
-        userId: session?.user?.id || ''
+        userName: session?.user?.name ?? '',
+        userEmail: session?.user?.email ?? '',
+        userId: session?.user?.id ?? ''
       })
     }
-  }, [session, status]) // No incluir authState para evitar loops
+  }, [session, status])
 
-  // Crear objeto de sesión para UserMenu
-  const sessionData = authState.isAuthenticated
-    ? {
-        user: {
-          id: authState.userId,
-          name: authState.userName,
-          email: authState.userEmail
-        },
-        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-      }
-    : null
-
-  const handleAuthClick = () => {
+  const handleAuthClick = (): void => {
     if (authState.isAuthenticated) {
-      console.log('👤 Opening user menu')
-      // setIsUserMenuOpen(true);
       router.push('/account')
     } else {
-      console.log('🔐 User not authenticated, opening login modal')
-      // 👈 USAR EL PROVIDER CENTRALIZADO - Sin callbacks especiales para el header
       openLogin()
     }
   }
 
-  return (
-    <>
-      <button
-        onClick={handleAuthClick}
-        className="relative flex flex-col items-center"
-      >
-        <User className="h-6 w-6" />
-        <span className="mt-1 text-xs">
-          {authState.isAuthenticated ? 'Mi cuenta' : 'Iniciar sesión'}
-        </span>
-      </button>
+  const renderContent = (): JSX.Element => {
+    const text = authState.isAuthenticated ? 'Mi cuenta' : 'Iniciar sesión'
 
-      {/* Menú de usuario - Solo se renderiza si está autenticado */}
-      {authState.isAuthenticated && sessionData && (
-        <UserMenu
-          isOpen={isUserMenuOpen}
-          onClose={() => { setIsUserMenuOpen(false) }}
-          session={sessionData}
-        />
-      )}
-    </>
+    switch (variant) {
+      case 'header':
+        return (
+          <button
+            className={`relative flex flex-col items-center ${className}`}
+          >
+            <User className="h-6 w-6" />
+            <span className="mt-1 text-xs">{text}</span>
+          </button>
+        )
+
+      case 'footer':
+        return (
+          <span
+            className={`text-gray-600 transition-colors duration-300 hover:text-primary ${className}`}
+          >
+            {text}
+          </span>
+        )
+
+      case 'link':
+        return <span className={`cursor-pointer ${className}`}>{text}</span>
+
+      default:
+        return <span className={className}>{text}</span>
+    }
+  }
+
+  return (
+    <div onClick={handleAuthClick} className="cursor-pointer">
+      {renderContent()}
+    </div>
   )
 }
 

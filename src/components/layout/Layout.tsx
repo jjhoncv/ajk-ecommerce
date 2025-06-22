@@ -1,4 +1,6 @@
-import { getFooter } from '@/services/footer'
+import InformationService from '@/services/information'
+import PageService from '@/services/pages'
+
 import React from 'react'
 import Footer from './Footer'
 
@@ -7,12 +9,13 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = async ({ children }) => {
-  const footer = await getFooter()
+  const informations = await InformationService.getInformation()
+  const pages = await PageService.getPages()
 
   return (
     <>
       {children}
-      <Footer sections={footer.sections} socialLinks={footer.socialLinks} />
+      <Footer pages={pages} informations={informations} />
     </>
   )
 }
