@@ -1,4 +1,5 @@
 import { getGradientByType } from '@/components/promotion/Promotion.helpers'
+import { cn } from '@/lib/utils'
 import { type Promotion } from '@/services/promotion/types'
 import React from 'react'
 
@@ -79,7 +80,7 @@ const PromotionBanner: React.FC<PromotionBannerProps> = ({
       mobileBar: 'p-3'
     },
     large: {
-      container: 'mb-4',
+      container: 'mb-8',
       icon: 'text-3xl',
       badge: 'text-xs px-3 py-1',
       title: 'text-3xl md:text-4xl font-bold',
@@ -105,8 +106,12 @@ const PromotionBanner: React.FC<PromotionBannerProps> = ({
       <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/5"></div>
 
       {/* Contenido principal */}
-      <div className="relative mx-auto flex max-w-screen-4xl px-6 py-4 text-white">
-        <div className="flex items-center justify-between">
+      <div
+        className={cn('relative px-4 py-2 text-white', {
+          'mx-auto flex max-w-screen-4xl px-12 pb-8 pt-9': size === 'large'
+        })}
+      >
+        <div className="flex w-full items-center justify-between">
           {/* Lado izquierdo */}
           <div className="flex-1">
             {size !== 'small' && (

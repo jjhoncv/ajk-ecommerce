@@ -21,7 +21,7 @@ export const NavigationMain: FC<NavigationMainProps> = ({
           {promotionsMap.map((promotion, key) => (
             <Link
               key={key}
-              href={`/search?promotions=${promotion.id}`}
+              href={`/promotion/${promotion.id}`}
               className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-primary"
             >
               {promotion.name}
