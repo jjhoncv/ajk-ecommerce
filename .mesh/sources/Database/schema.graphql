@@ -1087,6 +1087,7 @@ type promotions {
   is_active: Int
   created_at: Timestamp!
   updated_at: Timestamp!
+  type: String
   promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
 }
 
@@ -1123,6 +1124,7 @@ input promotions_WhereInput {
   is_active: String
   created_at: String
   updated_at: String
+  type: String
 }
 
 input promotions_OrderByInput {
@@ -1137,6 +1139,7 @@ input promotions_OrderByInput {
   is_active: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
+  type: OrderBy
 }
 
 input variant_attribute_options_WhereInput {
@@ -2508,6 +2511,7 @@ input promotions_InsertInput {
   is_active: Int
   created_at: Timestamp
   updated_at: Timestamp
+  type: String
 }
 
 input promotions_UpdateInput {
@@ -2522,6 +2526,7 @@ input promotions_UpdateInput {
   is_active: Int
   created_at: Timestamp
   updated_at: Timestamp
+  type: String
 }
 
 input rating_images_InsertInput {

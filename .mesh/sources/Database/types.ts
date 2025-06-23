@@ -1949,6 +1949,7 @@ export type promotions = {
   is_active?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
+  type?: Maybe<Scalars['String']['output']>;
   promotion_variants?: Maybe<Array<Maybe<promotion_variants>>>;
 };
 
@@ -1992,6 +1993,7 @@ export type promotions_WhereInput = {
   is_active?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type promotions_OrderByInput = {
@@ -2006,6 +2008,7 @@ export type promotions_OrderByInput = {
   is_active?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type variant_attribute_options_WhereInput = {
@@ -4066,6 +4069,7 @@ export type promotions_InsertInput = {
   is_active?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type promotions_UpdateInput = {
@@ -4080,6 +4084,7 @@ export type promotions_UpdateInput = {
   is_active?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type rating_images_InsertInput = {

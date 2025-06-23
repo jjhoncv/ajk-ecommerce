@@ -61,7 +61,9 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
               <span className="inline-flex items-center rounded-full bg-primary px-2 py-1 text-xs text-white">
                 {selectedCategory.name}
                 <button
-                  onClick={() => { updateFilter('category', null) }}
+                  onClick={() => {
+                    updateFilter('category', null)
+                  }}
                   className="ml-1 rounded-full p-0.5 hover:bg-primary/80"
                 >
                   ×
@@ -81,7 +83,9 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
               <span className="inline-flex items-center rounded-full bg-primary px-2 py-1 text-xs text-white">
                 {selectedBrand.name}
                 <button
-                  onClick={() => { updateFilter('brand', null) }}
+                  onClick={() => {
+                    updateFilter('brand', null)
+                  }}
                   className="ml-1 rounded-full p-0.5 hover:bg-primary/80"
                 >
                   ×
@@ -95,7 +99,9 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
           <span className="inline-flex items-center rounded-full bg-green-500 px-2 py-1 text-xs text-white">
             Min: S/ {currentFilters.minPrice}
             <button
-              onClick={() => { updateFilter('minPrice', null) }}
+              onClick={() => {
+                updateFilter('minPrice', null)
+              }}
               className="ml-1 rounded-full p-0.5 hover:bg-green-600"
             >
               ×
@@ -108,7 +114,9 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
           <span className="inline-flex items-center rounded-full bg-green-500 px-2 py-1 text-xs text-white">
             Max: S/ {currentFilters.maxPrice}
             <button
-              onClick={() => { updateFilter('maxPrice', null) }}
+              onClick={() => {
+                updateFilter('maxPrice', null)
+              }}
               className="ml-1 rounded-full p-0.5 hover:bg-green-600"
             >
               ×
@@ -166,6 +174,55 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
                 )
               })
             }
+          )}
+
+        {currentFilters.promotionIds &&
+          currentFilters.promotionIds.length > 0 && (
+            <div className="mb-4">
+              <h4 className="mb-2 text-sm font-medium text-gray-900">
+                Promociones:
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {currentFilters.promotionIds.map((promotionId) => {
+                  const promotion = availableFilters.promotions?.find(
+                    (p) => p.id === promotionId
+                  )
+                  if (!promotion) return null
+
+                  return (
+                    <span
+                      key={promotionId}
+                      className="inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-800"
+                    >
+                      {promotion.name}
+                      <button
+                        onClick={() => {
+                          const params = new URLSearchParams(
+                            searchParams.toString()
+                          )
+                          const newPromotions =
+                            currentFilters.promotionIds!.filter(
+                              (id) => id !== promotionId
+                            )
+
+                          if (newPromotions.length > 0) {
+                            params.set('promotions', newPromotions.join(','))
+                          } else {
+                            params.delete('promotions')
+                          }
+
+                          params.set('page', '1')
+                          router.push(`${pathname}?${params.toString()}`)
+                        }}
+                        className="ml-1 text-purple-600 hover:text-purple-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
           )}
       </div>
     </div>

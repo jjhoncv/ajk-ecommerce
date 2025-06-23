@@ -481,6 +481,7 @@ export interface Promotions {
   name: Scalars['String']['output'];
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
   startDate: Scalars['DateTime']['output'];
+  type?: Maybe<Scalars['String']['output']>;
 
 }
 

@@ -16,24 +16,28 @@ export interface VariantSearchResultRaw {
 export class SearchRepository {
   public async searchProductVariants(
     filters: ProductSearchFilters
-  ): Promise<{ results: VariantSearchResultRaw[], totalCount: number }> {
+  ): Promise<{ results: VariantSearchResultRaw[]; totalCount: number }> {
     try {
+      // ✅ Construir SELECT dinámicamente según si hay filtros de promoción
+      const hasPromotionFilter =
+        filters.promotionIds && filters.promotionIds.length > 0
+
       let query = `
-        SELECT 
-          pv.id as variant_id, 
-          pv.product_id, 
-          pv.sku, 
-          pv.price, 
-          pv.stock,
-          p.name as product_name, 
-          p.description as product_description, 
-          p.brand_id, 
-          p.base_price
-        FROM 
-          product_variants pv
-        JOIN 
-          products p ON pv.product_id = p.id
-      `
+      SELECT 
+        pv.id as variant_id, 
+        pv.product_id, 
+        pv.sku, 
+        pv.price, 
+        pv.stock,
+        p.name as product_name, 
+        p.description as product_description, 
+        p.brand_id, 
+        p.base_price${hasPromotionFilter ? ',\n        prom.id as promotion_id, prom.name as promotion_name, prom.type as promotion_type' : ''}
+      FROM 
+        product_variants pv
+      JOIN 
+        products p ON pv.product_id = p.id
+    `
 
       const whereConditions: string[] = []
       const queryParams: Array<string | number> = []
@@ -53,8 +57,6 @@ export class SearchRepository {
             additionalJoins.push('LEFT JOIN brands b ON p.brand_id = b.id')
           }
 
-          // ESTRATEGIA SIMPLIFICADA: Solo usar el término más significativo para búsquedas complejas
-          // Esto evita problemas con términos cortos como "xx" que pueden existir pero ser irrelevantes
           const significantTerms = searchTerms.filter(
             (term) => term.length >= 3
           )
@@ -64,19 +66,18 @@ export class SearchRepository {
               : [searchTerms[0]]
 
           if (finalSearchTerms.length === 1 || searchTerms.length === 1) {
-            // Búsqueda simple - un solo término
             whereConditions.push(`
-              (LOWER(p.name) LIKE LOWER(?) OR 
-               LOWER(p.description) LIKE LOWER(?) OR 
-               LOWER(pv.sku) LIKE LOWER(?) OR
-               LOWER(b.name) LIKE LOWER(?) OR
-               EXISTS (
-                 SELECT 1 FROM variant_attribute_options vao_search
-                 JOIN attribute_options ao_search ON vao_search.attribute_option_id = ao_search.id
-                 WHERE vao_search.variant_id = pv.id 
-                 AND LOWER(ao_search.value) LIKE LOWER(?)
-               ))
-            `)
+            (LOWER(p.name) LIKE LOWER(?) OR 
+             LOWER(p.description) LIKE LOWER(?) OR 
+             LOWER(pv.sku) LIKE LOWER(?) OR
+             LOWER(b.name) LIKE LOWER(?) OR
+             EXISTS (
+               SELECT 1 FROM variant_attribute_options vao_search
+               JOIN attribute_options ao_search ON vao_search.attribute_option_id = ao_search.id
+               WHERE vao_search.variant_id = pv.id 
+               AND LOWER(ao_search.value) LIKE LOWER(?)
+             ))
+          `)
             const searchTerm = `%${searchTerms[0]}%`
             queryParams.push(
               searchTerm,
@@ -86,8 +87,6 @@ export class SearchRepository {
               searchTerm
             )
           } else {
-            // Búsqueda multi-término - MEJORADA
-            // Crear condiciones para que TODOS los términos estén presentes
             const termConditions = searchTerms.map((term, index) => {
               const searchTerm = `%${term}%`
               queryParams.push(
@@ -99,20 +98,19 @@ export class SearchRepository {
               )
 
               return `
-                (LOWER(p.name) LIKE LOWER(?) OR 
-                 LOWER(p.description) LIKE LOWER(?) OR 
-                 LOWER(pv.sku) LIKE LOWER(?) OR
-                 LOWER(b.name) LIKE LOWER(?) OR
-                 EXISTS (
-                   SELECT 1 FROM variant_attribute_options vao_${index}
-                   JOIN attribute_options ao_${index} ON vao_${index}.attribute_option_id = ao_${index}.id
-                   WHERE vao_${index}.variant_id = pv.id 
-                   AND LOWER(ao_${index}.value) LIKE LOWER(?)
-                 ))
-              `
+              (LOWER(p.name) LIKE LOWER(?) OR 
+               LOWER(p.description) LIKE LOWER(?) OR 
+               LOWER(pv.sku) LIKE LOWER(?) OR
+               LOWER(b.name) LIKE LOWER(?) OR
+               EXISTS (
+                 SELECT 1 FROM variant_attribute_options vao_${index}
+                 JOIN attribute_options ao_${index} ON vao_${index}.attribute_option_id = ao_${index}.id
+                 WHERE vao_${index}.variant_id = pv.id 
+                 AND LOWER(ao_${index}.value) LIKE LOWER(?)
+               ))
+            `
             })
 
-            // Todos los términos deben coincidir (AND)
             whereConditions.push(`(${termConditions.join(' AND ')})`)
           }
         }
@@ -152,6 +150,25 @@ export class SearchRepository {
         queryParams.push(filters.maxPrice)
       }
 
+      // === FILTRO POR PROMOCIONES ===
+      if (filters.promotionIds && filters.promotionIds.length > 0) {
+        additionalJoins.push(`
+        JOIN promotion_variants prom_v ON pv.id = prom_v.variant_id
+        JOIN promotions prom ON prom_v.promotion_id = prom.id
+      `)
+
+        const placeholders = filters.promotionIds.map(() => '?').join(', ')
+        whereConditions.push(`prom.id IN (${placeholders})`)
+        queryParams.push(...filters.promotionIds)
+
+        // También filtrar por promociones activas
+        whereConditions.push(`
+        prom.is_active = 1 
+        AND prom.start_date <= NOW() 
+        AND (prom.end_date IS NULL OR prom.end_date >= NOW())
+      `)
+      }
+
       // === FILTROS POR ATRIBUTOS ===
       if (filters.attributes && typeof filters.attributes === 'object') {
         const attributeEntries = Object.entries(filters.attributes).filter(
@@ -183,8 +200,12 @@ export class SearchRepository {
       }
 
       // GROUP BY para evitar duplicados
-      query +=
-        ' GROUP BY pv.id, pv.product_id, pv.sku, pv.price, pv.stock, p.name, p.description, p.brand_id, p.base_price'
+      let groupByFields =
+        'pv.id, pv.product_id, pv.sku, pv.price, pv.stock, p.name, p.description, p.brand_id, p.base_price'
+      if (hasPromotionFilter) {
+        groupByFields += ', prom.id, prom.name, prom.type'
+      }
+      query += ` GROUP BY ${groupByFields}`
 
       // === CONSULTA PARA CONTAR TOTAL ===
       const countQueryBase = query
@@ -196,7 +217,7 @@ export class SearchRepository {
 
       const countResult = await executeQuery<[{ total: number }]>({
         query: countQueryBase,
-        values: [...queryParams] // Clonar array
+        values: [...queryParams]
       })
       const totalCount = countResult[0]?.total || 0
 
@@ -287,7 +308,7 @@ export class SearchRepository {
       const searchTerm = `%${term}%`
 
       const suggestions = await executeQuery<
-        Array<{ suggestion: string, priority: number }>
+        Array<{ suggestion: string; priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (
@@ -365,7 +386,7 @@ export class SearchRepository {
     try {
       // Para múltiples términos, enfoque más directo y efectivo
       const suggestions = await executeQuery<
-        Array<{ suggestion: string, priority: number }>
+        Array<{ suggestion: string; priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (

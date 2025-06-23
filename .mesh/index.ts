@@ -2667,6 +2667,7 @@ export type Promotions = {
   isActive?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
+  type?: Maybe<Scalars['String']['output']>;
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
 };
 
@@ -2710,6 +2711,7 @@ export type PromotionsWhereInput = {
   isActive?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PromotionsOrderByInput = {
@@ -2724,6 +2726,7 @@ export type PromotionsOrderByInput = {
   isActive?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
 };
 
 export type VariantAttributeOptionsWhereInput = {
@@ -4078,6 +4081,7 @@ export type PromotionsInsertInput = {
   isActive?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PromotionsUpdateInput = {
@@ -4092,6 +4096,7 @@ export type PromotionsUpdateInput = {
   isActive?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type RatingImagesInsertInput = {
@@ -5483,6 +5488,7 @@ export type PromotionsResolvers<ContextType = MeshContext, ParentType extends Re
   isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   promotionVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['PromotionVariants']>>>, ParentType, ContextType, Partial<PromotionspromotionVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

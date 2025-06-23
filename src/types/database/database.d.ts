@@ -442,6 +442,7 @@ export interface Promotions {
   min_purchase_amount?: Maybe<Scalars['Float']['output']>;
   name: Scalars['String']['output'];
   start_date: Scalars['DateTime']['output'];
+  type?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['Timestamp']['output'];
 }
 

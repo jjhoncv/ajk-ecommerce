@@ -1,6 +1,7 @@
 'use client'
 import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.helpers'
 import ProductCardButtonView from '@/components/ui/ProductCard/ProductCardButtonView'
+import { PromotionBadge } from '@/components/ui/ProductCard/PromotionBadge'
 import { getVariantImages } from '@/helpers/image.helpers'
 import { getVariantTitle } from '@/helpers/productVariant.helpers'
 import Link from 'next/link'
@@ -36,7 +37,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const thumbImage = images.sort((a, b) => a.displayOrder - b.displayOrder)[0]
     .imageUrlThumb
 
-  const { originalPrice } = getPriceIfHasPromotion(variant)
+  const { originalPrice, icon, currentPromotion, type, name } =
+    getPriceIfHasPromotion(variant)
 
   return (
     <div className={'relative bg-white pb-2 transition-shadow hover:shadow-lg'}>
@@ -44,34 +46,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link href={`/productos/variante/${variant.id}`} className={'block'}>
           <ProductCardSlider images={images} productName={product.name} />
         </Link>
-
-        {/* <button className="absolute h-10 bottom-2 right-2">
-          Addsss
-        </button> */}
         <ProductCardButtonView variantId={product.variantId} />
-        {/* <ProductCardButtonAddToCart
-          id={product.variantId}
-          image={thumbImage}
-          name={getVariantTitle(product.name, variant)}
-          price={originalPrice}
-          stock={variant.stock}
-          quantity={1}
-          promotionVariants={variant.promotionVariants}
-        /> */}
       </div>
 
       <div className="px-1">
         <Link href={`/productos/variante/${variant.id}`}>
-          <h3 className="mb-1 line-clamp-1 text-[14px] font-medium leading-[14px] -tracking-wide transition-colors hover:text-primary">
+          <span className="flex">
             {/* Promoción */}
             {hasDiscount && (
-              <span className="mr-[1px] inline-block bg-gradient-to-r from-red-500 to-red-700 px-[3px] py-[2px] text-[11px] leading-[11px] text-white">
-                Promo
-              </span>
+              <div className="flex">
+                <PromotionBadge prefix={type} name={type} />
+              </div>
             )}
-
-            {getVariantTitle(product.name, variant)}
-          </h3>
+            <h3 className="mb-1 line-clamp-1 text-[14px] font-medium leading-[14px] -tracking-wide transition-colors hover:text-primary">
+              {getVariantTitle(product.name, variant)}
+            </h3>
+          </span>
         </Link>
 
         {/* Precio */}

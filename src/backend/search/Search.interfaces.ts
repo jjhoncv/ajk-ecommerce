@@ -10,6 +10,7 @@ export interface ProductSearchFilters {
   attributes?: Record<number, number[]>
   page?: number
   limit?: number
+  promotionIds?: number[]
   sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | 'newest'
 }
 

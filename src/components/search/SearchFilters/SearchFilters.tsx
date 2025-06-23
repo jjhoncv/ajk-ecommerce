@@ -4,6 +4,7 @@ import { type ProductSearchFilters } from '@/backend/search'
 import ActiveFilters from '@/components/search/ActiveFilters'
 import AttributeFilter from '@/components/search/AttributeFilter'
 import PriceRangeFilter from '@/components/search/PriceRangeFilter'
+import PromotionFilter from '@/components/search/PromotionFilter'
 import React from 'react'
 
 interface SearchFiltersProps {
@@ -39,6 +40,11 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
         availableFilters={availableFilters}
         currentFilters={currentFilters}
       /> */}
+
+      <PromotionFilter
+        availableFilters={availableFilters}
+        currentFilters={currentFilters}
+      />
 
       {/* Atributos */}
       <AttributeFilter

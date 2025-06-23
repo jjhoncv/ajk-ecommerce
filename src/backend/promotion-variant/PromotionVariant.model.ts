@@ -128,7 +128,6 @@ export class PromotionVariantModel {
       (promotionsVariant ?? []).map(async (promotionVariant) => {
         return {
           ...promotionVariant,
-          createdAt: promotionVariant.createdAt,
           stockLimit: promotionVariant.stockLimit,
           promotionId: promotionVariant.promotionId,
           promotion: await promotionModel.getPromotionById(
@@ -362,26 +361,19 @@ export class PromotionVariantModel {
       throw new Error('Promotion variant not found')
     }
 
-    await oPromotionVariantRep.deletePromotionVariant(
-      promotionId,
-      variantId
-    )
+    await oPromotionVariantRep.deletePromotionVariant(promotionId, variantId)
   }
 
   public async deletePromotionVariantsByVariantId(
     variantId: number
   ): Promise<void> {
-    await oPromotionVariantRep.deletePromotionVariantsByVariantId(
-      variantId
-    )
+    await oPromotionVariantRep.deletePromotionVariantsByVariantId(variantId)
   }
 
   public async deletePromotionVariantsByPromotionId(
     promotionId: number
   ): Promise<void> {
-    await oPromotionVariantRep.deletePromotionVariantsByPromotionId(
-      promotionId
-    )
+    await oPromotionVariantRep.deletePromotionVariantsByPromotionId(promotionId)
   }
 
   // ============================================================================

@@ -27,6 +27,8 @@ export const getFilters = (params: SearchParams): ProductSearchFilters => {
   // Formato esperado: attr_1=2,3&attr_2=5
   const attributeFilters: Record<number, number[]> = {}
 
+  let promotionIds: number[] = []
+
   Object.keys(params).forEach((key) => {
     if (key.startsWith('attr_')) {
       const attributeId = parseInt(key.replace('attr_', ''))
@@ -35,10 +37,23 @@ export const getFilters = (params: SearchParams): ProductSearchFilters => {
         .map((id) => parseInt(id))
       attributeFilters[attributeId] = optionIds
     }
+
+    // ✅ Manejar parámetros de promociones
+    if (key === 'promotions') {
+      promotionIds = (params[key] as string)
+        .split(',')
+        .map((id) => parseInt(id))
+        .filter((id) => !isNaN(id))
+    }
   })
 
   if (Object.keys(attributeFilters).length > 0) {
     filters.attributes = attributeFilters
+  }
+
+  // ✅ Agregar promociones a los filtros
+  if (promotionIds.length > 0) {
+    filters.promotionIds = promotionIds
   }
 
   return filters

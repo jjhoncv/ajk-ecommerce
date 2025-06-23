@@ -3,6 +3,14 @@ export interface AvailableFilters {
   brands: FilterBrand[]
   priceRange: PriceRange
   attributes: FilterAttribute[]
+  promotions: FilterPromotion[]
+}
+
+export interface FilterPromotion {
+  id: number
+  name: string
+  type: string
+  count: number
 }
 
 export interface FilterCategory {

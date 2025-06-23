@@ -1,4 +1,3 @@
-import { formatPrice } from '@/helpers/utils'
 import { type Categories } from '@/types/domain'
 import Link from 'next/link'
 import { type FC } from 'react'
@@ -22,13 +21,10 @@ export const NavigationMain: FC<NavigationMainProps> = ({
           {promotionsMap.map((promotion, key) => (
             <Link
               key={key}
-              href={`/promotion/${promotion.id}`}
+              href={`/search?promotions=${promotion.id}`}
               className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-primary"
             >
-              {promotion.name}{' '}
-              {promotion.type === 'fixed_amount'
-                ? `- ${formatPrice(promotion.value)}`
-                : `- ${promotion.value}%`}
+              {promotion.name}
             </Link>
           ))}
         </>

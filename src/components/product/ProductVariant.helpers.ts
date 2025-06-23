@@ -87,6 +87,8 @@ export const getPriceIfHasPromotion = (
   hasPromotion: boolean
   finalPrice: number
   originalPrice: number
+  type: string
+  name: string
   currentPromotion?: PromotionVariants | null
 } => {
   // Obtener promoción activa de la variante actual
@@ -102,6 +104,8 @@ export const getPriceIfHasPromotion = (
   return {
     finalPrice,
     hasPromotion: Boolean(currentPromotion),
+    type: currentPromotion?.promotion?.type ?? '',
+    name: currentPromotion?.promotion?.name ?? '',
     originalPrice,
     currentPromotion
   }

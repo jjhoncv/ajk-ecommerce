@@ -129,10 +129,32 @@ export class SearchModel {
     })
 
     // Contadores para categorías
-    const categoryCount = new Map<number, { name: string, count: number }>()
+    const categoryCount = new Map<
+      number,
+      {
+        name: string
+        count: number
+      }
+    >()
 
     // Contadores para marcas
-    const brandCount = new Map<number, { name: string, count: number }>()
+    const brandCount = new Map<
+      number,
+      {
+        name: string
+        count: number
+      }
+    >()
+
+    // ✅ Contadores para promociones
+    const promotionCount = new Map<
+      number,
+      {
+        name: string
+        type: string
+        count: number
+      }
+    >()
 
     // Rango de precios
     let minPrice = Infinity
@@ -141,7 +163,16 @@ export class SearchModel {
     // Contadores para atributos
     const attributeCount = new Map<
       number,
-      { name: string, options: Map<number, { value: string, count: number }> }
+      {
+        name: string
+        options: Map<
+          number,
+          {
+            value: string
+            count: number
+          }
+        >
+      }
     >()
 
     products.forEach((product) => {
@@ -165,6 +196,33 @@ export class SearchModel {
         } else {
           brandCount.set(product.brandId, { name: product.brandName, count: 1 })
         }
+      }
+
+      // ✅ Contar promociones
+      if (product.variants) {
+        product.variants.forEach((variant) => {
+          if (
+            variant.promotionVariants &&
+            variant.promotionVariants.length > 0
+          ) {
+            variant.promotionVariants.forEach((promotionVariant) => {
+              if (promotionVariant.promotion) {
+                const promotion = promotionVariant.promotion
+                const existing = promotionCount.get(promotion.id)
+
+                if (existing) {
+                  existing.count++
+                } else {
+                  promotionCount.set(promotion.id, {
+                    name: promotion.name,
+                    type: promotion.type,
+                    count: 1
+                  })
+                }
+              }
+            })
+          }
+        })
       }
 
       // Calcular rango de precios
@@ -218,7 +276,7 @@ export class SearchModel {
                   if (existingOptionEntry) {
                     // Incrementar contador de la opción existente
                     ;(
-                      existingOptionEntry[1] as { value: string, count: number }
+                      existingOptionEntry[1] as { value: string; count: number }
                     ).count++
                   } else {
                     // Crear nueva opción
@@ -261,6 +319,12 @@ export class SearchModel {
             count: optionData.count
           })
         )
+      })),
+      promotions: Array.from(promotionCount.entries()).map(([id, data]) => ({
+        id,
+        name: data.name,
+        type: data.type,
+        count: data.count
       }))
     }
   }
