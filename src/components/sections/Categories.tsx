@@ -1,11 +1,17 @@
-import { type MainCategory } from '@/services/mainCategories'
 import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+interface Category {
+  id: number
+  name: string
+  imageUrl: string
+  description: string
+}
+
 interface CategoriesProps {
-  categories: MainCategory[]
+  categories: Category[]
 }
 
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {
@@ -18,7 +24,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
             Explora Nuestras Categorías
           </h2>
         </div>
-        <p className="font-roboto mx-auto max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto max-w-2xl font-roboto text-lg text-gray-600">
           Descubre la mejor tecnología organizada por categorías para encontrar
           exactamente lo que necesitas
         </p>
@@ -33,7 +39,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
           >
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 rounded-full bg-gray-50 p-4 transition-colors group-hover:bg-primary/10">
-                {category.image === null ? (
+                {category.imageUrl === '' ? (
                   <Image
                     alt={category.name}
                     src="/no-image.webp"
@@ -43,7 +49,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
                   />
                 ) : (
                   <Image
-                    src={category.image}
+                    src={category.imageUrl}
                     width={60}
                     height={60}
                     alt={category.name}

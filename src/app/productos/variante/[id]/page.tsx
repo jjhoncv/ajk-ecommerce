@@ -3,7 +3,7 @@ import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
 import { ProductVariantNotFound } from '@/components/product/ProductVariantNotFound'
 import ProductVariantView from '@/components/product/ProductVariantView'
-import Navigation from '@/components/ui/Navigation'
+import Navigation from '@/components/ui/Navigation/Navigation'
 import {
   generateErrorMetadata,
   generateProductVariantMetadata

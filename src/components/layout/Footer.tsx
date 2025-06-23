@@ -1,40 +1,23 @@
-import ClientAuthButton from '@/components/ui/ClientAuthButton'
 import { siteConfig } from '@/config'
 import { ICONS } from '@/constants/icons.constants'
-import { authOptions } from '@/lib/auth'
+import CategoryService from '@/services/categories'
+import InformationService from '@/services/information'
+import PageService from '@/services/pages'
 import { Monitor } from 'lucide-react'
-import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { type JSX } from 'react'
 
-interface Page {
-  name: string
-  href: string
-}
-interface Information {
-  description: string
-  icon: string
-}
-
-interface FooterProps {
-  pages: Page[]
-  informations: Information[]
-}
-
-const Footer = async ({
-  pages,
-  informations
-}: FooterProps): Promise<JSX.Element> => {
-  const session = await getServerSession(authOptions)
-  const isAuthenticated = session !== null
-  const user = session?.user
+const Footer = async (): Promise<JSX.Element> => {
+  const informations = await InformationService.getInformation()
+  const pages = await PageService.getPages()
+  const mainCategories = await CategoryService.getMainCategories()
 
   return (
     <footer className="border-t border-gray-300 bg-white">
       <div className="mx-auto max-w-screen-4xl px-12 py-12">
-        <div className="grid grid-cols-5 gap-8">
+        <div className="grid grid-cols-4 gap-8">
           {/* Company Info */}
-          <div className="col-span-2">
+          <div>
             <Link href="/" className="mb-4 flex items-center gap-2">
               <Monitor className="h-8 w-8 text-primary" />
               <span className="text-2xl font-bold text-primary">
@@ -72,7 +55,25 @@ const Footer = async ({
           </div>
 
           <div>
-            <h3 className="mb-4 font-bold text-gray-900">Compañía</h3>
+            <h3 className="mb-4 font-bold text-gray-900">Categorias</h3>
+            <ul className="space-y-2">
+              {mainCategories.map((category, key) => (
+                <li key={key}>
+                  <Link
+                    href={`/category/${category.id}`}
+                    className="text-gray-600 transition-colors duration-300 hover:text-primary"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-bold text-gray-900">
+              Servicio al cliente
+            </h3>
             <ul className="space-y-2">
               {pages.map((page, key) => (
                 <li key={key}>
@@ -88,62 +89,11 @@ const Footer = async ({
           </div>
 
           <div>
-            <h3 className="mb-4 font-bold text-gray-900">Mi Cuenta</h3>
-            <ul className="space-y-2">
-              {isAuthenticated ? (
-                [
-                  { name: 'Mi cuenta', href: '/account' },
-                  { name: 'Ver Carrito', href: '/carrito' },
-                  { name: 'Mi Lista de Deseos', href: '/wishlist' },
-                  { name: 'Rastrear mi Pedido', href: '/tracking' },
-                  { name: 'Ayuda', href: '/ayuda' },
+            <h3 className="mb-4 font-bold text-gray-900">
+              Medios de pago seguros
+            </h3>
 
-                  { name: 'Mis Pedidos', href: '/pedidos' }
-                ].map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-gray-600 transition-colors duration-300 hover:text-primary"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <ClientAuthButton
-                    initialIsAuthenticated={isAuthenticated}
-                    initialUserName={user?.name ?? ''}
-                    initialUserEmail={user?.email ?? ''}
-                    initialUserId={user?.id ?? ''}
-                    variant="footer"
-                  />
-                </li>
-              )}
-            </ul>
-          </div>
-
-          {/* Install App */}
-          <div>
-            <h3 className="mb-4 font-bold text-gray-900">Instalar App</h3>
-            <p className="mb-4 text-gray-600">Desde App Store o Google Play</p>
-            <div className="mb-6 space-y-3">
-              <a href="#" className="block">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
-                  alt="App Store"
-                  className="h-10"
-                />
-              </a>
-              <a href="#" className="block">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                  alt="Google Play"
-                  className="h-10"
-                />
-              </a>
-            </div>
-            <p className="mb-2 text-gray-600">Medios de pago seguros</p>
+            {/* <p className="mb-2 text-gray-600">Medios de pago seguros</p> */}
             <div className="flex gap-2">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"

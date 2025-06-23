@@ -6,7 +6,7 @@ import EditProfile from '@/components/account/EditProfile/EditProfile'
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
-import Navigation from '@/components/ui/Navigation'
+import Navigation from '@/components/ui/Navigation/Navigation'
 import { authOptions } from '@/lib/auth' // IMPORTANTE: Importar authOptions
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'

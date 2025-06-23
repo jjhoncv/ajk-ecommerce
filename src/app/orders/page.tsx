@@ -1,7 +1,7 @@
 import categoryModel from '@/backend/category'
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
-import Navigation from '@/components/ui/Navigation'
+import Navigation from '@/components/ui/Navigation/Navigation'
 import { AlertCircle, CheckCircle, Clock, Package } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'

@@ -3,7 +3,7 @@ import { CartPageInteractive } from '@/components/cart/CartPageInteractive'
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
-import Navigation from '@/components/ui/Navigation'
+import Navigation from '@/components/ui/Navigation/Navigation'
 import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
