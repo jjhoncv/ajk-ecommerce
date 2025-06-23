@@ -1,11 +1,10 @@
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
+import PromotionBanner from '@/components/promotion/PromotionBanner'
 import { PromotionPageNotFound } from '@/components/promotion/PromotionPageNotFound'
-import SearchFilters from '@/components/search/SearchFilters'
-import SearchResults from '@/components/search/SearchResults'
-import StickyFilters from '@/components/search/StickyFilters'
 import Navigation from '@/components/ui/Navigation/Navigation'
+import ProductCard from '@/components/ui/ProductCard'
 import { getFilters } from '@/helpers/search.helpers'
 import PromotionService from '@/services/promotion'
 import SearchService from '@/services/search'
@@ -49,46 +48,28 @@ export default async function PromotionPage({
   })
 
   // Obtener resultados de búsqueda directamente del modelo
-  const {
-    page,
-    products,
-    totalPages,
-    filters: availableFilters
-  } = await SearchService.getSearchParams(filters)
+  const { products } = await SearchService.getSearchParams(filters)
 
   return (
     <Layout>
       <Header navigationType="mini">
         <Navigation type="mini" />
       </Header>
-      <LayoutContent className="py-0">
-        <h1>name: {promotion.name}</h1>
-        <p>discountType: {promotion.discountType}</p>
-        <p>discountValue: {promotion.discountValue}</p>
-        <p>type: {promotion.type}</p>
-        <p>description: {promotion.description}</p>
-        <p>startDate: {promotion.startDate}</p>
-        <p>endDate: {promotion.endDate}</p>
-        <div className="flex flex-col gap-8 lg:flex-row">
-          {/* Filtros laterales */}
-          <div className="lg:min-w-56 lg:max-w-56">
-            <StickyFilters>
-              <SearchFilters
-                availableFilters={availableFilters}
-                currentFilters={filters}
-              />
-            </StickyFilters>
-          </div>
+      <LayoutContent className="px-0 py-0">
+        {promotion != null && <PromotionBanner promotion={promotion} />}
 
-          {/* Resultados */}
-          <div className="lg:100% w-full">
-            <SearchResults
-              products={products}
-              totalPages={totalPages}
-              currentPage={page}
-              currentFilters={filters}
-              defaultView="grid"
-            />
+        <div className="mx-auto flex max-w-screen-4xl px-12">
+          <div
+            className={
+              'grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6'
+            }
+          >
+            {products.map((product) => (
+              <ProductCard
+                key={product.variantId || product.id}
+                product={product}
+              />
+            ))}
           </div>
         </div>
       </LayoutContent>

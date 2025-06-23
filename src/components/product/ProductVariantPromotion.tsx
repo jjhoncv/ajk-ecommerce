@@ -14,7 +14,7 @@ export const ProductVariantPromotion: FC<ProductVariantPromotionProps> = ({
   return (
     <>
       {hasPromotion && (
-        <PromotionBanner promotion={currentPromotion?.promotion} />
+        <PromotionBanner promotion={currentPromotion?.promotion} size="small" />
       )}
     </>
   )

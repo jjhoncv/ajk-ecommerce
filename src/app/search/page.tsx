@@ -48,8 +48,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <Header navigationType="mini">
         <Navigation type="mini" />
       </Header>
-      <LayoutContent>
-        <div className="flex flex-col gap-8 lg:flex-row">
+      <LayoutContent className="px-0 py-0">
+        <div className="mx-auto flex max-w-screen-4xl flex-col gap-8 px-12 lg:flex-row">
           {/* Filtros laterales */}
           <div className="lg:min-w-56 lg:max-w-56">
             <StickyFilters>

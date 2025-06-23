@@ -4,9 +4,13 @@ import React from 'react'
 
 interface PromotionBannerProps {
   promotion: Promotion
+  size?: 'small' | 'medium' | 'large'
 }
 
-const PromotionBanner: React.FC<PromotionBannerProps> = ({ promotion }) => {
+const PromotionBanner: React.FC<PromotionBannerProps> = ({
+  promotion,
+  size = 'large'
+}) => {
   // Función para obtener el icono según el tipo
   const getIconByType = (type: string): string => {
     switch (type.toLowerCase()) {
@@ -46,9 +50,54 @@ const PromotionBanner: React.FC<PromotionBannerProps> = ({ promotion }) => {
   const gradientClass = getGradientByType(promotion.type)
   const icon = getIconByType(promotion.type)
 
+  // Tamaños configurados
+  const sizeClasses = {
+    small: {
+      container: 'mb-4',
+      icon: 'text-xl',
+      badge: 'text-xs px-2 py-0.5',
+      title: 'text-lg font-bold',
+      description: 'text-sm !mb-0',
+      discountValue: 'text-2xl',
+      discountText: 'text-sm',
+      counterContainer: 'p-3',
+      counterDays: 'text-xl',
+      counterText: 'text-xs',
+      mobileBar: 'p-2'
+    },
+    medium: {
+      container: 'rounded-xl mb-6',
+      icon: 'text-2xl',
+      badge: 'text-xs px-3 py-1',
+      title: 'text-2xl font-bold',
+      description: 'text-base',
+      discountValue: 'text-4xl',
+      discountText: 'text-lg',
+      counterContainer: 'p-4',
+      counterDays: 'text-3xl',
+      counterText: 'text-sm',
+      mobileBar: 'p-3'
+    },
+    large: {
+      container: 'mb-4',
+      icon: 'text-3xl',
+      badge: 'text-xs px-3 py-1',
+      title: 'text-3xl md:text-4xl font-bold',
+      description: 'text-lg md:text-xl',
+      discountValue: 'text-5xl md:text-6xl',
+      discountText: 'text-xl',
+      counterContainer: 'p-6',
+      counterDays: 'text-4xl',
+      counterText: 'text-sm',
+      mobileBar: 'p-3'
+    }
+  }
+
+  const currentSize = sizeClasses[size]
+
   return (
     <div
-      className={`relative mb-8 overflow-hidden rounded-2xl ${gradientClass} shadow-2xl`}
+      className={`relative overflow-hidden ${currentSize.container} ${gradientClass} shadow-lg`}
     >
       {/* Efectos de fondo */}
       <div className="absolute inset-0 bg-black/10"></div>
@@ -56,66 +105,94 @@ const PromotionBanner: React.FC<PromotionBannerProps> = ({ promotion }) => {
       <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/5"></div>
 
       {/* Contenido principal */}
-      <div className="relative px-8 py-6 text-white">
+      <div className="relative mx-auto flex max-w-screen-4xl px-6 py-4 text-white">
         <div className="flex items-center justify-between">
           {/* Lado izquierdo */}
           <div className="flex-1">
-            <div className="mb-2 flex items-center gap-3">
-              <span className="text-3xl">{icon}</span>
-              <div>
-                <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
-                  {promotion.type}
-                </span>
-              </div>
-            </div>
-
-            <h2 className="mb-2 text-3xl font-bold leading-tight md:text-4xl">
-              {promotion.name}
-            </h2>
-
-            <p className="mb-4 max-w-2xl text-lg text-white/90 md:text-xl">
-              {promotion.description}
-            </p>
-
-            {/* Descuento destacado */}
-            {promotion.discountType === 'percentage' && (
-              <div className="mb-4 flex items-center gap-2">
-                <span className="text-5xl font-black text-yellow-300 md:text-6xl">
-                  {promotion.discountValue}%
-                </span>
-                <span className="text-xl font-semibold">DE DESCUENTO</span>
+            {size !== 'small' && (
+              <div className="mb-2 flex items-center gap-2">
+                <span className={currentSize.icon}>{icon}</span>
+                <div>
+                  <span
+                    className={`inline-block rounded-full bg-white/20 ${currentSize.badge} font-semibold uppercase tracking-wider backdrop-blur-sm`}
+                  >
+                    {promotion.type}
+                  </span>
+                </div>
               </div>
             )}
 
-            {promotion.discountType === 'fixed_amount' && (
-              <div className="mb-4 flex items-center gap-2">
-                <span className="text-5xl font-black text-yellow-300 md:text-6xl">
-                  S/{promotion.discountValue}
-                </span>
-                <span className="text-xl font-semibold">DE DESCUENTO</span>
-              </div>
+            <h2 className={`mb-1 ${currentSize.title} leading-tight`}>
+              {promotion.name}
+            </h2>
+
+            <p
+              className={`mb-3 max-w-2xl ${currentSize.description} text-white/90`}
+            >
+              {promotion.description}
+            </p>
+
+            {size !== 'small' && (
+              <>
+                {/* Descuento destacado */}
+                {promotion.discountType === 'percentage' && (
+                  <div className="mb-3 flex items-center gap-2">
+                    <span
+                      className={`${currentSize.discountValue} font-black text-yellow-300`}
+                    >
+                      {promotion.discountValue}%
+                    </span>
+                    <span
+                      className={`${currentSize.discountText} font-semibold`}
+                    >
+                      DE DESCUENTO
+                    </span>
+                  </div>
+                )}
+
+                {promotion.discountType === 'fixed_amount' && (
+                  <div className="mb-3 flex items-center gap-2">
+                    <span
+                      className={`${currentSize.discountValue} font-black text-yellow-300`}
+                    >
+                      S/{promotion.discountValue}
+                    </span>
+                    <span
+                      className={`${currentSize.discountText} font-semibold`}
+                    >
+                      DE DESCUENTO
+                    </span>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
           {/* Lado derecho - Contador */}
-          {daysRemaining != null && daysRemaining > 0 && (
-            <div className="hidden flex-col items-center rounded-xl border border-white/20 bg-white/15 p-6 backdrop-blur-sm md:flex">
+          {daysRemaining != null && daysRemaining > 0 && size !== 'small' && (
+            <div
+              className={`hidden flex-col items-center rounded-lg border border-white/20 bg-white/15 ${currentSize.counterContainer} backdrop-blur-sm md:flex`}
+            >
               <div className="text-center">
-                <div className="mb-1 text-4xl font-black text-yellow-300">
+                <div
+                  className={`mb-1 font-black text-yellow-300 ${currentSize.counterDays}`}
+                >
                   {daysRemaining}
                 </div>
-                <div className="text-sm font-semibold uppercase tracking-wider">
+                <div
+                  className={`${currentSize.counterText} font-semibold uppercase tracking-wider`}
+                >
                   {daysRemaining === 1 ? 'Día' : 'Días'}
                 </div>
                 <div className="mt-1 text-xs text-white/80">Restantes</div>
               </div>
 
               {promotion.endDate !== '' && (
-                <div className="mt-4 text-center">
+                <div className="mt-3 text-center">
                   <div className="mb-1 text-xs uppercase tracking-wider text-white/70">
                     Hasta
                   </div>
-                  <div className="text-sm font-semibold">
+                  <div className={`${currentSize.counterText} font-semibold`}>
                     {formatDate(promotion.endDate)}
                   </div>
                 </div>
@@ -125,31 +202,37 @@ const PromotionBanner: React.FC<PromotionBannerProps> = ({ promotion }) => {
         </div>
 
         {/* Barra inferior para móvil */}
-        <div className="mt-6 flex items-center justify-between rounded-lg bg-white/10 p-3 backdrop-blur-sm md:hidden">
-          {daysRemaining !== null && daysRemaining > 0 && (
+        {daysRemaining !== null && daysRemaining > 0 && (
+          <div
+            className={`mt-4 flex items-center justify-between rounded-md bg-white/10 ${currentSize.mobileBar} backdrop-blur-sm md:hidden`}
+          >
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-yellow-300">
+              <span
+                className={`font-bold text-yellow-300 ${size === 'small' ? 'text-xl' : 'text-2xl'}`}
+              >
                 {daysRemaining}
               </span>
-              <span className="text-sm font-semibold">
+              <span className={`${currentSize.counterText} font-semibold`}>
                 {daysRemaining === 1 ? 'día restante' : 'días restantes'}
               </span>
             </div>
-          )}
 
-          {promotion.endDate !== '' && (
-            <div className="text-right">
-              <div className="text-xs text-white/70">Hasta</div>
-              <div className="text-sm font-semibold">
-                {formatDate(promotion.endDate)}
+            {promotion.endDate !== '' && (
+              <div className="text-right">
+                <div className="text-xs text-white/70">Hasta</div>
+                <div className={`${currentSize.counterText} font-semibold`}>
+                  {formatDate(promotion.endDate)}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Efecto de brillo animado */}
-      <div className="animate-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+      {size !== 'small' && (
+        <div className="animate-shimmer absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+      )}
     </div>
   )
 }

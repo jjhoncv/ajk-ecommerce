@@ -19,7 +19,7 @@ export default function CartPageContent() {
 
   // 🆕 Estado para almacenar información de stock actualizada desde validación
   const [stockInfo, setStockInfo] = useState<
-    Array<{ id: number, availableStock: number }>
+    Array<{ id: number; availableStock: number }>
   >([])
 
   // 🆕 Hook dedicado para el manejo de la selección del resumen
@@ -65,14 +65,16 @@ export default function CartPageContent() {
       -1,
       '¿Estás seguro de que quieres eliminar los artículo(s) de tu cesta?',
       () => {
-        selectedItems.forEach((item) => { removeItem(item.id) })
+        selectedItems.forEach((item) => {
+          removeItem(item.id)
+        })
       }
     )
   }
 
   // 🆕 Función para recibir actualizaciones de stock desde CartPageSummary
   const handleStockInfoUpdate = (
-    newStockInfo: Array<{ id: number, availableStock: number }>
+    newStockInfo: Array<{ id: number; availableStock: number }>
   ) => {
     console.log('📦 Stock info received in CartPageContent:', newStockInfo)
     setStockInfo(newStockInfo)
@@ -134,7 +136,7 @@ export default function CartPageContent() {
 
   // 🆕 Función para manejar actualizaciones del carrito (remover/ajustar cantidades)
   const handleCartUpdate = (
-    adjustedItems: Array<{ id: number, quantity: number }>
+    adjustedItems: Array<{ id: number; quantity: number }>
   ) => {
     console.log('🔄 Processing cart updates in CartPageContent:', adjustedItems)
 
@@ -205,8 +207,9 @@ export default function CartPageContent() {
                   key={item.id}
                   item={item}
                   isSelected={summaryCart.isItemSelected(item.id)}
-                  onToggleSelection={() => { summaryCart.toggleItemSelection(item.id) }
-                  }
+                  onToggleSelection={() => {
+                    summaryCart.toggleItemSelection(item.id)
+                  }}
                   stockInfo={stockInfoForItem} // 🆕 Pasar stock info al item
                 />
               )

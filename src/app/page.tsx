@@ -41,7 +41,7 @@ export default async function HomePage(): Promise<JSX.Element> {
       <Header>
         <Navigation />
       </Header>
-      <LayoutContent className="py-0">
+      <LayoutContent className="px-0 py-0">
         <HeroSlider slides={hero} sideBanners={banners} />
         <Features features={features} />
         <Categories categories={mainCategories} />

@@ -33,7 +33,7 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
 
   return (
     <section className="relative">
-      <div className="mx-auto max-w-screen-4xl py-6">
+      <div className="mx-auto max-w-screen-4xl px-12 py-6">
         <div className="grid grid-cols-12 gap-6">
           {/* Slider */}
           <div className="relative col-span-8 h-[400px] overflow-hidden">
@@ -93,7 +93,9 @@ const HeroSlider: React.FC<HeroSliderProps> = ({
               {slides.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => { setCurrentSlide(index) }}
+                  onClick={() => {
+                    setCurrentSlide(index)
+                  }}
                   className={`h-3 w-3 rounded-full ${
                     index === currentSlide ? 'bg-white' : 'bg-white/50'
                   }`}

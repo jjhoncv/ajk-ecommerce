@@ -15,7 +15,7 @@ const ProductVariantView: React.FC<ProductVariantViewProps> = ({
   variant
 }) => {
   return (
-    <main className="mx-auto py-6">
+    <main className="mx-auto max-w-screen-4xl px-12 py-6">
       <ProductVariantInteractive
         initialData={data}
         allVariants={allVariants}

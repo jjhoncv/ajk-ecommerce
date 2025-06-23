@@ -12,7 +12,7 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
   categories
 }) => {
   return (
-    <section className="py-8">
+    <section className="mx-auto max-w-screen-4xl px-12 py-8">
       <h2 className="mb-6 text-2xl font-bold">Categorías Destacadas</h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {categories.map((category, index) => (

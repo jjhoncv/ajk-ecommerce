@@ -70,7 +70,7 @@ export default async function ProductVariantPage({
       <Header navigationType="mini">
         <Navigation type="mini" categories={categories || []} />
       </Header>
-      <LayoutContent>
+      <LayoutContent className="px-0 py-0">
         <ProductVariantView
           data={data}
           allVariants={allVariants}

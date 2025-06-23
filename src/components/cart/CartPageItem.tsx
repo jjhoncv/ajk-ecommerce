@@ -1,4 +1,5 @@
 import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
+import { PromotionBadge } from '@/components/ui/ProductCard/PromotionBadge'
 import { formatPrice } from '@/helpers/utils'
 import { type CartItem } from '@/hooks/useCart'
 import { useCartContext } from '@/providers/cart'
@@ -42,7 +43,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
   stockInfo // 🆕 Recibir stockInfo desde el padre
 }) => {
   const { updateQuantity, openDeleteConfirmation } = useCartContext()
-  const { finalPrice, hasPromotion, originalPrice } =
+  const { finalPrice, hasPromotion, originalPrice, currentPromotion } =
     getPriceIfHasPromotion(item)
 
   // ✅ Determinar el stock actual
@@ -102,6 +103,8 @@ export const CartPageItem: FC<CartPageItemProps> = ({
     }
   }
 
+  const promotion = currentPromotion?.promotion
+
   return (
     <div
       className={`relative border bg-white p-4 transition-all hover:shadow-sm ${
@@ -147,8 +150,11 @@ export const CartPageItem: FC<CartPageItemProps> = ({
                     <div className="flex items-center">
                       {/* Badge de promoción */}
                       {hasPromotion && (
-                        <div className="z-10 mr-1 h-4 bg-red-500 px-1 text-[11px] font-semibold leading-4 text-white">
-                          Promo
+                        <div className="flex">
+                          <PromotionBadge
+                            type={promotion?.type}
+                            name={promotion?.type}
+                          />
                         </div>
                       )}
                       <span>{item.name}</span>
