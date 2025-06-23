@@ -1,12 +1,16 @@
 import { type Promotions } from '@/types/domain'
 import { type Promotion } from './types'
 
-export const hydratePromotions = (data: Promotions[]): Promotion[] => {
-  return data.map((item) => ({
-    id: item.id,
-    name: item.name,
-    discountType: item.discountType,
-    discountValue: item.discountValue,
-    icon: item.icon ?? undefined
-  }))
-}
+export const hydratePromotions = (data: Promotions[]): Promotion[] =>
+  data.map(hydratePromotion)
+
+export const hydratePromotion = (item: Promotions): Promotion => ({
+  id: item.id,
+  name: item.name,
+  discountType: item.discountType,
+  discountValue: item.discountValue,
+  description: item.description ?? '',
+  endDate: item.endDate.toString(),
+  startDate: item.endDate.toString(),
+  type: item.type ?? undefined
+})

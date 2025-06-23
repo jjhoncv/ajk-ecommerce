@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
+import { PromotionPageNotFound } from '@/components/promotion/PromotionPageNotFound'
 import SearchFilters from '@/components/search/SearchFilters'
 import SearchResults from '@/components/search/SearchResults'
 import StickyFilters from '@/components/search/StickyFilters'
@@ -8,32 +9,44 @@ import Navigation from '@/components/ui/Navigation/Navigation'
 import { getFilters } from '@/helpers/search.helpers'
 import PromotionService from '@/services/promotion'
 import SearchService from '@/services/search'
-import { type SearchParams } from '@/shared'
+
+// services
 import { type Metadata } from 'next'
+import { type JSX } from 'react'
 
 export const metadata: Metadata = {
-  title: 'Búsqueda de Productos | AJK E-commerce',
-  description: 'Busca y filtra productos en nuestra tienda online'
+  title: 'TechStore - Tu tienda de tecnología y zapatillas',
+  description:
+    'Encuentra los mejores productos de tecnología y zapatillas en TechStore'
 }
 
-interface SearchPageProps {
-  searchParams: SearchParams
+interface PromotionPageProps {
+  params: Promise<{
+    id: string
+  }>
 }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
-  // Esperar a searchParams antes de usar sus propiedades
-  const params = await searchParams
+export default async function PromotionPage({
+  params
+}: PromotionPageProps): Promise<JSX.Element> {
+  const { id, ...nextParams } = await params
+  const promotionId = parseInt(id)
 
-  // console.log('params', params)
-  // console.log('promotions', params.promotions)
-
-  const filters = getFilters(params)
-  const promotionParam: string | undefined = params.promotions
-  let promotion = null
-  if (promotionParam !== undefined) {
-    const promotionId = parseInt(promotionParam)
-    promotion = await PromotionService.getPromotion(promotionId)
+  // Validar ID
+  if (isNaN(promotionId)) {
+    return <PromotionPageNotFound />
   }
+
+  const promotion = await PromotionService.getPromotion(promotionId)
+
+  if (promotion === null) {
+    return <PromotionPageNotFound />
+  }
+
+  const filters = getFilters({
+    promotions: promotionId.toString(),
+    ...nextParams
+  })
 
   // Obtener resultados de búsqueda directamente del modelo
   const {
@@ -48,7 +61,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <Header navigationType="mini">
         <Navigation type="mini" />
       </Header>
-      <LayoutContent>
+      <LayoutContent className="py-0">
+        <h1>name: {promotion.name}</h1>
+        <p>discountType: {promotion.discountType}</p>
+        <p>discountValue: {promotion.discountValue}</p>
+        <p>type: {promotion.type}</p>
+        <p>description: {promotion.description}</p>
+        <p>startDate: {promotion.startDate}</p>
+        <p>endDate: {promotion.endDate}</p>
         <div className="flex flex-col gap-8 lg:flex-row">
           {/* Filtros laterales */}
           <div className="lg:min-w-56 lg:max-w-56">
@@ -63,7 +83,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {/* Resultados */}
           <div className="lg:100% w-full">
             <SearchResults
-              promotion={promotion}
               products={products}
               totalPages={totalPages}
               currentPage={page}

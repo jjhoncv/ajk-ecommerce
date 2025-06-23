@@ -1,12 +1,18 @@
 'use client'
-import { type ProductSearchFilters, type ProductSearchItem } from '@/backend/search'
+import {
+  type ProductSearchFilters,
+  type ProductSearchItem
+} from '@/backend/search'
+import PromotionBanner from '@/components/promotion/PromotionBanner'
 import Pagination from '@/components/search/Pagination'
 import { SearchNotFound } from '@/components/search/SearchNotFound'
 import SearchSorting from '@/components/search/SearchSorting'
 import ProductCard from '@/components/ui/ProductCard'
+import { type Promotion } from '@/services/promotion/types'
 import React from 'react'
 
 interface SearchResultsProps {
+  promotion: Promotion | null
   products: ProductSearchItem[]
   totalPages: number
   currentPage: number
@@ -15,6 +21,7 @@ interface SearchResultsProps {
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
+  promotion,
   products,
   totalPages,
   currentPage,
@@ -27,6 +34,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <div>
+      {promotion != null && <PromotionBanner promotion={promotion} />}
+
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex w-full items-center justify-end">
           <SearchSorting currentSort={filters.sort} variant="toggle" />

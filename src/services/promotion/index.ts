@@ -1,7 +1,8 @@
-import { getPromotions } from './promotion'
+import { getPromotion, getPromotions } from './promotion'
 
 const PromotionService = {
-  getPromotions
+  getPromotions,
+  getPromotion
 }
 
 export default PromotionService

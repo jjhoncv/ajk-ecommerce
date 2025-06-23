@@ -1,12 +1,11 @@
 import promotionModel from '@/backend/promotion'
-import { hydratePromotions } from '@/services/promotion/hydrators'
+import {
+  hydratePromotion,
+  hydratePromotions
+} from '@/services/promotion/hydrators'
 import { type Promotion } from './types'
 
 export const getPromotions = async (): Promise<Promotion[]> => {
-  // return await new Promise((resolve) => {
-  //   resolve(dataMock)
-  // })
-
   try {
     // Obtener todas las promociones
     const promotionsData = await promotionModel.getPromotions()
@@ -32,6 +31,34 @@ export const getPromotions = async (): Promise<Promotion[]> => {
   } catch (error) {
     throw new Error(
       `Error al obtener getPromotions ${error instanceof Error ? error.message : 'Unknow error'}`
+    )
+  }
+}
+
+export const getPromotion = async (id: number): Promise<Promotion | null> => {
+  try {
+    // Obtener todas las promociones
+    const promotion = await promotionModel.getPromotionById(id)
+
+    if (promotion == null) {
+      console.log('No se encontró la promoción')
+      return null
+    }
+
+    const date = new Date()
+    const startDate = new Date(promotion.startDate)
+    const endDate = new Date(promotion.endDate)
+    const isAvailable = date >= startDate && date <= endDate
+
+    if (!isAvailable) {
+      console.log('La promoción no se encuentra vigente')
+      return null
+    }
+
+    return hydratePromotion(promotion)
+  } catch (error) {
+    throw new Error(
+      `Error al obtener getPromotion ${error instanceof Error ? error.message : 'Unknow error'}`
     )
   }
 }

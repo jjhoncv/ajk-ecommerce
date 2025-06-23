@@ -1,4 +1,5 @@
 import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.helpers'
+import PromotionBanner from '@/components/promotion/PromotionBanner'
 import { type ProductVariants } from '@/types/domain'
 import { type FC } from 'react'
 
@@ -13,12 +14,7 @@ export const ProductVariantPromotion: FC<ProductVariantPromotionProps> = ({
   return (
     <>
       {hasPromotion && (
-        <div className="flex items-center bg-gradient-to-r from-red-500 to-red-700 p-3 text-sm">
-          <p className="line-clamp-1 text-[17px] font-bold leading-[17px] text-white">
-            {currentPromotion?.promotion?.name}:{' '}
-            {currentPromotion?.promotion?.description}
-          </p>
-        </div>
+        <PromotionBanner promotion={currentPromotion?.promotion} />
       )}
     </>
   )

@@ -55,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {/* Promoción */}
             {hasDiscount && (
               <div className="flex">
-                <PromotionBadge prefix={type} name={type} />
+                <PromotionBadge type={type} name={type} />
               </div>
             )}
             <h3 className="mb-1 line-clamp-1 text-[14px] font-medium leading-[14px] -tracking-wide transition-colors hover:text-primary">
