@@ -1,6 +1,8 @@
 export interface Banner {
   title: string
   subtitle: string
+  description: string
   image: string
-  link: string
+  ctaLink: string
+  cta: string
 }

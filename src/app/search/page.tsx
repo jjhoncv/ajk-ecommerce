@@ -6,7 +6,6 @@ import SearchResults from '@/components/search/SearchResults'
 import StickyFilters from '@/components/search/StickyFilters'
 import Navigation from '@/components/ui/Navigation/Navigation'
 import { getFilters } from '@/helpers/search.helpers'
-import PromotionService from '@/services/promotion'
 import SearchService from '@/services/search'
 import { type SearchParams } from '@/shared'
 import { type Metadata } from 'next'
@@ -28,12 +27,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   // console.log('promotions', params.promotions)
 
   const filters = getFilters(params)
-  const promotionParam: string | undefined = params.promotions
-  let promotion = null
-  if (promotionParam !== undefined) {
-    const promotionId = parseInt(promotionParam)
-    promotion = await PromotionService.getPromotion(promotionId)
-  }
 
   // Obtener resultados de búsqueda directamente del modelo
   const {
@@ -63,7 +56,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {/* Resultados */}
           <div className="lg:100% w-full">
             <SearchResults
-              promotion={promotion}
               products={products}
               totalPages={totalPages}
               currentPage={page}

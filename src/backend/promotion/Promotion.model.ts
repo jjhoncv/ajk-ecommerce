@@ -13,7 +13,7 @@ export class PromotionModel {
 
   public async getPromotionById(id: number): Promise<Promotion | undefined> {
     const brandRaw = await oPromotionRep.getPromotionById(id)
-    if (!brandRaw) return undefined
+    if (brandRaw == null) return undefined
     return PromotionMapper(brandRaw)
   }
 
@@ -21,7 +21,7 @@ export class PromotionModel {
     brandData: Omit<PromotionRaw, 'id'>
   ): Promise<Promotion | undefined> {
     const created = await oPromotionRep.createPromotion(brandData)
-    if (!created) return undefined
+    if (created == null) return undefined
     return PromotionMapper(created)
   }
 
@@ -30,7 +30,7 @@ export class PromotionModel {
     id: number
   ): Promise<Promotion | undefined> {
     const updated = await oPromotionRep.updatePromotion(brandData, id)
-    if (!updated) return undefined
+    if (updated == null) return undefined
     return PromotionMapper(updated)
   }
 

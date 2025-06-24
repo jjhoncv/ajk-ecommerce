@@ -9,15 +9,15 @@ import HeroSlider from '@/components/sections/HeroSlider'
 import Newsletter from '@/components/sections/Newsletter'
 import PopularProducts from '@/components/sections/PopularProducts'
 import Navigation from '@/components/ui/Navigation/Navigation'
+import BannerService from '@/services/banner'
 
 // services
-import { getBanner } from '@/services/banner'
 import CategoryService from '@/services/categories'
 import { getDealsProducts } from '@/services/dealsProducts'
 import { getFeaturedCategories } from '@/services/featuredCategories'
 import { getFeatures } from '@/services/features/features'
-import { getHero } from '@/services/hero'
 import { getPopularProducts } from '@/services/popularProducts'
+import PromotionService from '@/services/promotion'
 import { type Metadata } from 'next'
 import { type JSX } from 'react'
 
@@ -31,10 +31,10 @@ export default async function HomePage(): Promise<JSX.Element> {
   const mainCategories = await CategoryService.getMainCategories()
   const popularProducts = await getPopularProducts()
   const dealsProducts = await getDealsProducts()
-  const hero = await getHero()
-  const banners = await getBanner()
+  const banners = await BannerService.getBanner()
   const features = await getFeatures()
   const featureCategories = await getFeaturedCategories()
+  const sideBanners = await PromotionService.getBanners()
 
   return (
     <Layout>
@@ -42,7 +42,7 @@ export default async function HomePage(): Promise<JSX.Element> {
         <Navigation />
       </Header>
       <LayoutContent className="px-0 py-0">
-        <HeroSlider slides={hero} sideBanners={banners} />
+        <HeroSlider slides={banners} sideBanners={sideBanners} />
         <Features features={features} />
         <Categories categories={mainCategories} />
         <FeaturedCategories categories={featureCategories} />

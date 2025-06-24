@@ -1,3 +1,4 @@
+import CategoryService from '@/services/categories'
 import PromotionService from '@/services/promotion'
 import { type Categories } from '@/types/domain'
 import { type FC } from 'react'
@@ -11,9 +12,14 @@ export const NavigationFull: FC<NavigationFullProps> = async ({
   categories
 }) => {
   const promotions = await PromotionService.getPromotions()
+  const navCategories = await CategoryService.getNavCategories()
   return (
     <>
-      <NavigationFullClient categories={categories} promotions={promotions} />
+      <NavigationFullClient
+        categories={categories}
+        navCategories={navCategories}
+        promotions={promotions}
+      />
     </>
   )
 }

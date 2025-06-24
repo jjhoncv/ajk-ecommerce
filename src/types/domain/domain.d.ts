@@ -91,6 +91,7 @@ export type AttributesDisplayType =
   | 'select';
 
 export interface Banner {
+  buttonText?: Maybe<Scalars['String']['output']>;
 
   description?: Maybe<Scalars['String']['output']>;
   displayOrder?: Maybe<Scalars['Int']['output']>;
@@ -110,11 +111,13 @@ export interface Brands {
 
 export interface Categories {
   description?: Maybe<Scalars['String']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   imageUrl?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parentId?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
+  showNav?: Maybe<Scalars['Int']['output']>;
 }
 
 export interface CouponUsage {
@@ -474,8 +477,10 @@ export interface Promotions {
   description?: Maybe<Scalars['String']['output']>;
   discountType: PromotionsDiscountType;
   discountValue: Scalars['Float']['output'];
+  displayOrder?: Maybe<Scalars['Int']['output']>;
   endDate: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
   isActive?: Maybe<Scalars['Int']['output']>;
   minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
   name: Scalars['String']['output'];

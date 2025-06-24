@@ -4,19 +4,20 @@ import { type FC } from 'react'
 import { type Promotion } from './Navigation.interfaces'
 
 interface NavigationMainProps {
-  categories: Categories[]
+  navCategories?: Categories[]
   promotions?: Promotion[]
 }
 
 export const NavigationMain: FC<NavigationMainProps> = ({
-  categories,
+  navCategories,
   promotions
 }) => {
   const promotionsMap = promotions ?? []
+  const navCategoriesMap = navCategories ?? []
 
   return (
     <nav className="flex items-center gap-8 px-6">
-      {promotionsMap.length > 0 ? (
+      {promotionsMap.length > 0 && (
         <>
           {promotionsMap.map((promotion, key) => (
             <Link
@@ -28,19 +29,19 @@ export const NavigationMain: FC<NavigationMainProps> = ({
             </Link>
           ))}
         </>
-      ) : (
+      )}
+
+      {navCategoriesMap.length > 0 && (
         <>
-          {categories
-            .filter((category) => category.parentId === null)
-            .map((category) => (
-              <Link
-                key={category.id}
-                href={`/categoria/${category.id}`}
-                className="text-gray-700 transition-colors duration-300 hover:text-primary"
-              >
-                {category.name}
-              </Link>
-            ))}
+          {navCategoriesMap.map((category, key) => (
+            <Link
+              key={key}
+              href={`/categoria/${category.id}`}
+              className="text-gray-700 transition-colors duration-300 hover:text-primary"
+            >
+              {category.name}
+            </Link>
+          ))}
         </>
       )}
     </nav>

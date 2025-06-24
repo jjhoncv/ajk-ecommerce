@@ -7,7 +7,9 @@ export const CategoryMapper = (data: CategoryRaw): Category => {
     name: data.name,
     description: data.description,
     imageUrl: data.image_url,
-    parentId: data.parent_id
+    parentId: data.parent_id,
+    displayOrder: data.display_order,
+    showNav: data.show_nav
   }
 }
 

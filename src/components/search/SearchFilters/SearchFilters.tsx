@@ -3,6 +3,7 @@ import { type AvailableFilters } from '@/backend/filters'
 import { type ProductSearchFilters } from '@/backend/search'
 import ActiveFilters from '@/components/search/ActiveFilters'
 import AttributeFilter from '@/components/search/AttributeFilter'
+import CategoryFilter from '@/components/search/CategoryFilter'
 import PriceRangeFilter from '@/components/search/PriceRangeFilter'
 import PromotionFilter from '@/components/search/PromotionFilter'
 import React from 'react'
@@ -30,10 +31,10 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({
       />
 
       {/* Categorías */}
-      {/* <CategoryFilter
+      <CategoryFilter
         availableFilters={availableFilters}
         currentFilters={currentFilters}
-      /> */}
+      />
 
       {/* Marcas */}
       {/* <BrandFilter

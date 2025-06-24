@@ -11,6 +11,16 @@ export class CategoryRepository {
     return categories
   }
 
+  public async getCategoriesToNav(): Promise<CategoriesRaw[] | null> {
+    const categories = await executeQuery<CategoriesRaw[]>({
+      query:
+        'SELECT * FROM categories WHERE show_nav = 1 ORDER BY display_order ASC, name ASC'
+    })
+
+    if (categories.length === 0) return null
+    return categories
+  }
+
   public async getCategoryById(id: number): Promise<CategoriesRaw | null> {
     const categories = await executeQuery<CategoriesRaw[]>({
       query: 'SELECT * FROM categories WHERE id = ?',

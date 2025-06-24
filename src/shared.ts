@@ -23,7 +23,6 @@ export interface SearchParams {
   maxPrice?: string
   sort?: string
   page?: string
-  promotions: string
   [key: string]: string | string[] | undefined
 }
 

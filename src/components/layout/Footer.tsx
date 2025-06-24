@@ -1,9 +1,9 @@
+import Logo from '@/components/ui/Logo'
 import { siteConfig } from '@/config'
 import { ICONS } from '@/constants/icons.constants'
 import CategoryService from '@/services/categories'
 import InformationService from '@/services/information'
 import PageService from '@/services/pages'
-import { Monitor } from 'lucide-react'
 import Link from 'next/link'
 import { type JSX } from 'react'
 
@@ -18,13 +18,7 @@ const Footer = async (): Promise<JSX.Element> => {
         <div className="grid grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <Link href="/" className="mb-4 flex items-center gap-2">
-              <Monitor className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold text-primary">
-                {siteConfig.name}
-              </span>
-            </Link>
-            <p className="mb-4 text-gray-600">{siteConfig.description}</p>
+            <Logo />
 
             <div className="mb-6 space-y-2">
               {informations.map((information, index) => (

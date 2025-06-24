@@ -1,22 +1,20 @@
 'use client'
-import Image from 'next/image'
-import Link from 'next/link'
 import { siteConfig } from '@/config'
+import { Monitor } from 'lucide-react'
+import Link from 'next/link'
+import { type JSX } from 'react'
 
-const Logo = () => {
+const Logo = (): JSX.Element => {
   return (
-    <Link href="/" className="flex cursor-pointer items-center">
-      <Image
-        width={32}
-        height={32}
-        alt="logo"
-        src={'/Logo.svg'}
-        className="mr-2 h-auto w-auto"
-      />
-      <span className="text-2xl font-extralight text-black md:text-4xl">
-        {siteConfig.name}
-      </span>
-    </Link>
+    <div className="mb-4 mt-4 flex flex-col gap-1">
+      <Link href="/" className="flex items-center gap-2">
+        <Monitor className="h-8 w-8 text-primary" />
+        <span className="font-roboto text-2xl font-bold leading-8 text-primary">
+          {siteConfig.name}
+        </span>
+      </Link>
+      <p className="text-sm text-gray-600">{siteConfig.description}</p>
+    </div>
   )
 }
 

@@ -4,7 +4,7 @@ import { type Promotions as PromotionRaw } from '@/types/database'
 export class PromotionRepository {
   public async getPromotions(): Promise<PromotionRaw[] | null> {
     const promotions = await executeQuery<PromotionRaw[]>({
-      query: 'SELECT * FROM promotions'
+      query: 'SELECT * FROM promotions ORDER BY display_order ASC'
     })
 
     if (promotions.length === 0) return null

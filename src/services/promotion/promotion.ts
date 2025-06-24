@@ -1,4 +1,5 @@
 import promotionModel from '@/backend/promotion'
+import { isPromotionActive } from '@/services/promotion/helpers'
 import {
   hydratePromotion,
   hydratePromotions
@@ -16,12 +17,9 @@ export const getPromotions = async (): Promise<Promotion[]> => {
     }
 
     // obtener las promociones que esten vigentes en el rango de fecha
-    const promotions = promotionsData.filter((promotion) => {
-      const date = new Date()
-      const startDate = new Date(promotion.startDate)
-      const endDate = new Date(promotion.endDate)
-      return date >= startDate && date <= endDate
-    })
+    const promotions = promotionsData.filter((promotion) =>
+      isPromotionActive(promotion)
+    )
     if (promotions.length === 0) {
       console.log('No se encontraron promociones vigentes en el rango de fecha')
       return []
@@ -45,12 +43,7 @@ export const getPromotion = async (id: number): Promise<Promotion | null> => {
       return null
     }
 
-    const date = new Date()
-    const startDate = new Date(promotion.startDate)
-    const endDate = new Date(promotion.endDate)
-    const isAvailable = date >= startDate && date <= endDate
-
-    if (!isAvailable) {
+    if (!isPromotionActive(promotion)) {
       console.log('La promoción no se encuentra vigente')
       return null
     }

@@ -1000,6 +1000,8 @@ type categories {
   description: String
   parent_id: Int
   image_url: String
+  show_nav: Int
+  display_order: Int
   product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
 }
 
@@ -1019,6 +1021,8 @@ input categories_WhereInput {
   description: String
   parent_id: String
   image_url: String
+  show_nav: String
+  display_order: String
 }
 
 input categories_OrderByInput {
@@ -1027,6 +1031,8 @@ input categories_OrderByInput {
   description: OrderBy
   parent_id: OrderBy
   image_url: OrderBy
+  show_nav: OrderBy
+  display_order: OrderBy
 }
 
 input products_WhereInput {
@@ -1088,6 +1094,8 @@ type promotions {
   created_at: Timestamp!
   updated_at: Timestamp!
   type: String
+  image_url: String
+  display_order: Int
   promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
 }
 
@@ -1125,6 +1133,8 @@ input promotions_WhereInput {
   created_at: String
   updated_at: String
   type: String
+  image_url: String
+  display_order: String
 }
 
 input promotions_OrderByInput {
@@ -1140,6 +1150,8 @@ input promotions_OrderByInput {
   created_at: OrderBy
   updated_at: OrderBy
   type: OrderBy
+  image_url: OrderBy
+  display_order: OrderBy
 }
 
 input variant_attribute_options_WhereInput {
@@ -1238,6 +1250,7 @@ type banner {
   display_order: Int
   link: String
   image_url: String
+  button_text: String
 }
 
 input banner_WhereInput {
@@ -1250,6 +1263,7 @@ input banner_WhereInput {
   display_order: String
   link: String
   image_url: String
+  button_text: String
 }
 
 input banner_OrderByInput {
@@ -1262,6 +1276,7 @@ input banner_OrderByInput {
   display_order: OrderBy
   link: OrderBy
   image_url: OrderBy
+  button_text: OrderBy
 }
 
 """VIEW"""
@@ -1935,6 +1950,7 @@ input banner_InsertInput {
   display_order: Int
   link: String
   image_url: String
+  button_text: String
 }
 
 input banner_UpdateInput {
@@ -1947,6 +1963,7 @@ input banner_UpdateInput {
   display_order: Int
   link: String
   image_url: String
+  button_text: String
 }
 
 input brands_InsertInput {
@@ -1965,6 +1982,8 @@ input categories_InsertInput {
   description: String
   parent_id: Int
   image_url: String
+  show_nav: Int
+  display_order: Int
 }
 
 input categories_UpdateInput {
@@ -1973,6 +1992,8 @@ input categories_UpdateInput {
   description: String
   parent_id: Int
   image_url: String
+  show_nav: Int
+  display_order: Int
 }
 
 input coupon_usage_InsertInput {
@@ -2512,6 +2533,8 @@ input promotions_InsertInput {
   created_at: Timestamp
   updated_at: Timestamp
   type: String
+  image_url: String
+  display_order: Int
 }
 
 input promotions_UpdateInput {
@@ -2527,6 +2550,8 @@ input promotions_UpdateInput {
   created_at: Timestamp
   updated_at: Timestamp
   type: String
+  image_url: String
+  display_order: Int
 }
 
 input rating_images_InsertInput {

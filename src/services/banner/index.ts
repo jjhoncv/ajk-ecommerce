@@ -1,2 +1,7 @@
-export * from './banner'
-export * from './types'
+import { getBanner } from './banner'
+
+const BannerService = {
+  getBanner
+}
+
+export default BannerService

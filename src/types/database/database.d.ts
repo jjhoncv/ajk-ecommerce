@@ -150,6 +150,7 @@ export interface Attributes {
 }
 
 export interface Banner {
+  button_text?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
   description?: Maybe<Scalars['String']['output']>;
   display_order?: Maybe<Scalars['Int']['output']>;
@@ -168,10 +169,12 @@ export interface Brands {
 
 export interface Categories {
   description?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   image_url?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id?: Maybe<Scalars['Int']['output']>;
+  show_nav?: Maybe<Scalars['Int']['output']>;
 }
 
 export interface CouponUsage {
@@ -436,8 +439,10 @@ export interface Promotions {
   description?: Maybe<Scalars['String']['output']>;
   discount_type: PromotionsDiscountType;
   discount_value: Scalars['Float']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
   end_date: Scalars['DateTime']['output'];
   id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
   is_active?: Maybe<Scalars['Int']['output']>;
   min_purchase_amount?: Maybe<Scalars['Float']['output']>;
   name: Scalars['String']['output'];

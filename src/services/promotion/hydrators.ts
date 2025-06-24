@@ -12,5 +12,6 @@ export const hydratePromotion = (item: Promotions): Promotion => ({
   description: item.description ?? '',
   endDate: item.endDate.toString(),
   startDate: item.endDate.toString(),
-  type: item.type ?? undefined
+  type: item.type ?? '',
+  imageUrl: item.imageUrl ?? ''
 })

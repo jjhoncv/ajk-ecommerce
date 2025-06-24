@@ -9,11 +9,13 @@ import { useNavigation } from './use-navigation.hook'
 
 interface NavigationFullClientProps {
   categories: Categories[]
+  navCategories: Categories[]
   promotions?: Promotion[]
 }
 
 export const NavigationFullClient: FC<NavigationFullClientProps> = ({
   categories,
+  navCategories,
   promotions
 }) => {
   const categoriesMenu = useNavigation()
@@ -26,7 +28,10 @@ export const NavigationFullClient: FC<NavigationFullClientProps> = ({
             <div className="relative">
               <NavigationButton type="normal" onClick={categoriesMenu.toggle} />
             </div>
-            <NavigationMain categories={categories} promotions={promotions} />
+            <NavigationMain
+              navCategories={navCategories}
+              promotions={promotions}
+            />
           </div>
         </div>
       </div>

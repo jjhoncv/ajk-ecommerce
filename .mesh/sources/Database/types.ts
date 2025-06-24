@@ -1830,6 +1830,8 @@ export type categories = {
   description?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['Int']['output']>;
   image_url?: Maybe<Scalars['String']['output']>;
+  show_nav?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
   product_categories?: Maybe<Array<Maybe<product_categories>>>;
 };
 
@@ -1857,6 +1859,8 @@ export type categories_WhereInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  show_nav?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type categories_OrderByInput = {
@@ -1865,6 +1869,8 @@ export type categories_OrderByInput = {
   description?: InputMaybe<OrderBy>;
   parent_id?: InputMaybe<OrderBy>;
   image_url?: InputMaybe<OrderBy>;
+  show_nav?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
 };
 
 export type products_WhereInput = {
@@ -1950,6 +1956,8 @@ export type promotions = {
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
   type?: Maybe<Scalars['String']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
   promotion_variants?: Maybe<Array<Maybe<promotion_variants>>>;
 };
 
@@ -1994,6 +2002,8 @@ export type promotions_WhereInput = {
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type promotions_OrderByInput = {
@@ -2009,6 +2019,8 @@ export type promotions_OrderByInput = {
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
 };
 
 export type variant_attribute_options_WhereInput = {
@@ -2115,6 +2127,7 @@ export type banner = {
   display_order?: Maybe<Scalars['Int']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   image_url?: Maybe<Scalars['String']['output']>;
+  button_text?: Maybe<Scalars['String']['output']>;
 };
 
 export type banner_WhereInput = {
@@ -2127,6 +2140,7 @@ export type banner_WhereInput = {
   display_order?: InputMaybe<Scalars['String']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  button_text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type banner_OrderByInput = {
@@ -2139,6 +2153,7 @@ export type banner_OrderByInput = {
   display_order?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   image_url?: InputMaybe<OrderBy>;
+  button_text?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3493,6 +3508,7 @@ export type banner_InsertInput = {
   display_order?: InputMaybe<Scalars['Int']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  button_text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type banner_UpdateInput = {
@@ -3505,6 +3521,7 @@ export type banner_UpdateInput = {
   display_order?: InputMaybe<Scalars['Int']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  button_text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type brands_InsertInput = {
@@ -3523,6 +3540,8 @@ export type categories_InsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  show_nav?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type categories_UpdateInput = {
@@ -3531,6 +3550,8 @@ export type categories_UpdateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
+  show_nav?: InputMaybe<Scalars['Int']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type coupon_usage_InsertInput = {
@@ -4070,6 +4091,8 @@ export type promotions_InsertInput = {
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type promotions_UpdateInput = {
@@ -4085,6 +4108,8 @@ export type promotions_UpdateInput = {
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type rating_images_InsertInput = {

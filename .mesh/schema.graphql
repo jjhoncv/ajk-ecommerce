@@ -1114,6 +1114,8 @@ type Categories {
   description: String
   parentId: Int
   imageUrl: String
+  showNav: Int
+  displayOrder: Int
   productCategories(limit: Int, offset: Int, where: ProductCategoriesWhereInput, orderBy: ProductCategoriesOrderByInput): [ProductCategories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
 }
 
@@ -1133,6 +1135,8 @@ input CategoriesWhereInput {
   description: String
   parentId: String
   imageUrl: String
+  showNav: String
+  displayOrder: String
 }
 
 input CategoriesOrderByInput {
@@ -1141,6 +1145,8 @@ input CategoriesOrderByInput {
   description: OrderBy
   parentId: OrderBy
   imageUrl: OrderBy
+  showNav: OrderBy
+  displayOrder: OrderBy
 }
 
 input ProductsWhereInput {
@@ -1202,6 +1208,8 @@ type Promotions {
   createdAt: Timestamp!
   updatedAt: Timestamp!
   type: String
+  imageUrl: String
+  displayOrder: Int
   promotionVariants(limit: Int, offset: Int, where: PromotionVariantsWhereInput, orderBy: PromotionVariantsOrderByInput): [PromotionVariants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
 }
 
@@ -1239,6 +1247,8 @@ input PromotionsWhereInput {
   createdAt: String
   updatedAt: String
   type: String
+  imageUrl: String
+  displayOrder: String
 }
 
 input PromotionsOrderByInput {
@@ -1254,6 +1264,8 @@ input PromotionsOrderByInput {
   createdAt: OrderBy
   updatedAt: OrderBy
   type: OrderBy
+  imageUrl: OrderBy
+  displayOrder: OrderBy
 }
 
 input VariantAttributeOptionsWhereInput {
@@ -1352,6 +1364,7 @@ type Banner {
   displayOrder: Int
   link: String
   imageUrl: String
+  buttonText: String
 }
 
 input BannerWhereInput {
@@ -1364,6 +1377,7 @@ input BannerWhereInput {
   displayOrder: String
   link: String
   imageUrl: String
+  buttonText: String
 }
 
 input BannerOrderByInput {
@@ -1376,6 +1390,7 @@ input BannerOrderByInput {
   displayOrder: OrderBy
   link: OrderBy
   imageUrl: OrderBy
+  buttonText: OrderBy
 }
 
 """VIEW"""
@@ -1935,6 +1950,7 @@ input BannerInsertInput {
   displayOrder: Int
   link: String
   imageUrl: String
+  buttonText: String
 }
 
 input BannerUpdateInput {
@@ -1947,6 +1963,7 @@ input BannerUpdateInput {
   displayOrder: Int
   link: String
   imageUrl: String
+  buttonText: String
 }
 
 input BrandsInsertInput {
@@ -1965,6 +1982,8 @@ input CategoriesInsertInput {
   description: String
   parentId: Int
   imageUrl: String
+  showNav: Int
+  displayOrder: Int
 }
 
 input CategoriesUpdateInput {
@@ -1973,6 +1992,8 @@ input CategoriesUpdateInput {
   description: String
   parentId: Int
   imageUrl: String
+  showNav: Int
+  displayOrder: Int
 }
 
 input CouponUsageInsertInput {
@@ -2512,6 +2533,8 @@ input PromotionsInsertInput {
   createdAt: Timestamp
   updatedAt: Timestamp
   type: String
+  imageUrl: String
+  displayOrder: Int
 }
 
 input PromotionsUpdateInput {
@@ -2527,6 +2550,8 @@ input PromotionsUpdateInput {
   createdAt: Timestamp
   updatedAt: Timestamp
   type: String
+  imageUrl: String
+  displayOrder: Int
 }
 
 input RatingImagesInsertInput {

@@ -3,11 +3,14 @@ import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
 import PromotionBanner from '@/components/promotion/PromotionBanner'
 import { PromotionPageNotFound } from '@/components/promotion/PromotionPageNotFound'
+import SearchFilters from '@/components/search/SearchFilters'
+import SearchResults from '@/components/search/SearchResults'
+import StickyFilters from '@/components/search/StickyFilters'
 import Navigation from '@/components/ui/Navigation/Navigation'
-import ProductCard from '@/components/ui/ProductCard'
 import { getFilters } from '@/helpers/search.helpers'
 import PromotionService from '@/services/promotion'
 import SearchService from '@/services/search'
+import { type SearchParams } from '@/shared'
 
 // services
 import { type Metadata } from 'next'
@@ -23,12 +26,16 @@ interface PromotionPageProps {
   params: Promise<{
     id: string
   }>
+  searchParams: SearchParams // ← AGREGADO: Los search params son necesarios para los filtros
 }
 
 export default async function PromotionPage({
-  params
+  params,
+  searchParams // ← AGREGADO: Recibir searchParams
 }: PromotionPageProps): Promise<JSX.Element> {
-  const { id, ...nextParams } = await params
+  const { id } = await params
+  const searchParamsResolved = await searchParams // ← AGREGADO: Resolver searchParams
+
   const promotionId = parseInt(id)
 
   // Validar ID
@@ -42,13 +49,19 @@ export default async function PromotionPage({
     return <PromotionPageNotFound />
   }
 
+  // ← CORREGIDO: Usar searchParams resueltos y agregar promotions al filtro
   const filters = getFilters({
-    promotions: promotionId.toString(),
-    ...nextParams
+    ...searchParamsResolved,
+    promotions: promotionId.toString()
   })
 
   // Obtener resultados de búsqueda directamente del modelo
-  const { products } = await SearchService.getSearchParams(filters)
+  const {
+    page,
+    products,
+    totalPages,
+    filters: availableFilters
+  } = await SearchService.getSearchParams(filters)
 
   return (
     <Layout>
@@ -58,18 +71,26 @@ export default async function PromotionPage({
       <LayoutContent className="px-0 py-0">
         {promotion != null && <PromotionBanner promotion={promotion} />}
 
-        <div className="mx-auto flex max-w-screen-4xl px-12">
-          <div
-            className={
-              'grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6'
-            }
-          >
-            {products.map((product) => (
-              <ProductCard
-                key={product.variantId || product.id}
-                product={product}
+        <div className="mx-auto flex max-w-screen-4xl flex-col gap-8 px-12 lg:flex-row">
+          {/* Filtros laterales */}
+          <div className="lg:min-w-56 lg:max-w-56">
+            <StickyFilters>
+              <SearchFilters
+                availableFilters={availableFilters}
+                currentFilters={filters}
               />
-            ))}
+            </StickyFilters>
+          </div>
+
+          {/* Resultados */}
+          <div className="lg:100% w-full">
+            <SearchResults
+              products={products}
+              totalPages={totalPages}
+              currentPage={page}
+              currentFilters={filters}
+              defaultView="grid"
+            />
           </div>
         </div>
       </LayoutContent>

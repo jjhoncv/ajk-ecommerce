@@ -9,4 +9,12 @@ export interface Promotion {
   startDate: string
   endDate: string
   type: string
+  imageUrl: string
+}
+
+export interface BannerPromotion {
+  title: string
+  subtitle: string
+  image: string
+  link: string
 }

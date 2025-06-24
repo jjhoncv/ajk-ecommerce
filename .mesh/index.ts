@@ -2548,6 +2548,8 @@ export type Categories = {
   description?: Maybe<Scalars['String']['output']>;
   parentId?: Maybe<Scalars['Int']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
+  showNav?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
 };
 
@@ -2575,6 +2577,8 @@ export type CategoriesWhereInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  showNav?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CategoriesOrderByInput = {
@@ -2583,6 +2587,8 @@ export type CategoriesOrderByInput = {
   description?: InputMaybe<OrderBy>;
   parentId?: InputMaybe<OrderBy>;
   imageUrl?: InputMaybe<OrderBy>;
+  showNav?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
 };
 
 export type ProductsWhereInput = {
@@ -2668,6 +2674,8 @@ export type Promotions = {
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
   type?: Maybe<Scalars['String']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
 };
 
@@ -2712,6 +2720,8 @@ export type PromotionsWhereInput = {
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PromotionsOrderByInput = {
@@ -2727,6 +2737,8 @@ export type PromotionsOrderByInput = {
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
 };
 
 export type VariantAttributeOptionsWhereInput = {
@@ -2833,6 +2845,7 @@ export type Banner = {
   displayOrder?: Maybe<Scalars['Int']['output']>;
   link?: Maybe<Scalars['String']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
+  buttonText?: Maybe<Scalars['String']['output']>;
 };
 
 export type BannerWhereInput = {
@@ -2845,6 +2858,7 @@ export type BannerWhereInput = {
   displayOrder?: InputMaybe<Scalars['String']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  buttonText?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type BannerOrderByInput = {
@@ -2857,6 +2871,7 @@ export type BannerOrderByInput = {
   displayOrder?: InputMaybe<OrderBy>;
   link?: InputMaybe<OrderBy>;
   imageUrl?: InputMaybe<OrderBy>;
+  buttonText?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3505,6 +3520,7 @@ export type BannerInsertInput = {
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  buttonText?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type BannerUpdateInput = {
@@ -3517,6 +3533,7 @@ export type BannerUpdateInput = {
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
   link?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  buttonText?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type BrandsInsertInput = {
@@ -3535,6 +3552,8 @@ export type CategoriesInsertInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['Int']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  showNav?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CategoriesUpdateInput = {
@@ -3543,6 +3562,8 @@ export type CategoriesUpdateInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   parentId?: InputMaybe<Scalars['Int']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
+  showNav?: InputMaybe<Scalars['Int']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CouponUsageInsertInput = {
@@ -4082,6 +4103,8 @@ export type PromotionsInsertInput = {
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type PromotionsUpdateInput = {
@@ -4097,6 +4120,8 @@ export type PromotionsUpdateInput = {
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type RatingImagesInsertInput = {
@@ -5454,6 +5479,8 @@ export type CategoriesResolvers<ContextType = MeshContext, ParentType extends Re
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showNav?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -5489,6 +5516,8 @@ export type PromotionsResolvers<ContextType = MeshContext, ParentType extends Re
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   promotionVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['PromotionVariants']>>>, ParentType, ContextType, Partial<PromotionspromotionVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -5519,6 +5548,7 @@ export type BannerResolvers<ContextType = MeshContext, ParentType extends Resolv
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  buttonText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
