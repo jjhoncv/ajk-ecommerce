@@ -2,7 +2,7 @@ import customerModel from '@/backend/customer'
 import orderModel from '@/backend/order'
 import orderItemsModel from '@/backend/order-item'
 import orderTrackingModel from '@/backend/order-tracking'
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 

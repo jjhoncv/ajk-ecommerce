@@ -8,7 +8,8 @@ export const authOptions: NextAuthOptions = {
       name: 'Credenciales',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Contraseña', type: 'password' }
+        password: { label: 'Contraseña', type: 'password' },
+        userType: { label: 'Tipo', type: 'text' } // ⭐ Campo adicional
       },
       async authorize(credentials) {
         if (credentials?.email == null || credentials?.password == null) {
@@ -23,7 +24,8 @@ export const authOptions: NextAuthOptions = {
             return {
               id: customer.id.toString(), // Asegurar que sea string
               email: customer.email,
-              name: customer.name
+              name: customer.name,
+              type: 'customer'
             }
           }
         } catch (error) {
@@ -44,15 +46,18 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.name = user.name
+        token.type = user.type
       }
       return token
     },
     async session({ session, token }) {
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (session.user) {
-        session.user.id = token.id as string
+        session.user.id = token.id
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         session.user.name = token.name!
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        session.user.type = token.type!
       }
       return session
     }

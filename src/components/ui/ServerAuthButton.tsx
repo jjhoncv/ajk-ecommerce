@@ -1,4 +1,4 @@
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type JSX } from 'react'
 import ClientAuthButton from './ClientAuthButton'

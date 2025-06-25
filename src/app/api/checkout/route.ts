@@ -14,7 +14,7 @@ import productVariantModel from '@/backend/product-variant'
 import shippingZoneMethodModel from '@/backend/shipping-zone-method'
 
 // Types
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import {
   type CheckoutResponse,
   type CouponValidation,

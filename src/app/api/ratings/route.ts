@@ -1,7 +1,7 @@
 import variantRatingModel from '@/backend/variant-rating'
-import { type NextRequest, NextResponse } from 'next/server'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {

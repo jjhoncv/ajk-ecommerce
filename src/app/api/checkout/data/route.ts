@@ -9,7 +9,7 @@ import paymentMethodModel from '@/backend/payment-method'
 import shippingZoneMethodModel from '@/backend/shipping-zone-method'
 
 // Types
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import {
   type CheckoutSummary,
   type CheckoutUser,

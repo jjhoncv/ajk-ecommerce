@@ -1,5 +1,5 @@
 // 📄 app/api/shipping/calculate-user/route.ts
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 

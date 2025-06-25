@@ -545,11 +545,11 @@ export interface Users {
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Int']['output']>;
   lastname: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   password: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
-  role_id: Scalars['Int']['output'];
+  role_id?: Maybe<Scalars['Int']['output']>;
   updated_at: Scalars['Timestamp']['output'];
-  username: Scalars['String']['output'];
 }
 
 export interface VariantAttributeOptions {

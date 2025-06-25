@@ -3127,10 +3127,10 @@ export type SectionsOrderByInput = {
 
 export type Users = {
   id: Scalars['Int']['output'];
-  username: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   email: Scalars['String']['output'];
   password: Scalars['String']['output'];
-  roleId: Scalars['Int']['output'];
+  roleId?: Maybe<Scalars['Int']['output']>;
   isActive?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
@@ -3149,7 +3149,7 @@ export type UsersrolesArgs = {
 
 export type UsersWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   roleId?: InputMaybe<Scalars['String']['input']>;
@@ -3162,7 +3162,7 @@ export type UsersWhereInput = {
 
 export type UsersOrderByInput = {
   id?: InputMaybe<OrderBy>;
-  username?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   email?: InputMaybe<OrderBy>;
   password?: InputMaybe<OrderBy>;
   roleId?: InputMaybe<OrderBy>;
@@ -4302,10 +4302,10 @@ export type ShippingZonesUpdateInput = {
 
 export type UsersInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username: Scalars['String']['input'];
+  name: Scalars['String']['input'];
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  roleId: Scalars['Int']['input'];
+  roleId?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4315,7 +4315,7 @@ export type UsersInsertInput = {
 
 export type UsersUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   roleId?: InputMaybe<Scalars['Int']['input']>;
@@ -5626,10 +5626,10 @@ export type SectionsResolvers<ContextType = MeshContext, ParentType extends Reso
 
 export type UsersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  roleId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  roleId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;

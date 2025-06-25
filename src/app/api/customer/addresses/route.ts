@@ -1,6 +1,6 @@
 // app/api/customer/addresses/route.ts
 import customerAddressModel from '@/backend/customer-address'
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'

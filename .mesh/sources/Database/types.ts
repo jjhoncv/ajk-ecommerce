@@ -2409,10 +2409,10 @@ export type sections_OrderByInput = {
 
 export type users = {
   id: Scalars['Int']['output'];
-  username: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   email: Scalars['String']['output'];
   password: Scalars['String']['output'];
-  role_id: Scalars['Int']['output'];
+  role_id?: Maybe<Scalars['Int']['output']>;
   is_active?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
@@ -2431,7 +2431,7 @@ export type usersrolesArgs = {
 
 export type users_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   role_id?: InputMaybe<Scalars['String']['input']>;
@@ -2444,7 +2444,7 @@ export type users_WhereInput = {
 
 export type users_OrderByInput = {
   id?: InputMaybe<OrderBy>;
-  username?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   email?: InputMaybe<OrderBy>;
   password?: InputMaybe<OrderBy>;
   role_id?: InputMaybe<OrderBy>;
@@ -4290,10 +4290,10 @@ export type shipping_zones_UpdateInput = {
 
 export type users_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username: Scalars['String']['input'];
+  name: Scalars['String']['input'];
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  role_id: Scalars['Int']['input'];
+  role_id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4303,7 +4303,7 @@ export type users_InsertInput = {
 
 export type users_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
-  username?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   role_id?: InputMaybe<Scalars['Int']['input']>;

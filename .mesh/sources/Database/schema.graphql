@@ -1499,10 +1499,10 @@ input sections_OrderByInput {
 
 type users {
   id: Int!
-  username: String!
+  name: String!
   email: String!
   password: String!
-  role_id: Int!
+  role_id: Int
   is_active: Int
   created_at: Timestamp!
   updated_at: Timestamp!
@@ -1513,7 +1513,7 @@ type users {
 
 input users_WhereInput {
   id: String
-  username: String
+  name: String
   email: String
   password: String
   role_id: String
@@ -1526,7 +1526,7 @@ input users_WhereInput {
 
 input users_OrderByInput {
   id: OrderBy
-  username: OrderBy
+  name: OrderBy
   email: OrderBy
   password: OrderBy
   role_id: OrderBy
@@ -2732,10 +2732,10 @@ input shipping_zones_UpdateInput {
 
 input users_InsertInput {
   id: Int
-  username: String!
+  name: String!
   email: String!
   password: String!
-  role_id: Int!
+  role_id: Int
   is_active: Int
   created_at: Timestamp
   updated_at: Timestamp
@@ -2745,7 +2745,7 @@ input users_InsertInput {
 
 input users_UpdateInput {
   id: Int
-  username: String
+  name: String
   email: String
   password: String
   role_id: Int

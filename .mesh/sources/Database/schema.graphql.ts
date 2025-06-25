@@ -30300,7 +30300,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "username"
+            "value": "name"
           },
           "arguments": [],
           "type": {
@@ -30361,13 +30361,10 @@ const schemaAST = {
           },
           "arguments": [],
           "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "Int"
-              }
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
             }
           },
           "directives": []
@@ -30659,7 +30656,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "username"
+            "value": "name"
           },
           "type": {
             "kind": "NamedType",
@@ -30819,7 +30816,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "username"
+            "value": "name"
           },
           "type": {
             "kind": "NamedType",
@@ -52947,7 +52944,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "username"
+            "value": "name"
           },
           "type": {
             "kind": "NonNullType",
@@ -53004,13 +53001,10 @@ const schemaAST = {
             "value": "role_id"
           },
           "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "Int"
-              }
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
             }
           },
           "directives": []
@@ -53122,7 +53116,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "username"
+            "value": "name"
           },
           "type": {
             "kind": "NamedType",

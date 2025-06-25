@@ -69,6 +69,10 @@ const shouldOpenMinicart = (currentPath: string): boolean => {
 export function useCart() {
   const router = useRouter()
   const pathname = usePathname()
+
+  // 🚫 VALIDACIÓN TEMPRANA: Si es admin, no hacer nada
+  const isAdminRoute = pathname?.startsWith('/admin')
+
   const [items, setItems] = useState<CartItem[]>([])
   const [totalItems, setTotalItems] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -76,7 +80,7 @@ export function useCart() {
   const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   // FLAGS PARA CONTROLAR EL FLUJO
-  const [isInitialized, setIsInitialized] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(isAdminRoute) // Si es admin, marcar como inicializado inmediatamente
   const hasLoadedRef = useRef(false)
   const isMountedRef = useRef(true)
 
@@ -96,6 +100,8 @@ export function useCart() {
 
   // 🆕 FUNCIÓN PARA SINCRONIZAR CON LOCALSTORAGE
   const syncWithLocalStorage = useCallback(() => {
+    if (isAdminRoute) return // 🚫 No ejecutar en admin
+
     try {
       const savedCart = localStorage.getItem('cart')
       if (savedCart) {
@@ -106,10 +112,14 @@ export function useCart() {
     } catch (error) {
       console.error('❌ Error syncing with localStorage:', error)
     }
-  }, [])
+  }, [isAdminRoute])
 
-  // 🆕 LISTENER PARA EVENTOS DE ACTUALIZACIÓN DEL CARRITO
+  // 🆕 LISTENER PARA EVENTOS DE ACTUALIZACIÓN DEL CARRITO (SOLO si NO es admin)
   useEffect(() => {
+    if (isAdminRoute) {
+      return // 🚫 No ejecutar en admin
+    }
+
     const handleCartUpdate = () => {
       console.log('📡 Received cart update event')
       syncWithLocalStorage()
@@ -130,7 +140,7 @@ export function useCart() {
       window.removeEventListener('cartUpdated', handleCartUpdate)
       window.removeEventListener('storage', handleCartUpdate)
     }
-  }, [syncWithLocalStorage])
+  }, [syncWithLocalStorage, isAdminRoute])
 
   // 👈 CERRAR MINICART AL CAMBIAR A RUTA BLOQUEADA
   useEffect(() => {
@@ -140,10 +150,15 @@ export function useCart() {
       console.log('🔒 Closing minicart due to route restriction')
       setIsCartOpen(false)
     }
-  }, [pathname])
+  }, [pathname, isAdminRoute])
 
-  // EFECTO 1: CARGAR desde localStorage
+  // EFECTO 1: CARGAR desde localStorage (SOLO si NO es admin)
   useEffect(() => {
+    if (isAdminRoute) {
+      console.log('🚫 Admin route detected, skipping cart initialization')
+      return
+    }
+
     console.log('🔄 Initializing cart from localStorage...')
 
     if (hasLoadedRef.current) {
@@ -182,10 +197,14 @@ export function useCart() {
     return () => {
       isMountedRef.current = false
     }
-  }, [])
+  }, [isAdminRoute])
 
-  // EFECTO 2: GUARDAR en localStorage
+  // EFECTO 2: GUARDAR en localStorage (SOLO si NO es admin)
   useEffect(() => {
+    if (isAdminRoute) {
+      return // 🚫 No ejecutar en admin
+    }
+
     if (!isInitialized) {
       console.log('⏭️ Skipping save - not initialized yet')
       return
@@ -214,7 +233,7 @@ export function useCart() {
     } catch (error) {
       console.error('❌ Error saving to localStorage:', error)
     }
-  }, [items, isInitialized])
+  }, [items, isInitialized, isAdminRoute])
 
   // EFECTO 3: Toast timer
   useEffect(() => {
@@ -222,7 +241,9 @@ export function useCart() {
       const timer = setTimeout(() => {
         setToastMessage(null)
       }, 3000)
-      return () => { clearTimeout(timer) }
+      return () => {
+        clearTimeout(timer)
+      }
     }
   }, [toastMessage])
 
@@ -230,6 +251,11 @@ export function useCart() {
     item: Omit<CartItem, 'quantity'>,
     initialQuantity: number = 1
   ) => {
+    if (isAdminRoute) {
+      console.log('🚫 addItem disabled in admin route')
+      return
+    }
+
     console.log('➕ Adding item:', item.name, 'Qty:', initialQuantity)
 
     // Agregar el item al estado SIEMPRE
@@ -263,6 +289,11 @@ export function useCart() {
   }
 
   const removeItem = (id: number) => {
+    if (isAdminRoute) {
+      console.log('🚫 removeItem disabled in admin route')
+      return
+    }
+
     console.log('🗑️ Removing item ID:', id)
     const itemToRemove = items.find((item) => item.id === id)
 
@@ -278,6 +309,11 @@ export function useCart() {
   }
 
   const updateQuantity = (id: number, quantity: number) => {
+    if (isAdminRoute) {
+      console.log('🚫 updateQuantity disabled in admin route')
+      return
+    }
+
     console.log('🔄 Updating quantity - ID:', id, 'New qty:', quantity)
 
     if (quantity <= 0) {
@@ -351,6 +387,11 @@ export function useCart() {
   }
 
   const incrementQuantity = (id: number) => {
+    if (isAdminRoute) {
+      console.log('🚫 incrementQuantity disabled in admin route')
+      return
+    }
+
     console.log('⬆️ Incrementing quantity for ID:', id)
     setItems((prevItems) =>
       prevItems.map((item) =>
@@ -360,6 +401,11 @@ export function useCart() {
   }
 
   const decrementQuantity = (id: number) => {
+    if (isAdminRoute) {
+      console.log('🚫 decrementQuantity disabled in admin route')
+      return
+    }
+
     console.log('⬇️ Decrementing quantity for ID:', id)
     setItems((prevItems) => {
       return prevItems
@@ -379,6 +425,11 @@ export function useCart() {
   }
 
   const clearCart = () => {
+    if (isAdminRoute) {
+      console.log('🚫 clearCart disabled in admin route')
+      return
+    }
+
     console.log('🧹 Clearing entire cart')
     setItems([])
     setToastMessage('Carrito vaciado')
@@ -386,6 +437,11 @@ export function useCart() {
 
   // 👈 FUNCIÓN PRINCIPAL: ABRIR CARRITO CON VALIDACIÓN DE RUTA
   const openCart = () => {
+    if (isAdminRoute) {
+      console.log('🚫 openCart disabled in admin route')
+      return
+    }
+
     const currentPath = pathname
     console.log('👆 Attempting to open cart on route:', currentPath)
 
@@ -400,11 +456,21 @@ export function useCart() {
   }
 
   const closeCart = () => {
+    if (isAdminRoute) {
+      console.log('🚫 closeCart disabled in admin route')
+      return
+    }
+
     console.log('👇 Closing cart')
     setIsCartOpen(false)
   }
 
   const toggleCart = () => {
+    if (isAdminRoute) {
+      console.log('🚫 toggleCart disabled in admin route')
+      return
+    }
+
     if (isCartOpen) {
       closeCart()
     } else {
@@ -414,11 +480,17 @@ export function useCart() {
 
   // 👈 FUNCIÓN HELPER PARA COMPONENTES
   const canShowMinicart = (): boolean => {
+    if (isAdminRoute) return false // 🚫 Nunca mostrar en admin
     return isMinicartAllowedOnRoute(pathname)
   }
 
   // 👈 FUNCIÓN PARA IR AL CARRITO COMPLETO
   const goToCartPage = () => {
+    if (isAdminRoute) {
+      console.log('🚫 goToCartPage disabled in admin route')
+      return
+    }
+
     console.log('🛒 Navigating to full cart page')
     setIsCartOpen(false)
     router.push('/cart')
@@ -427,18 +499,32 @@ export function useCart() {
   // 🆕 FUNCIONES DE DELETE CONFIRMATION
   const openDeleteConfirmation = useCallback(
     (id: number, message?: string, onConfirm?: () => void) => {
+      if (isAdminRoute) {
+        console.log('🚫 openDeleteConfirmation disabled in admin route')
+        return
+      }
+
       console.log('🗑️ Opening delete confirmation:', { id })
       setDeleteConfirmation({
         isOpen: true,
         message,
         productId: id,
-        onConfirm: onConfirm || (() => { removeItem(id) })
+        onConfirm:
+          onConfirm ||
+          (() => {
+            removeItem(id)
+          })
       })
     },
-    []
+    [isAdminRoute]
   )
 
   const closeDeleteConfirmation = useCallback(() => {
+    if (isAdminRoute) {
+      console.log('🚫 closeDeleteConfirmation disabled in admin route')
+      return
+    }
+
     console.log('❌ Closing delete confirmation')
     setDeleteConfirmation({
       isOpen: false,
@@ -446,18 +532,25 @@ export function useCart() {
       message: '',
       onConfirm: null
     })
-  }, [])
+  }, [isAdminRoute])
 
   const confirmDelete = useCallback(() => {
+    if (isAdminRoute) {
+      console.log('🚫 confirmDelete disabled in admin route')
+      return
+    }
+
     console.log('✅ Confirming delete')
     if (deleteConfirmation.onConfirm) {
       deleteConfirmation.onConfirm()
     }
     closeDeleteConfirmation()
-  }, [deleteConfirmation.onConfirm, closeDeleteConfirmation])
+  }, [deleteConfirmation.onConfirm, closeDeleteConfirmation, isAdminRoute])
 
   // DEBUG INFO
   useEffect(() => {
+    if (isAdminRoute) return // 🚫 No mostrar debug en admin
+
     console.log('📊 Cart State Summary:', {
       itemsCount: items.length,
       totalItems,
@@ -467,7 +560,7 @@ export function useCart() {
       currentRoute: pathname,
       canShowMinicart: canShowMinicart()
     })
-  }, [items, totalItems, totalPrice, isInitialized, pathname])
+  }, [items, totalItems, totalPrice, isInitialized, pathname, isAdminRoute])
 
   return {
     // Funcionalidad principal del carrito

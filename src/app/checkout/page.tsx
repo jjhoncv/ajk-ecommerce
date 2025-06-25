@@ -11,7 +11,7 @@ import paymentMethodModel from '@/backend/payment-method'
 import CheckoutClient from '@/components/checkout/CheckoutClient'
 
 // Types
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { type CheckoutUser } from '@/types/checkout'
 
 export default async function CheckoutPage() {

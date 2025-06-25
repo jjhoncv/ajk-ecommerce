@@ -1,6 +1,6 @@
 // app/api/customer/orders/route.ts
 import orderModel from '@/backend/order'
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 

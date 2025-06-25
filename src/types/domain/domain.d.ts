@@ -600,12 +600,12 @@ export interface Users {
   id: Scalars['Int']['output'];
   isActive?: Maybe<Scalars['Int']['output']>;
   lastname: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   password: Scalars['String']['output'];
   photo?: Maybe<Scalars['String']['output']>;
   role?: Maybe<Roles>;
-  roleId: Scalars['Int']['output'];
+  roleId?: Maybe<Scalars['Int']['output']>;
 
-  username: Scalars['String']['output'];
 }
 
 export interface VariantAttributeOptions {

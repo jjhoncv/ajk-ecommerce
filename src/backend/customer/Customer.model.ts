@@ -29,7 +29,7 @@ export class CustomerModel {
     customerData: Omit<Customer, 'id' | 'dni' | 'phone' | 'photo'>
   ): Promise<Customer | undefined> {
     const created = await oCustomerRep.createCustomer(customerData)
-    if (!created) return undefined
+    if (created == null) return undefined
     return CustomerMapper(created)
   }
 
