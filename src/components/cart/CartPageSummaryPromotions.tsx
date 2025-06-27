@@ -3,8 +3,9 @@ import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.help
 import { formatPrice } from '@/helpers/utils'
 import useSummaryCart from '@/hooks/useSummaryCart'
 import { useCartContext } from '@/providers/cart'
+import { type JSX } from 'react'
 
-export const CartPageSummaryPromotions = () => {
+export const CartPageSummaryPromotions = (): JSX.Element => {
   const { items } = useCartContext()
 
   // 🆕 Hook dedicado para el manejo de la selección del resumen
@@ -26,10 +27,15 @@ export const CartPageSummaryPromotions = () => {
               .filter((item) => getPriceIfHasPromotion(item).hasPromotion)
               .map((item) => {
                 const { currentPromotion } = getPriceIfHasPromotion(item)
-                const itemDiscount =
-                  (Number(item.price) -
-                    Number(currentPromotion?.promotionPrice || item.price)) *
-                  item.quantity
+                let itemDiscount = 0
+                if (currentPromotion != null) {
+                  itemDiscount =
+                    (Number(item.price) -
+                      Number(currentPromotion.promotionPrice ?? item.price)) *
+                    item.quantity
+                } else {
+                  itemDiscount = 0
+                }
 
                 return (
                   <div key={item.id} className="flex justify-between text-xs">

@@ -1,5 +1,5 @@
 import { getPriceIfHasPromotion } from '@/components/product/ProductVariant.helpers'
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 
 // Calcular totales considerando promociones
 export const calculateTotalsWithPromotions = (items: CartItem[]) => {

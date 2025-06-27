@@ -35,11 +35,12 @@ export const login = async ({
     // No devolver la contraseña
     const { password, ...UserWithoutPassword } = validUser
 
-    const sections = await sectionModel.getSectionsByRole(validUser.id)
-    validUser.role = {
+    const sections = await sectionModel.getSectionsByRole(validUser.roleId)
+
+    UserWithoutPassword.role = {
       id: Number(validUser.roleId),
       name: (await roleModel.getRole(Number(validUser.roleId)))?.name ?? '',
-      rolesSections: sections
+      rolesSections: sections ?? []
     }
 
     return UserWithoutPassword as User

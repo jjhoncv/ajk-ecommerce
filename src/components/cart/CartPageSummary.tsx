@@ -1,7 +1,7 @@
 import StockValidationModal from '@/components/checkout/StockValidationModal'
 import { useCheckoutNavigation } from '@/components/checkout/useStockValidation'
 import { formatPrice } from '@/helpers/utils'
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import { ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import { type FC, useState } from 'react'
@@ -31,10 +31,10 @@ interface CartPageSummaryProps {
     hasSelectedItems: () => boolean
   }
   onCartUpdate?: (
-    adjustedItems: Array<{ id: number, quantity: number }>
+    adjustedItems: Array<{ id: number; quantity: number }>
   ) => void // Callback para actualizar carrito
   onStockInfoReceived?: (
-    stockInfo: Array<{ id: number, availableStock: number }>
+    stockInfo: Array<{ id: number; availableStock: number }>
   ) => void // 🆕 Callback para recibir stock info
 }
 
@@ -86,7 +86,7 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
       // 🆕 Callback para recibir información de stock (SOLO INFORMATIVO)
       const handleStockInfoReceived = (
-        stockInfo: Array<{ id: number, availableStock: number }>
+        stockInfo: Array<{ id: number; availableStock: number }>
       ) => {
         console.log('📦 Stock info received in CartPageSummary:', stockInfo)
 

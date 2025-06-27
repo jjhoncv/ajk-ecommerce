@@ -1,2 +1,2 @@
-import type useCart from '@/hooks/useCart'
+import type useCart from '@/hooks/useCart/useCart'
 export type CartContextProps = ReturnType<typeof useCart>

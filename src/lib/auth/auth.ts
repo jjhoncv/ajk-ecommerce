@@ -1,5 +1,6 @@
+import { isProd } from '@/lib/utils'
 import CustomerService from '@/services/customer'
-import NextAuth, { type NextAuthOptions } from 'next-auth'
+import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions: NextAuthOptions = {
@@ -8,8 +9,7 @@ export const authOptions: NextAuthOptions = {
       name: 'Credenciales',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Contraseña', type: 'password' },
-        userType: { label: 'Tipo', type: 'text' } // ⭐ Campo adicional
+        password: { label: 'Contraseña', type: 'password' }
       },
       async authorize(credentials) {
         if (credentials?.email == null || credentials?.password == null) {
@@ -17,28 +17,26 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          // Usar el servicio de cliente para autenticar
           const customer = await CustomerService.login(credentials)
 
           if (customer != null) {
             return {
-              id: customer.id.toString(), // Asegurar que sea string
+              id: customer.id.toString(),
               email: customer.email,
               name: customer.name,
               type: 'customer'
             }
           }
         } catch (error) {
-          console.error('Error en authorize:', error)
+          console.error('❌ Customer login error:', error)
         }
 
-        // Credenciales inválidas
         return null
       }
     })
   ],
   pages: {
-    signIn: '/' // No redirigimos a una página específica, usamos un modal
+    signIn: '/'
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -52,19 +50,50 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      if (session.user) {
+      if (session?.user) {
         session.user.id = token.id
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        session.user.name = token.name!
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        session.user.type = token.type!
+        session.user.name = token.name
+        session.user.type = token.type
       }
       return session
     }
   },
   session: {
     strategy: 'jwt' as const
+  },
+  cookies: {
+    sessionToken: {
+      name: isProd
+        ? '__Secure-next-auth.session-token.customer'
+        : 'next-auth.session-token.customer',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    },
+    callbackUrl: {
+      name: isProd
+        ? '__Secure-next-auth.callback-url.customer'
+        : 'next-auth.callback-url.customer',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    },
+    csrfToken: {
+      name: isProd
+        ? '__Host-next-auth.csrf-token.customer'
+        : 'next-auth.csrf-token.customer',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    }
   }
 }
-
-export default NextAuth(authOptions)

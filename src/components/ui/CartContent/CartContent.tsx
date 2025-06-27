@@ -2,7 +2,7 @@
 import { CartContentEmpty } from '@/components/ui/CartContent/CartContentEmpty'
 import { CartContentItem } from '@/components/ui/CartContent/CartContentItem'
 import { CartContentPurchase } from '@/components/ui/CartContent/CartContentPurchase'
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import React, { type JSX } from 'react'
 
 interface CartContentProps {

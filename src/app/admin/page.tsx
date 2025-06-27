@@ -8,8 +8,13 @@ export default async function AdminPage() {
   // ✅ Primer render: Server-side, sin shimmer
   const session = await getServerSession(adminAuthOptions)
 
-  // Si ya está logueado como admin, mostrar dashboard directamente
-  if (session?.user?.type === 'admin') {
+  // crear array de tipos de usuarios
+  const adminTypes = ['admin', 'superadmin']
+
+  console.log('session?.user', session?.user)
+
+  // validar si el tipo de usuario esta dentro del array de tipos de usuarios
+  if (session?.user && adminTypes.includes(session.user.type)) {
     return <AdminDashboard user={session.user} />
   }
 

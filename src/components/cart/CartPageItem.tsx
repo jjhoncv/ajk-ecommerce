@@ -1,7 +1,7 @@
 import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
 import { PromotionBadge } from '@/components/ui/ProductCard/PromotionBadge'
 import { formatPrice } from '@/helpers/utils'
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import { useCartContext } from '@/providers/cart'
 import { AlertTriangle, Package, Trash2 } from 'lucide-react'
 import Image from 'next/image'

@@ -1,7 +1,7 @@
 // hooks/useSummaryCart.ts - Hook dedicado para manejo de selección del resumen
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { type CartItem } from './useCart'
+import { type CartItem } from './useCart/useCart'
 
 export function useSummaryCart(items: CartItem[]) {
   const [selectedItemIds, setSelectedItemIds] = useState<number[]>([])
@@ -51,7 +51,9 @@ export function useSummaryCart(items: CartItem[]) {
         lastActionWasManualRef.current = false
       }, 100) // 100ms es suficiente para evitar conflicts
 
-      return () => { clearTimeout(timer) }
+      return () => {
+        clearTimeout(timer)
+      }
     }
   }, [items])
 

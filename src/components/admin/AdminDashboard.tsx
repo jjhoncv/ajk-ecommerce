@@ -2,21 +2,27 @@
 import Link from 'next/link'
 import AdminLogoutButton from './AdminLogoutButton'
 
+interface Sections {
+  id: number
+  name: string
+  url: string
+  image?: string
+  displayOrder: number
+}
+
 interface AdminDashboardProps {
-  user: {
+  name: string
+  email: string
+  role?: {
+    id: number
     name: string
-    email: string
-    role?: string
-    sections?: Array<{
-      id: number
-      name: string
-      url: string
-      image?: string
-    }>
+    rolesSections: Sections[]
   }
+  sections?: Sections[]
 }
 
 export default function AdminDashboard({ user }: AdminDashboardProps) {
+  console.log(user)
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

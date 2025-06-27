@@ -1,23 +1,36 @@
-// components/admin/AdminLogoutButton.tsx
+// components/admin/AdminLogout.tsx
 'use client'
 
 import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 
-export default function AdminLogoutButton() {
-  const router = useRouter()
-
+export default function AdminLogout() {
   const handleLogout = async () => {
-    await signOut({ redirect: false })
-    router.refresh() // Refrescar para que el Server Component detecte que no hay sesión
+    // ⭐ Usar callbackUrl para redirigir a admin después del logout
+    await signOut({
+      callbackUrl: '/admin',
+      redirect: true
+    })
   }
 
   return (
     <button
       onClick={handleLogout}
-      className="text-sm text-gray-500 transition-colors hover:text-gray-700"
+      className="inline-flex items-center rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
     >
-      Cerrar Sesión
+      <svg
+        className="-ml-1 mr-2 h-4 w-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+        />
+      </svg>
+      Cerrar Sesión Admin
     </button>
   )
 }

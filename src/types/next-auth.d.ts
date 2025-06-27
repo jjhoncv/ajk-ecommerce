@@ -1,38 +1,34 @@
-import { type DefaultSession, type DefaultUser } from 'next-auth'
+import 'next-auth'
+import { type DefaultSession } from 'next-auth'
 import 'next-auth/jwt'
 
-// Tipos específicos
-interface AdminSection {
+export interface AdminSection {
   id: number
   name: string
   url: string
   image?: string
+  displayOrder?: number
 }
-
-interface AdminUser {
-  id: string
-  type: 'admin'
-  role: string
-  roleId: number
-  sections: AdminSection[]
-}
-
-interface CustomerUser {
-  id: string
-  type: 'customer'
-}
-
-type AppUser = AdminUser | CustomerUser
 
 declare module 'next-auth' {
   interface Session {
-    user: AppUser & DefaultSession['user']
+    user: {
+      id: string
+      name: string
+      email: string
+      type: string
+      roleName?: string
+      roleId?: number
+      sections?: AdminSection[]
+    } & Pick<DefaultSession['user'], 'image'>
   }
 
-  interface User extends DefaultUser {
+  interface User {
     id: string
-    type: 'admin' | 'customer'
-    role?: string
+    name: string
+    email: string
+    type: string
+    roleName?: string
     roleId?: number
     sections?: AdminSection[]
   }
@@ -41,8 +37,9 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string
-    type: 'admin' | 'customer'
-    role?: string
+    name: string
+    type: string
+    roleName?: string
     roleId?: number
     sections?: AdminSection[]
   }

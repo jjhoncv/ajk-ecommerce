@@ -1,9 +1,13 @@
 'use client'
-import { useCart } from '@/hooks/useCart'
+import { useCart } from '@/hooks/useCart/useCart'
+import { type JSX } from 'react'
 import { CartContext } from './Cart.context'
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
-  // Simplemente usar el hook y pasar todo el valor
+export function CartProvider({
+  children
+}: {
+  children: React.ReactNode
+}): JSX.Element {
   const cartValue = useCart()
 
   return (

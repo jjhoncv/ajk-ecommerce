@@ -17,7 +17,7 @@ import {
 import { type PaymentMethods } from '@/types/domain'
 
 // Components
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import CartSummary from './CartSummary'
 import PaymentStep from './PaymentStep'
 import ProcessingStep from './ProcessingStep'

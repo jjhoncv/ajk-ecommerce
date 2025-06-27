@@ -1,15 +1,16 @@
-// lib/auth/admin-auth.ts
+import { isProd } from '@/lib/utils'
 import UserService from '@/services/user'
+import { type AdminSection } from '@/types/next-auth'
 import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const adminAuthOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'Admin Login',
+      name: 'admin-credentials',
       credentials: {
-        email: { type: 'email' },
-        password: { type: 'password' }
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
         if (credentials?.email == null || credentials?.password == null) {
@@ -17,59 +18,95 @@ export const adminAuthOptions: NextAuthOptions = {
         }
 
         try {
-          const user = await UserService.login(credentials)
+          const admin = await UserService.login({
+            email: credentials.email,
+            password: credentials.password
+          })
 
-          if (user != null) {
+          if (admin != null) {
             return {
-              id: user.id.toString(),
-              email: user.email,
-              name: user.name, // ← Cambié a 'name' para consistencia con NextAuth
-              type: 'admin',
-              // Agregar campos que comentaste si los tienes en user
-              role: user.role?.name ?? undefined, // Asumiendo que Roles tiene una propiedad 'name'
-              roleId: user.roleId ?? undefined,
-              sections:
-                user.role?.rolesSections?.filter(
-                  (section) => section != null
-                ) ?? undefined
+              id: admin.id.toString(),
+              email: admin.email,
+              name: admin.name,
+              type: admin.role?.name ?? 'admin',
+              roleName: admin.role?.name ?? 'admin',
+              roleId: admin.roleId ?? 0,
+              sections: admin?.role?.rolesSections as AdminSection[]
             }
           }
         } catch (error) {
-          console.error('Error en admin authorize:', error)
+          console.error('❌ Admin login error:', error)
         }
 
         return null
       }
     })
   ],
-  pages: {
-    signIn: '/admin'
+  session: {
+    strategy: 'jwt' as const
   },
   callbacks: {
     async jwt({ token, user }) {
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (user) {
-        token.id = user.id // ← Agregué esto que faltaba
-        token.name = user.name // ← Agregué esto que faltaba
+        token.id = user.id
+        token.name = user.name
         token.type = user.type
-        token.role = user.role
+        token.roleName = user.roleName
         token.roleId = user.roleId
         token.sections = user.sections
       }
       return token
     },
     async session({ session, token }) {
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (session.user) {
         session.user.id = token.id
-        session.user.name = token.name!
+        session.user.name = token.name
         session.user.type = token.type
-        session.user.role = token.role
+        session.user.roleName = token.roleName
         session.user.roleId = token.roleId
-        session.user.sections = token.sections as any[] | undefined
+        session.user.sections = token.sections
       }
       return session
     }
   },
-  session: {
-    strategy: 'jwt'
+  pages: {
+    signIn: '/admin'
+  },
+  cookies: {
+    sessionToken: {
+      name: isProd
+        ? '__Secure-next-auth.session-token.admin'
+        : 'next-auth.session-token.admin',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    },
+    callbackUrl: {
+      name: isProd
+        ? '__Secure-next-auth.callback-url.admin'
+        : 'next-auth.callback-url.admin',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    },
+    csrfToken: {
+      name: isProd
+        ? '__Host-next-auth.csrf-token.admin'
+        : 'next-auth.csrf-token.admin',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd
+      }
+    }
   }
 }

@@ -3,7 +3,7 @@ import { CartContentThinEmpty } from './CartContentThinEmpty'
 import { CartContentThinItem } from './CartContentThinItem'
 import { CartContentThinPurchase } from './CartContentThinPurchase'
 
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import React, { type JSX } from 'react'
 
 interface CartContentThinProps {

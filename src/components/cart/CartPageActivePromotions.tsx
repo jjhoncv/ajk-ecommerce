@@ -1,4 +1,4 @@
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import { Clock, Tag } from 'lucide-react'
 import { type FC } from 'react'
 

@@ -1,4 +1,4 @@
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import {
   type OrderCalculation,
   type PaymentOption,

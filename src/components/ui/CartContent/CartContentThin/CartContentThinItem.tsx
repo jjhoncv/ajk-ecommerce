@@ -1,6 +1,6 @@
 import { PlusMinusButton } from '@/components/ui/PlusMinusButton'
 import { formatPrice } from '@/helpers/utils'
-import { type CartItem } from '@/hooks/useCart'
+import { type CartItem } from '@/hooks/useCart/useCart'
 import Image from 'next/image'
 import { type FC } from 'react'
 

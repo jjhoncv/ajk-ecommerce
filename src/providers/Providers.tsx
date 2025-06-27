@@ -18,13 +18,12 @@ export function Providers({ children }: ProvidersProps): JSX.Element {
 
   return (
     <ThemeProvider>
-      {/* 🔧 Usar el mismo basePath para ambos */}
-      <SessionProvider basePath="/api/auth">
-        {isAdminRoute ? (
-          // 🚫 Admin: Solo lo esencial
+      {isAdminRoute ? (
+        <SessionProvider basePath="/api/auth/admin">
           <main>{children}</main>
-        ) : (
-          // ✅ Commerce: Stack completo
+        </SessionProvider>
+      ) : (
+        <SessionProvider basePath="/api/auth">
           <AuthModalProvider>
             <CartProvider>
               <main>
@@ -33,8 +32,8 @@ export function Providers({ children }: ProvidersProps): JSX.Element {
               </main>
             </CartProvider>
           </AuthModalProvider>
-        )}
-      </SessionProvider>
+        </SessionProvider>
+      )}
     </ThemeProvider>
   )
 }

@@ -15,21 +15,33 @@ export default function AdminLogin() {
     setError('')
 
     try {
+      console.log('🔍 Attempting login for:', credentials.email)
+
       const result = await signIn('credentials', {
         email: credentials.email,
         password: credentials.password,
-        redirect: false // ✅ No redirect, el wrapper detectará el cambio
+        redirect: false
       })
 
+      console.log('🔄 Login result:', result)
+
       if (result?.error) {
-        setError('Credenciales inválidas')
-        setIsLoading(false)
+        console.log('❌ Login failed:', result.error)
+        setError('Credenciales de administrador inválidas')
+        setIsLoading(false) // ⭐ RESETEAR LOADING EN ERROR
+      } else if (result?.ok) {
+        console.log('✅ Login successful')
+        // ⭐ NO resetear loading aquí - AdminClientWrapper se encargará
+        // El useEffect en AdminClientWrapper detectará el cambio de sesión
+      } else {
+        console.log('❓ Unexpected result:', result)
+        setError('Error inesperado al iniciar sesión')
+        setIsLoading(false) // ⭐ RESETEAR LOADING EN ERROR INESPERADO
       }
-      // ✅ Si es exitoso, useSession en AdminClientWrapper se actualizará
-      // y automáticamente cambiará a mostrar el dashboard
     } catch (error) {
+      console.error('💥 Login exception:', error)
       setError('Error al iniciar sesión')
-      setIsLoading(false)
+      setIsLoading(false) // ⭐ RESETEAR LOADING EN EXCEPCIÓN
     }
   }
 
@@ -40,28 +52,32 @@ export default function AdminLogin() {
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-gray-900">TechStore</h1>
             <p className="mt-2 text-gray-600">Panel de Administración</p>
+            <div className="mt-2 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+              👑 Admin Portal
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Email
+                Email de Administrador
               </label>
               <input
-                type="email"
+                type="text"
                 required
                 className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={credentials.email}
                 onChange={(e) => {
                   setCredentials((prev) => ({ ...prev, email: e.target.value }))
                 }}
-                placeholder="admin@techstore.com"
+                placeholder="admin"
+                disabled={isLoading} // ⭐ DESHABILITAR DURANTE LOADING
               />
             </div>
 
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Contraseña
+                Contraseña de Administrador
               </label>
               <input
                 type="password"
@@ -74,13 +90,18 @@ export default function AdminLogin() {
                     password: e.target.value
                   }))
                 }}
-                placeholder="••••••••"
+                placeholder="12345678"
+                disabled={isLoading} // ⭐ DESHABILITAR DURANTE LOADING
               />
             </div>
 
             {error && (
               <div className="rounded-md border border-red-200 bg-red-50 p-3">
-                <div className="text-sm text-red-800">{error}</div>
+                <div className="flex">
+                  <div className="text-sm text-red-800">
+                    <strong>Error:</strong> {error}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -110,17 +131,17 @@ export default function AdminLogin() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Iniciando sesión...
+                  Verificando credenciales...
                 </div>
               ) : (
-                'Iniciar Sesión'
+                'Acceder como Administrador'
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
-              Acceso restringido solo para administradores
+              Sistema separado de autenticación administrativa
             </p>
           </div>
         </div>
