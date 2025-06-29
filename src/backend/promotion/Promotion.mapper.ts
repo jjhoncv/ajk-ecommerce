@@ -7,7 +7,7 @@ export const PromotionMapper = (data: PromotionRaw): Promotion => {
     name: data.name,
     description: data.description,
     discountType: data.discount_type,
-    discountValue: data.discount_value,
+    discountValue: Number(data.discount_value),
     endDate: data.end_date,
     startDate: data.start_date,
     isActive: data.is_active,

@@ -41,7 +41,7 @@ export const FilterAttributeMapper = (
     options: data.options.map((option) => ({
       id: option.id,
       value: option.value,
-      additionalCost: option.additionalCost,
+      additionalCost: Number(option.additionalCost),
       count: option.count
     }))
   }
@@ -56,7 +56,7 @@ export const FilterAttributesMapper = (
 export const AvailableFiltersMapper = (
   categories: FilterCategory[],
   brands: FilterBrand[],
-  priceRange: { min: number, max: number },
+  priceRange: { min: number; max: number },
   attributes: FilterAttribute[]
 ): AvailableFilters => {
   return {

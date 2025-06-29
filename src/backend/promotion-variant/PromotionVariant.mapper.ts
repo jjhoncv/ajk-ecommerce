@@ -7,9 +7,8 @@ export const PromotionVariantMapper = (
   return {
     promotionId: data.promotion_id,
     variantId: data.variant_id,
-    promotionPrice: data.promotion_price ?? undefined,
+    promotionPrice: Number(data.promotion_price) ?? undefined,
     stockLimit: data.stock_limit ?? undefined,
-    createdAt: data.created_at,
     productVariants: undefined, // Se llena en el modelo con lógica de negocio,
     promotion: undefined // Se llena en el modelo con lógica de negocio
   }

@@ -1631,7 +1631,7 @@ type shipping_zone_methods {
   shipping_method_id: Int!
   shipping_zone_id: Int!
   cost: Float!
-  free_shipping_threshold: Float
+  free_shipping_threshold: Float!
   estimated_days_min: Int
   estimated_days_max: Int
   is_active: Int

@@ -7,8 +7,6 @@ export const OrderMapper = (orderRaw: OrdersRaw): Order => {
     customerId: orderRaw.customer_id,
     orderNumber: orderRaw.order_number,
     status: orderRaw.status,
-    createdAt: orderRaw.created_at,
-    updatedAt: orderRaw.updated_at,
 
     // Montos
     subtotal: Number(orderRaw.subtotal),

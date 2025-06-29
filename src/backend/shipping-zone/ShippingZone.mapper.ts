@@ -7,9 +7,7 @@ export const ShippingZoneMapper = (data: ShippingZoneRaw): ShippingZone => {
     id: data.id,
     name: data.name,
     districts: data.districts,
-    isActive: data.is_active,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+    isActive: data.is_active
   }
 }
 

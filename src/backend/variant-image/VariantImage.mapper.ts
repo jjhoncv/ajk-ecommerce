@@ -12,8 +12,6 @@ export const VariantImageMapper = (img: VariantImageRaw): VariantImage => {
     isPrimary: img.is_primary,
     altText: img.alt_text,
     displayOrder: img.display_order,
-    createdAt: img.created_at,
-    updatedAt: img.updated_at,
     productVariants: undefined
   }
 }

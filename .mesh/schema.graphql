@@ -1745,7 +1745,7 @@ type ShippingZoneMethods {
   shippingMethodId: Int!
   shippingZoneId: Int!
   cost: Float!
-  freeShippingThreshold: Float
+  freeShippingThreshold: Float!
   estimatedDaysMin: Int
   estimatedDaysMax: Int
   isActive: Int

@@ -20,15 +20,10 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  // Esperar a searchParams antes de usar sus propiedades
   const params = await searchParams
-
-  // console.log('params', params)
-  // console.log('promotions', params.promotions)
 
   const filters = getFilters(params)
 
-  // Obtener resultados de búsqueda directamente del modelo
   const {
     page,
     products,

@@ -13,8 +13,6 @@ export const AttributeOptionImageMapper = (
     imageUrlZoom: data.image_url_zoom ?? undefined,
     altText: data.alt_text ?? undefined,
     displayOrder: data.display_order ?? undefined,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at,
     isPrimary: data.is_primary,
     attributeOption: undefined // Se llena en el modelo si es necesario
   }

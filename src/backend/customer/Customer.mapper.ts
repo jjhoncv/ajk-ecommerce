@@ -6,14 +6,11 @@ export const CustomerMapper = (data: CustomerRaw): Customer => {
     id: data.id,
     name: data.name,
     lastname: data.lastname,
-    username: data.username,
     email: data.email,
     password: data.password,
     photo: data.photo,
     isActive: data.is_active,
     addressId: data.address_id,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at,
     customersAddresses: undefined,
     variantRatings: undefined
   }

@@ -574,7 +574,7 @@ export interface ShippingZoneMethods {
 
   estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
   estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
-  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
+  freeShippingThreshold: Scalars['Float']['output'];
   id: Scalars['Int']['output'];
   isActive?: Maybe<Scalars['Int']['output']>;
   shippingMethod?: Maybe<ShippingMethods>;

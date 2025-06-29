@@ -30,7 +30,7 @@ export const VariantAttributeOptionsWithDetailMapper = (
       attributeId: item.attribute_id,
       id: item.attribute_option_id,
       value: item.attribute_option_value,
-      additionalCost: item.additional_cost,
+      additionalCost: Number(item.additional_cost),
       attribute: {
         displayType: item.attribute_display_type,
         id: item.attribute_id,

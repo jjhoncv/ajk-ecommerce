@@ -522,7 +522,7 @@ export interface ShippingZoneMethods {
   created_at: Scalars['Timestamp']['output'];
   estimated_days_max?: Maybe<Scalars['Int']['output']>;
   estimated_days_min?: Maybe<Scalars['Int']['output']>;
-  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  free_shipping_threshold: Scalars['Float']['output'];
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Int']['output']>;
   shipping_method_id: Scalars['Int']['output'];

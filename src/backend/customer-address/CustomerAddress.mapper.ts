@@ -17,8 +17,6 @@ export const CustomerAddressMapper = (
     latitude: data.latitude || undefined,
     longitude: data.longitude || undefined,
     isDefault: data.is_default,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at,
     customer: undefined // Se puede popular después si es necesario
   }
 }

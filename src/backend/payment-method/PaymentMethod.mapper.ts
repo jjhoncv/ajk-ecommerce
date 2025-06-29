@@ -16,9 +16,7 @@ export const PaymentMethodMapper = (data: PaymentMethodRaw): PaymentMethod => {
     processingFeeValue: Number(data.processing_fee_value),
     requiresVerification: data.requires_verification,
     settings: data.settings,
-    displayOrder: Number(data.display_order),
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+    displayOrder: Number(data.display_order)
   }
 }
 

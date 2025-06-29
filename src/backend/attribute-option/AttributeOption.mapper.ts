@@ -13,7 +13,7 @@ export const AttributeOptionMapper = (
     id: data.id,
     attributeId: data.attribute_id,
     value: data.value,
-    additionalCost: data.additional_cost ?? undefined,
+    additionalCost: Number(data.additional_cost) ?? undefined,
     attributeOptionImages: undefined,
     variantAttributeOptions: undefined
   }

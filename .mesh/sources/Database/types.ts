@@ -2573,7 +2573,7 @@ export type shipping_zone_methods = {
   shipping_method_id: Scalars['Int']['output'];
   shipping_zone_id: Scalars['Int']['output'];
   cost: Scalars['Float']['output'];
-  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  free_shipping_threshold: Scalars['Float']['output'];
   estimated_days_min?: Maybe<Scalars['Int']['output']>;
   estimated_days_max?: Maybe<Scalars['Int']['output']>;
   is_active?: Maybe<Scalars['Int']['output']>;

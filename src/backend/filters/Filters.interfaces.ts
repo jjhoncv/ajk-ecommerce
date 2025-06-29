@@ -3,7 +3,7 @@ export interface AvailableFilters {
   brands: FilterBrand[]
   priceRange: PriceRange
   attributes: FilterAttribute[]
-  promotions: FilterPromotion[]
+  promotions?: FilterPromotion[]
 }
 
 export interface FilterPromotion {

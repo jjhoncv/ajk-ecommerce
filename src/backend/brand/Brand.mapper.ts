@@ -4,7 +4,7 @@ import { type Brands as Brand } from '@/types/domain'
 export const BrandMapper = (data: BrandRaw): Brand => {
   return {
     ...data,
-    products: undefined
+    product: undefined
   }
 }
 

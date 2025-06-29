@@ -94,7 +94,7 @@ export class FiltersRepository {
       attributesMap.get(option.id)?.options.push({
         id: option.option_id,
         value: option.option_value,
-        additionalCost: option.additional_cost,
+        additionalCost: Number(option.additional_cost),
         count: option.count
       })
     })

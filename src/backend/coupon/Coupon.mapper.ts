@@ -9,7 +9,7 @@ export function CouponMapper(couponRaw: CouponRaw): CouponDomain {
     description: couponRaw.description || null,
     code: couponRaw.code,
     discountType: couponRaw.discount_type,
-    discountValue: couponRaw.discount_value,
+    discountValue: Number(couponRaw.discount_value),
     startDate: couponRaw.start_date,
     endDate: couponRaw.end_date,
     isActive: couponRaw.is_active || null,
@@ -20,8 +20,6 @@ export function CouponMapper(couponRaw: CouponRaw): CouponDomain {
     maxDiscountAmount: couponRaw.max_discount_amount || null,
     applicableTo: couponRaw.applicable_to || null,
     applicableIds: couponRaw.applicable_ids || null,
-    createdAt: couponRaw.created_at,
-    updatedAt: couponRaw.updated_at,
     couponUsage: null // Se cargará por separado si es necesario
   }
 }
@@ -41,7 +39,7 @@ export function CouponToRawMapper(
     description: coupon.description || null,
     code: coupon.code,
     discount_type: coupon.discountType,
-    discount_value: coupon.discountValue,
+    discount_value: Number(coupon.discountValue),
     start_date: coupon.startDate,
     end_date: coupon.endDate,
     is_active: coupon.isActive || null,

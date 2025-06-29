@@ -15,9 +15,7 @@ export const OrderTrackingMapper = (
     shippedAt: orderTrackingRaw.shipped_at || undefined,
     deliveredAt: orderTrackingRaw.delivered_at || undefined,
     deliveredTo: orderTrackingRaw.delivered_to || undefined,
-    deliveryNotes: orderTrackingRaw.delivery_notes || undefined,
-    createdAt: orderTrackingRaw.created_at,
-    updatedAt: orderTrackingRaw.updated_at
+    deliveryNotes: orderTrackingRaw.delivery_notes || undefined
   }
 }
 

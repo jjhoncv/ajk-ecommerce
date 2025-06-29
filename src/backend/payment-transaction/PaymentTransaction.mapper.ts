@@ -19,9 +19,7 @@ export const PaymentTransactionMapper = (
     paymentData: data.payment_data,
     gatewayResponse: data.gateway_response,
     processedAt: data.processed_at,
-    expiresAt: data.expires_at,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+    expiresAt: data.expires_at
   }
 }
 

@@ -8,13 +8,11 @@ export const ShippingZoneMethodMapper = (
     id: data.id,
     shippingMethodId: data.shipping_method_id,
     shippingZoneId: data.shipping_zone_id,
-    cost: data.cost,
-    estimatedDaysMin: data.estimated_days_min,
-    estimatedDaysMax: data.estimated_days_max,
-    freeShippingThreshold: data.free_shipping_threshold,
-    isActive: data.is_active,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+    cost: Number(data.cost),
+    estimatedDaysMin: Number(data.estimated_days_min),
+    estimatedDaysMax: Number(data.estimated_days_max),
+    freeShippingThreshold: Number(data.free_shipping_threshold),
+    isActive: data.is_active
   }
 }
 

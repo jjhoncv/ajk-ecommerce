@@ -8,7 +8,7 @@ export const SectionMapper = (data: SectionRaw): Section => {
     name: data.name,
     url: data.url,
     image: data.image,
-    displayOrder: data.display_order
+    displayOrder: Number(data.display_order)
   }
 }
 

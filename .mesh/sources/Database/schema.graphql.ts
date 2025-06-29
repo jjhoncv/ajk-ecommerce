@@ -32596,10 +32596,13 @@ const schemaAST = {
           },
           "arguments": [],
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "Float"
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "Float"
+              }
             }
           },
           "directives": []

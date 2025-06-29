@@ -3291,7 +3291,7 @@ export type ShippingZoneMethods = {
   shippingMethodId: Scalars['Int']['output'];
   shippingZoneId: Scalars['Int']['output'];
   cost: Scalars['Float']['output'];
-  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
+  freeShippingThreshold: Scalars['Float']['output'];
   estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
   estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
   isActive?: Maybe<Scalars['Int']['output']>;
@@ -5688,7 +5688,7 @@ export type ShippingZoneMethodsResolvers<ContextType = MeshContext, ParentType e
   shippingMethodId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   shippingZoneId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   cost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  freeShippingThreshold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  freeShippingThreshold?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;

@@ -9,14 +9,12 @@ export const ShippingMethodMapper = (
     id: data.id,
     name: data.name,
     description: data.description,
-    baseCost: data.base_cost,
-    estimatedDaysMin: data.estimated_days_min,
-    estimatedDaysMax: data.estimated_days_max,
-    freeShippingThreshold: data.free_shipping_threshold,
+    baseCost: Number(data.base_cost),
+    estimatedDaysMin: Number(data.estimated_days_min),
+    estimatedDaysMax: Number(data.estimated_days_max),
+    freeShippingThreshold: Number(data.free_shipping_threshold),
     isActive: data.is_active,
-    displayOrder: data.display_order,
-    createdAt: data.created_at,
-    updatedAt: data.updated_at
+    displayOrder: data.display_order
   }
 }
 
