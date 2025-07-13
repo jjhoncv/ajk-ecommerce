@@ -1,28 +1,9 @@
 // components/admin/AdminDashboard.tsx
+import { User } from 'next-auth'
 import Link from 'next/link'
 import AdminLogoutButton from './AdminLogoutButton'
 
-interface Sections {
-  id: number
-  name: string
-  url: string
-  image?: string
-  displayOrder: number
-}
-
-interface AdminDashboardProps {
-  name: string
-  email: string
-  role?: {
-    id: number
-    name: string
-    rolesSections: Sections[]
-  }
-  sections?: Sections[]
-}
-
-export default function AdminDashboard({ user }: AdminDashboardProps) {
-  console.log(user)
+export default function AdminDashboard({ user }: { user: User }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -36,9 +17,9 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               <span className="text-sm text-gray-700">
                 Hola, <span className="font-medium">{user.name}</span>
               </span>
-              {user.role && (
+              {user.roleName && (
                 <span className="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800">
-                  {user.role}
+                  {user.roleName}
                 </span>
               )}
               <AdminLogoutButton />

@@ -47,7 +47,6 @@ export const adminAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (user) {
         token.id = user.id
         token.name = user.name
@@ -59,7 +58,6 @@ export const adminAuthOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (session.user) {
         session.user.id = token.id
         session.user.name = token.name

@@ -1,5 +1,4 @@
 import 'next-auth'
-import { type DefaultSession } from 'next-auth'
 import 'next-auth/jwt'
 
 export interface AdminSection {
@@ -15,17 +14,19 @@ declare module 'next-auth' {
     user: {
       id: string
       name: string
+      image?: string
       email: string
       type: string
       roleName?: string
       roleId?: number
       sections?: AdminSection[]
-    } & Pick<DefaultSession['user'], 'image'>
+    }
   }
 
   interface User {
     id: string
     name: string
+    image?: string
     email: string
     type: string
     roleName?: string
