@@ -1,43 +1,52 @@
-import { BannerFields } from "@/app/components/admin/components/Banners/bannerFields";
-import { FormCreate } from "@/app/components/admin/components/FormCreate/FormCreate";
-import { mergeFieldsWithData } from "@/app/components/admin/components/FormCreate/mergeFieldsWithData";
-import { PageUI } from "@/app/components/admin/components/Page/Page";
-import { PageTitle } from "@/app/components/admin/components/Page/PageTitle";
+import { BannerFields } from '@/module/banners/components/admin/bannerFields'
+import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
+import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
+import { PageUI } from '@/module/shared/components/Page/Page'
+import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 
-import { getBanner } from "@/services/bannerService";
+import { type JSX } from 'react'
 
-export const revalidate = 0; // Deshabilitar cache estático
+import BannerService from '@/module/banners/service/banner'
+import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
+
+export const revalidate = 0 // Deshabilitar cache estático
 
 export default async function UserEditPage({
-  params,
+  params
 }: {
-  params: { id: string };
-}) {
-  const { id } = params;
+  params: Promise<{ id: number }>
+}): Promise<JSX.Element> {
+  const { id } = await params
 
-  const banner = await getBanner(id);
-  const fieldsWithValues = mergeFieldsWithData(BannerFields, banner);
+  const banner = await BannerService.getBanner(id)
 
-  if (!banner) return <div>No se encontraron banner</div>;
+  const fieldsWithValues = mergeFieldsWithData(BannerFields, {
+    ...banner,
+    image_url: banner?.image
+  })
+
+  if (banner === undefined) return <div>No se encontraron banner</div>
 
   return (
-    <PageUI
-      title={<PageTitle title="Editar Banner" />}
-      breadcrumb={[
-        { label: "Banners", url: "/dashboard/users" },
-        { label: "Editar Banner" },
-      ]}
-      subtitle="Editar Banner"
-    >
-      <FormCreate
-        type="edit"
-        api={{ url: "/api/admin/banners", method: "PATCH", withFiles: true }}
-        form={{
-          redirect: "/dashboard/banners",
-          fields: fieldsWithValues,
-          customFields: { id },
-        }}
-      />
-    </PageUI>
-  );
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="Editar Banner" />}
+        breadcrumb={[
+          { label: 'Banners', url: '/admin/banners' },
+          { label: 'Editar Banner' }
+        ]}
+        subtitle="Editar Banner"
+      >
+        <FormCreate
+          type="edit"
+          api={{ url: '/api/admin/banners', method: 'PATCH', withFiles: true }}
+          form={{
+            redirect: '/admin/banners',
+            fields: fieldsWithValues,
+            customFields: { id }
+          }}
+        />
+      </PageUI>
+    </LayoutPageAdmin>
+  )
 }

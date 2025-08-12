@@ -5,11 +5,11 @@ import Categories from '@/components/sections/Categories'
 import DailyDeals from '@/components/sections/DailyDeals'
 import FeaturedCategories from '@/components/sections/FeaturedCategories'
 import Features from '@/components/sections/Features'
-import HeroSlider from '@/components/sections/HeroSlider'
 import Newsletter from '@/components/sections/Newsletter'
 import PopularProducts from '@/components/sections/PopularProducts'
 import Navigation from '@/components/ui/Navigation/Navigation'
-import BannerService from '@/services/banner'
+import HeroSlider from '@/module/banners/components/HeroSlider'
+import BannerService from '@/module/banners/service/banner'
 
 // services
 import CategoryService from '@/services/categories'
@@ -31,7 +31,7 @@ export default async function HomePage(): Promise<JSX.Element> {
   const mainCategories = await CategoryService.getMainCategories()
   const popularProducts = await getPopularProducts()
   const dealsProducts = await getDealsProducts()
-  const banners = await BannerService.getBanner()
+  const banners = await BannerService.getBanners()
   const features = await getFeatures()
   const featureCategories = await getFeaturedCategories()
   const sideBanners = await PromotionService.getBanners()

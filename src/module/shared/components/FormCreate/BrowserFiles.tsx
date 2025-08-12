@@ -1,13 +1,13 @@
-import { FetchCustomBody } from '@/lib/admin/FetchCustomBody'
-import { formatBytes } from '@/lib/admin/formatBytes'
-import { schemaImageValidation } from '@/lib/admin/schemaImage'
+import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
+import { formatBytes } from '@/module/shared/lib/formatBytes'
+import { schemaImageValidation } from '@/module/shared/lib/schemaImage'
 import { ImagePlusIcon, Trash2, UploadCloud } from 'lucide-react'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { type FC, useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 import { Button } from '../Form/Input/Button'
-import { FilePreview, FilePreviewCard } from './FilePreviewCard'
-import { Field, FileOptions } from './types/fileManagement'
+import { type FilePreview, FilePreviewCard } from './FilePreviewCard'
+import { type Field, type FileOptions } from './types/fileManagement'
 
 interface BrowserFilesProps {
   setOpenDialog: (value: boolean) => void
@@ -96,7 +96,9 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
       }
 
       // Limpiar previews anteriores
-      previews.forEach((preview) => URL.revokeObjectURL(preview.preview))
+      previews.forEach((preview) => {
+        URL.revokeObjectURL(preview.preview)
+      })
       setPreviews(newPreviews)
     } catch (error) {
       console.error('Error validating files:', error)
@@ -151,7 +153,9 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
   // Cleanup
   useEffect(() => {
     return () => {
-      previews.forEach((preview) => URL.revokeObjectURL(preview.preview))
+      previews.forEach((preview) => {
+        URL.revokeObjectURL(preview.preview)
+      })
     }
   }, [])
 
@@ -285,7 +289,9 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
         <div className="flex items-center justify-between p-4">
           <button
             type="button"
-            onClick={() => setOpenDialog(false)}
+            onClick={() => {
+              setOpenDialog(false)
+            }}
             className="rounded border bg-white px-4 py-2"
           >
             Cancelar

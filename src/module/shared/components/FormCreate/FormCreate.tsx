@@ -1,12 +1,12 @@
 'use client'
-import { FetchCustomBody } from '@/lib/admin/FetchCustomBody'
-import { handleKeyDown } from '@/lib/admin/form'
-import { isImageFile } from '@/lib/admin/isImageFile'
-import { ToastFail, ToastSuccess } from '@/lib/admin/splash'
+import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
+import { handleKeyDown } from '@/module/shared/lib/form'
+import { isImageFile } from '@/module/shared/lib/isImageFile'
+import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ImageIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { FC, useCallback, useState } from 'react'
+import { type FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { CardContent } from '../CardContent/CardContent'
 import { Button } from '../Form/Input/Button'
@@ -15,7 +15,7 @@ import { createDynamicSchema } from './createDynamicSchema'
 import { DialogAssets } from './DialogAssets'
 import { extractDefaultValues } from './extractDefaultValues'
 import { SliderImages } from './SliderImages'
-import { Field } from './types/fileManagement'
+import { type Field } from './types/fileManagement'
 
 // Types
 
@@ -159,7 +159,9 @@ export const FormCreate: FC<FormCreateProps> = ({
                   {field.value.every(isImageFile) ? (
                     <SliderImages
                       images={field.value}
-                      onClickEdit={() => handleFileSelect(field)}
+                      onClickEdit={() => {
+                        handleFileSelect(field)
+                      }}
                     />
                   ) : (
                     <ul>
@@ -171,7 +173,9 @@ export const FormCreate: FC<FormCreateProps> = ({
                 </div>
               ) : (
                 <div
-                  onClick={() => handleFileSelect(field)}
+                  onClick={() => {
+                    handleFileSelect(field)
+                  }}
                   className="flex h-full w-full cursor-pointer items-center justify-center transition-colors hover:bg-slate-200"
                 >
                   <div className="flex w-full flex-col items-center justify-center gap-2">
@@ -196,9 +200,9 @@ export const FormCreate: FC<FormCreateProps> = ({
       {dialogState.isOpen && dialogState.selectedField && (
         <DialogAssets
           open={dialogState.isOpen}
-          setOpenDialog={(isOpen) =>
+          setOpenDialog={(isOpen) => {
             setDialogState((prev) => ({ ...prev, isOpen }))
-          }
+          }}
           addFilesToForm={handleFilesAdd}
           field={dialogState.selectedField}
         />

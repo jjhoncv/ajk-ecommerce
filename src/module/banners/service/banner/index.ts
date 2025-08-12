@@ -1,9 +1,10 @@
-import { getBanners } from './banner'
+import { getBanner, getBanners } from './banner'
 import { searchBanners } from './search'
 
 const BannerService = {
   getBanners,
-  searchBanners
+  searchBanners,
+  getBanner
 }
 
 export default BannerService

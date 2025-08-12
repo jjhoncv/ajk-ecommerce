@@ -1,10 +1,10 @@
 import AdminClientWrapper from '@/components/admin/AdminClientWrapper'
+import { AdminDashboard } from '@/module/shared/components/AdminDashboard'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
-// import { adminAuthOptions } from '@/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 
-export default async function AdminPage() {
+export default async function AdminPage(): Promise<React.JSX.Element> {
   // ✅ Primer render: Server-side, sin shimmer
   const session = await getServerSession(adminAuthOptions)
 
@@ -12,13 +12,12 @@ export default async function AdminPage() {
   const adminTypes = ['admin', 'superadmin']
 
   // validar si el tipo de usuario esta dentro del array de tipos de usuarios
-  if (session?.user && adminTypes.includes(session.user.type)) {
+  if (session?.user != null && adminTypes.includes(session.user.type)) {
     return (
-      <>
-        <LayoutPageAdmin user={session.user}></LayoutPageAdmin>
-      </>
+      <LayoutPageAdmin>
+        <AdminDashboard user={session.user} />
+      </LayoutPageAdmin>
     )
-    // return <AdminDashboard user={session.user} />
   }
 
   return <AdminClientWrapper />

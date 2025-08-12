@@ -33,7 +33,7 @@ export class BannerRepository {
   }
 
   public async createBanner(
-    banner: Omit<BannerRaw, 'id'>
+    banner: Omit<BannerRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<BannerRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: 'INSERT INTO banner SET ?',
@@ -44,7 +44,7 @@ export class BannerRepository {
   }
 
   public async updateBanner(
-    bannerData: Omit<BannerRaw, 'id'>,
+    bannerData: Omit<BannerRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<BannerRaw | null> {
     await executeQuery({
@@ -53,6 +53,16 @@ export class BannerRepository {
     })
 
     return await this.getBannerById(id)
+  }
+
+  public async updateBannerOrder(
+    id: number,
+    displayOrder: number
+  ): Promise<void> {
+    await executeQuery({
+      query: 'UPDATE banner SET display_order = ? WHERE id = ?',
+      values: [displayOrder, id]
+    })
   }
 
   public async deleteBanner(id: number): Promise<void> {

@@ -1,6 +1,6 @@
 import {
-  Field,
-  FileOptions
+  type Field,
+  type FileOptions
 } from '@/module/shared/components/FormCreate/types/fileManagement'
 
 export const BannerFileOptions: FileOptions = {
@@ -28,6 +28,14 @@ export const BannerFields: Field[] = [
     type: 'text',
     required: {
       min: 'Título es requerido'
+    }
+  },
+  {
+    key: 'buttonText',
+    label: 'Button Text',
+    type: 'text',
+    required: {
+      min: 'Button text es requerido'
     }
   },
   {

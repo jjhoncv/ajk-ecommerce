@@ -10,5 +10,7 @@ export const hydrateBanner = (item: Banner): BannerModel => ({
   description: item.description ?? '',
   image: item.imageUrl ?? '',
   ctaLink: item.link ?? '',
-  cta: item.buttonText ?? ''
+  cta: item.buttonText ?? '',
+  link: item.link ?? '',
+  buttonText: item.buttonText ?? ''
 })

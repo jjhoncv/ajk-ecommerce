@@ -1,11 +1,12 @@
+import { HouseIcon } from 'lucide-react'
 import Link from 'next/link'
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 
 interface PageUIProps {
   title?: React.ReactNode
   subtitle?: React.ReactNode
   options?: React.ReactNode
-  breadcrumb?: { label: string; url?: string }[]
+  breadcrumb?: Array<{ label: string; url?: string }>
   children: React.ReactNode
 }
 
@@ -19,15 +20,15 @@ export const PageUI: FC<PageUIProps> = ({
   return (
     <>
       {breadcrumb && (
-        <div className="my-5 flex gap-2 text-sm">
-          <Link className="text-gray-500" href="/dashboard">
-            Dashboard
+        <div className="my-5 flex items-center gap-2 text-sm">
+          <Link className="text-gray-500" href="/admin">
+            <HouseIcon size={15} />
           </Link>
           {breadcrumb.length > 0 && (
-            <div>
+            <div className="flex gap-2">
               <div className="text-gray-500">{'/'}</div>
               {breadcrumb.map((item, key) => (
-                <div key={key}>
+                <div className="flex gap-2" key={key}>
                   {item.url ? (
                     <>
                       <Link className="text-gray-500" href={item.url}>

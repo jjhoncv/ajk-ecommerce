@@ -23,7 +23,7 @@ export class BannerModel {
   }
 
   public async createBanner(
-    bannerData: Omit<BannersRaw, 'id'>
+    bannerData: Omit<BannersRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<Banner | undefined> {
     const created = await oBannerRep.createBanner(bannerData)
     if (created == null) return undefined
@@ -31,12 +31,19 @@ export class BannerModel {
   }
 
   public async updateBanner(
-    bannerData: Omit<BannersRaw, 'id'>,
+    bannerData: Omit<BannersRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<Banner | undefined> {
     const updated = await oBannerRep.updateBanner(bannerData, id)
     if (updated == null) return undefined
     return BannerMapper(updated)
+  }
+
+  public async updateBannerOrder(
+    id: number,
+    displayOrder: number
+  ): Promise<void> {
+    await oBannerRep.updateBannerOrder(id, displayOrder)
   }
 
   public async deleteBanner(id: number): Promise<void> {

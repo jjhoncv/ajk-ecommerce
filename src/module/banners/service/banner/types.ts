@@ -6,4 +6,6 @@ export interface Banner {
   image: string
   ctaLink: string
   cta: string
+  link: string
+  buttonText: string
 }

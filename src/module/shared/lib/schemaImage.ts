@@ -1,4 +1,4 @@
-import { FileOptions } from '@/components/admin/FormCreate/types/fileManagement'
+import { type FileOptions } from '@/module/shared/components/FormCreate/types/fileManagement'
 import { isArray } from 'lodash'
 import { z } from 'zod'
 import { formatBytes } from './formatBytes'
@@ -55,7 +55,7 @@ export const schemaImageValidation = ({
 
         // Validar tamaño
 
-        if (options && options.maxFileSize && file.size > options.maxFileSize) {
+        if (options?.maxFileSize && file.size > options.maxFileSize) {
           errors.push(
             `El archivo excede el tamaño máximo de ${formatBytes(
               options.maxFileSize
@@ -65,8 +65,7 @@ export const schemaImageValidation = ({
 
         // Validar tipo
         if (
-          options &&
-          options.acceptImageTypes &&
+          options?.acceptImageTypes &&
           !options.acceptImageTypes.includes(file.type)
         ) {
           errors.push(
@@ -82,12 +81,9 @@ export const schemaImageValidation = ({
           if (!options) return true
           const dimensions = options.dimensions
           if (
-            dimensions &&
-            dimensions.min &&
-            dimensions.min.width &&
+            dimensions?.min?.width &&
             dimensions.min.height &&
-            dimensions.max &&
-            dimensions.max.width &&
+            dimensions.max?.width &&
             dimensions.max.height
           ) {
             const dimensions_valid = await new Promise<boolean>((resolve) => {
@@ -102,10 +98,14 @@ export const schemaImageValidation = ({
                     img.height <= dimensions.max.height
                   resolve(meetsDimensions)
                 }
-                img.onerror = () => resolve(false)
+                img.onerror = () => {
+                  resolve(false)
+                }
                 img.src = e.target?.result as string
               }
-              reader.onerror = () => resolve(false)
+              reader.onerror = () => {
+                resolve(false)
+              }
               reader.readAsDataURL(file)
             })
             if (!dimensions_valid) {

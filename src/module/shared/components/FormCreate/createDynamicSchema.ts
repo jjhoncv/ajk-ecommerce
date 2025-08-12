@@ -1,6 +1,6 @@
-import { schemaImageValidation } from '@/lib/admin/schemaImage'
+import { schemaImageValidation } from '@/module/shared/lib/schemaImage'
 import { z } from 'zod'
-import { Field } from './types/fileManagement'
+import { type Field } from './types/fileManagement'
 
 export const createDynamicSchema = (fields: Field[]) => {
   const schemaFields: Record<string, z.ZodTypeAny> = {}

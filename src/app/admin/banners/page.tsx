@@ -4,22 +4,29 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
-import { Suspense } from 'react'
+import { type JSX, Suspense } from 'react'
 
-function LoadingTable() {
+function LoadingTable(): JSX.Element {
   return <div>Cargando banners...</div>
 }
 
 export default async function BannerListPage({
-  searchParams: { q }
+  searchParams
 }: {
-  searchParams: { q: string }
-}) {
-  const banners = q
-    ? await bannerService.searchBanners(q)
-    : await bannerService.getBanners()
+  searchParams: Promise<{ q?: string }>
+}): Promise<JSX.Element> {
+  const { q } = await searchParams
+  const banners =
+    q != null
+      ? await bannerService.searchBanners(q)
+      : await bannerService.getBanners()
 
-  if (!banners) return <div>No se encontraron banners</div>
+  if (banners.length === 0) return <div>No se encontraron banners</div>
+
+  const bannerMapped = banners.map((banner) => ({
+    ...banner,
+    image_url: banner.image
+  }))
 
   return (
     <LayoutPageAdmin>
@@ -32,7 +39,7 @@ export default async function BannerListPage({
         }
       >
         <Suspense fallback={<LoadingTable />}>
-          <BannerListView banners={banners} />
+          <BannerListView banners={bannerMapped} />
         </Suspense>
       </PageUI>
     </LayoutPageAdmin>

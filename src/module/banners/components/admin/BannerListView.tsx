@@ -1,5 +1,5 @@
 'use client'
-import { Banner } from '@/module/banners/service/banner/types'
+import { type Banner } from '@/module/banners/service/banner/types'
 import { Alert } from '@/module/shared/components/Alert/Alert'
 import { PreviewImageList } from '@/module/shared/components/PreviewImageList'
 import {
@@ -8,13 +8,13 @@ import {
 } from '@/module/shared/components/Table/Actions'
 import {
   DynamicTable,
-  TableColumn
+  type TableColumn
 } from '@/module/shared/components/Table/DynamicTable'
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FC } from 'react'
+import { type FC } from 'react'
 
 interface BannerListViewProps {
   banners: Banner[]
@@ -60,8 +60,8 @@ export const BannerListView: FC<BannerListViewProps> = ({ banners }) => {
     }
   ]
 
-  const handleRemoveRole = async (id: string | null) => {
-    if (!id) return
+  const handleRemoveRole = async (id: string | null): Promise<void> => {
+    if (id == null || id === '') return
     try {
       const message = await FetchCustomBody({
         data: { id },
@@ -70,19 +70,39 @@ export const BannerListView: FC<BannerListViewProps> = ({ banners }) => {
       })
 
       ToastSuccess(message)
-      router.push('/dashboard/banners')
+      router.push('/admin/banners')
       router.refresh()
-    } catch (error: any) {
-      ToastFail(error.message)
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error desconocido'
+      ToastFail(errorMessage)
     }
   }
 
-  const handleReorder = (reorderedItems: any[]) => {
-    // Actualizar el orden en la base de datos
-    console.log('Nuevo orden:', reorderedItems)
-  }
+  const handleReorder = async (
+    reorderedItems: Array<Record<string, unknown>>
+  ): Promise<void> => {
+    try {
+      // Crear array con los IDs y sus nuevos órdenes
+      const orderUpdates = reorderedItems.map((item, index) => ({
+        id: item.id as number,
+        display_order: index + 1
+      }))
 
-  const handleSearch = (q: string) => {}
+      await FetchCustomBody({
+        data: { orders: orderUpdates },
+        method: 'PUT',
+        url: '/api/admin/banners'
+      })
+
+      ToastSuccess('Orden actualizado correctamente')
+      router.refresh()
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error al actualizar el orden'
+      ToastFail(errorMessage)
+    }
+  }
 
   return (
     <>
@@ -91,10 +111,10 @@ export const BannerListView: FC<BannerListViewProps> = ({ banners }) => {
         onSuccess={() => {
           const urlParams = new URLSearchParams(window.location.search)
           const id = urlParams.get('id')
-          handleRemoveRole(id)
+          void handleRemoveRole(id)
         }}
         onCancel={() => {
-          router.replace('/dashboard/banners')
+          router.replace('/admin/banners')
         }}
       />
       <DynamicTable
@@ -103,8 +123,8 @@ export const BannerListView: FC<BannerListViewProps> = ({ banners }) => {
         renderActions={(id: string) => {
           return (
             <>
-              <EditAction id={id} baseURL="/dashboard/banners" />
-              <RemoveAction id={id} baseURL="/dashboard/banners" />
+              <EditAction id={id} baseURL="/admin/banners" />
+              <RemoveAction id={id} baseURL="/admin/banners" />
             </>
           )
         }}

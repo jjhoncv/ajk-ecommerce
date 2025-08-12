@@ -1,10 +1,10 @@
-import { schemaImageValidation } from '@/lib/admin/schemaImage'
+import { schemaImageValidation } from '@/module/shared/lib/schemaImage'
 import { FilesIcon, Plus } from 'lucide-react'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { type FC, useCallback, useEffect, useState } from 'react'
 import { Button } from '../Form/Input/Button'
 import { renderOptionsFile } from './BrowserFiles'
 import { FilePreviewCard } from './FilePreviewCard'
-import { Field, FileServer } from './types/fileManagement'
+import { type Field, type FileServer } from './types/fileManagement'
 
 interface ServerFilesProps {
   onAddFiles: () => void
@@ -134,10 +134,10 @@ export const ServerFiles: FC<ServerFilesProps> = ({
   }
 
   async function convertServerFilesToFileList(
-    serverFiles: Array<any>
+    serverFiles: any[]
   ): Promise<FileList> {
     const files = await Promise.all(
-      serverFiles.map((serverFile) => serverFileToFile(serverFile))
+      serverFiles.map(async (serverFile) => await serverFileToFile(serverFile))
     )
 
     // Crear un DataTransfer para generar un FileList
@@ -190,7 +190,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
       )
     }
 
-    if (!state.files.length) {
+    if (state.files.length === 0) {
       return (
         <div className="flex h-full w-full flex-col items-center justify-center gap-2">
           <FilesIcon size={40} />
@@ -210,10 +210,12 @@ export const ServerFiles: FC<ServerFilesProps> = ({
         {state.files.map((file, index) => (
           <FilePreviewCard
             key={`${file.path}-${index}`}
-            onChangeInput={(e) =>
+            onChangeInput={(e) => {
               handleFileSelect(e.target.value, e.target.checked)
-            }
-            onClickRemove={() => handleRemoveFile(file)}
+            }}
+            onClickRemove={async () => {
+              await handleRemoveFile(file)
+            }}
             multiple={field.multiple}
             value={index.toString()}
             checked={selecteds.includes(index.toString())}
@@ -258,7 +260,9 @@ export const ServerFiles: FC<ServerFilesProps> = ({
         <div className="flex items-center justify-between p-4">
           <button
             type="button"
-            onClick={() => setOpenDialog(false)}
+            onClick={() => {
+              setOpenDialog(false)
+            }}
             className="rounded border bg-white px-4 py-2"
           >
             Cancelar
@@ -266,7 +270,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
           <button
             type="button"
             onClick={handleFinish}
-            disabled={!selecteds.length || state.loading}
+            disabled={selecteds.length === 0 || state.loading}
             className="rounded border bg-gray-800 px-4 py-2 text-white disabled:bg-gray-400"
           >
             Aceptar ({selecteds.length} seleccionados)
