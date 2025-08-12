@@ -1,7 +1,7 @@
-// app/admin/page.tsx
 import AdminClientWrapper from '@/components/admin/AdminClientWrapper'
-import AdminDashboard from '@/components/admin/AdminDashboard'
-import { adminAuthOptions } from '@/lib/auth/authAdmin'
+import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
+import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
+// import { adminAuthOptions } from '@/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 
 export default async function AdminPage() {
@@ -13,9 +13,13 @@ export default async function AdminPage() {
 
   // validar si el tipo de usuario esta dentro del array de tipos de usuarios
   if (session?.user && adminTypes.includes(session.user.type)) {
-    return <AdminDashboard user={session.user} />
+    return (
+      <>
+        <LayoutPageAdmin user={session.user}></LayoutPageAdmin>
+      </>
+    )
+    // return <AdminDashboard user={session.user} />
   }
 
-  // Si no está logueado, mostrar el wrapper client que maneja el login
   return <AdminClientWrapper />
 }

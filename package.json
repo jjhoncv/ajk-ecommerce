@@ -13,16 +13,23 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^17.0.0",
+    "@hookform/resolvers": "^5.1.1",
+    "@types/lodash": "^4.17.20",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.507.0",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
     "prettier": "^3.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.60.0",
+    "react-hot-toast": "^2.5.2",
     "serverless-mysql": "^2.1.0",
     "tailwind-merge": "^3.3.1",
+    "uuid": "^11.1.0",
     "zod": "^3.25.58"
   },
   "devDependencies": {
