@@ -134,6 +134,7 @@ export const FormCreate: FC<FormCreateProps> = ({
   }
 
   const renderField = (field: Field) => {
+    console.log('field', field)
     switch (field.type) {
       case 'text':
       case 'textarea':
