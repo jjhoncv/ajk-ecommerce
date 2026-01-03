@@ -1,4 +1,5 @@
 import productVariantModel from '@/backend/product-variant'
+import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import {
   apiHandler,
   createResponse,
@@ -40,15 +41,27 @@ const processFormData = async (formData: FormData) => {
   const priceStr = formData.get('price') as string
   const stockStr = formData.get('stock') as string
   const id = formData.get('id') as string
+  const attributesStr = formData.get('attributes') as string
 
   const price = priceStr !== '' && priceStr != null ? parseFloat(priceStr) : 0
   const stock = stockStr !== '' && stockStr != null ? parseInt(stockStr, 10) : 0
+
+  // Parsear atributos (formato: {"1": 5, "2": 8})
+  let attributes: Record<number, number> = {}
+  if (attributesStr && attributesStr !== '') {
+    try {
+      attributes = JSON.parse(attributesStr)
+    } catch (e) {
+      // Si falla el parse, dejamos vacío
+    }
+  }
 
   return {
     id,
     sku,
     price,
-    stock
+    stock,
+    attributes
   }
 }
 
@@ -59,7 +72,7 @@ export async function POST(
   return await apiHandler(async () => {
     const { productId } = await context.params
     const formData = await req.formData()
-    const { sku, price, stock } = await processFormData(formData)
+    const { sku, price, stock, attributes } = await processFormData(formData)
 
     if (sku === '') {
       return createResponse(
@@ -69,12 +82,24 @@ export async function POST(
     }
 
     try {
-      await productVariantModel.createProductVariant({
+      const variant = await productVariantModel.createProductVariant({
         product_id: Number(productId),
         sku,
         price,
         stock
       })
+
+      // Asignar atributos a la variante
+      if (variant && Object.keys(attributes).length > 0) {
+        await Promise.all(
+          Object.entries(attributes).map(([attributeId, optionId]) =>
+            variantAttributeOptionModel.addAttributeOptionToVariant(
+              variant.id,
+              Number(optionId)
+            )
+          )
+        )
+      }
 
       return createResponse(
         {
@@ -95,7 +120,7 @@ export async function PATCH(
 ): Promise<Response> {
   return await apiHandler(async () => {
     const formData = await req.formData()
-    const { id, sku, price, stock } = await processFormData(formData)
+    const { id, sku, price, stock, attributes } = await processFormData(formData)
 
     if (sku === '' || id === '') {
       return createResponse(
@@ -113,6 +138,21 @@ export async function PATCH(
         },
         Number(id)
       )
+
+      // Actualizar atributos: primero eliminamos todos los existentes
+      await variantAttributeOptionModel.deleteVariantAttributeOptionsByVariantId(Number(id))
+
+      // Luego agregamos los nuevos seleccionados
+      if (Object.keys(attributes).length > 0) {
+        await Promise.all(
+          Object.entries(attributes).map(([attributeId, optionId]) =>
+            variantAttributeOptionModel.addAttributeOptionToVariant(
+              Number(id),
+              Number(optionId)
+            )
+          )
+        )
+      }
 
       return createResponse(
         {

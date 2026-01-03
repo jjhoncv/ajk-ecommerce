@@ -60,6 +60,33 @@ export class VariantAttributeOptionModel {
     return optionsByVariantId
   }
 
+  public async getVariantAttributeOptionsWithDetailsByIds(
+    variantIds: number[]
+  ): Promise<Map<number, VariantAttributeOptions[]>> {
+    const optionsRaw =
+      await oVariantAttributeOptionRep.getVariantAttributeOptionsWithDetailsByIds(
+        variantIds
+      )
+
+    if (!optionsRaw) return new Map()
+
+    // Agrupar options por variant_id
+    const optionsByVariantId = new Map<number, VariantAttributeOptions[]>()
+
+    for (const optionRaw of optionsRaw) {
+      const option = VariantAttributeOptionsWithDetailMapper([optionRaw])[0]
+      const variantId = option.variantId
+
+      if (!optionsByVariantId.has(variantId)) {
+        optionsByVariantId.set(variantId, [])
+      }
+
+      optionsByVariantId.get(variantId)!.push(option)
+    }
+
+    return optionsByVariantId
+  }
+
   public async getVariantAttributeOptionsByAttributeOptionIds(
     attributeOptionIds: number[]
   ): Promise<Map<number, VariantAttributeOption[]>> {

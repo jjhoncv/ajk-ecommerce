@@ -1,6 +1,7 @@
+import attributeModel from '@/backend/attribute'
 import productModel from '@/backend/product'
+import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'
-import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
@@ -15,6 +16,7 @@ export default async function NewVariantPage({
 }: NewVariantPageProps): Promise<JSX.Element> {
   const { productId } = await params
   const product = await productModel.getProductById(Number(productId))
+  const attributes = await attributeModel.getAttributes()
 
   if (product == null) {
     return (
@@ -43,16 +45,12 @@ export default async function NewVariantPage({
           { label: 'Nueva Variante' }
         ]}
       >
-        <FormCreate
-          api={{
-            url: `/api/admin/products/${productId}/variants`,
-            method: 'POST',
-            withFiles: true
-          }}
-          form={{
-            redirect: `/admin/products/${productId}/variants`,
-            fields: VariantFields
-          }}
+        <VariantForm
+          type="new"
+          productId={productId}
+          fields={VariantFields}
+          attributes={attributes || []}
+          redirectUrl={`/admin/products/${productId}/variants`}
         />
       </PageUI>
     </LayoutPageAdmin>

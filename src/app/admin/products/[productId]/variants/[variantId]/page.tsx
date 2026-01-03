@@ -1,7 +1,9 @@
+import attributeModel from '@/backend/attribute'
 import productModel from '@/backend/product'
 import productVariantModel from '@/backend/product-variant'
+import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'
-import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
@@ -22,6 +24,11 @@ export default async function EditVariantPage({
   const variant = await productVariantModel.getProductVariantById(
     Number(variantId)
   )
+  const attributes = await attributeModel.getAttributes()
+  const variantAttributeOptions =
+    await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
+      Number(variantId)
+    )
 
   if (product == null) {
     return (
@@ -63,6 +70,17 @@ export default async function EditVariantPage({
     stock: variant.stock?.toString() || '0'
   })
 
+  // Construir objeto de atributos seleccionados: { attributeId: optionId }
+  const selectedAttributes: Record<number, number> = {}
+  if (variantAttributeOptions) {
+    variantAttributeOptions.forEach((vao) => {
+      if (vao.attributeOption?.attributeId) {
+        selectedAttributes[vao.attributeOption.attributeId] =
+          vao.attributeOptionId
+      }
+    })
+  }
+
   return (
     <LayoutPageAdmin>
       <PageUI
@@ -75,18 +93,14 @@ export default async function EditVariantPage({
           { label: 'Editar Variante' }
         ]}
       >
-        <FormCreate
+        <VariantForm
           type="edit"
-          api={{
-            url: `/api/admin/products/${productId}/variants`,
-            method: 'PATCH',
-            withFiles: true
-          }}
-          form={{
-            redirect: `/admin/products/${productId}/variants`,
-            fields: fieldsWithValues,
-            customFields: { id: variantId }
-          }}
+          productId={productId}
+          fields={fieldsWithValues}
+          attributes={attributes || []}
+          selectedAttributes={selectedAttributes}
+          customFields={{ id: variantId }}
+          redirectUrl={`/admin/products/${productId}/variants`}
         />
       </PageUI>
     </LayoutPageAdmin>

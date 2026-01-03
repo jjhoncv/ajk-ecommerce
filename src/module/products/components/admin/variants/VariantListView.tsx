@@ -60,6 +60,32 @@ export const VariantListView: FC<VariantListViewProps> = ({
         )
       },
       width: '150px'
+    },
+    {
+      key: 'variantAttributeOptions',
+      label: 'Atributos',
+      priority: 'medium',
+      sortable: false,
+      render: (variantAttributeOptions: any) => {
+        if (!variantAttributeOptions || variantAttributeOptions.length === 0) {
+          return <span className="text-sm text-gray-400">Sin atributos</span>
+        }
+
+        const attributesText = variantAttributeOptions
+          .map((vao: any) => {
+            const attributeName = vao.attributeOption?.attribute?.name || 'N/A'
+            const optionValue = vao.attributeOption?.value || 'N/A'
+            return `${attributeName}: ${optionValue}`
+          })
+          .join(', ')
+
+        return (
+          <span className="text-sm text-gray-700">
+            {attributesText}
+          </span>
+        )
+      },
+      width: '300px'
     }
   ]
 

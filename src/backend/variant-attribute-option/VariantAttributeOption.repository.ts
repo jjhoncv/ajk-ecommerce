@@ -81,6 +81,35 @@ export class VariantAttributeOptionRepository {
     return options
   }
 
+  public async getVariantAttributeOptionsWithDetailsByIds(
+    variantIds: number[]
+  ): Promise<VariantAttributeOptionWithDetailsRaw[] | null> {
+    if (variantIds.length === 0) return null
+
+    const placeholders = variantIds.map(() => '?').join(',')
+    const options = await executeQuery<VariantAttributeOptionWithDetailsRaw[]>({
+      query: `
+        SELECT
+          vao.variant_id,
+          vao.attribute_option_id,
+          ao.value as attribute_option_value,
+          ao.additional_cost,
+          ao.attribute_id,
+          a.name as attribute_name,
+          a.display_type as attribute_display_type
+        FROM variant_attribute_options vao
+        JOIN attribute_options ao ON vao.attribute_option_id = ao.id
+        JOIN attributes a ON ao.attribute_id = a.id
+        WHERE vao.variant_id IN (${placeholders})
+        ORDER BY a.id, ao.id
+      `,
+      values: variantIds
+    })
+
+    if (options.length === 0) return null
+    return options
+  }
+
   public async getVariantAttributeOptionsByAttributeOptionIds(
     attributeOptionIds: number[]
   ): Promise<VariantAttributeOptionRaw[] | null> {
