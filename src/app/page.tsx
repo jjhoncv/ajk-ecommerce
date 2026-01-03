@@ -1,15 +1,15 @@
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import { LayoutContent } from '@/components/layout/LayoutContent'
-import Categories from '@/components/sections/Categories'
 import DailyDeals from '@/components/sections/DailyDeals'
-import FeaturedCategories from '@/components/sections/FeaturedCategories'
 import Features from '@/components/sections/Features'
 import Newsletter from '@/components/sections/Newsletter'
 import PopularProducts from '@/components/sections/PopularProducts'
 import Navigation from '@/components/ui/Navigation/Navigation'
 import HeroSlider from '@/module/banners/components/HeroSlider'
 import BannerService from '@/module/banners/service/banner'
+import Categories from '@/module/categories/Categories'
+import FeaturedCategories from '@/module/categories/FeaturedCategories'
 
 // services
 import CategoryService from '@/services/categories'
