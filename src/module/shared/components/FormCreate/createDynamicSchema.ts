@@ -34,6 +34,32 @@ export const createDynamicSchema = (fields: Field[]) => {
         }
         break
 
+      case 'select':
+        fieldSchema = z.string().optional()
+
+        // Aplicar validaciones específicas según required
+        if (typeof field.required === 'object') {
+          if (field.required.min) {
+            fieldSchema = z.string().min(1, field.required.min)
+          }
+        } else if (field.required === true) {
+          fieldSchema = z.string().min(1, `${field.label} es requerido`)
+        }
+        break
+
+      case 'checkbox-group':
+        fieldSchema = z.array(z.string()).optional()
+
+        // Aplicar validaciones específicas según required
+        if (typeof field.required === 'object') {
+          if (field.required.min) {
+            fieldSchema = z.array(z.string()).min(1, field.required.min)
+          }
+        } else if (field.required === true) {
+          fieldSchema = z.array(z.string()).min(1, `${field.label} es requerido`)
+        }
+        break
+
       case 'primary':
         fieldSchema = z.any().optional()
         break

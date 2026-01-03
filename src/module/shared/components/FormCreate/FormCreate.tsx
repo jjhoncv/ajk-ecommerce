@@ -10,7 +10,9 @@ import { type FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { CardContent } from '../CardContent/CardContent'
 import { Button } from '../Form/Input/Button'
+import { CheckboxGroup } from '../Form/Input/CheckboxGroup'
 import { Input } from '../Form/Input/Input'
+import { Select } from '../Form/Input/Select'
 import { createDynamicSchema } from './createDynamicSchema'
 import { DialogAssets } from './DialogAssets'
 import { extractDefaultValues } from './extractDefaultValues'
@@ -55,6 +57,7 @@ export const FormCreate: FC<FormCreateProps> = ({
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isSubmitting }
   } = useForm({
     resolver: zodResolver(schema),
@@ -108,6 +111,13 @@ export const FormCreate: FC<FormCreateProps> = ({
               formData.append(key, value[0].path)
             }
           }
+        } else if (field.type === 'checkbox-group') {
+          // Para checkbox-group, enviamos un array de IDs
+          if (Array.isArray(value) && value.length > 0) {
+            value.forEach((item: string) => {
+              formData.append(`${key}[]`, item)
+            })
+          }
         } else {
           formData.append(key, value)
         }
@@ -146,6 +156,33 @@ export const FormCreate: FC<FormCreateProps> = ({
             type={field.type}
             rows={field.type === 'textarea' ? 2 : undefined}
             onKeyDown={handleKeyDown}
+          />
+        )
+      case 'select':
+        return (
+          <Select
+            {...register(field.key)}
+            error={errors[field.key] as any}
+            label={field.label}
+          >
+            {field.placeholder && (
+              <option value="">{field.placeholder}</option>
+            )}
+            {field.selectOptions?.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        )
+      case 'checkbox-group':
+        return (
+          <CheckboxGroup
+            name={field.key}
+            label={field.label || ''}
+            error={errors[field.key] as any}
+            control={control}
+            items={field.checkboxItems || []}
           />
         )
       case 'file':

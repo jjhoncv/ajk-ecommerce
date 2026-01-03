@@ -25,7 +25,34 @@ import variantRatingModel, {
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.getProducts()
-    return ProductsMapper(productsRaw)
+    const products = ProductsMapper(productsRaw)
+
+    if (!products) return undefined
+
+    // Cargar la marca y categorías de cada producto
+    const productsWithData = await Promise.all(
+      products.map(async (product) => {
+        // Cargar marca
+        if (product.brandId) {
+          const brand = await brandModel.getBrandById(product.brandId)
+          if (brand) product.brand = brand
+        }
+
+        // Cargar categorías
+        const categories = await categoryModel.getCategoriesByProductId(product.id)
+        if (categories) {
+          product.productCategories = categories.map((category) => ({
+            categoryId: category.id,
+            productId: product.id,
+            categories
+          }))
+        }
+
+        return product
+      })
+    )
+
+    return productsWithData
   }
 
   public async getProductFullById(id: number): Promise<Product | undefined> {
@@ -156,7 +183,34 @@ export class ProductModel {
     searchTerm: string
   ): Promise<Product[] | undefined> {
     const productsRaw = await oProductRep.searchProductsByName(searchTerm)
-    return ProductsMapper(productsRaw)
+    const products = ProductsMapper(productsRaw)
+
+    if (!products) return undefined
+
+    // Cargar la marca y categorías de cada producto
+    const productsWithData = await Promise.all(
+      products.map(async (product) => {
+        // Cargar marca
+        if (product.brandId) {
+          const brand = await brandModel.getBrandById(product.brandId)
+          if (brand) product.brand = brand
+        }
+
+        // Cargar categorías
+        const categories = await categoryModel.getCategoriesByProductId(product.id)
+        if (categories) {
+          product.productCategories = categories.map((category) => ({
+            categoryId: category.id,
+            productId: product.id,
+            categories
+          }))
+        }
+
+        return product
+      })
+    )
+
+    return productsWithData
   }
 
   public async getProductsPaginated(

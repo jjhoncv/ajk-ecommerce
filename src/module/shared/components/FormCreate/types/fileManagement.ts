@@ -31,12 +31,25 @@ export interface FileOptions {
     | undefined;
 }
 
-export type FieldType = "primary" | "text" | "textarea" | "file";
+export interface SelectOption {
+  value: string
+  label: string
+}
+
+export type FieldType = "primary" | "text" | "textarea" | "file" | "select" | "checkbox-group";
+
+export interface CheckboxItem {
+  id: string
+  name: string
+}
 
 export interface Field extends FieldBasic {
   type: FieldType;
   multiple?: boolean;
   options?: FileOptions;
+  selectOptions?: SelectOption[];
+  checkboxItems?: CheckboxItem[];
+  placeholder?: string;
 }
 
 export interface ServerFilesProps {
