@@ -1,11 +1,11 @@
 export interface FileServer {
   createdAt: string;
-  extension: string;
+  extension?: string;
   modifiedAt: string;
   name: string;
   path: string;
   size: number;
-  type: "file";
+  type: "file" | "directory";
 }
 
 export interface FieldRequired {
@@ -29,6 +29,7 @@ export interface FileOptions {
         max: { width: number; height: number };
       }
     | undefined;
+  subdirectory?: string; // Para organizar archivos en carpetas (ej: SKU)
 }
 
 export interface SelectOption {

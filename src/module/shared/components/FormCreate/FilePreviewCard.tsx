@@ -8,6 +8,7 @@ export interface FilePreview {
   preview: string
   isValid: boolean
   errors?: string[]
+  customName?: string
 }
 
 interface FilePreviewCardProps {
@@ -24,6 +25,9 @@ interface FilePreviewCardProps {
   format: string
   withValidation?: boolean
   multiple?: boolean
+  customName?: string
+  onCustomNameChange?: (value: string) => void
+  showCustomNameInput?: boolean
 }
 
 export const FilePreviewCard: FC<FilePreviewCardProps> = ({
@@ -39,7 +43,10 @@ export const FilePreviewCard: FC<FilePreviewCardProps> = ({
   url,
   format,
   withValidation,
-  multiple
+  multiple,
+  customName,
+  onCustomNameChange,
+  showCustomNameInput
 }) => {
   return (
     <div className={`relative w-full rounded border border-slate-300`}>
@@ -97,11 +104,24 @@ export const FilePreviewCard: FC<FilePreviewCardProps> = ({
         </div>
       </div>
       <div className="border border-b-0 border-l-0 border-r-0 border-t-slate-300 p-2 text-sm">
-        <div className="flex flex-col">
-          <div className="overflow-hidden overflow-ellipsis text-nowrap">
-            {name}
+        <div className="flex flex-col gap-1">
+          <div className="overflow-hidden overflow-ellipsis text-nowrap text-xs text-gray-500">
+            Original: {name}
           </div>
-          <div className="text-xs uppercase">{format}</div>
+          {showCustomNameInput && onCustomNameChange ? (
+            <input
+              type="text"
+              value={customName || ''}
+              onChange={(e) => onCustomNameChange(e.target.value)}
+              placeholder="Nombre personalizado"
+              className="w-full rounded border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none"
+            />
+          ) : (
+            <div className="overflow-hidden overflow-ellipsis text-nowrap">
+              {customName || name}
+            </div>
+          )}
+          <div className="text-xs uppercase text-gray-400">{format}</div>
         </div>
       </div>
     </div>

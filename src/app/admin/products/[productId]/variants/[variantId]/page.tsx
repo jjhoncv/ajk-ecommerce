@@ -3,6 +3,7 @@ import productModel from '@/backend/product'
 import productVariantModel from '@/backend/product-variant'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
+import { VariantImageManager } from '@/module/products/components/admin/variants/VariantImageManager'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
@@ -93,15 +94,26 @@ export default async function EditVariantPage({
           { label: 'Editar Variante' }
         ]}
       >
-        <VariantForm
-          type="edit"
-          productId={productId}
-          fields={fieldsWithValues}
-          attributes={attributes || []}
-          selectedAttributes={selectedAttributes}
-          customFields={{ id: variantId }}
-          redirectUrl={`/admin/products/${productId}/variants`}
-        />
+        <div className="space-y-6">
+          {/* Formulario de variante */}
+          <VariantForm
+            type="edit"
+            productId={productId}
+            fields={fieldsWithValues}
+            attributes={attributes || []}
+            selectedAttributes={selectedAttributes}
+            customFields={{ id: variantId }}
+            redirectUrl={`/admin/products/${productId}/variants`}
+          />
+
+          {/* Gestión de imágenes */}
+          <div className="rounded-lg border border-gray-200 bg-white p-6">
+            <VariantImageManager
+              variantId={Number(variantId)}
+              productId={Number(productId)}
+            />
+          </div>
+        </div>
       </PageUI>
     </LayoutPageAdmin>
   )

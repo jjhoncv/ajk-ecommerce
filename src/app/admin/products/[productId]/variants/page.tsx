@@ -1,6 +1,7 @@
 import productModel from '@/backend/product'
 import productVariantModel from '@/backend/product-variant'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import variantImageModel from '@/backend/variant-image'
 import { VariantListView } from '@/module/products/components/admin/variants/VariantListView'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
@@ -25,18 +26,25 @@ export default async function VariantListPage({
     Number(productId)
   )
 
-  // Cargar atributos de todas las variantes
+  // Cargar atributos e imágenes de todas las variantes
   let variantsWithAttributes = variants || []
   if (variants && variants.length > 0) {
     const variantIds = variants.map((v) => v.id)
+
+    // Cargar atributos
     const attributesByVariantId =
       await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsByIds(
         variantIds
       )
 
+    // Cargar imágenes
+    const imagesByVariantId =
+      await variantImageModel.getVariantImagesByVariantIds(variantIds)
+
     variantsWithAttributes = variants.map((variant) => ({
       ...variant,
-      variantAttributeOptions: attributesByVariantId.get(variant.id) || []
+      variantAttributeOptions: attributesByVariantId.get(variant.id) || [],
+      variantImages: imagesByVariantId.get(variant.id) || []
     }))
   }
 

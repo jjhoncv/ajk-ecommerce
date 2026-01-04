@@ -13,6 +13,7 @@ interface BrowserFilesProps {
   setOpenDialog: (value: boolean) => void
   setOpenBrowserFiles: (value: boolean) => void
   field: Field
+  currentPath: string
 }
 
 export const renderOptionsFile = (options: FileOptions) => {
@@ -37,7 +38,8 @@ export const renderOptionsFile = (options: FileOptions) => {
 export const BrowserFiles: FC<BrowserFilesProps> = ({
   setOpenDialog,
   field,
-  setOpenBrowserFiles
+  setOpenBrowserFiles,
+  currentPath
 }) => {
   const [previews, setPreviews] = useState<FilePreview[]>([])
   const [isValidating, setIsValidating] = useState(false)
@@ -86,12 +88,15 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
       for (const file of Array.from(files)) {
         const preview = URL.createObjectURL(file)
         const validation = await validateSingleFile(file)
+        // Extraer nombre sin extensión como nombre personalizado inicial
+        const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name
         newPreviews.push({
           id: uuidv4(),
           file,
           preview,
           isValid: validation.isValid,
-          errors: validation.errors
+          errors: validation.errors,
+          customName: nameWithoutExt
         })
       }
 
@@ -105,6 +110,12 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
     } finally {
       setIsValidating(false)
     }
+  }
+
+  const handleCustomNameChange = (previewId: string, newName: string) => {
+    setPreviews((prev) =>
+      prev.map((p) => (p.id === previewId ? { ...p, customName: newName } : p))
+    )
   }
 
   const onChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,20 +133,34 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
 
   const onSubmit = async (e: any) => {
     e.preventDefault()
-    const validFiles = previews.filter((p) => p.isValid).map((p) => p.file)
-    if (validFiles.length > 0) {
-      const dt = new DataTransfer()
-      validFiles.forEach((file) => dt.items.add(file))
-
+    const validPreviews = previews.filter((p) => p.isValid)
+    if (validPreviews.length > 0) {
       const formData = new FormData()
       formData.append('name', field.key)
 
-      const files = dt.files
-      if (files instanceof FileList) {
-        Array.from(files).forEach((file, index) => {
-          formData.append(`${field.key}[]`, file)
-        })
+      // Usar currentPath si existe, sino usar subdirectory del field
+      if (currentPath) {
+        console.log('📤 Uploading files to:', currentPath)
+        formData.append('subdirectory', currentPath)
+      } else if (field.options?.subdirectory) {
+        console.log('📤 Uploading files to (from field):', field.options.subdirectory)
+        formData.append('subdirectory', field.options.subdirectory)
+      } else {
+        console.log('📤 Uploading files to root')
       }
+
+      // Enviar cada archivo con su nombre personalizado
+      validPreviews.forEach((preview, index) => {
+        formData.append(`${field.key}[]`, preview.file)
+        // Enviar nombre personalizado en un array paralelo
+        if (preview.customName && preview.customName.trim()) {
+          formData.append(`customNames[]`, preview.customName.trim())
+        } else {
+          // Si no hay nombre personalizado, enviar cadena vacía
+          formData.append(`customNames[]`, '')
+        }
+      })
+
       try {
         await FetchCustomBody({
           data: formData,
@@ -274,6 +299,11 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
                           errors={preview.errors}
                           isValid={preview.isValid}
                           withValidation
+                          customName={preview.customName}
+                          onCustomNameChange={(newName) =>
+                            handleCustomNameChange(preview.id, newName)
+                          }
+                          showCustomNameInput
                           key={index}
                         />
                       ))}

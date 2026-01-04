@@ -6,18 +6,28 @@ import { type NextRequest, NextResponse } from 'next/server'
 import path, { join } from 'path'
 
 export async function GET(req: NextRequest) {
-  const files = getFileTree('/public/uploads')
+  const { searchParams } = new URL(req.url)
+  const currentPath = searchParams.get('path') || '' // Ruta actual dentro de /uploads
 
-  const filesFixPath = files.map((file) => ({
-    ...file,
-    path: file.path.replace('/public', '')
+  // Construir ruta completa: /public/uploads/{currentPath}
+  const basePath = '/public/uploads'
+  const fullPath = currentPath ? `${basePath}/${currentPath}` : basePath
+
+  const items = getFileTree(fullPath)
+
+  const itemsFixPath = items.map((item) => ({
+    ...item,
+    path: item.path.replace('/public', ''),
+    // Remover children para no enviar todo el árbol (solo el nivel actual)
+    children: undefined
   }))
 
   const response = NextResponse.json(
     {
       message: 'archivos de la libreria',
       success: true,
-      files: filesFixPath
+      files: itemsFixPath,
+      currentPath: currentPath || ''
     },
     {
       status: 200
@@ -30,12 +40,32 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
     const nameField = formData.get('name')
+    const subdirectory = formData.get('subdirectory') as string | null // Nuevo: subdirectorio (SKU)
     const files = formData.getAll(`${nameField}[]`) as File[]
+    const customNames = formData.getAll('customNames[]') as string[] // Nombres personalizados
 
     const filesURL = await Promise.all(
-      files.map(async (file) => {
-        const uploadDir = join(process.cwd(), 'public', 'uploads')
-        const fileUrl = await writeFileServer(uploadDir, file)
+      files.map(async (file, index) => {
+        let uploadDir = join(process.cwd(), 'public', 'uploads')
+
+        // Si hay subdirectorio, crear carpeta específica
+        if (subdirectory && subdirectory.trim() !== '') {
+          // Sanitizar el subdirectorio para evitar path traversal
+          // Primero normalizar y remover intentos de subir niveles (..)
+          const normalized = path.normalize(subdirectory).replace(/^(\.\.[\\/])+/, '')
+          // Luego unir con uploadDir de forma segura
+          uploadDir = join(uploadDir, normalized)
+
+          console.log('📁 Upload directory:', {
+            subdirectory,
+            normalized,
+            uploadDir
+          })
+        }
+
+        // Obtener nombre personalizado correspondiente al índice del archivo
+        const customName = customNames[index] || ''
+        const fileUrl = await writeFileServer(uploadDir, file, customName)
         return fileUrl
       })
     )

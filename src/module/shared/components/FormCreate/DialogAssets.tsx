@@ -1,6 +1,7 @@
 import { X } from 'lucide-react'
 import { FC, useState } from 'react'
 import { BrowserFiles } from './BrowserFiles'
+import { FileLibraryHeader } from './FileLibraryHeader'
 import { ServerFiles } from './ServerFiles'
 import { Field, FileServer } from './types/fileManagement'
 
@@ -18,6 +19,73 @@ export const DialogAssets: FC<DialogAssetsProps> = ({
   field
 }) => {
   const [showBrowserFiles, setShowBrowserFiles] = useState(false)
+  const [currentPath, setCurrentPath] = useState<string>('')
+  const [showCreateFolder, setShowCreateFolder] = useState(false)
+  const [newFolderName, setNewFolderName] = useState('')
+  const [errors, setErrors] = useState<any[]>()
+  const [reloadTrigger, setReloadTrigger] = useState(0)
+
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) {
+      setErrors([{ message: 'El nombre de la carpeta no puede estar vacío' }])
+      return
+    }
+
+    try {
+      const folderPath = currentPath
+        ? `${currentPath}/${newFolderName.trim()}`
+        : newFolderName.trim()
+
+      console.log('🔍 Creating folder:', {
+        currentPath,
+        newFolderName: newFolderName.trim(),
+        finalFolderPath: folderPath
+      })
+
+      const response = await fetch('/api/admin/library/folder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folderPath })
+      })
+
+      const json = await response.json()
+
+      if (!json.success) {
+        setErrors([{ message: json.message || 'Error al crear carpeta' }])
+        return
+      }
+
+      // Limpiar y cerrar
+      setNewFolderName('')
+      setShowCreateFolder(false)
+      setErrors([])
+
+      // Si estamos en modo BrowserFiles, volver a ServerFiles para ver la carpeta creada
+      if (showBrowserFiles) {
+        setShowBrowserFiles(false)
+      }
+
+      // Trigger reload incrementando el contador
+      setReloadTrigger((prev) => prev + 1)
+    } catch (error) {
+      console.error('Error creating folder:', error)
+      setErrors([{ message: 'Error al crear la carpeta' }])
+    }
+  }
+
+  const handleGoBack = () => {
+    // Si estamos en modo BrowserFiles, primero volver a ServerFiles
+    if (showBrowserFiles) {
+      setShowBrowserFiles(false)
+      return
+    }
+
+    // Si no, navegar a la carpeta padre
+    const pathParts = currentPath.split('/')
+    pathParts.pop()
+    const newPath = pathParts.join('/')
+    setCurrentPath(newPath)
+  }
 
   if (!field) return null
 
@@ -49,21 +117,45 @@ export const DialogAssets: FC<DialogAssetsProps> = ({
                 </div>
 
                 {showBrowserFiles ? (
-                  <BrowserFiles
-                    field={field}
-                    setOpenDialog={(v) => {
-                      setOpenDialog(v)
-                      setShowBrowserFiles(false)
-                    }}
-                    setOpenBrowserFiles={setShowBrowserFiles}
-                  />
+                  <div className="py-4 !pb-0">
+                    <FileLibraryHeader
+                      field={field}
+                      onAddFiles={() => setShowBrowserFiles(true)}
+                      currentPath={currentPath}
+                      onGoBack={handleGoBack}
+                      showCreateFolder={showCreateFolder}
+                      setShowCreateFolder={setShowCreateFolder}
+                      newFolderName={newFolderName}
+                      setNewFolderName={setNewFolderName}
+                      onCreateFolder={handleCreateFolder}
+                      errors={errors}
+                    />
+                    <BrowserFiles
+                      field={field}
+                      currentPath={currentPath}
+                      setOpenDialog={(v) => {
+                        setOpenDialog(v)
+                        setShowBrowserFiles(false)
+                      }}
+                      setOpenBrowserFiles={setShowBrowserFiles}
+                    />
+                  </div>
                 ) : (
                   <>
                     <ServerFiles
                       field={field}
+                      currentPath={currentPath}
+                      setCurrentPath={setCurrentPath}
                       setOpenDialog={setOpenDialog}
                       onAddFiles={() => setShowBrowserFiles(true)}
                       addFilesToForm={(f) => addFilesToForm(field, f)}
+                      showCreateFolder={showCreateFolder}
+                      setShowCreateFolder={setShowCreateFolder}
+                      newFolderName={newFolderName}
+                      setNewFolderName={setNewFolderName}
+                      onCreateFolder={handleCreateFolder}
+                      errors={errors}
+                      reloadTrigger={reloadTrigger}
                     />
                   </>
                 )}

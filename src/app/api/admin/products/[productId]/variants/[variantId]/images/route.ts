@@ -82,6 +82,15 @@ export async function POST(
     }
 
     try {
+      // Verificar que el método existe
+      if (typeof variantImageModel.createVariantImage !== 'function') {
+        console.error('variantImageModel methods:', Object.keys(variantImageModel))
+        return createResponse(
+          { error: 'Método createVariantImage no disponible. Reinicia el servidor.', success: false },
+          500
+        )
+      }
+
       const image = await variantImageModel.createVariantImage({
         variant_id: Number(variantId),
         image_type: imageType as any,

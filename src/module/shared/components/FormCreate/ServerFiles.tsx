@@ -1,8 +1,7 @@
 import { schemaImageValidation } from '@/module/shared/lib/schemaImage'
-import { FilesIcon, Plus } from 'lucide-react'
+import { Edit2, FilesIcon, Folder, Trash2 } from 'lucide-react'
 import { type FC, useCallback, useEffect, useState } from 'react'
-import { Button } from '../Form/Input/Button'
-import { renderOptionsFile } from './BrowserFiles'
+import { FileLibraryHeader } from './FileLibraryHeader'
 import { FilePreviewCard } from './FilePreviewCard'
 import { type Field, type FileServer } from './types/fileManagement'
 
@@ -11,13 +10,31 @@ interface ServerFilesProps {
   setOpenDialog: (value: boolean) => void
   addFilesToForm: (files: FileServer[]) => void
   field: Field
+  currentPath: string
+  setCurrentPath: (path: string) => void
+  showCreateFolder: boolean
+  setShowCreateFolder: (value: boolean) => void
+  newFolderName: string
+  setNewFolderName: (value: string) => void
+  onCreateFolder: () => void
+  errors?: any[]
+  reloadTrigger?: number
 }
 
 export const ServerFiles: FC<ServerFilesProps> = ({
   onAddFiles,
   setOpenDialog,
   addFilesToForm,
-  field
+  field,
+  currentPath,
+  setCurrentPath,
+  showCreateFolder,
+  setShowCreateFolder,
+  newFolderName,
+  setNewFolderName,
+  onCreateFolder,
+  errors,
+  reloadTrigger
 }) => {
   const [state, setState] = useState<{
     files: FileServer[]
@@ -29,13 +46,18 @@ export const ServerFiles: FC<ServerFilesProps> = ({
     error: null
   })
   const [selecteds, setSelecteds] = useState<string[]>([])
-  const [errors, setErrors] = useState<any[]>()
+  const [renamingFolder, setRenamingFolder] = useState<string | null>(null)
+  const [newFolderNameRename, setNewFolderNameRename] = useState('')
 
   const loadFilesServer = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }))
 
-      const response = await fetch('/api/admin/library')
+      const url = currentPath
+        ? `/api/admin/library?path=${encodeURIComponent(currentPath)}`
+        : '/api/admin/library'
+
+      const response = await fetch(url)
       const json = await response.json()
       const dataFiles = json.files as FileServer[]
 
@@ -43,14 +65,22 @@ export const ServerFiles: FC<ServerFilesProps> = ({
         accept.split('/').pop()
       )
 
-      const dataFilesFiltered = dataFiles.filter((file) =>
+      // Separar carpetas y archivos
+      const folders = dataFiles.filter((item) => item.type === 'directory')
+      const files = dataFiles.filter((item) => item.type === 'file')
+
+      // Filtrar archivos por extensión permitida
+      const filesFiltered = files.filter((file) =>
         extensionAlloweds?.includes(
           file.extension ? file.extension.toLowerCase().replace(/^\./, '') : ''
         )
       )
 
+      // Combinar carpetas primero, luego archivos
+      const allItems = [...folders, ...filesFiltered]
+
       setState({
-        files: dataFilesFiltered,
+        files: allItems,
         loading: false,
         error: null
       })
@@ -63,11 +93,11 @@ export const ServerFiles: FC<ServerFilesProps> = ({
       }))
       console.error('Error loading files:', error)
     }
-  }, [field.options?.acceptImageTypes])
+  }, [field.options?.acceptImageTypes, currentPath])
 
   useEffect(() => {
     loadFilesServer()
-  }, [loadFilesServer])
+  }, [loadFilesServer, reloadTrigger])
 
   const handleFileSelect = useCallback(
     (value: string, checked: boolean) => {
@@ -80,6 +110,123 @@ export const ServerFiles: FC<ServerFilesProps> = ({
     },
     [field.multiple]
   )
+
+  const handleFolderClick = (folderName: string) => {
+    // Navegar a la carpeta
+    const newPath = currentPath ? `${currentPath}/${folderName}` : folderName
+    console.log('📁 Navigating to folder:', {
+      from: currentPath,
+      folderName,
+      to: newPath
+    })
+    setCurrentPath(newPath)
+    setSelecteds([]) // Limpiar selección al cambiar de carpeta
+  }
+
+  const handleGoBack = () => {
+    // Volver a la carpeta padre
+    const pathParts = currentPath.split('/')
+    pathParts.pop()
+    const newPath = pathParts.join('/')
+    setCurrentPath(newPath)
+    setSelecteds([])
+  }
+
+  const handleRenameFolder = async (folderName: string) => {
+    if (!newFolderNameRename.trim()) {
+      alert('El nombre no puede estar vacío')
+      return
+    }
+
+    try {
+      const oldPath = currentPath ? `${currentPath}/${folderName}` : folderName
+
+      const response = await fetch('/api/admin/library/folder', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          oldPath,
+          newName: newFolderNameRename.trim()
+        })
+      })
+
+      const json = await response.json()
+
+      if (!json.success) {
+        alert(json.message || 'Error al renombrar carpeta')
+        return
+      }
+
+      // Mostrar mensaje con información de actualización de BD
+      if (json.databaseUpdates && json.databaseUpdates.recordsUpdated > 0) {
+        alert(
+          `Carpeta renombrada exitosamente.\n\n` +
+            `✅ Se actualizaron ${json.databaseUpdates.recordsUpdated} registro(s) en la base de datos.`
+        )
+      } else {
+        alert('Carpeta renombrada exitosamente.')
+      }
+
+      // Limpiar y recargar
+      setRenamingFolder(null)
+      setNewFolderNameRename('')
+      await loadFilesServer()
+    } catch (error) {
+      console.error('Error renaming folder:', error)
+      alert('Error al renombrar la carpeta')
+    }
+  }
+
+  const handleDeleteFolder = async (folderName: string) => {
+    try {
+      const folderPath = currentPath ? `${currentPath}/${folderName}` : folderName
+
+      // Primero obtener info de la carpeta para mostrar advertencia
+      const response = await fetch('/api/admin/library/folder', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folderPath })
+      })
+
+      const json = await response.json()
+
+      if (!json.success) {
+        alert(json.message || 'Error al eliminar carpeta')
+        return
+      }
+
+      if (json.deleted) {
+        const { files, folders, databaseRecords } = json.deleted
+        let message = `Carpeta eliminada exitosamente.\n\n` +
+          `Se eliminaron:\n` +
+          `- ${files} archivo(s)\n` +
+          `- ${folders} carpeta(s)`
+
+        if (databaseRecords > 0) {
+          message += `\n- ${databaseRecords} registro(s) de la base de datos`
+        }
+
+        alert(message)
+      }
+
+      // Recargar archivos
+      await loadFilesServer()
+    } catch (error) {
+      console.error('Error deleting folder:', error)
+      alert('Error al eliminar la carpeta')
+    }
+  }
+
+  const confirmDeleteFolder = async (folderName: string) => {
+    const confirmed = window.confirm(
+      `¿Estás seguro de eliminar la carpeta "${folderName}"?\n\n` +
+        `Esta acción eliminará la carpeta y todo su contenido de forma permanente.`
+    )
+
+    if (confirmed) {
+      await handleDeleteFolder(folderName)
+    }
+  }
 
   const handleRemoveFile = async (file: FileServer) => {
     try {
@@ -149,9 +296,14 @@ export const ServerFiles: FC<ServerFilesProps> = ({
 
   const handleFinish = async () => {
     try {
-      const filesSelecteds = state.files.filter((_, index) =>
-        selecteds.includes(index.toString())
+      const filesSelecteds = state.files.filter((item, index) =>
+        selecteds.includes(index.toString()) && item.type === 'file'
       )
+
+      if (filesSelecteds.length === 0) {
+        setErrors([{ message: 'Debes seleccionar al menos un archivo' }])
+        return
+      }
 
       const fileList = await convertServerFilesToFileList(filesSelecteds)
 
@@ -193,62 +345,150 @@ export const ServerFiles: FC<ServerFilesProps> = ({
     if (state.files.length === 0) {
       return (
         <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-          <FilesIcon size={40} />
-          <p>Librería de archivos vacía</p>
-          <Button onClick={onAddFiles} type="button">
-            <div className="flex items-center gap-1">
-              <Plus size={20} />
-              <div>Añadir nuevo archivo</div>
-            </div>
-          </Button>
+          <FilesIcon size={40} className="text-gray-400" />
+          <p className="text-gray-500">
+            {currentPath ? 'Carpeta vacía' : 'Librería de archivos vacía'}
+          </p>
+          <p className="text-sm text-gray-400">
+            Usa el botón "Añadir más archivos" para subir contenido
+          </p>
         </div>
       )
     }
 
     return (
       <div className="grid max-h-[330px] w-full grid-cols-1 gap-3 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">
-        {state.files.map((file, index) => (
-          <FilePreviewCard
-            key={`${file.path}-${index}`}
-            onChangeInput={(e) => {
-              handleFileSelect(e.target.value, e.target.checked)
-            }}
-            onClickRemove={async () => {
-              await handleRemoveFile(file)
-            }}
-            multiple={field.multiple}
-            value={index.toString()}
-            checked={selecteds.includes(index.toString())}
-            name={file.name}
-            format={file.extension.split('.').pop() ?? ''}
-            id={index.toString()}
-            isImage={/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(file.name)}
-            url={file.path}
-          />
-        ))}
+        {state.files.map((item, index) => {
+          // Si es carpeta, mostrar card de carpeta
+          if (item.type === 'directory') {
+            const isRenaming = renamingFolder === item.name
+
+            return (
+              <div
+                key={`folder-${item.name}-${index}`}
+                className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-gray-300 bg-gradient-to-b from-gray-50 to-gray-100 p-6 transition-all hover:border-blue-400 hover:shadow-md"
+              >
+                {/* Botones de acción */}
+                <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setRenamingFolder(item.name)
+                      setNewFolderNameRename(item.name)
+                    }}
+                    className="rounded bg-blue-500 p-1 text-white hover:bg-blue-600"
+                    title="Renombrar carpeta"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      confirmDeleteFolder(item.name)
+                    }}
+                    className="rounded bg-red-500 p-1 text-white hover:bg-red-600"
+                    title="Eliminar carpeta"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+
+                {/* Contenido de la carpeta */}
+                <div
+                  onClick={() => !isRenaming && handleFolderClick(item.name)}
+                  className={!isRenaming ? 'cursor-pointer' : ''}
+                >
+                  <Folder
+                    size={48}
+                    className="text-gray-400 transition-colors group-hover:text-blue-500"
+                  />
+                </div>
+
+                {/* Nombre de carpeta o input de renombrado */}
+                {isRenaming ? (
+                  <div className="mt-2 flex w-full flex-col gap-1" onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="text"
+                      value={newFolderNameRename}
+                      onChange={(e) => setNewFolderNameRename(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleRenameFolder(item.name)
+                        }
+                        if (e.key === 'Escape') {
+                          setRenamingFolder(null)
+                          setNewFolderNameRename('')
+                        }
+                      }}
+                      className="w-full rounded border border-blue-500 px-2 py-1 text-center text-xs focus:outline-none"
+                      autoFocus
+                    />
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleRenameFolder(item.name)}
+                        className="flex-1 rounded bg-green-500 px-2 py-1 text-xs text-white hover:bg-green-600"
+                      >
+                        ✓
+                      </button>
+                      <button
+                        onClick={() => {
+                          setRenamingFolder(null)
+                          setNewFolderNameRename('')
+                        }}
+                        className="flex-1 rounded bg-gray-400 px-2 py-1 text-xs text-white hover:bg-gray-500"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-center text-sm font-medium text-gray-700">
+                    {item.name}
+                  </p>
+                )}
+              </div>
+            )
+          }
+
+          // Si es archivo, mostrar FilePreviewCard normal
+          return (
+            <FilePreviewCard
+              key={`${item.path}-${index}`}
+              onChangeInput={(e) => {
+                handleFileSelect(e.target.value, e.target.checked)
+              }}
+              onClickRemove={async () => {
+                await handleRemoveFile(item)
+              }}
+              multiple={field.multiple}
+              value={index.toString()}
+              checked={selecteds.includes(index.toString())}
+              name={item.name}
+              format={item.extension?.split('.').pop() ?? ''}
+              id={index.toString()}
+              isImage={/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(item.name)}
+              url={item.path}
+            />
+          )
+        })}
       </div>
     )
   }
 
   return (
     <div className="py-4 !pb-0">
-      <div className="w-full gap-3 border-b px-4 pb-4">
-        <div className="flex w-full items-center justify-between">
-          <div>{field.options && renderOptionsFile(field.options)}</div>
-          <button
-            onClick={onAddFiles}
-            className="rounded border border-transparent bg-sky-600 px-4 py-2 text-white"
-          >
-            Añadir más archivos
-          </button>
-        </div>
-        {(errors && errors?.length > 0 && (
-          <div className="mt-2 text-sm text-red-500">
-            {errors.map((error) => error.message).join('')}
-          </div>
-        )) ||
-          ''}
-      </div>
+      <FileLibraryHeader
+        field={field}
+        onAddFiles={onAddFiles}
+        currentPath={currentPath}
+        onGoBack={handleGoBack}
+        showCreateFolder={showCreateFolder}
+        setShowCreateFolder={setShowCreateFolder}
+        newFolderName={newFolderName}
+        setNewFolderName={setNewFolderName}
+        onCreateFolder={onCreateFolder}
+        errors={errors}
+      />
 
       <div className="p-8">
         <div className="flex h-full min-h-[200px] items-center">

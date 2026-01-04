@@ -119,6 +119,71 @@ export class VariantImageRepository {
       values: [imageId]
     })
   }
+
+  // Buscar imágenes que contienen una ruta específica
+  public async findImagesByPathPattern(
+    pathPattern: string
+  ): Promise<VariantImagesRaw[]> {
+    const searchPattern = `%${pathPattern}%`
+
+    const images = await executeQuery<VariantImagesRaw[]>({
+      query: `
+        SELECT * FROM variant_images
+        WHERE image_url_thumb LIKE ?
+           OR image_url_normal LIKE ?
+           OR image_url_zoom LIKE ?
+      `,
+      values: [searchPattern, searchPattern, searchPattern]
+    })
+
+    return images
+  }
+
+  // Actualizar rutas de imágenes (renombrar carpeta)
+  public async updateImagePaths(
+    oldPath: string,
+    newPath: string
+  ): Promise<number> {
+    const result = await executeQuery<{ affectedRows: number }>({
+      query: `
+        UPDATE variant_images
+        SET
+          image_url_thumb = REPLACE(image_url_thumb, ?, ?),
+          image_url_normal = REPLACE(image_url_normal, ?, ?),
+          image_url_zoom = REPLACE(image_url_zoom, ?, ?)
+        WHERE image_url_thumb LIKE ?
+           OR image_url_normal LIKE ?
+           OR image_url_zoom LIKE ?
+      `,
+      values: [
+        oldPath, newPath,
+        oldPath, newPath,
+        oldPath, newPath,
+        `%${oldPath}%`,
+        `%${oldPath}%`,
+        `%${oldPath}%`
+      ]
+    })
+
+    return result.affectedRows || 0
+  }
+
+  // Eliminar registros de imágenes por patrón de ruta (eliminar carpeta)
+  public async deleteImagesByPathPattern(pathPattern: string): Promise<number> {
+    const searchPattern = `%${pathPattern}%`
+
+    const result = await executeQuery<{ affectedRows: number }>({
+      query: `
+        DELETE FROM variant_images
+        WHERE image_url_thumb LIKE ?
+           OR image_url_normal LIKE ?
+           OR image_url_zoom LIKE ?
+      `,
+      values: [searchPattern, searchPattern, searchPattern]
+    })
+
+    return result.affectedRows || 0
+  }
 }
 
 const variantImageRepository = new VariantImageRepository()

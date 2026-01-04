@@ -8,6 +8,8 @@ import {
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
 import { type ProductVariants } from '@/types/domain'
+import { ImageIcon } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
@@ -24,6 +26,37 @@ export const VariantListView: FC<VariantListViewProps> = ({
   const router = useRouter()
 
   const columns: TableColumn[] = [
+    {
+      key: 'variantImages',
+      label: 'Imagen',
+      priority: 'high',
+      sortable: false,
+      render: (variantImages: any) => {
+        // Buscar imagen principal o primera imagen
+        const primaryImage = variantImages?.find((img: any) => img.isPrimary)
+        const displayImage = primaryImage || variantImages?.[0]
+
+        if (!displayImage) {
+          return (
+            <div className="flex h-12 w-12 items-center justify-center rounded bg-gray-100">
+              <ImageIcon size={20} className="text-gray-400" />
+            </div>
+          )
+        }
+
+        return (
+          <div className="relative h-12 w-12 overflow-hidden rounded border border-gray-200">
+            <Image
+              src={displayImage.imageUrlThumb}
+              alt={displayImage.altText || 'Imagen de variante'}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )
+      },
+      width: '80px'
+    },
     {
       key: 'sku',
       label: 'SKU',
