@@ -3,15 +3,14 @@ import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
 import { ImagePlusIcon, Star, Trash2 } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { type FC, useEffect, useState } from 'react'
 import { DialogAssets } from '@/module/shared/components/FormCreate/DialogAssets'
 import { type FileServer } from '@/module/shared/components/FormCreate/types/fileManagement'
-import { VariantImageFileOptions } from './variantImageFileOptions'
+import { AttributeOptionImageFileOptions } from './attributeOptionImageFileOptions'
 
-interface VariantImage {
+interface AttributeOptionImage {
   id: number
-  variantId: number
+  attributeOptionId: number
   imageType: string
   imageUrlThumb: string
   imageUrlNormal: string
@@ -21,33 +20,29 @@ interface VariantImage {
   altText?: string
 }
 
-interface VariantImageManagerProps {
-  variantId: number
-  productId: number
-  initialImages?: VariantImage[]
+interface AttributeOptionImageManagerProps {
+  attributeOptionId: number
+  attributeId: number
+  initialImages?: AttributeOptionImage[]
 }
 
-export const VariantImageManager: FC<VariantImageManagerProps> = ({
-  variantId,
-  productId,
-  initialImages = []
-}) => {
-  const router = useRouter()
-  const [images, setImages] = useState<VariantImage[]>(initialImages)
+export const AttributeOptionImageManager: FC<
+  AttributeOptionImageManagerProps
+> = ({ attributeOptionId, attributeId, initialImages = [] }) => {
+  const [images, setImages] = useState<AttributeOptionImage[]>(initialImages)
   const [loading, setLoading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [editingImage, setEditingImage] = useState<VariantImage | null>(null)
 
   // Cargar imágenes al montar
   useEffect(() => {
     loadImages()
-  }, [variantId])
+  }, [attributeOptionId])
 
   const loadImages = async () => {
     try {
       setLoading(true)
       const response = await fetch(
-        `/api/admin/products/${productId}/variants/${variantId}/images`
+        `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`
       )
       const result = await response.json()
       if (result.success) {
@@ -77,7 +72,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         formData.append('altText', file.name)
 
         await FetchCustomBody({
-          url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+          url: `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`,
           method: 'POST',
           data: formData,
           withFiles: true
@@ -97,15 +92,33 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
   const handleSetPrimary = async (imageId: number) => {
     try {
       setLoading(true)
+
+      // Actualizar la imagen seleccionada
+      const formData = new FormData()
+      formData.append('id', imageId.toString())
+      formData.append('isPrimary', 'true')
+
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images/actions`,
-        method: 'POST',
-        data: {
-          action: 'setPrimary',
-          data: { imageId }
-        },
-        withFiles: false
+        url: `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`,
+        method: 'PATCH',
+        data: formData,
+        withFiles: true
       })
+
+      // Desmarcar las demás como primarias
+      for (const img of images) {
+        if (img.id !== imageId && img.isPrimary) {
+          const fd = new FormData()
+          fd.append('id', img.id.toString())
+          fd.append('isPrimary', 'false')
+          await FetchCustomBody({
+            url: `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`,
+            method: 'PATCH',
+            data: fd,
+            withFiles: true
+          })
+        }
+      }
 
       ToastSuccess('Imagen marcada como principal')
       await loadImages()
@@ -122,7 +135,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
     try {
       setLoading(true)
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+        url: `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`,
         method: 'DELETE',
         data: { id: imageId },
         withFiles: false
@@ -144,7 +157,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
       formData.append('altText', altText)
 
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+        url: `/api/admin/attributes/${attributeId}/options/${attributeOptionId}/images`,
         method: 'PATCH',
         data: formData,
         withFiles: true
@@ -169,7 +182,9 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Imágenes de la variante</h3>
+          <h3 className="text-lg font-semibold">
+            Imágenes de la opción de atributo
+          </h3>
           <p className="text-sm text-gray-500">
             {images.length} imagen{images.length !== 1 ? 'es' : ''}
           </p>
@@ -193,7 +208,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         <div className="flex h-40 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
           <ImagePlusIcon size={40} className="text-gray-400" />
           <p className="mt-2 text-sm text-gray-500">
-            No hay imágenes. Click en "Agregar imágenes" para comenzar.
+            No hay imágenes. Click en &quot;Agregar imágenes&quot; para comenzar.
           </p>
         </div>
       ) : (
@@ -219,7 +234,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
               <div className="relative aspect-square overflow-hidden rounded">
                 <Image
                   src={image.imageUrlThumb}
-                  alt={image.altText || 'Imagen de variante'}
+                  alt={image.altText || 'Imagen de opción de atributo'}
                   fill
                   className="object-cover"
                 />
@@ -287,11 +302,11 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
             handleAddFiles(files)
           }}
           field={{
-            key: 'variant_images',
-            label: 'Imágenes de variante',
+            key: 'attribute_option_images',
+            label: 'Imágenes de opción de atributo',
             type: 'file',
             multiple: true,
-            options: VariantImageFileOptions
+            options: AttributeOptionImageFileOptions
           }}
         />
       )}

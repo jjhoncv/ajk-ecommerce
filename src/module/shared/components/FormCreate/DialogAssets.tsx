@@ -1,9 +1,9 @@
 import { X } from 'lucide-react'
-import { FC, useState } from 'react'
+import { type FC, useState } from 'react'
 import { BrowserFiles } from './BrowserFiles'
 import { FileLibraryHeader } from './FileLibraryHeader'
 import { ServerFiles } from './ServerFiles'
-import { Field, FileServer } from './types/fileManagement'
+import { type Field, type FileServer } from './types/fileManagement'
 
 interface DialogAssetsProps {
   open: boolean
@@ -100,18 +100,20 @@ export const DialogAssets: FC<DialogAssetsProps> = ({
             }}
             className={`${
               open
-                ? `absolute bottom-0 left-0 right-0 top-0 z-30 bg-black opacity-50`
-                : `absolute h-0 w-0`
+                ? 'fixed bottom-0 left-0 right-0 top-0 z-30 !mt-0 bg-black opacity-50'
+                : 'absolute h-0 w-0'
             } transition-all`}
           ></div>
           {open && (
-            <div className="absolute bottom-0 left-0 right-0 top-0 flex h-full w-full items-center justify-center">
+            <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex h-full w-full items-center justify-center">
               <div className="z-40 flex w-[calc(100%-20px)] flex-col rounded border border-slate-200 bg-white md:w-[800px]">
                 <div className="flex w-full items-center justify-between bg-slate-200 p-4">
                   <div className="font-semibold">Añadir nuevo archivo</div>
                   <X
                     size={20}
-                    onClick={() => setOpenDialog(false)}
+                    onClick={() => {
+                      setOpenDialog(false)
+                    }}
                     className="cursor-pointer"
                   />
                 </div>
@@ -120,7 +122,9 @@ export const DialogAssets: FC<DialogAssetsProps> = ({
                   <div className="py-4 !pb-0">
                     <FileLibraryHeader
                       field={field}
-                      onAddFiles={() => setShowBrowserFiles(true)}
+                      onAddFiles={() => {
+                        setShowBrowserFiles(true)
+                      }}
                       currentPath={currentPath}
                       onGoBack={handleGoBack}
                       showCreateFolder={showCreateFolder}
@@ -147,8 +151,12 @@ export const DialogAssets: FC<DialogAssetsProps> = ({
                       currentPath={currentPath}
                       setCurrentPath={setCurrentPath}
                       setOpenDialog={setOpenDialog}
-                      onAddFiles={() => setShowBrowserFiles(true)}
-                      addFilesToForm={(f) => addFilesToForm(field, f)}
+                      onAddFiles={() => {
+                        setShowBrowserFiles(true)
+                      }}
+                      addFilesToForm={(f) => {
+                        addFilesToForm(field, f)
+                      }}
                       showCreateFolder={showCreateFolder}
                       setShowCreateFolder={setShowCreateFolder}
                       newFolderName={newFolderName}

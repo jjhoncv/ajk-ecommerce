@@ -48,10 +48,15 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
 
   // Crear el schema para un solo archivo
   const singleFileSchema = schemaImageValidation({
-    acceptImageTypes: field.options?.acceptImageTypes,
-    dimensions: field.options?.dimensions,
-    maxFileSize: field.options?.maxFileSize,
+    options: field.options,
     multiple: false // Importante: validamos de a un archivo
+  })
+
+  // Log para verificar opciones
+  console.log('🔍 Validation options:', {
+    acceptImageTypes: field.options?.acceptImageTypes,
+    maxFileSize: field.options?.maxFileSize,
+    dimensions: field.options?.dimensions
   })
 
   const newPreviews: FilePreview[] = []
@@ -64,16 +69,26 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
       const dt = new DataTransfer()
       dt.items.add(file)
 
+      console.log('📝 Validating file:', {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        sizeMB: (file.size / 1024 / 1024).toFixed(2) + 'MB'
+      })
+
       // Validar usando el schema
       await singleFileSchema.parseAsync(dt.files)
+      console.log('✅ File validated successfully:', file.name)
       return { isValid: true, errors: [] }
     } catch (error) {
       if (error instanceof z.ZodError) {
+        console.log('❌ Validation errors for', file.name, ':', error.errors)
         return {
           isValid: false,
           errors: error.errors.map((e) => e.message)
         }
       }
+      console.log('❌ Unknown validation error:', error)
       return {
         isValid: false,
         errors: ['Error al validar el archivo']
@@ -89,7 +104,8 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
         const preview = URL.createObjectURL(file)
         const validation = await validateSingleFile(file)
         // Extraer nombre sin extensión como nombre personalizado inicial
-        const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name
+        const nameWithoutExt =
+          file.name.substring(0, file.name.lastIndexOf('.')) || file.name
         newPreviews.push({
           id: uuidv4(),
           file,
@@ -143,7 +159,10 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
         console.log('📤 Uploading files to:', currentPath)
         formData.append('subdirectory', currentPath)
       } else if (field.options?.subdirectory) {
-        console.log('📤 Uploading files to (from field):', field.options.subdirectory)
+        console.log(
+          '📤 Uploading files to (from field):',
+          field.options.subdirectory
+        )
         formData.append('subdirectory', field.options.subdirectory)
       } else {
         console.log('📤 Uploading files to root')
@@ -153,11 +172,11 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
       validPreviews.forEach((preview, index) => {
         formData.append(`${field.key}[]`, preview.file)
         // Enviar nombre personalizado en un array paralelo
-        if (preview.customName && preview.customName.trim()) {
-          formData.append(`customNames[]`, preview.customName.trim())
+        if (preview.customName?.trim()) {
+          formData.append('customNames[]', preview.customName.trim())
         } else {
           // Si no hay nombre personalizado, enviar cadena vacía
-          formData.append(`customNames[]`, '')
+          formData.append('customNames[]', '')
         }
       })
 
@@ -197,11 +216,11 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
                 <div className="mt-6 flex flex-col items-center justify-center gap-2">
                   <ImagePlusIcon size={40} />
                   <p>Arrastra y suelta aquí ó</p>
-                  {field.options && (
+                  {/* {field.options && (
                     <p className="flex w-full justify-center text-center text-sm">
                       {field.options && renderOptionsFile(field.options)}
                     </p>
-                  )}
+                  )} */}
 
                   <Button
                     type="button"
@@ -234,11 +253,11 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
             {previews.length > 0 && (
               <>
                 <div className="flex w-full justify-between gap-2 border-b border-slate-300 pb-4">
-                  <div>
+                  {/* <div>
                     <p className="text-sm">
                       {field.options && renderOptionsFile(field.options)}
                     </p>
-                  </div>
+                  </div> */}
                   <div className="flex gap-3">
                     {selecteds.length > 0 && (
                       <div
@@ -300,9 +319,9 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
                           isValid={preview.isValid}
                           withValidation
                           customName={preview.customName}
-                          onCustomNameChange={(newName) =>
+                          onCustomNameChange={(newName) => {
                             handleCustomNameChange(preview.id, newName)
-                          }
+                          }}
                           showCustomNameInput
                           key={index}
                         />

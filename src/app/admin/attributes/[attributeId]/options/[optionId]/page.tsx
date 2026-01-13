@@ -1,6 +1,7 @@
 import attributeModel from '@/backend/attribute'
 import attributeOptionModel from '@/backend/attribute-option'
 import { AttributeOptionFields } from '@/module/attributes/components/admin/attributeOptionFields'
+import { AttributeOptionImageManager } from '@/module/attributes/components/admin/AttributeOptionImageManager'
 import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
@@ -80,19 +81,29 @@ export default async function EditOptionPage({
           { label: 'Editar Opción' }
         ]}
       >
-        <FormCreate
-          type="edit"
-          api={{
-            url: `/api/admin/attributes/${attributeId}/options`,
-            method: 'PATCH',
-            withFiles: true
-          }}
-          form={{
-            redirect: `/admin/attributes/${attributeId}/options`,
-            fields: fieldsWithValues,
-            customFields: { id: optionId }
-          }}
-        />
+        <div className="space-y-8">
+          <FormCreate
+            type="edit"
+            api={{
+              url: `/api/admin/attributes/${attributeId}/options`,
+              method: 'PATCH',
+              withFiles: true
+            }}
+            form={{
+              redirect: `/admin/attributes/${attributeId}/options`,
+              fields: fieldsWithValues,
+              customFields: { id: optionId }
+            }}
+          />
+
+          {/* Gestión de imágenes */}
+          <div className="rounded-lg border border-gray-200 bg-white p-6">
+            <AttributeOptionImageManager
+              attributeOptionId={Number(optionId)}
+              attributeId={Number(attributeId)}
+            />
+          </div>
+        </div>
       </PageUI>
     </LayoutPageAdmin>
   )

@@ -20,7 +20,7 @@ export default async function OptionListPage({
 }: OptionListPageProps): Promise<JSX.Element> {
   const { attributeId } = await params
   const attribute = await attributeModel.getAttributeById(Number(attributeId))
-  const options = await attributeOptionModel.getAttributeOptions(
+  const options = await attributeOptionModel.getAttributeOptionsWithImages(
     Number(attributeId)
   )
 
