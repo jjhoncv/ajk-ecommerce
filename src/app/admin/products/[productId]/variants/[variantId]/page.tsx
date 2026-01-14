@@ -82,6 +82,11 @@ export default async function EditVariantPage({
     })
   }
 
+  // Obtener la opción del atributo que controla las imágenes
+  const imageAttributeOptionId = variant.imageAttributeId
+    ? selectedAttributes[variant.imageAttributeId]
+    : undefined
+
   return (
     <LayoutPageAdmin>
       <PageUI
@@ -102,6 +107,7 @@ export default async function EditVariantPage({
             fields={fieldsWithValues}
             attributes={attributes || []}
             selectedAttributes={selectedAttributes}
+            imageAttributeId={variant.imageAttributeId}
             customFields={{ id: variantId }}
             redirectUrl={`/admin/products/${productId}/variants`}
           />
@@ -111,6 +117,8 @@ export default async function EditVariantPage({
             <VariantImageManager
               variantId={Number(variantId)}
               productId={Number(productId)}
+              imageAttributeId={variant.imageAttributeId}
+              imageAttributeOptionId={imageAttributeOptionId}
             />
           </div>
         </div>

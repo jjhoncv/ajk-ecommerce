@@ -3,12 +3,29 @@ import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/d
 
 export class AttributeOptionImageRepository {
   public async getAttributeOptionImages(
-    attributeOptionId: number
+    attributeOptionId: number,
+    productId?: number
   ): Promise<AttributeOptionImageRaw[] | null> {
+    // Si se proporciona productId, filtrar por ambos
+    if (productId !== undefined) {
+      const images = await executeQuery<AttributeOptionImageRaw[]>({
+        query: `
+          SELECT * FROM attribute_option_images
+          WHERE attribute_option_id = ? AND product_id = ?
+          ORDER BY display_order ASC, id ASC
+        `,
+        values: [attributeOptionId, productId]
+      })
+
+      if (images.length === 0) return null
+      return images
+    }
+
+    // Si no se proporciona productId, comportamiento original
     const images = await executeQuery<AttributeOptionImageRaw[]>({
       query: `
-        SELECT * FROM attribute_option_images 
-        WHERE attribute_option_id = ? 
+        SELECT * FROM attribute_option_images
+        WHERE attribute_option_id = ?
         ORDER BY display_order ASC, id ASC
       `,
       values: [attributeOptionId]

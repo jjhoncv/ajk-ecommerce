@@ -52,6 +52,7 @@ export interface AttributeOptionImages {
 
   imageUrlZoom: Scalars['String']['output'];
   isPrimary?: Maybe<Scalars['Int']['output']>;
+  productId?: Maybe<Scalars['Int']['output']>;
 
 }
 
@@ -436,6 +437,7 @@ export interface ProductRatingSummary {
 export interface ProductVariants {
 
   id: Scalars['Int']['output'];
+  imageAttributeId?: Maybe<Scalars['Int']['output']>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
   price: Scalars['Float']['output'];
   product?: Maybe<Products>;

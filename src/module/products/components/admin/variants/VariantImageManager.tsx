@@ -11,7 +11,8 @@ import { VariantImageFileOptions } from './variantImageFileOptions'
 
 interface VariantImage {
   id: number
-  variantId: number
+  variantId?: number
+  attributeOptionId?: number
   imageType: string
   imageUrlThumb: string
   imageUrlNormal: string
@@ -24,12 +25,16 @@ interface VariantImage {
 interface VariantImageManagerProps {
   variantId: number
   productId: number
+  imageAttributeId?: number | null
+  imageAttributeOptionId?: number
   initialImages?: VariantImage[]
 }
 
 export const VariantImageManager: FC<VariantImageManagerProps> = ({
   variantId,
   productId,
+  imageAttributeId,
+  imageAttributeOptionId,
   initialImages = []
 }) => {
   const router = useRouter()
@@ -38,20 +43,33 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingImage, setEditingImage] = useState<VariantImage | null>(null)
 
-  // Cargar imágenes al montar
+  // Cargar imágenes al montar o cuando cambian los parámetros de imagen
   useEffect(() => {
     loadImages()
-  }, [variantId])
+  }, [variantId, imageAttributeId, imageAttributeOptionId])
 
   const loadImages = async () => {
     try {
       setLoading(true)
-      const response = await fetch(
-        `/api/admin/products/${productId}/variants/${variantId}/images`
-      )
-      const result = await response.json()
-      if (result.success) {
-        setImages(result.data || [])
+
+      // Si usa atributo para controlar imágenes, cargar desde attribute_option_images
+      if (imageAttributeId && imageAttributeOptionId) {
+        const response = await fetch(
+          `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images?productId=${productId}`
+        )
+        const result = await response.json()
+        if (result.success) {
+          setImages(result.data || [])
+        }
+      } else {
+        // Si no, cargar imágenes propias de la variante
+        const response = await fetch(
+          `/api/admin/products/${productId}/variants/${variantId}/images`
+        )
+        const result = await response.json()
+        if (result.success) {
+          setImages(result.data || [])
+        }
       }
     } catch (error) {
       console.error('Error loading images:', error)
@@ -64,8 +82,12 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
     try {
       setLoading(true)
 
-      // Por ahora, subimos la primera imagen seleccionada
-      // En el futuro podríamos hacer batch upload
+      // Determinar la URL según si usa atributo o no
+      const baseUrl = imageAttributeId && imageAttributeOptionId
+        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        : `/api/admin/products/${productId}/variants/${variantId}/images`
+
+      // Subir cada imagen seleccionada
       for (const file of files) {
         const formData = new FormData()
         formData.append('imageType', 'front')
@@ -76,8 +98,13 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         formData.append('isPrimary', images.length === 0 ? 'true' : 'false')
         formData.append('altText', file.name)
 
+        // Si usa atributo, enviar productId
+        if (imageAttributeId && imageAttributeOptionId) {
+          formData.append('productId', productId.toString())
+        }
+
         await FetchCustomBody({
-          url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+          url: baseUrl,
           method: 'POST',
           data: formData,
           withFiles: true
@@ -97,12 +124,23 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
   const handleSetPrimary = async (imageId: number) => {
     try {
       setLoading(true)
+
+      // Determinar la URL según si usa atributo o no
+      const baseUrl = imageAttributeId && imageAttributeOptionId
+        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images/actions`
+        : `/api/admin/products/${productId}/variants/${variantId}/images/actions`
+
+      // Si usa atributo, incluir productId en los datos
+      const actionData = imageAttributeId && imageAttributeOptionId
+        ? { imageId, productId }
+        : { imageId }
+
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images/actions`,
+        url: baseUrl,
         method: 'POST',
         data: {
           action: 'setPrimary',
-          data: { imageId }
+          data: actionData
         },
         withFiles: false
       })
@@ -121,8 +159,14 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
     try {
       setLoading(true)
+
+      // Determinar la URL según si usa atributo o no
+      const baseUrl = imageAttributeId && imageAttributeOptionId
+        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        : `/api/admin/products/${productId}/variants/${variantId}/images`
+
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+        url: baseUrl,
         method: 'DELETE',
         data: { id: imageId },
         withFiles: false
@@ -143,8 +187,13 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
       formData.append('id', imageId.toString())
       formData.append('altText', altText)
 
+      // Determinar la URL según si usa atributo o no
+      const baseUrl = imageAttributeId && imageAttributeOptionId
+        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        : `/api/admin/products/${productId}/variants/${variantId}/images`
+
       await FetchCustomBody({
-        url: `/api/admin/products/${productId}/variants/${variantId}/images`,
+        url: baseUrl,
         method: 'PATCH',
         data: formData,
         withFiles: true
@@ -166,10 +215,27 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
   return (
     <div className="space-y-4">
+      {/* Mensaje informativo si se usa atributo para controlar imágenes */}
+      {imageAttributeId && imageAttributeOptionId && (
+        <div className="rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4">
+          <p className="text-sm font-medium text-blue-800">
+            ℹ️ Gestión de imágenes por atributo
+          </p>
+          <p className="mt-1 text-xs text-blue-700">
+            Las imágenes que agregues aquí se asociarán a la opción de atributo seleccionada.
+            Todas las variantes que compartan esta opción mostrarán las mismas imágenes.
+          </p>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Imágenes de la variante</h3>
+          <h3 className="text-lg font-semibold">
+            {imageAttributeId && imageAttributeOptionId
+              ? 'Imágenes del atributo'
+              : 'Imágenes de la variante'}
+          </h3>
           <p className="text-sm text-gray-500">
             {images.length} imagen{images.length !== 1 ? 'es' : ''}
           </p>
@@ -193,7 +259,9 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         <div className="flex h-40 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
           <ImagePlusIcon size={40} className="text-gray-400" />
           <p className="mt-2 text-sm text-gray-500">
-            No hay imágenes. Click en "Agregar imágenes" para comenzar.
+            {imageAttributeId && imageAttributeOptionId
+              ? 'No hay imágenes configuradas para esta opción de atributo.'
+              : 'No hay imágenes. Click en "Agregar imágenes" para comenzar.'}
           </p>
         </div>
       ) : (

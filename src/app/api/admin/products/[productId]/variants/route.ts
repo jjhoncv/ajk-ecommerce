@@ -42,6 +42,7 @@ const processFormData = async (formData: FormData) => {
   const stockStr = formData.get('stock') as string
   const id = formData.get('id') as string
   const attributesStr = formData.get('attributes') as string
+  const imageAttributeIdStr = formData.get('image_attribute_id') as string
 
   const price = priceStr !== '' && priceStr != null ? parseFloat(priceStr) : 0
   const stock = stockStr !== '' && stockStr != null ? parseInt(stockStr, 10) : 0
@@ -56,12 +57,19 @@ const processFormData = async (formData: FormData) => {
     }
   }
 
+  // Parsear image_attribute_id (puede ser null o número)
+  let imageAttributeId: number | null = null
+  if (imageAttributeIdStr && imageAttributeIdStr !== '' && imageAttributeIdStr !== 'null') {
+    imageAttributeId = parseInt(imageAttributeIdStr, 10)
+  }
+
   return {
     id,
     sku,
     price,
     stock,
-    attributes
+    attributes,
+    imageAttributeId
   }
 }
 
@@ -72,7 +80,7 @@ export async function POST(
   return await apiHandler(async () => {
     const { productId } = await context.params
     const formData = await req.formData()
-    const { sku, price, stock, attributes } = await processFormData(formData)
+    const { sku, price, stock, attributes, imageAttributeId } = await processFormData(formData)
 
     if (sku === '') {
       return createResponse(
@@ -86,7 +94,8 @@ export async function POST(
         product_id: Number(productId),
         sku,
         price,
-        stock
+        stock,
+        image_attribute_id: imageAttributeId
       })
 
       // Asignar atributos a la variante
@@ -120,7 +129,7 @@ export async function PATCH(
 ): Promise<Response> {
   return await apiHandler(async () => {
     const formData = await req.formData()
-    const { id, sku, price, stock, attributes } = await processFormData(formData)
+    const { id, sku, price, stock, attributes, imageAttributeId } = await processFormData(formData)
 
     if (sku === '' || id === '') {
       return createResponse(
@@ -134,7 +143,8 @@ export async function PATCH(
         {
           sku,
           price,
-          stock
+          stock,
+          image_attribute_id: imageAttributeId
         },
         Number(id)
       )

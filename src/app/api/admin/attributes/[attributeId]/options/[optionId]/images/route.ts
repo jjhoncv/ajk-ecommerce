@@ -16,10 +16,13 @@ export async function GET(
 ): Promise<Response> {
   return await apiHandler(async () => {
     const { optionId } = await context.params
+    const { searchParams } = new URL(req.url)
+    const productId = searchParams.get('productId')
 
     try {
       const images = await attributeOptionImageModel.getAttributeOptionImages(
-        Number(optionId)
+        Number(optionId),
+        productId ? Number(productId) : undefined
       )
       return createResponse(
         {
@@ -44,6 +47,7 @@ const processFormData = async (formData: FormData) => {
   const altText = formData.get('altText') as string
   const displayOrder = formData.get('displayOrder') as string
   const isPrimary = formData.get('isPrimary') as string
+  const productId = formData.get('productId') as string
 
   return {
     id,
@@ -53,7 +57,8 @@ const processFormData = async (formData: FormData) => {
     imageUrlZoom,
     altText: altText || null,
     displayOrder: displayOrder ? parseInt(displayOrder, 10) : 0,
-    isPrimary: isPrimary === 'true' || isPrimary === '1'
+    isPrimary: isPrimary === 'true' || isPrimary === '1',
+    productId: productId ? parseInt(productId, 10) : null
   }
 }
 
@@ -71,7 +76,8 @@ export async function POST(
       imageUrlZoom,
       altText,
       displayOrder,
-      isPrimary
+      isPrimary,
+      productId
     } = await processFormData(formData)
 
     if (!imageUrlThumb || !imageUrlNormal || !imageUrlZoom) {
@@ -84,6 +90,7 @@ export async function POST(
     try {
       const image = await attributeOptionImageModel.createAttributeOptionImage({
         attribute_option_id: Number(optionId),
+        product_id: productId,
         image_type: imageType as any,
         image_url_thumb: imageUrlThumb,
         image_url_normal: imageUrlNormal,

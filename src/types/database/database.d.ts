@@ -133,6 +133,7 @@ export interface AttributeOptionImages {
   /** Imagen zoom 1200x1200 (opcional) */
   image_url_zoom: Scalars['String']['output']
   is_primary?: Maybe<Scalars['Int']['output']>
+  product_id?: Maybe<Scalars['Int']['output']>
   updated_at: Scalars['Timestamp']['output']
 }
 
@@ -409,6 +410,7 @@ export interface ProductRatingSummary {
 export interface ProductVariants {
   created_at: Scalars['Timestamp']['output']
   id: Scalars['Int']['output']
+  image_attribute_id?: Maybe<Scalars['Int']['output']>
   price: Scalars['Float']['output']
   product_id: Scalars['Int']['output']
   sku: Scalars['String']['output']

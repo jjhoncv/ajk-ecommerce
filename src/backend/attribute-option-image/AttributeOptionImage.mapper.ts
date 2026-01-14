@@ -7,6 +7,7 @@ export const AttributeOptionImageMapper = (
   return {
     id: data.id,
     attributeOptionId: data.attribute_option_id,
+    productId: data.product_id ?? undefined,
     imageType: data.image_type,
     imageUrlThumb: data.image_url_thumb,
     imageUrlNormal: data.image_url_normal ?? undefined,

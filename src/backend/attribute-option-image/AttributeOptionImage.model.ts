@@ -10,10 +10,11 @@ import oAttributeOptionImageRep from './AttributeOptionImage.repository'
 
 export class AttributeOptionImageModel {
   public async getAttributeOptionImages(
-    attributeOptionId: number
+    attributeOptionId: number,
+    productId?: number
   ): Promise<AttributeOptionImage[] | undefined> {
     const imagesRaw =
-      await oAttributeOptionImageRep.getAttributeOptionImages(attributeOptionId)
+      await oAttributeOptionImageRep.getAttributeOptionImages(attributeOptionId, productId)
     return AttributeOptionImagesMapper(imagesRaw)
   }
 

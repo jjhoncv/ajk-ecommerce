@@ -10,6 +10,7 @@ export const ProductVariantMapper = (
     sku: data.sku,
     price: Number(data.price),
     stock: Number(data.stock),
+    imageAttributeId: data.image_attribute_id ?? undefined,
     product: undefined,
     promotionVariants: undefined,
     variantAttributeOptions: undefined,

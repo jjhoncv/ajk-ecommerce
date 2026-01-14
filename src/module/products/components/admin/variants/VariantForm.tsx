@@ -3,6 +3,7 @@ import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { type Field } from '@/module/shared/components/FormCreate/types/fileManagement'
 import { type FC, useState } from 'react'
 import { AttributeSelector } from './AttributeSelector'
+import { ImageAttributeSelector } from './ImageAttributeSelector'
 
 interface AttributeWithOptions {
   id: number
@@ -21,6 +22,7 @@ interface VariantFormProps {
   fields: Field[]
   attributes: AttributeWithOptions[]
   selectedAttributes?: Record<number, number>
+  imageAttributeId?: number | null
   customFields?: object
   redirectUrl: string
 }
@@ -31,17 +33,22 @@ export const VariantForm: FC<VariantFormProps> = ({
   fields,
   attributes,
   selectedAttributes = {},
+  imageAttributeId = null,
   customFields = {},
   redirectUrl
 }) => {
   const [attributesSelected, setAttributesSelected] = useState<Record<number, number>>(
     selectedAttributes
   )
+  const [selectedImageAttributeId, setSelectedImageAttributeId] = useState<number | null>(
+    imageAttributeId ?? null
+  )
 
-  // Agregar el campo attributes al customFields para enviarlo al API
+  // Agregar el campo attributes e image_attribute_id al customFields para enviarlo al API
   const enhancedCustomFields = {
     ...customFields,
-    attributes: JSON.stringify(attributesSelected)
+    attributes: JSON.stringify(attributesSelected),
+    image_attribute_id: selectedImageAttributeId?.toString() ?? ''
   }
 
   return (
@@ -70,6 +77,15 @@ export const VariantForm: FC<VariantFormProps> = ({
             onChange={setAttributesSelected}
           />
         </div>
+      )}
+
+      {/* Selector de atributo que controla imágenes */}
+      {attributes.length > 0 && (
+        <ImageAttributeSelector
+          attributes={attributes}
+          selectedImageAttributeId={selectedImageAttributeId}
+          onChange={setSelectedImageAttributeId}
+        />
       )}
     </div>
   )
