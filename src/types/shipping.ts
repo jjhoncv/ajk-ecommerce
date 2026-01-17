@@ -24,6 +24,8 @@ export interface ShippingCalculationResponse {
   allAddresses: ShippingOptionForAddress[]
   userId: string
   message?: string
+  hasAddresses?: boolean
+  hasShippingOptions?: boolean
 }
 
 // Request para cálculo de envío

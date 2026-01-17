@@ -8,11 +8,7 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
-import { type JSX, Suspense } from 'react'
-
-function LoadingTable(): JSX.Element {
-  return <div>Cargando variantes...</div>
-}
+import { type JSX } from 'react'
 
 interface VariantListPageProps {
   params: Promise<{ productId: string }>
@@ -133,12 +129,10 @@ export default async function VariantListPage({
           </PageButton>
         }
       >
-        <Suspense fallback={<LoadingTable />}>
-          <VariantListView
-            variants={variantsWithAttributes}
-            productId={Number(productId)}
-          />
-        </Suspense>
+        <VariantListView
+          variants={variantsWithAttributes}
+          productId={Number(productId)}
+        />
       </PageUI>
     </LayoutPageAdmin>
   )

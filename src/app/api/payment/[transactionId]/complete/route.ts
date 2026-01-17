@@ -1,6 +1,10 @@
 // 📄 app/api/payment/[transactionId]/complete/route.ts
+import customerModel from '@/backend/customer'
+import customerAddressModel from '@/backend/customer-address'
 import orderModel from '@/backend/order'
+import orderItemsModel from '@/backend/order-item'
 import paymentTransactionModel from '@/backend/payment-transaction'
+import emailService from '@/services/email'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
@@ -67,6 +71,64 @@ export async function POST(
       'processing',
       'Pago confirmado - Procesando pedido'
     )
+
+    // 7. Obtener datos completos para el email de confirmación
+    const order = await orderModel.getOrderById(transaction.orderId)
+    if (order) {
+      try {
+        const [customer, shippingAddress, orderItems] = await Promise.all([
+          customerModel.getCustomer(order.customerId),
+          customerAddressModel.getAddress(order.shippingAddressId),
+          orderItemsModel.getOrderItemsByOrderId(order.id)
+        ])
+
+        if (customer && shippingAddress && orderItems) {
+          // Enviar email de confirmación (no bloquear si falla)
+          emailService
+            .sendOrderConfirmationEmail({
+              orderNumber: order.orderNumber,
+              customerName: `${customer.name || ''} ${customer.lastname || ''}`.trim(),
+              customerEmail: customer.email,
+              items: orderItems.map((item) => ({
+                productName: item.productName,
+                quantity: item.quantity,
+                unitPrice: Number(item.unitPrice) || 0,
+                totalPrice: Number(item.totalPrice) || 0
+              })),
+              subtotal: Number(order.subtotal) || 0,
+              discountAmount: Number(order.discountAmount) || 0,
+              shippingCost: Number(order.shippingCost) || 0,
+              taxAmount: Number(order.taxAmount) || 0,
+              totalAmount: Number(order.totalAmount) || 0,
+              shippingAddress: {
+                alias: shippingAddress.alias,
+                streetName: shippingAddress.streetName,
+                streetNumber: shippingAddress.streetNumber,
+                apartment: shippingAddress.apartment,
+                district: shippingAddress.district,
+                province: shippingAddress.province,
+                department: shippingAddress.department
+              },
+              shippingMethod: order.shippingMethod || 'Estándar',
+              estimatedDelivery: order.estimatedDelivery,
+              createdAt: order.createdAt
+            })
+            .then((sent) => {
+              if (sent) {
+                console.log(`Email de confirmación enviado a ${customer.email}`)
+              } else {
+                console.error(`Error enviando email de confirmación a ${customer.email}`)
+              }
+            })
+            .catch((err) => {
+              console.error('Error enviando email de confirmación:', err)
+            })
+        }
+      } catch (emailError) {
+        // Log pero no fallar el proceso de pago
+        console.error('Error preparando email de confirmación:', emailError)
+      }
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,7 +1,7 @@
 import { type Orders as OrdersRaw } from '@/types/database'
 import { type Orders as Order } from '@/types/domain'
 
-export const OrderMapper = (orderRaw: OrdersRaw): Order => {
+export const OrderMapper = (orderRaw: OrdersRaw): Order & { createdAt: Date } => {
   return {
     id: orderRaw.id,
     customerId: orderRaw.customer_id,
@@ -27,13 +27,16 @@ export const OrderMapper = (orderRaw: OrdersRaw): Order => {
 
     // Notas
     customerNotes: orderRaw.customer_notes,
-    adminNotes: orderRaw.admin_notes
+    adminNotes: orderRaw.admin_notes,
+
+    // Timestamps
+    createdAt: orderRaw.created_at
   }
 }
 
 export const OrdersMapper = (
   ordersRaw: OrdersRaw[] | null
-): Order[] | undefined => {
+): (Order & { createdAt: Date })[] | undefined => {
   if (!ordersRaw || ordersRaw.length === 0) return undefined
   return ordersRaw.map(OrderMapper)
 }
@@ -46,12 +49,12 @@ export const OrderToRawMapper = (
     order_number: order.orderNumber,
     status: order.status,
 
-    // Montos
-    subtotal: order.subtotal,
-    discount_amount: order.discountAmount,
-    shipping_cost: order.shippingCost,
-    tax_amount: order.taxAmount,
-    total_amount: order.totalAmount,
+    // Montos - Asegurar que sean números válidos
+    subtotal: Number(order.subtotal) || 0,
+    discount_amount: Number(order.discountAmount) || 0,
+    shipping_cost: Number(order.shippingCost) || 0,
+    tax_amount: Number(order.taxAmount) || 0,
+    total_amount: Number(order.totalAmount) || 0,
 
     // Información de envío
     shipping_address_id: order.shippingAddressId,

@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { type FC } from 'react'
 
 interface PageTitleProps {
-  title: string;
-  image?: string;
+  title: string
+  image?: string
 }
 
 export const PageTitle: FC<PageTitleProps> = ({ title, image }) => {
@@ -11,5 +11,5 @@ export const PageTitle: FC<PageTitleProps> = ({ title, image }) => {
       {image && <img src={`/imgs/dashboard/${image}`} className="h-4" />}
       <span>{title}</span>
     </div>
-  );
-};
+  )
+}

@@ -80,7 +80,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           type="text"
           label="Nombre"
           value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          onChange={(e) => { setFormData({ ...formData, name: e.target.value }) }}
           required
           disabled={loading}
         />
@@ -91,8 +91,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           type="text"
           label="Apellido"
           value={formData.lastname}
-          onChange={(e) =>
-            setFormData({ ...formData, lastname: e.target.value })
+          onChange={(e) => { setFormData({ ...formData, lastname: e.target.value }) }
           }
           required
           disabled={loading}
@@ -104,7 +103,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           type="email"
           label="Email"
           value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          onChange={(e) => { setFormData({ ...formData, email: e.target.value }) }}
           required
           disabled={loading}
         />

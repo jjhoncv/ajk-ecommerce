@@ -4,11 +4,7 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
-import { type JSX, Suspense } from 'react'
-
-function LoadingTable(): JSX.Element {
-  return <div>Cargando atributos...</div>
-}
+import { type JSX } from 'react'
 
 export default async function AttributeListPage(): Promise<JSX.Element> {
   const attributes = await attributeModel.getAttributes()
@@ -42,9 +38,7 @@ export default async function AttributeListPage(): Promise<JSX.Element> {
           <PageButton href="/admin/attributes/new">Nuevo atributo</PageButton>
         }
       >
-        <Suspense fallback={<LoadingTable />}>
-          <AttributeListView attributes={attributes} />
-        </Suspense>
+        <AttributeListView attributes={attributes} />
       </PageUI>
     </LayoutPageAdmin>
   )

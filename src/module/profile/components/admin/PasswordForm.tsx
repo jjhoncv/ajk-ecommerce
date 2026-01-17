@@ -76,8 +76,7 @@ export const PasswordForm: React.FC = () => {
           type="password"
           label="Contraseña Actual"
           value={formData.currentPassword}
-          onChange={(e) =>
-            setFormData({ ...formData, currentPassword: e.target.value })
+          onChange={(e) => { setFormData({ ...formData, currentPassword: e.target.value }) }
           }
           required
           disabled={loading}
@@ -89,8 +88,7 @@ export const PasswordForm: React.FC = () => {
           type="password"
           label="Nueva Contraseña"
           value={formData.newPassword}
-          onChange={(e) =>
-            setFormData({ ...formData, newPassword: e.target.value })
+          onChange={(e) => { setFormData({ ...formData, newPassword: e.target.value }) }
           }
           required
           minLength={6}
@@ -104,8 +102,7 @@ export const PasswordForm: React.FC = () => {
           type="password"
           label="Confirmar Nueva Contraseña"
           value={formData.confirmPassword}
-          onChange={(e) =>
-            setFormData({ ...formData, confirmPassword: e.target.value })
+          onChange={(e) => { setFormData({ ...formData, confirmPassword: e.target.value }) }
           }
           required
           disabled={loading}

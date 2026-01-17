@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import path, { join } from 'path'
 
 // Función auxiliar para contar archivos recursivamente
-function countFilesRecursive(dirPath: string): { files: number; folders: number } {
+function countFilesRecursive(dirPath: string): { files: number, folders: number } {
   let fileCount = 0
   let folderCount = 0
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     console.log('🔧 Backend - Creating folder:', {
       received: folderPath,
       sanitized: safeFolderPath,
-      fullPath: fullPath
+      fullPath
     })
 
     // Verificar que la ruta esté dentro del directorio permitido

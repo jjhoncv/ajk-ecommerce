@@ -54,14 +54,14 @@ export const SliderImages: React.FC<SliderImagesProps> = ({
     setCurrentIndex(0)
   }, [images])
 
-  if (!images.length) return null
+  if (images.length === 0) return null
 
   return (
     <div className={`relative h-full w-full ${className}`}>
       <div className="group relative h-full overflow-hidden transition-all">
         <button
           type="button"
-          onClick={() => onClickEdit()}
+          onClick={() => { onClickEdit() }}
           className="absolute left-0 right-0 top-[90px] z-10 mx-auto flex w-[110px] gap-3 rounded border border-transparent bg-sky-600 px-4 py-2 text-white opacity-0 transition-all group-hover:opacity-100"
         >
           <Edit size={20} />
@@ -107,7 +107,7 @@ export const SliderImages: React.FC<SliderImagesProps> = ({
             {images.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
+                onClick={() => { goToSlide(index) }}
                 className={`h-2 w-2 rounded-full transition-all ${
                   index === currentIndex
                     ? 'w-4 bg-white'

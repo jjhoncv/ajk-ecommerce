@@ -3,6 +3,7 @@ import customerAddressModel from '@/backend/customer-address'
 import orderModel from '@/backend/order'
 import orderItemsModel from '@/backend/order-item'
 import orderTrackingModel from '@/backend/order-tracking'
+import paymentTransactionModel from '@/backend/payment-transaction'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -65,6 +66,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         order.shippingAddressId
       )
     }
+
+    // Obtener transacción de pago para la comisión
+    const paymentTransactions = await paymentTransactionModel.getTransactionsByOrderId(orderId)
+    const paymentTransaction = paymentTransactions?.[0]
+    const processingFee = paymentTransaction?.processingFee ? Number(paymentTransaction.processingFee) : 0
 
     // Formatear items de la orden
     const formattedItems =
@@ -134,6 +140,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       subtotal: order.subtotal,
       discountAmount: order.discountAmount || 0,
       shippingCost: order.shippingCost || 0,
+      processingFee,
       taxAmount: order.taxAmount || 0,
       totalAmount: order.totalAmount,
 

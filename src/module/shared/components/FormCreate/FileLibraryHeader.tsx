@@ -50,7 +50,7 @@ export const FileLibraryHeader: FC<FileLibraryHeaderProps> = ({
       <div className="mt-3">
         {!showCreateFolder ? (
           <button
-            onClick={() => setShowCreateFolder(true)}
+            onClick={() => { setShowCreateFolder(true) }}
             className="flex items-center gap-1 rounded bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700"
           >
             <FolderPlus size={16} />
@@ -61,7 +61,7 @@ export const FileLibraryHeader: FC<FileLibraryHeaderProps> = ({
             <input
               type="text"
               value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
+              onChange={(e) => { setNewFolderName(e.target.value) }}
               placeholder="Nombre de la carpeta"
               className="rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
               onKeyDown={(e) => {

@@ -19,6 +19,7 @@ import { deliveryDates } from '@/components/product/ProductVariantShipping/Produ
 import { type ShippingOptionForAddress } from '@/types/shipping'
 import { type ProductVariantShippingProps } from './ProductVariantShipping.interfaces'
 import { ProductVariantShippingLogout } from './ProductVariantShippingLogout'
+import { ProductVariantShippingNoMethods } from './ProductVariantShippingNoMethods'
 import { ProductVariantShippingNotAddress } from './ProductVariantShippingNotAddress'
 import { ProductVariantShippingNotAvailable } from './ProductVariantShippingNotAvailable'
 import { ProductVariantShippingShimmer } from './ProductVariantShippingShimmer'
@@ -39,6 +40,8 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
     loading,
     error,
     isInitialized,
+    hasAddresses,
+    hasShippingOptions,
     selectAddress
   } = useProductVariantShipping({
     productVariantId,
@@ -74,9 +77,19 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
     return <ProductVariantShippingLogout />
   }
 
+  // Usuario tiene direcciones pero no hay métodos de envío configurados
+  if (hasAddresses && !hasShippingOptions) {
+    return <ProductVariantShippingNoMethods />
+  }
+
   // Renderizar sin direcciones
-  if (!selectedAddress) {
+  if (!hasAddresses) {
     return <ProductVariantShippingNotAddress />
+  }
+
+  // No hay dirección seleccionada (caso edge)
+  if (!selectedAddress) {
+    return <ProductVariantShippingNotAvailable />
   }
 
   const { selectedAddress: selectedAddressArg } = { selectedAddress }

@@ -4,11 +4,7 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
-import { type JSX, Suspense } from 'react'
-
-function LoadingTable(): JSX.Element {
-  return <div>Cargando banners...</div>
-}
+import { type JSX } from 'react'
 
 export default async function BannerListPage({
   searchParams
@@ -38,9 +34,7 @@ export default async function BannerListPage({
           <PageButton href="/admin/banners/new">Nuevo banner</PageButton>
         }
       >
-        <Suspense fallback={<LoadingTable />}>
-          <BannerListView banners={bannerMapped} />
-        </Suspense>
+        <BannerListView banners={bannerMapped} />
       </PageUI>
     </LayoutPageAdmin>
   )

@@ -34,7 +34,7 @@ export const ProductSearchItemMapper = (
   variantResult: VariantSearchResult,
   variant: ProductVariantComplete,
   brandName: string,
-  categories: Array<{ id: number; name: string }>,
+  categories: Array<{ id: number, name: string }>,
   mainImage?: string
 ): ProductSearchItem => {
   return {

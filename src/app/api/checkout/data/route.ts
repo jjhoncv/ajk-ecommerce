@@ -82,19 +82,33 @@ export async function POST(request: NextRequest) {
       // Aplicar precio promocional si existe
       if (item.promotionVariants && item.promotionVariants.length > 0) {
         const activePromotion = item.promotionVariants.find(
-          (pv: any) =>
-            pv.promotion.isActive === 1 &&
-            new Date() >= new Date(pv.promotion.startDate) &&
-            new Date() <= new Date(pv.promotion.endDate)
+          (pv: any) => {
+            // Verificar que pv.promotion exista antes de acceder a sus propiedades
+            if (!pv?.promotion) return false
+
+            const now = new Date()
+            const startDate = pv.promotion.startDate ? new Date(pv.promotion.startDate) : null
+            const endDate = pv.promotion.endDate ? new Date(pv.promotion.endDate) : null
+
+            const isActive = pv.promotion.isActive === 1
+            const hasStarted = startDate ? now >= startDate : true
+            const hasNotEnded = endDate ? now <= endDate : true
+
+            return isActive && hasStarted && hasNotEnded
+          }
         )
 
-        if (activePromotion) {
-          finalPrice = parseFloat(activePromotion.promotionPrice)
+        if (activePromotion?.promotionPrice) {
+          const promoPrice = Number(activePromotion.promotionPrice)
+          if (!isNaN(promoPrice) && promoPrice > 0) {
+            finalPrice = promoPrice
+          }
         }
       }
 
       // Retornar precio final (promocional o base) + costos adicionales
-      return finalPrice + additionalCost
+      const result = finalPrice + additionalCost
+      return isNaN(result) ? basePrice : result
     }
 
     // 3. Calcular subtotal considerando costos adicionales
@@ -156,15 +170,17 @@ export async function POST(request: NextRequest) {
       }) || []
 
     // 6. Cálculo inicial (sin envío ni descuentos)
+    const initialShippingCost = Number(shippingOptions[0]?.cost) || 0
+    const safeSubtotal = Number(subtotal) || 0
+    const taxAmount = (safeSubtotal + initialShippingCost) * 0.18
+    const totalAmount = safeSubtotal + initialShippingCost + taxAmount
+
     const calculation = {
-      subtotal,
+      subtotal: safeSubtotal,
       discountAmount: 0,
-      shippingCost: shippingOptions[0]?.cost || 0,
-      taxAmount: (subtotal + (shippingOptions[0]?.cost || 0)) * 0.18,
-      totalAmount:
-        subtotal +
-        (shippingOptions[0]?.cost || 0) +
-        (subtotal + (shippingOptions[0]?.cost || 0)) * 0.18,
+      shippingCost: initialShippingCost,
+      taxAmount: isNaN(taxAmount) ? 0 : taxAmount,
+      totalAmount: isNaN(totalAmount) ? safeSubtotal : totalAmount,
       estimatedDelivery: null
     }
 

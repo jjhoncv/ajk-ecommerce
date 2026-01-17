@@ -7,7 +7,7 @@ import {
 import { type NextRequest } from 'next/server'
 
 interface RouteContext {
-  params: Promise<{ productId: string; variantId: string }>
+  params: Promise<{ productId: string, variantId: string }>
 }
 
 export async function GET(

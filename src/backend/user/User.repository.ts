@@ -91,6 +91,100 @@ export class UserRepository {
       values: [id]
     })
   }
+
+  public async getUsersWithRoles(): Promise<any[] | null> {
+    const users = await executeQuery<any[]>({
+      query: `
+        SELECT
+          u.id,
+          u.name,
+          u.lastname,
+          u.email,
+          u.is_active,
+          u.role_id,
+          u.photo,
+          u.created_at,
+          u.updated_at,
+          r.name as role_name
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        ORDER BY u.created_at DESC
+      `
+    })
+
+    if (users.length === 0) return null
+    return users
+  }
+
+  public async getUserWithRoleById(id: number): Promise<any | null> {
+    const users = await executeQuery<any[]>({
+      query: `
+        SELECT
+          u.id,
+          u.name,
+          u.lastname,
+          u.email,
+          u.is_active,
+          u.role_id,
+          u.photo,
+          u.created_at,
+          u.updated_at,
+          r.name as role_name
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        WHERE u.id = ?
+      `,
+      values: [id]
+    })
+
+    if (users.length === 0) return null
+    return users[0]
+  }
+
+  // Password setup tokens
+  public async createPasswordSetupToken(
+    userId: number,
+    token: string,
+    expiresAt: Date
+  ): Promise<number> {
+    const result = await executeQuery<{ insertId: number }>({
+      query: `
+        INSERT INTO password_setup_tokens (user_id, token, expires_at)
+        VALUES (?, ?, ?)
+      `,
+      values: [userId, token, expiresAt]
+    })
+    return result.insertId
+  }
+
+  public async getPasswordSetupToken(token: string): Promise<any | null> {
+    const tokens = await executeQuery<any[]>({
+      query: `
+        SELECT pst.*, u.email, u.name
+        FROM password_setup_tokens pst
+        JOIN users u ON pst.user_id = u.id
+        WHERE pst.token = ? AND pst.used_at IS NULL AND pst.expires_at > NOW()
+      `,
+      values: [token]
+    })
+
+    if (tokens.length === 0) return null
+    return tokens[0]
+  }
+
+  public async markTokenAsUsed(token: string): Promise<void> {
+    await executeQuery({
+      query: 'UPDATE password_setup_tokens SET used_at = NOW() WHERE token = ?',
+      values: [token]
+    })
+  }
+
+  public async updateUserPassword(userId: number, hashedPassword: string): Promise<void> {
+    await executeQuery({
+      query: 'UPDATE users SET password = ? WHERE id = ?',
+      values: [hashedPassword, userId]
+    })
+  }
 }
 
 const userRepository = new UserRepository()

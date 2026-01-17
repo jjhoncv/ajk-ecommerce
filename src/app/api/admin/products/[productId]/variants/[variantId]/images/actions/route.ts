@@ -7,7 +7,7 @@ import {
 import { type NextRequest } from 'next/server'
 
 interface RouteContext {
-  params: Promise<{ productId: string; variantId: string }>
+  params: Promise<{ productId: string, variantId: string }>
 }
 
 /**
@@ -38,7 +38,7 @@ export async function POST(
 
           // Actualizar el orden de cada imagen
           await Promise.all(
-            data.map(async (item: { id: number; displayOrder: number }) => {
+            data.map(async (item: { id: number, displayOrder: number }) => {
               await variantImageModel.updateImageOrder(
                 item.id,
                 item.displayOrder

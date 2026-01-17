@@ -289,7 +289,7 @@ export class SearchModel {
                   if (existingOptionEntry) {
                     // Incrementar contador de la opción existente
                     ;(
-                      existingOptionEntry[1] as { value: string; count: number }
+                      existingOptionEntry[1] as { value: string, count: number }
                     ).count++
                   } else {
                     // Crear nueva opción

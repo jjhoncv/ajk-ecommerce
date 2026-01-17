@@ -17,6 +17,11 @@ export class ShippingMethodModel {
     return ShippingMethodsMapper(methodsRaw)
   }
 
+  public async getAllShippingMethods(): Promise<ShippingMethod[] | undefined> {
+    const methodsRaw = await oShippingMethodRep.getAllShippingMethods()
+    return ShippingMethodsMapper(methodsRaw)
+  }
+
   public async getShippingMethodById(
     id: number
   ): Promise<ShippingMethod | undefined> {
@@ -37,6 +42,26 @@ export class ShippingMethodModel {
     ShippingMethodWithZones[] | undefined
   > {
     const methods = await this.getShippingMethods()
+    if (!methods) return undefined
+
+    const methodsWithZones: ShippingMethodWithZones[] = []
+
+    for (const method of methods) {
+      const zones =
+        await oShippingZoneMethodRep.getZoneMethodsByShippingMethodId(method.id)
+      methodsWithZones.push({
+        ...method,
+        zones: zones || []
+      })
+    }
+
+    return methodsWithZones
+  }
+
+  public async getAllShippingMethodsWithZones(): Promise<
+    ShippingMethodWithZones[] | undefined
+  > {
+    const methods = await this.getAllShippingMethods()
     if (!methods) return undefined
 
     const methodsWithZones: ShippingMethodWithZones[] = []
@@ -97,8 +122,9 @@ export class ShippingMethodModel {
     )
     if (!zoneMethod) return undefined
 
-    const threshold = zoneMethod.free_shipping_threshold || null
-    const isFree = threshold !== null && orderValue >= threshold
+    // Solo es gratis si hay un umbral configurado (> 0) y el valor del pedido lo supera
+    const threshold = Number(zoneMethod.free_shipping_threshold) || 0
+    const isFree = threshold > 0 && orderValue >= threshold
 
     return {
       cost: isFree ? 0 : zoneMethod.cost,

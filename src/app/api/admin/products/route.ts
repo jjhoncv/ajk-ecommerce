@@ -10,7 +10,7 @@ import { type NextRequest } from 'next/server'
 export async function GET(): Promise<Response> {
   return await apiHandler(async () => {
     try {
-      const products = await productModel.getProducts()
+      const products = await productModel.getProductsForAdmin()
       return createResponse(
         {
           message: 'Productos obtenidos',
@@ -82,8 +82,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       // Asignar categorías al producto
       if (product && categories.length > 0) {
         await Promise.all(
-          categories.map((categoryId) =>
-            categoryModel.addProductToCategory(product.id, categoryId)
+          categories.map(async (categoryId) => { await categoryModel.addProductToCategory(product.id, categoryId) }
           )
         )
       }
@@ -133,8 +132,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
         (catId) => !categories.includes(catId)
       )
       await Promise.all(
-        categoriesToRemove.map((categoryId) =>
-          categoryModel.removeProductFromCategory(Number(id), categoryId)
+        categoriesToRemove.map(async (categoryId) => { await categoryModel.removeProductFromCategory(Number(id), categoryId) }
         )
       )
 
@@ -143,8 +141,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
         (catId) => !currentCategoryIds.includes(catId)
       )
       await Promise.all(
-        categoriesToAdd.map((categoryId) =>
-          categoryModel.addProductToCategory(Number(id), categoryId)
+        categoriesToAdd.map(async (categoryId) => { await categoryModel.addProductToCategory(Number(id), categoryId) }
         )
       )
 

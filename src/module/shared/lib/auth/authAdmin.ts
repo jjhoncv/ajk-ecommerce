@@ -24,11 +24,13 @@ export const adminAuthOptions: NextAuthOptions = {
           })
 
           if (admin != null) {
+            // type: superadmin para rol 1, admin para los demás
+            const userType = admin.roleId === 1 ? 'superadmin' : 'admin'
             return {
               id: admin.id.toString(),
               email: admin.email,
               name: admin.name,
-              type: admin.role?.name ?? 'admin',
+              type: userType,
               roleName: admin.role?.name ?? 'admin',
               roleId: admin.roleId ?? 0,
               sections: admin?.role?.rolesSections as AdminSection[]

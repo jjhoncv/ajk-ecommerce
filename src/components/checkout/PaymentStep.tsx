@@ -1,7 +1,7 @@
 // 📄 app/checkout/components/PaymentStep.tsx
 import { type PaymentOption } from '@/types/checkout'
 import { type PaymentMethods } from '@/types/domain'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface PaymentStepProps {
   paymentMethods: PaymentMethods[]
@@ -26,6 +26,33 @@ export default function PaymentStep({
     selectedPayment?.methodId || null
   )
 
+  // Obtener métodos de pago disponibles
+  const availableMethods = paymentMethods.filter(
+    (method) =>
+      method.isActive === 1 &&
+      paymentOptions.some((option) => option.methodId === method.id)
+  )
+
+  // Auto-seleccionar el primer método de pago si no hay ninguno seleccionado
+  useEffect(() => {
+    if (availableMethods.length > 0 && selectedMethodId === null) {
+      const firstMethod = availableMethods[0]
+      const option = paymentOptions.find((o) => o.methodId === firstMethod.id)
+
+      if (firstMethod && option) {
+        setSelectedMethodId(firstMethod.id)
+        onPaymentMethodChange({
+          ...option,
+          methodName: firstMethod.name,
+          methodCode: firstMethod.code,
+          iconUrl: firstMethod.iconUrl || undefined,
+          description: firstMethod.description || undefined,
+          requiresVerification: firstMethod.requiresVerification === 1
+        })
+      }
+    }
+  }, [availableMethods, paymentOptions, selectedMethodId, onPaymentMethodChange])
+
   const handlePaymentMethodSelect = (methodId: number) => {
     setSelectedMethodId(methodId)
 
@@ -46,13 +73,6 @@ export default function PaymentStep({
   }
 
   const canProceed = selectedMethodId !== null
-
-  // Obtener métodos de pago disponibles combinando ambas fuentes
-  const availableMethods = paymentMethods.filter(
-    (method) =>
-      method.isActive === 1 &&
-      paymentOptions.some((option) => option.methodId === method.id)
-  )
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">

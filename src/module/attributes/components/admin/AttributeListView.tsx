@@ -15,7 +15,7 @@ interface AttributeWithOptions {
   id: number
   name: string
   displayType: 'radio' | 'pills' | 'select' | 'color' | 'custom'
-  options?: Array<{ id: number; value: string; additionalCost: number }>
+  options?: Array<{ id: number, value: string, additionalCost: number }>
 }
 
 interface AttributeListViewProps {

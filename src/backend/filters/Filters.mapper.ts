@@ -56,7 +56,7 @@ export const FilterAttributesMapper = (
 export const AvailableFiltersMapper = (
   categories: FilterCategory[],
   brands: FilterBrand[],
-  priceRange: { min: number; max: number },
+  priceRange: { min: number, max: number },
   attributes: FilterAttribute[]
 ): AvailableFilters => {
   return {

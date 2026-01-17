@@ -14,7 +14,7 @@ import { type JSX } from 'react'
 export const revalidate = 0 // Deshabilitar cache estático
 
 interface EditVariantPageProps {
-  params: Promise<{ productId: string; variantId: string }>
+  params: Promise<{ productId: string, variantId: string }>
 }
 
 export default async function EditVariantPage({

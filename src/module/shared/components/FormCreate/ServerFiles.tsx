@@ -48,6 +48,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
   const [selecteds, setSelecteds] = useState<string[]>([])
   const [renamingFolder, setRenamingFolder] = useState<string | null>(null)
   const [newFolderNameRename, setNewFolderNameRename] = useState('')
+  const [validationErrors, setValidationErrors] = useState<any[]>([])
 
   const loadFilesServer = useCallback(async () => {
     try {
@@ -101,6 +102,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
 
   const handleFileSelect = useCallback(
     (value: string, checked: boolean) => {
+      setValidationErrors([]) // Limpiar errores al seleccionar
       setSelecteds((prev) => {
         if (field.multiple) {
           return checked ? [...prev, value] : prev.filter((v) => v !== value)
@@ -160,7 +162,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
       // Mostrar mensaje con información de actualización de BD
       if (json.databaseUpdates && json.databaseUpdates.recordsUpdated > 0) {
         alert(
-          `Carpeta renombrada exitosamente.\n\n` +
+          'Carpeta renombrada exitosamente.\n\n' +
             `✅ Se actualizaron ${json.databaseUpdates.recordsUpdated} registro(s) en la base de datos.`
         )
       } else {
@@ -197,8 +199,8 @@ export const ServerFiles: FC<ServerFilesProps> = ({
 
       if (json.deleted) {
         const { files, folders, databaseRecords } = json.deleted
-        let message = `Carpeta eliminada exitosamente.\n\n` +
-          `Se eliminaron:\n` +
+        let message = 'Carpeta eliminada exitosamente.\n\n' +
+          'Se eliminaron:\n' +
           `- ${files} archivo(s)\n` +
           `- ${folders} carpeta(s)`
 
@@ -220,7 +222,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
   const confirmDeleteFolder = async (folderName: string) => {
     const confirmed = window.confirm(
       `¿Estás seguro de eliminar la carpeta "${folderName}"?\n\n` +
-        `Esta acción eliminará la carpeta y todo su contenido de forma permanente.`
+        'Esta acción eliminará la carpeta y todo su contenido de forma permanente.'
     )
 
     if (confirmed) {
@@ -301,7 +303,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
       )
 
       if (filesSelecteds.length === 0) {
-        setErrors([{ message: 'Debes seleccionar al menos un archivo' }])
+        setValidationErrors([{ message: 'Debes seleccionar al menos un archivo' }])
         return
       }
 
@@ -316,9 +318,14 @@ export const ServerFiles: FC<ServerFilesProps> = ({
 
       // Validar con el schema
       await singleFileSchema.parseAsync(fileList)
+      setValidationErrors([])
       addFilesToForm(filesSelecteds)
     } catch (error: any) {
-      setErrors(JSON.parse(error.message))
+      try {
+        setValidationErrors(JSON.parse(error.message))
+      } catch {
+        setValidationErrors([{ message: error.message || 'Error de validación' }])
+      }
     }
   }
 
@@ -406,11 +413,11 @@ export const ServerFiles: FC<ServerFilesProps> = ({
 
                 {/* Nombre de carpeta o input de renombrado */}
                 {isRenaming ? (
-                  <div className="mt-2 flex w-full flex-col gap-1" onClick={(e) => e.stopPropagation()}>
+                  <div className="mt-2 flex w-full flex-col gap-1" onClick={(e) => { e.stopPropagation() }}>
                     <input
                       type="text"
                       value={newFolderNameRename}
-                      onChange={(e) => setNewFolderNameRename(e.target.value)}
+                      onChange={(e) => { setNewFolderNameRename(e.target.value) }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           handleRenameFolder(item.name)
@@ -425,7 +432,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
                     />
                     <div className="flex gap-1">
                       <button
-                        onClick={() => handleRenameFolder(item.name)}
+                        onClick={async () => { await handleRenameFolder(item.name) }}
                         className="flex-1 rounded bg-green-500 px-2 py-1 text-xs text-white hover:bg-green-600"
                       >
                         ✓
@@ -487,7 +494,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
         newFolderName={newFolderName}
         setNewFolderName={setNewFolderName}
         onCreateFolder={onCreateFolder}
-        errors={errors}
+        errors={[...(errors || []), ...validationErrors]}
       />
 
       <div className="p-8">

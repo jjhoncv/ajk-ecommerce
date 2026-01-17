@@ -142,16 +142,9 @@ export class ShippingZoneMethodModel {
       if (!shippingMethod) continue
 
       // Calcular si el envío es gratis
-      const threshold = zoneMethod.free_shipping_threshold
-
-      console.log('threshold', Number(orderValue), '>=', Number(threshold))
-      let isFree = false
-      if (threshold) {
-        isFree = orderValue >= threshold
-      }
-
-      console.log('isFree', isFree)
-      // const isFree = threshold !== null && orderValue >= threshold
+      // Solo es gratis si hay un umbral configurado (> 0) y el valor del pedido lo supera
+      const threshold = Number(zoneMethod.free_shipping_threshold) || 0
+      const isFree = threshold > 0 && orderValue >= threshold
 
       // Calcular costo final
       const finalCost = isFree ? 0 : zoneMethod.cost
@@ -205,8 +198,9 @@ export class ShippingZoneMethodModel {
       await oShippingMethodRep.getShippingMethodById(shippingMethodId)
     if (!shippingMethod) return undefined
 
-    const threshold = zoneMethod.free_shipping_threshold
-    const isFree = threshold !== null && orderValue >= threshold
+    // Solo es gratis si hay un umbral configurado (> 0) y el valor del pedido lo supera
+    const threshold = Number(zoneMethod.free_shipping_threshold) || 0
+    const isFree = threshold > 0 && orderValue >= threshold
     const finalCost = isFree ? 0 : zoneMethod.cost
 
     const estimatedDaysMin =

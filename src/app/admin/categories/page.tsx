@@ -4,16 +4,12 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
-import { type JSX, Suspense } from 'react'
-
-function LoadingTable(): JSX.Element {
-  return <div>Cargando categorías...</div>
-}
+import { type JSX } from 'react'
 
 export default async function CategoryListPage({
   searchParams
 }: {
-  searchParams: Promise<{ q?: string; parent?: string }>
+  searchParams: Promise<{ q?: string, parent?: string }>
 }): Promise<JSX.Element> {
   const { q, parent } = await searchParams
   const parentId = parent ? Number(parent) : null
@@ -98,13 +94,11 @@ export default async function CategoryListPage({
           </div>
         }
       >
-        <Suspense fallback={<LoadingTable />}>
-          <CategoryListView
-            categories={categoriesWithSubcategories}
-            parentId={parentId}
-            parentCategory={parentCategory}
-          />
-        </Suspense>
+        <CategoryListView
+          categories={categoriesWithSubcategories}
+          parentId={parentId}
+          parentCategory={parentCategory}
+        />
       </PageUI>
     </LayoutPageAdmin>
   )

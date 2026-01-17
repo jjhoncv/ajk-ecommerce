@@ -2,6 +2,7 @@ import categoryModel from '@/backend/category'
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import Navigation from '@/components/ui/Navigation/Navigation'
+import { authOptions } from '@/lib/auth/auth'
 import { AlertCircle, CheckCircle, Clock, Package } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
@@ -56,7 +57,7 @@ const getStatusIcon = (status: string) => {
 
 export default async function OrdersPage() {
   // Obtener la sesión del usuario
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   // Si no hay sesión, redirigir al inicio
   // Esto es una doble verificación, ya que el middleware debería manejar esto

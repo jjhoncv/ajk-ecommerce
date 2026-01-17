@@ -126,6 +126,24 @@ export class OrderRepository {
     if (summary.length === 0) return null
     return summary
   }
+
+  public async getOrdersWithCustomerInfo(): Promise<any[] | null> {
+    const orders = await executeQuery<any[]>({
+      query: `
+        SELECT
+          o.*,
+          CONCAT(c.name, ' ', COALESCE(c.lastname, '')) as customer_name,
+          c.email as customer_email,
+          (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as item_count
+        FROM orders o
+        LEFT JOIN customers c ON o.customer_id = c.id
+        ORDER BY o.created_at DESC
+      `
+    })
+
+    if (orders.length === 0) return null
+    return orders
+  }
 }
 
 const orderRepository = new OrderRepository()

@@ -88,7 +88,7 @@ export class ShippingZoneMethodRepository {
   > {
     const methods = await executeQuery<ShippingZoneMethodWithDetails[]>({
       query: `
-        SELECT 
+        SELECT
           szm.*,
           sm.name as method_name,
           sz.name as zone_name,
@@ -96,9 +96,6 @@ export class ShippingZoneMethodRepository {
         FROM shipping_zone_methods szm
         JOIN shipping_methods sm ON szm.shipping_method_id = sm.id
         JOIN shipping_zones sz ON szm.shipping_zone_id = sz.id
-        WHERE szm.is_active = 1 
-        AND sm.is_active = 1 
-        AND sz.is_active = 1
         ORDER BY sz.name ASC, sm.display_order ASC, sm.name ASC
       `
     })

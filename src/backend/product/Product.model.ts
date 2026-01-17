@@ -55,6 +55,73 @@ export class ProductModel {
     return productsWithData
   }
 
+  /**
+   * Obtiene productos con estadísticas para el panel de administración
+   * Incluye: conteo de variantes, stock total, rango de precios, imagen principal
+   */
+  public async getProductsForAdmin(): Promise<any[] | undefined> {
+    const productsRaw = await oProductRep.getProducts()
+    const products = ProductsMapper(productsRaw)
+
+    if (!products) return undefined
+
+    const productsWithStats = await Promise.all(
+      products.map(async (product) => {
+        // Cargar marca
+        let brand = null
+        if (product.brandId) {
+          brand = await brandModel.getBrandById(product.brandId)
+        }
+
+        // Cargar variantes con sus datos
+        const variants = await productVariantModel.getProductVariantsByProductId(product.id)
+
+        // Calcular estadísticas de variantes
+        const variantsCount = variants?.length ?? 0
+        let totalStock = 0
+        let minPrice = product.basePrice ?? 0
+        let maxPrice = product.basePrice ?? 0
+        let mainImage: string | null = null
+
+        if (variants && variants.length > 0) {
+          // Calcular stock total y rango de precios
+          for (const variant of variants) {
+            totalStock += variant.stock ?? 0
+            const variantPrice = variant.price ?? 0
+            if (variantPrice > 0) {
+              if (minPrice === 0 || variantPrice < minPrice) minPrice = variantPrice
+              if (variantPrice > maxPrice) maxPrice = variantPrice
+            }
+          }
+
+          // Obtener imagen de la primera variante
+          const firstVariantImages = await variantImageModel.getVariantImages(variants[0].id)
+          if (firstVariantImages && firstVariantImages.length > 0) {
+            // Buscar imagen principal o usar la primera
+            const primaryImage = firstVariantImages.find(img => img.isPrimary) ?? firstVariantImages[0]
+            mainImage = primaryImage.imageUrlThumb
+          }
+        }
+
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          basePrice: product.basePrice,
+          brand: brand ? { id: brand.id, name: brand.name } : null,
+          variantsCount,
+          totalStock,
+          minPrice,
+          maxPrice,
+          mainImage,
+          createdAt: product.createdAt
+        }
+      })
+    )
+
+    return productsWithStats
+  }
+
   public async getProductFullById(id: number): Promise<Product | undefined> {
     const productRaw = await oProductRep.getProductById(id)
     if (!productRaw) return undefined

@@ -6,7 +6,7 @@ interface PageUIProps {
   title?: React.ReactNode
   subtitle?: React.ReactNode
   options?: React.ReactNode
-  breadcrumb?: Array<{ label: string; url?: string }>
+  breadcrumb?: Array<{ label: string, url?: string }>
   children: React.ReactNode
 }
 

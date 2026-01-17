@@ -43,8 +43,8 @@ export const ProductFields: Field[] = [
 ]
 
 export const getProductFieldsWithData = (
-  brands: Array<{ id: number; name: string }>,
-  categories: Array<{ id: number; name: string }>
+  brands: Array<{ id: number, name: string }>,
+  categories: Array<{ id: number, name: string }>
 ): Field[] => {
   const brandOptions: SelectOption[] = brands.map((brand) => ({
     value: brand.id.toString(),

@@ -7,13 +7,15 @@ import customerModel from '@/backend/customer'
 import customerAddressModel from '@/backend/customer-address'
 import orderModel from '@/backend/order'
 import orderItemsModel from '@/backend/order-item'
+import paymentTransactionModel from '@/backend/payment-transaction'
 
 // Usar tipos del dominio
 import {
   type Customers,
   type CustomersAddresses,
   type OrderItems,
-  type Orders
+  type Orders,
+  type PaymentTransactions
 } from '@/types/domain'
 
 // Components
@@ -24,6 +26,7 @@ interface OrderConfirmationData {
   customer: Customers
   shippingAddress: CustomersAddresses
   orderItems: OrderItems[]
+  paymentTransaction?: PaymentTransactions
 }
 
 async function getOrderConfirmationData(
@@ -56,11 +59,16 @@ async function getOrderConfirmationData(
       throw new Error('Dirección de envío no encontrada')
     }
 
+    // 5. Obtener transacción de pago para la comisión
+    const paymentTransactions = await paymentTransactionModel.getTransactionsByOrderId(order.id)
+    const paymentTransaction = paymentTransactions?.[0]
+
     return {
       order,
       customer,
       shippingAddress,
-      orderItems
+      orderItems,
+      paymentTransaction
     }
   } catch (error) {
     console.error('Error fetching order confirmation data:', error)
@@ -77,10 +85,13 @@ export default async function OrderConfirmationPage({
 
   const data = await getOrderConfirmationData(orderNumber)
 
-  const { order, customer, shippingAddress, orderItems } = data
+  const { order, customer, shippingAddress, orderItems, paymentTransaction } = data
   const estimatedDate = order.estimatedDelivery
     ? new Date(order.estimatedDelivery)
     : null
+  const processingFee = paymentTransaction?.processingFee ? Number(paymentTransaction.processingFee) : 0
+  // El total real pagado por el cliente incluye la comisión de procesamiento
+  const totalPaid = order.totalAmount + processingFee
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -108,7 +119,7 @@ export default async function OrderConfirmationPage({
               </div>
               <h3 className="font-semibold text-gray-900">Pago Confirmado</h3>
               <p className="text-sm text-gray-600">
-                S/ {order.totalAmount.toFixed(2)}
+                S/ {totalPaid.toFixed(2)}
               </p>
             </div>
 
@@ -169,11 +180,44 @@ export default async function OrderConfirmationPage({
                     {order.paymentStatus}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total:</span>
-                  <span className="text-lg font-bold">
-                    S/ {order.totalAmount.toFixed(2)}
-                  </span>
+              </div>
+
+              {/* Desglose de totales */}
+              <div className="mt-4 border-t pt-4">
+                <h4 className="mb-3 text-sm font-semibold text-gray-700">Resumen de pago</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span>S/ {order.subtotal.toFixed(2)}</span>
+                  </div>
+                  {order.discountAmount > 0 && (
+                    <div className="flex justify-between text-sm text-green-600">
+                      <span>Descuento:</span>
+                      <span>-S/ {order.discountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Envío:</span>
+                    <span>{order.shippingCost > 0 ? `S/ ${order.shippingCost.toFixed(2)}` : 'Gratis'}</span>
+                  </div>
+                  {processingFee > 0 && (
+                    <div className="flex justify-between text-sm text-orange-600">
+                      <span>Comisión de pago:</span>
+                      <span>S/ {processingFee.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">IGV (18%):</span>
+                    <span>S/ {order.taxAmount.toFixed(2)}</span>
+                  </div>
+                  <div className="border-t pt-2">
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-gray-900">Total:</span>
+                      <span className="text-lg font-bold text-gray-900">
+                        S/ {totalPaid.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

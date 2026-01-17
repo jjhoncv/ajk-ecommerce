@@ -1,5 +1,5 @@
 // components/admin/AdminDashboard.tsx
-import { User } from 'next-auth'
+import { type User } from 'next-auth'
 import Link from 'next/link'
 import AdminLogoutButton from './AdminLogoutButton'
 

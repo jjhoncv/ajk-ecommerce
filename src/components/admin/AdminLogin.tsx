@@ -28,11 +28,11 @@ export default function AdminLogin() {
       if (result?.error) {
         console.log('❌ Login failed:', result.error)
         setError('Credenciales de administrador inválidas')
-        setIsLoading(false) // ⭐ RESETEAR LOADING EN ERROR
+        setIsLoading(false)
       } else if (result?.ok) {
         console.log('✅ Login successful')
-        // ⭐ NO resetear loading aquí - AdminClientWrapper se encargará
-        // El useEffect en AdminClientWrapper detectará el cambio de sesión
+        // Refresh the page to load server-side dashboard with sidebar
+        window.location.href = '/admin'
       } else {
         console.log('❓ Unexpected result:', result)
         setError('Error inesperado al iniciar sesión')

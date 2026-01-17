@@ -2,20 +2,32 @@ import AdminClientWrapper from '@/components/admin/AdminClientWrapper'
 import { AdminDashboard } from '@/module/shared/components/AdminDashboard'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
+import dashboardService from '@/services/dashboard'
 import { getServerSession } from 'next-auth'
 
 export default async function AdminPage(): Promise<React.JSX.Element> {
-  // ✅ Primer render: Server-side, sin shimmer
   const session = await getServerSession(adminAuthOptions)
 
-  // crear array de tipos de usuarios
-  const adminTypes = ['admin', 'superadmin']
+  // Si hay sesión válida con roleId, mostrar dashboard
+  if (session?.user != null && session.user.roleId != null) {
+    // Fetch dashboard data in parallel
+    const [metrics, recentOrders, lowStockProducts, topSellingProducts] =
+      await Promise.all([
+        dashboardService.getMetrics(),
+        dashboardService.getRecentOrders(5),
+        dashboardService.getLowStockProducts(5),
+        dashboardService.getTopSellingProducts(5)
+      ])
 
-  // validar si el tipo de usuario esta dentro del array de tipos de usuarios
-  if (session?.user != null && adminTypes.includes(session.user.type)) {
     return (
       <LayoutPageAdmin>
-        <AdminDashboard user={session.user} />
+        <AdminDashboard
+          user={session.user}
+          metrics={metrics}
+          recentOrders={recentOrders}
+          lowStockProducts={lowStockProducts}
+          topSellingProducts={topSellingProducts}
+        />
       </LayoutPageAdmin>
     )
   }

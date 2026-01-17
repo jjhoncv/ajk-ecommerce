@@ -113,9 +113,9 @@ export async function POST(
       // Asignar atributos a la variante con sus costos adicionales
       if (variant && Object.keys(attributes).length > 0) {
         await Promise.all(
-          Object.entries(attributes).map(([attributeId, optionId]) => {
+          Object.entries(attributes).map(async ([attributeId, optionId]) => {
             const additionalCost = attributeCosts[Number(optionId)] || 0
-            return variantAttributeOptionModel.addAttributeOptionToVariant(
+            return await variantAttributeOptionModel.addAttributeOptionToVariant(
               variant.id,
               Number(optionId),
               additionalCost
@@ -169,9 +169,9 @@ export async function PATCH(
       // Luego agregamos los nuevos seleccionados con sus costos adicionales
       if (Object.keys(attributes).length > 0) {
         await Promise.all(
-          Object.entries(attributes).map(([attributeId, optionId]) => {
+          Object.entries(attributes).map(async ([attributeId, optionId]) => {
             const additionalCost = attributeCosts[Number(optionId)] || 0
-            return variantAttributeOptionModel.addAttributeOptionToVariant(
+            return await variantAttributeOptionModel.addAttributeOptionToVariant(
               Number(id),
               Number(optionId),
               additionalCost

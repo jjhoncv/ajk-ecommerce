@@ -1,5 +1,6 @@
 // app/api/customer/orders/route.ts
 import orderModel from '@/backend/order'
+import paymentTransactionModel from '@/backend/payment-transaction'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -58,21 +59,29 @@ export async function GET(request: NextRequest) {
     const endIndex = startIndex + limit
     const paginatedOrders = orders.slice(startIndex, endIndex)
 
-    // Formatear las órdenes para la respuesta
-    const formattedOrders = paginatedOrders.map((order) => ({
-      id: order.id,
-      orderNumber: order.orderNumber,
-      status: order.status,
-      paymentStatus: order.paymentStatus,
-      totalAmount: order.totalAmount,
-      createdAt: order.createdAt,
-      estimatedDelivery: order.estimatedDelivery,
-      // Campos adicionales útiles para la vista
-      itemCount: order.orderItems?.length || 0,
-      shippingMethod: order.shippingMethod,
-      trackingAvailable:
-        order.status === 'shipped' || order.status === 'delivered'
-    }))
+    // Formatear las órdenes para la respuesta (incluyendo comisión de pago)
+    const formattedOrders = await Promise.all(
+      paginatedOrders.map(async (order) => {
+        // Obtener la transacción de pago para la comisión
+        const transactions = await paymentTransactionModel.getTransactionsByOrderId(order.id)
+        const processingFee = transactions?.[0]?.processingFee ? Number(transactions[0].processingFee) : 0
+
+        return {
+          id: order.id,
+          orderNumber: order.orderNumber,
+          status: order.status,
+          paymentStatus: order.paymentStatus,
+          totalAmount: order.totalAmount + processingFee, // Total real pagado
+          createdAt: order.createdAt,
+          estimatedDelivery: order.estimatedDelivery,
+          // Campos adicionales útiles para la vista
+          itemCount: order.orderItems?.length || 0,
+          shippingMethod: order.shippingMethod,
+          trackingAvailable:
+            order.status === 'shipped' || order.status === 'delivered'
+        }
+      })
+    )
 
     return NextResponse.json({
       orders: formattedOrders,

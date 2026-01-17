@@ -104,7 +104,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       defaultAddress,
       allAddresses: addressesWithShipping,
-      userId: session.user.id
+      userId: session.user.id,
+      // Información adicional para el frontend
+      hasAddresses: userAddresses.length > 0,
+      hasShippingOptions: addressesWithShipping.length > 0
     })
   } catch (error) {
     console.error('Error calculating shipping for user:', error)

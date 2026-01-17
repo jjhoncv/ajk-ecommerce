@@ -1,13 +1,27 @@
 'use client'
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
-import { ImagePlusIcon, Star, Trash2 } from 'lucide-react'
+import { ImagePlusIcon, Star, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { type FC, useEffect, useState } from 'react'
 import { DialogAssets } from '@/module/shared/components/FormCreate/DialogAssets'
 import { type FileServer } from '@/module/shared/components/FormCreate/types/fileManagement'
 import { VariantImageFileOptions } from './variantImageFileOptions'
+
+const IMAGE_TYPES = [
+  { value: 'front', label: 'Frontal' },
+  { value: 'back', label: 'Posterior' },
+  { value: 'side', label: 'Lateral' },
+  { value: 'detail', label: 'Detalle' },
+  { value: 'lifestyle', label: 'Lifestyle' },
+  { value: 'packaging', label: 'Empaque' }
+]
+
+interface PendingFile {
+  file: FileServer
+  imageType: string
+}
 
 interface VariantImage {
   id: number
@@ -42,6 +56,8 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
   const [loading, setLoading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingImage, setEditingImage] = useState<VariantImage | null>(null)
+  const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([])
+  const [showTypeSelector, setShowTypeSelector] = useState(false)
 
   // Cargar imágenes al montar o cuando cambian los parámetros de imagen
   useEffect(() => {
@@ -78,7 +94,53 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
     }
   }
 
-  const handleAddFiles = async (files: FileServer[]) => {
+  // Cuando el usuario selecciona archivos, mostramos el selector de tipo
+  const handleSelectFiles = (files: FileServer[]) => {
+    // Obtener tipos ya usados por imágenes existentes
+    const usedTypes = new Set(images.map(img => img.imageType))
+
+    // Asignar tipos por defecto que no estén usados
+    const newPendingFiles: PendingFile[] = []
+
+    for (const file of files) {
+      // Buscar el primer tipo disponible
+      let defaultType = 'front'
+      for (const type of IMAGE_TYPES) {
+        if (!usedTypes.has(type.value)) {
+          defaultType = type.value
+          break
+        }
+      }
+      usedTypes.add(defaultType) // Marcar como usado para el siguiente archivo
+
+      newPendingFiles.push({
+        file,
+        imageType: defaultType
+      })
+    }
+
+    setPendingFiles(newPendingFiles)
+    setDialogOpen(false)
+    setShowTypeSelector(true)
+  }
+
+  // Actualizar el tipo de una imagen pendiente
+  const handleUpdatePendingType = (index: number, newType: string) => {
+    setPendingFiles(prev =>
+      prev.map((pf, i) => i === index ? { ...pf, imageType: newType } : pf)
+    )
+  }
+
+  // Remover un archivo pendiente
+  const handleRemovePending = (index: number) => {
+    setPendingFiles(prev => prev.filter((_, i) => i !== index))
+    if (pendingFiles.length <= 1) {
+      setShowTypeSelector(false)
+    }
+  }
+
+  // Confirmar y subir las imágenes con sus tipos
+  const handleConfirmUpload = async () => {
     try {
       setLoading(true)
 
@@ -87,15 +149,16 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         ? `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images`
         : `/api/admin/products/${productId}/variants/${variantId}/images`
 
-      // Subir cada imagen seleccionada
-      for (const file of files) {
+      // Subir cada imagen con su tipo seleccionado
+      for (let i = 0; i < pendingFiles.length; i++) {
+        const { file, imageType } = pendingFiles[i]
         const formData = new FormData()
-        formData.append('imageType', 'front')
+        formData.append('imageType', imageType)
         formData.append('imageUrlThumb', file.path)
         formData.append('imageUrlNormal', file.path)
         formData.append('imageUrlZoom', file.path)
-        formData.append('displayOrder', images.length.toString())
-        formData.append('isPrimary', images.length === 0 ? 'true' : 'false')
+        formData.append('displayOrder', (images.length + i).toString())
+        formData.append('isPrimary', (images.length === 0 && i === 0) ? 'true' : 'false')
         formData.append('altText', file.name)
 
         // Si usa atributo, enviar productId
@@ -112,13 +175,20 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
       }
 
       ToastSuccess('Imágenes agregadas exitosamente')
+      setPendingFiles([])
+      setShowTypeSelector(false)
       await loadImages()
-      setDialogOpen(false)
     } catch (error: any) {
       ToastFail(error.message || 'Error al agregar imágenes')
     } finally {
       setLoading(false)
     }
+  }
+
+  // Cancelar la selección
+  const handleCancelUpload = () => {
+    setPendingFiles([])
+    setShowTypeSelector(false)
   }
 
   const handleSetPrimary = async (imageId: number) => {
@@ -241,7 +311,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
           </p>
         </div>
         <button
-          onClick={() => setDialogOpen(true)}
+          onClick={() => { setDialogOpen(true) }}
           disabled={loading}
           className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
         >
@@ -296,7 +366,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
                 <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                   {!image.isPrimary && (
                     <button
-                      onClick={() => handleSetPrimary(image.id)}
+                      onClick={async () => { await handleSetPrimary(image.id) }}
                       className="rounded bg-yellow-500 p-2 text-white hover:bg-yellow-600"
                       title="Marcar como principal"
                     >
@@ -304,7 +374,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
                     </button>
                   )}
                   <button
-                    onClick={() => handleDelete(image.id)}
+                    onClick={async () => { await handleDelete(image.id) }}
                     className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
                     title="Eliminar"
                   >
@@ -346,13 +416,13 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
         </div>
       )}
 
-      {/* Dialog para agregar imágenes */}
+      {/* Dialog para seleccionar imágenes del servidor */}
       {dialogOpen && (
         <DialogAssets
           open={dialogOpen}
           setOpenDialog={setDialogOpen}
           addFilesToForm={(field, files) => {
-            handleAddFiles(files)
+            handleSelectFiles(files)
           }}
           field={{
             key: 'variant_images',
@@ -362,6 +432,102 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
             options: VariantImageFileOptions
           }}
         />
+      )}
+
+      {/* Modal para asignar tipo de imagen */}
+      {showTypeSelector && (
+        <>
+          <div
+            onClick={handleCancelUpload}
+            className="fixed inset-0 z-40 bg-black/50"
+          />
+          <div className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-xl md:w-[500px]">
+            <div className="flex items-center justify-between border-b p-4">
+              <h3 className="text-lg font-semibold">Asignar tipo de imagen</h3>
+              <button
+                onClick={handleCancelUpload}
+                className="rounded p-1 hover:bg-gray-100"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto p-4">
+              <p className="mb-4 text-sm text-gray-600">
+                Selecciona el tipo para cada imagen antes de agregarlas.
+              </p>
+
+              <div className="space-y-4">
+                {pendingFiles.map((pf, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-4 rounded-lg border p-3"
+                  >
+                    {/* Preview de la imagen */}
+                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded">
+                      <Image
+                        src={pf.file.path}
+                        alt={pf.file.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+                    {/* Nombre del archivo */}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">{pf.file.name}</p>
+
+                      {/* Selector de tipo */}
+                      <select
+                        value={pf.imageType}
+                        onChange={(e) => handleUpdatePendingType(index, e.target.value)}
+                        className="mt-1 w-full rounded border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
+                      >
+                        {IMAGE_TYPES.map((type) => {
+                          const isUsed = images.some(img => img.imageType === type.value) ||
+                            pendingFiles.some((p, i) => i !== index && p.imageType === type.value)
+                          return (
+                            <option
+                              key={type.value}
+                              value={type.value}
+                              disabled={isUsed}
+                            >
+                              {type.label} {isUsed ? '(en uso)' : ''}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </div>
+
+                    {/* Botón eliminar */}
+                    <button
+                      onClick={() => handleRemovePending(index)}
+                      className="rounded p-1 text-red-500 hover:bg-red-50"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t p-4">
+              <button
+                onClick={handleCancelUpload}
+                className="rounded border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleConfirmUpload}
+                disabled={loading || pendingFiles.length === 0}
+                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:bg-gray-400"
+              >
+                {loading ? 'Subiendo...' : `Agregar ${pendingFiles.length} imagen${pendingFiles.length !== 1 ? 'es' : ''}`}
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

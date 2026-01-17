@@ -19,7 +19,7 @@ export default function CartPageContent() {
 
   // 🆕 Estado para almacenar información de stock actualizada desde validación
   const [stockInfo, setStockInfo] = useState<
-    Array<{ id: number; availableStock: number }>
+    Array<{ id: number, availableStock: number }>
   >([])
 
   // 🆕 Hook dedicado para el manejo de la selección del resumen
@@ -74,7 +74,7 @@ export default function CartPageContent() {
 
   // 🆕 Función para recibir actualizaciones de stock desde CartPageSummary
   const handleStockInfoUpdate = (
-    newStockInfo: Array<{ id: number; availableStock: number }>
+    newStockInfo: Array<{ id: number, availableStock: number }>
   ) => {
     console.log('📦 Stock info received in CartPageContent:', newStockInfo)
     setStockInfo(newStockInfo)
@@ -136,7 +136,7 @@ export default function CartPageContent() {
 
   // 🆕 Función para manejar actualizaciones del carrito (remover/ajustar cantidades)
   const handleCartUpdate = (
-    adjustedItems: Array<{ id: number; quantity: number }>
+    adjustedItems: Array<{ id: number, quantity: number }>
   ) => {
     console.log('🔄 Processing cart updates in CartPageContent:', adjustedItems)
 

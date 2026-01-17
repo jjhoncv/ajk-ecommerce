@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, Download, Package, Share2 } from 'lucide-react'
+import { ArrowLeft, ClipboardList, Download, Package, Share2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface ActionButtonsProps {
@@ -44,6 +44,14 @@ export default function ActionButtons({ orderNumber }: ActionButtonsProps) {
       >
         <Package className="mr-2 h-4 w-4" />
         Rastrear Pedido
+      </button>
+
+      <button
+        onClick={() => { router.push('/account/orders') }}
+        className="flex items-center justify-center rounded-lg border border-blue-600 px-6 py-3 text-blue-600 hover:bg-blue-50"
+      >
+        <ClipboardList className="mr-2 h-4 w-4" />
+        Ver mis Pedidos
       </button>
 
       <button

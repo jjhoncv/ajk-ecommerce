@@ -7,8 +7,20 @@ export class ShippingZoneRepository {
   public async getShippingZones(): Promise<ShippingZoneRaw[] | null> {
     const zones = await executeQuery<ShippingZoneRaw[]>({
       query: `
-        SELECT * FROM shipping_zones 
-        WHERE is_active = 1 
+        SELECT * FROM shipping_zones
+        WHERE is_active = 1
+        ORDER BY name ASC
+      `
+    })
+
+    if (zones.length === 0) return null
+    return zones
+  }
+
+  public async getAllShippingZones(): Promise<ShippingZoneRaw[] | null> {
+    const zones = await executeQuery<ShippingZoneRaw[]>({
+      query: `
+        SELECT * FROM shipping_zones
         ORDER BY name ASC
       `
     })
@@ -34,17 +46,22 @@ export class ShippingZoneRepository {
     province?: string,
     department?: string
   ): Promise<ShippingZoneRaw | null> {
+    // Buscar zona que contenga el objeto completo {name, province, department}
+    const searchObject = {
+      name: district,
+      province: province ?? '',
+      department: department ?? ''
+    }
+
     const zones = await executeQuery<ShippingZoneRaw[]>({
       query: `
-        SELECT * FROM shipping_zones 
-        WHERE JSON_CONTAINS(districts, ?) 
+        SELECT * FROM shipping_zones
+        WHERE JSON_CONTAINS(districts, ?)
         AND is_active = 1
         LIMIT 1
       `,
-      values: [JSON.stringify(district)]
+      values: [JSON.stringify(searchObject)]
     })
-
-    // console.log('zones', zones)
 
     if (zones.length === 0) return null
     return zones[0]

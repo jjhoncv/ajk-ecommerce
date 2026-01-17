@@ -19,7 +19,7 @@ export const writeFileServer = async (
 
   // Si hay nombre personalizado, usarlo; si no, generar uno aleatorio
   let uniqueFileName: string
-  if (customName && customName.trim()) {
+  if (customName?.trim()) {
     // Sanitizar el nombre personalizado
     const safeName = customName.trim().replace(/[^a-zA-Z0-9_-]/g, '-')
     uniqueFileName = `${safeName}-${timestamp}.${fileExtension}`

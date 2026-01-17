@@ -23,9 +23,20 @@ export default function ReviewStep({
   const [customerNotes, setCustomerNotes] = useState('')
   const [acceptTerms, setAcceptTerms] = useState(false)
 
-  const selectedAddress = summary.selectedAddress
+  // Obtener selectedAddress del summary o buscarlo en customerAddresses
+  const selectedAddress = summary.selectedAddress ||
+    summary.customerAddresses?.find(addr => addr.id === checkoutData?.shippingAddressId) ||
+    summary.customerAddresses?.[0]
   const selectedShipping = summary.selectedShipping
   const selectedPayment = summary.selectedPayment
+
+  // Debug: mostrar el estado de las selecciones
+  console.log('ReviewStep - canProceed check:', {
+    acceptTerms,
+    selectedAddress: !!selectedAddress,
+    selectedShipping: !!selectedShipping,
+    selectedPayment: !!selectedPayment
+  })
 
   const handleApplyCoupon = async () => {
     // TODO: Implementar aplicación de cupón
@@ -51,19 +62,36 @@ export default function ReviewStep({
 
           <div className="space-y-4">
             {summary.items.map((item) => {
-              let displayPrice = item.price
+              const originalPrice = Number(item.price) || 0
+              let displayPrice = originalPrice
 
               // Mostrar precio promocional si existe
               if (item.promotionVariants && item.promotionVariants.length > 0) {
                 const activePromotion = item.promotionVariants.find(
-                  (pv: any) =>
-                    pv.promotion.isActive === 1 &&
-                    new Date() >= new Date(pv.promotion.startDate) &&
-                    new Date() <= new Date(pv.promotion.endDate)
+                  (pv: any) => {
+                    if (!pv?.promotion) return false
+
+                    const now = new Date()
+                    const startDate = pv.promotion.startDate
+                      ? new Date(pv.promotion.startDate)
+                      : null
+                    const endDate = pv.promotion.endDate
+                      ? new Date(pv.promotion.endDate)
+                      : null
+
+                    const isActive = pv.promotion.isActive === 1
+                    const hasStarted = startDate ? now >= startDate : true
+                    const hasNotEnded = endDate ? now <= endDate : true
+
+                    return isActive && hasStarted && hasNotEnded
+                  }
                 )
 
-                if (activePromotion) {
-                  displayPrice = parseFloat(activePromotion.promotionPrice)
+                if (activePromotion?.promotionPrice) {
+                  const promoPrice = Number(activePromotion.promotionPrice)
+                  if (!isNaN(promoPrice) && promoPrice > 0) {
+                    displayPrice = promoPrice
+                  }
                 }
               }
 
@@ -81,9 +109,9 @@ export default function ReviewStep({
                       {item.name}
                     </h4>
                     <div className="mt-1 flex items-center space-x-2">
-                      {displayPrice < item.price && (
+                      {displayPrice < originalPrice && (
                         <span className="text-sm text-gray-500 line-through">
-                          S/ {item.price.toFixed(2)}
+                          S/ {originalPrice.toFixed(2)}
                         </span>
                       )}
                       <span className="text-sm font-medium text-gray-900">
@@ -144,7 +172,7 @@ export default function ReviewStep({
                   <p className="font-medium">
                     {selectedShipping.isFree
                       ? 'Gratis'
-                      : `S/ ${selectedShipping.cost.toFixed(2)}`}
+                      : `S/ ${Number(selectedShipping.cost).toFixed(2)}`}
                   </p>
                 </div>
               </div>

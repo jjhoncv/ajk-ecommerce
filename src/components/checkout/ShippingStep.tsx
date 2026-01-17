@@ -1,6 +1,6 @@
 // 📄 app/checkout/components/ShippingStep.tsx
 import { type CheckoutSummary, type CheckoutUser, type ShippingOption } from '@/types/checkout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface ShippingStepProps {
   user: CheckoutUser
@@ -23,9 +23,35 @@ export default function ShippingStep({
 }: ShippingStepProps) {
   const [selectedShippingMethod, setSelectedShippingMethod] = useState<
     number | null
-  >(null)
+  >(summary.selectedShipping?.methodId || null)
   const currentAddressId =
     selectedAddressId || user.defaultAddressId || user.addresses[0]?.id
+
+  // Auto-seleccionar método de envío cuando:
+  // 1. Hay opciones disponibles y no hay selección
+  // 2. El método seleccionado ya no está disponible (cambió la dirección)
+  useEffect(() => {
+    if (summary.shippingOptions.length > 0) {
+      // Verificar si el método seleccionado aún está disponible
+      const isCurrentSelectionValid = selectedShippingMethod !== null &&
+        summary.shippingOptions.some(opt => opt.methodId === selectedShippingMethod)
+
+      if (!isCurrentSelectionValid) {
+        // Auto-seleccionar el primer método disponible
+        const firstOption = summary.shippingOptions[0]
+        setSelectedShippingMethod(firstOption.methodId)
+        onShippingMethodChange(firstOption)
+      } else if (!summary.selectedShipping && selectedShippingMethod !== null) {
+        // El estado local tiene selección pero el summary no - sincronizar
+        const selectedOption = summary.shippingOptions.find(
+          opt => opt.methodId === selectedShippingMethod
+        )
+        if (selectedOption) {
+          onShippingMethodChange(selectedOption)
+        }
+      }
+    }
+  }, [summary.shippingOptions, selectedShippingMethod, summary.selectedShipping, onShippingMethodChange])
 
   const handleShippingMethodSelect = (option: ShippingOption) => {
     setSelectedShippingMethod(option.methodId)
@@ -33,8 +59,6 @@ export default function ShippingStep({
   }
 
   const canProceed = currentAddressId && selectedShippingMethod
-
-  console.log('summary.shippingOptions', summary.shippingOptions)
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -101,12 +125,12 @@ export default function ShippingStep({
       </div>
 
       {/* Métodos de envío */}
-      {summary.shippingOptions.length > 0 && (
-        <div className="mb-8">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">
-            Método de envío
-          </h3>
+      <div className="mb-8">
+        <h3 className="mb-4 text-lg font-medium text-gray-900">
+          Método de envío
+        </h3>
 
+        {summary.shippingOptions.length > 0 ? (
           <div className="space-y-4">
             {summary.shippingOptions.map((option) => (
               <div
@@ -160,8 +184,34 @@ export default function ShippingStep({
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="rounded-lg border border-orange-200 bg-orange-50 p-4">
+            <div className="flex items-start">
+              <svg
+                className="h-5 w-5 text-orange-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="ml-3">
+                <h4 className="text-sm font-medium text-orange-800">
+                  No hay envíos disponibles
+                </h4>
+                <p className="mt-1 text-sm text-orange-700">
+                  No tenemos opciones de envío configuradas para la dirección
+                  seleccionada. Por favor, selecciona otra dirección o contacta
+                  con nosotros.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Botón continuar */}
       <div className="flex justify-end">

@@ -65,6 +65,7 @@ interface OrderDetailData {
   subtotal: number
   discountAmount: number
   shippingCost: number
+  processingFee: number
   taxAmount: number
   totalAmount: number
   shippingMethod?: string
@@ -526,6 +527,12 @@ export default function OrderDetailModal({
                           <span>{formatPrice(order.shippingCost)}</span>
                         </div>
                       )}
+                      {order.processingFee > 0 && (
+                        <div className="flex justify-between text-orange-600">
+                          <span>Comisión de pago</span>
+                          <span>{formatPrice(order.processingFee)}</span>
+                        </div>
+                      )}
                       {order.taxAmount > 0 && (
                         <div className="flex justify-between">
                           <span>Impuestos</span>
@@ -535,7 +542,7 @@ export default function OrderDetailModal({
                       <div className="border-t pt-2">
                         <div className="flex justify-between font-semibold">
                           <span>Total</span>
-                          <span>{formatPrice(order.totalAmount)}</span>
+                          <span>{formatPrice(order.totalAmount + order.processingFee)}</span>
                         </div>
                       </div>
                     </div>

@@ -130,7 +130,7 @@ export async function PUT(req: NextRequest) {
     try {
       const {
         orders
-      }: { orders: Array<{ id: number; display_order: number }> } =
+      }: { orders: Array<{ id: number, display_order: number }> } =
         await req.json()
 
       if (orders == null || !Array.isArray(orders)) {

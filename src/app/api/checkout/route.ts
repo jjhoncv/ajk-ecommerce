@@ -138,28 +138,45 @@ function calculateItemFinalPrice(item: any): number {
   // Aplicar precio promocional si existe
   if (item.promotionVariants && item.promotionVariants.length > 0) {
     const activePromotion = item.promotionVariants.find(
-      (pv: any) =>
-        pv.promotion.isActive === 1 &&
-        new Date() >= new Date(pv.promotion.startDate) &&
-        new Date() <= new Date(pv.promotion.endDate)
+      (pv: any) => {
+        // Verificar que pv.promotion exista antes de acceder a sus propiedades
+        if (!pv?.promotion) return false
+
+        const now = new Date()
+        const startDate = pv.promotion.startDate ? new Date(pv.promotion.startDate) : null
+        const endDate = pv.promotion.endDate ? new Date(pv.promotion.endDate) : null
+
+        const isActive = pv.promotion.isActive === 1
+        const hasStarted = startDate ? now >= startDate : true
+        const hasNotEnded = endDate ? now <= endDate : true
+
+        return isActive && hasStarted && hasNotEnded
+      }
     )
 
-    if (activePromotion) {
-      finalPrice = parseFloat(activePromotion.promotionPrice)
+    if (activePromotion?.promotionPrice) {
+      const promoPrice = Number(activePromotion.promotionPrice)
+      if (!isNaN(promoPrice) && promoPrice > 0) {
+        finalPrice = promoPrice
+      }
     }
   }
 
   // Retornar precio final (promocional o base) + costos adicionales
-  return finalPrice + additionalCost
+  const result = finalPrice + additionalCost
+  return isNaN(result) ? basePrice : result
 }
 
 // Calcular totales de la orden
 async function calculateOrderTotals(
   items: any[],
-  shippingCost: number,
+  shippingCostInput: number | string,
   couponCode?: string,
   customerId?: number
 ): Promise<OrderCalculation> {
+  // Asegurar que shippingCost sea un número
+  const shippingCost = Number(shippingCostInput) || 0
+
   // Calcular subtotal considerando promociones y costos adicionales
   let subtotal = 0
 
@@ -167,6 +184,9 @@ async function calculateOrderTotals(
     const itemPrice = calculateItemFinalPrice(item)
     subtotal += itemPrice * item.quantity
   }
+
+  // Asegurar que subtotal sea un número válido
+  subtotal = Number(subtotal) || 0
 
   let discountAmount = 0
   let appliedCoupon
@@ -179,7 +199,7 @@ async function calculateOrderTotals(
       subtotal
     )
     if (couponValidation.isValid) {
-      discountAmount = couponValidation.discountAmount
+      discountAmount = Number(couponValidation.discountAmount) || 0
       appliedCoupon = couponValidation.coupon
     }
   }
@@ -194,11 +214,11 @@ async function calculateOrderTotals(
   estimatedDelivery.setDate(estimatedDelivery.getDate() + 5)
 
   return {
-    subtotal,
-    discountAmount,
-    shippingCost,
-    taxAmount,
-    totalAmount,
+    subtotal: Number(subtotal.toFixed(2)),
+    discountAmount: Number(discountAmount.toFixed(2)),
+    shippingCost: Number(shippingCost.toFixed(2)),
+    taxAmount: Number(taxAmount.toFixed(2)),
+    totalAmount: Number(totalAmount.toFixed(2)),
     estimatedDelivery,
     appliedCoupon
   }

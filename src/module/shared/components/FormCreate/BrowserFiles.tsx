@@ -63,7 +63,7 @@ export const BrowserFiles: FC<BrowserFilesProps> = ({
 
   const validateSingleFile = async (
     file: File
-  ): Promise<{ isValid: boolean; errors: string[] }> => {
+  ): Promise<{ isValid: boolean, errors: string[] }> => {
     try {
       // Crear FileList con un solo archivo
       const dt = new DataTransfer()

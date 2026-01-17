@@ -6,7 +6,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session || !session.user) {
+    if (!session?.user) {
       return NextResponse.json(
         { error: 'Debes iniciar sesión para valorar productos' },
         { status: 401 }

@@ -44,10 +44,10 @@ interface CartPageSummaryProps {
     hasSelectedItems: () => boolean
   }
   onCartUpdate?: (
-    adjustedItems: Array<{ id: number; quantity: number }>
+    adjustedItems: Array<{ id: number, quantity: number }>
   ) => void // Callback para actualizar carrito
   onStockInfoReceived?: (
-    stockInfo: Array<{ id: number; availableStock: number }>
+    stockInfo: Array<{ id: number, availableStock: number }>
   ) => void // 🆕 Callback para recibir stock info
 }
 
@@ -99,7 +99,7 @@ export const CartPageSummary: FC<CartPageSummaryProps> = ({
 
       // 🆕 Callback para recibir información de stock (SOLO INFORMATIVO)
       const handleStockInfoReceived = (
-        stockInfo: Array<{ id: number; availableStock: number }>
+        stockInfo: Array<{ id: number, availableStock: number }>
       ) => {
         console.log('📦 Stock info received in CartPageSummary:', stockInfo)
 

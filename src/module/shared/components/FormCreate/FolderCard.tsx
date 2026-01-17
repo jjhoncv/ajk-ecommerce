@@ -1,6 +1,6 @@
 import { FolderIcon, Trash2 } from 'lucide-react'
-import React, { FC } from 'react'
-import { Folder } from './types/fileManagement'
+import React, { type FC } from 'react'
+import { type Folder } from './types/fileManagement'
 
 interface FolderCardProps {
   folder: Folder

@@ -190,7 +190,7 @@ export const AttributeOptionImageManager: FC<
           </p>
         </div>
         <button
-          onClick={() => setDialogOpen(true)}
+          onClick={() => { setDialogOpen(true) }}
           disabled={loading}
           className="flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
         >
@@ -243,7 +243,7 @@ export const AttributeOptionImageManager: FC<
                 <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                   {!image.isPrimary && (
                     <button
-                      onClick={() => handleSetPrimary(image.id)}
+                      onClick={async () => { await handleSetPrimary(image.id) }}
                       className="rounded bg-yellow-500 p-2 text-white hover:bg-yellow-600"
                       title="Marcar como principal"
                     >
@@ -251,7 +251,7 @@ export const AttributeOptionImageManager: FC<
                     </button>
                   )}
                   <button
-                    onClick={() => handleDelete(image.id)}
+                    onClick={async () => { await handleDelete(image.id) }}
                     className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
                     title="Eliminar"
                   >

@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircleIcon, File, Trash2 } from 'lucide-react'
 import Image from 'next/image'
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 
 export interface FilePreview {
   id: string
@@ -49,7 +49,7 @@ export const FilePreviewCard: FC<FilePreviewCardProps> = ({
   showCustomNameInput
 }) => {
   return (
-    <div className={`relative w-full rounded border border-slate-300`}>
+    <div className={'relative w-full rounded border border-slate-300'}>
       <input
         type={multiple ? 'checkbox' : 'radio'}
         className="absolute z-40 m-2 flex h-4 w-4 cursor-pointer"
@@ -87,7 +87,7 @@ export const FilePreviewCard: FC<FilePreviewCardProps> = ({
             </>
           )}
         </>
-        <div className={`relative aspect-square h-[100px] overflow-hidden`}>
+        <div className={'relative aspect-square h-[100px] overflow-hidden'}>
           {isImage ? (
             <Image
               src={url}
@@ -112,7 +112,7 @@ export const FilePreviewCard: FC<FilePreviewCardProps> = ({
             <input
               type="text"
               value={customName || ''}
-              onChange={(e) => onCustomNameChange(e.target.value)}
+              onChange={(e) => { onCustomNameChange(e.target.value) }}
               placeholder="Nombre personalizado"
               className="w-full rounded border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none"
             />

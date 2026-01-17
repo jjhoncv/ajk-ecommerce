@@ -72,17 +72,21 @@ export default function CheckoutClient({
   // Obtener datos del checkout desde la API
   const fetchCheckoutData = async (
     items: CartItem[],
-    shippingAddressId?: number
+    shippingAddressId?: number,
+    preserveSelections: boolean = false
   ) => {
     setState((prev) => ({ ...prev, loading: true }))
 
     try {
+      // Usar la dirección proporcionada o la por defecto
+      const addressId = shippingAddressId || user.defaultAddressId || user.addresses?.[0]?.id
+
       const response = await fetch('/api/checkout/data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items,
-          shippingAddressId: shippingAddressId || user.defaultAddressId
+          shippingAddressId: addressId
         })
       })
 
@@ -91,15 +95,31 @@ export default function CheckoutClient({
       }
 
       const data = await response.json()
-      setSummary(data.summary)
+
+      // Preservar las selecciones existentes si se indica
+      if (preserveSelections && summary) {
+        setSummary({
+          ...data.summary,
+          selectedShipping: summary.selectedShipping,
+          selectedPayment: summary.selectedPayment
+        })
+      } else {
+        setSummary(data.summary)
+      }
+
+      // Guardar el shippingAddressId en el estado
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+        data: { ...prev.data, shippingAddressId: addressId }
+      }))
     } catch (error) {
       console.error('Error fetching checkout data:', error)
       setState((prev) => ({
         ...prev,
+        loading: false,
         error: 'Error cargando datos del checkout'
       }))
-    } finally {
-      setState((prev) => ({ ...prev, loading: false }))
     }
   }
 
@@ -125,14 +145,22 @@ export default function CheckoutClient({
     }))
 
     if (summary) {
+      const subtotal = Number(summary.calculation.subtotal) || 0
+      const discountAmount = Number(summary.calculation.discountAmount) || 0
+      const shippingCost = Number(option.cost) || 0
+      // Mantener la comisión de pago existente si ya se seleccionó un método
+      const processingFee = Number(summary.selectedPayment?.processingFee) || 0
+
+      // Recalcular IGV (18%) sobre subtotal - descuento + envío (sin incluir comisión)
+      const taxAmount = (subtotal - discountAmount + shippingCost) * 0.18
+      // Total = subtotal - descuento + envío + IGV + comisión de pago
+      const totalAmount = subtotal - discountAmount + shippingCost + taxAmount + processingFee
+
       const updatedCalculation = {
         ...summary.calculation,
-        shippingCost: option.cost,
-        totalAmount:
-          summary.calculation.subtotal -
-          summary.calculation.discountAmount +
-          option.cost +
-          summary.calculation.taxAmount
+        shippingCost,
+        taxAmount,
+        totalAmount
       }
 
       setSummary({
@@ -155,8 +183,26 @@ export default function CheckoutClient({
     }))
 
     if (summary) {
+      const subtotal = Number(summary.calculation.subtotal) || 0
+      const discountAmount = Number(summary.calculation.discountAmount) || 0
+      const shippingCost = Number(summary.calculation.shippingCost) || 0
+      const processingFee = Number(option.processingFee) || 0
+
+      // Recalcular IGV (18%) sobre subtotal - descuento + envío (sin incluir comisión de pago)
+      const taxAmount = (subtotal - discountAmount + shippingCost) * 0.18
+      // Total = subtotal - descuento + envío + IGV + comisión de pago
+      const totalAmount = subtotal - discountAmount + shippingCost + taxAmount + processingFee
+
+      const updatedCalculation = {
+        ...summary.calculation,
+        processingFee,
+        taxAmount,
+        totalAmount
+      }
+
       setSummary({
         ...summary,
+        calculation: updatedCalculation,
         selectedPayment: option
       })
     }
@@ -194,16 +240,24 @@ export default function CheckoutClient({
 
   // Procesar el checkout
   const processCheckout = async () => {
-    console.log('summary?.selectedShipping', summary?.selectedShipping)
-    console.log('summary?.selectedPayment', summary?.selectedPayment)
-    console.log('state.data.shippingAddressId', state.data.shippingAddressId)
+    console.log('processCheckout - Validating data:')
+    console.log('  selectedShipping:', summary?.selectedShipping)
+    console.log('  selectedPayment:', summary?.selectedPayment)
+    console.log('  shippingAddressId:', state.data.shippingAddressId)
 
-    if (
-      !summary?.selectedShipping ||
-      !summary?.selectedPayment ||
-      !state.data.shippingAddressId
-    ) {
-      setState((prev) => ({ ...prev, error: 'Faltan datos requeridos' }))
+    // Validación con mensajes específicos
+    if (!state.data.shippingAddressId) {
+      setState((prev) => ({ ...prev, error: 'Falta seleccionar una dirección de envío' }))
+      return
+    }
+
+    if (!summary?.selectedShipping) {
+      setState((prev) => ({ ...prev, error: 'Falta seleccionar un método de envío' }))
+      return
+    }
+
+    if (!summary?.selectedPayment) {
+      setState((prev) => ({ ...prev, error: 'Falta seleccionar un método de pago' }))
       return
     }
 

@@ -7,92 +7,185 @@ import {
 } from '@/module/shared/components/Table/DynamicTable'
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
-import { type Products } from '@/types/domain'
+import { AlertTriangle, ImageIcon, Package } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
 
-interface ProductListViewProps {
-  products: Products[]
+interface ProductAdmin {
+  id: number
+  name: string
+  description: string | null
+  basePrice: number | null
+  brand: { id: number; name: string } | null
+  variantsCount: number
+  totalStock: number
+  minPrice: number
+  maxPrice: number
+  mainImage: string | null
+  createdAt: string | null
 }
+
+interface ProductListViewProps {
+  products: ProductAdmin[]
+}
+
+const LOW_STOCK_THRESHOLD = 10
 
 export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
   const router = useRouter()
 
   const columns: TableColumn[] = [
     {
+      key: 'mainImage',
+      label: '',
+      priority: 'high',
+      sortable: false,
+      width: '60px',
+      render: (mainImage: string | null, item: ProductAdmin) => {
+        if (!mainImage) {
+          return (
+            <div className="flex h-10 w-10 items-center justify-center rounded bg-gray-100">
+              <ImageIcon size={18} className="text-gray-400" />
+            </div>
+          )
+        }
+        return (
+          <div className="relative h-10 w-10 overflow-hidden rounded">
+            <Image
+              src={mainImage}
+              alt={item.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )
+      }
+    },
+    {
       key: 'name',
-      label: 'Nombre',
+      label: 'Producto',
       priority: 'high',
       sortable: true,
       searchable: true,
-      width: '200px'
-    },
-    {
-      key: 'brand',
-      label: 'Marca',
-      priority: 'high',
-      sortable: false,
-      render: (brand: any) => {
-        if (!brand || !brand.name) return <span className="text-sm text-gray-400">Sin marca</span>
-        return (
-          <span className="text-sm text-gray-600">
-            {brand.name}
-          </span>
-        )
-      },
-      width: '130px'
-    },
-    {
-      key: 'productCategories',
-      label: 'Categorías',
-      priority: 'medium',
-      sortable: false,
-      render: (productCategories: any) => {
-        if (!productCategories || productCategories.length === 0) {
-          return <span className="text-sm text-gray-400">Sin categorías</span>
-        }
-        const categoryNames = productCategories[0]?.categories
-          ?.map((cat: any) => cat.name)
-          .join(', ') || ''
-        return (
-          <span className="text-sm text-gray-600">
-            {categoryNames.length > 50 ? `${categoryNames.substring(0, 50)}...` : categoryNames}
-          </span>
-        )
-      },
-      width: '180px'
-    },
-    {
-      key: 'description',
-      label: 'Descripción',
-      priority: 'low',
-      sortable: false,
-      searchable: true,
       width: '200px',
-      render: (description: string) => {
-        if (!description) return <span className="text-sm text-gray-400">Sin descripción</span>
+      render: (name: string, item: ProductAdmin) => (
+        <div>
+          <p className="font-medium text-gray-900">{name}</p>
+          {item.brand && (
+            <p className="text-xs text-gray-500">{item.brand.name}</p>
+          )}
+        </div>
+      )
+    },
+    {
+      key: 'variantsCount',
+      label: 'Variantes',
+      priority: 'high',
+      sortable: true,
+      width: '100px',
+      render: (variantsCount: number) => {
+        if (variantsCount === 0) {
+          return (
+            <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">
+              Sin variantes
+            </span>
+          )
+        }
         return (
-          <span className="text-sm text-gray-600">
-            {description.length > 80 ? `${description.substring(0, 80)}...` : description}
+          <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
+            <Package size={12} />
+            {variantsCount}
           </span>
         )
       }
     },
     {
-      key: 'basePrice',
-      label: 'Precio Base',
+      key: 'totalStock',
+      label: 'Stock',
       priority: 'high',
       sortable: true,
-      render: (basePrice: number) => {
-        if (!basePrice) return <span className="text-sm text-gray-400">-</span>
+      width: '100px',
+      render: (totalStock: number, item: ProductAdmin) => {
+        if (item.variantsCount === 0) {
+          return <span className="text-sm text-gray-400">-</span>
+        }
+        const isLowStock = totalStock > 0 && totalStock <= LOW_STOCK_THRESHOLD
+        const isOutOfStock = totalStock === 0
+
+        if (isOutOfStock) {
+          return (
+            <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
+              <AlertTriangle size={12} />
+              Agotado
+            </span>
+          )
+        }
+
+        if (isLowStock) {
+          return (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+              <AlertTriangle size={12} />
+              {totalStock}
+            </span>
+          )
+        }
+
+        return (
+          <span className="text-sm font-medium text-gray-900">{totalStock}</span>
+        )
+      }
+    },
+    {
+      key: 'minPrice',
+      label: 'Precio',
+      priority: 'high',
+      sortable: true,
+      width: '130px',
+      render: (minPrice: number, item: ProductAdmin) => {
+        if (item.variantsCount === 0 && !item.basePrice) {
+          return <span className="text-sm text-gray-400">-</span>
+        }
+
+        // Si no hay variantes, mostrar precio base
+        if (item.variantsCount === 0) {
+          return (
+            <span className="text-sm font-medium text-gray-900">
+              S/ {item.basePrice?.toFixed(2)}
+            </span>
+          )
+        }
+
+        // Si hay variantes y los precios son diferentes, mostrar rango
+        if (item.minPrice !== item.maxPrice && item.maxPrice > 0) {
+          return (
+            <div className="text-sm">
+              <span className="font-medium text-gray-900">S/ {item.minPrice.toFixed(2)}</span>
+              <span className="text-gray-400"> - </span>
+              <span className="font-medium text-gray-900">S/ {item.maxPrice.toFixed(2)}</span>
+            </div>
+          )
+        }
+
+        // Si todos tienen el mismo precio
         return (
           <span className="text-sm font-medium text-gray-900">
-            S/ {basePrice.toFixed(2)}
+            S/ {minPrice.toFixed(2)}
           </span>
         )
-      },
-      width: '130px'
+      }
+    },
+    {
+      key: 'brand',
+      label: 'Marca',
+      priority: 'medium',
+      sortable: false,
+      width: '120px',
+      render: (brand: { id: number; name: string } | null) => {
+        if (!brand) return <span className="text-sm text-gray-400">-</span>
+        return <span className="text-sm text-gray-600">{brand.name}</span>
+      }
     }
   ]
 
@@ -119,6 +212,12 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
     <>
       <Alert
         message="¿Estás seguro de eliminar este producto?"
+        dependenciesUrl="/api/admin/products/{id}/dependencies"
+        blockOnDependencies
+        blockedMessage="No se puede eliminar este producto porque tiene:"
+        dependenciesMap={{
+          variants: 'Variantes'
+        }}
         onSuccess={() => {
           const urlParams = new URLSearchParams(window.location.search)
           const id = urlParams.get('id')

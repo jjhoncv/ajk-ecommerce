@@ -12,6 +12,8 @@ interface ShippingData {
   loading: boolean
   error: string | null
   isInitialized: boolean
+  hasAddresses: boolean
+  hasShippingOptions: boolean
 }
 
 interface UseProductVariantShippingProps {
@@ -37,7 +39,9 @@ export const useProductVariantShipping = ({
     allAddresses: [],
     loading: true,
     error: null,
-    isInitialized: false
+    isInitialized: false,
+    hasAddresses: false,
+    hasShippingOptions: false
   })
 
   const loadShippingData = async () => {
@@ -68,7 +72,9 @@ export const useProductVariantShipping = ({
           allAddresses: data.allAddresses || [],
           loading: false,
           error: null,
-          isInitialized: true
+          isInitialized: true,
+          hasAddresses: data.hasAddresses ?? false,
+          hasShippingOptions: data.hasShippingOptions ?? false
         })
       } else {
         // Usuario no logueado: mostrar envío genérico
@@ -77,7 +83,9 @@ export const useProductVariantShipping = ({
           allAddresses: [],
           loading: false,
           error: null,
-          isInitialized: true
+          isInitialized: true,
+          hasAddresses: false,
+          hasShippingOptions: false
         })
       }
     } catch (error) {
@@ -90,7 +98,9 @@ export const useProductVariantShipping = ({
           error instanceof Error
             ? error.message
             : 'Error al cargar información de envío',
-        isInitialized: true
+        isInitialized: true,
+        hasAddresses: false,
+        hasShippingOptions: false
       })
     }
   }
@@ -114,7 +124,9 @@ export const useProductVariantShipping = ({
       ...prev,
       loading: true,
       error: null,
-      isInitialized: false
+      isInitialized: false,
+      hasAddresses: false,
+      hasShippingOptions: false
     }))
     loadShippingData()
   }

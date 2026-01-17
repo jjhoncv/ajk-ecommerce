@@ -94,7 +94,7 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
             <Select
               label={attribute.name}
               value={selected[attribute.id]?.toString() || ''}
-              onChange={(e) => handleChange(attribute.id, e.target.value)}
+              onChange={(e) => { handleChange(attribute.id, e.target.value) }}
             >
               <option value="">Sin seleccionar</option>
               {attribute.options?.map((option) => (
@@ -115,8 +115,7 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
                   min="0"
                   placeholder="0.00"
                   value={costs[selected[attribute.id]] || ''}
-                  onChange={(e) =>
-                    handleCostChange(selected[attribute.id], e.target.value)
+                  onChange={(e) => { handleCostChange(selected[attribute.id], e.target.value) }
                   }
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />

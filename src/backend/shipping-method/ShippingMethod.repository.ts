@@ -5,8 +5,20 @@ export class ShippingMethodRepository {
   public async getShippingMethods(): Promise<ShippingMethodRaw[] | null> {
     const methods = await executeQuery<ShippingMethodRaw[]>({
       query: `
-        SELECT * FROM shipping_methods 
-        WHERE is_active = 1 
+        SELECT * FROM shipping_methods
+        WHERE is_active = 1
+        ORDER BY display_order ASC, name ASC
+      `
+    })
+
+    if (methods.length === 0) return null
+    return methods
+  }
+
+  public async getAllShippingMethods(): Promise<ShippingMethodRaw[] | null> {
+    const methods = await executeQuery<ShippingMethodRaw[]>({
+      query: `
+        SELECT * FROM shipping_methods
         ORDER BY display_order ASC, name ASC
       `
     })

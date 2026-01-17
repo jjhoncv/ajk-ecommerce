@@ -28,23 +28,40 @@ export default function CartSummary({
       {/* Items */}
       <div className="mb-6 space-y-4">
         {items.map((item) => {
-          let displayPrice = item.price
+          let displayPrice = Number(item.price) || 0
 
           // Mostrar precio promocional si existe
           if (item.promotionVariants && item.promotionVariants.length > 0) {
             const activePromotion = item.promotionVariants
               .filter((pv) => !!pv)
-              .find(
-                (pv: PromotionVariants) =>
-                  pv?.promotion?.isActive === 1 &&
-                  new Date() >= new Date(pv.promotion.startDate) &&
-                  new Date() <= new Date(pv.promotion.endDate)
-              )
+              .find((pv: PromotionVariants) => {
+                // Verificar que pv.promotion exista antes de acceder a sus propiedades
+                if (!pv?.promotion) return false
 
-            if (activePromotion) {
-              displayPrice = parseFloat(activePromotion.promotionPrice)
+                const now = new Date()
+                const startDate = pv.promotion.startDate
+                  ? new Date(pv.promotion.startDate)
+                  : null
+                const endDate = pv.promotion.endDate
+                  ? new Date(pv.promotion.endDate)
+                  : null
+
+                const isActive = pv.promotion.isActive === 1
+                const hasStarted = startDate ? now >= startDate : true
+                const hasNotEnded = endDate ? now <= endDate : true
+
+                return isActive && hasStarted && hasNotEnded
+              })
+
+            if (activePromotion?.promotionPrice) {
+              const promoPrice = Number(activePromotion.promotionPrice)
+              if (!isNaN(promoPrice) && promoPrice > 0) {
+                displayPrice = promoPrice
+              }
             }
           }
+
+          const originalPrice = Number(item.price) || 0
 
           return (
             <div key={item.id} className="flex items-center space-x-4">
@@ -60,13 +77,13 @@ export default function CartSummary({
                   {item.name}
                 </h3>
                 <div className="mt-1 flex items-center space-x-2">
-                  {displayPrice < item.price && (
+                  {displayPrice < originalPrice && (
                     <span className="text-sm text-gray-500 line-through">
-                      S/ {Number(item.price.toFixed(2))}
+                      S/ {originalPrice.toFixed(2)}
                     </span>
                   )}
                   <span className="text-sm font-medium text-gray-900">
-                    S/ {Number(displayPrice.toFixed(2))}
+                    S/ {displayPrice.toFixed(2)}
                   </span>
                 </div>
                 <p className="text-sm text-gray-500">
@@ -101,11 +118,6 @@ export default function CartSummary({
               {selectedPayment.methodName}
             </span>
           </div>
-          {selectedPayment.processingFee > 0 && (
-            <p className="mt-1 text-xs text-orange-600">
-              Comisión: S/ {Number(selectedPayment.processingFee).toFixed(2)}
-            </p>
-          )}
         </div>
       )}
 
@@ -138,6 +150,15 @@ export default function CartSummary({
           <span className="text-gray-600">IGV (18%)</span>
           <span>S/ {Number(calculation.taxAmount).toFixed(2)}</span>
         </div>
+
+        {selectedPayment && selectedPayment.processingFee > 0 && (
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600">Comisión ({selectedPayment.methodName})</span>
+            <span className="text-orange-600">
+              S/ {Number(selectedPayment.processingFee).toFixed(2)}
+            </span>
+          </div>
+        )}
 
         <div className="border-t border-gray-200 pt-2">
           <div className="flex justify-between text-lg font-semibold">

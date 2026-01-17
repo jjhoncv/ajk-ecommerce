@@ -52,12 +52,12 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
   const [isCreating, setIsCreating] = useState(false)
 
   // Estado para editar opción
-  const [editingOption, setEditingOption] = useState<{ id: number; value: string; attributeId: number } | null>(null)
+  const [editingOption, setEditingOption] = useState<{ id: number, value: string, attributeId: number } | null>(null)
   const [editOptionValue, setEditOptionValue] = useState('')
 
   // Estado para eliminar opción
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [optionToDelete, setOptionToDelete] = useState<{ id: number; name: string } | null>(null)
+  const [optionToDelete, setOptionToDelete] = useState<{ id: number, name: string } | null>(null)
 
   // Estado para auditoría
   const [showAudit, setShowAudit] = useState(false)
@@ -320,7 +320,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
               📊 Ver Auditoría
             </button>
             <button
-              onClick={() => setShowCleanupDialog(true)}
+              onClick={() => { setShowCleanupDialog(true) }}
               className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-red-700"
             >
               🧹 Limpiar No Usadas
@@ -381,7 +381,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
                         )}
                         <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                           <button
-                            onClick={() => startEditOption(option.id, option.value, attribute.id)}
+                            onClick={() => { startEditOption(option.id, option.value, attribute.id) }}
                             className="text-blue-500 hover:text-blue-700"
                             title="Editar opción"
                           >
@@ -400,7 +400,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
                             </svg>
                           </button>
                           <button
-                            onClick={() => confirmDelete(option.id, option.value)}
+                            onClick={() => { confirmDelete(option.id, option.value) }}
                             className="text-red-500 hover:text-red-700"
                             title="Eliminar opción"
                           >
@@ -443,7 +443,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
             </label>
             <select
               value={selectedAttribute || ''}
-              onChange={(e) => setSelectedAttribute(Number(e.target.value) || null)}
+              onChange={(e) => { setSelectedAttribute(Number(e.target.value) || null) }}
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="">-- Selecciona un atributo --</option>
@@ -463,7 +463,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
             <input
               type="text"
               value={newOptionValue}
-              onChange={(e) => setNewOptionValue(e.target.value)}
+              onChange={(e) => { setNewOptionValue(e.target.value) }}
               placeholder="Ej: Titanio Negro, 128GB, etc."
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               disabled={!selectedAttribute}
@@ -519,7 +519,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
               <input
                 type="text"
                 value={editOptionValue}
-                onChange={(e) => setEditOptionValue(e.target.value)}
+                onChange={(e) => { setEditOptionValue(e.target.value) }}
                 placeholder="Ej: Titanio Azul Claro"
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 onKeyPress={(e) => {
@@ -575,7 +575,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
         <Alert
           message="¿Eliminar todas las opciones no usadas en variantes?"
           onSuccess={handleCleanup}
-          onCancel={() => setShowCleanupDialog(false)}
+          onCancel={() => { setShowCleanupDialog(false) }}
         />
       )}
 
@@ -588,7 +588,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
                 📊 Auditoría de Atributos
               </h2>
               <button
-                onClick={() => setShowAudit(false)}
+                onClick={() => { setShowAudit(false) }}
                 className="text-gray-500 hover:text-gray-700"
               >
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -667,7 +667,7 @@ export const ProductAttributeManager: FC<ProductAttributeManagerProps> = ({
 
             <div className="mt-6 flex justify-end">
               <button
-                onClick={() => setShowAudit(false)}
+                onClick={() => { setShowAudit(false) }}
                 className="rounded-md bg-gray-600 px-4 py-2 font-medium text-white transition-colors hover:bg-gray-700"
               >
                 Cerrar

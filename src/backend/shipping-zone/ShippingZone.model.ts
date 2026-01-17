@@ -16,6 +16,32 @@ export class ShippingZoneModel {
     return ShippingZonesMapper(zonesRaw)
   }
 
+  public async getAllShippingZones(): Promise<ShippingZone[] | undefined> {
+    const zonesRaw = await oShippingZoneRep.getAllShippingZones()
+    return ShippingZonesMapper(zonesRaw)
+  }
+
+  public async getAllShippingZonesWithMethods(): Promise<
+    ShippingZoneWithMethods[] | undefined
+  > {
+    const zones = await this.getAllShippingZones()
+    if (!zones) return undefined
+
+    const zonesWithMethods: ShippingZoneWithMethods[] = []
+
+    for (const zone of zones) {
+      const methods = await oShippingZoneMethodRep.getZoneMethodsByZoneId(
+        zone.id
+      )
+      zonesWithMethods.push({
+        ...zone,
+        methods: methods || []
+      })
+    }
+
+    return zonesWithMethods
+  }
+
   public async getShippingZoneById(
     id: number
   ): Promise<ShippingZone | undefined> {

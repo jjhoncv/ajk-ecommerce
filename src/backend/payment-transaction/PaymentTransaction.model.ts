@@ -123,20 +123,27 @@ export class PaymentTransactionModel {
     )
     if (!paymentMethod) throw new Error('Método de pago no encontrado')
 
-    // Calcular comisión
+    // Calcular comisión basada en el monto base (order total sin comisión)
+    const baseAmount = Number(data.amount) || 0
     let processingFee = 0
     if (
       paymentMethod.processing_fee_value &&
-      paymentMethod.processing_fee_value > 0
+      Number(paymentMethod.processing_fee_value) > 0
     ) {
       if (paymentMethod.processing_fee_type === 'percentage') {
-        processingFee = (data.amount * paymentMethod.processing_fee_value) / 100
+        processingFee = (baseAmount * Number(paymentMethod.processing_fee_value)) / 100
       } else {
-        processingFee = paymentMethod.processing_fee_value
+        processingFee = Number(paymentMethod.processing_fee_value)
       }
     }
 
-    const netAmount = data.amount - processingFee
+    // Redondear a 2 decimales para evitar errores de precisión
+    processingFee = Number(processingFee.toFixed(2))
+
+    // amount = lo que paga el cliente (base + comisión)
+    // net_amount = lo que recibe el comercio (base sin comisión)
+    const totalWithFee = Number((baseAmount + processingFee).toFixed(2))
+    const netAmount = Number(baseAmount.toFixed(2))
 
     // Generar número de referencia si no se proporciona
     const referenceNumber =
@@ -148,7 +155,7 @@ export class PaymentTransactionModel {
     > = {
       order_id: data.orderId,
       payment_method_id: data.paymentMethodId,
-      amount: data.amount,
+      amount: totalWithFee,
       net_amount: netAmount,
       processing_fee: processingFee,
       currency: data.currency || 'PEN',

@@ -16,7 +16,7 @@ export interface VariantSearchResultRaw {
 export class SearchRepository {
   public async searchProductVariants(
     filters: ProductSearchFilters
-  ): Promise<{ results: VariantSearchResultRaw[]; totalCount: number }> {
+  ): Promise<{ results: VariantSearchResultRaw[], totalCount: number }> {
     try {
       // ✅ Construir SELECT dinámicamente según si hay filtros de promoción
       const hasPromotionFilter =
@@ -308,7 +308,7 @@ export class SearchRepository {
       const searchTerm = `%${term}%`
 
       const suggestions = await executeQuery<
-        Array<{ suggestion: string; priority: number }>
+        Array<{ suggestion: string, priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (
@@ -386,7 +386,7 @@ export class SearchRepository {
     try {
       // Para múltiples términos, enfoque más directo y efectivo
       const suggestions = await executeQuery<
-        Array<{ suggestion: string; priority: number }>
+        Array<{ suggestion: string, priority: number }>
       >({
         query: `
           SELECT DISTINCT suggestion, priority FROM (

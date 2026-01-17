@@ -7,14 +7,14 @@ import {
   Ellipsis,
   GripVertical
 } from 'lucide-react'
-import { FC, ReactNode, useEffect, useRef, useState } from 'react'
+import { type FC, type ReactNode, useEffect, useRef, useState } from 'react'
 
 import { StrictModeDroppable } from '@/module/shared/components/StrictModeDroppable'
 import {
   DragDropContext,
   Draggable,
-  DroppableProvided,
-  DropResult
+  type DroppableProvided,
+  type DropResult
 } from '@hello-pangea/dnd'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { CardContent } from '../CardContent/CardContent'
@@ -44,9 +44,9 @@ export interface TableActions {
 
 export interface DynamicTableProps {
   columns: TableColumn[]
-  data: Record<string, any>[]
+  data: Array<Record<string, any>>
   actions?: TableActions
-  onReorder?: (reorderedItems: Record<string, any>[]) => void
+  onReorder?: (reorderedItems: Array<Record<string, any>>) => void
   containerClassName?: string
   tableClassName?: string
   rowClassName?: string
@@ -111,9 +111,6 @@ export const DynamicTable: FC<DynamicTableProps> = ({
           inputRefSearch.current.selectionEnd = q.length
         }
       }, 500)
-    } else {
-      params.delete('q')
-      router.push(`${pathname}?${params.toString()}`)
     }
   }, [])
 
@@ -183,8 +180,8 @@ export const DynamicTable: FC<DynamicTableProps> = ({
       <span
         className={`${
           column.imageField
-            ? ``
-            : `block max-w-[300px] overflow-hidden overflow-ellipsis text-nowrap`
+            ? ''
+            : 'block max-w-[300px] overflow-hidden overflow-ellipsis text-nowrap'
         }`}
       >
         {item[column.key]}
@@ -213,7 +210,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                 className="bg-white"
                 type="search"
                 defaultValue={term}
-                onChange={(e) => setTerm(e.target.value)}
+                onChange={(e) => { setTerm(e.target.value) }}
               />
             </form>
           </div>
@@ -250,7 +247,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                             {enableSort && column.sortable && (
                               <button
                                 className="h-8 w-8 p-0"
-                                onClick={() => handleSort(column.key)}
+                                onClick={() => { handleSort(column.key) }}
                               >
                                 <ChevronUp
                                   className={`h-4 w-4 ${
@@ -383,7 +380,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                             )}
                             <div
                               className="flex-1"
-                              onClick={() => toggleRow(item.id)}
+                              onClick={() => { toggleRow(item.id) }}
                             >
                               <div className="space-y-2">
                                 {highPriorityColumns.map((column) => (
@@ -402,10 +399,9 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              {renderActionsProps &&
-                                renderActionsProps(item.id)}
+                              {renderActionsProps?.(item.id)}
                               <button
-                                onClick={() => toggleRow(item.id)}
+                                onClick={() => { toggleRow(item.id) }}
                                 className="p-1"
                               >
                                 <ChevronRightIcon
@@ -470,12 +466,12 @@ export const DynamicTable: FC<DynamicTableProps> = ({
 
               <div className="flex items-center justify-center gap-2">
                 <button
-                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                  onClick={() => { setCurrentPage((prev) => prev - 1) }}
                   disabled={currentPage === 1}
                 >
                   <div
                     className={`flex items-center gap-1 ${
-                      currentPage === 1 ? `text-gray-400` : `hover:underline`
+                      currentPage === 1 ? 'text-gray-400' : 'hover:underline'
                     }`}
                   >
                     <ChevronLeft size={20} />
@@ -486,14 +482,14 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                   {currentPage} de {totalPages}
                 </span>
                 <button
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  onClick={() => { setCurrentPage((prev) => prev + 1) }}
                   disabled={currentPage === totalPages}
                 >
                   <div
                     className={`flex items-center gap-1 ${
                       currentPage === totalPages
-                        ? `text-gray-400`
-                        : `hover:underline`
+                        ? 'text-gray-400'
+                        : 'hover:underline'
                     } `}
                   >
                     Siguiente
@@ -530,12 +526,12 @@ export const DynamicTable: FC<DynamicTableProps> = ({
 
           <div className="flex gap-1">
             <button
-              onClick={() => setCurrentPage((prev) => prev - 1)}
+              onClick={() => { setCurrentPage((prev) => prev - 1) }}
               disabled={currentPage === 1}
             >
               <div
                 className={`flex items-center gap-1 ${
-                  currentPage === 1 ? `text-gray-400` : `hover:underline`
+                  currentPage === 1 ? 'text-gray-400' : 'hover:underline'
                 }`}
               >
                 <ChevronLeft size={16} />
@@ -545,14 +541,14 @@ export const DynamicTable: FC<DynamicTableProps> = ({
               {currentPage}
             </div>
             <button
-              onClick={() => setCurrentPage((prev) => prev + 1)}
+              onClick={() => { setCurrentPage((prev) => prev + 1) }}
               disabled={currentPage === totalPages}
             >
               <div
                 className={`flex items-center gap-1 ${
                   currentPage === totalPages
-                    ? `text-gray-400`
-                    : `hover:underline`
+                    ? 'text-gray-400'
+                    : 'hover:underline'
                 } `}
               >
                 <ChevronRight size={16} />

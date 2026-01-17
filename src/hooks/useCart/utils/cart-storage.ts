@@ -81,13 +81,38 @@ export const calculateCartTotals = (
     // Precio base del item
     const basePrice = Number(item.price || 0)
 
-    // Si hay promoción, usar precio promocional + costos adicionales
-    const promotionPrice = item.promotionVariants?.[0]?.promotionPrice
-    const finalPrice = promotionPrice
-      ? Number(promotionPrice) + additionalCost
-      : basePrice + additionalCost
+    // Buscar promoción activa
+    let finalPrice = basePrice
+    if (item.promotionVariants && item.promotionVariants.length > 0) {
+      const activePromotion = item.promotionVariants.find((pv) => {
+        if (!pv?.promotion) return false
 
-    return total + finalPrice * item.quantity
+        const now = new Date()
+        const startDate = pv.promotion.startDate
+          ? new Date(pv.promotion.startDate)
+          : null
+        const endDate = pv.promotion.endDate
+          ? new Date(pv.promotion.endDate)
+          : null
+
+        const isActive = pv.promotion.isActive === 1
+        const hasStarted = startDate ? now >= startDate : true
+        const hasNotEnded = endDate ? now <= endDate : true
+
+        return isActive && hasStarted && hasNotEnded
+      })
+
+      if (activePromotion?.promotionPrice) {
+        const promoPrice = Number(activePromotion.promotionPrice)
+        if (!isNaN(promoPrice) && promoPrice > 0) {
+          finalPrice = promoPrice
+        }
+      }
+    }
+
+    // Precio final = precio (base o promocional) + costos adicionales
+    const itemTotal = (finalPrice + additionalCost) * item.quantity
+    return total + (isNaN(itemTotal) ? 0 : itemTotal)
   }, 0)
 
   return { totalItems, totalPrice }

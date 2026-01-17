@@ -1,13 +1,13 @@
-import Link from "next/link";
-import React, { FC } from "react";
+import Link from 'next/link'
+import React, { type FC } from 'react'
 
 interface ButtonProps {
-  type: "button" | "cancel" | "link" | "submit";
-  href?: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-  outline?: boolean;
-  disabled?: boolean;
+  type: 'button' | 'cancel' | 'link' | 'submit'
+  href?: string
+  children: React.ReactNode
+  onClick?: () => void
+  outline?: boolean
+  disabled?: boolean
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -20,15 +20,15 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const className = `min-w-16 rounded px-8 py-2.5 flex ${
-    disabled ? `!bg-gray-300 !hover:bg-gray-200 !cursor-not-allowed` : ``
-  }`;
+    disabled ? '!bg-gray-300 !hover:bg-gray-200 !cursor-not-allowed' : ''
+  }`
   const classOutline =
-    "border hover:border-slate-300 bg-slate-300 hover:bg-gray-400 transition-colors";
-  const classBg = "bg-gray-800 text-white hover:bg-sky-600 transition-colors";
+    'border hover:border-slate-300 bg-slate-300 hover:bg-gray-400 transition-colors'
+  const classBg = 'bg-gray-800 text-white hover:bg-sky-600 transition-colors'
 
   return (
     <>
-      {(type === "button" || type === "submit") && (
+      {(type === 'button' || type === 'submit') && (
         <button
           className={`${outline ? classOutline : classBg} ${className} cursor`}
           type={type}
@@ -38,16 +38,16 @@ export const Button: FC<ButtonProps> = ({
           {children}
         </button>
       )}
-      {type === "cancel" && href && (
+      {type === 'cancel' && href && (
         <Link href={href} className={`${classOutline} ${className}`}>
           {children}
         </Link>
       )}
-      {type === "link" && href && (
+      {type === 'link' && href && (
         <Link href={href} className={`border ${classBg} ${className}`}>
           {children}
         </Link>
       )}
     </>
-  );
-};
+  )
+}

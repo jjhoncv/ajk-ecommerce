@@ -106,6 +106,34 @@ export class OrderModel {
     if (!summary) return undefined
     return summary
   }
+
+  public async getAllOrders(): Promise<any[] | undefined> {
+    const orders = await oOrderRep.getOrdersWithCustomerInfo()
+    if (!orders) return undefined
+    return orders.map((order) => ({
+      id: order.id,
+      customerId: order.customer_id,
+      orderNumber: order.order_number,
+      status: order.status,
+      subtotal: Number(order.subtotal),
+      discountAmount: Number(order.discount_amount),
+      shippingCost: Number(order.shipping_cost),
+      taxAmount: Number(order.tax_amount),
+      totalAmount: Number(order.total_amount),
+      shippingAddressId: order.shipping_address_id,
+      shippingMethod: order.shipping_method,
+      estimatedDelivery: order.estimated_delivery,
+      paymentMethod: order.payment_method,
+      paymentStatus: order.payment_status,
+      paidAt: order.paid_at,
+      customerNotes: order.customer_notes,
+      adminNotes: order.admin_notes,
+      createdAt: order.created_at,
+      customerName: order.customer_name,
+      customerEmail: order.customer_email,
+      itemCount: Number(order.item_count) || 0
+    }))
+  }
 }
 
 const orderModel = new OrderModel()

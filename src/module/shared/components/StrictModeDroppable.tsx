@@ -1,41 +1,41 @@
-"use client";
+'use client'
 import {
   Droppable,
-  DroppableProps,
-  DroppableProvided,
-  DroppableStateSnapshot,
-} from "@hello-pangea/dnd";
-import { useEffect, useState, PropsWithChildren, memo } from "react";
+  type DroppableProps,
+  type DroppableProvided,
+  type DroppableStateSnapshot
+} from '@hello-pangea/dnd'
+import { useEffect, useState, PropsWithChildren, memo } from 'react'
 
-type StrictModeDroppableProps = Omit<DroppableProps, "children"> & {
+type StrictModeDroppableProps = Omit<DroppableProps, 'children'> & {
   children: (
     provided: DroppableProvided,
     snapshot: DroppableStateSnapshot
-  ) => React.ReactElement;
-};
+  ) => React.ReactElement
+}
 
 const StrictModeDroppableComponent = ({
   children,
   ...props
 }: StrictModeDroppableProps) => {
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
+    const animation = requestAnimationFrame(() => { setEnabled(true) })
 
     return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
+      cancelAnimationFrame(animation)
+      setEnabled(false)
+    }
+  }, [])
 
   if (!enabled) {
-    return null;
+    return null
   }
 
-  return <Droppable {...props}>{children}</Droppable>;
-};
+  return <Droppable {...props}>{children}</Droppable>
+}
 
-export const StrictModeDroppable = memo(StrictModeDroppableComponent);
+export const StrictModeDroppable = memo(StrictModeDroppableComponent)
 
-export type { StrictModeDroppableProps };
+export type { StrictModeDroppableProps }

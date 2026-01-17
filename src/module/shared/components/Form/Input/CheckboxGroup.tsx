@@ -5,7 +5,7 @@ interface CheckboxGroupProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   error?: any
   control: any
-  items: Array<{ id: string; name: string }>
+  items: Array<{ id: string, name: string }>
 }
 
 export const CheckboxGroup = forwardRef<HTMLInputElement, CheckboxGroupProps>(
