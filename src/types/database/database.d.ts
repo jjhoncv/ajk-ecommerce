@@ -118,6 +118,7 @@ export type VariantImagesImageType =
   | 'right'
   | 'top'
 
+// DEPRECATED: Use ProductAttributeOptionImages instead
 export interface AttributeOptionImages {
   /** Texto alternativo */
   alt_text?: Maybe<Scalars['String']['output']>
@@ -134,6 +135,24 @@ export interface AttributeOptionImages {
   image_url_zoom: Scalars['String']['output']
   is_primary?: Maybe<Scalars['Int']['output']>
   product_id?: Maybe<Scalars['Int']['output']>
+  updated_at: Scalars['Timestamp']['output']
+}
+
+export interface ProductAttributeOptionImages {
+  /** Texto alternativo */
+  alt_text?: Maybe<Scalars['String']['output']>
+  product_attribute_option_id: Scalars['Int']['output']
+  created_at: Scalars['Timestamp']['output']
+  display_order?: Maybe<Scalars['Int']['output']>
+  id: Scalars['Int']['output']
+  image_type: AttributeOptionImagesImageType
+  /** Imagen normal 600x800 */
+  image_url_normal: Scalars['String']['output']
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb: Scalars['String']['output']
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom: Scalars['String']['output']
+  is_primary?: Maybe<Scalars['Int']['output']>
   updated_at: Scalars['Timestamp']['output']
 }
 
@@ -428,6 +447,16 @@ export interface Products {
   updated_at: Scalars['Timestamp']['output']
 }
 
+export interface ProductAttributeOptions {
+  id: Scalars['Int']['output']
+  product_id: Scalars['Int']['output']
+  attribute_id: Scalars['Int']['output']
+  value: Scalars['String']['output']
+  display_order?: Maybe<Scalars['Int']['output']>
+  created_at: Scalars['Timestamp']['output']
+  updated_at: Scalars['Timestamp']['output']
+}
+
 export interface PromotionVariants {
   created_at: Scalars['Timestamp']['output']
   promotion_id: Scalars['Int']['output']
@@ -555,7 +584,8 @@ export interface Users {
 }
 
 export interface VariantAttributeOptions {
-  attribute_option_id: Scalars['Int']['output']
+  additional_cost?: Maybe<Scalars['Float']['output']>
+  product_attribute_option_id: Scalars['Int']['output']
   variant_id: Scalars['Int']['output']
 }
 

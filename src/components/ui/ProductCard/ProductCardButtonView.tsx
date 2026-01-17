@@ -77,7 +77,7 @@ const ProductCardButtonView: React.FC<ProductCardButtonViewProps> = ({
 
     const variantId = allVariants.find((v) => {
       return v?.variantAttributeOptions?.some(
-        (vao) => vao?.attributeOption?.id === optionId
+        (vao) => vao?.productAttributeOption?.id === optionId
       )
     })?.id
 

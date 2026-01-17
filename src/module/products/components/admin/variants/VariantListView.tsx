@@ -31,7 +31,7 @@ export const VariantListView: FC<VariantListViewProps> = ({
       label: 'Imagen',
       priority: 'high',
       sortable: false,
-      render: (variantImages: any) => {
+      render: (variantImages: any, row: any) => {
         // Buscar imagen principal o primera imagen
         const primaryImage = variantImages?.find((img: any) => img.isPrimary)
         const displayImage = primaryImage || variantImages?.[0]
@@ -44,18 +44,32 @@ export const VariantListView: FC<VariantListViewProps> = ({
           )
         }
 
+        // Determinar si es imagen base o de atributo
+        const isBaseImage = !row.imageAttributeId
+
         return (
-          <div className="relative h-12 w-12 overflow-hidden rounded border border-gray-200">
-            <Image
-              src={displayImage.imageUrlThumb}
-              alt={displayImage.altText || 'Imagen de variante'}
-              fill
-              className="object-cover"
-            />
+          <div className="flex flex-col items-center gap-1">
+            <div className="relative h-12 w-12 overflow-hidden rounded border border-gray-200">
+              <Image
+                src={displayImage.imageUrlThumb}
+                alt={displayImage.altText || 'Imagen de variante'}
+                fill
+                className="object-contain"
+              />
+            </div>
+            {isBaseImage ? (
+              <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
+                Base
+              </span>
+            ) : (
+              <span className="text-[10px] font-medium text-green-600 bg-green-50 px-1.5 py-0.5 rounded">
+                Atributo
+              </span>
+            )}
           </div>
         )
       },
-      width: '80px'
+      width: '100px'
     },
     {
       key: 'sku',
@@ -106,8 +120,8 @@ export const VariantListView: FC<VariantListViewProps> = ({
 
         const attributesText = variantAttributeOptions
           .map((vao: any) => {
-            const attributeName = vao.attributeOption?.attribute?.name || 'N/A'
-            const optionValue = vao.attributeOption?.value || 'N/A'
+            const attributeName = vao.productAttributeOption?.attribute?.name || 'N/A'
+            const optionValue = vao.productAttributeOption?.value || 'N/A'
             return `${attributeName}: ${optionValue}`
           })
           .join(', ')

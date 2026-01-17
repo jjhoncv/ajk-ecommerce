@@ -90,14 +90,25 @@ export const getPriceIfHasPromotion = (
   type: string
   name: string
   currentPromotion?: PromotionVariants | null
+  additionalCost: number
 } => {
+  // Calcular costos adicionales de los atributos
+  const additionalCost = variant?.variantAttributeOptions?.reduce((total, vao) => {
+    return total + (Number(vao?.additionalCost) || 0)
+  }, 0) || 0
+
+  // Precio base de la variante
+  const basePrice = Number(variant?.price || 0)
+
+  // Precio original = precio base + costos adicionales de atributos
+  const originalPrice = basePrice + additionalCost
+
   // Obtener promoción activa de la variante actual
   const currentPromotion = variant?.promotionVariants?.[0]
 
-  // Calcular precio con promoción
-  const originalPrice = Number(variant?.price || 0)
+  // Calcular precio con promoción (aplicar descuento sobre el precio total)
   const promotionPrice = currentPromotion
-    ? Number(currentPromotion.promotionPrice)
+    ? Number(currentPromotion.promotionPrice) + additionalCost
     : null
   const finalPrice = promotionPrice || originalPrice
 
@@ -107,6 +118,7 @@ export const getPriceIfHasPromotion = (
     type: currentPromotion?.promotion?.type ?? '',
     name: currentPromotion?.promotion?.name ?? '',
     originalPrice,
-    currentPromotion
+    currentPromotion,
+    additionalCost
   }
 }

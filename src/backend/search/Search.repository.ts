@@ -67,15 +67,15 @@ export class SearchRepository {
 
           if (finalSearchTerms.length === 1 || searchTerms.length === 1) {
             whereConditions.push(`
-            (LOWER(p.name) LIKE LOWER(?) OR 
-             LOWER(p.description) LIKE LOWER(?) OR 
+            (LOWER(p.name) LIKE LOWER(?) OR
+             LOWER(p.description) LIKE LOWER(?) OR
              LOWER(pv.sku) LIKE LOWER(?) OR
              LOWER(b.name) LIKE LOWER(?) OR
              EXISTS (
                SELECT 1 FROM variant_attribute_options vao_search
-               JOIN attribute_options ao_search ON vao_search.attribute_option_id = ao_search.id
-               WHERE vao_search.variant_id = pv.id 
-               AND LOWER(ao_search.value) LIKE LOWER(?)
+               JOIN product_attribute_options pao_search ON vao_search.product_attribute_option_id = pao_search.id
+               WHERE vao_search.variant_id = pv.id
+               AND LOWER(pao_search.value) LIKE LOWER(?)
              ))
           `)
             const searchTerm = `%${searchTerms[0]}%`
@@ -98,15 +98,15 @@ export class SearchRepository {
               )
 
               return `
-              (LOWER(p.name) LIKE LOWER(?) OR 
-               LOWER(p.description) LIKE LOWER(?) OR 
+              (LOWER(p.name) LIKE LOWER(?) OR
+               LOWER(p.description) LIKE LOWER(?) OR
                LOWER(pv.sku) LIKE LOWER(?) OR
                LOWER(b.name) LIKE LOWER(?) OR
                EXISTS (
                  SELECT 1 FROM variant_attribute_options vao_${index}
-                 JOIN attribute_options ao_${index} ON vao_${index}.attribute_option_id = ao_${index}.id
-                 WHERE vao_${index}.variant_id = pv.id 
-                 AND LOWER(ao_${index}.value) LIKE LOWER(?)
+                 JOIN product_attribute_options pao_${index} ON vao_${index}.product_attribute_option_id = pao_${index}.id
+                 WHERE vao_${index}.variant_id = pv.id
+                 AND LOWER(pao_${index}.value) LIKE LOWER(?)
                ))
             `
             })
@@ -182,7 +182,7 @@ export class SearchRepository {
           )
           const placeholders = optionIds.map(() => '?').join(', ')
           whereConditions.push(
-            `${vaoAlias}.attribute_option_id IN (${placeholders})`
+            `${vaoAlias}.product_attribute_option_id IN (${placeholders})`
           )
           queryParams.push(...optionIds)
         })
@@ -327,12 +327,12 @@ export class SearchRepository {
             UNION
             
             -- Productos + atributos específicos
-            SELECT DISTINCT CONCAT(p.name, ' ', ao.value) as suggestion, 3 as priority
+            SELECT DISTINCT CONCAT(p.name, ' ', pao.value) as suggestion, 3 as priority
             FROM products p
             JOIN product_variants pv ON p.id = pv.product_id
             JOIN variant_attribute_options vao ON pv.id = vao.variant_id
-            JOIN attribute_options ao ON vao.attribute_option_id = ao.id
-            WHERE (LOWER(p.name) LIKE LOWER(?) OR LOWER(ao.value) LIKE LOWER(?))
+            JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+            WHERE (LOWER(p.name) LIKE LOWER(?) OR LOWER(pao.value) LIKE LOWER(?))
             
             UNION
             
@@ -345,9 +345,9 @@ export class SearchRepository {
             UNION
             
             -- Solo valores de atributos
-            SELECT DISTINCT ao.value as suggestion, 5 as priority
-            FROM attribute_options ao
-            WHERE LOWER(ao.value) LIKE LOWER(?)
+            SELECT DISTINCT pao.value as suggestion, 5 as priority
+            FROM product_attribute_options pao
+            WHERE LOWER(pao.value) LIKE LOWER(?)
             
             UNION
             
@@ -398,12 +398,12 @@ export class SearchRepository {
             UNION
             
             -- Productos + atributos donde al menos coincidan los términos
-            SELECT DISTINCT CONCAT(p.name, ' ', ao.value) as suggestion, 2 as priority
+            SELECT DISTINCT CONCAT(p.name, ' ', pao.value) as suggestion, 2 as priority
             FROM products p
             JOIN product_variants pv ON p.id = pv.product_id
             JOIN variant_attribute_options vao ON pv.id = vao.variant_id
-            JOIN attribute_options ao ON vao.attribute_option_id = ao.id
-            WHERE ${terms.map(() => '(LOWER(p.name) LIKE LOWER(?) OR LOWER(ao.value) LIKE LOWER(?))').join(' AND ')}
+            JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+            WHERE ${terms.map(() => '(LOWER(p.name) LIKE LOWER(?) OR LOWER(pao.value) LIKE LOWER(?))').join(' AND ')}
             
             UNION
             

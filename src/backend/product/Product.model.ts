@@ -89,8 +89,9 @@ export class ProductModel {
         const attributeOptions: VariantAttributeOptions[] =
           variantAttributeOptionWithDetails?.map((option) => ({
             variantId: option.variantId,
-            attributeOptionId: option.attributeOptionId,
-            attributeOption: option.attributeOption
+            productAttributeOptionId: option.productAttributeOptionId,
+            additionalCost: option.additionalCost,
+            productAttributeOption: option.productAttributeOption
           })) || []
 
         // Obtener imágenes de la variante

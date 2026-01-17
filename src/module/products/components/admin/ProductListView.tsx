@@ -170,6 +170,24 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
                 </svg>
                 Variantes
               </Link>
+              <Link
+                href={`/admin/products/${id}/attributes`}
+                className="flex cursor-pointer items-center gap-3 rounded px-4 py-2 text-sm font-light transition-colors hover:bg-slate-100"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                Atributos
+              </Link>
               <RemoveAction id={id} baseURL="/admin/products" />
             </>
           )

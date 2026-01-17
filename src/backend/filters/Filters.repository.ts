@@ -54,15 +54,18 @@ export class FiltersRepository {
 
   public async getAvailableAttributes(): Promise<FilterAttribute[]> {
     const attributesQuery = `
-      SELECT 
-        a.id, a.name, a.display_type,
-        ao.id as option_id, ao.value as option_value, ao.additional_cost,
+      SELECT
+        a.id,
+        a.name,
+        a.display_type,
+        pao.id as option_id,
+        pao.value as option_value,
         COUNT(DISTINCT pv.id) as count
       FROM attributes a
-      JOIN attribute_options ao ON a.id = ao.attribute_id
-      JOIN variant_attribute_options vao ON ao.id = vao.attribute_option_id
+      JOIN product_attribute_options pao ON a.id = pao.attribute_id
+      JOIN variant_attribute_options vao ON pao.id = vao.product_attribute_option_id
       JOIN product_variants pv ON vao.variant_id = pv.id
-      GROUP BY a.id, ao.id
+      GROUP BY a.id, pao.id
       ORDER BY a.id, count DESC
     `
     const attributeOptions = await executeQuery<
@@ -72,31 +75,43 @@ export class FiltersRepository {
         display_type: string
         option_id: number
         option_value: string
-        additional_cost: number
         count: number
       }>
     >({
       query: attributesQuery
     })
 
+    if (!attributeOptions || attributeOptions.length === 0) {
+      return []
+    }
+
     const attributesMap = new Map<number, FilterAttribute>()
 
-    attributeOptions.forEach((option) => {
-      if (!attributesMap.has(option.id)) {
-        attributesMap.set(option.id, {
-          id: option.id,
-          name: option.name,
-          displayType: option.display_type,
+    attributeOptions.forEach((row) => {
+      // Validar que los datos sean correctos
+      if (!row || typeof row.id !== 'number' || !row.name || typeof row.option_id !== 'number') {
+        console.error('Invalid row data:', row)
+        return
+      }
+
+      if (!attributesMap.has(row.id)) {
+        attributesMap.set(row.id, {
+          id: row.id,
+          name: row.name,
+          displayType: row.display_type || 'pills',
           options: []
         })
       }
 
-      attributesMap.get(option.id)?.options.push({
-        id: option.option_id,
-        value: option.option_value,
-        additionalCost: Number(option.additional_cost),
-        count: option.count
-      })
+      const attribute = attributesMap.get(row.id)
+      if (attribute) {
+        attribute.options.push({
+          id: row.option_id,
+          value: row.option_value || '',
+          additionalCost: 0,
+          count: Number(row.count) || 0
+        })
+      }
     })
 
     return Array.from(attributesMap.values())

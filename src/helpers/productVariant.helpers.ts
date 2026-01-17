@@ -52,16 +52,16 @@ export const getVariantTitle = (
     ?.map((variantAttr) => {
       // Verificar que variantAttr no sea null
       if (!variantAttr) return null
-      // Obtener el valor del atributo desde attributeOptions
-      const attributeOption = variantAttr.attributeOption
-      return attributeOption?.value
+      // Obtener el valor del atributo desde productAttributeOption
+      const productAttributeOption = variantAttr.productAttributeOption
+      return productAttributeOption?.value
     })
     .filter(Boolean) // Filtrar valores undefined/null
-    .join(' - ')
+    .join(' ')
 
   // Si hay atributos, agregarlos al título
   if (variantAttributes && variantAttributes.length > 0) {
-    return `${baseTitle} - ${variantAttributes}`
+    return `${baseTitle} ${variantAttributes}`
   }
 
   return baseTitle

@@ -26,20 +26,31 @@ const AttributeFilter: React.FC<AttributeFilterProps> = ({
     return null
   }
 
+  // Filtrar atributos inválidos
+  const validAttributes = availableFilters.attributes.filter(
+    (attr) => attr && typeof attr.id === 'number' && attr.name && attr.options?.length > 0
+  )
+
+  if (validAttributes.length === 0) {
+    return null
+  }
+
   return (
     <div>
-      {availableFilters.attributes.map((attribute) => (
+      {validAttributes.map((attribute) => (
         <CollapsibleSection
           key={attribute.id}
           title={attribute.name}
           className="mb-0"
         >
           <div className="space-y-1">
-            {attribute.options.map((option) => (
+            {attribute.options
+              .filter((opt) => opt && typeof opt.id === 'number' && opt.value)
+              .map((option) => (
               <label key={option.id} className="flex items-center">
                 <input
                   type="checkbox"
-                  value={option.id}
+                  value={String(option.id)}
                   checked={
                     currentFilters.attributes?.[attribute.id]?.includes(
                       option.id

@@ -1,5 +1,5 @@
-import attributeModel from '@/backend/attribute'
 import productModel from '@/backend/product'
+import productAttributeOptionModel from '@/backend/product-attribute-option'
 import productVariantModel from '@/backend/product-variant'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
 import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
@@ -25,7 +25,12 @@ export default async function EditVariantPage({
   const variant = await productVariantModel.getProductVariantById(
     Number(variantId)
   )
-  const attributes = await attributeModel.getAttributes()
+
+  // 🆕 Obtener atributos asignados específicamente a este producto
+  const attributes = await productAttributeOptionModel.getProductAttributesWithOptions(
+    Number(productId)
+  )
+
   const variantAttributeOptions =
     await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
       Number(variantId)
@@ -73,11 +78,17 @@ export default async function EditVariantPage({
 
   // Construir objeto de atributos seleccionados: { attributeId: optionId }
   const selectedAttributes: Record<number, number> = {}
+  // Construir objeto de costos adicionales: { optionId: cost }
+  const attributeCosts: Record<number, number> = {}
   if (variantAttributeOptions) {
     variantAttributeOptions.forEach((vao) => {
-      if (vao.attributeOption?.attributeId) {
-        selectedAttributes[vao.attributeOption.attributeId] =
-          vao.attributeOptionId
+      if (vao.productAttributeOption?.attributeId) {
+        selectedAttributes[vao.productAttributeOption.attributeId] =
+          vao.productAttributeOptionId
+      }
+      // Guardar costo adicional si existe
+      if (vao.additionalCost && vao.additionalCost > 0) {
+        attributeCosts[vao.productAttributeOptionId] = vao.additionalCost
       }
     })
   }
@@ -107,6 +118,7 @@ export default async function EditVariantPage({
             fields={fieldsWithValues}
             attributes={attributes || []}
             selectedAttributes={selectedAttributes}
+            attributeCosts={attributeCosts}
             imageAttributeId={variant.imageAttributeId}
             customFields={{ id: variantId }}
             redirectUrl={`/admin/products/${productId}/variants`}

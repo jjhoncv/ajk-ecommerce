@@ -164,8 +164,8 @@ export class ProductVariantModel {
         const attributeOptions: VariantAttributeOption[] =
           variantAttributeOptionWithDetails?.map((option) => ({
             variantId: option.variantId,
-            attributeOptionId: option.attributeOptionId,
-            attributeOption: option.attributeOption
+            productAttributeOptionId: option.productAttributeOptionId,
+            productAttributeOption: option.productAttributeOption
           })) || []
 
         return {
@@ -218,33 +218,32 @@ export class ProductVariantModel {
   public async getVariantAttributeOptions(
     variantId: number
   ): Promise<VariantAttributeOptions[] | undefined> {
+    // Obtener la variante para conocer su productId
+    const variant = await this.getProductVariantById(variantId)
+    if (!variant) return undefined
+
     const variantAttributeOptionWithDetails =
       await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(
         variantId
       )
 
+    if (!variantAttributeOptionWithDetails) return undefined
+
+    // Cargar imágenes para cada opción de atributo
     const attributeOptions: VariantAttributeOptions[] = await Promise.all(
-      variantAttributeOptionWithDetails?.map(async (option) => ({
+      variantAttributeOptionWithDetails.map(async (option) => ({
         variantId: option.variantId,
-        attributeOptionId: option.attributeOptionId,
-        attributeOption: {
-          ...option.attributeOption,
+        productAttributeOptionId: option.productAttributeOptionId,
+        additionalCost: option.additionalCost,
+        productAttributeOption: {
+          ...option.productAttributeOption,
           attributeOptionImages:
             await attributeOptionImageModel.getAttributeOptionImages(
-              option.attributeOptionId
-            ),
-          attributeId: Number(option.attributeOption?.attributeId),
-          id: Number(option.attributeOption?.id),
-          value: option.attributeOption?.value || '',
-          attribute: {
-            ...option.attributeOption?.attribute,
-            id: Number(option.attributeOption?.attribute?.id),
-            displayType:
-              option.attributeOption?.attribute?.displayType || 'color',
-            name: option.attributeOption?.attribute?.name || ''
-          }
+              option.productAttributeOptionId,
+              variant.productId
+            )
         }
-      })) || []
+      }))
     )
     return attributeOptions
   }
@@ -314,21 +313,21 @@ export class ProductVariantModel {
 
   public async addAttributeOptionToVariant(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await oVariantAttributeOptionModel.addAttributeOptionToVariant(
       variantId,
-      attributeOptionId
+      productAttributeOptionId
     )
   }
 
   public async removeAttributeOptionFromVariant(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await oVariantAttributeOptionModel.removeAttributeOptionFromVariant(
       variantId,
-      attributeOptionId
+      productAttributeOptionId
     )
   }
 
@@ -359,7 +358,7 @@ export class ProductVariantModel {
     }
 
     const allOptionIds = productAttributeOptionIds.map(
-      (row) => row.attribute_option_id
+      (row) => row.product_attribute_option_id
     )
 
     // Usar el modelo de AttributeOptionImage para obtener las imágenes

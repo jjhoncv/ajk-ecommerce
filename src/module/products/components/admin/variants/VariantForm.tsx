@@ -22,6 +22,7 @@ interface VariantFormProps {
   fields: Field[]
   attributes: AttributeWithOptions[]
   selectedAttributes?: Record<number, number>
+  attributeCosts?: Record<number, number>
   imageAttributeId?: number | null
   customFields?: object
   redirectUrl: string
@@ -33,6 +34,7 @@ export const VariantForm: FC<VariantFormProps> = ({
   fields,
   attributes,
   selectedAttributes = {},
+  attributeCosts = {},
   imageAttributeId = null,
   customFields = {},
   redirectUrl
@@ -40,14 +42,16 @@ export const VariantForm: FC<VariantFormProps> = ({
   const [attributesSelected, setAttributesSelected] = useState<Record<number, number>>(
     selectedAttributes
   )
+  const [costs, setCosts] = useState<Record<number, number>>(attributeCosts)
   const [selectedImageAttributeId, setSelectedImageAttributeId] = useState<number | null>(
     imageAttributeId ?? null
   )
 
-  // Agregar el campo attributes e image_attribute_id al customFields para enviarlo al API
+  // Agregar el campo attributes, attribute_costs e image_attribute_id al customFields para enviarlo al API
   const enhancedCustomFields = {
     ...customFields,
     attributes: JSON.stringify(attributesSelected),
+    attribute_costs: JSON.stringify(costs),
     image_attribute_id: selectedImageAttributeId?.toString() ?? ''
   }
 
@@ -74,7 +78,9 @@ export const VariantForm: FC<VariantFormProps> = ({
           <AttributeSelector
             attributes={attributes}
             selectedAttributes={attributesSelected}
+            attributeCosts={costs}
             onChange={setAttributesSelected}
+            onCostChange={setCosts}
           />
         </div>
       )}

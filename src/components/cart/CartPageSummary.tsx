@@ -8,10 +8,23 @@ import { type FC, useState } from 'react'
 
 // Helper para obtener precio con promoción
 const getPriceIfHasPromotion = (item: CartItem) => {
+  // Calcular costos adicionales de los atributos
+  const additionalCost = item.variantAttributeOptions?.reduce((total, vao) => {
+    return total + (Number(vao?.additionalCost) || 0)
+  }, 0) || 0
+
+  // Precio base del item
+  const basePrice = Number(item.price || 0)
+
+  // Precio original = precio base + costos adicionales de atributos
+  const originalPrice = basePrice + additionalCost
+
+  // Obtener promoción activa
   const currentPromotion = item.promotionVariants?.[0]
-  const originalPrice = Number(item.price)
+
+  // Calcular precio con promoción (aplicar descuento sobre el precio base y sumar adicionales)
   const promotionPrice = currentPromotion
-    ? Number(currentPromotion.promotionPrice)
+    ? Number(currentPromotion.promotionPrice) + additionalCost
     : null
   const finalPrice = promotionPrice || originalPrice
 

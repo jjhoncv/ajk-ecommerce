@@ -168,9 +168,9 @@ export const getVariantImages = (variant: ProductVariants): ItemImage[] => {
     const attributeImages: ItemImage[] = []
 
     variant.variantAttributeOptions.forEach((variantAttrOption) => {
-      if (variantAttrOption?.attributeOption?.attributeOptionImages) {
+      if (variantAttrOption?.productAttributeOption?.attributeOptionImages) {
         const attrOptionImages =
-          variantAttrOption.attributeOption.attributeOptionImages
+          variantAttrOption.productAttributeOption.attributeOptionImages
             .filter((img): img is AttributeOptionImages => !!img)
             .map(
               (img): ItemImage => ({

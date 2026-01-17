@@ -1,7 +1,7 @@
 'use client'
 import { getPromotions } from '@/helpers/utils'
 import { useCartContext } from '@/providers/cart'
-import { type PromotionVariants } from '@/types/domain'
+import { type PromotionVariants, type VariantAttributeOptions } from '@/types/domain'
 import React from 'react'
 
 interface ProductVariantButtonAddToCartProps {
@@ -12,6 +12,7 @@ interface ProductVariantButtonAddToCartProps {
   stock: number
   quantity: number
   promotionVariants?: Array<PromotionVariants | null> | null
+  variantAttributeOptions?: Array<VariantAttributeOptions | null> | null
   onCartAction?: () => void
 }
 
@@ -25,6 +26,7 @@ const ProductVariantButtonAddToCart: React.FC<
   price,
   stock,
   promotionVariants: pvs,
+  variantAttributeOptions,
   onCartAction
 }) => {
   const { updateQuantity, items, addItem, openCart } = useCartContext()
@@ -60,7 +62,8 @@ const ProductVariantButtonAddToCart: React.FC<
           name,
           price,
           stock,
-          promotionVariants
+          promotionVariants,
+          variantAttributeOptions
         },
         quantity
       )

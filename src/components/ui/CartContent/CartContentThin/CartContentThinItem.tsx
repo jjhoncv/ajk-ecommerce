@@ -24,11 +24,24 @@ export const CartContentThinItem: FC<CartContentThinItemProps> = ({
   // }
 
   const getPrice = (): number => {
-    // const variant = getVariant(item.promotionVariants);
-    if (!item?.promotionVariants) return item.price
+    // Calcular costos adicionales de los atributos
+    const additionalCost = item.variantAttributeOptions?.reduce((total, vao) => {
+      return total + (Number(vao?.additionalCost) || 0)
+    }, 0) || 0
+
+    // Precio base del item
+    const basePrice = Number(item.price || 0)
+
+    // Si no hay promoción, retornar precio base + adicionales
+    if (!item?.promotionVariants) return basePrice + additionalCost
+
     const promotionPrice = item?.promotionVariants[0]?.promotionPrice
-    if (!promotionPrice) return item.price
-    return promotionPrice
+
+    // Si no hay precio de promoción, retornar precio base + adicionales
+    if (!promotionPrice) return basePrice + additionalCost
+
+    // Si hay promoción, retornar precio promocional + adicionales
+    return Number(promotionPrice) + additionalCost
   }
 
   const price = getPrice()

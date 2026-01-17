@@ -10,10 +10,23 @@ import { type FC } from 'react'
 
 // Helper para obtener precio con promoción
 const getPriceIfHasPromotion = (item: CartItem) => {
+  // Calcular costos adicionales de los atributos
+  const additionalCost = item.variantAttributeOptions?.reduce((total, vao) => {
+    return total + (Number(vao?.additionalCost) || 0)
+  }, 0) || 0
+
+  // Precio base del item
+  const basePrice = Number(item.price || 0)
+
+  // Precio original = precio base + costos adicionales de atributos
+  const originalPrice = basePrice + additionalCost
+
+  // Obtener promoción activa
   const currentPromotion = item.promotionVariants?.[0]
-  const originalPrice = Number(item.price)
+
+  // Calcular precio con promoción (aplicar descuento sobre el precio base y sumar adicionales)
   const promotionPrice = currentPromotion
-    ? Number(currentPromotion.promotionPrice)
+    ? Number(currentPromotion.promotionPrice) + additionalCost
     : null
   const finalPrice = promotionPrice || originalPrice
 
@@ -21,7 +34,9 @@ const getPriceIfHasPromotion = (item: CartItem) => {
     finalPrice,
     hasPromotion: Boolean(currentPromotion),
     originalPrice,
-    currentPromotion
+    currentPromotion,
+    additionalCost,
+    basePrice
   }
 }
 
@@ -43,7 +58,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
   stockInfo // 🆕 Recibir stockInfo desde el padre
 }) => {
   const { updateQuantity, openDeleteConfirmation } = useCartContext()
-  const { finalPrice, hasPromotion, originalPrice, currentPromotion } =
+  const { finalPrice, hasPromotion, originalPrice, currentPromotion, additionalCost, basePrice } =
     getPriceIfHasPromotion(item)
 
   // ✅ Determinar el stock actual
@@ -172,22 +187,34 @@ export const CartPageItem: FC<CartPageItemProps> = ({
               </div>
 
               <div className="flex w-full justify-between">
-                {hasPromotion ? (
-                  <div className="flex items-end gap-1">
-                    {/* Precio con promoción */}
-                    <div className="text-lg font-semibold leading-5 text-red-500">
+                <div className="flex flex-col">
+                  {hasPromotion ? (
+                    <div className="flex items-end gap-1">
+                      {/* Precio con promoción */}
+                      <div className="text-lg font-semibold leading-5 text-red-500">
+                        {formatPrice(finalPrice)}
+                      </div>
+                      {/* Precio original tachado */}
+                      <div className="text-sm leading-[14px] text-gray-500 line-through">
+                        {formatPrice(originalPrice)}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-lg font-semibold text-gray-900">
                       {formatPrice(finalPrice)}
                     </div>
-                    {/* Precio original tachado */}
-                    <div className="text-sm leading-[14px] text-gray-500 line-through">
-                      {formatPrice(originalPrice)}
+                  )}
+                  {/* Desglose de costos adicionales */}
+                  {additionalCost > 0 && (
+                    <div className="text-xs text-gray-600">
+                      <span>Base: {formatPrice(basePrice)}</span>
+                      <span className="mx-1">+</span>
+                      <span className="font-medium text-blue-600">
+                        {formatPrice(additionalCost)} atributos
+                      </span>
                     </div>
-                  </div>
-                ) : (
-                  <div className="text-lg font-semibold text-gray-900">
-                    {formatPrice(finalPrice)}
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* Precio y controles */}
                 <div className="flex flex-col items-end gap-3">

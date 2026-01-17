@@ -1,34 +1,17 @@
 import { executeQuery } from '@/lib/db'
-import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
+import { type ProductAttributeOptionImages as ProductAttributeOptionImageRaw } from '@/types/database'
 
 export class AttributeOptionImageRepository {
   public async getAttributeOptionImages(
-    attributeOptionId: number,
-    productId?: number
-  ): Promise<AttributeOptionImageRaw[] | null> {
-    // Si se proporciona productId, filtrar por ambos
-    if (productId !== undefined) {
-      const images = await executeQuery<AttributeOptionImageRaw[]>({
-        query: `
-          SELECT * FROM attribute_option_images
-          WHERE attribute_option_id = ? AND product_id = ?
-          ORDER BY display_order ASC, id ASC
-        `,
-        values: [attributeOptionId, productId]
-      })
-
-      if (images.length === 0) return null
-      return images
-    }
-
-    // Si no se proporciona productId, comportamiento original
-    const images = await executeQuery<AttributeOptionImageRaw[]>({
+    productAttributeOptionId: number
+  ): Promise<ProductAttributeOptionImageRaw[] | null> {
+    const images = await executeQuery<ProductAttributeOptionImageRaw[]>({
       query: `
-        SELECT * FROM attribute_option_images
-        WHERE attribute_option_id = ?
+        SELECT * FROM product_attribute_option_images
+        WHERE product_attribute_option_id = ?
         ORDER BY display_order ASC, id ASC
       `,
-      values: [attributeOptionId]
+      values: [productAttributeOptionId]
     })
 
     if (images.length === 0) return null
@@ -37,9 +20,9 @@ export class AttributeOptionImageRepository {
 
   public async getAttributeOptionImageById(
     id: number
-  ): Promise<AttributeOptionImageRaw | null> {
-    const images = await executeQuery<AttributeOptionImageRaw[]>({
-      query: 'SELECT * FROM attribute_option_images WHERE id = ?',
+  ): Promise<ProductAttributeOptionImageRaw | null> {
+    const images = await executeQuery<ProductAttributeOptionImageRaw[]>({
+      query: 'SELECT * FROM product_attribute_option_images WHERE id = ?',
       values: [id]
     })
 
@@ -48,18 +31,18 @@ export class AttributeOptionImageRepository {
   }
 
   public async getAttributeOptionImagesByOptionIds(
-    attributeOptionIds: number[]
-  ): Promise<AttributeOptionImageRaw[] | null> {
-    if (attributeOptionIds.length === 0) return null
+    productAttributeOptionIds: number[]
+  ): Promise<ProductAttributeOptionImageRaw[] | null> {
+    if (productAttributeOptionIds.length === 0) return null
 
-    const placeholders = attributeOptionIds.map(() => '?').join(',')
-    const images = await executeQuery<AttributeOptionImageRaw[]>({
+    const placeholders = productAttributeOptionIds.map(() => '?').join(',')
+    const images = await executeQuery<ProductAttributeOptionImageRaw[]>({
       query: `
-        SELECT * FROM attribute_option_images 
-        WHERE attribute_option_id IN (${placeholders})
-        ORDER BY attribute_option_id, display_order ASC, id ASC
+        SELECT * FROM product_attribute_option_images
+        WHERE product_attribute_option_id IN (${placeholders})
+        ORDER BY product_attribute_option_id, display_order ASC, id ASC
       `,
-      values: attributeOptionIds
+      values: productAttributeOptionIds
     })
 
     if (images.length === 0) return null
@@ -67,10 +50,10 @@ export class AttributeOptionImageRepository {
   }
 
   public async createAttributeOptionImage(
-    image: Omit<AttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
-  ): Promise<AttributeOptionImageRaw | null> {
+    image: Omit<ProductAttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ProductAttributeOptionImageRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
-      query: 'INSERT INTO attribute_option_images SET ?',
+      query: 'INSERT INTO product_attribute_option_images SET ?',
       values: [image]
     })
 
@@ -79,12 +62,12 @@ export class AttributeOptionImageRepository {
 
   public async updateAttributeOptionImage(
     imageData: Partial<
-      Omit<AttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
+      Omit<ProductAttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
     >,
     id: number
-  ): Promise<AttributeOptionImageRaw | null> {
+  ): Promise<ProductAttributeOptionImageRaw | null> {
     await executeQuery({
-      query: 'UPDATE attribute_option_images SET ? WHERE id = ?',
+      query: 'UPDATE product_attribute_option_images SET ? WHERE id = ?',
       values: [imageData, id]
     })
 
@@ -93,18 +76,18 @@ export class AttributeOptionImageRepository {
 
   public async deleteAttributeOptionImage(id: number): Promise<void> {
     await executeQuery({
-      query: 'DELETE FROM attribute_option_images WHERE id = ?',
+      query: 'DELETE FROM product_attribute_option_images WHERE id = ?',
       values: [id]
     })
   }
 
   public async deleteAttributeOptionImagesByOptionId(
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await executeQuery({
       query:
-        'DELETE FROM attribute_option_images WHERE attribute_option_id = ?',
-      values: [attributeOptionId]
+        'DELETE FROM product_attribute_option_images WHERE product_attribute_option_id = ?',
+      values: [productAttributeOptionId]
     })
   }
 }

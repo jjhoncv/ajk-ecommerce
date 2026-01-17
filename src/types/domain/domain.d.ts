@@ -461,7 +461,32 @@ export interface Products {
   name: Scalars['String']['output'];
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
 
+}
+
+export interface ProductAttributeOptions {
+  id: Scalars['Int']['output'];
+  productId: Scalars['Int']['output'];
+  attributeId: Scalars['Int']['output'];
+  value: Scalars['String']['output'];
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  product?: Maybe<Products>;
+  attribute?: Maybe<Attributes>;
+  productAttributeOptionImages?: Maybe<Array<Maybe<ProductAttributeOptionImages>>>;
+}
+
+export interface ProductAttributeOptionImages {
+  id: Scalars['Int']['output'];
+  productAttributeOptionId: Scalars['Int']['output'];
+  imageType: string;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  imageUrlThumb: Scalars['String']['output'];
+  imageUrlNormal: Scalars['String']['output'];
+  imageUrlZoom: Scalars['String']['output'];
+  altText?: Maybe<Scalars['String']['output']>;
+  isPrimary?: Maybe<Scalars['Int']['output']>;
+  productAttributeOption?: Maybe<ProductAttributeOptions>;
 }
 
 export interface PromotionVariants {
@@ -611,8 +636,9 @@ export interface Users {
 }
 
 export interface VariantAttributeOptions {
-  attributeOption?: Maybe<AttributeOptions>;
-  attributeOptionId: Scalars['Int']['output'];
+  additionalCost?: Maybe<Scalars['Float']['output']>;
+  productAttributeOption?: Maybe<ProductAttributeOptions>;
+  productAttributeOptionId: Scalars['Int']['output'];
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
   variantId: Scalars['Int']['output'];
 }

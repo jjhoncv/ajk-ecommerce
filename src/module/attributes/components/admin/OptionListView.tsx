@@ -44,71 +44,12 @@ export const OptionListView: FC<OptionListViewProps> = ({
 
   const columns: TableColumn[] = [
     {
-      key: 'attributeOptionImages',
-      label: 'Imagen',
-      priority: 'high',
-      sortable: false,
-      render: (images: AttributeOptionImage[] | undefined) => {
-        const primaryImage = images?.find((img) => img.isPrimary === 1)
-        const displayImage = primaryImage || images?.[0]
-
-        if (!displayImage) {
-          return (
-            <div className="flex h-12 w-12 items-center justify-center rounded border border-gray-200 bg-gray-50">
-              <svg
-                className="h-6 w-6 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-          )
-        }
-
-        return (
-          <div className="relative h-12 w-12 overflow-hidden rounded border border-gray-200">
-            <Image
-              src={displayImage.imageUrlThumb}
-              alt={displayImage.altText || 'Imagen de opción'}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )
-      },
-      width: '80px'
-    },
-    {
       key: 'value',
       label: 'Valor',
       priority: 'high',
       sortable: true,
       searchable: true,
-      width: '300px'
-    },
-    {
-      key: 'additionalCost',
-      label: 'Costo adicional',
-      priority: 'high',
-      sortable: true,
-      render: (additionalCost: number) => {
-        if (additionalCost === 0) {
-          return <span className="text-sm text-gray-400">-</span>
-        }
-        return (
-          <span className="text-sm font-medium text-gray-900">
-            S/ {additionalCost.toFixed(2)}
-          </span>
-        )
-      },
-      width: '200px'
+      width: '400px'
     }
   ]
 

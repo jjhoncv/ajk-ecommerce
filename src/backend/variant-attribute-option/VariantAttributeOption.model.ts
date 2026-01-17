@@ -23,12 +23,12 @@ export class VariantAttributeOptionModel {
     return VariantAttributeOptionsMapper(optionsRaw)
   }
 
-  public async getVariantAttributeOptionsByAttributeOptionId(
-    attributeOptionId: number
+  public async getVariantAttributeOptionsByProductAttributeOptionId(
+    productAttributeOptionId: number
   ): Promise<VariantAttributeOption[] | undefined> {
     const optionsRaw =
-      await oVariantAttributeOptionRep.getVariantAttributeOptionsByAttributeOptionId(
-        attributeOptionId
+      await oVariantAttributeOptionRep.getVariantAttributeOptionsByProductAttributeOptionId(
+        productAttributeOptionId
       )
     return VariantAttributeOptionsMapper(optionsRaw)
   }
@@ -87,34 +87,34 @@ export class VariantAttributeOptionModel {
     return optionsByVariantId
   }
 
-  public async getVariantAttributeOptionsByAttributeOptionIds(
-    attributeOptionIds: number[]
+  public async getVariantAttributeOptionsByProductAttributeOptionIds(
+    productAttributeOptionIds: number[]
   ): Promise<Map<number, VariantAttributeOption[]>> {
     const optionsRaw =
-      await oVariantAttributeOptionRep.getVariantAttributeOptionsByAttributeOptionIds(
-        attributeOptionIds
+      await oVariantAttributeOptionRep.getVariantAttributeOptionsByProductAttributeOptionIds(
+        productAttributeOptionIds
       )
 
     if (!optionsRaw) return new Map()
 
-    // Agrupar options por attribute_option_id
-    const optionsByAttributeOptionId = new Map<
+    // Agrupar options por product_attribute_option_id
+    const optionsByProductAttributeOptionId = new Map<
       number,
       VariantAttributeOption[]
     >()
 
     for (const optionRaw of optionsRaw) {
       const option = VariantAttributeOptionMapper(optionRaw)
-      const attributeOptionId = option.attributeOptionId
+      const productAttributeOptionId = option.productAttributeOptionId
 
-      if (!optionsByAttributeOptionId.has(attributeOptionId)) {
-        optionsByAttributeOptionId.set(attributeOptionId, [])
+      if (!optionsByProductAttributeOptionId.has(productAttributeOptionId)) {
+        optionsByProductAttributeOptionId.set(productAttributeOptionId, [])
       }
 
-      optionsByAttributeOptionId.get(attributeOptionId)!.push(option)
+      optionsByProductAttributeOptionId.get(productAttributeOptionId)!.push(option)
     }
 
-    return optionsByAttributeOptionId
+    return optionsByProductAttributeOptionId
   }
 
   public async createVariantAttributeOption(
@@ -128,11 +128,11 @@ export class VariantAttributeOptionModel {
 
   public async deleteVariantAttributeOption(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await oVariantAttributeOptionRep.deleteVariantAttributeOption(
       variantId,
-      attributeOptionId
+      productAttributeOptionId
     )
   }
 
@@ -144,11 +144,11 @@ export class VariantAttributeOptionModel {
     )
   }
 
-  public async deleteVariantAttributeOptionsByAttributeOptionId(
-    attributeOptionId: number
+  public async deleteVariantAttributeOptionsByProductAttributeOptionId(
+    productAttributeOptionId: number
   ): Promise<void> {
-    await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByAttributeOptionId(
-      attributeOptionId
+    await oVariantAttributeOptionRep.deleteVariantAttributeOptionsByProductAttributeOptionId(
+      productAttributeOptionId
     )
   }
 
@@ -170,20 +170,22 @@ export class VariantAttributeOptionModel {
 
   public async addAttributeOptionToVariant(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number,
+    additionalCost?: number
   ): Promise<VariantAttributeOption | undefined> {
     const optionData: VariantAttributeOptionRaw = {
       variant_id: variantId,
-      attribute_option_id: attributeOptionId
+      product_attribute_option_id: productAttributeOptionId,
+      additional_cost: additionalCost ?? 0
     }
     return await this.createVariantAttributeOption(optionData)
   }
 
   public async removeAttributeOptionFromVariant(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
-    await this.deleteVariantAttributeOption(variantId, attributeOptionId)
+    await this.deleteVariantAttributeOption(variantId, productAttributeOptionId)
   }
 }
 

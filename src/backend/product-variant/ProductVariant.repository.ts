@@ -118,12 +118,12 @@ export class ProductVariantRepository {
 
   public async getAttributeOptionIdsByProductId(
     productId: number
-  ): Promise<Array<{ attribute_option_id: number }> | null> {
-    const optionIds = await executeQuery<Array<{ attribute_option_id: number }>>({
+  ): Promise<Array<{ product_attribute_option_id: number }> | null> {
+    const optionIds = await executeQuery<Array<{ product_attribute_option_id: number }>>({
       query: `
-        SELECT DISTINCT vao.attribute_option_id
-        FROM variant_attribute_options vao 
-        JOIN product_variants pv ON vao.variant_id = pv.id 
+        SELECT DISTINCT vao.product_attribute_option_id
+        FROM variant_attribute_options vao
+        JOIN product_variants pv ON vao.variant_id = pv.id
         WHERE pv.product_id = ?
       `,
       values: [productId]

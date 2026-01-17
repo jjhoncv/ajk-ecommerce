@@ -1,5 +1,5 @@
 // types/cart.ts
-import { type PromotionVariants } from '@/types/domain'
+import { type PromotionVariants, type VariantAttributeOptions } from '@/types/domain'
 
 export interface CartItem {
   id: number
@@ -9,6 +9,7 @@ export interface CartItem {
   quantity: number
   stock: number
   promotionVariants?: Array<PromotionVariants | null> | null
+  variantAttributeOptions?: Array<VariantAttributeOptions | null> | null
 }
 
 export interface DeleteConfirmation {

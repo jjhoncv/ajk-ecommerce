@@ -72,10 +72,23 @@ export const calculateCartTotals = (
   totalPrice: number
 } => {
   const totalItems = items.reduce((total, item) => total + item.quantity, 0)
-  const totalPrice = items.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  )
+  const totalPrice = items.reduce((total, item) => {
+    // Calcular costos adicionales de los atributos
+    const additionalCost = item.variantAttributeOptions?.reduce((sum, vao) => {
+      return sum + (Number(vao?.additionalCost) || 0)
+    }, 0) || 0
+
+    // Precio base del item
+    const basePrice = Number(item.price || 0)
+
+    // Si hay promoción, usar precio promocional + costos adicionales
+    const promotionPrice = item.promotionVariants?.[0]?.promotionPrice
+    const finalPrice = promotionPrice
+      ? Number(promotionPrice) + additionalCost
+      : basePrice + additionalCost
+
+    return total + finalPrice * item.quantity
+  }, 0)
 
   return { totalItems, totalPrice }
 }

@@ -7,8 +7,9 @@ export const VariantAttributeOptionMapper = (
 ): VariantAttributeOption => {
   return {
     variantId: data.variant_id,
-    attributeOptionId: data.attribute_option_id,
-    attributeOption: undefined, // Se llena en el modelo con lógica de negocio
+    productAttributeOptionId: data.product_attribute_option_id,
+    additionalCost: data.additional_cost ?? undefined,
+    productAttributeOption: undefined, // Se llena en el modelo con lógica de negocio
     productVariants: undefined // Se llena en el modelo con lógica de negocio
   }
 }
@@ -24,18 +25,21 @@ export const VariantAttributeOptionsWithDetailMapper = (
   data: VariantAttributeOptionWithDetailsRaw[]
 ): VariantAttributeOption[] => {
   return data.map((item) => ({
-    attributeOptionId: item.attribute_option_id,
+    productAttributeOptionId: item.product_attribute_option_id,
     variantId: item.variant_id,
-    attributeOption: {
+    additionalCost: item.variant_additional_cost ?? undefined,
+    productAttributeOption: {
       attributeId: item.attribute_id,
-      id: item.attribute_option_id,
+      id: item.product_attribute_option_id,
       value: item.attribute_option_value,
-      additionalCost: Number(item.additional_cost),
+      productId: 0, // Not available in this query
+      displayOrder: undefined,
       attribute: {
         displayType: item.attribute_display_type,
         id: item.attribute_id,
         name: item.attribute_name
       }
-    }
+    },
+    productVariants: undefined
   }))
 }

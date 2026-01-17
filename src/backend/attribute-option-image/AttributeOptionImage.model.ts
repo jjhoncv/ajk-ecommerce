@@ -1,5 +1,5 @@
-import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
-import { type AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
+import { type ProductAttributeOptionImages as ProductAttributeOptionImageRaw } from '@/types/database'
+import { type ProductAttributeOptionImages as ProductAttributeOptionImage } from '@/types/domain'
 
 // me
 import {
@@ -10,17 +10,16 @@ import oAttributeOptionImageRep from './AttributeOptionImage.repository'
 
 export class AttributeOptionImageModel {
   public async getAttributeOptionImages(
-    attributeOptionId: number,
-    productId?: number
-  ): Promise<AttributeOptionImage[] | undefined> {
+    productAttributeOptionId: number
+  ): Promise<ProductAttributeOptionImage[] | undefined> {
     const imagesRaw =
-      await oAttributeOptionImageRep.getAttributeOptionImages(attributeOptionId, productId)
+      await oAttributeOptionImageRep.getAttributeOptionImages(productAttributeOptionId)
     return AttributeOptionImagesMapper(imagesRaw)
   }
 
   public async getAttributeOptionImageById(
     id: number
-  ): Promise<AttributeOptionImage | undefined> {
+  ): Promise<ProductAttributeOptionImage | undefined> {
     const imageRaw =
       await oAttributeOptionImageRep.getAttributeOptionImageById(id)
     if (!imageRaw) return undefined
@@ -28,21 +27,21 @@ export class AttributeOptionImageModel {
   }
 
   public async getAttributeOptionImagesByOptionIds(
-    attributeOptionIds: number[]
-  ): Promise<Map<number, AttributeOptionImage[]>> {
+    productAttributeOptionIds: number[]
+  ): Promise<Map<number, ProductAttributeOptionImage[]>> {
     const imagesRaw =
       await oAttributeOptionImageRep.getAttributeOptionImagesByOptionIds(
-        attributeOptionIds
+        productAttributeOptionIds
       )
 
     if (!imagesRaw) return new Map()
 
-    // Agrupar images por attribute_option_id
-    const imagesByOptionId = new Map<number, AttributeOptionImage[]>()
+    // Agrupar images por product_attribute_option_id
+    const imagesByOptionId = new Map<number, ProductAttributeOptionImage[]>()
 
     for (const imageRaw of imagesRaw) {
       const image = AttributeOptionImageMapper(imageRaw)
-      const optionId = image.attributeOptionId
+      const optionId = image.productAttributeOptionId
 
       if (!imagesByOptionId.has(optionId)) {
         imagesByOptionId.set(optionId, [])
@@ -55,8 +54,8 @@ export class AttributeOptionImageModel {
   }
 
   public async createAttributeOptionImage(
-    imageData: Omit<AttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
-  ): Promise<AttributeOptionImage | undefined> {
+    imageData: Omit<ProductAttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ProductAttributeOptionImage | undefined> {
     const created =
       await oAttributeOptionImageRep.createAttributeOptionImage(imageData)
     if (!created) return undefined
@@ -65,10 +64,10 @@ export class AttributeOptionImageModel {
 
   public async updateAttributeOptionImage(
     imageData: Partial<
-      Omit<AttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
+      Omit<ProductAttributeOptionImageRaw, 'id' | 'created_at' | 'updated_at'>
     >,
     id: number
-  ): Promise<AttributeOptionImage | undefined> {
+  ): Promise<ProductAttributeOptionImage | undefined> {
     const updated = await oAttributeOptionImageRep.updateAttributeOptionImage(
       imageData,
       id
@@ -82,10 +81,10 @@ export class AttributeOptionImageModel {
   }
 
   public async deleteAttributeOptionImagesByOptionId(
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await oAttributeOptionImageRep.deleteAttributeOptionImagesByOptionId(
-      attributeOptionId
+      productAttributeOptionId
     )
   }
 }

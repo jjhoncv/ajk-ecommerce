@@ -1,27 +1,26 @@
-import { type AttributeOptionImages as AttributeOptionImageRaw } from '@/types/database'
-import { type AttributeOptionImages as AttributeOptionImage } from '@/types/domain'
+import { type ProductAttributeOptionImages as ProductAttributeOptionImageRaw } from '@/types/database'
+import { type ProductAttributeOptionImages as ProductAttributeOptionImage } from '@/types/domain'
 
 export const AttributeOptionImageMapper = (
-  data: AttributeOptionImageRaw
-): AttributeOptionImage => {
+  data: ProductAttributeOptionImageRaw
+): ProductAttributeOptionImage => {
   return {
     id: data.id,
-    attributeOptionId: data.attribute_option_id,
-    productId: data.product_id ?? undefined,
+    productAttributeOptionId: data.product_attribute_option_id,
     imageType: data.image_type,
     imageUrlThumb: data.image_url_thumb,
-    imageUrlNormal: data.image_url_normal ?? undefined,
-    imageUrlZoom: data.image_url_zoom ?? undefined,
+    imageUrlNormal: data.image_url_normal,
+    imageUrlZoom: data.image_url_zoom,
     altText: data.alt_text ?? undefined,
     displayOrder: data.display_order ?? undefined,
-    isPrimary: data.is_primary,
-    attributeOption: undefined // Se llena en el modelo si es necesario
+    isPrimary: data.is_primary ?? undefined,
+    productAttributeOption: undefined // Se llena en el modelo si es necesario
   }
 }
 
 export const AttributeOptionImagesMapper = (
-  data: AttributeOptionImageRaw[] | null
-): AttributeOptionImage[] | undefined => {
+  data: ProductAttributeOptionImageRaw[] | null
+): ProductAttributeOptionImage[] | undefined => {
   if (data === null) return undefined
   return data.map(AttributeOptionImageMapper)
 }

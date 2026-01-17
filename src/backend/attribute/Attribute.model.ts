@@ -1,122 +1,56 @@
 // generated
 import { type Attributes as AttributeRaw } from '@/types/database'
-import { type AttributeOptions as AttributeOption } from '@/types/domain'
-
-// others
-import attributeOptionModel from '@/backend/attribute-option/AttributeOption.model'
+import { type Attributes as Attribute } from '@/types/domain'
 
 // me
-import { type AttributeWithOptions } from './Attribute.interfaces'
 import { AttributeMapper, AttributeMappers } from './Attribute.mapper'
 import oAttributeRep from './Attribute.repository'
 
 export class AttributeModel {
-  // ✅ Obtener todos los attributes con sus opciones (SIN images por defecto)
-  public async getAttributes(): Promise<AttributeWithOptions[] | undefined> {
+  /**
+   * Obtener todos los atributos base (Color, Tamaño, Material, etc.)
+   * Las opciones específicas se obtienen por producto
+   */
+  public async getAttributes(): Promise<Attribute[] | undefined> {
     const attributesRaw = await oAttributeRep.getAttributes()
-    const attributes = AttributeMappers(attributesRaw)
-
-    if (!attributes) return undefined
-
-    // Para cada atributo, obtener sus opciones SIN images
-    return await Promise.all(
-      attributes.map(async (attribute) => ({
-        ...attribute,
-        options: await this.getAttributeOptions(attribute.id)
-      }))
-    )
+    return AttributeMappers(attributesRaw)
   }
 
-  // ✅ Obtener todos los attributes con opciones E IMAGES (lógica de negocio)
-  public async getAttributesWithImages(): Promise<
-    AttributeWithOptions[] | undefined
-  > {
-    const attributesRaw = await oAttributeRep.getAttributes()
-    const attributes = AttributeMappers(attributesRaw)
-
-    if (!attributes) return undefined
-
-    // Para cada atributo, obtener sus opciones CON images usando el MODEL
-    return await Promise.all(
-      attributes.map(async (attribute) => ({
-        ...attribute,
-        options: await attributeOptionModel.getAttributeOptionsWithImages(
-          attribute.id
-        )
-      }))
-    )
-  }
-
-  // ✅ Obtener attribute por ID con sus opciones (SIN images por defecto)
-  public async getAttributeById(
-    id: number
-  ): Promise<AttributeWithOptions | undefined> {
+  /**
+   * Obtener atributo base por ID
+   */
+  public async getAttributeById(id: number): Promise<Attribute | undefined> {
     const attributeRaw = await oAttributeRep.getAttributeById(id)
-
     if (!attributeRaw) return undefined
-
-    const attribute = AttributeMapper(attributeRaw)
-    const options = await this.getAttributeOptions(attribute.id)
-
-    return {
-      ...attribute,
-      options
-    }
+    return AttributeMapper(attributeRaw)
   }
 
-  // ✅ Obtener attribute por ID con opciones E IMAGES (lógica de negocio)
-  public async getAttributeByIdWithImages(
-    id: number
-  ): Promise<AttributeWithOptions | undefined> {
-    const attributeRaw = await oAttributeRep.getAttributeById(id)
-
-    if (!attributeRaw) return undefined
-
-    const attribute = AttributeMapper(attributeRaw)
-    const options = await attributeOptionModel.getAttributeOptionsWithImages(
-      attribute.id
-    )
-
-    return {
-      ...attribute,
-      options
-    }
-  }
-
-  // ✅ Obtener solo las opciones de un atributo
-  public async getAttributeOptions(
-    attributeId: number
-  ): Promise<AttributeOption[] | undefined> {
-    const optionsRaw =
-      await attributeOptionModel.getAttributeOptions(attributeId)
-    if (!optionsRaw) return undefined
-    return optionsRaw
-  }
-
-  // ✅ Crear attribute - delega al repository
+  /**
+   * Crear atributo base
+   */
   public async createAttribute(
     attributeData: Omit<AttributeRaw, 'id'>
-  ): Promise<AttributeWithOptions | undefined> {
+  ): Promise<Attribute | undefined> {
     const created = await oAttributeRep.createAttribute(attributeData)
-
     if (!created) return undefined
-
-    return await this.getAttributeById(created.id)
+    return AttributeMapper(created)
   }
 
-  // ✅ Actualizar attribute - delega al repository
+  /**
+   * Actualizar atributo base
+   */
   public async updateAttribute(
     attributeData: Omit<AttributeRaw, 'id'>,
     id: number
-  ): Promise<AttributeWithOptions | undefined> {
+  ): Promise<Attribute | undefined> {
     const updated = await oAttributeRep.updateAttribute(attributeData, id)
-
     if (!updated) return undefined
-
-    return await this.getAttributeById(updated.id)
+    return AttributeMapper(updated)
   }
 
-  // ✅ Eliminar attribute - delega al repository
+  /**
+   * Eliminar atributo base
+   */
   public async deleteAttribute(id: number): Promise<void> {
     await oAttributeRep.deleteAttribute(id)
   }

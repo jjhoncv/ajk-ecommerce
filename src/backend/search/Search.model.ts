@@ -50,17 +50,30 @@ export class SearchModel {
 
         // Encontrar la imagen principal de la variante
         let mainImage: string | undefined
+        let imagesToUse = variantDetail.variantImages || []
 
-        if (
-          variantDetail.variantImages &&
-          variantDetail.variantImages.length > 0
-        ) {
-          const primaryImage = variantDetail.variantImages.find(
+        // Si la variante tiene imageAttributeId, obtener imágenes del atributo
+        if (variantDetail.imageAttributeId && variantDetail.variantAttributeOptions) {
+          // Buscar la opción del atributo que controla las imágenes
+          const imageControlOption = variantDetail.variantAttributeOptions.find(
+            (attr) => attr.productAttributeOption?.attributeId === variantDetail.imageAttributeId
+          )
+
+          if (imageControlOption?.productAttributeOption?.attributeOptionImages) {
+            const attributeImages = imageControlOption.productAttributeOption.attributeOptionImages
+            if (attributeImages && attributeImages.length > 0) {
+              imagesToUse = attributeImages
+            }
+          }
+        }
+
+        if (imagesToUse && imagesToUse.length > 0) {
+          const primaryImage = imagesToUse.find(
             (img) => img?.isPrimary
           )
           mainImage = primaryImage
             ? primaryImage.imageUrlNormal
-            : variantDetail.variantImages[0]?.imageUrlNormal
+            : imagesToUse[0]?.imageUrlNormal
         }
 
         // Crear ProductSearchItem usando el mapper
@@ -239,8 +252,8 @@ export class SearchModel {
         product.variants.forEach((variant) => {
           if (variant.variantAttributeOptions) {
             variant.variantAttributeOptions.forEach((variantAttr) => {
-              if (variantAttr.attributeOption) {
-                const option = variantAttr.attributeOption
+              if (variantAttr.productAttributeOption) {
+                const option = variantAttr.productAttributeOption
                 const attributeId = option.attributeId
                 const uniqueKey = `${product.id}-${attributeId}-${option.value}`
 

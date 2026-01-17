@@ -16,17 +16,22 @@ interface AttributeWithOptions {
 interface AttributeSelectorProps {
   attributes: AttributeWithOptions[]
   selectedAttributes?: Record<number, number> // attributeId -> optionId
+  attributeCosts?: Record<number, number> // optionId -> cost
   onChange: (selectedAttributes: Record<number, number>) => void
+  onCostChange?: (attributeCosts: Record<number, number>) => void
 }
 
 export const AttributeSelector: FC<AttributeSelectorProps> = ({
   attributes,
   selectedAttributes = {},
-  onChange
+  attributeCosts = {},
+  onChange,
+  onCostChange
 }) => {
   const [selected, setSelected] = useState<Record<number, number>>(
     selectedAttributes
   )
+  const [costs, setCosts] = useState<Record<number, number>>(attributeCosts)
 
   const handleChange = (attributeId: number, optionId: string) => {
     const newSelected = {
@@ -41,6 +46,24 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
 
     setSelected(newSelected)
     onChange(newSelected)
+  }
+
+  const handleCostChange = (optionId: number, cost: string) => {
+    const costValue = cost === '' ? 0 : parseFloat(cost)
+    const newCosts = {
+      ...costs,
+      [optionId]: costValue
+    }
+
+    // Eliminar si es 0
+    if (costValue === 0) {
+      delete newCosts[optionId]
+    }
+
+    setCosts(newCosts)
+    if (onCostChange) {
+      onCostChange(newCosts)
+    }
   }
 
   if (!attributes || attributes.length === 0) {
@@ -67,7 +90,7 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {attributes.map((attribute) => (
-          <div key={attribute.id}>
+          <div key={attribute.id} className="space-y-2">
             <Select
               label={attribute.name}
               value={selected[attribute.id]?.toString() || ''}
@@ -77,11 +100,31 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
               {attribute.options?.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.value}
-                  {option.additionalCost > 0 &&
-                    ` (+S/ ${option.additionalCost.toFixed(2)})`}
                 </option>
               ))}
             </Select>
+
+            {selected[attribute.id] && (
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-700">
+                  Costo adicional (S/)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
+                  value={costs[selected[attribute.id]] || ''}
+                  onChange={(e) =>
+                    handleCostChange(selected[attribute.id], e.target.value)
+                  }
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Costo adicional para esta opción en esta variante específica
+                </p>
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -52,31 +52,48 @@ export const getVariantImages = (
     return sortImages(normalizedImages)
   }
 
-  // Si no hay variantImages, buscar en attributeOptionImages
+  // Si no hay variantImages, buscar en productAttributeOption images
   if (
     variant.variantAttributeOptions &&
     variant.variantAttributeOptions.length > 0
   ) {
     const attributeImages: ItemImage[] = []
 
-    // Iterar sobre las opciones de atributos de la variante
-    for (const variantAttrOption of variant.variantAttributeOptions) {
-      if (variantAttrOption?.attributeOption?.attributeOptionImages) {
-        const images = variantAttrOption.attributeOption.attributeOptionImages
+    // Si la variante tiene imageAttributeId, usar solo esa opción
+    if ('imageAttributeId' in variant && variant.imageAttributeId) {
+      const imageControlOption = variant.variantAttributeOptions.find(
+        (attr) => attr.productAttributeOption?.attributeId === variant.imageAttributeId
+      )
+
+      if (imageControlOption?.productAttributeOption?.attributeOptionImages) {
+        const images = imageControlOption.productAttributeOption.attributeOptionImages
           .filter(Boolean)
           .map(normalizeToItemImage)
 
-        attributeImages.push(...images)
+        if (images.length > 0) {
+          return sortImages(images)
+        }
       }
-    }
+    } else {
+      // Si no hay imageAttributeId, buscar en todas las opciones de atributos
+      for (const variantAttrOption of variant.variantAttributeOptions) {
+        if (variantAttrOption?.productAttributeOption?.attributeOptionImages) {
+          const images = variantAttrOption.productAttributeOption.attributeOptionImages
+            .filter(Boolean)
+            .map(normalizeToItemImage)
 
-    if (attributeImages.length > 0) {
-      // Eliminar duplicados por ID
-      const uniqueImages = attributeImages.filter(
-        (img, index, arr) => arr.findIndex((i) => i.id === img.id) === index
-      )
+          attributeImages.push(...images)
+        }
+      }
 
-      return sortImages(uniqueImages)
+      if (attributeImages.length > 0) {
+        // Eliminar duplicados por ID
+        const uniqueImages = attributeImages.filter(
+          (img, index, arr) => arr.findIndex((i) => i.id === img.id) === index
+        )
+
+        return sortImages(uniqueImages)
+      }
     }
   }
 
@@ -108,35 +125,48 @@ export const getVariantImagesOrAttributeOptionImages = (
     return sortedImages
   }
 
-  // Si no hay variantImages, filtrar attributeImages según los atributos de la variante
+  // Si no hay variantImages, buscar en productAttributeOption images
   if (
-    variant.attributeImages &&
-    variant.attributeImages.length > 0 &&
     variant.variantAttributeOptions &&
     variant.variantAttributeOptions.length > 0
   ) {
-    // Obtener los attributeOptionIds de la variante
-    const variantAttributeOptionIds = variant.variantAttributeOptions.map(
-      (attr) => attr.attributeOptionId
-    )
+    const attributeImages: ItemImage[] = []
 
-    // Filtrar solo las imágenes que corresponden a los atributos de esta variante
-    const filteredImages = variant.attributeImages.filter(
-      (img: AttributeOptionImages) =>
-        variantAttributeOptionIds.includes(img.attributeOptionId)
-    )
+    // Si la variante tiene imageAttributeId, usar solo esa opción
+    if (variant.imageAttributeId) {
+      const imageControlOption = variant.variantAttributeOptions.find(
+        (attr) => attr.productAttributeOption?.attributeId === variant.imageAttributeId
+      )
 
-    if (filteredImages.length > 0) {
-      // Ordenar: front primero, luego por displayOrder
-      const sortedImages = filteredImages
-        .sort((a: AttributeOptionImages, b: AttributeOptionImages) => {
-          if (a.imageType === 'front' && b.imageType !== 'front') return -1
-          if (b.imageType === 'front' && a.imageType !== 'front') return 1
-          return (a.displayOrder || 0) - (b.displayOrder || 0)
-        })
-        .map((img) => ({ ...img, displayOrder: Number(img.displayOrder) }))
+      if (imageControlOption?.productAttributeOption?.attributeOptionImages) {
+        const images = imageControlOption.productAttributeOption.attributeOptionImages
+          .filter(Boolean)
+          .map(normalizeToItemImage)
 
-      return sortedImages
+        if (images.length > 0) {
+          return sortImages(images)
+        }
+      }
+    } else {
+      // Si no hay imageAttributeId, buscar en todas las opciones de atributos
+      for (const variantAttrOption of variant.variantAttributeOptions) {
+        if (variantAttrOption?.productAttributeOption?.attributeOptionImages) {
+          const images = variantAttrOption.productAttributeOption.attributeOptionImages
+            .filter(Boolean)
+            .map(normalizeToItemImage)
+
+          attributeImages.push(...images)
+        }
+      }
+
+      if (attributeImages.length > 0) {
+        // Eliminar duplicados por ID
+        const uniqueImages = attributeImages.filter(
+          (img, index, arr) => arr.findIndex((i) => i.id === img.id) === index
+        )
+
+        return sortImages(uniqueImages)
+      }
     }
   }
 

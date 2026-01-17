@@ -10,8 +10,10 @@ interface ProductVariantPriceProps {
 export const ProductVariantPrice: FC<ProductVariantPriceProps> = ({
   variant
 }) => {
-  const { finalPrice, hasPromotion, originalPrice, currentPromotion } =
+  const { finalPrice, hasPromotion, originalPrice, currentPromotion, additionalCost } =
     getPriceIfHasPromotion(variant)
+
+  const basePrice = Number(variant?.price || 0)
 
   return (
     <div className="ml-1 flex flex-col gap-1">
@@ -28,6 +30,15 @@ export const ProductVariantPrice: FC<ProductVariantPriceProps> = ({
               ? `-${Number(currentPromotion.promotion.discountValue)}%`
               : `- ${formatPrice(Number(currentPromotion?.promotion?.discountValue))}`}{' '}
             dscto.
+          </span>
+        </div>
+      )}
+      {additionalCost > 0 && (
+        <div className="text-xs text-gray-600">
+          <span>Precio base: {formatPrice(basePrice)}</span>
+          <span className="mx-1">+</span>
+          <span className="font-medium text-blue-600">
+            {formatPrice(additionalCost)} por atributos seleccionados
           </span>
         </div>
       )}

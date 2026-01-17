@@ -1,3 +1,4 @@
+import attributeOptionImageModel from '@/backend/attribute-option-image'
 import productModel from '@/backend/product'
 import productVariantModel from '@/backend/product-variant'
 import variantAttributeOptionModel from '@/backend/variant-attribute-option'
@@ -37,15 +38,41 @@ export default async function VariantListPage({
         variantIds
       )
 
-    // Cargar imágenes
+    // Cargar imágenes base (variant_images)
     const imagesByVariantId =
       await variantImageModel.getVariantImagesByVariantIds(variantIds)
 
-    variantsWithAttributes = variants.map((variant) => ({
-      ...variant,
-      variantAttributeOptions: attributesByVariantId.get(variant.id) || [],
-      variantImages: imagesByVariantId.get(variant.id) || []
-    }))
+    // Preparar datos enriquecidos
+    variantsWithAttributes = await Promise.all(
+      variants.map(async (variant) => {
+        const variantAttrs = attributesByVariantId.get(variant.id) || []
+        let images = imagesByVariantId.get(variant.id) || []
+
+        // Si la variante tiene imageAttributeId, cargar imágenes de la opción de atributo
+        if (variant.imageAttributeId && variantAttrs.length > 0) {
+          // Buscar la opción del atributo que controla las imágenes
+          const imageControlOption = variantAttrs.find(
+            (attr) => attr.productAttributeOption?.attributeId === variant.imageAttributeId
+          )
+
+          if (imageControlOption?.productAttributeOptionId) {
+            // Cargar imágenes de esta opción de atributo
+            const attributeImages = await attributeOptionImageModel.getAttributeOptionImages(
+              imageControlOption.productAttributeOptionId
+            )
+            if (attributeImages && attributeImages.length > 0) {
+              images = attributeImages
+            }
+          }
+        }
+
+        return {
+          ...variant,
+          variantAttributeOptions: variantAttrs,
+          variantImages: images
+        }
+      })
+    )
   }
 
   if (product == null) {

@@ -67,13 +67,17 @@ export async function POST(request: NextRequest) {
         addresses.find((addr) => addr.isDefault === 1) || addresses[0]
     }
 
-    // 3. Calcular subtotal
-    let subtotal = 0
-    let itemCount = 0
-    let totalQuantity = 0
+    // Helper para calcular el precio final de un item (precio base/promocional + costos adicionales)
+    const calculateItemFinalPrice = (item: any): number => {
+      // Calcular costos adicionales de los atributos
+      const additionalCost = item.variantAttributeOptions?.reduce((total: number, vao: any) => {
+        return total + (Number(vao?.additionalCost) || 0)
+      }, 0) || 0
 
-    for (const item of items) {
-      let itemPrice = item.price
+      // Precio base del item
+      const basePrice = Number(item.price || 0)
+
+      let finalPrice = basePrice
 
       // Aplicar precio promocional si existe
       if (item.promotionVariants && item.promotionVariants.length > 0) {
@@ -85,10 +89,21 @@ export async function POST(request: NextRequest) {
         )
 
         if (activePromotion) {
-          itemPrice = parseFloat(activePromotion.promotionPrice)
+          finalPrice = parseFloat(activePromotion.promotionPrice)
         }
       }
 
+      // Retornar precio final (promocional o base) + costos adicionales
+      return finalPrice + additionalCost
+    }
+
+    // 3. Calcular subtotal considerando costos adicionales
+    let subtotal = 0
+    let itemCount = 0
+    let totalQuantity = 0
+
+    for (const item of items) {
+      const itemPrice = calculateItemFinalPrice(item)
       subtotal += itemPrice * item.quantity
       itemCount++
       totalQuantity += item.quantity

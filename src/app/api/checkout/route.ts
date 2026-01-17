@@ -123,6 +123,36 @@ async function validateCoupon(
   }
 }
 
+// Helper para calcular el precio final de un item (precio base/promocional + costos adicionales)
+function calculateItemFinalPrice(item: any): number {
+  // Calcular costos adicionales de los atributos
+  const additionalCost = item.variantAttributeOptions?.reduce((total: number, vao: any) => {
+    return total + (Number(vao?.additionalCost) || 0)
+  }, 0) || 0
+
+  // Precio base del item
+  const basePrice = Number(item.price || 0)
+
+  let finalPrice = basePrice
+
+  // Aplicar precio promocional si existe
+  if (item.promotionVariants && item.promotionVariants.length > 0) {
+    const activePromotion = item.promotionVariants.find(
+      (pv: any) =>
+        pv.promotion.isActive === 1 &&
+        new Date() >= new Date(pv.promotion.startDate) &&
+        new Date() <= new Date(pv.promotion.endDate)
+    )
+
+    if (activePromotion) {
+      finalPrice = parseFloat(activePromotion.promotionPrice)
+    }
+  }
+
+  // Retornar precio final (promocional o base) + costos adicionales
+  return finalPrice + additionalCost
+}
+
 // Calcular totales de la orden
 async function calculateOrderTotals(
   items: any[],
@@ -130,26 +160,11 @@ async function calculateOrderTotals(
   couponCode?: string,
   customerId?: number
 ): Promise<OrderCalculation> {
-  // Calcular subtotal considerando promociones
+  // Calcular subtotal considerando promociones y costos adicionales
   let subtotal = 0
 
   for (const item of items) {
-    let itemPrice = item.price
-
-    // Aplicar precio promocional si existe
-    if (item.promotionVariants && item.promotionVariants.length > 0) {
-      const activePromotion = item.promotionVariants.find(
-        (pv: any) =>
-          pv.promotion.isActive === 1 &&
-          new Date() >= new Date(pv.promotion.startDate) &&
-          new Date() <= new Date(pv.promotion.endDate)
-      )
-
-      if (activePromotion) {
-        itemPrice = parseFloat(activePromotion.promotionPrice)
-      }
-    }
-
+    const itemPrice = calculateItemFinalPrice(item)
     subtotal += itemPrice * item.quantity
   }
 
@@ -244,7 +259,7 @@ export async function POST(request: NextRequest) {
       address.province,
       address.department,
       orderData.items.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => total + calculateItemFinalPrice(item) * item.quantity,
         0
       )
     )
@@ -306,23 +321,8 @@ export async function POST(request: NextRequest) {
 
     // 5. Crear items de la orden
     const orderItems = orderData.items.map((item) => {
-      let unitPrice = item.price
-
-      // Aplicar precio promocional si existe
-      if (item.promotionVariants && item.promotionVariants.length > 0) {
-        const activePromotion = item.promotionVariants
-          .filter((pv) => !!pv)
-          .find(
-            (pv) =>
-              pv?.promotion?.isActive === 1 &&
-              new Date() >= new Date(pv.promotion.startDate) &&
-              new Date() <= new Date(pv.promotion.endDate)
-          )
-
-        if (activePromotion) {
-          unitPrice = parseFloat(activePromotion?.promotionPrice)
-        }
-      }
+      // Usar la función helper para calcular el precio final (base/promocional + adicionales)
+      const unitPrice = calculateItemFinalPrice(item)
 
       return {
         orderId: newOrder.id,

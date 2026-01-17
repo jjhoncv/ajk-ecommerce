@@ -8,10 +8,5 @@ export const AttributeOptionFields: Field[] = [
     required: {
       min: 'El valor es requerido'
     }
-  },
-  {
-    key: 'additional_cost',
-    label: 'Costo adicional (opcional)',
-    type: 'text'
   }
 ]

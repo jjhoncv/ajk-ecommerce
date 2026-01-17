@@ -91,6 +91,7 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({
             name={getVariantTitle(product.name, variant)}
             image={thumbImage}
             promotionVariants={variant.promotionVariants}
+            variantAttributeOptions={variant.variantAttributeOptions}
             onCartAction={onCartAction}
           />
         </div>

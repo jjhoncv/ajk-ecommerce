@@ -52,10 +52,10 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
     try {
       setLoading(true)
 
-      // Si usa atributo para controlar imágenes, cargar desde attribute_option_images
+      // Si usa atributo para controlar imágenes, cargar desde product_attribute_option_images
       if (imageAttributeId && imageAttributeOptionId) {
         const response = await fetch(
-          `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images?productId=${productId}`
+          `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images`
         )
         const result = await response.json()
         if (result.success) {
@@ -84,7 +84,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
       // Determinar la URL según si usa atributo o no
       const baseUrl = imageAttributeId && imageAttributeOptionId
-        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        ? `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images`
         : `/api/admin/products/${productId}/variants/${variantId}/images`
 
       // Subir cada imagen seleccionada
@@ -127,7 +127,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
       // Determinar la URL según si usa atributo o no
       const baseUrl = imageAttributeId && imageAttributeOptionId
-        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images/actions`
+        ? `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images/actions`
         : `/api/admin/products/${productId}/variants/${variantId}/images/actions`
 
       // Si usa atributo, incluir productId en los datos
@@ -162,7 +162,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
       // Determinar la URL según si usa atributo o no
       const baseUrl = imageAttributeId && imageAttributeOptionId
-        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        ? `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images`
         : `/api/admin/products/${productId}/variants/${variantId}/images`
 
       await FetchCustomBody({
@@ -189,7 +189,7 @@ export const VariantImageManager: FC<VariantImageManagerProps> = ({
 
       // Determinar la URL según si usa atributo o no
       const baseUrl = imageAttributeId && imageAttributeOptionId
-        ? `/api/admin/attributes/${imageAttributeId}/options/${imageAttributeOptionId}/images`
+        ? `/api/admin/products/${productId}/attribute-options/${imageAttributeOptionId}/images`
         : `/api/admin/products/${productId}/variants/${variantId}/images`
 
       await FetchCustomBody({

@@ -1,15 +1,15 @@
 import { executeQuery } from '@/lib/db'
 import {
-  type AttributeOptions,
+  type ProductAttributeOptions,
   type Attributes,
   type VariantAttributeOptions as VariantAttributeOptionRaw
 } from '@/types/database'
 
 export interface VariantAttributeOptionWithDetailsRaw
   extends VariantAttributeOptionRaw {
-  attribute_option_value: AttributeOptions['value']
-  additional_cost: AttributeOptions['additional_cost']
-  attribute_id: AttributeOptions['attribute_id']
+  attribute_option_value: ProductAttributeOptions['value']
+  variant_additional_cost: VariantAttributeOptionRaw['additional_cost']
+  attribute_id: ProductAttributeOptions['attribute_id']
   attribute_name: Attributes['name']
   attribute_display_type: Attributes['display_type']
 }
@@ -32,19 +32,19 @@ export class VariantAttributeOptionRepository {
   ): Promise<VariantAttributeOptionWithDetailsRaw[] | null> {
     const options = await executeQuery<VariantAttributeOptionWithDetailsRaw[]>({
       query: `
-        SELECT 
+        SELECT
           vao.variant_id,
-          vao.attribute_option_id,
-          ao.value as attribute_option_value,
-          ao.additional_cost,
-          ao.attribute_id,
+          vao.product_attribute_option_id,
+          vao.additional_cost as variant_additional_cost,
+          pao.value as attribute_option_value,
+          pao.attribute_id,
           a.name as attribute_name,
           a.display_type as attribute_display_type
         FROM variant_attribute_options vao
-        JOIN attribute_options ao ON vao.attribute_option_id = ao.id
-        JOIN attributes a ON ao.attribute_id = a.id
+        JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+        JOIN attributes a ON pao.attribute_id = a.id
         WHERE vao.variant_id = ?
-        ORDER BY a.id, ao.id
+        ORDER BY a.id, pao.id
       `,
       values: [variantId]
     })
@@ -53,13 +53,13 @@ export class VariantAttributeOptionRepository {
     return options
   }
 
-  public async getVariantAttributeOptionsByAttributeOptionId(
-    attributeOptionId: number
+  public async getVariantAttributeOptionsByProductAttributeOptionId(
+    productAttributeOptionId: number
   ): Promise<VariantAttributeOptionRaw[] | null> {
     const options = await executeQuery<VariantAttributeOptionRaw[]>({
       query:
-        'SELECT * FROM variant_attribute_options WHERE attribute_option_id = ?',
-      values: [attributeOptionId]
+        'SELECT * FROM variant_attribute_options WHERE product_attribute_option_id = ?',
+      values: [productAttributeOptionId]
     })
 
     if (options.length === 0) return null
@@ -91,17 +91,17 @@ export class VariantAttributeOptionRepository {
       query: `
         SELECT
           vao.variant_id,
-          vao.attribute_option_id,
-          ao.value as attribute_option_value,
-          ao.additional_cost,
-          ao.attribute_id,
+          vao.product_attribute_option_id,
+          vao.additional_cost as variant_additional_cost,
+          pao.value as attribute_option_value,
+          pao.attribute_id,
           a.name as attribute_name,
           a.display_type as attribute_display_type
         FROM variant_attribute_options vao
-        JOIN attribute_options ao ON vao.attribute_option_id = ao.id
-        JOIN attributes a ON ao.attribute_id = a.id
+        JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+        JOIN attributes a ON pao.attribute_id = a.id
         WHERE vao.variant_id IN (${placeholders})
-        ORDER BY a.id, ao.id
+        ORDER BY a.id, pao.id
       `,
       values: variantIds
     })
@@ -110,15 +110,15 @@ export class VariantAttributeOptionRepository {
     return options
   }
 
-  public async getVariantAttributeOptionsByAttributeOptionIds(
-    attributeOptionIds: number[]
+  public async getVariantAttributeOptionsByProductAttributeOptionIds(
+    productAttributeOptionIds: number[]
   ): Promise<VariantAttributeOptionRaw[] | null> {
-    if (attributeOptionIds.length === 0) return null
+    if (productAttributeOptionIds.length === 0) return null
 
-    const placeholders = attributeOptionIds.map(() => '?').join(',')
+    const placeholders = productAttributeOptionIds.map(() => '?').join(',')
     const options = await executeQuery<VariantAttributeOptionRaw[]>({
-      query: `SELECT * FROM variant_attribute_options WHERE attribute_option_id IN (${placeholders})`,
-      values: attributeOptionIds
+      query: `SELECT * FROM variant_attribute_options WHERE product_attribute_option_id IN (${placeholders})`,
+      values: productAttributeOptionIds
     })
 
     if (options.length === 0) return null
@@ -139,12 +139,12 @@ export class VariantAttributeOptionRepository {
 
   public async deleteVariantAttributeOption(
     variantId: number,
-    attributeOptionId: number
+    productAttributeOptionId: number
   ): Promise<void> {
     await executeQuery({
       query:
-        'DELETE FROM variant_attribute_options WHERE variant_id = ? AND attribute_option_id = ?',
-      values: [variantId, attributeOptionId]
+        'DELETE FROM variant_attribute_options WHERE variant_id = ? AND product_attribute_option_id = ?',
+      values: [variantId, productAttributeOptionId]
     })
   }
 
@@ -157,13 +157,13 @@ export class VariantAttributeOptionRepository {
     })
   }
 
-  public async deleteVariantAttributeOptionsByAttributeOptionId(
-    attributeOptionId: number
+  public async deleteVariantAttributeOptionsByProductAttributeOptionId(
+    productAttributeOptionId: number
   ): Promise<void> {
     await executeQuery({
       query:
-        'DELETE FROM variant_attribute_options WHERE attribute_option_id = ?',
-      values: [attributeOptionId]
+        'DELETE FROM variant_attribute_options WHERE product_attribute_option_id = ?',
+      values: [productAttributeOptionId]
     })
   }
 }

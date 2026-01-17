@@ -30,7 +30,7 @@ export interface TableColumn {
   key: string
   label: ReactNode | string
   width?: string
-  render?: (value: any) => ReactNode | string
+  render?: (value: any, row?: any) => ReactNode | string
   priority?: Priority
   sortable?: boolean
   searchable?: boolean
@@ -177,7 +177,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({
 
   const renderCell = (item: Record<string, any>, column: TableColumn) => {
     if (column.render) {
-      return column.render(item[column.key])
+      return column.render(item[column.key], item)
     }
     return (
       <span

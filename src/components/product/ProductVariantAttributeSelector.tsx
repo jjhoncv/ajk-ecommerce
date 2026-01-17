@@ -57,8 +57,8 @@ const ProductVariantAttributeSelector: React.FC<
 
     // Primero, identificar todos los atributos únicos desde la variante actual
     currentVariant?.variantAttributeOptions?.forEach((vao) => {
-      if (vao?.attributeOption?.attribute) {
-        const attr = vao.attributeOption.attribute
+      if (vao?.productAttributeOption?.attribute) {
+        const attr = vao.productAttributeOption.attribute
         const attributeId = attr.id
 
         if (!groups[attributeId]) {
@@ -66,8 +66,8 @@ const ProductVariantAttributeSelector: React.FC<
             attributeId,
             name: attr.name,
             displayType: attr.displayType,
-            selectedValue: vao.attributeOption.value,
-            selectedOptionId: vao.attributeOption.id,
+            selectedValue: vao.productAttributeOption.value,
+            selectedOptionId: vao.productAttributeOption.id,
             availableOptions: []
           }
         }
@@ -86,20 +86,20 @@ const ProductVariantAttributeSelector: React.FC<
 
         // Buscar si esta variante tiene este atributo
         const vao = v.variantAttributeOptions.find(
-          (vao) => vao?.attributeOption?.attributeId === attributeId
+          (vao) => vao?.productAttributeOption?.attributeId === attributeId
         )
 
-        if (vao?.attributeOption) {
-          const optionKey = `${vao.attributeOption.id}-${vao.attributeOption.value}`
+        if (vao?.productAttributeOption) {
+          const optionKey = `${vao.productAttributeOption.id}-${vao.productAttributeOption.value}`
           if (!optionsSet.has(optionKey)) {
             optionsSet.add(optionKey)
 
             // Buscar imagen para esta opción desde attributeOptionImages
-            const optionImage = vao.attributeOption.attributeOptionImages?.[0]
+            const optionImage = vao.productAttributeOption.attributeOptionImages?.[0]
 
             groups[attributeId].availableOptions.push({
-              optionId: vao.attributeOption.id,
-              value: vao.attributeOption.value,
+              optionId: vao.productAttributeOption.id,
+              value: vao.productAttributeOption.value,
               variantId: v.id,
               image: optionImage
                 ? {
@@ -129,7 +129,7 @@ const ProductVariantAttributeSelector: React.FC<
     // Encontrar la variante que tiene esta opción específica
     const targetVariant = allVariants.find((v) => {
       return v?.variantAttributeOptions?.some(
-        (vao) => vao?.attributeOption?.id === optionId
+        (vao) => vao?.productAttributeOption?.id === optionId
       )
     })
 
@@ -175,8 +175,8 @@ const ProductVariantAttributeSelector: React.FC<
     // Obtener los otros atributos de la variante actual (excluyendo el atributo que estamos evaluando)
     const currentOtherAttributes =
       currentVariant.variantAttributeOptions
-        ?.filter((vao) => vao?.attributeOption?.attributeId !== attributeId)
-        ?.map((vao) => vao?.attributeOption?.id)
+        ?.filter((vao) => vao?.productAttributeOption?.attributeId !== attributeId)
+        ?.map((vao) => vao?.productAttributeOption?.id)
         ?.filter(Boolean) || []
 
     // Buscar si existe alguna variante que tenga esta opción Y todos los otros atributos actuales
@@ -185,7 +185,7 @@ const ProductVariantAttributeSelector: React.FC<
 
       // Verificar si esta variante tiene la opción que estamos evaluando
       const hasTargetOption = variant.variantAttributeOptions.some(
-        (vao) => vao?.attributeOption?.id === optionId
+        (vao) => vao?.productAttributeOption?.id === optionId
       )
 
       if (!hasTargetOption) return false
@@ -193,7 +193,7 @@ const ProductVariantAttributeSelector: React.FC<
       // Verificar si esta variante también tiene todos los otros atributos actuales
       const variantOptionIds =
         variant.variantAttributeOptions
-          ?.map((vao) => vao?.attributeOption?.id)
+          ?.map((vao) => vao?.productAttributeOption?.id)
           ?.filter(Boolean) || []
 
       return currentOtherAttributes.every((optionId) =>

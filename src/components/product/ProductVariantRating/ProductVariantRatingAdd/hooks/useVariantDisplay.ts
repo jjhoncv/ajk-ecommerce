@@ -12,8 +12,8 @@ export const useVariantDisplay = (
       variant.variantAttributeOptions.length > 0
     ) {
       const attributes = variant.variantAttributeOptions
-        .filter((attr) => attr?.attributeOption?.value)
-        .map((attr) => attr!.attributeOption!.value)
+        .filter((attr) => attr?.productAttributeOption?.value)
+        .map((attr) => attr!.productAttributeOption!.value)
         .join(', ')
 
       if (attributes) {
