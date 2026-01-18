@@ -1,4 +1,4 @@
-import variantRatingModel from '@/backend/variant-rating'
+import { variantRatingModel } from '@/module/products/core'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

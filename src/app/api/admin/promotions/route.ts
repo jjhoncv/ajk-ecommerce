@@ -1,7 +1,5 @@
 // app/api/admin/promotions/route.ts
-import promotionModel from '@/backend/promotion/Promotion.model'
-import promotionRepository from '@/backend/promotion/Promotion.repository'
-import promotionVariantModel from '@/backend/promotion-variant/PromotionVariant.model'
+import { promotionModel, promotionRepository, promotionVariantModel } from '@/module/promotions/core'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'

@@ -1,6 +1,6 @@
 // app/api/admin/orders/route.ts
-import orderModel from '@/backend/order'
-import paymentTransactionModel from '@/backend/payment-transaction'
+import { orderModel } from '@/module/orders/core'
+import { paymentTransactionModel } from '@/module/payments/core'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

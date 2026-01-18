@@ -1,22 +1,22 @@
-import couponModel from '@/backend/coupon/Coupon.model'
+import { CouponsListView } from '@/module/coupons/components/admin'
+import CouponService from '@/module/coupons/service/coupon'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { type JSX } from 'react'
-import CouponsListAdmin from './CouponsListAdmin'
 
 export default async function AdminCouponsPage(): Promise<JSX.Element> {
-  const coupons = await couponModel.getCouponsWithStats()
-  const stats = await couponModel.getCouponStats()
+  const coupons = await CouponService.getCoupons()
+  const stats = await CouponService.getCouponStats()
 
-  if (!coupons || coupons.length === 0) {
-    return (
-      <LayoutPageAdmin>
-        <PageUI
-          title={<PageTitle title="Cupones" />}
-          subtitle="Gestión de cupones de descuento"
-          breadcrumb={[{ label: 'Cupones' }]}
-        >
+  return (
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="Cupones" />}
+        subtitle="Gestión de cupones de descuento"
+        breadcrumb={[{ label: 'Cupones' }]}
+      >
+        {coupons.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <p className="text-gray-500">No hay cupones registrados</p>
             <a
@@ -26,19 +26,9 @@ export default async function AdminCouponsPage(): Promise<JSX.Element> {
               Crear primer cupón
             </a>
           </div>
-        </PageUI>
-      </LayoutPageAdmin>
-    )
-  }
-
-  return (
-    <LayoutPageAdmin>
-      <PageUI
-        title={<PageTitle title="Cupones" />}
-        subtitle="Gestión de cupones de descuento"
-        breadcrumb={[{ label: 'Cupones' }]}
-      >
-        <CouponsListAdmin initialCoupons={coupons} stats={stats} />
+        ) : (
+          <CouponsListView coupons={coupons} stats={stats} />
+        )}
       </PageUI>
     </LayoutPageAdmin>
   )

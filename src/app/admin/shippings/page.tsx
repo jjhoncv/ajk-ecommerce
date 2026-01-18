@@ -1,6 +1,4 @@
-import shippingMethodModel from '@/backend/shipping-method'
-import shippingZoneModel from '@/backend/shipping-zone'
-import shippingZoneMethodModel from '@/backend/shipping-zone-method'
+import { shippingMethodModel, shippingZoneModel, shippingZoneMethodModel } from '@/module/shippings/core'
 import { ZoneMethodPricingManager } from '@/module/shippings/components/admin/ZoneMethodPricingManager'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'

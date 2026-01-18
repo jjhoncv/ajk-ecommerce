@@ -1,6 +1,5 @@
-import attributeModel from '@/backend/attribute'
-import productModel from '@/backend/product'
-import productAttributeOptionModel from '@/backend/product-attribute-option'
+import { attributeModel } from '@/module/attributes/core'
+import { productModel, productAttributeOptionModel } from '@/module/products/core'
 import { ProductAttributeManager } from '@/module/products/components/admin/attributes/ProductAttributeManager'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'

@@ -1,4 +1,4 @@
-import categoryModel from '@/backend/category'
+import { categoryModel } from '@/module/categories/core'
 import { type Categories } from '@/types/domain'
 import { hydrateHeader } from './hydrators'
 

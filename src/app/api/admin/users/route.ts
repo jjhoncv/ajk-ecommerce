@@ -1,5 +1,4 @@
-import userModel from '@/backend/user'
-import userRepository from '@/backend/user/User.repository'
+import { userModel, userRepository } from '@/module/users/core'
 import {
   apiHandler,
   createResponse,

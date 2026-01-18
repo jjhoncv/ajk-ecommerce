@@ -1,4 +1,4 @@
-import { type ProductSearchItem } from '@/backend/search'
+import { type ProductSearchItem } from '@/module/search/core'
 
 export const hydrateDealsProducts = (
   data: ProductSearchItem[]

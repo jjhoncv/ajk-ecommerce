@@ -3,9 +3,8 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
 // Models
-import customerModel from '@/backend/customer'
-import customerAddressModel from '@/backend/customer-address'
-import paymentMethodModel from '@/backend/payment-method'
+import { customerModel, customerAddressModel } from '@/module/customers/core'
+import { paymentMethodModel } from '@/module/payments/core'
 
 // Components
 import CheckoutClient from '@/components/checkout/CheckoutClient'

@@ -1,6 +1,6 @@
 // 📄 app/api/payment/[transactionId]/fail/route.ts
-import orderModel from '@/backend/order'
-import paymentTransactionModel from '@/backend/payment-transaction'
+import { orderModel } from '@/module/orders/core'
+import { paymentTransactionModel } from '@/module/payments/core'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(

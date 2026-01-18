@@ -1,4 +1,4 @@
-import attributeOptionImageModel from '@/backend/attribute-option-image'
+import { attributeOptionImageModel } from '@/module/attributes/core'
 import {
   apiHandler,
   createResponse,

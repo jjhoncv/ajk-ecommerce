@@ -1,4 +1,4 @@
-import paymentMethodModel from '@/backend/payment-method'
+import { paymentMethodModel } from '@/module/payments/core'
 import {
   apiHandler,
   createResponse,

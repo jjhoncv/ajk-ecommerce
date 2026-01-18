@@ -4,8 +4,8 @@ import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Usar tus modelos existentes
-import customerAddressModel from '@/backend/customer-address'
-import shippingZoneMethodModel from '@/backend/shipping-zone-method'
+import { customerAddressModel } from '@/module/customers/core'
+import { shippingZoneMethodModel } from '@/module/shippings/core'
 
 export async function POST(request: NextRequest) {
   try {

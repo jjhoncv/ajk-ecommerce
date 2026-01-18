@@ -1,4 +1,4 @@
-import productAttributeOptionModel from '@/backend/product-attribute-option'
+import { productAttributeOptionModel } from '@/module/products/core'
 import {
   apiHandler,
   createResponse,

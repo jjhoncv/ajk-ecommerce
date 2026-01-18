@@ -3,10 +3,9 @@ import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Models
-import customerModel from '@/backend/customer'
-import customerAddressModel from '@/backend/customer-address'
-import paymentMethodModel from '@/backend/payment-method'
-import shippingZoneMethodModel from '@/backend/shipping-zone-method'
+import { customerModel, customerAddressModel } from '@/module/customers/core'
+import { paymentMethodModel } from '@/module/payments/core'
+import { shippingZoneMethodModel } from '@/module/shippings/core'
 
 // Types
 import { authOptions } from '@/lib/auth/auth'

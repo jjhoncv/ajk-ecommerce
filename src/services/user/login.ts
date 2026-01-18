@@ -1,6 +1,4 @@
-import roleModel from '@/backend/role'
-import sectionModel from '@/backend/section'
-import userModel from '@/backend/user'
+import { roleModel, sectionModel, userModel } from '@/module/users/core'
 import { type Users as User } from '@/types/domain'
 import bcrypt from 'bcryptjs'
 

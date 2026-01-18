@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/Input'
 import {
   Calendar,
   Package,
-  Percent,
   Plus,
   Save,
   Tag,
@@ -14,46 +13,17 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { type Promotion, type PromotionVariantWithInfo } from '../../service/promotion/types'
 
-interface Promotion {
-  id: number
-  name: string
-  description?: string | null
-  discountType: 'fixed_amount' | 'percentage'
-  discountValue: number
-  startDate: Date
-  endDate: Date
-  minPurchaseAmount?: number | null
-  imageUrl?: string | null
-  isActive?: number | null
-  type?: string | null
-  displayOrder?: number | null
-}
-
-interface PromotionVariant {
-  variantId: number
-  promotionPrice: number | null
-  stockLimit: number
-  createdAt: Date
-  variant: {
-    id: number
-    sku: string
-    price: number
-    stock: number
-    productId: number
-    productName: string
-  }
-}
-
-interface PromotionDetailAdminProps {
+interface PromotionDetailViewProps {
   promotion: Promotion | null
-  variants: PromotionVariant[]
+  variants: PromotionVariantWithInfo[]
 }
 
-export default function PromotionDetailAdmin({
+export function PromotionDetailView({
   promotion,
   variants: initialVariants
-}: PromotionDetailAdminProps) {
+}: PromotionDetailViewProps) {
   const router = useRouter()
   const isNew = !promotion
 
@@ -79,7 +49,7 @@ export default function PromotionDetailAdmin({
   )
   const [isActive, setIsActive] = useState(promotion?.isActive === 1)
 
-  const [variants, setVariants] = useState<PromotionVariant[]>(initialVariants)
+  const [variants, setVariants] = useState<PromotionVariantWithInfo[]>(initialVariants)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -146,7 +116,6 @@ export default function PromotionDetailAdmin({
 
     setSearching(true)
     try {
-      // Search for variants by SKU
       const response = await fetch(`/api/admin/products/search?sku=${encodeURIComponent(newVariantSku)}`)
       if (response.ok) {
         const data = await response.json()
@@ -175,7 +144,6 @@ export default function PromotionDetailAdmin({
       })
 
       if (response.ok) {
-        // Add to local state
         setVariants([
           ...variants,
           {
@@ -221,7 +189,6 @@ export default function PromotionDetailAdmin({
 
   return (
     <div className="space-y-6">
-      {/* Error message */}
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
           {error}
@@ -229,7 +196,6 @@ export default function PromotionDetailAdmin({
       )}
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Main form */}
         <div className="space-y-6 lg:col-span-2">
           {/* Basic info */}
           <div className="rounded-lg border bg-white p-4">
@@ -337,7 +303,7 @@ export default function PromotionDetailAdmin({
             </div>
           </div>
 
-          {/* Variants - only show for existing promotions */}
+          {/* Variants */}
           {!isNew && (
             <div className="rounded-lg border bg-white p-4">
               <div className="mb-4 flex items-center justify-between">
@@ -399,7 +365,6 @@ export default function PromotionDetailAdmin({
 
         {/* Sidebar */}
         <div className="space-y-4">
-          {/* Status */}
           <div className="rounded-lg border bg-white p-4">
             <h3 className="mb-3 text-sm font-semibold">Estado</h3>
             <label className="flex items-center gap-2">
@@ -413,7 +378,6 @@ export default function PromotionDetailAdmin({
             </label>
           </div>
 
-          {/* Min purchase */}
           <div className="rounded-lg border bg-white p-4">
             <h3 className="mb-3 text-sm font-semibold">Condiciones</h3>
             <div>
@@ -439,7 +403,6 @@ export default function PromotionDetailAdmin({
             </div>
           </div>
 
-          {/* Actions */}
           <div className="rounded-lg border bg-white p-4">
             <Button onClick={handleSave} disabled={saving} className="w-full">
               <Save className="mr-2 h-4 w-4" />

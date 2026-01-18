@@ -1,5 +1,5 @@
-import brandModel from '@/backend/brand'
-import categoryModel from '@/backend/category'
+import { brandModel } from '@/module/brands/core'
+import { categoryModel } from '@/module/categories/core'
 import { getProductFieldsWithData } from '@/module/products/components/admin/productFields'
 import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'

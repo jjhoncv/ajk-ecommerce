@@ -1,6 +1,6 @@
 'use client'
 
-import { type UserWithRole } from '@/backend/user/User.model'
+import { type UserWithRole } from '@/module/users/core'
 import { Alert } from '@/module/shared/components/Alert/Alert'
 import { EditAction } from '@/module/shared/components/Table/Actions'
 import {

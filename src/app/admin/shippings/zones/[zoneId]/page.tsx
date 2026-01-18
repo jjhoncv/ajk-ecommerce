@@ -1,4 +1,4 @@
-import shippingZoneModel from '@/backend/shipping-zone'
+import { shippingZoneModel } from '@/module/shippings/core'
 import { ShippingZoneForm } from '@/module/shippings/components/admin/ShippingZoneForm'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'

@@ -1,5 +1,5 @@
-import userModel from '@/backend/user'
-import { adminAuthOptions } from '@/lib/auth/authAdmin'
+import { userModel } from '@/module/users/core'
+import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { NextResponse, type NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'

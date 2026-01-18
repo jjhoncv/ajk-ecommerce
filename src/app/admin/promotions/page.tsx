@@ -1,22 +1,21 @@
-import promotionModel from '@/backend/promotion/Promotion.model'
-import promotionVariantModel from '@/backend/promotion-variant/PromotionVariant.model'
+import { PromotionsListView } from '@/module/promotions/components/admin'
+import PromotionService from '@/module/promotions/service/promotion'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { type JSX } from 'react'
-import PromotionsListAdmin from './PromotionsListAdmin'
 
 export default async function AdminPromotionsPage(): Promise<JSX.Element> {
-  const promotions = await promotionModel.getPromotions()
+  const promotions = await PromotionService.getPromotionsWithMetrics()
 
-  if (!promotions || promotions.length === 0) {
-    return (
-      <LayoutPageAdmin>
-        <PageUI
-          title={<PageTitle title="Promociones" />}
-          subtitle="Gestión de promociones y descuentos"
-          breadcrumb={[{ label: 'Promociones' }]}
-        >
+  return (
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="Promociones" />}
+        subtitle="Gestión de promociones y descuentos"
+        breadcrumb={[{ label: 'Promociones' }]}
+      >
+        {promotions.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <p className="text-gray-500">No hay promociones registradas</p>
             <a
@@ -26,32 +25,9 @@ export default async function AdminPromotionsPage(): Promise<JSX.Element> {
               Crear primera promoción
             </a>
           </div>
-        </PageUI>
-      </LayoutPageAdmin>
-    )
-  }
-
-  // Get variant counts for each promotion
-  const promotionsWithMetrics = await Promise.all(
-    promotions.map(async (promotion) => {
-      const metrics = await promotionVariantModel.getPromotionMetrics(promotion.id)
-      return {
-        ...promotion,
-        variantCount: metrics?.totalVariants || 0,
-        variantsWithStock: metrics?.variantsWithStock || 0,
-        totalStockLimit: metrics?.totalStockLimit || 0
-      }
-    })
-  )
-
-  return (
-    <LayoutPageAdmin>
-      <PageUI
-        title={<PageTitle title="Promociones" />}
-        subtitle="Gestión de promociones y descuentos"
-        breadcrumb={[{ label: 'Promociones' }]}
-      >
-        <PromotionsListAdmin initialPromotions={promotionsWithMetrics} />
+        ) : (
+          <PromotionsListView promotions={promotions} />
+        )}
       </PageUI>
     </LayoutPageAdmin>
   )

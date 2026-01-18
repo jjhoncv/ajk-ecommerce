@@ -1,4 +1,4 @@
-import couponModel from '@/backend/coupon/Coupon.model'
+import { couponModel } from '@/module/coupons/core'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'

@@ -1,6 +1,6 @@
 // 📄 app/api/checkout/validate-coupon/route.ts
-import couponModel from '@/backend/coupon'
-import customerModel from '@/backend/customer'
+import { couponModel } from '@/module/coupons/core'
+import { customerModel } from '@/module/customers/core'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

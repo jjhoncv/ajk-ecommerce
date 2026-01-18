@@ -1,5 +1,5 @@
 // app/api/customer/change-password/route.ts
-import customerModel from '@/backend/customer'
+import { customerModel } from '@/module/customers/core'
 import { authOptions } from '@/lib/auth/auth'
 import bcrypt from 'bcryptjs'
 import { getServerSession } from 'next-auth'

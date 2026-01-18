@@ -1,4 +1,4 @@
-import paymentMethodModel from '@/backend/payment-method'
+import { paymentMethodModel } from '@/module/payments/core'
 import { PaymentMethodForm } from '@/module/payments/components/admin/PaymentMethodForm'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'

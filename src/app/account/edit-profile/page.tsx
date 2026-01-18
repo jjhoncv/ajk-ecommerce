@@ -1,6 +1,6 @@
 // app/account/edit-profile/page.tsx
-import categoryModel from '@/backend/category'
-import customerModel from '@/backend/customer'
+import { categoryModel } from '@/module/categories/core'
+import { customerModel } from '@/module/customers/core'
 import AccountLayout from '@/components/account/AccountLayout'
 import EditProfile from '@/components/account/EditProfile/EditProfile'
 import Header from '@/components/layout/Header'

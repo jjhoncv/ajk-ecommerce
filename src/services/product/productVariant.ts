@@ -1,7 +1,8 @@
-import productModel from '@/backend/product'
-import productVariantModel, {
+import {
+  productModel,
+  productVariantModel,
   type ProductVariantWithAttributeOptions
-} from '@/backend/product-variant'
+} from '@/module/products/core'
 import { type Products as Product } from '@/types/domain'
 
 export interface ProductVariantData {

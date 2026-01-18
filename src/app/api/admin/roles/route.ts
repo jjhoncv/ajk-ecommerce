@@ -1,6 +1,4 @@
-import roleModel from '@/backend/role'
-import sectionModel from '@/backend/section'
-import sectionRepository from '@/backend/section/Section.repository'
+import { roleModel, sectionModel, sectionRepository } from '@/module/users/core'
 import {
   apiHandler,
   createResponse,

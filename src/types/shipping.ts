@@ -1,5 +1,5 @@
 // 📄 types/shipping.ts
-import { type ShippingCalculation } from '@/backend/shipping-zone-method/ShippingZoneMethod.interfaces'
+import { type ShippingCalculation } from '@/module/shippings/core'
 
 // Tipo para dirección con opciones de envío
 export interface ShippingOptionForAddress {

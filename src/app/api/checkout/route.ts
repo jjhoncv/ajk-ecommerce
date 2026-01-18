@@ -3,15 +3,12 @@ import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
 // Models
-import couponModel from '@/backend/coupon'
-import customerModel from '@/backend/customer'
-import customerAddressModel from '@/backend/customer-address'
-import orderModel from '@/backend/order'
-import orderItemsModel from '@/backend/order-item'
-import paymentMethodModel from '@/backend/payment-method'
-import paymentTransactionModel from '@/backend/payment-transaction'
-import productVariantModel from '@/backend/product-variant'
-import shippingZoneMethodModel from '@/backend/shipping-zone-method'
+import { couponModel } from '@/module/coupons/core'
+import { customerModel, customerAddressModel } from '@/module/customers/core'
+import { orderModel, orderItemsModel } from '@/module/orders/core'
+import { paymentMethodModel, paymentTransactionModel } from '@/module/payments/core'
+import { productVariantModel } from '@/module/products/core'
+import { shippingZoneMethodModel } from '@/module/shippings/core'
 
 // Types
 import { authOptions } from '@/lib/auth/auth'

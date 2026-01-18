@@ -1,7 +1,6 @@
 // app/api/admin/promotions/[promotionId]/variants/route.ts
-import promotionModel from '@/backend/promotion/Promotion.model'
-import promotionVariantModel from '@/backend/promotion-variant/PromotionVariant.model'
-import productVariantModel from '@/backend/product-variant/ProductVariant.model'
+import { promotionModel, promotionVariantModel } from '@/module/promotions/core'
+import { productVariantModel } from '@/module/products/core'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { executeQuery } from '@/lib/db'
 import { getServerSession } from 'next-auth'

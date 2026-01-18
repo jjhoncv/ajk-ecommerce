@@ -1,4 +1,4 @@
-import variantImageRepository from '@/backend/variant-image/VariantImage.repository'
+import { variantImageRepository } from '@/module/products/core'
 import { existsSync, readdirSync, statSync } from 'fs'
 import { mkdir, rename, rm } from 'fs/promises'
 import { type NextRequest, NextResponse } from 'next/server'

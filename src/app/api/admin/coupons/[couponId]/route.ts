@@ -1,5 +1,5 @@
 // app/api/admin/coupons/[couponId]/route.ts
-import couponModel from '@/backend/coupon/Coupon.model'
+import { couponModel } from '@/module/coupons/core'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

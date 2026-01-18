@@ -1,5 +1,5 @@
-import shippingMethodModel from '@/backend/shipping-method'
 import { ShippingMethodsListView } from '@/module/shippings/components/admin/ShippingMethodsListView'
+import ShippingService from '@/module/shippings/service/shipping'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
@@ -9,7 +9,7 @@ import { type JSX } from 'react'
 export const revalidate = 0
 
 export default async function ShippingMethodsPage(): Promise<JSX.Element> {
-  const methods = await shippingMethodModel.getAllShippingMethodsWithZones()
+  const methods = await ShippingService.getShippingMethods()
 
   return (
     <LayoutPageAdmin>

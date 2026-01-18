@@ -1,4 +1,4 @@
-import shippingMethodModel from '@/backend/shipping-method'
+import { shippingMethodModel } from '@/module/shippings/core'
 import {
   apiHandler,
   createResponse,

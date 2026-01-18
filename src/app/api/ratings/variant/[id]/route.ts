@@ -1,5 +1,5 @@
-import customerModel from '@/backend/customer'
-import variantRatingModel from '@/backend/variant-rating'
+import { customerModel } from '@/module/customers/core'
+import { variantRatingModel } from '@/module/products/core'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(

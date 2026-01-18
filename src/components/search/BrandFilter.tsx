@@ -3,8 +3,7 @@ import CollapsibleSection from '@/components/ui/CollapsibleSection'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-import { type AvailableFilters } from '@/backend/filters'
-import { type ProductSearchFilters } from '@/backend/search'
+import { type AvailableFilters, type ProductSearchFilters } from '@/module/search/core'
 
 interface BrandFilterProps {
   availableFilters: AvailableFilters

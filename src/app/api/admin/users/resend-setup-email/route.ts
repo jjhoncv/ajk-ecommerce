@@ -1,4 +1,4 @@
-import userModel from '@/backend/user'
+import { userModel } from '@/module/users/core'
 import {
   apiHandler,
   createResponse,

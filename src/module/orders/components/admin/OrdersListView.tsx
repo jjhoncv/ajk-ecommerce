@@ -11,30 +11,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { type Order } from '../../service/order/types'
 
-interface Order {
-  id: number
-  orderNumber: string
-  status: string
-  paymentStatus: string
-  paymentMethod: string
-  subtotal: number
-  discountAmount: number
-  shippingCost: number
-  processingFee: number
-  taxAmount: number
-  totalAmount: number
-  totalWithFee: number
-  shippingMethod: string
-  createdAt: Date
-  customerId: number
-  customerName: string
-  customerEmail: string
-  itemCount: number
-}
-
-interface OrdersListAdminProps {
-  initialOrders: Order[]
+interface OrdersListViewProps {
+  orders: Order[]
 }
 
 const statusLabels: Record<string, { label: string, color: string, bgColor: string }> = {
@@ -52,7 +32,7 @@ const paymentStatusLabels: Record<string, { label: string, color: string, bgColo
   refunded: { label: 'Reemb.', color: 'text-blue-700', bgColor: 'bg-blue-100' }
 }
 
-export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps) {
+export function OrdersListView({ orders }: OrdersListViewProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [paymentFilter, setPaymentFilter] = useState('')
@@ -61,15 +41,15 @@ export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps)
 
   // Filtrar órdenes
   const filteredOrders = useMemo(() => {
-    let filtered = [...initialOrders]
+    let filtered = [...orders]
 
     if (searchTerm) {
       const search = searchTerm.toLowerCase()
       filtered = filtered.filter(
         (order) =>
           order.orderNumber.toLowerCase().includes(search) ||
-          order.customerName.toLowerCase().includes(search) ||
-          order.customerEmail.toLowerCase().includes(search)
+          order.customerName?.toLowerCase().includes(search) ||
+          order.customerEmail?.toLowerCase().includes(search)
       )
     }
 
@@ -82,7 +62,7 @@ export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps)
     }
 
     return filtered
-  }, [initialOrders, searchTerm, statusFilter, paymentFilter])
+  }, [orders, searchTerm, statusFilter, paymentFilter])
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
   const paginatedOrders = filteredOrders.slice(
@@ -91,16 +71,16 @@ export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps)
   )
 
   const stats = useMemo(() => {
-    const pending = initialOrders.filter((o) => o.status === 'pending').length
-    const processing = initialOrders.filter((o) => o.status === 'processing').length
-    const shipped = initialOrders.filter((o) => o.status === 'shipped').length
-    const delivered = initialOrders.filter((o) => o.status === 'delivered').length
-    const totalRevenue = initialOrders
+    const pending = orders.filter((o) => o.status === 'pending').length
+    const processing = orders.filter((o) => o.status === 'processing').length
+    const shipped = orders.filter((o) => o.status === 'shipped').length
+    const delivered = orders.filter((o) => o.status === 'delivered').length
+    const totalRevenue = orders
       .filter((o) => o.paymentStatus === 'paid')
-      .reduce((sum, o) => sum + o.totalWithFee, 0)
+      .reduce((sum, o) => sum + (o.totalWithFee || o.totalAmount), 0)
 
     return { pending, processing, shipped, delivered, totalRevenue }
-  }, [initialOrders])
+  }, [orders])
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('es-PE', {
@@ -222,15 +202,15 @@ export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps)
                     {order.orderNumber.replace('ORD-2026-', '')}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {order.itemCount} item{order.itemCount !== 1 && 's'}
+                    {order.itemCount || 0} item{(order.itemCount || 0) !== 1 && 's'}
                   </div>
                 </td>
                 <td className="px-3 py-2">
                   <div className="max-w-[150px] truncate text-xs font-medium text-gray-900">
-                    {order.customerName}
+                    {order.customerName || '-'}
                   </div>
                   <div className="max-w-[150px] truncate text-xs text-gray-400">
-                    {order.customerEmail}
+                    {order.customerEmail || '-'}
                   </div>
                 </td>
                 <td className="px-3 py-2 text-center">
@@ -253,7 +233,7 @@ export default function OrdersListAdmin({ initialOrders }: OrdersListAdminProps)
                 </td>
                 <td className="px-3 py-2 text-right">
                   <div className="text-xs font-semibold text-gray-900">
-                    {formatPrice(order.totalWithFee)}
+                    {formatPrice(order.totalWithFee || order.totalAmount)}
                   </div>
                 </td>
                 <td className="px-3 py-2 text-center text-xs text-gray-500">

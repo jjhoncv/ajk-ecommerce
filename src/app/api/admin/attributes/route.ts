@@ -1,4 +1,4 @@
-import attributeModel from '@/backend/attribute'
+import { attributeModel } from '@/module/attributes/core'
 import {
   apiHandler,
   createResponse,

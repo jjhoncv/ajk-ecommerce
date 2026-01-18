@@ -1,4 +1,4 @@
-import shippingZoneModel from '@/backend/shipping-zone'
+import { shippingZoneModel } from '@/module/shippings/core'
 import {
   apiHandler,
   createResponse,

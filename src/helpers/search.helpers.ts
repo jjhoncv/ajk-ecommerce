@@ -1,4 +1,4 @@
-import { type ProductSearchFilters } from '@/backend/search'
+import { type ProductSearchFilters } from '@/module/search/core'
 import {
   SEARCH_INITIAL_PAGE,
   SEARCH_PRODUCTS_PER_PAGE

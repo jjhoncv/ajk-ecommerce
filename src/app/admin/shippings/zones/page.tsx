@@ -1,5 +1,5 @@
-import shippingZoneModel from '@/backend/shipping-zone'
 import { ShippingZonesListView } from '@/module/shippings/components/admin/ShippingZonesListView'
+import ShippingService from '@/module/shippings/service/shipping'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
@@ -9,7 +9,7 @@ import { type JSX } from 'react'
 export const revalidate = 0
 
 export default async function ShippingZonesPage(): Promise<JSX.Element> {
-  const zones = await shippingZoneModel.getAllShippingZonesWithMethods()
+  const zones = await ShippingService.getShippingZones()
 
   return (
     <LayoutPageAdmin>

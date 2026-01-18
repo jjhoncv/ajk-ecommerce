@@ -1,4 +1,4 @@
-import sectionModel from '@/backend/section'
+import { sectionModel } from '@/module/users/core'
 import {
   apiHandler,
   createResponse,

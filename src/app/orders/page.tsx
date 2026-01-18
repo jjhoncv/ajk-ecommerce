@@ -1,4 +1,4 @@
-import categoryModel from '@/backend/category'
+import { categoryModel } from '@/module/categories/core'
 import Header from '@/components/layout/Header'
 import Layout from '@/components/layout/Layout'
 import Navigation from '@/components/ui/Navigation/Navigation'

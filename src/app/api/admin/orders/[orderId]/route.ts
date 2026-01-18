@@ -1,5 +1,5 @@
 // app/api/admin/orders/[orderId]/route.ts
-import orderModel from '@/backend/order'
+import { orderModel } from '@/module/orders/core'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

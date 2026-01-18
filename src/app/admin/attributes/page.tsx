@@ -1,5 +1,5 @@
-import attributeModel from '@/backend/attribute'
 import { AttributeListView } from '@/module/attributes/components/admin/AttributeListView'
+import AttributeService from '@/module/attributes/service/attribute'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
@@ -7,7 +7,7 @@ import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { type JSX } from 'react'
 
 export default async function AttributeListPage(): Promise<JSX.Element> {
-  const attributes = await attributeModel.getAttributes()
+  const attributes = await AttributeService.getAttributes()
 
   if (!attributes || attributes.length === 0) {
     return (

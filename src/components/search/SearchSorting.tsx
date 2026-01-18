@@ -1,5 +1,5 @@
 'use client'
-import { type ProductSearchFilters } from '@/backend/search'
+import { type ProductSearchFilters } from '@/module/search/core'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 

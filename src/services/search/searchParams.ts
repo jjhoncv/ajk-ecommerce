@@ -1,7 +1,8 @@
-import searchModel, {
+import {
+  searchModel,
   type ProductSearchFilters,
   type ProductSearchResult
-} from '@/backend/search'
+} from '@/module/search/core'
 
 export const getSearchParams = async (
   filters: ProductSearchFilters

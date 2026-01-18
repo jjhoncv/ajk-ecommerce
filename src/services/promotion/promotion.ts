@@ -1,4 +1,4 @@
-import promotionModel from '@/backend/promotion'
+import { promotionModel } from '@/module/promotions/core'
 import { isPromotionActive } from '@/services/promotion/helpers'
 import {
   hydratePromotion,

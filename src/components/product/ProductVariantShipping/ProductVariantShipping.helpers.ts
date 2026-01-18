@@ -1,4 +1,4 @@
-import { type ShippingCalculation } from '@/backend/shipping-zone-method'
+import { type ShippingCalculation } from '@/module/shippings/core'
 
 export const deliveryDates = (defaultShipping: ShippingCalculation) => {
   const today = new Date()

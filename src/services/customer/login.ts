@@ -1,4 +1,4 @@
-import customerModel from '@/backend/customer'
+import { customerModel } from '@/module/customers/core'
 import { type Customers as Customer } from '@/types/domain'
 import bcrypt from 'bcryptjs'
 

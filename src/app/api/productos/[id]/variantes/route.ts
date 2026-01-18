@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import productVariantModel from '@/backend/product-variant/ProductVariant.model'
+import { productVariantModel } from '@/module/products/core'
 
 export async function GET(
   request: NextRequest,

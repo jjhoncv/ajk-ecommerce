@@ -1,4 +1,4 @@
-import { type ProductSearchItem } from '@/backend/search'
+import { type ProductSearchItem } from '@/module/search/core'
 import ProductCard from '@/components/ui/ProductCard'
 import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'

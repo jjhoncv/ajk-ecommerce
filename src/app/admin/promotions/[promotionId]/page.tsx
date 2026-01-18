@@ -1,12 +1,10 @@
-import promotionModel from '@/backend/promotion/Promotion.model'
-import promotionVariantModel from '@/backend/promotion-variant/PromotionVariant.model'
-import { executeQuery } from '@/lib/db'
+import { PromotionDetailView } from '@/module/promotions/components/admin'
+import PromotionService from '@/module/promotions/service/promotion'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { notFound } from 'next/navigation'
 import { type JSX } from 'react'
-import PromotionDetailAdmin from './PromotionDetailAdmin'
 
 interface PageProps {
   params: Promise<{ promotionId: string }>
@@ -29,7 +27,7 @@ export default async function AdminPromotionDetailPage({
             { label: 'Nueva' }
           ]}
         >
-          <PromotionDetailAdmin promotion={null} variants={[]} />
+          <PromotionDetailView promotion={null} variants={[]} />
         </PageUI>
       </LayoutPageAdmin>
     )
@@ -41,49 +39,12 @@ export default async function AdminPromotionDetailPage({
     notFound()
   }
 
-  const promotion = await promotionModel.getPromotionById(promotionIdNum)
+  const promotion = await PromotionService.getPromotionById(promotionIdNum)
   if (!promotion) {
     notFound()
   }
 
-  // Get promotion variants with product info
-  const variantsWithInfo = await executeQuery<any[]>({
-    query: `
-      SELECT
-        pv.promotion_id,
-        pv.variant_id,
-        pv.promotion_price,
-        pv.stock_limit,
-        pv.created_at,
-        v.id as variant_id,
-        v.sku,
-        v.price as variant_price,
-        v.stock as variant_stock,
-        v.product_id,
-        p.name as product_name
-      FROM promotion_variants pv
-      JOIN product_variants v ON pv.variant_id = v.id
-      JOIN products p ON v.product_id = p.id
-      WHERE pv.promotion_id = ?
-      ORDER BY p.name, v.sku
-    `,
-    values: [promotionIdNum]
-  })
-
-  const formattedVariants = variantsWithInfo.map((row) => ({
-    variantId: row.variant_id,
-    promotionPrice: row.promotion_price ? Number(row.promotion_price) : null,
-    stockLimit: row.stock_limit,
-    createdAt: row.created_at,
-    variant: {
-      id: row.variant_id,
-      sku: row.sku,
-      price: Number(row.variant_price),
-      stock: row.variant_stock,
-      productId: row.product_id,
-      productName: row.product_name
-    }
-  }))
+  const variants = await PromotionService.getPromotionVariantsWithInfo(promotionIdNum)
 
   return (
     <LayoutPageAdmin>
@@ -95,7 +56,7 @@ export default async function AdminPromotionDetailPage({
           { label: promotion.name }
         ]}
       >
-        <PromotionDetailAdmin promotion={promotion} variants={formattedVariants} />
+        <PromotionDetailView promotion={promotion} variants={variants} />
       </PageUI>
     </LayoutPageAdmin>
   )

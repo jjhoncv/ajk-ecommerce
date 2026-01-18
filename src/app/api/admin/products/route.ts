@@ -1,5 +1,5 @@
-import categoryModel from '@/backend/category'
-import productModel from '@/backend/product'
+import { categoryModel } from '@/module/categories/core'
+import { productModel } from '@/module/products/core'
 import {
   apiHandler,
   createResponse,

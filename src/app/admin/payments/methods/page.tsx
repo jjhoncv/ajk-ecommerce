@@ -1,5 +1,5 @@
-import paymentMethodModel from '@/backend/payment-method'
 import { PaymentMethodsListView } from '@/module/payments/components/admin/PaymentMethodsListView'
+import PaymentService from '@/module/payments/service/payment'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
@@ -9,7 +9,7 @@ import { type JSX } from 'react'
 export const revalidate = 0
 
 export default async function PaymentMethodsPage(): Promise<JSX.Element> {
-  const methods = await paymentMethodModel.getAllPaymentMethods()
+  const methods = await PaymentService.getPaymentMethods()
 
   return (
     <LayoutPageAdmin>

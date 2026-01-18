@@ -1,4 +1,4 @@
-import userModel from '@/backend/user'
+import { userModel } from '@/module/users/core'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'

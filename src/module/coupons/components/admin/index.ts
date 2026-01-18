@@ -1,0 +1,1 @@
+export { CouponsListView } from './CouponsListView'

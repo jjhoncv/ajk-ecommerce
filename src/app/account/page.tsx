@@ -1,5 +1,5 @@
-import categoryModel from '@/backend/category'
-import customerModel from '@/backend/customer'
+import { categoryModel } from '@/module/categories/core'
+import { customerModel } from '@/module/customers/core'
 import AccountHome from '@/components/account/AccountHome'
 import AccountLayout from '@/components/account/AccountLayout'
 import Header from '@/components/layout/Header'

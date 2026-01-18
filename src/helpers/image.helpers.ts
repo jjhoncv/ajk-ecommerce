@@ -1,4 +1,4 @@
-import { type ProductVariantComplete } from '@/backend/product-variant'
+import { type ProductVariantComplete } from '@/module/products/core'
 import { type ItemImage } from '@/shared'
 import { type AttributeOptionImages, type ProductVariants } from '@/types/domain'
 

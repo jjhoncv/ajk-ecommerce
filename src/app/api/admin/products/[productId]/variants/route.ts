@@ -1,5 +1,4 @@
-import productVariantModel from '@/backend/product-variant'
-import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import { productVariantModel, variantAttributeOptionModel } from '@/module/products/core'
 import {
   apiHandler,
   createResponse,

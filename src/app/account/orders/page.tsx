@@ -1,5 +1,5 @@
 // app/account/orders/page.tsx
-import categoryModel from '@/backend/category'
+import { categoryModel } from '@/module/categories/core'
 import AccountLayout from '@/components/account/AccountLayout'
 import OrdersList from '@/components/account/OrderList'
 import Header from '@/components/layout/Header'

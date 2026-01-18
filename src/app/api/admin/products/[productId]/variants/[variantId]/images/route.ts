@@ -1,4 +1,4 @@
-import variantImageModel from '@/backend/variant-image'
+import { variantImageModel } from '@/module/products/core'
 import {
   apiHandler,
   createResponse,

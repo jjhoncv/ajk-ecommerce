@@ -1,6 +1,6 @@
 // app/account/addresses/page.tsx
-import categoryModel from '@/backend/category'
-import customerAddressModel from '@/backend/customer-address'
+import { categoryModel } from '@/module/categories/core'
+import { customerAddressModel } from '@/module/customers/core'
 import AccountLayout from '@/components/account/AccountLayout'
 import Addresses from '@/components/account/Addresses/Addresses'
 import Header from '@/components/layout/Header'

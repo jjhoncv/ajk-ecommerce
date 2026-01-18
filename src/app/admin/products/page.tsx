@@ -1,5 +1,5 @@
-import productModel from '@/backend/product'
 import { ProductListView } from '@/module/products/components/admin/ProductListView'
+import ProductService from '@/module/products/service/product'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
@@ -8,7 +8,7 @@ import { type JSX } from 'react'
 
 export default async function ProductListPage(): Promise<JSX.Element> {
   // Obtener productos con estadísticas para admin
-  const products = await productModel.getProductsForAdmin()
+  const products = await ProductService.getProductsForAdmin()
 
   if (!products || products.length === 0) {
     return (

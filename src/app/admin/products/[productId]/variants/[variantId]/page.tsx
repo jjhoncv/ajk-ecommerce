@@ -1,7 +1,4 @@
-import productModel from '@/backend/product'
-import productAttributeOptionModel from '@/backend/product-attribute-option'
-import productVariantModel from '@/backend/product-variant'
-import variantAttributeOptionModel from '@/backend/variant-attribute-option'
+import { productModel, productAttributeOptionModel, productVariantModel, variantAttributeOptionModel } from '@/module/products/core'
 import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
 import { VariantImageManager } from '@/module/products/components/admin/variants/VariantImageManager'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'

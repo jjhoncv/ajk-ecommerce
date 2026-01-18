@@ -1,4 +1,4 @@
-import searchModel, { type ProductSearchItem } from '@/backend/search'
+import { searchModel, type ProductSearchItem } from '@/module/search/core'
 import { hydrateDealsProducts } from './hydrators'
 
 export const getDealsProducts = async (): Promise<ProductSearchItem[]> => {

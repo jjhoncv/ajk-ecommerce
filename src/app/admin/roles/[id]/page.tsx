@@ -1,5 +1,4 @@
-import roleModel from '@/backend/role'
-import sectionModel from '@/backend/section'
+import { roleModel, sectionModel } from '@/module/users/core'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'

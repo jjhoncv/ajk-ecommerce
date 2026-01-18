@@ -1,5 +1,4 @@
-import productModel from '@/backend/product'
-import productAttributeOptionModel from '@/backend/product-attribute-option'
+import { productModel, productAttributeOptionModel } from '@/module/products/core'
 import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'

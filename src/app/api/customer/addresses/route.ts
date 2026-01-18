@@ -1,5 +1,5 @@
 // app/api/customer/addresses/route.ts
-import customerAddressModel from '@/backend/customer-address'
+import { customerAddressModel } from '@/module/customers/core'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

@@ -1,4 +1,4 @@
-import shippingMethodModel from '@/backend/shipping-method'
+import { shippingMethodModel } from '@/module/shippings/core'
 import { ShippingMethodForm } from '@/module/shippings/components/admin/ShippingMethodForm'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'

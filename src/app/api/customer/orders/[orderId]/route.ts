@@ -1,9 +1,7 @@
 // app/api/customer/orders/[orderId]/route.ts
-import customerAddressModel from '@/backend/customer-address'
-import orderModel from '@/backend/order'
-import orderItemsModel from '@/backend/order-item'
-import orderTrackingModel from '@/backend/order-tracking'
-import paymentTransactionModel from '@/backend/payment-transaction'
+import { customerAddressModel } from '@/module/customers/core'
+import { orderModel, orderItemsModel, orderTrackingModel } from '@/module/orders/core'
+import { paymentTransactionModel } from '@/module/payments/core'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'

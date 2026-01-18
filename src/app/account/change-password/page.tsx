@@ -1,5 +1,5 @@
 // app/account/change-password/page.tsx
-import categoryModel from '@/backend/category'
+import { categoryModel } from '@/module/categories/core'
 import AccountLayout from '@/components/account/AccountLayout'
 import ChangePassword from '@/components/account/ChangePassword/ChangePassword'
 import Header from '@/components/layout/Header'

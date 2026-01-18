@@ -1,4 +1,4 @@
-import attributeModel from '@/backend/attribute'
+import { attributeModel } from '@/module/attributes/core'
 import { AttributeFields } from '@/module/attributes/components/admin/attributeFields'
 import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'

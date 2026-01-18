@@ -2,7 +2,7 @@
 import {
   type ProductSearchFilters,
   type ProductSearchItem
-} from '@/backend/search'
+} from '@/module/search/core'
 import Pagination from '@/components/search/Pagination'
 import { SearchNotFound } from '@/components/search/SearchNotFound'
 import SearchSorting from '@/components/search/SearchSorting'
