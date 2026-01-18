@@ -6,20 +6,20 @@ export function CouponMapper(couponRaw: CouponRaw): CouponDomain {
   return {
     id: couponRaw.id,
     name: couponRaw.name,
-    description: couponRaw.description || null,
+    description: couponRaw.description ?? null,
     code: couponRaw.code,
     discountType: couponRaw.discount_type,
     discountValue: Number(couponRaw.discount_value),
     startDate: couponRaw.start_date,
     endDate: couponRaw.end_date,
-    isActive: couponRaw.is_active || null,
-    usageLimit: couponRaw.usage_limit || null,
-    usageLimitPerCustomer: couponRaw.usage_limit_per_customer || null,
-    usedCount: couponRaw.used_count || null,
-    minPurchaseAmount: couponRaw.min_purchase_amount || null,
-    maxDiscountAmount: couponRaw.max_discount_amount || null,
-    applicableTo: couponRaw.applicable_to || null,
-    applicableIds: couponRaw.applicable_ids || null,
+    isActive: couponRaw.is_active ?? null, // Use ?? to preserve 0 values
+    usageLimit: couponRaw.usage_limit ?? null,
+    usageLimitPerCustomer: couponRaw.usage_limit_per_customer ?? null,
+    usedCount: couponRaw.used_count ?? null,
+    minPurchaseAmount: couponRaw.min_purchase_amount ? Number(couponRaw.min_purchase_amount) : null,
+    maxDiscountAmount: couponRaw.max_discount_amount ? Number(couponRaw.max_discount_amount) : null,
+    applicableTo: couponRaw.applicable_to ?? null,
+    applicableIds: couponRaw.applicable_ids ?? null,
     couponUsage: null // Se cargará por separado si es necesario
   }
 }

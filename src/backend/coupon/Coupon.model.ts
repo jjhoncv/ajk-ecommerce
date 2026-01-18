@@ -116,7 +116,9 @@ export class CouponModel {
     }>
   ): Promise<CouponValidationResult> {
     try {
+      console.log('validateCoupon - Looking for coupon with code:', code)
       const coupon = await this.getCouponByCode(code)
+      console.log('validateCoupon - Coupon found:', coupon)
 
       if (!coupon) {
         return {
@@ -126,8 +128,9 @@ export class CouponModel {
         }
       }
 
-      // Verificar si está activo
-      if (!coupon.isActive) {
+      // Verificar si está activo (is_active puede ser 0, 1 o null)
+      console.log('validateCoupon - isActive value:', coupon.isActive, 'type:', typeof coupon.isActive)
+      if (coupon.isActive !== 1) {
         return {
           isValid: false,
           discountAmount: 0,

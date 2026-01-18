@@ -69,57 +69,23 @@ async function validateStock(items: any[]): Promise<StockValidation> {
   }
 }
 
-// Validar cupón
+// Validar cupón usando el método del modelo
 async function validateCoupon(
   couponCode: string,
   customerId: number,
   totalAmount: number
 ): Promise<CouponValidation> {
-  try {
-    const coupon = await couponModel.getCouponByCode(couponCode)
+  const validation = await couponModel.validateCoupon(
+    couponCode,
+    customerId,
+    totalAmount
+  )
 
-    if (!coupon) {
-      return { isValid: false, discountAmount: 0, error: 'Cupón no válido' }
-    }
-
-    if (!coupon.isActive) {
-      return { isValid: false, discountAmount: 0, error: 'Cupón no activo' }
-    }
-
-    const now = new Date()
-    if (now < new Date(coupon.startDate) || now > new Date(coupon.endDate)) {
-      return { isValid: false, discountAmount: 0, error: 'Cupón expirado' }
-    }
-
-    if (coupon.minPurchaseAmount && totalAmount < coupon.minPurchaseAmount) {
-      return {
-        isValid: false,
-        discountAmount: 0,
-        error: `Monto mínimo requerido: S/ ${coupon.minPurchaseAmount}`
-      }
-    }
-
-    // Calcular descuento
-    let discountAmount = 0
-    if (coupon.discountType === 'percentage') {
-      discountAmount = (totalAmount * coupon.discountValue) / 100
-      if (
-        coupon.maxDiscountAmount &&
-        discountAmount > coupon.maxDiscountAmount
-      ) {
-        discountAmount = coupon.maxDiscountAmount
-      }
-    } else {
-      discountAmount = coupon.discountValue
-    }
-
-    return {
-      isValid: true,
-      coupon,
-      discountAmount
-    }
-  } catch (error) {
-    return { isValid: false, discountAmount: 0, error: 'Error validando cupón' }
+  return {
+    isValid: validation.isValid,
+    coupon: validation.coupon,
+    discountAmount: validation.discountAmount,
+    error: validation.error
   }
 }
 
@@ -368,13 +334,13 @@ export async function POST(request: NextRequest) {
       paymentData: orderData.paymentData
     })
 
-    // 7. Aplicar cupón si existe
+    // 7. Aplicar cupón si existe (registrar el uso)
     if (orderData.couponCode && calculation.appliedCoupon) {
       await couponModel.applyCoupon({
         couponCode: orderData.couponCode,
         customerId: user.id,
         orderId: newOrder.id,
-        orderTotal: calculation.discountAmount
+        orderTotal: calculation.subtotal
       })
     }
 

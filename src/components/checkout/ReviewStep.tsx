@@ -1,5 +1,6 @@
 // 📄 app/checkout/components/ReviewStep.tsx
 import { type CheckoutData, type CheckoutSummary, type CheckoutUser } from '@/types/checkout'
+import { Check, Loader2, Tag, X } from 'lucide-react'
 import { useState } from 'react'
 
 interface ReviewStepProps {
@@ -8,6 +9,8 @@ interface ReviewStepProps {
   checkoutData?: Partial<CheckoutData>
   onProcess: () => void
   onPrev: () => void
+  onApplyCoupon: (couponCode: string) => Promise<{ success: boolean; error?: string }>
+  onRemoveCoupon: () => void
   loading: boolean
 }
 
@@ -17,11 +20,15 @@ export default function ReviewStep({
   checkoutData,
   onProcess,
   onPrev,
+  onApplyCoupon,
+  onRemoveCoupon,
   loading
 }: ReviewStepProps) {
   const [couponCode, setCouponCode] = useState('')
   const [customerNotes, setCustomerNotes] = useState('')
   const [acceptTerms, setAcceptTerms] = useState(false)
+  const [couponLoading, setCouponLoading] = useState(false)
+  const [couponError, setCouponError] = useState('')
 
   // Obtener selectedAddress del summary o buscarlo en customerAddresses
   const selectedAddress = summary.selectedAddress ||
@@ -39,8 +46,25 @@ export default function ReviewStep({
   })
 
   const handleApplyCoupon = async () => {
-    // TODO: Implementar aplicación de cupón
-    console.log('Aplicar cupón:', couponCode)
+    if (!couponCode.trim()) return
+
+    setCouponLoading(true)
+    setCouponError('')
+
+    const result = await onApplyCoupon(couponCode.trim().toUpperCase())
+
+    if (result.success) {
+      setCouponCode('')
+    } else {
+      setCouponError(result.error || 'Error al aplicar el cupón')
+    }
+
+    setCouponLoading(false)
+  }
+
+  const handleRemoveCoupon = () => {
+    onRemoveCoupon()
+    setCouponError('')
   }
 
   const canProceed =
@@ -205,25 +229,71 @@ export default function ReviewStep({
             Cupón de descuento
           </h3>
 
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <input
-                type="text"
-                value={couponCode}
-                onChange={(e) => { setCouponCode(e.target.value) }}
-                placeholder="Ingresa tu código de cupón"
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
+          {/* Cupón aplicado */}
+          {summary.appliedCoupon ? (
+            <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                  <Tag className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-green-800">
+                    Cupón aplicado: {summary.appliedCoupon.code}
+                  </p>
+                  <p className="text-xs text-green-600">
+                    Descuento: -S/ {Number(summary.appliedCoupon.discountAmount).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveCoupon}
+                className="rounded-full p-1 text-green-600 hover:bg-green-100"
+                title="Quitar cupón"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={handleApplyCoupon}
-              disabled={!couponCode.trim()}
-              className="focus:outline-focus:ring-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Aplicar
-            </button>
-          </div>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex space-x-3">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => { setCouponCode(e.target.value.toUpperCase()) }}
+                    placeholder="Ingresa tu código de cupón"
+                    className="block w-full rounded-md border-gray-300 px-3 py-2 text-sm uppercase shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    disabled={couponLoading}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleApplyCoupon()
+                      }
+                    }}
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleApplyCoupon}
+                  disabled={!couponCode.trim() || couponLoading}
+                  className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {couponLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Validando...
+                    </>
+                  ) : (
+                    'Aplicar'
+                  )}
+                </button>
+              </div>
+              {couponError && (
+                <p className="text-sm text-red-600">{couponError}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Notas del cliente */}

@@ -9,8 +9,10 @@ import {
   LogOut,
   Menu,
   Package,
+  Percent,
   ShoppingCart,
   StickyNote,
+  Ticket,
   Truck,
   UserPen,
   Users,
@@ -61,6 +63,20 @@ const menuConfig: MenuItemConfig[] = [
         sectionUrl: '/attributes'
       }
     ]
+  },
+  {
+    id: 'promotions',
+    label: 'Promociones',
+    icon: Percent,
+    href: '/admin/promotions',
+    sectionUrl: '/promotions'
+  },
+  {
+    id: 'coupons',
+    label: 'Cupones',
+    icon: Ticket,
+    href: '/admin/coupons',
+    sectionUrl: '/coupons'
   },
   {
     id: 'content',

@@ -52,6 +52,12 @@ export interface PaymentOption {
   requiresVerification: boolean
 }
 
+// Cupón aplicado
+export interface AppliedCoupon {
+  code: string
+  discountAmount: number
+}
+
 // Resumen completo del checkout
 export interface CheckoutSummary {
   items: CartItem[]
@@ -64,6 +70,7 @@ export interface CheckoutSummary {
   selectedPayment?: PaymentOption
   customerAddresses: CustomersAddresses[]
   selectedAddress?: CustomersAddresses
+  appliedCoupon?: AppliedCoupon
 }
 
 // Datos para crear la orden

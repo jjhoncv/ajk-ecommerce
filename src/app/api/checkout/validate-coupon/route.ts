@@ -32,65 +32,35 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const coupon = await couponModel.getCouponByCode(couponCode)
+    // Usar el método validateCoupon del modelo que hace todas las validaciones
+    console.log('Validating coupon:', { couponCode: couponCode.toUpperCase(), customerId: customer.id, totalAmount: Number(totalAmount) })
 
-    if (!coupon) {
+    const validation = await couponModel.validateCoupon(
+      couponCode.toUpperCase(),
+      customer.id,
+      Number(totalAmount)
+    )
+
+    console.log('Validation result:', validation)
+
+    if (!validation.isValid) {
       return NextResponse.json({
         isValid: false,
-        error: 'Cupón no válido',
+        error: validation.error || 'Cupón no válido',
         discountAmount: 0
       })
-    }
-
-    if (!coupon.isActive) {
-      return NextResponse.json({
-        isValid: false,
-        error: 'Cupón no activo',
-        discountAmount: 0
-      })
-    }
-
-    const now = new Date()
-    if (now < new Date(coupon.startDate) || now > new Date(coupon.endDate)) {
-      return NextResponse.json({
-        isValid: false,
-        error: 'Cupón expirado',
-        discountAmount: 0
-      })
-    }
-
-    if (coupon.minPurchaseAmount && totalAmount < coupon.minPurchaseAmount) {
-      return NextResponse.json({
-        isValid: false,
-        error: `Monto mínimo requerido: S/ ${coupon.minPurchaseAmount}`,
-        discountAmount: 0
-      })
-    }
-
-    // Calcular descuento
-    let discountAmount = 0
-    if (coupon.discountType === 'percentage') {
-      discountAmount = (totalAmount * coupon.discountValue) / 100
-      if (
-        coupon.maxDiscountAmount &&
-        discountAmount > coupon.maxDiscountAmount
-      ) {
-        discountAmount = coupon.maxDiscountAmount
-      }
-    } else {
-      discountAmount = coupon.discountValue
     }
 
     return NextResponse.json({
       isValid: true,
-      coupon,
-      discountAmount,
-      message: `Descuento aplicado: S/ ${discountAmount.toFixed(2)}`
+      coupon: validation.coupon,
+      discountAmount: validation.discountAmount,
+      message: `Descuento aplicado: S/ ${validation.discountAmount.toFixed(2)}`
     })
   } catch (error) {
     console.error('Error validating coupon:', error)
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
+      { isValid: false, error: 'Error interno del servidor', discountAmount: 0 },
       { status: 500 }
     )
   }

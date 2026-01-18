@@ -208,6 +208,96 @@ export default function CheckoutClient({
     }
   }
 
+  // Manejar aplicación de cupón
+  const handleApplyCoupon = async (couponCode: string): Promise<{ success: boolean; error?: string }> => {
+    if (!summary) return { success: false, error: 'Error interno' }
+
+    try {
+      const response = await fetch('/api/checkout/validate-coupon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          couponCode,
+          totalAmount: summary.calculation.subtotal
+        })
+      })
+
+      const result = await response.json()
+
+      if (!result.isValid) {
+        return { success: false, error: result.error || 'Cupón no válido' }
+      }
+
+      // Actualizar el estado con el código del cupón
+      setState((prev) => ({
+        ...prev,
+        data: { ...prev.data, couponCode }
+      }))
+
+      // Recalcular totales con el descuento
+      const subtotal = Number(summary.calculation.subtotal) || 0
+      const discountAmount = Number(result.discountAmount) || 0
+      const shippingCost = Number(summary.calculation.shippingCost) || 0
+      const processingFee = Number(summary.selectedPayment?.processingFee) || 0
+
+      // Recalcular IGV (18%) sobre subtotal - descuento + envío
+      const taxAmount = (subtotal - discountAmount + shippingCost) * 0.18
+      // Total = subtotal - descuento + envío + IGV + comisión de pago
+      const totalAmount = subtotal - discountAmount + shippingCost + taxAmount + processingFee
+
+      setSummary({
+        ...summary,
+        calculation: {
+          ...summary.calculation,
+          discountAmount,
+          taxAmount,
+          totalAmount
+        },
+        appliedCoupon: {
+          code: couponCode,
+          discountAmount
+        }
+      })
+
+      return { success: true }
+    } catch (error) {
+      console.error('Error applying coupon:', error)
+      return { success: false, error: 'Error al validar el cupón' }
+    }
+  }
+
+  // Remover cupón aplicado
+  const handleRemoveCoupon = () => {
+    if (!summary) return
+
+    // Quitar el cupón del estado
+    setState((prev) => ({
+      ...prev,
+      data: { ...prev.data, couponCode: undefined }
+    }))
+
+    // Recalcular totales sin el descuento
+    const subtotal = Number(summary.calculation.subtotal) || 0
+    const shippingCost = Number(summary.calculation.shippingCost) || 0
+    const processingFee = Number(summary.selectedPayment?.processingFee) || 0
+
+    // Recalcular IGV (18%) sobre subtotal + envío (sin descuento)
+    const taxAmount = (subtotal + shippingCost) * 0.18
+    // Total = subtotal + envío + IGV + comisión de pago
+    const totalAmount = subtotal + shippingCost + taxAmount + processingFee
+
+    setSummary({
+      ...summary,
+      calculation: {
+        ...summary.calculation,
+        discountAmount: 0,
+        taxAmount,
+        totalAmount
+      },
+      appliedCoupon: undefined
+    })
+  }
+
   // Avanzar al siguiente paso
   const nextStep = () => {
     const steps: CheckoutStep[] = [
@@ -368,6 +458,8 @@ export default function CheckoutClient({
             checkoutData={state.data}
             onProcess={processCheckout}
             onPrev={prevStep}
+            onApplyCoupon={handleApplyCoupon}
+            onRemoveCoupon={handleRemoveCoupon}
             loading={state.loading}
           />
         )}
