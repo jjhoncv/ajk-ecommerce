@@ -1,5 +1,16 @@
 import categoryModel from '../../core/Category.model'
+import userModel from '@/module/users/core/User.model'
 import { type CreateCategoryData, type UpdateCategoryData } from './types'
+
+export interface CategoryWithAudit {
+  category: Awaited<ReturnType<typeof categoryModel.getCategoryById>>
+  audit: {
+    createdAt: Date | null
+    createdByName: string | null
+    updatedAt: Date | null
+    updatedByName: string | null
+  }
+}
 
 export const categoryService = {
   getCategories: async () => {
@@ -28,6 +39,49 @@ export const categoryService = {
 
   getCategoryById: async (id: number) => {
     return await categoryModel.getCategoryById(id)
+  },
+
+  // Obtener categoría con información de auditoría (nombres de usuarios)
+  getCategoryWithAudit: async (id: number): Promise<CategoryWithAudit | null> => {
+    const category = await categoryModel.getCategoryById(id)
+    if (!category) return null
+
+    // Obtener nombres de usuarios
+    const [createdByName, updatedByName] = await Promise.all([
+      category.createdBy ? userModel.getUserFullName(category.createdBy) : null,
+      category.updatedBy ? userModel.getUserFullName(category.updatedBy) : null
+    ])
+
+    return {
+      category,
+      audit: {
+        createdAt: category.createdAt ?? null,
+        createdByName,
+        updatedAt: category.updatedAt ?? null,
+        updatedByName
+      }
+    }
+  },
+
+  // Obtener todos los ancestros de una categoría (para breadcrumb)
+  getCategoryAncestors: async (categoryId: number) => {
+    const ancestors: Array<{ id: number; name: string; parentId: number | null }> = []
+    let currentId: number | null = categoryId
+
+    while (currentId != null) {
+      const category = await categoryModel.getCategoryById(currentId)
+      if (category == null) break
+
+      ancestors.unshift({
+        id: category.id,
+        name: category.name,
+        parentId: category.parentId ?? null
+      })
+
+      currentId = category.parentId ?? null
+    }
+
+    return ancestors
   },
 
   getCategoriesByProductId: async (productId: number) => {

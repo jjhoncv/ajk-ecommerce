@@ -284,13 +284,13 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                             {...provided.draggableProps}
                             className={`border-t ${
                               snapshot.isDragging
-                                ? 'bg-blue-50 *:opacity-0'
-                                : 'opacity-100'
+                                ? 'table w-full border border-blue-200 bg-blue-50 shadow-lg'
+                                : 'bg-white'
                             } ${rowClassName}`}
                           >
                             {enableReorder && (
                               <td
-                                className="w-8 px-3"
+                                className="w-8 bg-inherit px-3"
                                 {...provided.dragHandleProps}
                               >
                                 <GripVertical className="h-4 w-4 cursor-move text-gray-400" />
@@ -299,14 +299,13 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                             {columns.map((column) => (
                               <td
                                 key={`${item.id}-${column.key}`}
-                                className={`text-slate-250 px-3 py-4 text-sm font-light ${
-                                  column.width || 'flex-1'
-                                } ${cellClassName}`}
+                                className={`bg-inherit px-3 py-4 text-sm font-light text-slate-700 ${cellClassName}`}
+                                style={{ width: column.width }}
                               >
                                 {renderCell(item, column)}
                               </td>
                             ))}
-                            <td className="relative flex justify-center p-2 px-3 py-4">
+                            <td className="relative flex justify-center bg-inherit p-2 px-3 py-4">
                               <button
                                 onClick={(e) => {
                                   document.dispatchEvent(

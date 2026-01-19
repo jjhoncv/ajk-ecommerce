@@ -47,8 +47,6 @@ export type Scalars = {
 };
 
 export type Query = {
-  attributeOptionImages?: Maybe<Array<Maybe<AttributeOptionImages>>>;
-  countAttributeOptionImages?: Maybe<Scalars['Int']['output']>;
   attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
   countAttributeOptions?: Maybe<Scalars['Int']['output']>;
   attributes?: Maybe<Array<Maybe<Attributes>>>;
@@ -75,12 +73,18 @@ export type Query = {
   countOrderTracking?: Maybe<Scalars['Int']['output']>;
   orders?: Maybe<Array<Maybe<Orders>>>;
   countOrders?: Maybe<Scalars['Int']['output']>;
+  passwordSetupTokens?: Maybe<Array<Maybe<PasswordSetupTokens>>>;
+  countPasswordSetupTokens?: Maybe<Scalars['Int']['output']>;
   paymentMethods?: Maybe<Array<Maybe<PaymentMethods>>>;
   countPaymentMethods?: Maybe<Scalars['Int']['output']>;
   paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
   countPaymentTransactions?: Maybe<Scalars['Int']['output']>;
   permissions?: Maybe<Array<Maybe<Permissions>>>;
   countPermissions?: Maybe<Scalars['Int']['output']>;
+  productAttributeOptionImages?: Maybe<Array<Maybe<ProductAttributeOptionImages>>>;
+  countProductAttributeOptionImages?: Maybe<Scalars['Int']['output']>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
+  countProductAttributeOptions?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   countProductCategories?: Maybe<Scalars['Int']['output']>;
   productRatingSummary?: Maybe<Array<Maybe<ProductRatingSummary>>>;
@@ -121,19 +125,6 @@ export type Query = {
   countVariantRatingSummary?: Maybe<Scalars['Int']['output']>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
   countVariantRatings?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type QueryattributeOptionImagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<AttributeOptionImagesWhereInput>;
-  orderBy?: InputMaybe<AttributeOptionImagesOrderByInput>;
-};
-
-
-export type QuerycountAttributeOptionImagesArgs = {
-  where?: InputMaybe<AttributeOptionImagesWhereInput>;
 };
 
 
@@ -306,6 +297,19 @@ export type QuerycountOrdersArgs = {
 };
 
 
+export type QuerypasswordSetupTokensArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PasswordSetupTokensWhereInput>;
+  orderBy?: InputMaybe<PasswordSetupTokensOrderByInput>;
+};
+
+
+export type QuerycountPasswordSetupTokensArgs = {
+  where?: InputMaybe<PasswordSetupTokensWhereInput>;
+};
+
+
 export type QuerypaymentMethodsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -342,6 +346,32 @@ export type QuerypermissionsArgs = {
 
 export type QuerycountPermissionsArgs = {
   where?: InputMaybe<PermissionsWhereInput>;
+};
+
+
+export type QueryproductAttributeOptionImagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeOptionImagesWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionImagesOrderByInput>;
+};
+
+
+export type QuerycountProductAttributeOptionImagesArgs = {
+  where?: InputMaybe<ProductAttributeOptionImagesWhereInput>;
+};
+
+
+export type QueryproductAttributeOptionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionsOrderByInput>;
+};
+
+
+export type QuerycountProductAttributeOptionsArgs = {
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
 };
 
 
@@ -605,9 +635,6 @@ export type QuerycountVariantRatingsArgs = {
 };
 
 export type Mutation = {
-  insertAttributeOptionImages?: Maybe<AttributeOptionImages>;
-  updateAttributeOptionImages?: Maybe<AttributeOptionImages>;
-  deleteAttributeOptionImages?: Maybe<Scalars['Boolean']['output']>;
   insertAttributeOptions?: Maybe<AttributeOptions>;
   updateAttributeOptions?: Maybe<AttributeOptions>;
   deleteAttributeOptions?: Maybe<Scalars['Boolean']['output']>;
@@ -647,6 +674,9 @@ export type Mutation = {
   insertOrders?: Maybe<Orders>;
   updateOrders?: Maybe<Orders>;
   deleteOrders?: Maybe<Scalars['Boolean']['output']>;
+  insertPasswordSetupTokens?: Maybe<PasswordSetupTokens>;
+  updatePasswordSetupTokens?: Maybe<PasswordSetupTokens>;
+  deletePasswordSetupTokens?: Maybe<Scalars['Boolean']['output']>;
   insertPaymentMethods?: Maybe<PaymentMethods>;
   updatePaymentMethods?: Maybe<PaymentMethods>;
   deletePaymentMethods?: Maybe<Scalars['Boolean']['output']>;
@@ -656,6 +686,12 @@ export type Mutation = {
   insertPermissions?: Maybe<Permissions>;
   updatePermissions?: Maybe<Permissions>;
   deletePermissions?: Maybe<Scalars['Boolean']['output']>;
+  insertProductAttributeOptionImages?: Maybe<ProductAttributeOptionImages>;
+  updateProductAttributeOptionImages?: Maybe<ProductAttributeOptionImages>;
+  deleteProductAttributeOptionImages?: Maybe<Scalars['Boolean']['output']>;
+  insertProductAttributeOptions?: Maybe<ProductAttributeOptions>;
+  updateProductAttributeOptions?: Maybe<ProductAttributeOptions>;
+  deleteProductAttributeOptions?: Maybe<Scalars['Boolean']['output']>;
   insertProductCategories?: Maybe<ProductCategories>;
   updateProductCategories?: Maybe<ProductCategories>;
   deleteProductCategories?: Maybe<Scalars['Boolean']['output']>;
@@ -716,22 +752,6 @@ export type Mutation = {
   insertVariantRatings?: Maybe<VariantRatings>;
   updateVariantRatings?: Maybe<VariantRatings>;
   deleteVariantRatings?: Maybe<Scalars['Boolean']['output']>;
-};
-
-
-export type MutationinsertAttributeOptionImagesArgs = {
-  attribute_option_images: AttributeOptionImagesInsertInput;
-};
-
-
-export type MutationupdateAttributeOptionImagesArgs = {
-  attribute_option_images: AttributeOptionImagesUpdateInput;
-  where?: InputMaybe<AttributeOptionImagesWhereInput>;
-};
-
-
-export type MutationdeleteAttributeOptionImagesArgs = {
-  where?: InputMaybe<AttributeOptionImagesWhereInput>;
 };
 
 
@@ -943,6 +963,22 @@ export type MutationdeleteOrdersArgs = {
 };
 
 
+export type MutationinsertPasswordSetupTokensArgs = {
+  password_setup_tokens: PasswordSetupTokensInsertInput;
+};
+
+
+export type MutationupdatePasswordSetupTokensArgs = {
+  password_setup_tokens: PasswordSetupTokensUpdateInput;
+  where?: InputMaybe<PasswordSetupTokensWhereInput>;
+};
+
+
+export type MutationdeletePasswordSetupTokensArgs = {
+  where?: InputMaybe<PasswordSetupTokensWhereInput>;
+};
+
+
 export type MutationinsertPaymentMethodsArgs = {
   payment_methods: PaymentMethodsInsertInput;
 };
@@ -988,6 +1024,38 @@ export type MutationupdatePermissionsArgs = {
 
 export type MutationdeletePermissionsArgs = {
   where?: InputMaybe<PermissionsWhereInput>;
+};
+
+
+export type MutationinsertProductAttributeOptionImagesArgs = {
+  product_attribute_option_images: ProductAttributeOptionImagesInsertInput;
+};
+
+
+export type MutationupdateProductAttributeOptionImagesArgs = {
+  product_attribute_option_images: ProductAttributeOptionImagesUpdateInput;
+  where?: InputMaybe<ProductAttributeOptionImagesWhereInput>;
+};
+
+
+export type MutationdeleteProductAttributeOptionImagesArgs = {
+  where?: InputMaybe<ProductAttributeOptionImagesWhereInput>;
+};
+
+
+export type MutationinsertProductAttributeOptionsArgs = {
+  product_attribute_options: ProductAttributeOptionsInsertInput;
+};
+
+
+export type MutationupdateProductAttributeOptionsArgs = {
+  product_attribute_options: ProductAttributeOptionsUpdateInput;
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+};
+
+
+export type MutationdeleteProductAttributeOptionsArgs = {
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
 };
 
 
@@ -1310,62 +1378,12 @@ export type MutationdeleteVariantRatingsArgs = {
   where?: InputMaybe<VariantRatingsWhereInput>;
 };
 
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImages = {
-  id: Scalars['Int']['output'];
-  attributeOptionId: Scalars['Int']['output'];
-  imageType: AttributeOptionImagesImageType;
-  displayOrder?: Maybe<Scalars['Int']['output']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  imageUrlThumb: Scalars['String']['output'];
-  /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal: Scalars['String']['output'];
-  /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom: Scalars['String']['output'];
-  /** Texto alternativo */
-  altText?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  isPrimary?: Maybe<Scalars['Int']['output']>;
-  attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
-};
-
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImagesattributeOptionsArgs = {
-  where?: InputMaybe<AttributeOptionsWhereInput>;
-  orderBy?: InputMaybe<AttributeOptionsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type AttributeOptionImagesImageType =
-  | 'front'
-  | 'back'
-  | 'left'
-  | 'right'
-  | 'top'
-  | 'bottom'
-  | 'detail'
-  | 'lifestyle'
-  | 'packaging';
-
 export type AttributeOptions = {
   id: Scalars['Int']['output'];
   attributeId: Scalars['Int']['output'];
   value: Scalars['String']['output'];
   additionalCost?: Maybe<Scalars['Float']['output']>;
-  attributeOptionImages?: Maybe<Array<Maybe<AttributeOptionImages>>>;
   attributes?: Maybe<Array<Maybe<Attributes>>>;
-  variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
-};
-
-
-export type AttributeOptionsattributeOptionImagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<AttributeOptionImagesWhereInput>;
-  orderBy?: InputMaybe<AttributeOptionImagesOrderByInput>;
 };
 
 
@@ -1376,61 +1394,18 @@ export type AttributeOptionsattributesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-
-export type AttributeOptionsvariantAttributeOptionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<VariantAttributeOptionsWhereInput>;
-  orderBy?: InputMaybe<VariantAttributeOptionsOrderByInput>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImagesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  attributeOptionId?: InputMaybe<Scalars['String']['input']>;
-  imageType?: InputMaybe<Scalars['String']['input']>;
-  displayOrder?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  imageUrlThumb?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom?: InputMaybe<Scalars['String']['input']>;
-  /** Texto alternativo */
-  altText?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  isPrimary?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImagesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  attributeOptionId?: InputMaybe<OrderBy>;
-  imageType?: InputMaybe<OrderBy>;
-  displayOrder?: InputMaybe<OrderBy>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  imageUrlThumb?: InputMaybe<OrderBy>;
-  /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal?: InputMaybe<OrderBy>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom?: InputMaybe<OrderBy>;
-  /** Texto alternativo */
-  altText?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  isPrimary?: InputMaybe<OrderBy>;
-};
-
-export type OrderBy =
-  | 'asc'
-  | 'desc';
-
 export type Attributes = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   displayType: AttributesDisplayType;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
   attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
 };
 
 
@@ -1439,6 +1414,30 @@ export type AttributesattributeOptionsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<AttributeOptionsWhereInput>;
   orderBy?: InputMaybe<AttributeOptionsOrderByInput>;
+};
+
+
+export type AttributesusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AttributesproductAttributeOptionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionsOrderByInput>;
+};
+
+
+export type AttributesproductVariantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductVariantsWhereInput>;
+  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
 };
 
 export type AttributesDisplayType =
@@ -1462,34 +1461,497 @@ export type AttributeOptionsOrderByInput = {
   additionalCost?: InputMaybe<OrderBy>;
 };
 
+export type OrderBy =
+  | 'asc'
+  | 'desc';
+
+export type Users = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  roleId?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  lastname: Scalars['String']['output'];
+  photo?: Maybe<Scalars['String']['output']>;
+  attributes?: Maybe<Array<Maybe<Attributes>>>;
+  banner?: Maybe<Array<Maybe<Banner>>>;
+  brands?: Maybe<Array<Maybe<Brands>>>;
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  coupons?: Maybe<Array<Maybe<Coupons>>>;
+  passwordSetupTokens?: Maybe<Array<Maybe<PasswordSetupTokens>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+  promotions?: Maybe<Array<Maybe<Promotions>>>;
+  roles?: Maybe<Array<Maybe<Roles>>>;
+};
+
+
+export type UsersattributesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<AttributesWhereInput>;
+  orderBy?: InputMaybe<AttributesOrderByInput>;
+};
+
+
+export type UsersbannerArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<BannerWhereInput>;
+  orderBy?: InputMaybe<BannerOrderByInput>;
+};
+
+
+export type UsersbrandsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<BrandsWhereInput>;
+  orderBy?: InputMaybe<BrandsOrderByInput>;
+};
+
+
+export type UserscategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CategoriesWhereInput>;
+  orderBy?: InputMaybe<CategoriesOrderByInput>;
+};
+
+
+export type UserscouponsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponsWhereInput>;
+  orderBy?: InputMaybe<CouponsOrderByInput>;
+};
+
+
+export type UserspasswordSetupTokensArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PasswordSetupTokensWhereInput>;
+  orderBy?: InputMaybe<PasswordSetupTokensOrderByInput>;
+};
+
+
+export type UsersproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+};
+
+
+export type UserspromotionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PromotionsWhereInput>;
+  orderBy?: InputMaybe<PromotionsOrderByInput>;
+};
+
+
+export type UsersrolesArgs = {
+  where?: InputMaybe<RolesWhereInput>;
+  orderBy?: InputMaybe<RolesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type AttributesWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   displayType?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type AttributesOrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   displayType?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
 };
 
-export type VariantAttributeOptions = {
-  variantId: Scalars['Int']['output'];
-  attributeOptionId: Scalars['Int']['output'];
-  attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
-  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+export type Banner = {
+  id: Scalars['Int']['output'];
+  title: Scalars['String']['output'];
+  subtitle?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  buttonText?: Maybe<Scalars['String']['output']>;
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<Users>>>;
 };
 
 
-export type VariantAttributeOptionsattributeOptionsArgs = {
-  where?: InputMaybe<AttributeOptionsWhereInput>;
-  orderBy?: InputMaybe<AttributeOptionsOrderByInput>;
+export type BannerusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UsersWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  roleId?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  photo?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UsersOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  password?: InputMaybe<OrderBy>;
+  roleId?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  lastname?: InputMaybe<OrderBy>;
+  photo?: InputMaybe<OrderBy>;
+};
+
+export type BannerWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  subtitle?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  buttonText?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BannerOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  subtitle?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  buttonText?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
+};
+
+export type Brands = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<Users>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+};
+
+
+export type BrandsusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
+export type BrandsproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+};
+
+export type Products = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  brandId?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  basePrice?: Maybe<Scalars['Float']['output']>;
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
+  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+  brands?: Maybe<Array<Maybe<Brands>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
+};
+
+
+export type ProductsproductAttributeOptionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionsOrderByInput>;
+};
+
+
+export type ProductsproductCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductCategoriesWhereInput>;
+  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
+};
+
+
+export type ProductsproductVariantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductVariantsWhereInput>;
+  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
+};
+
+
+export type ProductsbrandsArgs = {
+  where?: InputMaybe<BrandsWhereInput>;
+  orderBy?: InputMaybe<BrandsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ProductsusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptions = {
+  id: Scalars['Int']['output'];
+  /** ID del producto al que pertenece esta opciÃ³n */
+  productId: Scalars['Int']['output'];
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attributeId: Scalars['Int']['output'];
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value: Scalars['String']['output'];
+  /** Orden de visualizaciÃ³n */
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  productAttributeOptionImages?: Maybe<Array<Maybe<ProductAttributeOptionImages>>>;
+  attributes?: Maybe<Array<Maybe<Attributes>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+  variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsproductAttributeOptionImagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductAttributeOptionImagesWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionImagesOrderByInput>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsattributesArgs = {
+  where?: InputMaybe<AttributesWhereInput>;
+  orderBy?: InputMaybe<AttributesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsproductsArgs = {
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsvariantAttributeOptionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<VariantAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<VariantAttributeOptionsOrderByInput>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImages = {
+  id: Scalars['Int']['output'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId: Scalars['Int']['output'];
+  imageType: ProductAttributeOptionImagesImageType;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  /** Imagen thumbnail 140x140 */
+  imageUrlThumb: Scalars['String']['output'];
+  /** Imagen normal 600x800 */
+  imageUrlNormal: Scalars['String']['output'];
+  /** Imagen zoom 1200x1200 */
+  imageUrlZoom: Scalars['String']['output'];
+  altText?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  isPrimary?: Maybe<Scalars['Int']['output']>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
+};
+
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImagesproductAttributeOptionsArgs = {
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ProductAttributeOptionImagesImageType =
+  | 'front'
+  | 'back'
+  | 'left'
+  | 'right'
+  | 'top'
+  | 'bottom'
+  | 'detail'
+  | 'lifestyle'
+  | 'packaging';
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  productId?: InputMaybe<Scalars['String']['input']>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attributeId?: InputMaybe<Scalars['String']['input']>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<Scalars['String']['input']>;
+  /** Orden de visualizaciÃ³n */
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  productId?: InputMaybe<OrderBy>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attributeId?: InputMaybe<OrderBy>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<OrderBy>;
+  /** Orden de visualizaciÃ³n */
+  displayOrder?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImagesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<Scalars['String']['input']>;
+  imageType?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen thumbnail 140x140 */
+  imageUrlThumb?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen normal 600x800 */
+  imageUrlNormal?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen zoom 1200x1200 */
+  imageUrlZoom?: InputMaybe<Scalars['String']['input']>;
+  altText?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  isPrimary?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImagesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<OrderBy>;
+  imageType?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  /** Imagen thumbnail 140x140 */
+  imageUrlThumb?: InputMaybe<OrderBy>;
+  /** Imagen normal 600x800 */
+  imageUrlNormal?: InputMaybe<OrderBy>;
+  /** Imagen zoom 1200x1200 */
+  imageUrlZoom?: InputMaybe<OrderBy>;
+  altText?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  isPrimary?: InputMaybe<OrderBy>;
+};
+
+export type ProductsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  brandId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  basePrice?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  brandId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  basePrice?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
+};
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
+export type VariantAttributeOptions = {
+  variantId: Scalars['Int']['output'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId: Scalars['Int']['output'];
+  /** Costo adicional para esta variante */
+  additionalCost?: Maybe<Scalars['Float']['output']>;
+  productAttributeOptions?: Maybe<Array<Maybe<ProductAttributeOptions>>>;
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+};
+
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
+export type VariantAttributeOptionsproductAttributeOptionsArgs = {
+  where?: InputMaybe<ProductAttributeOptionsWhereInput>;
+  orderBy?: InputMaybe<ProductAttributeOptionsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type VariantAttributeOptionsproductVariantsArgs = {
   where?: InputMaybe<ProductVariantsWhereInput>;
   orderBy?: InputMaybe<ProductVariantsOrderByInput>;
@@ -1505,7 +1967,10 @@ export type ProductVariants = {
   stock: Scalars['Int']['output'];
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  imageAttributeId?: Maybe<Scalars['Int']['output']>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
+  attributes?: Maybe<Array<Maybe<Attributes>>>;
   products?: Maybe<Array<Maybe<Products>>>;
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
@@ -1519,6 +1984,14 @@ export type ProductVariantsorderItemsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<OrderItemsWhereInput>;
   orderBy?: InputMaybe<OrderItemsOrderByInput>;
+};
+
+
+export type ProductVariantsattributesArgs = {
+  where?: InputMaybe<AttributesWhereInput>;
+  orderBy?: InputMaybe<AttributesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1767,7 +2240,10 @@ export type Coupons = {
   applicableIds?: Maybe<Scalars['JSON']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
   couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
 };
 
 
@@ -1776,6 +2252,14 @@ export type CouponscouponUsageArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CouponUsageWhereInput>;
   orderBy?: InputMaybe<CouponUsageOrderByInput>;
+};
+
+
+export type CouponsusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CouponsDiscountType =
@@ -1824,6 +2308,8 @@ export type CouponsWhereInput = {
   applicableIds?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CouponsOrderByInput = {
@@ -1845,6 +2331,8 @@ export type CouponsOrderByInput = {
   applicableIds?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
 };
 
 export type Customers = {
@@ -2197,6 +2685,8 @@ export type ProductVariantsWhereInput = {
   stock?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  imageAttributeId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ProductVariantsOrderByInput = {
@@ -2207,6 +2697,8 @@ export type ProductVariantsOrderByInput = {
   stock?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  imageAttributeId?: InputMaybe<OrderBy>;
 };
 
 /** Items/productos de cada orden */
@@ -2482,159 +2974,6 @@ export type PaymentMethodsOrderByInput = {
   updatedAt?: InputMaybe<OrderBy>;
 };
 
-export type Products = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  brandId?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  basePrice?: Maybe<Scalars['Float']['output']>;
-  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
-  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
-  brands?: Maybe<Array<Maybe<Brands>>>;
-};
-
-
-export type ProductsproductCategoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductCategoriesWhereInput>;
-  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
-};
-
-
-export type ProductsproductVariantsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductVariantsWhereInput>;
-  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
-};
-
-
-export type ProductsbrandsArgs = {
-  where?: InputMaybe<BrandsWhereInput>;
-  orderBy?: InputMaybe<BrandsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ProductCategories = {
-  productId: Scalars['Int']['output'];
-  categoryId: Scalars['Int']['output'];
-  categories?: Maybe<Array<Maybe<Categories>>>;
-  products?: Maybe<Array<Maybe<Products>>>;
-};
-
-
-export type ProductCategoriescategoriesArgs = {
-  where?: InputMaybe<CategoriesWhereInput>;
-  orderBy?: InputMaybe<CategoriesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type ProductCategoriesproductsArgs = {
-  where?: InputMaybe<ProductsWhereInput>;
-  orderBy?: InputMaybe<ProductsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type Categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parentId?: Maybe<Scalars['Int']['output']>;
-  imageUrl?: Maybe<Scalars['String']['output']>;
-  showNav?: Maybe<Scalars['Int']['output']>;
-  displayOrder?: Maybe<Scalars['Int']['output']>;
-  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
-};
-
-
-export type CategoriesproductCategoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductCategoriesWhereInput>;
-  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
-};
-
-export type ProductCategoriesWhereInput = {
-  productId?: InputMaybe<Scalars['String']['input']>;
-  categoryId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductCategoriesOrderByInput = {
-  productId?: InputMaybe<OrderBy>;
-  categoryId?: InputMaybe<OrderBy>;
-};
-
-export type CategoriesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parentId?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  showNav?: InputMaybe<Scalars['String']['input']>;
-  displayOrder?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CategoriesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  imageUrl?: InputMaybe<OrderBy>;
-  showNav?: InputMaybe<OrderBy>;
-  displayOrder?: InputMaybe<OrderBy>;
-};
-
-export type ProductsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  brandId?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  basePrice?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  brandId?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  basePrice?: InputMaybe<OrderBy>;
-};
-
-export type Brands = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  products?: Maybe<Array<Maybe<Products>>>;
-};
-
-
-export type BrandsproductsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductsWhereInput>;
-  orderBy?: InputMaybe<ProductsOrderByInput>;
-};
-
-export type BrandsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type BrandsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-};
-
 export type PromotionVariants = {
   promotionId: Scalars['Int']['output'];
   variantId: Scalars['Int']['output'];
@@ -2676,7 +3015,10 @@ export type Promotions = {
   type?: Maybe<Scalars['String']['output']>;
   imageUrl?: Maybe<Scalars['String']['output']>;
   displayOrder?: Maybe<Scalars['Int']['output']>;
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
 };
 
 
@@ -2685,6 +3027,14 @@ export type PromotionspromotionVariantsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PromotionVariantsWhereInput>;
   orderBy?: InputMaybe<PromotionVariantsOrderByInput>;
+};
+
+
+export type PromotionsusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type PromotionsDiscountType =
@@ -2722,6 +3072,8 @@ export type PromotionsWhereInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PromotionsOrderByInput = {
@@ -2739,16 +3091,26 @@ export type PromotionsOrderByInput = {
   type?: InputMaybe<OrderBy>;
   imageUrl?: InputMaybe<OrderBy>;
   displayOrder?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type VariantAttributeOptionsWhereInput = {
   variantId?: InputMaybe<Scalars['String']['input']>;
-  attributeOptionId?: InputMaybe<Scalars['String']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<Scalars['String']['input']>;
+  /** Costo adicional para esta variante */
+  additionalCost?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type VariantAttributeOptionsOrderByInput = {
   variantId?: InputMaybe<OrderBy>;
-  attributeOptionId?: InputMaybe<OrderBy>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<OrderBy>;
+  /** Costo adicional para esta variante */
+  additionalCost?: InputMaybe<OrderBy>;
 };
 
 /** Imágenes de variantes con múltiples tamaños y tipos */
@@ -2835,43 +3197,259 @@ export type VariantImagesOrderByInput = {
   updatedAt?: InputMaybe<OrderBy>;
 };
 
-export type Banner = {
+export type ProductCategories = {
+  productId: Scalars['Int']['output'];
+  categoryId: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+};
+
+
+export type ProductCategoriescategoriesArgs = {
+  where?: InputMaybe<CategoriesWhereInput>;
+  orderBy?: InputMaybe<CategoriesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ProductCategoriesproductsArgs = {
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Categories = {
   id: Scalars['Int']['output'];
-  title: Scalars['String']['output'];
-  subtitle?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  showNav?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
-  displayOrder?: Maybe<Scalars['Int']['output']>;
-  link?: Maybe<Scalars['String']['output']>;
-  imageUrl?: Maybe<Scalars['String']['output']>;
-  buttonText?: Maybe<Scalars['String']['output']>;
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<Users>>>;
+  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
 };
 
-export type BannerWhereInput = {
+
+export type CategoriesusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CategoriesproductCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductCategoriesWhereInput>;
+  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
+};
+
+export type ProductCategoriesWhereInput = {
+  productId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductCategoriesOrderByInput = {
+  productId?: InputMaybe<OrderBy>;
+  categoryId?: InputMaybe<OrderBy>;
+};
+
+export type CategoriesWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  subtitle?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  parentId?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  showNav?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
-  displayOrder?: InputMaybe<Scalars['String']['input']>;
-  link?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  buttonText?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type BannerOrderByInput = {
+export type CategoriesOrderByInput = {
   id?: InputMaybe<OrderBy>;
-  title?: InputMaybe<OrderBy>;
-  subtitle?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
+  parentId?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  showNav?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
+};
+
+export type BrandsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BrandsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
+};
+
+export type PasswordSetupTokens = {
+  id: Scalars['Int']['output'];
+  userId: Scalars['Int']['output'];
+  token: Scalars['String']['output'];
+  expiresAt: Scalars['Timestamp']['output'];
+  usedAt?: Maybe<Scalars['Timestamp']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  users?: Maybe<Array<Maybe<Users>>>;
+};
+
+
+export type PasswordSetupTokensusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type PasswordSetupTokensWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['String']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['String']['input']>;
+  usedAt?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PasswordSetupTokensOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  userId?: InputMaybe<OrderBy>;
+  token?: InputMaybe<OrderBy>;
+  expiresAt?: InputMaybe<OrderBy>;
+  usedAt?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
+export type Roles = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
+};
+
+
+export type RolesrolesSectionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RolesSectionsWhereInput>;
+  orderBy?: InputMaybe<RolesSectionsOrderByInput>;
+};
+
+
+export type RolesusersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+};
+
+export type RolesSections = {
+  id: Scalars['Int']['output'];
+  idSection?: Maybe<Scalars['Int']['output']>;
+  idRol?: Maybe<Scalars['Int']['output']>;
+  roles?: Maybe<Array<Maybe<Roles>>>;
+  sections?: Maybe<Array<Maybe<Sections>>>;
+};
+
+
+export type RolesSectionsrolesArgs = {
+  where?: InputMaybe<RolesWhereInput>;
+  orderBy?: InputMaybe<RolesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type RolesSectionssectionsArgs = {
+  where?: InputMaybe<SectionsWhereInput>;
+  orderBy?: InputMaybe<SectionsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type RolesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RolesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type Sections = {
+  id: Scalars['Int']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Scalars['String']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
+};
+
+
+export type SectionsrolesSectionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RolesSectionsWhereInput>;
+  orderBy?: InputMaybe<RolesSectionsOrderByInput>;
+};
+
+export type RolesSectionsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  idSection?: InputMaybe<Scalars['String']['input']>;
+  idRol?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RolesSectionsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  idSection?: InputMaybe<OrderBy>;
+  idRol?: InputMaybe<OrderBy>;
+};
+
+export type SectionsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SectionsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+  image?: InputMaybe<OrderBy>;
   displayOrder?: InputMaybe<OrderBy>;
-  link?: InputMaybe<OrderBy>;
-  imageUrl?: InputMaybe<OrderBy>;
-  buttonText?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3015,162 +3593,6 @@ export type ProductRatingSummaryOrderByInput = {
   twoStar?: InputMaybe<OrderBy>;
   oneStar?: InputMaybe<OrderBy>;
   verifiedPurchases?: InputMaybe<OrderBy>;
-};
-
-export type Roles = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
-  users?: Maybe<Array<Maybe<Users>>>;
-};
-
-
-export type RolesrolesSectionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<RolesSectionsWhereInput>;
-  orderBy?: InputMaybe<RolesSectionsOrderByInput>;
-};
-
-
-export type RolesusersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<UsersWhereInput>;
-  orderBy?: InputMaybe<UsersOrderByInput>;
-};
-
-export type RolesSections = {
-  id: Scalars['Int']['output'];
-  idSection?: Maybe<Scalars['Int']['output']>;
-  idRol?: Maybe<Scalars['Int']['output']>;
-  roles?: Maybe<Array<Maybe<Roles>>>;
-  sections?: Maybe<Array<Maybe<Sections>>>;
-};
-
-
-export type RolesSectionsrolesArgs = {
-  where?: InputMaybe<RolesWhereInput>;
-  orderBy?: InputMaybe<RolesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type RolesSectionssectionsArgs = {
-  where?: InputMaybe<SectionsWhereInput>;
-  orderBy?: InputMaybe<SectionsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type RolesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type RolesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type Sections = {
-  id: Scalars['Int']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  url?: Maybe<Scalars['String']['output']>;
-  image?: Maybe<Scalars['String']['output']>;
-  displayOrder?: Maybe<Scalars['Int']['output']>;
-  rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
-};
-
-
-export type SectionsrolesSectionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<RolesSectionsWhereInput>;
-  orderBy?: InputMaybe<RolesSectionsOrderByInput>;
-};
-
-export type RolesSectionsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  idSection?: InputMaybe<Scalars['String']['input']>;
-  idRol?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type RolesSectionsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  idSection?: InputMaybe<OrderBy>;
-  idRol?: InputMaybe<OrderBy>;
-};
-
-export type SectionsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  url?: InputMaybe<Scalars['String']['input']>;
-  image?: InputMaybe<Scalars['String']['input']>;
-  displayOrder?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SectionsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  url?: InputMaybe<OrderBy>;
-  image?: InputMaybe<OrderBy>;
-  displayOrder?: InputMaybe<OrderBy>;
-};
-
-export type Users = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  email: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  roleId?: Maybe<Scalars['Int']['output']>;
-  isActive?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  lastname: Scalars['String']['output'];
-  photo?: Maybe<Scalars['String']['output']>;
-  roles?: Maybe<Array<Maybe<Roles>>>;
-};
-
-
-export type UsersrolesArgs = {
-  where?: InputMaybe<RolesWhereInput>;
-  orderBy?: InputMaybe<RolesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type UsersWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
-  roleId?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  lastname?: InputMaybe<Scalars['String']['input']>;
-  photo?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UsersOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  email?: InputMaybe<OrderBy>;
-  password?: InputMaybe<OrderBy>;
-  roleId?: InputMaybe<OrderBy>;
-  isActive?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  lastname?: InputMaybe<OrderBy>;
-  photo?: InputMaybe<OrderBy>;
 };
 
 export type Services = {
@@ -3446,44 +3868,6 @@ export type VariantRatingSummaryOrderByInput = {
   verifiedPurchases?: InputMaybe<OrderBy>;
 };
 
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImagesInsertInput = {
-  id?: InputMaybe<Scalars['Int']['input']>;
-  attributeOptionId: Scalars['Int']['input'];
-  imageType?: InputMaybe<AttributeOptionImagesImageType>;
-  displayOrder?: InputMaybe<Scalars['Int']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  imageUrlThumb: Scalars['String']['input'];
-  /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal: Scalars['String']['input'];
-  /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom: Scalars['String']['input'];
-  /** Texto alternativo */
-  altText?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
-  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
-  isPrimary?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type AttributeOptionImagesUpdateInput = {
-  id?: InputMaybe<Scalars['Int']['input']>;
-  attributeOptionId?: InputMaybe<Scalars['Int']['input']>;
-  imageType?: InputMaybe<AttributeOptionImagesImageType>;
-  displayOrder?: InputMaybe<Scalars['Int']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  imageUrlThumb?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen normal 600x800 (opcional) */
-  imageUrlNormal?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  imageUrlZoom?: InputMaybe<Scalars['String']['input']>;
-  /** Texto alternativo */
-  altText?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
-  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
-  isPrimary?: InputMaybe<Scalars['Int']['input']>;
-};
-
 export type AttributeOptionsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   attributeId: Scalars['Int']['input'];
@@ -3502,12 +3886,20 @@ export type AttributesInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   displayType?: InputMaybe<AttributesDisplayType>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type AttributesUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   displayType?: InputMaybe<AttributesDisplayType>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type BannerInsertInput = {
@@ -3521,6 +3913,8 @@ export type BannerInsertInput = {
   link?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   buttonText?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type BannerUpdateInput = {
@@ -3534,16 +3928,26 @@ export type BannerUpdateInput = {
   link?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   buttonText?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type BrandsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type BrandsUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CategoriesInsertInput = {
@@ -3554,6 +3958,10 @@ export type CategoriesInsertInput = {
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   showNav?: InputMaybe<Scalars['Int']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CategoriesUpdateInput = {
@@ -3564,6 +3972,10 @@ export type CategoriesUpdateInput = {
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   showNav?: InputMaybe<Scalars['Int']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CouponUsageInsertInput = {
@@ -3603,6 +4015,8 @@ export type CouponsInsertInput = {
   applicableIds?: InputMaybe<Scalars['JSON']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CouponsUpdateInput = {
@@ -3624,6 +4038,8 @@ export type CouponsUpdateInput = {
   applicableIds?: InputMaybe<Scalars['JSON']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CustomersInsertInput = {
@@ -3910,6 +4326,24 @@ export type OrdersUpdateInput = {
   adminNotes?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type PasswordSetupTokensInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  userId: Scalars['Int']['input'];
+  token: Scalars['String']['input'];
+  expiresAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type PasswordSetupTokensUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  userId?: InputMaybe<Scalars['Int']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type PaymentMethodsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -3998,6 +4432,74 @@ export type PermissionsUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImagesInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId: Scalars['Int']['input'];
+  imageType?: InputMaybe<ProductAttributeOptionImagesImageType>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** Imagen thumbnail 140x140 */
+  imageUrlThumb: Scalars['String']['input'];
+  /** Imagen normal 600x800 */
+  imageUrlNormal: Scalars['String']['input'];
+  /** Imagen zoom 1200x1200 */
+  imageUrlZoom: Scalars['String']['input'];
+  altText?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  isPrimary?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type ProductAttributeOptionImagesUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<Scalars['Int']['input']>;
+  imageType?: InputMaybe<ProductAttributeOptionImagesImageType>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** Imagen thumbnail 140x140 */
+  imageUrlThumb?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen normal 600x800 */
+  imageUrlNormal?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen zoom 1200x1200 */
+  imageUrlZoom?: InputMaybe<Scalars['String']['input']>;
+  altText?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  isPrimary?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  productId: Scalars['Int']['input'];
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attributeId: Scalars['Int']['input'];
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value: Scalars['String']['input'];
+  /** Orden de visualizaciÃ³n */
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type ProductAttributeOptionsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  productId?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attributeId?: InputMaybe<Scalars['Int']['input']>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<Scalars['String']['input']>;
+  /** Orden de visualizaciÃ³n */
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type ProductCategoriesInsertInput = {
   productId: Scalars['Int']['input'];
   categoryId: Scalars['Int']['input'];
@@ -4042,6 +4544,8 @@ export type ProductVariantsInsertInput = {
   stock?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  imageAttributeId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type ProductVariantsUpdateInput = {
@@ -4052,6 +4556,8 @@ export type ProductVariantsUpdateInput = {
   stock?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  imageAttributeId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type ProductsInsertInput = {
@@ -4062,6 +4568,8 @@ export type ProductsInsertInput = {
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   basePrice?: InputMaybe<Scalars['Float']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type ProductsUpdateInput = {
@@ -4072,6 +4580,8 @@ export type ProductsUpdateInput = {
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   basePrice?: InputMaybe<Scalars['Float']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type PromotionVariantsInsertInput = {
@@ -4105,6 +4615,8 @@ export type PromotionsInsertInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type PromotionsUpdateInput = {
@@ -4122,6 +4634,8 @@ export type PromotionsUpdateInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  updatedBy?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type RatingImagesInsertInput = {
@@ -4326,14 +4840,22 @@ export type UsersUpdateInput = {
   photo?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type VariantAttributeOptionsInsertInput = {
   variantId: Scalars['Int']['input'];
-  attributeOptionId: Scalars['Int']['input'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId: Scalars['Int']['input'];
+  /** Costo adicional para esta variante */
+  additionalCost?: InputMaybe<Scalars['Float']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type VariantAttributeOptionsUpdateInput = {
   variantId?: InputMaybe<Scalars['Int']['input']>;
-  attributeOptionId?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  productAttributeOptionId?: InputMaybe<Scalars['Int']['input']>;
+  /** Costo adicional para esta variante */
+  additionalCost?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** Imágenes de variantes con múltiples tamaños y tipos */
@@ -4516,22 +5038,35 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
-  AttributeOptionImages: ResolverTypeWrapper<AttributeOptionImages>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  AttributeOptionImagesImageType: AttributeOptionImagesImageType;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
-  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   AttributeOptions: ResolverTypeWrapper<AttributeOptions>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  AttributeOptionImagesWhereInput: AttributeOptionImagesWhereInput;
-  AttributeOptionImagesOrderByInput: AttributeOptionImagesOrderByInput;
-  OrderBy: OrderBy;
   Attributes: ResolverTypeWrapper<Attributes>;
   AttributesDisplayType: AttributesDisplayType;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
+  OrderBy: OrderBy;
+  Users: ResolverTypeWrapper<Users>;
   AttributesWhereInput: AttributesWhereInput;
   AttributesOrderByInput: AttributesOrderByInput;
+  Banner: ResolverTypeWrapper<Banner>;
+  UsersWhereInput: UsersWhereInput;
+  UsersOrderByInput: UsersOrderByInput;
+  BannerWhereInput: BannerWhereInput;
+  BannerOrderByInput: BannerOrderByInput;
+  Brands: ResolverTypeWrapper<Brands>;
+  Products: ResolverTypeWrapper<Products>;
+  ProductAttributeOptions: ResolverTypeWrapper<ProductAttributeOptions>;
+  ProductAttributeOptionImages: ResolverTypeWrapper<ProductAttributeOptionImages>;
+  ProductAttributeOptionImagesImageType: ProductAttributeOptionImagesImageType;
+  ProductAttributeOptionsWhereInput: ProductAttributeOptionsWhereInput;
+  ProductAttributeOptionsOrderByInput: ProductAttributeOptionsOrderByInput;
+  ProductAttributeOptionImagesWhereInput: ProductAttributeOptionImagesWhereInput;
+  ProductAttributeOptionImagesOrderByInput: ProductAttributeOptionImagesOrderByInput;
+  ProductsWhereInput: ProductsWhereInput;
+  ProductsOrderByInput: ProductsOrderByInput;
   VariantAttributeOptions: ResolverTypeWrapper<VariantAttributeOptions>;
   ProductVariants: ResolverTypeWrapper<ProductVariants>;
   OrderItems: ResolverTypeWrapper<OrderItems>;
@@ -4579,18 +5114,6 @@ export type ResolversTypes = ResolversObject<{
   PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
   PaymentMethodsWhereInput: PaymentMethodsWhereInput;
   PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
-  Products: ResolverTypeWrapper<Products>;
-  ProductCategories: ResolverTypeWrapper<ProductCategories>;
-  Categories: ResolverTypeWrapper<Categories>;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
-  ProductsWhereInput: ProductsWhereInput;
-  ProductsOrderByInput: ProductsOrderByInput;
-  Brands: ResolverTypeWrapper<Brands>;
-  BrandsWhereInput: BrandsWhereInput;
-  BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: ResolverTypeWrapper<PromotionVariants>;
   Promotions: ResolverTypeWrapper<Promotions>;
   PromotionsDiscountType: PromotionsDiscountType;
@@ -4604,9 +5127,26 @@ export type ResolversTypes = ResolversObject<{
   VariantImagesImageType: VariantImagesImageType;
   VariantImagesWhereInput: VariantImagesWhereInput;
   VariantImagesOrderByInput: VariantImagesOrderByInput;
-  Banner: ResolverTypeWrapper<Banner>;
-  BannerWhereInput: BannerWhereInput;
-  BannerOrderByInput: BannerOrderByInput;
+  ProductCategories: ResolverTypeWrapper<ProductCategories>;
+  Categories: ResolverTypeWrapper<Categories>;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  BrandsWhereInput: BrandsWhereInput;
+  BrandsOrderByInput: BrandsOrderByInput;
+  PasswordSetupTokens: ResolverTypeWrapper<PasswordSetupTokens>;
+  PasswordSetupTokensWhereInput: PasswordSetupTokensWhereInput;
+  PasswordSetupTokensOrderByInput: PasswordSetupTokensOrderByInput;
+  Roles: ResolverTypeWrapper<Roles>;
+  RolesSections: ResolverTypeWrapper<RolesSections>;
+  RolesWhereInput: RolesWhereInput;
+  RolesOrderByInput: RolesOrderByInput;
+  Sections: ResolverTypeWrapper<Sections>;
+  RolesSectionsWhereInput: RolesSectionsWhereInput;
+  RolesSectionsOrderByInput: RolesSectionsOrderByInput;
+  SectionsWhereInput: SectionsWhereInput;
+  SectionsOrderByInput: SectionsOrderByInput;
   OrderSummary: ResolverTypeWrapper<OrderSummary>;
   OrderSummaryStatus: OrderSummaryStatus;
   OrderSummaryPaymentStatus: OrderSummaryPaymentStatus;
@@ -4619,18 +5159,6 @@ export type ResolversTypes = ResolversObject<{
   ProductRatingSummary: ResolverTypeWrapper<ProductRatingSummary>;
   ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
   ProductRatingSummaryOrderByInput: ProductRatingSummaryOrderByInput;
-  Roles: ResolverTypeWrapper<Roles>;
-  RolesSections: ResolverTypeWrapper<RolesSections>;
-  RolesWhereInput: RolesWhereInput;
-  RolesOrderByInput: RolesOrderByInput;
-  Sections: ResolverTypeWrapper<Sections>;
-  RolesSectionsWhereInput: RolesSectionsWhereInput;
-  RolesSectionsOrderByInput: RolesSectionsOrderByInput;
-  SectionsWhereInput: SectionsWhereInput;
-  SectionsOrderByInput: SectionsOrderByInput;
-  Users: ResolverTypeWrapper<Users>;
-  UsersWhereInput: UsersWhereInput;
-  UsersOrderByInput: UsersOrderByInput;
   Services: ResolverTypeWrapper<Services>;
   ServicesImages: ResolverTypeWrapper<ServicesImages>;
   ServicesWhereInput: ServicesWhereInput;
@@ -4649,11 +5177,9 @@ export type ResolversTypes = ResolversObject<{
   VariantRatingSummary: ResolverTypeWrapper<VariantRatingSummary>;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
-  AttributeOptionImagesInsertInput: AttributeOptionImagesInsertInput;
-  AttributeOptionImagesUpdateInput: AttributeOptionImagesUpdateInput;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   AttributeOptionsInsertInput: AttributeOptionsInsertInput;
   AttributeOptionsUpdateInput: AttributeOptionsUpdateInput;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   AttributesInsertInput: AttributesInsertInput;
   AttributesUpdateInput: AttributesUpdateInput;
   BannerInsertInput: BannerInsertInput;
@@ -4678,12 +5204,18 @@ export type ResolversTypes = ResolversObject<{
   OrderTrackingUpdateInput: OrderTrackingUpdateInput;
   OrdersInsertInput: OrdersInsertInput;
   OrdersUpdateInput: OrdersUpdateInput;
+  PasswordSetupTokensInsertInput: PasswordSetupTokensInsertInput;
+  PasswordSetupTokensUpdateInput: PasswordSetupTokensUpdateInput;
   PaymentMethodsInsertInput: PaymentMethodsInsertInput;
   PaymentMethodsUpdateInput: PaymentMethodsUpdateInput;
   PaymentTransactionsInsertInput: PaymentTransactionsInsertInput;
   PaymentTransactionsUpdateInput: PaymentTransactionsUpdateInput;
   PermissionsInsertInput: PermissionsInsertInput;
   PermissionsUpdateInput: PermissionsUpdateInput;
+  ProductAttributeOptionImagesInsertInput: ProductAttributeOptionImagesInsertInput;
+  ProductAttributeOptionImagesUpdateInput: ProductAttributeOptionImagesUpdateInput;
+  ProductAttributeOptionsInsertInput: ProductAttributeOptionsInsertInput;
+  ProductAttributeOptionsUpdateInput: ProductAttributeOptionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
   ProductCategoriesUpdateInput: ProductCategoriesUpdateInput;
   ProductRatingSummaryInsertInput: ProductRatingSummaryInsertInput;
@@ -4730,19 +5262,32 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Mutation: {};
-  AttributeOptionImages: AttributeOptionImages;
+  AttributeOptions: AttributeOptions;
   Int: Scalars['Int']['output'];
   String: Scalars['String']['output'];
-  Timestamp: Scalars['Timestamp']['output'];
-  AttributeOptions: AttributeOptions;
   Float: Scalars['Float']['output'];
-  AttributeOptionImagesWhereInput: AttributeOptionImagesWhereInput;
-  AttributeOptionImagesOrderByInput: AttributeOptionImagesOrderByInput;
   Attributes: Attributes;
+  Timestamp: Scalars['Timestamp']['output'];
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
+  Users: Users;
   AttributesWhereInput: AttributesWhereInput;
   AttributesOrderByInput: AttributesOrderByInput;
+  Banner: Banner;
+  UsersWhereInput: UsersWhereInput;
+  UsersOrderByInput: UsersOrderByInput;
+  BannerWhereInput: BannerWhereInput;
+  BannerOrderByInput: BannerOrderByInput;
+  Brands: Brands;
+  Products: Products;
+  ProductAttributeOptions: ProductAttributeOptions;
+  ProductAttributeOptionImages: ProductAttributeOptionImages;
+  ProductAttributeOptionsWhereInput: ProductAttributeOptionsWhereInput;
+  ProductAttributeOptionsOrderByInput: ProductAttributeOptionsOrderByInput;
+  ProductAttributeOptionImagesWhereInput: ProductAttributeOptionImagesWhereInput;
+  ProductAttributeOptionImagesOrderByInput: ProductAttributeOptionImagesOrderByInput;
+  ProductsWhereInput: ProductsWhereInput;
+  ProductsOrderByInput: ProductsOrderByInput;
   VariantAttributeOptions: VariantAttributeOptions;
   ProductVariants: ProductVariants;
   OrderItems: OrderItems;
@@ -4783,18 +5328,6 @@ export type ResolversParentTypes = ResolversObject<{
   PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
   PaymentMethodsWhereInput: PaymentMethodsWhereInput;
   PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
-  Products: Products;
-  ProductCategories: ProductCategories;
-  Categories: Categories;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
-  ProductsWhereInput: ProductsWhereInput;
-  ProductsOrderByInput: ProductsOrderByInput;
-  Brands: Brands;
-  BrandsWhereInput: BrandsWhereInput;
-  BrandsOrderByInput: BrandsOrderByInput;
   PromotionVariants: PromotionVariants;
   Promotions: Promotions;
   PromotionVariantsWhereInput: PromotionVariantsWhereInput;
@@ -4806,9 +5339,26 @@ export type ResolversParentTypes = ResolversObject<{
   VariantImages: VariantImages;
   VariantImagesWhereInput: VariantImagesWhereInput;
   VariantImagesOrderByInput: VariantImagesOrderByInput;
-  Banner: Banner;
-  BannerWhereInput: BannerWhereInput;
-  BannerOrderByInput: BannerOrderByInput;
+  ProductCategories: ProductCategories;
+  Categories: Categories;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  BrandsWhereInput: BrandsWhereInput;
+  BrandsOrderByInput: BrandsOrderByInput;
+  PasswordSetupTokens: PasswordSetupTokens;
+  PasswordSetupTokensWhereInput: PasswordSetupTokensWhereInput;
+  PasswordSetupTokensOrderByInput: PasswordSetupTokensOrderByInput;
+  Roles: Roles;
+  RolesSections: RolesSections;
+  RolesWhereInput: RolesWhereInput;
+  RolesOrderByInput: RolesOrderByInput;
+  Sections: Sections;
+  RolesSectionsWhereInput: RolesSectionsWhereInput;
+  RolesSectionsOrderByInput: RolesSectionsOrderByInput;
+  SectionsWhereInput: SectionsWhereInput;
+  SectionsOrderByInput: SectionsOrderByInput;
   OrderSummary: OrderSummary;
   BigInt: Scalars['BigInt']['output'];
   OrderSummaryWhereInput: OrderSummaryWhereInput;
@@ -4819,18 +5369,6 @@ export type ResolversParentTypes = ResolversObject<{
   ProductRatingSummary: ProductRatingSummary;
   ProductRatingSummaryWhereInput: ProductRatingSummaryWhereInput;
   ProductRatingSummaryOrderByInput: ProductRatingSummaryOrderByInput;
-  Roles: Roles;
-  RolesSections: RolesSections;
-  RolesWhereInput: RolesWhereInput;
-  RolesOrderByInput: RolesOrderByInput;
-  Sections: Sections;
-  RolesSectionsWhereInput: RolesSectionsWhereInput;
-  RolesSectionsOrderByInput: RolesSectionsOrderByInput;
-  SectionsWhereInput: SectionsWhereInput;
-  SectionsOrderByInput: SectionsOrderByInput;
-  Users: Users;
-  UsersWhereInput: UsersWhereInput;
-  UsersOrderByInput: UsersOrderByInput;
   Services: Services;
   ServicesImages: ServicesImages;
   ServicesWhereInput: ServicesWhereInput;
@@ -4849,11 +5387,9 @@ export type ResolversParentTypes = ResolversObject<{
   VariantRatingSummary: VariantRatingSummary;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
-  AttributeOptionImagesInsertInput: AttributeOptionImagesInsertInput;
-  AttributeOptionImagesUpdateInput: AttributeOptionImagesUpdateInput;
-  Boolean: Scalars['Boolean']['output'];
   AttributeOptionsInsertInput: AttributeOptionsInsertInput;
   AttributeOptionsUpdateInput: AttributeOptionsUpdateInput;
+  Boolean: Scalars['Boolean']['output'];
   AttributesInsertInput: AttributesInsertInput;
   AttributesUpdateInput: AttributesUpdateInput;
   BannerInsertInput: BannerInsertInput;
@@ -4878,12 +5414,18 @@ export type ResolversParentTypes = ResolversObject<{
   OrderTrackingUpdateInput: OrderTrackingUpdateInput;
   OrdersInsertInput: OrdersInsertInput;
   OrdersUpdateInput: OrdersUpdateInput;
+  PasswordSetupTokensInsertInput: PasswordSetupTokensInsertInput;
+  PasswordSetupTokensUpdateInput: PasswordSetupTokensUpdateInput;
   PaymentMethodsInsertInput: PaymentMethodsInsertInput;
   PaymentMethodsUpdateInput: PaymentMethodsUpdateInput;
   PaymentTransactionsInsertInput: PaymentTransactionsInsertInput;
   PaymentTransactionsUpdateInput: PaymentTransactionsUpdateInput;
   PermissionsInsertInput: PermissionsInsertInput;
   PermissionsUpdateInput: PermissionsUpdateInput;
+  ProductAttributeOptionImagesInsertInput: ProductAttributeOptionImagesInsertInput;
+  ProductAttributeOptionImagesUpdateInput: ProductAttributeOptionImagesUpdateInput;
+  ProductAttributeOptionsInsertInput: ProductAttributeOptionsInsertInput;
+  ProductAttributeOptionsUpdateInput: ProductAttributeOptionsUpdateInput;
   ProductCategoriesInsertInput: ProductCategoriesInsertInput;
   ProductCategoriesUpdateInput: ProductCategoriesUpdateInput;
   ProductRatingSummaryInsertInput: ProductRatingSummaryInsertInput;
@@ -4980,8 +5522,6 @@ export type mysqlCountDirectiveArgs = {
 export type mysqlCountDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = mysqlCountDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  attributeOptionImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptionImages']>>>, ParentType, ContextType, Partial<QueryattributeOptionImagesArgs>>;
-  countAttributeOptionImages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountAttributeOptionImagesArgs>>;
   attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<QueryattributeOptionsArgs>>;
   countAttributeOptions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountAttributeOptionsArgs>>;
   attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<QueryattributesArgs>>;
@@ -5008,12 +5548,18 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countOrderTracking?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOrderTrackingArgs>>;
   orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<QueryordersArgs>>;
   countOrders?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOrdersArgs>>;
+  passwordSetupTokens?: Resolver<Maybe<Array<Maybe<ResolversTypes['PasswordSetupTokens']>>>, ParentType, ContextType, Partial<QuerypasswordSetupTokensArgs>>;
+  countPasswordSetupTokens?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPasswordSetupTokensArgs>>;
   paymentMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentMethods']>>>, ParentType, ContextType, Partial<QuerypaymentMethodsArgs>>;
   countPaymentMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPaymentMethodsArgs>>;
   paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<QuerypaymentTransactionsArgs>>;
   countPaymentTransactions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPaymentTransactionsArgs>>;
   permissions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Permissions']>>>, ParentType, ContextType, Partial<QuerypermissionsArgs>>;
   countPermissions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountPermissionsArgs>>;
+  productAttributeOptionImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptionImages']>>>, ParentType, ContextType, Partial<QueryproductAttributeOptionImagesArgs>>;
+  countProductAttributeOptionImages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductAttributeOptionImagesArgs>>;
+  productAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptions']>>>, ParentType, ContextType, Partial<QueryproductAttributeOptionsArgs>>;
+  countProductAttributeOptions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductAttributeOptionsArgs>>;
   productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<QueryproductCategoriesArgs>>;
   countProductCategories?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountProductCategoriesArgs>>;
   productRatingSummary?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductRatingSummary']>>>, ParentType, ContextType, Partial<QueryproductRatingSummaryArgs>>;
@@ -5057,9 +5603,6 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
 }>;
 
 export type MutationResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  insertAttributeOptionImages?: Resolver<Maybe<ResolversTypes['AttributeOptionImages']>, ParentType, ContextType, RequireFields<MutationinsertAttributeOptionImagesArgs, 'attribute_option_images'>>;
-  updateAttributeOptionImages?: Resolver<Maybe<ResolversTypes['AttributeOptionImages']>, ParentType, ContextType, RequireFields<MutationupdateAttributeOptionImagesArgs, 'attribute_option_images'>>;
-  deleteAttributeOptionImages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteAttributeOptionImagesArgs>>;
   insertAttributeOptions?: Resolver<Maybe<ResolversTypes['AttributeOptions']>, ParentType, ContextType, RequireFields<MutationinsertAttributeOptionsArgs, 'attribute_options'>>;
   updateAttributeOptions?: Resolver<Maybe<ResolversTypes['AttributeOptions']>, ParentType, ContextType, RequireFields<MutationupdateAttributeOptionsArgs, 'attribute_options'>>;
   deleteAttributeOptions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteAttributeOptionsArgs>>;
@@ -5099,6 +5642,9 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertOrders?: Resolver<Maybe<ResolversTypes['Orders']>, ParentType, ContextType, RequireFields<MutationinsertOrdersArgs, 'orders'>>;
   updateOrders?: Resolver<Maybe<ResolversTypes['Orders']>, ParentType, ContextType, RequireFields<MutationupdateOrdersArgs, 'orders'>>;
   deleteOrders?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOrdersArgs>>;
+  insertPasswordSetupTokens?: Resolver<Maybe<ResolversTypes['PasswordSetupTokens']>, ParentType, ContextType, RequireFields<MutationinsertPasswordSetupTokensArgs, 'password_setup_tokens'>>;
+  updatePasswordSetupTokens?: Resolver<Maybe<ResolversTypes['PasswordSetupTokens']>, ParentType, ContextType, RequireFields<MutationupdatePasswordSetupTokensArgs, 'password_setup_tokens'>>;
+  deletePasswordSetupTokens?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePasswordSetupTokensArgs>>;
   insertPaymentMethods?: Resolver<Maybe<ResolversTypes['PaymentMethods']>, ParentType, ContextType, RequireFields<MutationinsertPaymentMethodsArgs, 'payment_methods'>>;
   updatePaymentMethods?: Resolver<Maybe<ResolversTypes['PaymentMethods']>, ParentType, ContextType, RequireFields<MutationupdatePaymentMethodsArgs, 'payment_methods'>>;
   deletePaymentMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePaymentMethodsArgs>>;
@@ -5108,6 +5654,12 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertPermissions?: Resolver<Maybe<ResolversTypes['Permissions']>, ParentType, ContextType, RequireFields<MutationinsertPermissionsArgs, 'permissions'>>;
   updatePermissions?: Resolver<Maybe<ResolversTypes['Permissions']>, ParentType, ContextType, RequireFields<MutationupdatePermissionsArgs, 'permissions'>>;
   deletePermissions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeletePermissionsArgs>>;
+  insertProductAttributeOptionImages?: Resolver<Maybe<ResolversTypes['ProductAttributeOptionImages']>, ParentType, ContextType, RequireFields<MutationinsertProductAttributeOptionImagesArgs, 'product_attribute_option_images'>>;
+  updateProductAttributeOptionImages?: Resolver<Maybe<ResolversTypes['ProductAttributeOptionImages']>, ParentType, ContextType, RequireFields<MutationupdateProductAttributeOptionImagesArgs, 'product_attribute_option_images'>>;
+  deleteProductAttributeOptionImages?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductAttributeOptionImagesArgs>>;
+  insertProductAttributeOptions?: Resolver<Maybe<ResolversTypes['ProductAttributeOptions']>, ParentType, ContextType, RequireFields<MutationinsertProductAttributeOptionsArgs, 'product_attribute_options'>>;
+  updateProductAttributeOptions?: Resolver<Maybe<ResolversTypes['ProductAttributeOptions']>, ParentType, ContextType, RequireFields<MutationupdateProductAttributeOptionsArgs, 'product_attribute_options'>>;
+  deleteProductAttributeOptions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductAttributeOptionsArgs>>;
   insertProductCategories?: Resolver<Maybe<ResolversTypes['ProductCategories']>, ParentType, ContextType, RequireFields<MutationinsertProductCategoriesArgs, 'product_categories'>>;
   updateProductCategories?: Resolver<Maybe<ResolversTypes['ProductCategories']>, ParentType, ContextType, RequireFields<MutationupdateProductCategoriesArgs, 'product_categories'>>;
   deleteProductCategories?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteProductCategoriesArgs>>;
@@ -5170,10 +5722,123 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   deleteVariantRatings?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantRatingsArgs>>;
 }>;
 
-export type AttributeOptionImagesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['AttributeOptionImages'] = ResolversParentTypes['AttributeOptionImages']> = ResolversObject<{
+export type AttributeOptionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['AttributeOptions'] = ResolversParentTypes['AttributeOptions']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  attributeOptionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  imageType?: Resolver<ResolversTypes['AttributeOptionImagesImageType'], ParentType, ContextType>;
+  attributeId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  additionalCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<AttributeOptionsattributesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AttributesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Attributes'] = ResolversParentTypes['Attributes']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  displayType?: Resolver<ResolversTypes['AttributesDisplayType'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<AttributesattributeOptionsArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<AttributesusersArgs>>;
+  productAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptions']>>>, ParentType, ContextType, Partial<AttributesproductAttributeOptionsArgs>>;
+  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<AttributesproductVariantsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
+  name: 'Timestamp';
+}
+
+export type UsersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  roleId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<UsersattributesArgs>>;
+  banner?: Resolver<Maybe<Array<Maybe<ResolversTypes['Banner']>>>, ParentType, ContextType, Partial<UsersbannerArgs>>;
+  brands?: Resolver<Maybe<Array<Maybe<ResolversTypes['Brands']>>>, ParentType, ContextType, Partial<UsersbrandsArgs>>;
+  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<UserscategoriesArgs>>;
+  coupons?: Resolver<Maybe<Array<Maybe<ResolversTypes['Coupons']>>>, ParentType, ContextType, Partial<UserscouponsArgs>>;
+  passwordSetupTokens?: Resolver<Maybe<Array<Maybe<ResolversTypes['PasswordSetupTokens']>>>, ParentType, ContextType, Partial<UserspasswordSetupTokensArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<UsersproductsArgs>>;
+  promotions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Promotions']>>>, ParentType, ContextType, Partial<UserspromotionsArgs>>;
+  roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Roles']>>>, ParentType, ContextType, Partial<UsersrolesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BannerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Banner'] = ResolversParentTypes['Banner']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subtitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  buttonText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<BannerusersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BrandsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Brands'] = ResolversParentTypes['Brands']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<BrandsusersArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<BrandsproductsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProductsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Products'] = ResolversParentTypes['Products']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  brandId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  basePrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  productAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptions']>>>, ParentType, ContextType, Partial<ProductsproductAttributeOptionsArgs>>;
+  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<ProductsproductCategoriesArgs>>;
+  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<ProductsproductVariantsArgs>>;
+  brands?: Resolver<Maybe<Array<Maybe<ResolversTypes['Brands']>>>, ParentType, ContextType, Partial<ProductsbrandsArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<ProductsusersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProductAttributeOptionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductAttributeOptions'] = ResolversParentTypes['ProductAttributeOptions']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  attributeId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  productAttributeOptionImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptionImages']>>>, ParentType, ContextType, Partial<ProductAttributeOptionsproductAttributeOptionImagesArgs>>;
+  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<ProductAttributeOptionsattributesArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductAttributeOptionsproductsArgs>>;
+  variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<ProductAttributeOptionsvariantAttributeOptionsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProductAttributeOptionImagesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductAttributeOptionImages'] = ResolversParentTypes['ProductAttributeOptionImages']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productAttributeOptionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  imageType?: Resolver<ResolversTypes['ProductAttributeOptionImagesImageType'], ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   imageUrlThumb?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrlNormal?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -5182,37 +5847,15 @@ export type AttributeOptionImagesResolvers<ContextType = MeshContext, ParentType
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   isPrimary?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<AttributeOptionImagesattributeOptionsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
-  name: 'Timestamp';
-}
-
-export type AttributeOptionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['AttributeOptions'] = ResolversParentTypes['AttributeOptions']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  attributeId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  additionalCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  attributeOptionImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptionImages']>>>, ParentType, ContextType, Partial<AttributeOptionsattributeOptionImagesArgs>>;
-  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<AttributeOptionsattributesArgs>>;
-  variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<AttributeOptionsvariantAttributeOptionsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type AttributesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Attributes'] = ResolversParentTypes['Attributes']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  displayType?: Resolver<ResolversTypes['AttributesDisplayType'], ParentType, ContextType>;
-  attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<AttributesattributeOptionsArgs>>;
+  productAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptions']>>>, ParentType, ContextType, Partial<ProductAttributeOptionImagesproductAttributeOptionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type VariantAttributeOptionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantAttributeOptions'] = ResolversParentTypes['VariantAttributeOptions']> = ResolversObject<{
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  attributeOptionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<VariantAttributeOptionsattributeOptionsArgs>>;
+  productAttributeOptionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  additionalCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  productAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductAttributeOptions']>>>, ParentType, ContextType, Partial<VariantAttributeOptionsproductAttributeOptionsArgs>>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<VariantAttributeOptionsproductVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -5225,7 +5868,9 @@ export type ProductVariantsResolvers<ContextType = MeshContext, ParentType exten
   stock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  imageAttributeId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<ProductVariantsorderItemsArgs>>;
+  attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<ProductVariantsattributesArgs>>;
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductVariantsproductsArgs>>;
   promotionVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['PromotionVariants']>>>, ParentType, ContextType, Partial<ProductVariantspromotionVariantsArgs>>;
   variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<ProductVariantsvariantAttributeOptionsArgs>>;
@@ -5319,7 +5964,10 @@ export type CouponsResolvers<ContextType = MeshContext, ParentType extends Resol
   applicableIds?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CouponscouponUsageArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<CouponsusersArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5451,47 +6099,6 @@ export type PaymentMethodsResolvers<ContextType = MeshContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProductsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Products'] = ResolversParentTypes['Products']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  brandId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  basePrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<ProductsproductCategoriesArgs>>;
-  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<ProductsproductVariantsArgs>>;
-  brands?: Resolver<Maybe<Array<Maybe<ResolversTypes['Brands']>>>, ParentType, ContextType, Partial<ProductsbrandsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
-  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<ProductCategoriescategoriesArgs>>;
-  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductCategoriesproductsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  showNav?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type BrandsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Brands'] = ResolversParentTypes['Brands']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<BrandsproductsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type PromotionVariantsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PromotionVariants'] = ResolversParentTypes['PromotionVariants']> = ResolversObject<{
   promotionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -5518,7 +6125,10 @@ export type PromotionsResolvers<ContextType = MeshContext, ParentType extends Re
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   promotionVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['PromotionVariants']>>>, ParentType, ContextType, Partial<PromotionspromotionVariantsArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<PromotionsusersArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5538,17 +6148,68 @@ export type VariantImagesResolvers<ContextType = MeshContext, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BannerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Banner'] = ResolversParentTypes['Banner']> = ResolversObject<{
+export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
+  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<ProductCategoriescategoriesArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductCategoriesproductsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subtitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showNav?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<CategoriesusersArgs>>;
+  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PasswordSetupTokensResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PasswordSetupTokens'] = ResolversParentTypes['PasswordSetupTokens']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  expiresAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  usedAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<PasswordSetupTokensusersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type RolesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Roles'] = ResolversParentTypes['Roles']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  rolesSections?: Resolver<Maybe<Array<Maybe<ResolversTypes['RolesSections']>>>, ParentType, ContextType, Partial<RolesrolesSectionsArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<RolesusersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type RolesSectionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['RolesSections'] = ResolversParentTypes['RolesSections']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  idSection?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  idRol?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Roles']>>>, ParentType, ContextType, Partial<RolesSectionsrolesArgs>>;
+  sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Sections']>>>, ParentType, ContextType, Partial<RolesSectionssectionsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SectionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Sections'] = ResolversParentTypes['Sections']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  link?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  buttonText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  rolesSections?: Resolver<Maybe<Array<Maybe<ResolversTypes['RolesSections']>>>, ParentType, ContextType, Partial<SectionsrolesSectionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5592,50 +6253,6 @@ export type ProductRatingSummaryResolvers<ContextType = MeshContext, ParentType 
   twoStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   oneStar?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   verifiedPurchases?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type RolesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Roles'] = ResolversParentTypes['Roles']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  rolesSections?: Resolver<Maybe<Array<Maybe<ResolversTypes['RolesSections']>>>, ParentType, ContextType, Partial<RolesrolesSectionsArgs>>;
-  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<RolesusersArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type RolesSectionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['RolesSections'] = ResolversParentTypes['RolesSections']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  idSection?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  idRol?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Roles']>>>, ParentType, ContextType, Partial<RolesSectionsrolesArgs>>;
-  sections?: Resolver<Maybe<Array<Maybe<ResolversTypes['Sections']>>>, ParentType, ContextType, Partial<RolesSectionssectionsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SectionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Sections'] = ResolversParentTypes['Sections']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  rolesSections?: Resolver<Maybe<Array<Maybe<ResolversTypes['RolesSections']>>>, ParentType, ContextType, Partial<SectionsrolesSectionsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type UsersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  roleId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Roles']>>>, ParentType, ContextType, Partial<UsersrolesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5726,10 +6343,15 @@ export type VariantRatingSummaryResolvers<ContextType = MeshContext, ParentType 
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
-  AttributeOptionImages?: AttributeOptionImagesResolvers<ContextType>;
-  Timestamp?: GraphQLScalarType;
   AttributeOptions?: AttributeOptionsResolvers<ContextType>;
   Attributes?: AttributesResolvers<ContextType>;
+  Timestamp?: GraphQLScalarType;
+  Users?: UsersResolvers<ContextType>;
+  Banner?: BannerResolvers<ContextType>;
+  Brands?: BrandsResolvers<ContextType>;
+  Products?: ProductsResolvers<ContextType>;
+  ProductAttributeOptions?: ProductAttributeOptionsResolvers<ContextType>;
+  ProductAttributeOptionImages?: ProductAttributeOptionImagesResolvers<ContextType>;
   VariantAttributeOptions?: VariantAttributeOptionsResolvers<ContextType>;
   ProductVariants?: ProductVariantsResolvers<ContextType>;
   OrderItems?: OrderItemsResolvers<ContextType>;
@@ -5746,22 +6368,19 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   OrderTracking?: OrderTrackingResolvers<ContextType>;
   PaymentTransactions?: PaymentTransactionsResolvers<ContextType>;
   PaymentMethods?: PaymentMethodsResolvers<ContextType>;
-  Products?: ProductsResolvers<ContextType>;
-  ProductCategories?: ProductCategoriesResolvers<ContextType>;
-  Categories?: CategoriesResolvers<ContextType>;
-  Brands?: BrandsResolvers<ContextType>;
   PromotionVariants?: PromotionVariantsResolvers<ContextType>;
   Promotions?: PromotionsResolvers<ContextType>;
   VariantImages?: VariantImagesResolvers<ContextType>;
-  Banner?: BannerResolvers<ContextType>;
+  ProductCategories?: ProductCategoriesResolvers<ContextType>;
+  Categories?: CategoriesResolvers<ContextType>;
+  PasswordSetupTokens?: PasswordSetupTokensResolvers<ContextType>;
+  Roles?: RolesResolvers<ContextType>;
+  RolesSections?: RolesSectionsResolvers<ContextType>;
+  Sections?: SectionsResolvers<ContextType>;
   OrderSummary?: OrderSummaryResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Permissions?: PermissionsResolvers<ContextType>;
   ProductRatingSummary?: ProductRatingSummaryResolvers<ContextType>;
-  Roles?: RolesResolvers<ContextType>;
-  RolesSections?: RolesSectionsResolvers<ContextType>;
-  Sections?: SectionsResolvers<ContextType>;
-  Users?: UsersResolvers<ContextType>;
   Services?: ServicesResolvers<ContextType>;
   ServicesImages?: ServicesImagesResolvers<ContextType>;
   ShippingMethods?: ShippingMethodsResolvers<ContextType>;

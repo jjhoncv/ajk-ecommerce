@@ -22,17 +22,18 @@ export default async function EditCategoryPage({
   const { parent } = await searchParams
   const parentId = parent ? Number(parent) : null
 
-  const category = await categoryService.getCategoryById(Number(id))
+  const result = await categoryService.getCategoryWithAudit(Number(id))
 
-  if (category == null) {
+  if (result == null || result.category == null) {
     return <div>No se encontró la categoría</div>
   }
+
+  const { category, audit } = result
 
   const fieldsWithValues = mergeFieldsWithData(CategoryFields, {
     ...category,
     parent_id: category.parentId?.toString() || '',
-    image_url: category.imageUrl,
-    display_order: category.displayOrder?.toString() || '1',
+    image_url: category.imageUrl || '',
     show_nav: category.showNav ? '1' : '0'
   })
 
@@ -68,6 +69,7 @@ export default async function EditCategoryPage({
             fields: fieldsWithValues,
             customFields: { id }
           }}
+          audit={audit}
         />
       </PageUI>
     </LayoutPageAdmin>

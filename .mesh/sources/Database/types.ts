@@ -35,8 +35,6 @@ export type Scalars = {
 };
 
 export type Query = {
-  attribute_option_images?: Maybe<Array<Maybe<attribute_option_images>>>;
-  count_attribute_option_images?: Maybe<Scalars['Int']['output']>;
   attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
   count_attribute_options?: Maybe<Scalars['Int']['output']>;
   attributes?: Maybe<Array<Maybe<attributes>>>;
@@ -63,12 +61,18 @@ export type Query = {
   count_order_tracking?: Maybe<Scalars['Int']['output']>;
   orders?: Maybe<Array<Maybe<orders>>>;
   count_orders?: Maybe<Scalars['Int']['output']>;
+  password_setup_tokens?: Maybe<Array<Maybe<password_setup_tokens>>>;
+  count_password_setup_tokens?: Maybe<Scalars['Int']['output']>;
   payment_methods?: Maybe<Array<Maybe<payment_methods>>>;
   count_payment_methods?: Maybe<Scalars['Int']['output']>;
   payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
   count_payment_transactions?: Maybe<Scalars['Int']['output']>;
   permissions?: Maybe<Array<Maybe<permissions>>>;
   count_permissions?: Maybe<Scalars['Int']['output']>;
+  product_attribute_option_images?: Maybe<Array<Maybe<product_attribute_option_images>>>;
+  count_product_attribute_option_images?: Maybe<Scalars['Int']['output']>;
+  product_attribute_options?: Maybe<Array<Maybe<product_attribute_options>>>;
+  count_product_attribute_options?: Maybe<Scalars['Int']['output']>;
   product_categories?: Maybe<Array<Maybe<product_categories>>>;
   count_product_categories?: Maybe<Scalars['Int']['output']>;
   product_rating_summary?: Maybe<Array<Maybe<product_rating_summary>>>;
@@ -109,19 +113,6 @@ export type Query = {
   count_variant_rating_summary?: Maybe<Scalars['Int']['output']>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
   count_variant_ratings?: Maybe<Scalars['Int']['output']>;
-};
-
-
-export type Queryattribute_option_imagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<attribute_option_images_WhereInput>;
-  orderBy?: InputMaybe<attribute_option_images_OrderByInput>;
-};
-
-
-export type Querycount_attribute_option_imagesArgs = {
-  where?: InputMaybe<attribute_option_images_WhereInput>;
 };
 
 
@@ -294,6 +285,19 @@ export type Querycount_ordersArgs = {
 };
 
 
+export type Querypassword_setup_tokensArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<password_setup_tokens_WhereInput>;
+  orderBy?: InputMaybe<password_setup_tokens_OrderByInput>;
+};
+
+
+export type Querycount_password_setup_tokensArgs = {
+  where?: InputMaybe<password_setup_tokens_WhereInput>;
+};
+
+
 export type Querypayment_methodsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -330,6 +334,32 @@ export type QuerypermissionsArgs = {
 
 export type Querycount_permissionsArgs = {
   where?: InputMaybe<permissions_WhereInput>;
+};
+
+
+export type Queryproduct_attribute_option_imagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_attribute_option_images_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_option_images_OrderByInput>;
+};
+
+
+export type Querycount_product_attribute_option_imagesArgs = {
+  where?: InputMaybe<product_attribute_option_images_WhereInput>;
+};
+
+
+export type Queryproduct_attribute_optionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_options_OrderByInput>;
+};
+
+
+export type Querycount_product_attribute_optionsArgs = {
+  where?: InputMaybe<product_attribute_options_WhereInput>;
 };
 
 
@@ -592,62 +622,12 @@ export type Querycount_variant_ratingsArgs = {
   where?: InputMaybe<variant_ratings_WhereInput>;
 };
 
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_images = {
-  id: Scalars['Int']['output'];
-  attribute_option_id: Scalars['Int']['output'];
-  image_type: attribute_option_images_image_type;
-  display_order?: Maybe<Scalars['Int']['output']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  image_url_thumb: Scalars['String']['output'];
-  /** Imagen normal 600x800 (opcional) */
-  image_url_normal: Scalars['String']['output'];
-  /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom: Scalars['String']['output'];
-  /** Texto alternativo */
-  alt_text?: Maybe<Scalars['String']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  is_primary?: Maybe<Scalars['Int']['output']>;
-  attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
-};
-
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_imagesattribute_optionsArgs = {
-  where?: InputMaybe<attribute_options_WhereInput>;
-  orderBy?: InputMaybe<attribute_options_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type attribute_option_images_image_type =
-  | 'front'
-  | 'back'
-  | 'left'
-  | 'right'
-  | 'top'
-  | 'bottom'
-  | 'detail'
-  | 'lifestyle'
-  | 'packaging';
-
 export type attribute_options = {
   id: Scalars['Int']['output'];
   attribute_id: Scalars['Int']['output'];
   value: Scalars['String']['output'];
   additional_cost?: Maybe<Scalars['Float']['output']>;
-  attribute_option_images?: Maybe<Array<Maybe<attribute_option_images>>>;
   attributes?: Maybe<Array<Maybe<attributes>>>;
-  variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
-};
-
-
-export type attribute_optionsattribute_option_imagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<attribute_option_images_WhereInput>;
-  orderBy?: InputMaybe<attribute_option_images_OrderByInput>;
 };
 
 
@@ -658,61 +638,18 @@ export type attribute_optionsattributesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-
-export type attribute_optionsvariant_attribute_optionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<variant_attribute_options_WhereInput>;
-  orderBy?: InputMaybe<variant_attribute_options_OrderByInput>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_images_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  attribute_option_id?: InputMaybe<Scalars['String']['input']>;
-  image_type?: InputMaybe<Scalars['String']['input']>;
-  display_order?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  image_url_thumb?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: InputMaybe<Scalars['String']['input']>;
-  /** Texto alternativo */
-  alt_text?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  is_primary?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_images_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  attribute_option_id?: InputMaybe<OrderBy>;
-  image_type?: InputMaybe<OrderBy>;
-  display_order?: InputMaybe<OrderBy>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  image_url_thumb?: InputMaybe<OrderBy>;
-  /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: InputMaybe<OrderBy>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: InputMaybe<OrderBy>;
-  /** Texto alternativo */
-  alt_text?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  is_primary?: InputMaybe<OrderBy>;
-};
-
-export type OrderBy =
-  | 'asc'
-  | 'desc';
-
 export type attributes = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   display_type: attributes_display_type;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
   attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
+  users?: Maybe<Array<Maybe<users>>>;
+  product_attribute_options?: Maybe<Array<Maybe<product_attribute_options>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
 };
 
 
@@ -721,6 +658,30 @@ export type attributesattribute_optionsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<attribute_options_WhereInput>;
   orderBy?: InputMaybe<attribute_options_OrderByInput>;
+};
+
+
+export type attributesusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type attributesproduct_attribute_optionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_options_OrderByInput>;
+};
+
+
+export type attributesproduct_variantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
 };
 
 export type attributes_display_type =
@@ -744,34 +705,497 @@ export type attribute_options_OrderByInput = {
   additional_cost?: InputMaybe<OrderBy>;
 };
 
+export type OrderBy =
+  | 'asc'
+  | 'desc';
+
+export type users = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  role_id?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  lastname: Scalars['String']['output'];
+  photo?: Maybe<Scalars['String']['output']>;
+  attributes?: Maybe<Array<Maybe<attributes>>>;
+  banner?: Maybe<Array<Maybe<banner>>>;
+  brands?: Maybe<Array<Maybe<brands>>>;
+  categories?: Maybe<Array<Maybe<categories>>>;
+  coupons?: Maybe<Array<Maybe<coupons>>>;
+  password_setup_tokens?: Maybe<Array<Maybe<password_setup_tokens>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+  promotions?: Maybe<Array<Maybe<promotions>>>;
+  roles?: Maybe<Array<Maybe<roles>>>;
+};
+
+
+export type usersattributesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<attributes_WhereInput>;
+  orderBy?: InputMaybe<attributes_OrderByInput>;
+};
+
+
+export type usersbannerArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<banner_WhereInput>;
+  orderBy?: InputMaybe<banner_OrderByInput>;
+};
+
+
+export type usersbrandsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<brands_WhereInput>;
+  orderBy?: InputMaybe<brands_OrderByInput>;
+};
+
+
+export type userscategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<categories_WhereInput>;
+  orderBy?: InputMaybe<categories_OrderByInput>;
+};
+
+
+export type userscouponsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupons_WhereInput>;
+  orderBy?: InputMaybe<coupons_OrderByInput>;
+};
+
+
+export type userspassword_setup_tokensArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<password_setup_tokens_WhereInput>;
+  orderBy?: InputMaybe<password_setup_tokens_OrderByInput>;
+};
+
+
+export type usersproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+};
+
+
+export type userspromotionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<promotions_WhereInput>;
+  orderBy?: InputMaybe<promotions_OrderByInput>;
+};
+
+
+export type usersrolesArgs = {
+  where?: InputMaybe<roles_WhereInput>;
+  orderBy?: InputMaybe<roles_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type attributes_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   display_type?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type attributes_OrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
   display_type?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
 };
 
-export type variant_attribute_options = {
-  variant_id: Scalars['Int']['output'];
-  attribute_option_id: Scalars['Int']['output'];
-  attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
-  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+export type banner = {
+  id: Scalars['Int']['output'];
+  title: Scalars['String']['output'];
+  subtitle?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  link?: Maybe<Scalars['String']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  button_text?: Maybe<Scalars['String']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<users>>>;
 };
 
 
-export type variant_attribute_optionsattribute_optionsArgs = {
-  where?: InputMaybe<attribute_options_WhereInput>;
-  orderBy?: InputMaybe<attribute_options_OrderByInput>;
+export type bannerusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type users_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  role_id?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  lastname?: InputMaybe<Scalars['String']['input']>;
+  photo?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type users_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  password?: InputMaybe<OrderBy>;
+  role_id?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  lastname?: InputMaybe<OrderBy>;
+  photo?: InputMaybe<OrderBy>;
+};
+
+export type banner_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  subtitle?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  link?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  button_text?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type banner_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  subtitle?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  link?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  button_text?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
+};
+
+export type brands = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<users>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+};
+
+
+export type brandsusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
+export type brandsproductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+};
+
+export type products = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  brand_id?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  base_price?: Maybe<Scalars['Float']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
+  product_attribute_options?: Maybe<Array<Maybe<product_attribute_options>>>;
+  product_categories?: Maybe<Array<Maybe<product_categories>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+  brands?: Maybe<Array<Maybe<brands>>>;
+  users?: Maybe<Array<Maybe<users>>>;
+};
+
+
+export type productsproduct_attribute_optionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_options_OrderByInput>;
+};
+
+
+export type productsproduct_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_categories_WhereInput>;
+  orderBy?: InputMaybe<product_categories_OrderByInput>;
+};
+
+
+export type productsproduct_variantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
+};
+
+
+export type productsbrandsArgs = {
+  where?: InputMaybe<brands_WhereInput>;
+  orderBy?: InputMaybe<brands_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type productsusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_options = {
+  id: Scalars['Int']['output'];
+  /** ID del producto al que pertenece esta opciÃ³n */
+  product_id: Scalars['Int']['output'];
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attribute_id: Scalars['Int']['output'];
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value: Scalars['String']['output'];
+  /** Orden de visualizaciÃ³n */
+  display_order?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  product_attribute_option_images?: Maybe<Array<Maybe<product_attribute_option_images>>>;
+  attributes?: Maybe<Array<Maybe<attributes>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+  variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_optionsproduct_attribute_option_imagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_attribute_option_images_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_option_images_OrderByInput>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_optionsattributesArgs = {
+  where?: InputMaybe<attributes_WhereInput>;
+  orderBy?: InputMaybe<attributes_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_optionsproductsArgs = {
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_optionsvariant_attribute_optionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<variant_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<variant_attribute_options_OrderByInput>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_images = {
+  id: Scalars['Int']['output'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id: Scalars['Int']['output'];
+  image_type: product_attribute_option_images_image_type;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb: Scalars['String']['output'];
+  /** Imagen normal 600x800 */
+  image_url_normal: Scalars['String']['output'];
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom: Scalars['String']['output'];
+  alt_text?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  is_primary?: Maybe<Scalars['Int']['output']>;
+  product_attribute_options?: Maybe<Array<Maybe<product_attribute_options>>>;
+};
+
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_imagesproduct_attribute_optionsArgs = {
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_options_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type product_attribute_option_images_image_type =
+  | 'front'
+  | 'back'
+  | 'left'
+  | 'right'
+  | 'top'
+  | 'bottom'
+  | 'detail'
+  | 'lifestyle'
+  | 'packaging';
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_options_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  product_id?: InputMaybe<Scalars['String']['input']>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attribute_id?: InputMaybe<Scalars['String']['input']>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<Scalars['String']['input']>;
+  /** Orden de visualizaciÃ³n */
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_options_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  product_id?: InputMaybe<OrderBy>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attribute_id?: InputMaybe<OrderBy>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<OrderBy>;
+  /** Orden de visualizaciÃ³n */
+  display_order?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_images_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<Scalars['String']['input']>;
+  image_type?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen normal 600x800 */
+  image_url_normal?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom?: InputMaybe<Scalars['String']['input']>;
+  alt_text?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  is_primary?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_images_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<OrderBy>;
+  image_type?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb?: InputMaybe<OrderBy>;
+  /** Imagen normal 600x800 */
+  image_url_normal?: InputMaybe<OrderBy>;
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom?: InputMaybe<OrderBy>;
+  alt_text?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  is_primary?: InputMaybe<OrderBy>;
+};
+
+export type products_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  brand_id?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  base_price?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type products_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  brand_id?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  base_price?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
+};
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
+export type variant_attribute_options = {
+  variant_id: Scalars['Int']['output'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id: Scalars['Int']['output'];
+  /** Costo adicional para esta variante */
+  additional_cost?: Maybe<Scalars['Float']['output']>;
+  product_attribute_options?: Maybe<Array<Maybe<product_attribute_options>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+};
+
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
+export type variant_attribute_optionsproduct_attribute_optionsArgs = {
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+  orderBy?: InputMaybe<product_attribute_options_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type variant_attribute_optionsproduct_variantsArgs = {
   where?: InputMaybe<product_variants_WhereInput>;
   orderBy?: InputMaybe<product_variants_OrderByInput>;
@@ -787,7 +1211,10 @@ export type product_variants = {
   stock: Scalars['Int']['output'];
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  image_attribute_id?: Maybe<Scalars['Int']['output']>;
   order_items?: Maybe<Array<Maybe<order_items>>>;
+  attributes?: Maybe<Array<Maybe<attributes>>>;
   products?: Maybe<Array<Maybe<products>>>;
   promotion_variants?: Maybe<Array<Maybe<promotion_variants>>>;
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
@@ -801,6 +1228,14 @@ export type product_variantsorder_itemsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<order_items_WhereInput>;
   orderBy?: InputMaybe<order_items_OrderByInput>;
+};
+
+
+export type product_variantsattributesArgs = {
+  where?: InputMaybe<attributes_WhereInput>;
+  orderBy?: InputMaybe<attributes_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1049,7 +1484,10 @@ export type coupons = {
   applicable_ids?: Maybe<Scalars['JSON']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
   coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
+  users?: Maybe<Array<Maybe<users>>>;
 };
 
 
@@ -1058,6 +1496,14 @@ export type couponscoupon_usageArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<coupon_usage_WhereInput>;
   orderBy?: InputMaybe<coupon_usage_OrderByInput>;
+};
+
+
+export type couponsusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type coupons_discount_type =
@@ -1106,6 +1552,8 @@ export type coupons_WhereInput = {
   applicable_ids?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type coupons_OrderByInput = {
@@ -1127,6 +1575,8 @@ export type coupons_OrderByInput = {
   applicable_ids?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
 };
 
 export type customers = {
@@ -1479,6 +1929,8 @@ export type product_variants_WhereInput = {
   stock?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  image_attribute_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type product_variants_OrderByInput = {
@@ -1489,6 +1941,8 @@ export type product_variants_OrderByInput = {
   stock?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  image_attribute_id?: InputMaybe<OrderBy>;
 };
 
 /** Items/productos de cada orden */
@@ -1764,159 +2218,6 @@ export type payment_methods_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
-export type products = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  brand_id?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  base_price?: Maybe<Scalars['Float']['output']>;
-  product_categories?: Maybe<Array<Maybe<product_categories>>>;
-  product_variants?: Maybe<Array<Maybe<product_variants>>>;
-  brands?: Maybe<Array<Maybe<brands>>>;
-};
-
-
-export type productsproduct_categoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<product_categories_WhereInput>;
-  orderBy?: InputMaybe<product_categories_OrderByInput>;
-};
-
-
-export type productsproduct_variantsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<product_variants_WhereInput>;
-  orderBy?: InputMaybe<product_variants_OrderByInput>;
-};
-
-
-export type productsbrandsArgs = {
-  where?: InputMaybe<brands_WhereInput>;
-  orderBy?: InputMaybe<brands_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type product_categories = {
-  product_id: Scalars['Int']['output'];
-  category_id: Scalars['Int']['output'];
-  categories?: Maybe<Array<Maybe<categories>>>;
-  products?: Maybe<Array<Maybe<products>>>;
-};
-
-
-export type product_categoriescategoriesArgs = {
-  where?: InputMaybe<categories_WhereInput>;
-  orderBy?: InputMaybe<categories_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type product_categoriesproductsArgs = {
-  where?: InputMaybe<products_WhereInput>;
-  orderBy?: InputMaybe<products_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parent_id?: Maybe<Scalars['Int']['output']>;
-  image_url?: Maybe<Scalars['String']['output']>;
-  show_nav?: Maybe<Scalars['Int']['output']>;
-  display_order?: Maybe<Scalars['Int']['output']>;
-  product_categories?: Maybe<Array<Maybe<product_categories>>>;
-};
-
-
-export type categoriesproduct_categoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<product_categories_WhereInput>;
-  orderBy?: InputMaybe<product_categories_OrderByInput>;
-};
-
-export type product_categories_WhereInput = {
-  product_id?: InputMaybe<Scalars['String']['input']>;
-  category_id?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type product_categories_OrderByInput = {
-  product_id?: InputMaybe<OrderBy>;
-  category_id?: InputMaybe<OrderBy>;
-};
-
-export type categories_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parent_id?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-  show_nav?: InputMaybe<Scalars['String']['input']>;
-  display_order?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type categories_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parent_id?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-  show_nav?: InputMaybe<OrderBy>;
-  display_order?: InputMaybe<OrderBy>;
-};
-
-export type products_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  brand_id?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  base_price?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type products_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  brand_id?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  base_price?: InputMaybe<OrderBy>;
-};
-
-export type brands = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  products?: Maybe<Array<Maybe<products>>>;
-};
-
-
-export type brandsproductsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<products_WhereInput>;
-  orderBy?: InputMaybe<products_OrderByInput>;
-};
-
-export type brands_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type brands_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-};
-
 export type promotion_variants = {
   promotion_id: Scalars['Int']['output'];
   variant_id: Scalars['Int']['output'];
@@ -1958,7 +2259,10 @@ export type promotions = {
   type?: Maybe<Scalars['String']['output']>;
   image_url?: Maybe<Scalars['String']['output']>;
   display_order?: Maybe<Scalars['Int']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
   promotion_variants?: Maybe<Array<Maybe<promotion_variants>>>;
+  users?: Maybe<Array<Maybe<users>>>;
 };
 
 
@@ -1967,6 +2271,14 @@ export type promotionspromotion_variantsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<promotion_variants_WhereInput>;
   orderBy?: InputMaybe<promotion_variants_OrderByInput>;
+};
+
+
+export type promotionsusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type promotions_discount_type =
@@ -2004,6 +2316,8 @@ export type promotions_WhereInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type promotions_OrderByInput = {
@@ -2021,16 +2335,26 @@ export type promotions_OrderByInput = {
   type?: InputMaybe<OrderBy>;
   image_url?: InputMaybe<OrderBy>;
   display_order?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type variant_attribute_options_WhereInput = {
   variant_id?: InputMaybe<Scalars['String']['input']>;
-  attribute_option_id?: InputMaybe<Scalars['String']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<Scalars['String']['input']>;
+  /** Costo adicional para esta variante */
+  additional_cost?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type variant_attribute_options_OrderByInput = {
   variant_id?: InputMaybe<OrderBy>;
-  attribute_option_id?: InputMaybe<OrderBy>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<OrderBy>;
+  /** Costo adicional para esta variante */
+  additional_cost?: InputMaybe<OrderBy>;
 };
 
 /** Imágenes de variantes con múltiples tamaños y tipos */
@@ -2117,43 +2441,259 @@ export type variant_images_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
-export type banner = {
+export type product_categories = {
+  product_id: Scalars['Int']['output'];
+  category_id: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<categories>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+};
+
+
+export type product_categoriescategoriesArgs = {
+  where?: InputMaybe<categories_WhereInput>;
+  orderBy?: InputMaybe<categories_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type product_categoriesproductsArgs = {
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type categories = {
   id: Scalars['Int']['output'];
-  title: Scalars['String']['output'];
-  subtitle?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  show_nav?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
-  display_order?: Maybe<Scalars['Int']['output']>;
-  link?: Maybe<Scalars['String']['output']>;
-  image_url?: Maybe<Scalars['String']['output']>;
-  button_text?: Maybe<Scalars['String']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
+  users?: Maybe<Array<Maybe<users>>>;
+  product_categories?: Maybe<Array<Maybe<product_categories>>>;
 };
 
-export type banner_WhereInput = {
+
+export type categoriesusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type categoriesproduct_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_categories_WhereInput>;
+  orderBy?: InputMaybe<product_categories_OrderByInput>;
+};
+
+export type product_categories_WhereInput = {
+  product_id?: InputMaybe<Scalars['String']['input']>;
+  category_id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type product_categories_OrderByInput = {
+  product_id?: InputMaybe<OrderBy>;
+  category_id?: InputMaybe<OrderBy>;
+};
+
+export type categories_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  subtitle?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
+  parent_id?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  show_nav?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
-  display_order?: InputMaybe<Scalars['String']['input']>;
-  link?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-  button_text?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type banner_OrderByInput = {
+export type categories_OrderByInput = {
   id?: InputMaybe<OrderBy>;
-  title?: InputMaybe<OrderBy>;
-  subtitle?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
+  parent_id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  show_nav?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
+};
+
+export type brands_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type brands_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
+};
+
+export type password_setup_tokens = {
+  id: Scalars['Int']['output'];
+  user_id: Scalars['Int']['output'];
+  token: Scalars['String']['output'];
+  expires_at: Scalars['Timestamp']['output'];
+  used_at?: Maybe<Scalars['Timestamp']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  users?: Maybe<Array<Maybe<users>>>;
+};
+
+
+export type password_setup_tokensusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type password_setup_tokens_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['String']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  expires_at?: InputMaybe<Scalars['String']['input']>;
+  used_at?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type password_setup_tokens_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  user_id?: InputMaybe<OrderBy>;
+  token?: InputMaybe<OrderBy>;
+  expires_at?: InputMaybe<OrderBy>;
+  used_at?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
+export type roles = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  roles_sections?: Maybe<Array<Maybe<roles_sections>>>;
+  users?: Maybe<Array<Maybe<users>>>;
+};
+
+
+export type rolesroles_sectionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<roles_sections_WhereInput>;
+  orderBy?: InputMaybe<roles_sections_OrderByInput>;
+};
+
+
+export type rolesusersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+};
+
+export type roles_sections = {
+  id: Scalars['Int']['output'];
+  id_section?: Maybe<Scalars['Int']['output']>;
+  id_rol?: Maybe<Scalars['Int']['output']>;
+  roles?: Maybe<Array<Maybe<roles>>>;
+  sections?: Maybe<Array<Maybe<sections>>>;
+};
+
+
+export type roles_sectionsrolesArgs = {
+  where?: InputMaybe<roles_WhereInput>;
+  orderBy?: InputMaybe<roles_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type roles_sectionssectionsArgs = {
+  where?: InputMaybe<sections_WhereInput>;
+  orderBy?: InputMaybe<sections_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type roles_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type roles_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type sections = {
+  id: Scalars['Int']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+  image?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  roles_sections?: Maybe<Array<Maybe<roles_sections>>>;
+};
+
+
+export type sectionsroles_sectionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<roles_sections_WhereInput>;
+  orderBy?: InputMaybe<roles_sections_OrderByInput>;
+};
+
+export type roles_sections_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_section?: InputMaybe<Scalars['String']['input']>;
+  id_rol?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type roles_sections_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  id_section?: InputMaybe<OrderBy>;
+  id_rol?: InputMaybe<OrderBy>;
+};
+
+export type sections_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type sections_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+  image?: InputMaybe<OrderBy>;
   display_order?: InputMaybe<OrderBy>;
-  link?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-  button_text?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -2297,162 +2837,6 @@ export type product_rating_summary_OrderByInput = {
   two_star?: InputMaybe<OrderBy>;
   one_star?: InputMaybe<OrderBy>;
   verified_purchases?: InputMaybe<OrderBy>;
-};
-
-export type roles = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  roles_sections?: Maybe<Array<Maybe<roles_sections>>>;
-  users?: Maybe<Array<Maybe<users>>>;
-};
-
-
-export type rolesroles_sectionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<roles_sections_WhereInput>;
-  orderBy?: InputMaybe<roles_sections_OrderByInput>;
-};
-
-
-export type rolesusersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<users_WhereInput>;
-  orderBy?: InputMaybe<users_OrderByInput>;
-};
-
-export type roles_sections = {
-  id: Scalars['Int']['output'];
-  id_section?: Maybe<Scalars['Int']['output']>;
-  id_rol?: Maybe<Scalars['Int']['output']>;
-  roles?: Maybe<Array<Maybe<roles>>>;
-  sections?: Maybe<Array<Maybe<sections>>>;
-};
-
-
-export type roles_sectionsrolesArgs = {
-  where?: InputMaybe<roles_WhereInput>;
-  orderBy?: InputMaybe<roles_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type roles_sectionssectionsArgs = {
-  where?: InputMaybe<sections_WhereInput>;
-  orderBy?: InputMaybe<sections_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type roles_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type roles_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
-export type sections = {
-  id: Scalars['Int']['output'];
-  name?: Maybe<Scalars['String']['output']>;
-  url?: Maybe<Scalars['String']['output']>;
-  image?: Maybe<Scalars['String']['output']>;
-  display_order?: Maybe<Scalars['Int']['output']>;
-  roles_sections?: Maybe<Array<Maybe<roles_sections>>>;
-};
-
-
-export type sectionsroles_sectionsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<roles_sections_WhereInput>;
-  orderBy?: InputMaybe<roles_sections_OrderByInput>;
-};
-
-export type roles_sections_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_section?: InputMaybe<Scalars['String']['input']>;
-  id_rol?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type roles_sections_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  id_section?: InputMaybe<OrderBy>;
-  id_rol?: InputMaybe<OrderBy>;
-};
-
-export type sections_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  url?: InputMaybe<Scalars['String']['input']>;
-  image?: InputMaybe<Scalars['String']['input']>;
-  display_order?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type sections_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  url?: InputMaybe<OrderBy>;
-  image?: InputMaybe<OrderBy>;
-  display_order?: InputMaybe<OrderBy>;
-};
-
-export type users = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  email: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  role_id?: Maybe<Scalars['Int']['output']>;
-  is_active?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  lastname: Scalars['String']['output'];
-  photo?: Maybe<Scalars['String']['output']>;
-  roles?: Maybe<Array<Maybe<roles>>>;
-};
-
-
-export type usersrolesArgs = {
-  where?: InputMaybe<roles_WhereInput>;
-  orderBy?: InputMaybe<roles_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type users_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
-  password?: InputMaybe<Scalars['String']['input']>;
-  role_id?: InputMaybe<Scalars['String']['input']>;
-  is_active?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  lastname?: InputMaybe<Scalars['String']['input']>;
-  photo?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type users_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  email?: InputMaybe<OrderBy>;
-  password?: InputMaybe<OrderBy>;
-  role_id?: InputMaybe<OrderBy>;
-  is_active?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  lastname?: InputMaybe<OrderBy>;
-  photo?: InputMaybe<OrderBy>;
 };
 
 export type services = {
@@ -2729,9 +3113,6 @@ export type variant_rating_summary_OrderByInput = {
 };
 
 export type Mutation = {
-  insert_attribute_option_images?: Maybe<attribute_option_images>;
-  update_attribute_option_images?: Maybe<attribute_option_images>;
-  delete_attribute_option_images?: Maybe<Scalars['Boolean']['output']>;
   insert_attribute_options?: Maybe<attribute_options>;
   update_attribute_options?: Maybe<attribute_options>;
   delete_attribute_options?: Maybe<Scalars['Boolean']['output']>;
@@ -2771,6 +3152,9 @@ export type Mutation = {
   insert_orders?: Maybe<orders>;
   update_orders?: Maybe<orders>;
   delete_orders?: Maybe<Scalars['Boolean']['output']>;
+  insert_password_setup_tokens?: Maybe<password_setup_tokens>;
+  update_password_setup_tokens?: Maybe<password_setup_tokens>;
+  delete_password_setup_tokens?: Maybe<Scalars['Boolean']['output']>;
   insert_payment_methods?: Maybe<payment_methods>;
   update_payment_methods?: Maybe<payment_methods>;
   delete_payment_methods?: Maybe<Scalars['Boolean']['output']>;
@@ -2780,6 +3164,12 @@ export type Mutation = {
   insert_permissions?: Maybe<permissions>;
   update_permissions?: Maybe<permissions>;
   delete_permissions?: Maybe<Scalars['Boolean']['output']>;
+  insert_product_attribute_option_images?: Maybe<product_attribute_option_images>;
+  update_product_attribute_option_images?: Maybe<product_attribute_option_images>;
+  delete_product_attribute_option_images?: Maybe<Scalars['Boolean']['output']>;
+  insert_product_attribute_options?: Maybe<product_attribute_options>;
+  update_product_attribute_options?: Maybe<product_attribute_options>;
+  delete_product_attribute_options?: Maybe<Scalars['Boolean']['output']>;
   insert_product_categories?: Maybe<product_categories>;
   update_product_categories?: Maybe<product_categories>;
   delete_product_categories?: Maybe<Scalars['Boolean']['output']>;
@@ -2840,22 +3230,6 @@ export type Mutation = {
   insert_variant_ratings?: Maybe<variant_ratings>;
   update_variant_ratings?: Maybe<variant_ratings>;
   delete_variant_ratings?: Maybe<Scalars['Boolean']['output']>;
-};
-
-
-export type Mutationinsert_attribute_option_imagesArgs = {
-  attribute_option_images: attribute_option_images_InsertInput;
-};
-
-
-export type Mutationupdate_attribute_option_imagesArgs = {
-  attribute_option_images: attribute_option_images_UpdateInput;
-  where?: InputMaybe<attribute_option_images_WhereInput>;
-};
-
-
-export type Mutationdelete_attribute_option_imagesArgs = {
-  where?: InputMaybe<attribute_option_images_WhereInput>;
 };
 
 
@@ -3067,6 +3441,22 @@ export type Mutationdelete_ordersArgs = {
 };
 
 
+export type Mutationinsert_password_setup_tokensArgs = {
+  password_setup_tokens: password_setup_tokens_InsertInput;
+};
+
+
+export type Mutationupdate_password_setup_tokensArgs = {
+  password_setup_tokens: password_setup_tokens_UpdateInput;
+  where?: InputMaybe<password_setup_tokens_WhereInput>;
+};
+
+
+export type Mutationdelete_password_setup_tokensArgs = {
+  where?: InputMaybe<password_setup_tokens_WhereInput>;
+};
+
+
 export type Mutationinsert_payment_methodsArgs = {
   payment_methods: payment_methods_InsertInput;
 };
@@ -3112,6 +3502,38 @@ export type Mutationupdate_permissionsArgs = {
 
 export type Mutationdelete_permissionsArgs = {
   where?: InputMaybe<permissions_WhereInput>;
+};
+
+
+export type Mutationinsert_product_attribute_option_imagesArgs = {
+  product_attribute_option_images: product_attribute_option_images_InsertInput;
+};
+
+
+export type Mutationupdate_product_attribute_option_imagesArgs = {
+  product_attribute_option_images: product_attribute_option_images_UpdateInput;
+  where?: InputMaybe<product_attribute_option_images_WhereInput>;
+};
+
+
+export type Mutationdelete_product_attribute_option_imagesArgs = {
+  where?: InputMaybe<product_attribute_option_images_WhereInput>;
+};
+
+
+export type Mutationinsert_product_attribute_optionsArgs = {
+  product_attribute_options: product_attribute_options_InsertInput;
+};
+
+
+export type Mutationupdate_product_attribute_optionsArgs = {
+  product_attribute_options: product_attribute_options_UpdateInput;
+  where?: InputMaybe<product_attribute_options_WhereInput>;
+};
+
+
+export type Mutationdelete_product_attribute_optionsArgs = {
+  where?: InputMaybe<product_attribute_options_WhereInput>;
 };
 
 
@@ -3434,44 +3856,6 @@ export type Mutationdelete_variant_ratingsArgs = {
   where?: InputMaybe<variant_ratings_WhereInput>;
 };
 
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_images_InsertInput = {
-  id?: InputMaybe<Scalars['Int']['input']>;
-  attribute_option_id: Scalars['Int']['input'];
-  image_type?: InputMaybe<attribute_option_images_image_type>;
-  display_order?: InputMaybe<Scalars['Int']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  image_url_thumb: Scalars['String']['input'];
-  /** Imagen normal 600x800 (opcional) */
-  image_url_normal: Scalars['String']['input'];
-  /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom: Scalars['String']['input'];
-  /** Texto alternativo */
-  alt_text?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
-  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
-  is_primary?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** Imágenes para opciones de atributos (colores, materiales, etc.) */
-export type attribute_option_images_UpdateInput = {
-  id?: InputMaybe<Scalars['Int']['input']>;
-  attribute_option_id?: InputMaybe<Scalars['Int']['input']>;
-  image_type?: InputMaybe<attribute_option_images_image_type>;
-  display_order?: InputMaybe<Scalars['Int']['input']>;
-  /** Imagen thumbnail 140x140 para selector de atributo */
-  image_url_thumb?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen normal 600x800 (opcional) */
-  image_url_normal?: InputMaybe<Scalars['String']['input']>;
-  /** Imagen zoom 1200x1200 (opcional) */
-  image_url_zoom?: InputMaybe<Scalars['String']['input']>;
-  /** Texto alternativo */
-  alt_text?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
-  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
-  is_primary?: InputMaybe<Scalars['Int']['input']>;
-};
-
 export type attribute_options_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   attribute_id: Scalars['Int']['input'];
@@ -3490,12 +3874,20 @@ export type attributes_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   display_type?: InputMaybe<attributes_display_type>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type attributes_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   display_type?: InputMaybe<attributes_display_type>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type banner_InsertInput = {
@@ -3509,6 +3901,8 @@ export type banner_InsertInput = {
   link?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   button_text?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type banner_UpdateInput = {
@@ -3522,16 +3916,26 @@ export type banner_UpdateInput = {
   link?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   button_text?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type brands_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type brands_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type categories_InsertInput = {
@@ -3542,6 +3946,10 @@ export type categories_InsertInput = {
   image_url?: InputMaybe<Scalars['String']['input']>;
   show_nav?: InputMaybe<Scalars['Int']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type categories_UpdateInput = {
@@ -3552,6 +3960,10 @@ export type categories_UpdateInput = {
   image_url?: InputMaybe<Scalars['String']['input']>;
   show_nav?: InputMaybe<Scalars['Int']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type coupon_usage_InsertInput = {
@@ -3591,6 +4003,8 @@ export type coupons_InsertInput = {
   applicable_ids?: InputMaybe<Scalars['JSON']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type coupons_UpdateInput = {
@@ -3612,6 +4026,8 @@ export type coupons_UpdateInput = {
   applicable_ids?: InputMaybe<Scalars['JSON']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type customers_InsertInput = {
@@ -3898,6 +4314,24 @@ export type orders_UpdateInput = {
   admin_notes?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type password_setup_tokens_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  user_id: Scalars['Int']['input'];
+  token: Scalars['String']['input'];
+  expires_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type password_setup_tokens_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+  token?: InputMaybe<Scalars['String']['input']>;
+  expires_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type payment_methods_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -3986,6 +4420,74 @@ export type permissions_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_images_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id: Scalars['Int']['input'];
+  image_type?: InputMaybe<product_attribute_option_images_image_type>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb: Scalars['String']['input'];
+  /** Imagen normal 600x800 */
+  image_url_normal: Scalars['String']['input'];
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom: Scalars['String']['input'];
+  alt_text?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  is_primary?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** ImÃ¡genes para opciones de atributos especÃ­ficas del producto */
+export type product_attribute_option_images_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<Scalars['Int']['input']>;
+  image_type?: InputMaybe<product_attribute_option_images_image_type>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  /** Imagen thumbnail 140x140 */
+  image_url_thumb?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen normal 600x800 */
+  image_url_normal?: InputMaybe<Scalars['String']['input']>;
+  /** Imagen zoom 1200x1200 */
+  image_url_zoom?: InputMaybe<Scalars['String']['input']>;
+  alt_text?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  is_primary?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_options_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  product_id: Scalars['Int']['input'];
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attribute_id: Scalars['Int']['input'];
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value: Scalars['String']['input'];
+  /** Orden de visualizaciÃ³n */
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Opciones de atributos especÃ­ficas de cada producto */
+export type product_attribute_options_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del producto al que pertenece esta opciÃ³n */
+  product_id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID del atributo (Color, Almacenamiento, etc.) */
+  attribute_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Valor de la opciÃ³n (ej: "Titanio Negro", "128GB") */
+  value?: InputMaybe<Scalars['String']['input']>;
+  /** Orden de visualizaciÃ³n */
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type product_categories_InsertInput = {
   product_id: Scalars['Int']['input'];
   category_id: Scalars['Int']['input'];
@@ -4030,6 +4532,8 @@ export type product_variants_InsertInput = {
   stock?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  image_attribute_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type product_variants_UpdateInput = {
@@ -4040,6 +4544,8 @@ export type product_variants_UpdateInput = {
   stock?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
+  image_attribute_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type products_InsertInput = {
@@ -4050,6 +4556,8 @@ export type products_InsertInput = {
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   base_price?: InputMaybe<Scalars['Float']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type products_UpdateInput = {
@@ -4060,6 +4568,8 @@ export type products_UpdateInput = {
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   base_price?: InputMaybe<Scalars['Float']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type promotion_variants_InsertInput = {
@@ -4093,6 +4603,8 @@ export type promotions_InsertInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type promotions_UpdateInput = {
@@ -4110,6 +4622,8 @@ export type promotions_UpdateInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   image_url?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  updated_by?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type rating_images_InsertInput = {
@@ -4314,14 +4828,22 @@ export type users_UpdateInput = {
   photo?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type variant_attribute_options_InsertInput = {
   variant_id: Scalars['Int']['input'];
-  attribute_option_id: Scalars['Int']['input'];
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id: Scalars['Int']['input'];
+  /** Costo adicional para esta variante */
+  additional_cost?: InputMaybe<Scalars['Float']['input']>;
 };
 
+/** AsociaciÃ³n entre variantes y opciones de atributos del producto */
 export type variant_attribute_options_UpdateInput = {
   variant_id?: InputMaybe<Scalars['Int']['input']>;
-  attribute_option_id?: InputMaybe<Scalars['Int']['input']>;
+  /** ID de la opciÃ³n especÃ­fica del producto */
+  product_attribute_option_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Costo adicional para esta variante */
+  additional_cost?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** Imágenes de variantes con múltiples tamaños y tipos */
@@ -4418,10 +4940,6 @@ export type variant_ratings_UpdateInput = {
 
   export type QuerySdk = {
       /** undefined **/
-  attribute_option_images: InContextSdkMethod<Query['attribute_option_images'], Queryattribute_option_imagesArgs, MeshContext>,
-  /** undefined **/
-  count_attribute_option_images: InContextSdkMethod<Query['count_attribute_option_images'], Querycount_attribute_option_imagesArgs, MeshContext>,
-  /** undefined **/
   attribute_options: InContextSdkMethod<Query['attribute_options'], Queryattribute_optionsArgs, MeshContext>,
   /** undefined **/
   count_attribute_options: InContextSdkMethod<Query['count_attribute_options'], Querycount_attribute_optionsArgs, MeshContext>,
@@ -4474,6 +4992,10 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_orders: InContextSdkMethod<Query['count_orders'], Querycount_ordersArgs, MeshContext>,
   /** undefined **/
+  password_setup_tokens: InContextSdkMethod<Query['password_setup_tokens'], Querypassword_setup_tokensArgs, MeshContext>,
+  /** undefined **/
+  count_password_setup_tokens: InContextSdkMethod<Query['count_password_setup_tokens'], Querycount_password_setup_tokensArgs, MeshContext>,
+  /** undefined **/
   payment_methods: InContextSdkMethod<Query['payment_methods'], Querypayment_methodsArgs, MeshContext>,
   /** undefined **/
   count_payment_methods: InContextSdkMethod<Query['count_payment_methods'], Querycount_payment_methodsArgs, MeshContext>,
@@ -4485,6 +5007,14 @@ export type variant_ratings_UpdateInput = {
   permissions: InContextSdkMethod<Query['permissions'], QuerypermissionsArgs, MeshContext>,
   /** undefined **/
   count_permissions: InContextSdkMethod<Query['count_permissions'], Querycount_permissionsArgs, MeshContext>,
+  /** undefined **/
+  product_attribute_option_images: InContextSdkMethod<Query['product_attribute_option_images'], Queryproduct_attribute_option_imagesArgs, MeshContext>,
+  /** undefined **/
+  count_product_attribute_option_images: InContextSdkMethod<Query['count_product_attribute_option_images'], Querycount_product_attribute_option_imagesArgs, MeshContext>,
+  /** undefined **/
+  product_attribute_options: InContextSdkMethod<Query['product_attribute_options'], Queryproduct_attribute_optionsArgs, MeshContext>,
+  /** undefined **/
+  count_product_attribute_options: InContextSdkMethod<Query['count_product_attribute_options'], Querycount_product_attribute_optionsArgs, MeshContext>,
   /** undefined **/
   product_categories: InContextSdkMethod<Query['product_categories'], Queryproduct_categoriesArgs, MeshContext>,
   /** undefined **/
@@ -4569,12 +5099,6 @@ export type variant_ratings_UpdateInput = {
 
   export type MutationSdk = {
       /** undefined **/
-  insert_attribute_option_images: InContextSdkMethod<Mutation['insert_attribute_option_images'], Mutationinsert_attribute_option_imagesArgs, MeshContext>,
-  /** undefined **/
-  update_attribute_option_images: InContextSdkMethod<Mutation['update_attribute_option_images'], Mutationupdate_attribute_option_imagesArgs, MeshContext>,
-  /** undefined **/
-  delete_attribute_option_images: InContextSdkMethod<Mutation['delete_attribute_option_images'], Mutationdelete_attribute_option_imagesArgs, MeshContext>,
-  /** undefined **/
   insert_attribute_options: InContextSdkMethod<Mutation['insert_attribute_options'], Mutationinsert_attribute_optionsArgs, MeshContext>,
   /** undefined **/
   update_attribute_options: InContextSdkMethod<Mutation['update_attribute_options'], Mutationupdate_attribute_optionsArgs, MeshContext>,
@@ -4653,6 +5177,12 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   delete_orders: InContextSdkMethod<Mutation['delete_orders'], Mutationdelete_ordersArgs, MeshContext>,
   /** undefined **/
+  insert_password_setup_tokens: InContextSdkMethod<Mutation['insert_password_setup_tokens'], Mutationinsert_password_setup_tokensArgs, MeshContext>,
+  /** undefined **/
+  update_password_setup_tokens: InContextSdkMethod<Mutation['update_password_setup_tokens'], Mutationupdate_password_setup_tokensArgs, MeshContext>,
+  /** undefined **/
+  delete_password_setup_tokens: InContextSdkMethod<Mutation['delete_password_setup_tokens'], Mutationdelete_password_setup_tokensArgs, MeshContext>,
+  /** undefined **/
   insert_payment_methods: InContextSdkMethod<Mutation['insert_payment_methods'], Mutationinsert_payment_methodsArgs, MeshContext>,
   /** undefined **/
   update_payment_methods: InContextSdkMethod<Mutation['update_payment_methods'], Mutationupdate_payment_methodsArgs, MeshContext>,
@@ -4670,6 +5200,18 @@ export type variant_ratings_UpdateInput = {
   update_permissions: InContextSdkMethod<Mutation['update_permissions'], Mutationupdate_permissionsArgs, MeshContext>,
   /** undefined **/
   delete_permissions: InContextSdkMethod<Mutation['delete_permissions'], Mutationdelete_permissionsArgs, MeshContext>,
+  /** undefined **/
+  insert_product_attribute_option_images: InContextSdkMethod<Mutation['insert_product_attribute_option_images'], Mutationinsert_product_attribute_option_imagesArgs, MeshContext>,
+  /** undefined **/
+  update_product_attribute_option_images: InContextSdkMethod<Mutation['update_product_attribute_option_images'], Mutationupdate_product_attribute_option_imagesArgs, MeshContext>,
+  /** undefined **/
+  delete_product_attribute_option_images: InContextSdkMethod<Mutation['delete_product_attribute_option_images'], Mutationdelete_product_attribute_option_imagesArgs, MeshContext>,
+  /** undefined **/
+  insert_product_attribute_options: InContextSdkMethod<Mutation['insert_product_attribute_options'], Mutationinsert_product_attribute_optionsArgs, MeshContext>,
+  /** undefined **/
+  update_product_attribute_options: InContextSdkMethod<Mutation['update_product_attribute_options'], Mutationupdate_product_attribute_optionsArgs, MeshContext>,
+  /** undefined **/
+  delete_product_attribute_options: InContextSdkMethod<Mutation['delete_product_attribute_options'], Mutationdelete_product_attribute_optionsArgs, MeshContext>,
   /** undefined **/
   insert_product_categories: InContextSdkMethod<Mutation['insert_product_categories'], Mutationinsert_product_categoriesArgs, MeshContext>,
   /** undefined **/

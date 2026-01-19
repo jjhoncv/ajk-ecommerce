@@ -32,20 +32,6 @@ export const CategoryFields: Field[] = [
     type: 'text'
   },
   {
-    key: 'image_url',
-    label: 'Imagen de la categoría',
-    type: 'file',
-    multiple: false,
-    required: false,
-    options: CategoryFileOptions
-  },
-  {
-    key: 'display_order',
-    label: 'Orden de visualización',
-    type: 'text',
-    placeholder: 'Menor número = mayor prioridad'
-  },
-  {
     key: 'show_nav',
     label: 'Mostrar en navegación',
     type: 'select',
@@ -53,5 +39,13 @@ export const CategoryFields: Field[] = [
       { value: '1', label: 'Sí - Mostrar en menú' },
       { value: '0', label: 'No - Ocultar del menú' }
     ]
+  },
+  {
+    key: 'image_url',
+    label: 'Imagen de la categoría',
+    type: 'file',
+    multiple: false,
+    required: false,
+    options: CategoryFileOptions
   }
 ]

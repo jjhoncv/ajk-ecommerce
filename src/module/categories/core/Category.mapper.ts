@@ -9,7 +9,11 @@ export const CategoryMapper = (data: CategoryRaw): Category => {
     imageUrl: data.image_url,
     parentId: data.parent_id,
     displayOrder: data.display_order,
-    showNav: data.show_nav
+    showNav: data.show_nav,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+    createdBy: data.created_by,
+    updatedBy: data.updated_by
   }
 }
 

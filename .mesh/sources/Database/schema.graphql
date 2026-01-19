@@ -18,8 +18,6 @@ directive @mysqlTableForeign(subgraph: String, columnName: String) on FIELD_DEFI
 directive @mysqlCount(subgraph: String, table: String) on FIELD_DEFINITION
 
 type Query {
-  attribute_option_images(limit: Int, offset: Int, where: attribute_option_images_WhereInput, orderBy: attribute_option_images_OrderByInput): [attribute_option_images] @mysqlSelect(subgraph: "Database", table: "attribute_option_images")
-  count_attribute_option_images(where: attribute_option_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "attribute_option_images")
   attribute_options(limit: Int, offset: Int, where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options")
   count_attribute_options(where: attribute_options_WhereInput): Int @mysqlCount(subgraph: "Database", table: "attribute_options")
   attributes(limit: Int, offset: Int, where: attributes_WhereInput, orderBy: attributes_OrderByInput): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes")
@@ -46,12 +44,18 @@ type Query {
   count_order_tracking(where: order_tracking_WhereInput): Int @mysqlCount(subgraph: "Database", table: "order_tracking")
   orders(limit: Int, offset: Int, where: orders_WhereInput, orderBy: orders_OrderByInput): [orders] @mysqlSelect(subgraph: "Database", table: "orders")
   count_orders(where: orders_WhereInput): Int @mysqlCount(subgraph: "Database", table: "orders")
+  password_setup_tokens(limit: Int, offset: Int, where: password_setup_tokens_WhereInput, orderBy: password_setup_tokens_OrderByInput): [password_setup_tokens] @mysqlSelect(subgraph: "Database", table: "password_setup_tokens")
+  count_password_setup_tokens(where: password_setup_tokens_WhereInput): Int @mysqlCount(subgraph: "Database", table: "password_setup_tokens")
   payment_methods(limit: Int, offset: Int, where: payment_methods_WhereInput, orderBy: payment_methods_OrderByInput): [payment_methods] @mysqlSelect(subgraph: "Database", table: "payment_methods")
   count_payment_methods(where: payment_methods_WhereInput): Int @mysqlCount(subgraph: "Database", table: "payment_methods")
   payment_transactions(limit: Int, offset: Int, where: payment_transactions_WhereInput, orderBy: payment_transactions_OrderByInput): [payment_transactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions")
   count_payment_transactions(where: payment_transactions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "payment_transactions")
   permissions(limit: Int, offset: Int, where: permissions_WhereInput, orderBy: permissions_OrderByInput): [permissions] @mysqlSelect(subgraph: "Database", table: "permissions")
   count_permissions(where: permissions_WhereInput): Int @mysqlCount(subgraph: "Database", table: "permissions")
+  product_attribute_option_images(limit: Int, offset: Int, where: product_attribute_option_images_WhereInput, orderBy: product_attribute_option_images_OrderByInput): [product_attribute_option_images] @mysqlSelect(subgraph: "Database", table: "product_attribute_option_images")
+  count_product_attribute_option_images(where: product_attribute_option_images_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_attribute_option_images")
+  product_attribute_options(limit: Int, offset: Int, where: product_attribute_options_WhereInput, orderBy: product_attribute_options_OrderByInput): [product_attribute_options] @mysqlSelect(subgraph: "Database", table: "product_attribute_options")
+  count_product_attribute_options(where: product_attribute_options_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_attribute_options")
   product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories")
   count_product_categories(where: product_categories_WhereInput): Int @mysqlCount(subgraph: "Database", table: "product_categories")
   product_rating_summary(limit: Int, offset: Int, where: product_rating_summary_WhereInput, orderBy: product_rating_summary_OrderByInput): [product_rating_summary] @mysqlSelect(subgraph: "Database", table: "product_rating_summary")
@@ -94,101 +98,26 @@ type Query {
   count_variant_ratings(where: variant_ratings_WhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_ratings")
 }
 
-"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
-type attribute_option_images {
-  id: Int!
-  attribute_option_id: Int!
-  image_type: attribute_option_images_image_type!
-  display_order: Int
-  """Imagen thumbnail 140x140 para selector de atributo"""
-  image_url_thumb: String!
-  """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String!
-  """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String!
-  """Texto alternativo"""
-  alt_text: String
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  is_primary: Int
-  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
-}
-
-enum attribute_option_images_image_type {
-  front
-  back
-  left
-  right
-  top
-  bottom
-  detail
-  lifestyle
-  packaging
-}
-
-"""
-The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
-
 type attribute_options {
   id: Int!
   attribute_id: Int!
   value: String!
   additional_cost: Float
-  attribute_option_images(limit: Int, offset: Int, where: attribute_option_images_WhereInput, orderBy: attribute_option_images_OrderByInput): [attribute_option_images] @mysqlSelect(subgraph: "Database", table: "attribute_option_images", columnMap: [["attribute_option_id", "id"]])
   attributes(where: attributes_WhereInput, orderBy: attributes_OrderByInput, limit: Int, offset: Int): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_id")
-  variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["attribute_option_id", "id"]])
-}
-
-"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
-input attribute_option_images_WhereInput {
-  id: String
-  attribute_option_id: String
-  image_type: String
-  display_order: String
-  """Imagen thumbnail 140x140 para selector de atributo"""
-  image_url_thumb: String
-  """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String
-  """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String
-  """Texto alternativo"""
-  alt_text: String
-  created_at: String
-  updated_at: String
-  is_primary: String
-}
-
-"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
-input attribute_option_images_OrderByInput {
-  id: OrderBy
-  attribute_option_id: OrderBy
-  image_type: OrderBy
-  display_order: OrderBy
-  """Imagen thumbnail 140x140 para selector de atributo"""
-  image_url_thumb: OrderBy
-  """Imagen normal 600x800 (opcional)"""
-  image_url_normal: OrderBy
-  """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: OrderBy
-  """Texto alternativo"""
-  alt_text: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-  is_primary: OrderBy
-}
-
-enum OrderBy {
-  asc
-  desc
 }
 
 type attributes {
   id: Int!
   name: String!
   display_type: attributes_display_type!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  created_by: Int
+  updated_by: Int
   attribute_options(limit: Int, offset: Int, where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["attribute_id", "id"]])
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+  product_attribute_options(limit: Int, offset: Int, where: product_attribute_options_WhereInput, orderBy: product_attribute_options_OrderByInput): [product_attribute_options] @mysqlSelect(subgraph: "Database", table: "product_attribute_options", columnMap: [["attribute_id", "id"]])
+  product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["image_attribute_id", "id"]])
 }
 
 enum attributes_display_type {
@@ -198,6 +127,11 @@ enum attributes_display_type {
   color
   custom
 }
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
 
 input attribute_options_WhereInput {
   id: String
@@ -213,22 +147,304 @@ input attribute_options_OrderByInput {
   additional_cost: OrderBy
 }
 
+enum OrderBy {
+  asc
+  desc
+}
+
+type users {
+  id: Int!
+  name: String!
+  email: String!
+  password: String!
+  role_id: Int
+  is_active: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  lastname: String!
+  photo: String
+  attributes(limit: Int, offset: Int, where: attributes_WhereInput, orderBy: attributes_OrderByInput): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["updated_by", "id"]])
+  banner(limit: Int, offset: Int, where: banner_WhereInput, orderBy: banner_OrderByInput): [banner] @mysqlSelect(subgraph: "Database", table: "banner", columnMap: [["updated_by", "id"]])
+  brands(limit: Int, offset: Int, where: brands_WhereInput, orderBy: brands_OrderByInput): [brands] @mysqlSelect(subgraph: "Database", table: "brands", columnMap: [["updated_by", "id"]])
+  categories(limit: Int, offset: Int, where: categories_WhereInput, orderBy: categories_OrderByInput): [categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["updated_by", "id"]])
+  coupons(limit: Int, offset: Int, where: coupons_WhereInput, orderBy: coupons_OrderByInput): [coupons] @mysqlSelect(subgraph: "Database", table: "coupons", columnMap: [["updated_by", "id"]])
+  password_setup_tokens(limit: Int, offset: Int, where: password_setup_tokens_WhereInput, orderBy: password_setup_tokens_OrderByInput): [password_setup_tokens] @mysqlSelect(subgraph: "Database", table: "password_setup_tokens", columnMap: [["user_id", "id"]])
+  products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["updated_by", "id"]])
+  promotions(limit: Int, offset: Int, where: promotions_WhereInput, orderBy: promotions_OrderByInput): [promotions] @mysqlSelect(subgraph: "Database", table: "promotions", columnMap: [["updated_by", "id"]])
+  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "role_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "role_id")
+}
+
 input attributes_WhereInput {
   id: String
   name: String
   display_type: String
+  created_at: String
+  updated_at: String
+  created_by: String
+  updated_by: String
 }
 
 input attributes_OrderByInput {
   id: OrderBy
   name: OrderBy
   display_type: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
 }
 
+type banner {
+  id: Int!
+  title: String!
+  subtitle: String
+  description: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  display_order: Int
+  link: String
+  image_url: String
+  button_text: String
+  created_by: Int
+  updated_by: Int
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+}
+
+input users_WhereInput {
+  id: String
+  name: String
+  email: String
+  password: String
+  role_id: String
+  is_active: String
+  created_at: String
+  updated_at: String
+  lastname: String
+  photo: String
+}
+
+input users_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  email: OrderBy
+  password: OrderBy
+  role_id: OrderBy
+  is_active: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  lastname: OrderBy
+  photo: OrderBy
+}
+
+input banner_WhereInput {
+  id: String
+  title: String
+  subtitle: String
+  description: String
+  created_at: String
+  updated_at: String
+  display_order: String
+  link: String
+  image_url: String
+  button_text: String
+  created_by: String
+  updated_by: String
+}
+
+input banner_OrderByInput {
+  id: OrderBy
+  title: OrderBy
+  subtitle: OrderBy
+  description: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  display_order: OrderBy
+  link: OrderBy
+  image_url: OrderBy
+  button_text: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
+}
+
+type brands {
+  id: Int!
+  name: String!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  created_by: Int
+  updated_by: Int
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+  products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["brand_id", "id"]])
+}
+
+type products {
+  id: Int!
+  name: String!
+  description: String
+  brand_id: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  base_price: Float
+  created_by: Int
+  updated_by: Int
+  product_attribute_options(limit: Int, offset: Int, where: product_attribute_options_WhereInput, orderBy: product_attribute_options_OrderByInput): [product_attribute_options] @mysqlSelect(subgraph: "Database", table: "product_attribute_options", columnMap: [["product_id", "id"]])
+  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["product_id", "id"]])
+  product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["product_id", "id"]])
+  brands(where: brands_WhereInput, orderBy: brands_OrderByInput, limit: Int, offset: Int): [brands] @mysqlSelect(subgraph: "Database", table: "brands", columnMap: [["id", "brand_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "brand_id")
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+}
+
+"""Opciones de atributos especÃ­ficas de cada producto"""
+type product_attribute_options {
+  id: Int!
+  """ID del producto al que pertenece esta opciÃ³n"""
+  product_id: Int!
+  """ID del atributo (Color, Almacenamiento, etc.)"""
+  attribute_id: Int!
+  """Valor de la opciÃ³n (ej: "Titanio Negro", "128GB")"""
+  value: String!
+  """Orden de visualizaciÃ³n"""
+  display_order: Int
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  product_attribute_option_images(limit: Int, offset: Int, where: product_attribute_option_images_WhereInput, orderBy: product_attribute_option_images_OrderByInput): [product_attribute_option_images] @mysqlSelect(subgraph: "Database", table: "product_attribute_option_images", columnMap: [["product_attribute_option_id", "id"]])
+  attributes(where: attributes_WhereInput, orderBy: attributes_OrderByInput, limit: Int, offset: Int): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_id")
+  products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
+  variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["product_attribute_option_id", "id"]])
+}
+
+"""ImÃ¡genes para opciones de atributos especÃ­ficas del producto"""
+type product_attribute_option_images {
+  id: Int!
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int!
+  image_type: product_attribute_option_images_image_type!
+  display_order: Int
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String!
+  """Imagen normal 600x800"""
+  image_url_normal: String!
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String!
+  alt_text: String
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  is_primary: Int
+  product_attribute_options(where: product_attribute_options_WhereInput, orderBy: product_attribute_options_OrderByInput, limit: Int, offset: Int): [product_attribute_options] @mysqlSelect(subgraph: "Database", table: "product_attribute_options", columnMap: [["id", "product_attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_attribute_option_id")
+}
+
+enum product_attribute_option_images_image_type {
+  front
+  back
+  left
+  right
+  top
+  bottom
+  detail
+  lifestyle
+  packaging
+}
+
+"""Opciones de atributos especÃ­ficas de cada producto"""
+input product_attribute_options_WhereInput {
+  id: String
+  """ID del producto al que pertenece esta opciÃ³n"""
+  product_id: String
+  """ID del atributo (Color, Almacenamiento, etc.)"""
+  attribute_id: String
+  """Valor de la opciÃ³n (ej: "Titanio Negro", "128GB")"""
+  value: String
+  """Orden de visualizaciÃ³n"""
+  display_order: String
+  created_at: String
+  updated_at: String
+}
+
+"""Opciones de atributos especÃ­ficas de cada producto"""
+input product_attribute_options_OrderByInput {
+  id: OrderBy
+  """ID del producto al que pertenece esta opciÃ³n"""
+  product_id: OrderBy
+  """ID del atributo (Color, Almacenamiento, etc.)"""
+  attribute_id: OrderBy
+  """Valor de la opciÃ³n (ej: "Titanio Negro", "128GB")"""
+  value: OrderBy
+  """Orden de visualizaciÃ³n"""
+  display_order: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+"""ImÃ¡genes para opciones de atributos especÃ­ficas del producto"""
+input product_attribute_option_images_WhereInput {
+  id: String
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: String
+  image_type: String
+  display_order: String
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String
+  """Imagen normal 600x800"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String
+  alt_text: String
+  created_at: String
+  updated_at: String
+  is_primary: String
+}
+
+"""ImÃ¡genes para opciones de atributos especÃ­ficas del producto"""
+input product_attribute_option_images_OrderByInput {
+  id: OrderBy
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: OrderBy
+  image_type: OrderBy
+  display_order: OrderBy
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: OrderBy
+  """Imagen normal 600x800"""
+  image_url_normal: OrderBy
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: OrderBy
+  alt_text: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  is_primary: OrderBy
+}
+
+input products_WhereInput {
+  id: String
+  name: String
+  description: String
+  brand_id: String
+  created_at: String
+  updated_at: String
+  base_price: String
+  created_by: String
+  updated_by: String
+}
+
+input products_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  brand_id: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  base_price: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
+}
+
+"""AsociaciÃ³n entre variantes y opciones de atributos del producto"""
 type variant_attribute_options {
   variant_id: Int!
-  attribute_option_id: Int!
-  attribute_options(where: attribute_options_WhereInput, orderBy: attribute_options_OrderByInput, limit: Int, offset: Int): [attribute_options] @mysqlSelect(subgraph: "Database", table: "attribute_options", columnMap: [["id", "attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "attribute_option_id")
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int!
+  """Costo adicional para esta variante"""
+  additional_cost: Float
+  product_attribute_options(where: product_attribute_options_WhereInput, orderBy: product_attribute_options_OrderByInput, limit: Int, offset: Int): [product_attribute_options] @mysqlSelect(subgraph: "Database", table: "product_attribute_options", columnMap: [["id", "product_attribute_option_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_attribute_option_id")
   product_variants(where: product_variants_WhereInput, orderBy: product_variants_OrderByInput, limit: Int, offset: Int): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
 }
 
@@ -240,7 +456,12 @@ type product_variants {
   stock: Int!
   created_at: Timestamp!
   updated_at: Timestamp!
+  """
+  ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
+  """
+  image_attribute_id: Int
   order_items(limit: Int, offset: Int, where: order_items_WhereInput, orderBy: order_items_OrderByInput): [order_items] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["variant_id", "id"]])
+  attributes(where: attributes_WhereInput, orderBy: attributes_OrderByInput, limit: Int, offset: Int): [attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "image_attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "image_attribute_id")
   products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
   promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["variant_id", "id"]])
   variant_attribute_options(limit: Int, offset: Int, where: variant_attribute_options_WhereInput, orderBy: variant_attribute_options_OrderByInput): [variant_attribute_options] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options", columnMap: [["variant_id", "id"]])
@@ -370,7 +591,10 @@ type coupons {
   applicable_ids: JSON
   created_at: Timestamp!
   updated_at: Timestamp!
+  created_by: Int
+  updated_by: Int
   coupon_usage(limit: Int, offset: Int, where: coupon_usage_WhereInput, orderBy: coupon_usage_OrderByInput): [coupon_usage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["coupon_id", "id"]])
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
 }
 
 enum coupons_discount_type {
@@ -426,6 +650,8 @@ input coupons_WhereInput {
   applicable_ids: String
   created_at: String
   updated_at: String
+  created_by: String
+  updated_by: String
 }
 
 input coupons_OrderByInput {
@@ -447,6 +673,8 @@ input coupons_OrderByInput {
   applicable_ids: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
 }
 
 type customers {
@@ -719,6 +947,10 @@ input product_variants_WhereInput {
   stock: String
   created_at: String
   updated_at: String
+  """
+  ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
+  """
+  image_attribute_id: String
 }
 
 input product_variants_OrderByInput {
@@ -729,6 +961,10 @@ input product_variants_OrderByInput {
   stock: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
+  """
+  ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
+  """
+  image_attribute_id: OrderBy
 }
 
 """Items/productos de cada orden"""
@@ -974,103 +1210,6 @@ input payment_methods_OrderByInput {
   updated_at: OrderBy
 }
 
-type products {
-  id: Int!
-  name: String!
-  description: String
-  brand_id: Int
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  base_price: Float
-  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["product_id", "id"]])
-  product_variants(limit: Int, offset: Int, where: product_variants_WhereInput, orderBy: product_variants_OrderByInput): [product_variants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["product_id", "id"]])
-  brands(where: brands_WhereInput, orderBy: brands_OrderByInput, limit: Int, offset: Int): [brands] @mysqlSelect(subgraph: "Database", table: "brands", columnMap: [["id", "brand_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "brand_id")
-}
-
-type product_categories {
-  product_id: Int!
-  category_id: Int!
-  categories(where: categories_WhereInput, orderBy: categories_OrderByInput, limit: Int, offset: Int): [categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
-  products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
-}
-
-type categories {
-  id: Int!
-  name: String!
-  description: String
-  parent_id: Int
-  image_url: String
-  show_nav: Int
-  display_order: Int
-  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
-}
-
-input product_categories_WhereInput {
-  product_id: String
-  category_id: String
-}
-
-input product_categories_OrderByInput {
-  product_id: OrderBy
-  category_id: OrderBy
-}
-
-input categories_WhereInput {
-  id: String
-  name: String
-  description: String
-  parent_id: String
-  image_url: String
-  show_nav: String
-  display_order: String
-}
-
-input categories_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  parent_id: OrderBy
-  image_url: OrderBy
-  show_nav: OrderBy
-  display_order: OrderBy
-}
-
-input products_WhereInput {
-  id: String
-  name: String
-  description: String
-  brand_id: String
-  created_at: String
-  updated_at: String
-  base_price: String
-}
-
-input products_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  brand_id: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-  base_price: OrderBy
-}
-
-type brands {
-  id: Int!
-  name: String!
-  products(limit: Int, offset: Int, where: products_WhereInput, orderBy: products_OrderByInput): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["brand_id", "id"]])
-}
-
-input brands_WhereInput {
-  id: String
-  name: String
-}
-
-input brands_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-}
-
 type promotion_variants {
   promotion_id: Int!
   variant_id: Int!
@@ -1096,7 +1235,10 @@ type promotions {
   type: String
   image_url: String
   display_order: Int
+  created_by: Int
+  updated_by: Int
   promotion_variants(limit: Int, offset: Int, where: promotion_variants_WhereInput, orderBy: promotion_variants_OrderByInput): [promotion_variants] @mysqlSelect(subgraph: "Database", table: "promotion_variants", columnMap: [["promotion_id", "id"]])
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
 }
 
 enum promotions_discount_type {
@@ -1135,6 +1277,8 @@ input promotions_WhereInput {
   type: String
   image_url: String
   display_order: String
+  created_by: String
+  updated_by: String
 }
 
 input promotions_OrderByInput {
@@ -1152,16 +1296,26 @@ input promotions_OrderByInput {
   type: OrderBy
   image_url: OrderBy
   display_order: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
 }
 
+"""AsociaciÃ³n entre variantes y opciones de atributos del producto"""
 input variant_attribute_options_WhereInput {
   variant_id: String
-  attribute_option_id: String
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: String
+  """Costo adicional para esta variante"""
+  additional_cost: String
 }
 
+"""AsociaciÃ³n entre variantes y opciones de atributos del producto"""
 input variant_attribute_options_OrderByInput {
   variant_id: OrderBy
-  attribute_option_id: OrderBy
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: OrderBy
+  """Costo adicional para esta variante"""
+  additional_cost: OrderBy
 }
 
 """Imágenes de variantes con múltiples tamaños y tipos"""
@@ -1240,43 +1394,179 @@ input variant_images_OrderByInput {
   updated_at: OrderBy
 }
 
-type banner {
+type product_categories {
+  product_id: Int!
+  category_id: Int!
+  categories(where: categories_WhereInput, orderBy: categories_OrderByInput, limit: Int, offset: Int): [categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
+  products(where: products_WhereInput, orderBy: products_OrderByInput, limit: Int, offset: Int): [products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
+}
+
+type categories {
   id: Int!
-  title: String!
-  subtitle: String
+  name: String!
   description: String
+  parent_id: Int
+  image_url: String
+  show_nav: Int
+  display_order: Int
   created_at: Timestamp!
   updated_at: Timestamp!
-  display_order: Int
-  link: String
-  image_url: String
-  button_text: String
+  created_by: Int
+  updated_by: Int
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+  product_categories(limit: Int, offset: Int, where: product_categories_WhereInput, orderBy: product_categories_OrderByInput): [product_categories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
 }
 
-input banner_WhereInput {
+input product_categories_WhereInput {
+  product_id: String
+  category_id: String
+}
+
+input product_categories_OrderByInput {
+  product_id: OrderBy
+  category_id: OrderBy
+}
+
+input categories_WhereInput {
   id: String
-  title: String
-  subtitle: String
+  name: String
   description: String
+  parent_id: String
+  image_url: String
+  show_nav: String
+  display_order: String
   created_at: String
   updated_at: String
-  display_order: String
-  link: String
-  image_url: String
-  button_text: String
+  created_by: String
+  updated_by: String
 }
 
-input banner_OrderByInput {
+input categories_OrderByInput {
   id: OrderBy
-  title: OrderBy
-  subtitle: OrderBy
+  name: OrderBy
   description: OrderBy
+  parent_id: OrderBy
+  image_url: OrderBy
+  show_nav: OrderBy
+  display_order: OrderBy
   created_at: OrderBy
   updated_at: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
+}
+
+input brands_WhereInput {
+  id: String
+  name: String
+  created_at: String
+  updated_at: String
+  created_by: String
+  updated_by: String
+}
+
+input brands_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+  created_by: OrderBy
+  updated_by: OrderBy
+}
+
+type password_setup_tokens {
+  id: Int!
+  user_id: Int!
+  token: String!
+  expires_at: Timestamp!
+  used_at: Timestamp
+  created_at: Timestamp!
+  users(where: users_WhereInput, orderBy: users_OrderByInput, limit: Int, offset: Int): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "user_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "user_id")
+}
+
+input password_setup_tokens_WhereInput {
+  id: String
+  user_id: String
+  token: String
+  expires_at: String
+  used_at: String
+  created_at: String
+}
+
+input password_setup_tokens_OrderByInput {
+  id: OrderBy
+  user_id: OrderBy
+  token: OrderBy
+  expires_at: OrderBy
+  used_at: OrderBy
+  created_at: OrderBy
+}
+
+type roles {
+  id: Int!
+  name: String!
+  created_at: Timestamp!
+  updated_at: Timestamp!
+  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_rol", "id"]])
+  users(limit: Int, offset: Int, where: users_WhereInput, orderBy: users_OrderByInput): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["role_id", "id"]])
+}
+
+type roles_sections {
+  id: Int!
+  id_section: Int
+  id_rol: Int
+  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "id_rol"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_rol")
+  sections(where: sections_WhereInput, orderBy: sections_OrderByInput, limit: Int, offset: Int): [sections] @mysqlSelect(subgraph: "Database", table: "sections", columnMap: [["id", "id_section"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_section")
+}
+
+input roles_WhereInput {
+  id: String
+  name: String
+  created_at: String
+  updated_at: String
+}
+
+input roles_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  created_at: OrderBy
+  updated_at: OrderBy
+}
+
+type sections {
+  id: Int!
+  name: String
+  url: String
+  image: String
+  display_order: Int
+  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_section", "id"]])
+}
+
+input roles_sections_WhereInput {
+  id: String
+  id_section: String
+  id_rol: String
+}
+
+input roles_sections_OrderByInput {
+  id: OrderBy
+  id_section: OrderBy
+  id_rol: OrderBy
+}
+
+input sections_WhereInput {
+  id: String
+  name: String
+  url: String
+  image: String
+  display_order: String
+}
+
+input sections_OrderByInput {
+  id: OrderBy
+  name: OrderBy
+  url: OrderBy
+  image: OrderBy
   display_order: OrderBy
-  link: OrderBy
-  image_url: OrderBy
-  button_text: OrderBy
 }
 
 """VIEW"""
@@ -1427,114 +1717,6 @@ input product_rating_summary_OrderByInput {
   two_star: OrderBy
   one_star: OrderBy
   verified_purchases: OrderBy
-}
-
-type roles {
-  id: Int!
-  name: String!
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_rol", "id"]])
-  users(limit: Int, offset: Int, where: users_WhereInput, orderBy: users_OrderByInput): [users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["role_id", "id"]])
-}
-
-type roles_sections {
-  id: Int!
-  id_section: Int
-  id_rol: Int
-  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "id_rol"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_rol")
-  sections(where: sections_WhereInput, orderBy: sections_OrderByInput, limit: Int, offset: Int): [sections] @mysqlSelect(subgraph: "Database", table: "sections", columnMap: [["id", "id_section"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_section")
-}
-
-input roles_WhereInput {
-  id: String
-  name: String
-  created_at: String
-  updated_at: String
-}
-
-input roles_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-}
-
-type sections {
-  id: Int!
-  name: String
-  url: String
-  image: String
-  display_order: Int
-  roles_sections(limit: Int, offset: Int, where: roles_sections_WhereInput, orderBy: roles_sections_OrderByInput): [roles_sections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_section", "id"]])
-}
-
-input roles_sections_WhereInput {
-  id: String
-  id_section: String
-  id_rol: String
-}
-
-input roles_sections_OrderByInput {
-  id: OrderBy
-  id_section: OrderBy
-  id_rol: OrderBy
-}
-
-input sections_WhereInput {
-  id: String
-  name: String
-  url: String
-  image: String
-  display_order: String
-}
-
-input sections_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  url: OrderBy
-  image: OrderBy
-  display_order: OrderBy
-}
-
-type users {
-  id: Int!
-  name: String!
-  email: String!
-  password: String!
-  role_id: Int
-  is_active: Int
-  created_at: Timestamp!
-  updated_at: Timestamp!
-  lastname: String!
-  photo: String
-  roles(where: roles_WhereInput, orderBy: roles_OrderByInput, limit: Int, offset: Int): [roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "role_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "role_id")
-}
-
-input users_WhereInput {
-  id: String
-  name: String
-  email: String
-  password: String
-  role_id: String
-  is_active: String
-  created_at: String
-  updated_at: String
-  lastname: String
-  photo: String
-}
-
-input users_OrderByInput {
-  id: OrderBy
-  name: OrderBy
-  email: OrderBy
-  password: OrderBy
-  role_id: OrderBy
-  is_active: OrderBy
-  created_at: OrderBy
-  updated_at: OrderBy
-  lastname: OrderBy
-  photo: OrderBy
 }
 
 type services {
@@ -1763,9 +1945,6 @@ input variant_rating_summary_OrderByInput {
 }
 
 type Mutation {
-  insert_attribute_option_images(attribute_option_images: attribute_option_images_InsertInput!): attribute_option_images @mysqlInsert(subgraph: "Database", table: "attribute_option_images", primaryKeys: ["id"])
-  update_attribute_option_images(attribute_option_images: attribute_option_images_UpdateInput!, where: attribute_option_images_WhereInput): attribute_option_images @mysqlUpdate(subgraph: "Database", table: "attribute_option_images")
-  delete_attribute_option_images(where: attribute_option_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attribute_option_images")
   insert_attribute_options(attribute_options: attribute_options_InsertInput!): attribute_options @mysqlInsert(subgraph: "Database", table: "attribute_options", primaryKeys: ["id"])
   update_attribute_options(attribute_options: attribute_options_UpdateInput!, where: attribute_options_WhereInput): attribute_options @mysqlUpdate(subgraph: "Database", table: "attribute_options")
   delete_attribute_options(where: attribute_options_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attribute_options")
@@ -1805,6 +1984,9 @@ type Mutation {
   insert_orders(orders: orders_InsertInput!): orders @mysqlInsert(subgraph: "Database", table: "orders", primaryKeys: ["id"])
   update_orders(orders: orders_UpdateInput!, where: orders_WhereInput): orders @mysqlUpdate(subgraph: "Database", table: "orders")
   delete_orders(where: orders_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "orders")
+  insert_password_setup_tokens(password_setup_tokens: password_setup_tokens_InsertInput!): password_setup_tokens @mysqlInsert(subgraph: "Database", table: "password_setup_tokens", primaryKeys: ["id"])
+  update_password_setup_tokens(password_setup_tokens: password_setup_tokens_UpdateInput!, where: password_setup_tokens_WhereInput): password_setup_tokens @mysqlUpdate(subgraph: "Database", table: "password_setup_tokens")
+  delete_password_setup_tokens(where: password_setup_tokens_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "password_setup_tokens")
   insert_payment_methods(payment_methods: payment_methods_InsertInput!): payment_methods @mysqlInsert(subgraph: "Database", table: "payment_methods", primaryKeys: ["id"])
   update_payment_methods(payment_methods: payment_methods_UpdateInput!, where: payment_methods_WhereInput): payment_methods @mysqlUpdate(subgraph: "Database", table: "payment_methods")
   delete_payment_methods(where: payment_methods_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "payment_methods")
@@ -1814,6 +1996,12 @@ type Mutation {
   insert_permissions(permissions: permissions_InsertInput!): permissions @mysqlInsert(subgraph: "Database", table: "permissions", primaryKeys: ["id"])
   update_permissions(permissions: permissions_UpdateInput!, where: permissions_WhereInput): permissions @mysqlUpdate(subgraph: "Database", table: "permissions")
   delete_permissions(where: permissions_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "permissions")
+  insert_product_attribute_option_images(product_attribute_option_images: product_attribute_option_images_InsertInput!): product_attribute_option_images @mysqlInsert(subgraph: "Database", table: "product_attribute_option_images", primaryKeys: ["id"])
+  update_product_attribute_option_images(product_attribute_option_images: product_attribute_option_images_UpdateInput!, where: product_attribute_option_images_WhereInput): product_attribute_option_images @mysqlUpdate(subgraph: "Database", table: "product_attribute_option_images")
+  delete_product_attribute_option_images(where: product_attribute_option_images_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_attribute_option_images")
+  insert_product_attribute_options(product_attribute_options: product_attribute_options_InsertInput!): product_attribute_options @mysqlInsert(subgraph: "Database", table: "product_attribute_options", primaryKeys: ["id"])
+  update_product_attribute_options(product_attribute_options: product_attribute_options_UpdateInput!, where: product_attribute_options_WhereInput): product_attribute_options @mysqlUpdate(subgraph: "Database", table: "product_attribute_options")
+  delete_product_attribute_options(where: product_attribute_options_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_attribute_options")
   insert_product_categories(product_categories: product_categories_InsertInput!): product_categories @mysqlInsert(subgraph: "Database", table: "product_categories", primaryKeys: ["product_id", "category_id"])
   update_product_categories(product_categories: product_categories_UpdateInput!, where: product_categories_WhereInput): product_categories @mysqlUpdate(subgraph: "Database", table: "product_categories")
   delete_product_categories(where: product_categories_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "product_categories")
@@ -1862,7 +2050,7 @@ type Mutation {
   insert_users(users: users_InsertInput!): users @mysqlInsert(subgraph: "Database", table: "users", primaryKeys: ["id"])
   update_users(users: users_UpdateInput!, where: users_WhereInput): users @mysqlUpdate(subgraph: "Database", table: "users")
   delete_users(where: users_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "users")
-  insert_variant_attribute_options(variant_attribute_options: variant_attribute_options_InsertInput!): variant_attribute_options @mysqlInsert(subgraph: "Database", table: "variant_attribute_options", primaryKeys: ["variant_id", "attribute_option_id"])
+  insert_variant_attribute_options(variant_attribute_options: variant_attribute_options_InsertInput!): variant_attribute_options @mysqlInsert(subgraph: "Database", table: "variant_attribute_options", primaryKeys: ["variant_id", "product_attribute_option_id"])
   update_variant_attribute_options(variant_attribute_options: variant_attribute_options_UpdateInput!, where: variant_attribute_options_WhereInput): variant_attribute_options @mysqlUpdate(subgraph: "Database", table: "variant_attribute_options")
   delete_variant_attribute_options(where: variant_attribute_options_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_attribute_options")
   insert_variant_images(variant_images: variant_images_InsertInput!): variant_images @mysqlInsert(subgraph: "Database", table: "variant_images", primaryKeys: ["id"])
@@ -1874,44 +2062,6 @@ type Mutation {
   insert_variant_ratings(variant_ratings: variant_ratings_InsertInput!): variant_ratings @mysqlInsert(subgraph: "Database", table: "variant_ratings", primaryKeys: ["id"])
   update_variant_ratings(variant_ratings: variant_ratings_UpdateInput!, where: variant_ratings_WhereInput): variant_ratings @mysqlUpdate(subgraph: "Database", table: "variant_ratings")
   delete_variant_ratings(where: variant_ratings_WhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_ratings")
-}
-
-"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
-input attribute_option_images_InsertInput {
-  id: Int
-  attribute_option_id: Int!
-  image_type: attribute_option_images_image_type
-  display_order: Int
-  """Imagen thumbnail 140x140 para selector de atributo"""
-  image_url_thumb: String!
-  """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String!
-  """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String!
-  """Texto alternativo"""
-  alt_text: String
-  created_at: Timestamp
-  updated_at: Timestamp
-  is_primary: Int
-}
-
-"""Imágenes para opciones de atributos (colores, materiales, etc.)"""
-input attribute_option_images_UpdateInput {
-  id: Int
-  attribute_option_id: Int
-  image_type: attribute_option_images_image_type
-  display_order: Int
-  """Imagen thumbnail 140x140 para selector de atributo"""
-  image_url_thumb: String
-  """Imagen normal 600x800 (opcional)"""
-  image_url_normal: String
-  """Imagen zoom 1200x1200 (opcional)"""
-  image_url_zoom: String
-  """Texto alternativo"""
-  alt_text: String
-  created_at: Timestamp
-  updated_at: Timestamp
-  is_primary: Int
 }
 
 input attribute_options_InsertInput {
@@ -1932,12 +2082,20 @@ input attributes_InsertInput {
   id: Int
   name: String!
   display_type: attributes_display_type
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input attributes_UpdateInput {
   id: Int
   name: String
   display_type: attributes_display_type
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input banner_InsertInput {
@@ -1951,6 +2109,8 @@ input banner_InsertInput {
   link: String
   image_url: String
   button_text: String
+  created_by: Int
+  updated_by: Int
 }
 
 input banner_UpdateInput {
@@ -1964,16 +2124,26 @@ input banner_UpdateInput {
   link: String
   image_url: String
   button_text: String
+  created_by: Int
+  updated_by: Int
 }
 
 input brands_InsertInput {
   id: Int
   name: String!
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input brands_UpdateInput {
   id: Int
   name: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input categories_InsertInput {
@@ -1984,6 +2154,10 @@ input categories_InsertInput {
   image_url: String
   show_nav: Int
   display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input categories_UpdateInput {
@@ -1994,6 +2168,10 @@ input categories_UpdateInput {
   image_url: String
   show_nav: Int
   display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input coupon_usage_InsertInput {
@@ -2033,6 +2211,8 @@ input coupons_InsertInput {
   applicable_ids: JSON
   created_at: Timestamp
   updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input coupons_UpdateInput {
@@ -2054,6 +2234,8 @@ input coupons_UpdateInput {
   applicable_ids: JSON
   created_at: Timestamp
   updated_at: Timestamp
+  created_by: Int
+  updated_by: Int
 }
 
 input customers_InsertInput {
@@ -2340,6 +2522,24 @@ input orders_UpdateInput {
   admin_notes: String
 }
 
+input password_setup_tokens_InsertInput {
+  id: Int
+  user_id: Int!
+  token: String!
+  expires_at: Timestamp
+  used_at: Timestamp
+  created_at: Timestamp
+}
+
+input password_setup_tokens_UpdateInput {
+  id: Int
+  user_id: Int
+  token: String
+  expires_at: Timestamp
+  used_at: Timestamp
+  created_at: Timestamp
+}
+
 input payment_methods_InsertInput {
   id: Int
   name: String!
@@ -2428,6 +2628,74 @@ input permissions_UpdateInput {
   updated_at: Timestamp
 }
 
+"""ImÃ¡genes para opciones de atributos especÃ­ficas del producto"""
+input product_attribute_option_images_InsertInput {
+  id: Int
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int!
+  image_type: product_attribute_option_images_image_type
+  display_order: Int
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String!
+  """Imagen normal 600x800"""
+  image_url_normal: String!
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String!
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  is_primary: Int
+}
+
+"""ImÃ¡genes para opciones de atributos especÃ­ficas del producto"""
+input product_attribute_option_images_UpdateInput {
+  id: Int
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int
+  image_type: product_attribute_option_images_image_type
+  display_order: Int
+  """Imagen thumbnail 140x140"""
+  image_url_thumb: String
+  """Imagen normal 600x800"""
+  image_url_normal: String
+  """Imagen zoom 1200x1200"""
+  image_url_zoom: String
+  alt_text: String
+  created_at: Timestamp
+  updated_at: Timestamp
+  is_primary: Int
+}
+
+"""Opciones de atributos especÃ­ficas de cada producto"""
+input product_attribute_options_InsertInput {
+  id: Int
+  """ID del producto al que pertenece esta opciÃ³n"""
+  product_id: Int!
+  """ID del atributo (Color, Almacenamiento, etc.)"""
+  attribute_id: Int!
+  """Valor de la opciÃ³n (ej: "Titanio Negro", "128GB")"""
+  value: String!
+  """Orden de visualizaciÃ³n"""
+  display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
+"""Opciones de atributos especÃ­ficas de cada producto"""
+input product_attribute_options_UpdateInput {
+  id: Int
+  """ID del producto al que pertenece esta opciÃ³n"""
+  product_id: Int
+  """ID del atributo (Color, Almacenamiento, etc.)"""
+  attribute_id: Int
+  """Valor de la opciÃ³n (ej: "Titanio Negro", "128GB")"""
+  value: String
+  """Orden de visualizaciÃ³n"""
+  display_order: Int
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+
 input product_categories_InsertInput {
   product_id: Int!
   category_id: Int!
@@ -2472,6 +2740,10 @@ input product_variants_InsertInput {
   stock: Int
   created_at: Timestamp
   updated_at: Timestamp
+  """
+  ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
+  """
+  image_attribute_id: Int
 }
 
 input product_variants_UpdateInput {
@@ -2482,6 +2754,10 @@ input product_variants_UpdateInput {
   stock: Int
   created_at: Timestamp
   updated_at: Timestamp
+  """
+  ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
+  """
+  image_attribute_id: Int
 }
 
 input products_InsertInput {
@@ -2492,6 +2768,8 @@ input products_InsertInput {
   created_at: Timestamp
   updated_at: Timestamp
   base_price: Float
+  created_by: Int
+  updated_by: Int
 }
 
 input products_UpdateInput {
@@ -2502,6 +2780,8 @@ input products_UpdateInput {
   created_at: Timestamp
   updated_at: Timestamp
   base_price: Float
+  created_by: Int
+  updated_by: Int
 }
 
 input promotion_variants_InsertInput {
@@ -2535,6 +2815,8 @@ input promotions_InsertInput {
   type: String
   image_url: String
   display_order: Int
+  created_by: Int
+  updated_by: Int
 }
 
 input promotions_UpdateInput {
@@ -2552,6 +2834,8 @@ input promotions_UpdateInput {
   type: String
   image_url: String
   display_order: Int
+  created_by: Int
+  updated_by: Int
 }
 
 input rating_images_InsertInput {
@@ -2756,14 +3040,22 @@ input users_UpdateInput {
   photo: String
 }
 
+"""AsociaciÃ³n entre variantes y opciones de atributos del producto"""
 input variant_attribute_options_InsertInput {
   variant_id: Int!
-  attribute_option_id: Int!
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int!
+  """Costo adicional para esta variante"""
+  additional_cost: Float
 }
 
+"""AsociaciÃ³n entre variantes y opciones de atributos del producto"""
 input variant_attribute_options_UpdateInput {
   variant_id: Int
-  attribute_option_id: Int
+  """ID de la opciÃ³n especÃ­fica del producto"""
+  product_attribute_option_id: Int
+  """Costo adicional para esta variante"""
+  additional_cost: Float
 }
 
 """Imágenes de variantes con múltiples tamaños y tipos"""

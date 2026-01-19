@@ -21,6 +21,13 @@ import { type Field } from './types/fileManagement'
 
 // Types
 
+export interface AuditMetadata {
+  createdAt?: Date | string | null
+  createdByName?: string | null
+  updatedAt?: Date | string | null
+  updatedByName?: string | null
+}
+
 interface FormCreateProps {
   type?: 'new' | 'edit'
   api: {
@@ -33,12 +40,27 @@ interface FormCreateProps {
     fields: Field[]
     customFields?: object
   }
+  audit?: AuditMetadata
+}
+
+// Helper para formatear fechas
+const formatDate = (date: Date | string | null | undefined): string => {
+  if (!date) return '—'
+  const d = typeof date === 'string' ? new Date(date) : date
+  return d.toLocaleDateString('es-PE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 }
 
 export const FormCreate: FC<FormCreateProps> = ({
   type = 'new',
   api,
-  form: { redirect, fields: initialFields, customFields }
+  form: { redirect, fields: initialFields, customFields },
+  audit
 }) => {
   const router = useRouter()
   const [fields, setFields] = useState<Field[]>(initialFields)
@@ -267,28 +289,36 @@ export const FormCreate: FC<FormCreateProps> = ({
               </p>
             </div>
 
-            <ul className="my-5 flex flex-col gap-4 text-sm font-light">
-              <ul>
-                <li className="flex w-full justify-between">
-                  <p className="text-slate-250">Create</p>
-                  <div>23/07/2042</div>
+            {type === 'new' ? (
+              <div className="my-5 text-sm text-gray-500">
+                La información de auditoría se registrará al guardar.
+              </div>
+            ) : (
+              <ul className="my-5 flex flex-col gap-4 text-sm font-light">
+                <li className="space-y-1">
+                  <p className="text-xs font-medium uppercase text-gray-400">
+                    Creado
+                  </p>
+                  <p className="text-gray-700">
+                    {formatDate(audit?.createdAt)}
+                  </p>
+                  <p className="text-gray-500">
+                    {audit?.createdByName || '—'}
+                  </p>
                 </li>
-                <li className="flex w-full justify-between">
-                  <p className="text-slate-250">By</p>
-                  <div>Jhonnatan Castro</div>
+                <li className="space-y-1">
+                  <p className="text-xs font-medium uppercase text-gray-400">
+                    Última actualización
+                  </p>
+                  <p className="text-gray-700">
+                    {formatDate(audit?.updatedAt)}
+                  </p>
+                  <p className="text-gray-500">
+                    {audit?.updatedByName || '—'}
+                  </p>
                 </li>
               </ul>
-              <ul>
-                <li className="flex w-full justify-between">
-                  <p className="text-slate-250">Last update</p>
-                  <div>14/08/2025</div>
-                </li>
-                <li className="flex w-full justify-between">
-                  <p className="text-slate-250">By</p>
-                  <div>Renzo Larrea</div>
-                </li>
-              </ul>
-            </ul>
+            )}
           </CardContent>
         </div>
         <div className="mt-8 flex justify-end gap-3">

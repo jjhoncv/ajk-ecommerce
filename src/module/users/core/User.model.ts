@@ -53,6 +53,13 @@ export class UserModel {
     return UserMapper(userRaw)
   }
 
+  // Obtener nombre completo del usuario por ID (para auditoría)
+  public async getUserFullName(id: number): Promise<string | null> {
+    const userRaw = await oUserRep.getUser(id)
+    if (userRaw == null) return null
+    return `${userRaw.name} ${userRaw.lastname}`
+  }
+
   public async getUserWithRole(id: number): Promise<UserWithRole | undefined> {
     const userRaw = await oUserRep.getUserWithRoleById(id)
     if (userRaw == null) return undefined

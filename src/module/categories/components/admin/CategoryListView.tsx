@@ -37,26 +37,10 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
       label: '#',
       priority: 'high',
       sortable: true,
-      width: '50px',
+      width: '5%',
       render: (order: number) => (
         <span className="text-sm font-medium text-gray-500">{order}</span>
       )
-    },
-    {
-      key: 'name',
-      label: 'Nombre',
-      priority: 'high',
-      sortable: true,
-      searchable: true,
-      width: '200px'
-    },
-    {
-      key: 'description',
-      label: 'Descripción',
-      priority: 'medium',
-      sortable: true,
-      searchable: true,
-      width: '300px'
     },
     {
       key: 'imageUrl',
@@ -64,14 +48,22 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
       priority: 'high',
       sortable: false,
       render: (imageURL: string) => <PreviewImageList imageURL={imageURL} />,
-      width: '100px'
+      width: '10%'
+    },
+    {
+      key: 'name',
+      label: 'Nombre',
+      priority: 'high',
+      sortable: true,
+      searchable: true,
+      width: '45%'
     },
     {
       key: 'showNav',
       label: 'En Menú',
       priority: 'high',
       sortable: true,
-      width: '90px',
+      width: '15%',
       render: (showNav: boolean) =>
         showNav ? (
           <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
@@ -84,40 +76,9 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
         )
     },
     {
-      key: 'parentId',
-      label: 'Categoría Padre',
-      priority: 'medium',
-      sortable: true,
-      render: (categoryParentId: number | null) => {
-        if (categoryParentId == null) {
-          return (
-            <span className="text-sm text-gray-600">Categoría Principal</span>
-          )
-        }
-
-        // Si tenemos información de la categoría padre desde el servidor, usarla
-        if (parentCategory != null && parentCategory.id === categoryParentId) {
-          return (
-            <span className="text-sm text-gray-600">{parentCategory.name}</span>
-          )
-        }
-
-        // Buscar en las categorías actuales como fallback
-        const foundParent = categories.find(
-          (cat) => cat.id === categoryParentId
-        )
-        return (
-          <span className="text-sm text-gray-600">
-            {foundParent?.name ?? `ID: ${categoryParentId}`}
-          </span>
-        )
-      },
-      width: '150px'
-    },
-    {
       key: 'id',
       label: 'Subcategorías',
-      priority: 'medium',
+      priority: 'high',
       sortable: false,
       render: (id: number) => {
         const category = categories.find((cat) => cat.id === id)
@@ -128,13 +89,13 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
               className="inline-flex items-center gap-2 rounded bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 transition-colors hover:bg-blue-200"
             >
               <FolderOpen size={14} />
-              Ver subcategorías
+              Ver
             </Link>
           )
         }
-        return <span className="text-sm text-gray-500">Sin subcategorías</span>
+        return <span className="text-sm text-gray-400">—</span>
       },
-      width: '150px'
+      width: '15%'
     }
   ]
 

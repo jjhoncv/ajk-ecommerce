@@ -24,10 +24,12 @@ export default async function CategoryListPage({
     categories = await categoryService.getCategoriesByParent(null) // Solo categorías raíz
   }
 
-  // Obtener información de la categoría padre para el breadcrumb
+  // Obtener información de la categoría padre y ancestros para el breadcrumb
   let parentCategory = null
+  let ancestors: Array<{ id: number; name: string; parentId: number | null }> = []
   if (parentId != null) {
     parentCategory = await categoryService.getCategoryById(parentId)
+    ancestors = await categoryService.getCategoryAncestors(parentId)
   }
 
   if (categories.length === 0) {
@@ -46,21 +48,24 @@ export default async function CategoryListPage({
     }))
   )
 
-  // Construir breadcrumb dinámico
-  const breadcrumb = [{ label: 'Categorías', url: '/admin/categories' }]
-  if (parentCategory != null) {
-    breadcrumb.push({
-      label: `Subcategorías de "${parentCategory.name}"`,
-      url: ''
-    })
-  }
+  // Construir breadcrumb dinámico con toda la jerarquía
+  const breadcrumb: Array<{ label: string; url: string }> = [
+    { label: 'Categorías', url: '/admin/categories' }
+  ]
 
-  const title = parentCategory
-    ? `Subcategorías de "${parentCategory.name}"`
-    : 'Categorías'
+  // Agregar cada ancestro al breadcrumb
+  ancestors.forEach((ancestor, index) => {
+    const isLast = index === ancestors.length - 1
+    breadcrumb.push({
+      label: ancestor.name,
+      url: isLast ? '' : `/admin/categories?parent=${ancestor.id}`
+    })
+  })
+
+  const title = parentCategory ? parentCategory.name : 'Categorías'
 
   const subtitle = parentCategory
-    ? `Gestionar subcategorías de ${parentCategory.name}`
+    ? `Subcategorías de ${parentCategory.name}`
     : 'Todas las categorías principales'
 
   return (
