@@ -1,6 +1,6 @@
 'use client'
 
-import { type LowStockProduct } from '@/services/dashboard'
+import { type LowStockProduct } from '@/module/shared/services/dashboard'
 import { AlertTriangle, ExternalLink, Package } from 'lucide-react'
 import Link from 'next/link'
 import { type JSX } from 'react'

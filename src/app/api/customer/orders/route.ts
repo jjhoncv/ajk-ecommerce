@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     // Ordenar por fecha de creación (más recientes primero)
     orders.sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date((b as any).createdAt).getTime() - new Date((a as any).createdAt).getTime()
     )
 
     // Implementar paginación
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
           status: order.status,
           paymentStatus: order.paymentStatus,
           totalAmount: order.totalAmount + processingFee, // Total real pagado
-          createdAt: order.createdAt,
+          createdAt: (order as any).createdAt,
           estimatedDelivery: order.estimatedDelivery,
           // Campos adicionales útiles para la vista
           itemCount: order.orderItems?.length || 0,

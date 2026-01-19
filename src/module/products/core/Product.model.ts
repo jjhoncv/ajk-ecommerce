@@ -1,5 +1,8 @@
 import { type Products as ProductRaw } from '@/types/database'
-import { type Products as Product, type VariantAttributeOptions } from '@/types/domain'
+import {
+  type Products as Product,
+  type VariantAttributeOptions
+} from '@/types/domain'
 
 import { ProductMapper, ProductsMapper } from './Product.mapper'
 import oProductRep from './Product.repository'
@@ -8,17 +11,17 @@ import oProductRep from './Product.repository'
 import { brandModel } from '@/module/brands/core'
 import { categoryModel } from '@/module/categories/core'
 import { promotionVariantModel } from '@/module/promotions/core'
-import searchModel, {
+import {
   filtersModel,
+  searchModel,
   type ProductSearchFilters,
   type ProductSearchResult
 } from '@/module/search/core'
 import productVariantModel from './ProductVariant.model'
 import variantAttributeOptionModel from './VariantAttributeOption.model'
 import variantImageModel from './VariantImage.model'
-import variantRatingModel, {
-  type VariantRatingWithCustomer
-} from './VariantRating.model'
+import variantRatingModel from './VariantRating.model'
+import { type VariantRatingWithCustomer } from './VariantRating.interfaces'
 
 export class ProductModel {
   public async getProducts(): Promise<Product[] | undefined> {
@@ -37,7 +40,9 @@ export class ProductModel {
         }
 
         // Load categories
-        const categories = await categoryModel.getCategoriesByProductId(product.id)
+        const categories = await categoryModel.getCategoriesByProductId(
+          product.id
+        )
         if (categories) {
           product.productCategories = categories.map((category) => ({
             categoryId: category.id,
@@ -72,7 +77,8 @@ export class ProductModel {
         }
 
         // Load variants with their data
-        const variants = await productVariantModel.getProductVariantsByProductId(product.id)
+        const variants =
+          await productVariantModel.getProductVariantsByProductId(product.id)
 
         // Calculate variant statistics
         const variantsCount = variants?.length ?? 0
@@ -87,16 +93,22 @@ export class ProductModel {
             totalStock += variant.stock ?? 0
             const variantPrice = variant.price ?? 0
             if (variantPrice > 0) {
-              if (minPrice === 0 || variantPrice < minPrice) minPrice = variantPrice
+              if (minPrice === 0 || variantPrice < minPrice) {
+                minPrice = variantPrice
+              }
               if (variantPrice > maxPrice) maxPrice = variantPrice
             }
           }
 
           // Get image from first variant
-          const firstVariantImages = await variantImageModel.getVariantImages(variants[0].id)
+          const firstVariantImages = await variantImageModel.getVariantImages(
+            variants[0].id
+          )
           if (firstVariantImages && firstVariantImages.length > 0) {
             // Find primary image or use the first one
-            const primaryImage = firstVariantImages.find(img => img.isPrimary) ?? firstVariantImages[0]
+            const primaryImage =
+              firstVariantImages.find((img) => img.isPrimary) ??
+              firstVariantImages[0]
             mainImage = primaryImage.imageUrlThumb
           }
         }
@@ -112,7 +124,7 @@ export class ProductModel {
           minPrice,
           maxPrice,
           mainImage,
-          createdAt: product.createdAt
+          createdAt: (product as any).createdAt
         }
       })
     )
@@ -263,7 +275,9 @@ export class ProductModel {
         }
 
         // Load categories
-        const categories = await categoryModel.getCategoriesByProductId(product.id)
+        const categories = await categoryModel.getCategoriesByProductId(
+          product.id
+        )
         if (categories) {
           product.productCategories = categories.map((category) => ({
             categoryId: category.id,

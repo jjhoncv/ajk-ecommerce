@@ -1,0 +1,11 @@
+export { default as LoginCustomerForm } from './LoginCustomerForm'
+export { default as RegisterCustomerForm } from './RegisterCustomerForm'
+export { LoginCustomerFormSocial } from './LoginCustomerFormSocial'
+export { LoginCustomerFormSchema } from './LoginCustomerForm.schema'
+export { RegisterCustomerSchema } from './RegisterCustomer.schema'
+export type { LoginFormData } from './LoginCustomerForm.types'
+export type { RegisterFormData } from './RegisterCustomer.types'
+export { AuthModals } from './AuthModals'
+export { default as ClientAuthButton } from './ClientAuthButton'
+// ServerAuthButton no se exporta aquí porque es un componente servidor
+// Usar: import ServerAuthButton from '@/module/customers/components/auth/ServerAuthButton'

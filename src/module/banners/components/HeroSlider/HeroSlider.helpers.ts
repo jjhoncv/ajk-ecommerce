@@ -1,4 +1,4 @@
-import { type HeroSliderLayout } from '@/components/sections/HeroSlider/HeroSlider.interfaces'
+import { type HeroSliderLayout } from './HeroSlider.interfaces'
 import { cn } from '@/lib/utils'
 
 /**

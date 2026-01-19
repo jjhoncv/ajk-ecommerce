@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@/lib/utils'
-import { type Hero } from '@/services/hero'
+import { type Banner } from '@/module/banners/service/banner/types'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -24,7 +24,7 @@ import { type SideBanner } from './HeroSlider.interfaces'
 import { useHeroSlider } from './use-hero-slider.hook'
 
 interface HeroSliderProps {
-  slides: Hero[]
+  slides: Banner[]
   sideBanners?: SideBanner[]
   autoPlay?: boolean
   autoPlayInterval?: number

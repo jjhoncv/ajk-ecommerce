@@ -1,0 +1,7 @@
+export { default as AccountLayout } from './AccountLayout'
+export { default as AccountHome } from './AccountHome'
+export { default as Addresses } from './Addresses'
+export { default as ChangePassword } from './ChangePassword'
+export { default as EditProfile } from './EditProfile'
+export { default as OrderDetail } from './OrderDetail'
+export { default as OrdersList } from './OrderList'

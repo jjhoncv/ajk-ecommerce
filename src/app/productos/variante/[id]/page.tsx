@@ -1,15 +1,12 @@
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import { LayoutContent } from '@/components/layout/LayoutContent'
-import { ProductVariantNotFound } from '@/components/product/ProductVariantNotFound'
-import ProductVariantView from '@/components/product/ProductVariantView'
-import Navigation from '@/components/ui/Navigation/Navigation'
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import { ProductVariantView } from '@/module/products/components'
+import { ProductVariantNotFound } from '@/module/products/components/ProductVariantNotFound'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import {
   generateErrorMetadata,
   generateProductVariantMetadata
-} from '@/helpers/productVariant.helpers'
-import { getHeader } from '@/services/header'
-import ProductService from '@/services/product'
+} from '@/module/products/helpers/productVariant.helpers'
+import ProductService from '@/module/products/services'
 import { type Metadata } from 'next'
 
 interface ProductVariantPageProps {
@@ -63,12 +60,10 @@ export default async function ProductVariantPage({
     return <ProductVariantNotFound />
   }
 
-  const categories = await getHeader()
-
   return (
     <Layout>
       <Header navigationType="mini">
-        <Navigation type="mini" categories={categories || []} />
+        <Navigation type="mini" />
       </Header>
       <LayoutContent className="px-0 py-0">
         <ProductVariantView

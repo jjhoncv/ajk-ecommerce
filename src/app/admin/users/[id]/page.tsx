@@ -4,7 +4,7 @@ import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { notFound } from 'next/navigation'
 import { type JSX } from 'react'
-import { UserForm } from '../UserForm'
+import { UserForm } from '@/module/users/components/admin'
 
 interface EditUserPageProps {
   params: Promise<{ id: string }>

@@ -33,7 +33,7 @@ export default async function EditCategoryPage({
     parent_id: category.parentId?.toString() || '',
     image_url: category.imageUrl,
     display_order: category.displayOrder?.toString() || '1',
-    show_nav: category.showNav ? 'true' : 'false'
+    show_nav: category.showNav ? '1' : '0'
   })
 
   // Construir URL de redirección manteniendo el contexto

@@ -9,5 +9,5 @@ export const getPaymentMethodById = async (id: number) => {
 }
 
 export const getActivePaymentMethods = async () => {
-  return await paymentMethodModel.getActivePaymentMethods()
+  return await paymentMethodModel.getPaymentMethods()
 }

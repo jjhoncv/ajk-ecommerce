@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { Button, Input } from '@/module/shared/components/ui'
 import {
   ChevronLeft,
   ChevronRight,

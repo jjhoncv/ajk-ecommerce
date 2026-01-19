@@ -93,10 +93,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { filename: string } }
-) {
+export async function DELETE(request: NextRequest) {
   try {
     // Obtener la ruta del archivo desde el body
     const data = await request.json()

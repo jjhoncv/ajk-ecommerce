@@ -1,24 +1,19 @@
 // app/account/orders/[orderId]/page.tsx
-import { categoryModel } from '@/module/categories/core'
-import AccountLayout from '@/components/account/AccountLayout'
-import OrderDetail from '@/components/account/OrderDetail'
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import { LayoutContent } from '@/components/layout/LayoutContent'
-import Navigation from '@/components/ui/Navigation/Navigation'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
 interface OrderDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function OrderDetailPage({
   params
 }: OrderDetailPageProps) {
+  const resolvedParams = await params
+
   // Obtener la sesión del usuario
   const session = await getServerSession(authOptions)
 
@@ -28,24 +23,12 @@ export default async function OrderDetailPage({
   }
 
   // Validar que el orderId sea un número
-  const id = parseInt(params.id)
+  const id = parseInt(resolvedParams.id)
   if (isNaN(id)) {
     redirect('/account/orders')
   }
 
-  // Obtener datos para el header y footer
-  const categories = await categoryModel.getCategories()
-
-  return (
-    <Layout>
-      <Header navigationType="mini">
-        <Navigation type="mini" categories={categories || []} />
-      </Header>
-      <LayoutContent className="p-0">
-        <AccountLayout userName={session.user?.name || ''}>
-          <OrderDetail orderId={params.id} />
-        </AccountLayout>
-      </LayoutContent>
-    </Layout>
-  )
+  // Redirigir a la página de órdenes ya que OrderDetail es un modal
+  // TODO: Si se necesita una página de detalle standalone, crear un componente separado
+  redirect('/account/orders')
 }

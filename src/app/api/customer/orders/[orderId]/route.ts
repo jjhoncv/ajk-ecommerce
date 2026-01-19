@@ -6,13 +6,10 @@ import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
-interface RouteParams {
-  params: {
-    orderId: string
-  }
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ orderId: string }> }
+) {
   try {
     // Verificar sesión
     const session = await getServerSession(authOptions)
@@ -20,8 +17,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
+    const { orderId: orderIdParam } = await params
     const customerId = parseInt(session.user.id)
-    const orderId = parseInt(params.orderId)
+    const orderId = parseInt(orderIdParam)
 
     if (isNaN(orderId)) {
       return NextResponse.json(
@@ -92,7 +90,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         courierCompany: tracking.courierCompany,
         trackingNumber: tracking.trackingNumber,
         deliveryNotes: tracking.deliveryNotes,
-        createdAt: tracking.createdAt,
+        createdAt: (tracking as any).createdAt,
         shippedAt: tracking.shippedAt,
         deliveredAt: tracking.deliveredAt,
         deliveredTo: tracking.deliveredTo
@@ -128,7 +126,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       status: order.status,
       paymentStatus: order.paymentStatus,
       paymentMethod: order.paymentMethod,
-      createdAt: order.createdAt,
+      createdAt: (order as any).createdAt,
       paidAt: order.paidAt,
 
       // Fechas importantes
@@ -167,7 +165,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             courierCompany: latestTracking.courierCompany,
             trackingNumber: latestTracking.trackingNumber,
             deliveryNotes: latestTracking.deliveryNotes,
-            updatedAt: latestTracking.updatedAt
+            updatedAt: (latestTracking as any).updatedAt
           }
         : null,
 
@@ -189,7 +187,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ orderId: string }> }
+) {
   try {
     // Verificar sesión
     const session = await getServerSession(authOptions)
@@ -197,8 +198,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
+    const { orderId: orderIdParam } = await params
     const customerId = parseInt(session.user.id)
-    const orderId = parseInt(params.orderId)
+    const orderId = parseInt(orderIdParam)
 
     if (isNaN(orderId)) {
       return NextResponse.json(

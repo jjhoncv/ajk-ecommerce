@@ -30,7 +30,7 @@ const processFormData = async (formData: FormData) => {
   const description = formData.get('description') as string
   const parentId = formData.get('parent_id') as string
   const displayOrder = (formData.get('display_order') as string) ?? '1'
-  const showNav = formData.get('show_nav') === 'true'
+  const showNav = formData.get('show_nav') === '1'
   const id = formData.get('id') as string
 
   const itemFile =

@@ -56,13 +56,13 @@ export class SearchModel {
         if (variantDetail.imageAttributeId && variantDetail.variantAttributeOptions) {
           // Buscar la opcion del atributo que controla las imagenes
           const imageControlOption = variantDetail.variantAttributeOptions.find(
-            (attr) => attr.productAttributeOption?.attributeId === variantDetail.imageAttributeId
+            (attr) => attr?.productAttributeOption?.attributeId === variantDetail.imageAttributeId
           )
 
-          if (imageControlOption?.productAttributeOption?.attributeOptionImages) {
-            const attributeImages = imageControlOption.productAttributeOption.attributeOptionImages
+          if (imageControlOption?.productAttributeOption?.productAttributeOptionImages) {
+            const attributeImages = imageControlOption.productAttributeOption.productAttributeOptionImages
             if (attributeImages && attributeImages.length > 0) {
-              imagesToUse = attributeImages
+              imagesToUse = attributeImages as typeof imagesToUse
             }
           }
         }
@@ -219,7 +219,7 @@ export class SearchModel {
             variant.promotionVariants.length > 0
           ) {
             variant.promotionVariants.forEach((promotionVariant) => {
-              if (promotionVariant.promotion) {
+              if (promotionVariant?.promotion) {
                 const promotion = promotionVariant.promotion
                 const existing = promotionCount.get(promotion.id)
 
@@ -227,8 +227,8 @@ export class SearchModel {
                   existing.count++
                 } else {
                   promotionCount.set(promotion.id, {
-                    name: promotion.name,
-                    type: promotion.type,
+                    name: promotion.name ?? '',
+                    type: promotion.type ?? '',
                     count: 1
                   })
                 }
@@ -252,7 +252,7 @@ export class SearchModel {
         product.variants.forEach((variant) => {
           if (variant.variantAttributeOptions) {
             variant.variantAttributeOptions.forEach((variantAttr) => {
-              if (variantAttr.productAttributeOption) {
+              if (variantAttr?.productAttributeOption) {
                 const option = variantAttr.productAttributeOption
                 const attributeId = option.attributeId
                 const uniqueKey = `${product.id}-${attributeId}-${option.value}`

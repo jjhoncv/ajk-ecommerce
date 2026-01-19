@@ -1,5 +1,5 @@
 // 📄 Checkout.interfaces.ts
-import { type CartItem } from '@/hooks/useCart/useCart'
+import { type CartItem } from '@/module/cart/hooks/useCart/useCart'
 import { type Coupons, type CustomersAddresses } from '@/types/domain'
 
 // Datos necesarios para el checkout

@@ -1,0 +1,61 @@
+'use client'
+import {
+  type ProductSearchFilters,
+  type ProductSearchItem
+} from '@/module/search/core'
+import Pagination from '../Pagination'
+import { SearchNotFound } from '../SearchNotFound'
+import SearchSorting from '../SearchSorting'
+import { ProductCard } from '@/module/products/components'
+import React from 'react'
+
+interface SearchResultsProps {
+  products: ProductSearchItem[]
+  totalPages: number
+  currentPage: number
+  currentFilters: ProductSearchFilters
+  defaultView?: 'grid' | 'list'
+}
+
+const SearchResults: React.FC<SearchResultsProps> = ({
+  products,
+  totalPages,
+  currentPage,
+  defaultView: viewMode = 'grid',
+  currentFilters: filters
+}) => {
+  if (products.length === 0) {
+    return <SearchNotFound />
+  }
+
+  return (
+    <div>
+      <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex w-full items-center justify-end">
+          <SearchSorting currentSort={filters.sort} variant="toggle" />
+        </div>
+      </div>
+
+      {/* Productos en modo grid o list */}
+      <div
+        className={
+          viewMode === 'grid'
+            ? 'grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6'
+            : 'flex flex-col space-y-4'
+        }
+      >
+        {products.map((product) => (
+          <ProductCard
+            key={product.variantId || product.id}
+            product={product}
+          />
+        ))}
+      </div>
+
+      {/* Paginación */}
+      <Pagination totalPages={totalPages} currentPage={currentPage} />
+    </div>
+  )
+}
+
+export default SearchResults

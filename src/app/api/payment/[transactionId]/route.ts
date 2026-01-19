@@ -26,10 +26,11 @@ interface PaymentPageData {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { transactionId: string } }
+  { params }: { params: Promise<{ transactionId: string }> }
 ) {
   try {
-    const transactionId = parseInt(params.transactionId)
+    const { transactionId: transactionIdParam } = await params
+    const transactionId = parseInt(transactionIdParam)
 
     if (isNaN(transactionId)) {
       return NextResponse.json(

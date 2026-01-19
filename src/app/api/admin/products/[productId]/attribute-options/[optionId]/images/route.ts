@@ -68,7 +68,7 @@ export async function POST(
     try {
       const newImage = await attributeOptionImageModel.createAttributeOptionImage({
         product_attribute_option_id: Number(optionId),
-        image_type: imageType || 'front',
+        image_type: (imageType || 'front') as any,
         image_url_thumb: imageUrlThumb,
         image_url_normal: imageUrlNormal,
         image_url_zoom: imageUrlZoom,

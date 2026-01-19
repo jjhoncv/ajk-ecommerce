@@ -3,6 +3,7 @@ import CouponService from '@/module/coupons/service/coupon'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
+import Link from 'next/link'
 import { type JSX } from 'react'
 
 export default async function AdminCouponsPage(): Promise<JSX.Element> {
@@ -19,12 +20,12 @@ export default async function AdminCouponsPage(): Promise<JSX.Element> {
         {coupons.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <p className="text-gray-500">No hay cupones registrados</p>
-            <a
+            <Link
               href="/admin/coupons/new"
               className="mt-4 inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             >
               Crear primer cupón
-            </a>
+            </Link>
           </div>
         ) : (
           <CouponsListView coupons={coupons} stats={stats} />

@@ -5,7 +5,7 @@ import {
   type LowStockProduct,
   type RecentOrder,
   type TopSellingProduct
-} from '@/services/dashboard'
+} from '@/module/shared/services/dashboard'
 import { type AdminSection } from '@/types/next-auth'
 import {
   AlertTriangle,

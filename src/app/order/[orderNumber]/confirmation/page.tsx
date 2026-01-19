@@ -77,9 +77,9 @@ async function getOrderConfirmationData(
 export default async function OrderConfirmationPage({
   params
 }: {
-  params: { orderNumber: string }
+  params: Promise<{ orderNumber: string }>
 }) {
-  const { orderNumber } = params
+  const { orderNumber } = await params
 
   const data = await getOrderConfirmationData(orderNumber)
 
@@ -165,7 +165,7 @@ export default async function OrderConfirmationPage({
                 <div className="flex justify-between">
                   <span className="text-gray-600">Fecha del pedido:</span>
                   <span className="font-medium">
-                    {new Date(order.createdAt).toLocaleDateString('es-PE')}
+                    {new Date((order as any).createdAt).toLocaleDateString('es-PE')}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -188,15 +188,15 @@ export default async function OrderConfirmationPage({
                     <span className="text-gray-600">Subtotal:</span>
                     <span>S/ {order.subtotal.toFixed(2)}</span>
                   </div>
-                  {order.discountAmount > 0 && (
+                  {(order.discountAmount ?? 0) > 0 && (
                     <div className="flex justify-between text-sm text-green-600">
                       <span>Descuento:</span>
-                      <span>-S/ {order.discountAmount.toFixed(2)}</span>
+                      <span>-S/ {(order.discountAmount ?? 0).toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Envío:</span>
-                    <span>{order.shippingCost > 0 ? `S/ ${order.shippingCost.toFixed(2)}` : 'Gratis'}</span>
+                    <span>{(order.shippingCost ?? 0) > 0 ? `S/ ${(order.shippingCost ?? 0).toFixed(2)}` : 'Gratis'}</span>
                   </div>
                   {processingFee > 0 && (
                     <div className="flex justify-between text-sm text-orange-600">
@@ -206,7 +206,7 @@ export default async function OrderConfirmationPage({
                   )}
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">IGV (18%):</span>
-                    <span>S/ {order.taxAmount.toFixed(2)}</span>
+                    <span>S/ {(order.taxAmount ?? 0).toFixed(2)}</span>
                   </div>
                   <div className="border-t pt-2">
                     <div className="flex justify-between">

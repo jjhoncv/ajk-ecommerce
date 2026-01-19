@@ -1,6 +1,6 @@
 'use client'
 
-import { type RecentOrder } from '@/services/dashboard'
+import { type RecentOrder } from '@/module/shared/services/dashboard'
 import { Clock, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { type JSX } from 'react'

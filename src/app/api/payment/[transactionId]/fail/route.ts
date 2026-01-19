@@ -5,10 +5,11 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { transactionId: string } }
+  { params }: { params: Promise<{ transactionId: string }> }
 ) {
   try {
-    const transactionId = parseInt(params.transactionId)
+    const { transactionId: transactionIdParam } = await params
+    const transactionId = parseInt(transactionIdParam)
     const { gatewayResponse } = await request.json()
 
     if (isNaN(transactionId)) {

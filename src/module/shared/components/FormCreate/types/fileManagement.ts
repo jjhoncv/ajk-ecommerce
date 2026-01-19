@@ -8,6 +8,28 @@ export interface FileServer {
   type: 'file' | 'directory'
 }
 
+export interface Folder {
+  name: string
+  path: string
+  itemCount?: number
+  modifiedAt?: string
+}
+
+export interface DialogState {
+  open: boolean
+  type?: 'create-folder' | 'delete' | 'move'
+  data?: unknown
+}
+
+export interface FileManagerState {
+  files: FileServer[]
+  folders: Folder[]
+  selectedItems: string[]
+  currentPath: string[]
+  loading: boolean
+  error: string | null
+}
+
 export interface FieldRequired {
   min?: string
   url?: string

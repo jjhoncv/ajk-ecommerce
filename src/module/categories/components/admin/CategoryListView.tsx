@@ -33,6 +33,16 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
 
   const columns: TableColumn[] = [
     {
+      key: 'displayOrder',
+      label: '#',
+      priority: 'high',
+      sortable: true,
+      width: '50px',
+      render: (order: number) => (
+        <span className="text-sm font-medium text-gray-500">{order}</span>
+      )
+    },
+    {
       key: 'name',
       label: 'Nombre',
       priority: 'high',
@@ -55,6 +65,23 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
       sortable: false,
       render: (imageURL: string) => <PreviewImageList imageURL={imageURL} />,
       width: '100px'
+    },
+    {
+      key: 'showNav',
+      label: 'En Menú',
+      priority: 'high',
+      sortable: true,
+      width: '90px',
+      render: (showNav: boolean) =>
+        showNav ? (
+          <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+            Visible
+          </span>
+        ) : (
+          <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500">
+            Oculto
+          </span>
+        )
     },
     {
       key: 'parentId',
@@ -210,7 +237,8 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
         enableSearch
         enablePagination
         enableSort
-        enableReorder={false}
+        enableReorder
+        onReorder={handleReorder}
         pageSize={10}
         pageSizeOptions={[5, 10, 20, 50]}
       />

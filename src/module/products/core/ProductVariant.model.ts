@@ -5,8 +5,8 @@ import { promotionVariantModel } from '@/module/promotions/core'
 // Local dependencies
 import oVariantAttributeOptionModel from './VariantAttributeOption.model'
 import oVariantImageModel from './VariantImage.model'
-import oVariantRatingModel, { type VariantRatingWithCustomer } from './VariantRating.model'
-import { VariantRatingSummary } from './VariantRating.interfaces'
+import oVariantRatingModel from './VariantRating.model'
+import { type VariantRatingWithCustomer, VariantRatingSummary } from './VariantRating.interfaces'
 
 import {
   ProductVariantMapper,
@@ -18,6 +18,7 @@ import oProductVariantRep from './ProductVariant.repository'
 import { type ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
   type AttributeOptionImages,
+  type ProductAttributeOptionImages,
   type ProductVariants as ProductVariant,
   type VariantAttributeOptions as VariantAttributeOption,
   type VariantAttributeOptions
@@ -227,14 +228,14 @@ export class ProductVariantModel {
     if (!variantAttributeOptionWithDetails) return undefined
 
     // Cargar imagenes para cada opcion de atributo
-    const attributeOptions: VariantAttributeOptions[] = await Promise.all(
+    const attributeOptions = await Promise.all(
       variantAttributeOptionWithDetails.map(async (option) => ({
         variantId: option.variantId,
         productAttributeOptionId: option.productAttributeOptionId,
         additionalCost: option.additionalCost,
         productAttributeOption: {
           ...option.productAttributeOption,
-          attributeOptionImages:
+          productAttributeOptionImages:
             await attributeOptionImageModel.getAttributeOptionImages(
               option.productAttributeOptionId,
               variant.productId
@@ -242,7 +243,7 @@ export class ProductVariantModel {
         }
       }))
     )
-    return attributeOptions
+    return attributeOptions as VariantAttributeOptions[]
   }
 
   public async getProductVariant(
@@ -363,12 +364,12 @@ export class ProductVariantModel {
       )
 
     // Convertir el Map a array
-    const allImages: AttributeOptionImages[] = []
-    imagesByOptionId.forEach((images: AttributeOptionImages[]) => {
+    const allImages: ProductAttributeOptionImages[] = []
+    imagesByOptionId.forEach((images) => {
       allImages.push(...images)
     })
 
-    return allImages
+    return allImages as unknown as AttributeOptionImages[]
   }
 
   // ============================================================================

@@ -1,4 +1,11 @@
 import { type ShippingZones as ShippingZone } from '@/types/domain'
+import { type ShippingZoneMethods as ShippingZoneMethodRaw } from '@/types/database'
+
+export interface ShippingZoneMethodWithDetails extends ShippingZoneMethodRaw {
+  method_name?: string
+  zone_name?: string
+  zone_districts?: unknown
+}
 
 export interface ShippingZoneMethodExtended {
   id: number
@@ -13,7 +20,7 @@ export interface ShippingZoneMethodExtended {
 }
 
 export interface ShippingZoneWithMethods extends ShippingZone {
-  methods?: ShippingZoneMethodExtended[]
+  methods?: ShippingZoneMethodWithDetails[]
 }
 
 export interface ShippingZoneMethodInfo {

@@ -1,23 +1,23 @@
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import { LayoutContent } from '@/components/layout/LayoutContent'
-import DailyDeals from '@/components/sections/DailyDeals'
-import Features from '@/components/sections/Features'
-import Newsletter from '@/components/sections/Newsletter'
-import PopularProducts from '@/components/sections/PopularProducts'
-import Navigation from '@/components/ui/Navigation/Navigation'
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import {
+  DailyDeals,
+  Features,
+  Newsletter,
+  PopularProducts
+} from '@/module/shared/components/sections'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import HeroSlider from '@/module/banners/components/HeroSlider'
 import BannerService from '@/module/banners/service/banner'
 import Categories from '@/module/categories/Categories'
 import FeaturedCategories from '@/module/categories/FeaturedCategories'
 
 // services
-import CategoryService from '@/services/categories'
-import { getDealsProducts } from '@/services/dealsProducts'
-import { getFeaturedCategories } from '@/services/featuredCategories'
-import { getFeatures } from '@/services/features/features'
-import { getPopularProducts } from '@/services/popularProducts'
-import PromotionService from '@/services/promotion'
+import CategoryService from '@/module/categories/services'
+import { getDealsProducts } from '@/module/products/services/dealsProducts'
+import { getFeaturedCategories } from '@/module/categories/services/featuredCategories'
+import { getFeatures } from '@/module/shared/services/features/features'
+import { getPopularProducts } from '@/module/products/services/popularProducts'
+import PromotionService from '@/module/promotions/services'
 import { type Metadata } from 'next'
 import { type JSX } from 'react'
 

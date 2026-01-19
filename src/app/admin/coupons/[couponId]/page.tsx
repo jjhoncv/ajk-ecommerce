@@ -4,7 +4,7 @@ import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { notFound } from 'next/navigation'
 import { type JSX } from 'react'
-import CouponDetailAdmin from './CouponDetailAdmin'
+import { CouponDetailAdmin } from '@/module/coupons/components/admin'
 
 interface PageProps {
   params: Promise<{ couponId: string }>
@@ -23,7 +23,7 @@ export default async function AdminCouponDetailPage({
           title={<PageTitle title="Nuevo Cupón" />}
           subtitle="Crear un nuevo cupón de descuento"
           breadcrumb={[
-            { label: 'Cupones', href: '/admin/coupons' },
+            { label: 'Cupones', url: '/admin/coupons' },
             { label: 'Nuevo' }
           ]}
         >
@@ -52,7 +52,7 @@ export default async function AdminCouponDetailPage({
         title={<PageTitle title={coupon.name} />}
         subtitle="Editar cupón"
         breadcrumb={[
-          { label: 'Cupones', href: '/admin/coupons' },
+          { label: 'Cupones', url: '/admin/coupons' },
           { label: coupon.code }
         ]}
       >

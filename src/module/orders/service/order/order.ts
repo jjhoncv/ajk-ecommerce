@@ -1,5 +1,5 @@
 import { paymentTransactionModel } from '@/module/payments/core'
-import orderModel from '../../core'
+import { orderModel } from '../../core'
 import { hydrateOrders } from './hydrators'
 import { type Order } from './types'
 
@@ -52,14 +52,14 @@ export const getOrderById = async (id: number): Promise<Order | undefined> => {
       taxAmount: Number(orderData.taxAmount) || 0,
       totalAmount: Number(orderData.totalAmount) || 0,
       shippingAddressId: orderData.shippingAddressId,
-      shippingMethod: orderData.shippingMethod,
-      estimatedDelivery: orderData.estimatedDelivery,
-      paymentMethod: orderData.paymentMethod,
+      shippingMethod: orderData.shippingMethod ?? '',
+      estimatedDelivery: orderData.estimatedDelivery ?? null,
+      paymentMethod: orderData.paymentMethod ?? '',
       paymentStatus: orderData.paymentStatus,
-      paidAt: orderData.paidAt,
-      customerNotes: orderData.customerNotes,
-      adminNotes: orderData.adminNotes,
-      createdAt: (orderData as any).createdAt,
+      paidAt: orderData.paidAt ?? null,
+      customerNotes: orderData.customerNotes ?? null,
+      adminNotes: orderData.adminNotes ?? null,
+      createdAt: (orderData as any).createdAt ?? new Date(),
       processingFee,
       totalWithFee: Number(orderData.totalAmount) + processingFee
     }
@@ -86,14 +86,14 @@ export const getOrdersByStatus = async (status: string): Promise<Order[]> => {
       taxAmount: Number(order.taxAmount) || 0,
       totalAmount: Number(order.totalAmount) || 0,
       shippingAddressId: order.shippingAddressId,
-      shippingMethod: order.shippingMethod,
-      estimatedDelivery: order.estimatedDelivery,
-      paymentMethod: order.paymentMethod,
+      shippingMethod: order.shippingMethod ?? '',
+      estimatedDelivery: order.estimatedDelivery ?? null,
+      paymentMethod: order.paymentMethod ?? '',
       paymentStatus: order.paymentStatus,
-      paidAt: order.paidAt,
-      customerNotes: order.customerNotes,
-      adminNotes: order.adminNotes,
-      createdAt: (order as any).createdAt
+      paidAt: order.paidAt ?? null,
+      customerNotes: order.customerNotes ?? null,
+      adminNotes: order.adminNotes ?? null,
+      createdAt: (order as any).createdAt ?? new Date()
     }))
   } catch (error) {
     throw new Error(
@@ -122,14 +122,14 @@ export const updateOrderStatus = async (
       taxAmount: Number(updated.taxAmount) || 0,
       totalAmount: Number(updated.totalAmount) || 0,
       shippingAddressId: updated.shippingAddressId,
-      shippingMethod: updated.shippingMethod,
-      estimatedDelivery: updated.estimatedDelivery,
-      paymentMethod: updated.paymentMethod,
+      shippingMethod: updated.shippingMethod ?? '',
+      estimatedDelivery: updated.estimatedDelivery ?? null,
+      paymentMethod: updated.paymentMethod ?? '',
       paymentStatus: updated.paymentStatus,
-      paidAt: updated.paidAt,
-      customerNotes: updated.customerNotes,
-      adminNotes: updated.adminNotes,
-      createdAt: (updated as any).createdAt
+      paidAt: updated.paidAt ?? null,
+      customerNotes: updated.customerNotes ?? null,
+      adminNotes: updated.adminNotes ?? null,
+      createdAt: (updated as any).createdAt ?? new Date()
     }
   } catch (error) {
     throw new Error(

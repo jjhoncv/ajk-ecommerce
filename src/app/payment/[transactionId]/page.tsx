@@ -1,16 +1,17 @@
 // 📄 app/payment/[transactionId]/page.tsx (SERVER COMPONENT)
-import { PaymentPage as PaymentPageClient } from '@/components/payment/PaymentPage'
+import { PaymentPage as PaymentPageClient } from '@/module/payments/components'
 import { type Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Pago Seguro',
   description: 'Completa tu pago'
 }
 
-export default function PaymentPage({
+export default async function PaymentPage({
   params
 }: {
-  params: { transactionId: string }
+  params: Promise<{ transactionId: string }>
 }) {
+  const { transactionId } = await params
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header del servidor */}
@@ -21,7 +22,7 @@ export default function PaymentPage({
       </header>
 
       {/* Client Component con toda la lógica */}
-      <PaymentPageClient transactionId={params.transactionId} />
+      <PaymentPageClient transactionId={transactionId} />
     </div>
   )
 }

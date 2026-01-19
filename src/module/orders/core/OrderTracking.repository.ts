@@ -187,7 +187,7 @@ export class OrderTrackingRepository {
     deliveryNotes?: string
   ): Promise<OrderTrackingRaw | null> {
     const fields = ['status = ?']
-    const values = [status]
+    const values: (string | number)[] = [status]
 
     if (currentLocation !== undefined) {
       fields.push('current_location = ?')

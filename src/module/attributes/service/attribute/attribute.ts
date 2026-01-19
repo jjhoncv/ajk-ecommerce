@@ -7,7 +7,3 @@ export const getAttributes = async () => {
 export const getAttributeById = async (id: number) => {
   return await attributeModel.getAttributeById(id)
 }
-
-export const getAttributeWithOptions = async (id: number) => {
-  return await attributeModel.getAttributeWithOptions(id)
-}

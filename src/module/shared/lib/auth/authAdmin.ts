@@ -1,5 +1,5 @@
 import { isProd } from '@/lib/utils'
-import UserService from '@/services/user'
+import UserService from '@/module/users/services'
 import { type AdminSection } from '@/types/next-auth'
 import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'

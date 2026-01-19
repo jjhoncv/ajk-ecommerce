@@ -194,7 +194,8 @@ export class PromotionVariantModel {
 
     if (promotionsAvailable.length === 0) return undefined
 
-    return promotionsAvailable
+    // Return the best promotion (first available)
+    return promotionsAvailable[0]
   }
 
   public async getPromotionsWithStock(

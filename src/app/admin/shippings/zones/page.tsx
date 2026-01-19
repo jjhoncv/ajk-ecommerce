@@ -25,7 +25,7 @@ export default async function ShippingZonesPage(): Promise<JSX.Element> {
         }
       >
         {zones && zones.length > 0 ? (
-          <ShippingZonesListView zones={zones} />
+          <ShippingZonesListView zones={zones as any} />
         ) : (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <p className="text-gray-500">No hay zonas de envío configuradas</p>

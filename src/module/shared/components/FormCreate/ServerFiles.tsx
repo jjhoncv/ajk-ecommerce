@@ -310,9 +310,7 @@ export const ServerFiles: FC<ServerFilesProps> = ({
       const fileList = await convertServerFilesToFileList(filesSelecteds)
 
       const singleFileSchema = schemaImageValidation({
-        acceptImageTypes: field.options?.acceptImageTypes,
-        dimensions: field.options?.dimensions,
-        maxFileSize: field.options?.maxFileSize,
+        options: field.options,
         multiple: field.multiple ?? false
       })
 

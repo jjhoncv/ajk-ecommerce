@@ -1,5 +1,5 @@
-import CustomerService from '@/services/customer'
-import { type CustomerData } from '@/services/customer/types'
+import CustomerService from '@/module/customers/services'
+import { type CustomerData } from '@/module/customers/services/types'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

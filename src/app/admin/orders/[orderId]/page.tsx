@@ -6,7 +6,7 @@ import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { notFound } from 'next/navigation'
 import { type JSX } from 'react'
-import OrderDetailAdmin from './OrderDetailAdmin'
+import { OrderDetailAdmin } from '@/module/orders/components/admin'
 
 interface PageProps {
   params: Promise<{ orderId: string }>
@@ -46,6 +46,7 @@ export default async function AdminOrderDetailPage({
 
   const orderData = {
     ...order,
+    createdAt: (order as any).createdAt ?? new Date(),
     processingFee,
     totalWithFee: order.totalAmount + processingFee,
     customer: customer
@@ -78,11 +79,11 @@ export default async function AdminOrderDetailPage({
         title={<PageTitle title={`Orden ${order.orderNumber}`} />}
         subtitle="Detalle de la orden"
         breadcrumb={[
-          { label: 'Órdenes', href: '/admin/orders' },
+          { label: 'Órdenes', url: '/admin/orders' },
           { label: order.orderNumber }
         ]}
       >
-        <OrderDetailAdmin order={orderData} />
+        <OrderDetailAdmin order={orderData as any} />
       </PageUI>
     </LayoutPageAdmin>
   )

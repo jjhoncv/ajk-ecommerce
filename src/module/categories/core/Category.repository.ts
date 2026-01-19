@@ -4,7 +4,7 @@ import { type Categories as CategoriesRaw } from '@/types/database'
 export class CategoryRepository {
   public async getCategories(): Promise<CategoriesRaw[] | null> {
     const categories = await executeQuery<CategoriesRaw[]>({
-      query: 'SELECT * FROM categories ORDER BY name ASC'
+      query: 'SELECT * FROM categories ORDER BY display_order ASC, name ASC'
     })
 
     if (categories.length === 0) return null
@@ -16,8 +16,8 @@ export class CategoryRepository {
   ): Promise<CategoriesRaw[] | null> {
     const query =
       parentId === null || parentId === undefined
-        ? 'SELECT * FROM categories WHERE parent_id IS NULL ORDER BY name ASC'
-        : 'SELECT * FROM categories WHERE parent_id = ? ORDER BY name ASC'
+        ? 'SELECT * FROM categories WHERE parent_id IS NULL ORDER BY display_order ASC, name ASC'
+        : 'SELECT * FROM categories WHERE parent_id = ? ORDER BY display_order ASC, name ASC'
 
     const values = parentId === null || parentId === undefined ? [] : [parentId]
 
@@ -42,7 +42,7 @@ export class CategoryRepository {
   public async searchCategories(q?: string): Promise<CategoriesRaw[] | null> {
     const categories = await executeQuery<CategoriesRaw[]>({
       query:
-        'SELECT * FROM categories WHERE name LIKE ? OR description LIKE ? ORDER BY name ASC',
+        'SELECT * FROM categories WHERE name LIKE ? OR description LIKE ? ORDER BY display_order ASC, name ASC',
       values: [`%${q}%`, `%${q}%`]
     })
 
@@ -52,7 +52,8 @@ export class CategoryRepository {
 
   public async getCategoriesToNav(): Promise<CategoriesRaw[] | null> {
     const categories = await executeQuery<CategoriesRaw[]>({
-      query: 'SELECT * FROM categories ORDER BY name ASC'
+      query:
+        'SELECT * FROM categories WHERE show_nav = 1 ORDER BY display_order ASC, name ASC'
     })
 
     if (categories.length === 0) return null

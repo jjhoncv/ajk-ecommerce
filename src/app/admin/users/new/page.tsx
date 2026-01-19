@@ -2,7 +2,7 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { type JSX } from 'react'
-import { UserForm } from '../UserForm'
+import { UserForm } from '@/module/users/components/admin'
 
 export default async function NewUserPage(): Promise<JSX.Element> {
   return (

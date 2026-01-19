@@ -1,7 +1,5 @@
-import { categoryModel } from '@/module/categories/core'
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import Navigation from '@/components/ui/Navigation/Navigation'
+import { Header, Layout } from '@/module/shared/components/layout'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import { authOptions } from '@/lib/auth/auth'
 import { AlertCircle, CheckCircle, Clock, Package } from 'lucide-react'
 import { getServerSession } from 'next-auth'
@@ -60,18 +58,14 @@ export default async function OrdersPage() {
   const session = await getServerSession(authOptions)
 
   // Si no hay sesión, redirigir al inicio
-  // Esto es una doble verificación, ya que el middleware debería manejar esto
   if (!session) {
     redirect('/')
   }
 
-  // Obtener datos para el header y footer
-  const categories = await categoryModel.getCategories()
-
   return (
     <Layout>
       <Header navigationType="mini">
-        <Navigation type="mini" categories={categories || []} />
+        <Navigation type="mini" />
       </Header>
 
       <main className="mx-auto max-w-7xl px-4 py-8">

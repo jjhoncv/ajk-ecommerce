@@ -54,7 +54,7 @@ export default async function VariantListPage({
               imageControlOption.productAttributeOptionId
             )
             if (attributeImages && attributeImages.length > 0) {
-              images = attributeImages
+              images = attributeImages as any
             }
           }
         }

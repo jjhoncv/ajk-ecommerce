@@ -1,16 +1,11 @@
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import { LayoutContent } from '@/components/layout/LayoutContent'
-import PromotionBanner from '@/components/promotion/PromotionBanner'
-import { PromotionPageNotFound } from '@/components/promotion/PromotionPageNotFound'
-import SearchFilters from '@/components/search/SearchFilters'
-import SearchResults from '@/components/search/SearchResults'
-import StickyFilters from '@/components/search/StickyFilters'
-import Navigation from '@/components/ui/Navigation/Navigation'
-import { getFilters } from '@/helpers/search.helpers'
-import PromotionService from '@/services/promotion'
-import SearchService from '@/services/search'
-import { type SearchParams } from '@/shared'
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import { PromotionBanner, PromotionPageNotFound } from '@/module/promotions/components'
+import { SearchFilters, SearchResults, StickyFilters } from '@/module/search/components'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
+import { getFilters } from '@/module/search/helpers/search.helpers'
+import PromotionService from '@/module/promotions/services'
+import SearchService from '@/module/search/services'
+import { type SearchParams } from '@/module/shared/types/shared'
 
 // services
 import { type Metadata } from 'next'
@@ -26,7 +21,7 @@ interface PromotionPageProps {
   params: Promise<{
     id: string
   }>
-  searchParams: SearchParams // ← AGREGADO: Los search params son necesarios para los filtros
+  searchParams: Promise<SearchParams> // ← AGREGADO: Los search params son necesarios para los filtros
 }
 
 export default async function PromotionPage({

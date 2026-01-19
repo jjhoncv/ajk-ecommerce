@@ -42,11 +42,16 @@ export const CategoryFields: Field[] = [
   {
     key: 'display_order',
     label: 'Orden de visualización',
-    type: 'text'
+    type: 'text',
+    placeholder: 'Menor número = mayor prioridad'
   },
   {
     key: 'show_nav',
     label: 'Mostrar en navegación',
-    type: 'text'
+    type: 'select',
+    selectOptions: [
+      { value: '1', label: 'Sí - Mostrar en menú' },
+      { value: '0', label: 'No - Ocultar del menú' }
+    ]
   }
 ]

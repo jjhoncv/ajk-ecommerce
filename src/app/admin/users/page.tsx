@@ -4,7 +4,7 @@ import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageButton } from '@/module/shared/components/Page/PageButton'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { type JSX } from 'react'
-import { UsersManager } from './UsersManager'
+import { UsersManager } from '@/module/users/components/admin'
 
 export default async function UsersPage({
   searchParams

@@ -9,7 +9,7 @@ export const VariantImageMapper = (img: VariantImageRaw): VariantImage => {
     imageUrlNormal: img.image_url_normal,
     imageUrlZoom: img.image_url_zoom,
     imageType: img.image_type,
-    isPrimary: Boolean(img.is_primary),
+    isPrimary: img.is_primary ? 1 : 0,
     altText: img.alt_text ?? undefined,
     displayOrder: img.display_order ?? 0,
     productVariants: undefined

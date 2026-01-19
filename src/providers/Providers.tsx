@@ -1,12 +1,12 @@
 // providers/Providers.tsx
 'use client'
-import MiniCart from '@/components/ui/MiniCart'
-import { AuthModalProvider } from '@/providers/auth-modal'
+import { MiniCart } from '@/module/cart/components'
+import { CartProvider } from '@/module/cart/providers'
+import { AuthModalProvider } from '@/module/customers/providers'
+import { ThemeProvider } from '@/module/shared/providers'
 import { SessionProvider } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { type JSX, type ReactNode } from 'react'
-import { CartProvider } from './cart/CartProvider'
-import { ThemeProvider } from './theme/ThemeProvider'
 
 interface ProvidersProps {
   children: ReactNode

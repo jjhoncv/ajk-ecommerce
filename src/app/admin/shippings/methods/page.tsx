@@ -25,7 +25,7 @@ export default async function ShippingMethodsPage(): Promise<JSX.Element> {
         }
       >
         {methods && methods.length > 0 ? (
-          <ShippingMethodsListView methods={methods} />
+          <ShippingMethodsListView methods={methods as any} />
         ) : (
           <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
             <p className="text-gray-500">No hay métodos de envío configurados</p>

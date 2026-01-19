@@ -1,13 +1,13 @@
 // hooks/useHeroSlider.ts
 'use client'
 
-import { type Hero } from '@/services/hero'
+import { type Banner } from '@/module/banners/service/banner/types'
 import { useCallback, useEffect, useState } from 'react'
 import { createSliderLayout, shouldRenderSlider } from './HeroSlider.helpers'
 import { type HeroSliderLayout, type SideBanner } from './HeroSlider.interfaces'
 
 export interface UseHeroSliderProps {
-  slides: Hero[]
+  slides: Banner[]
   sideBanners?: SideBanner[]
   autoPlay?: boolean
   autoPlayInterval?: number

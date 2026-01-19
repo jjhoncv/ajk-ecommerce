@@ -1,8 +1,8 @@
-import AdminClientWrapper from '@/components/admin/AdminClientWrapper'
+import { AdminClientWrapper } from '@/module/shared/components/admin'
 import { AdminDashboard } from '@/module/shared/components/AdminDashboard'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
-import dashboardService from '@/services/dashboard'
+import dashboardService from '@/module/shared/services/dashboard'
 import { getServerSession } from 'next-auth'
 
 export default async function AdminPage(): Promise<React.JSX.Element> {

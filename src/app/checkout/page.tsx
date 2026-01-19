@@ -7,7 +7,7 @@ import { customerModel, customerAddressModel } from '@/module/customers/core'
 import { paymentMethodModel } from '@/module/payments/core'
 
 // Components
-import CheckoutClient from '@/components/checkout/CheckoutClient'
+import { CheckoutClient } from '@/module/checkout/components'
 
 // Types
 import { authOptions } from '@/lib/auth/auth'
@@ -17,15 +17,16 @@ export default async function CheckoutPage() {
   // 1. Verificar autenticación
   const session = await getServerSession(authOptions)
 
+  // Si no está autenticado, redirigir al carrito (el modal de login se maneja desde allí)
   if (!session?.user?.email) {
-    redirect('/auth/login?redirect=/checkout')
+    redirect('/cart')
   }
 
   // 2. Obtener datos del usuario
   const customer = await customerModel.getCustomerByEmail(session.user.email)
 
   if (!customer) {
-    redirect('/auth/login?redirect=/checkout')
+    redirect('/cart')
   }
 
   // 3. Obtener direcciones del cliente
@@ -45,7 +46,7 @@ export default async function CheckoutPage() {
     name: customer.name || '',
     lastname: customer.lastname,
     email: customer.email,
-    phone: customer.phone,
+    phone: customer.phone ?? '',
     addresses,
     defaultAddressId: addresses.find((addr) => addr.isDefault === 1)?.id
   }

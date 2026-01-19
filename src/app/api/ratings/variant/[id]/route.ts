@@ -4,11 +4,11 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params
-    const variantId = parseInt(resolvedParams.id)
+    const { id } = await params
+    const variantId = parseInt(id)
 
     if (isNaN(variantId)) {
       return NextResponse.json(
@@ -40,8 +40,8 @@ export async function GET(
           review: rating.review,
           title: rating.title,
           verifiedPurchase: rating.verifiedPurchase === 1,
-          createdAt: rating.createdAt,
-          updatedAt: rating.updatedAt,
+          createdAt: (rating as any).createdAt,
+          updatedAt: (rating as any).updatedAt,
           customerName: rating.customerName,
           customerPhoto: rating.customerPhoto || null,
           // Agregar imágenes de rating si las hay
@@ -77,11 +77,11 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params
-    const variantId = parseInt(resolvedParams.id)
+    const { id } = await params
+    const variantId = parseInt(id)
 
     if (isNaN(variantId)) {
       return NextResponse.json(

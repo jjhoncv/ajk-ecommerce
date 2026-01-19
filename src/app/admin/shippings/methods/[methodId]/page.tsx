@@ -52,10 +52,10 @@ export default async function EditShippingMethodPage({
             initialData={{
               id: method.id,
               name: method.name,
-              description: method.description,
+              description: method.description ?? null,
               baseCost: method.baseCost,
-              estimatedDaysMin: method.estimatedDaysMin,
-              estimatedDaysMax: method.estimatedDaysMax,
+              estimatedDaysMin: method.estimatedDaysMin ?? null,
+              estimatedDaysMax: method.estimatedDaysMax ?? null,
               isActive: method.isActive ?? 1
             }}
           />

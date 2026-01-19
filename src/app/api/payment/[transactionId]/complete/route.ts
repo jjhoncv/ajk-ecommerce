@@ -2,15 +2,16 @@
 import { customerModel, customerAddressModel } from '@/module/customers/core'
 import { orderModel, orderItemsModel } from '@/module/orders/core'
 import { paymentTransactionModel } from '@/module/payments/core'
-import emailService from '@/services/email'
+import emailService from '@/module/shared/services/email'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { transactionId: string } }
+  { params }: { params: Promise<{ transactionId: string }> }
 ) {
   try {
-    const transactionId = parseInt(params.transactionId)
+    const { transactionId: transactionIdParam } = await params
+    const transactionId = parseInt(transactionIdParam)
     const { gatewayResponse } = await request.json()
 
     if (isNaN(transactionId)) {
@@ -109,7 +110,7 @@ export async function POST(
               },
               shippingMethod: order.shippingMethod || 'Estándar',
               estimatedDelivery: order.estimatedDelivery,
-              createdAt: order.createdAt
+              createdAt: (order as any).createdAt
             })
             .then((sent) => {
               if (sent) {

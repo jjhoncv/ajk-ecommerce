@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
       name: user.name || '',
       lastname: user.lastname,
       email: user.email,
-      phone: user.phone,
+      phone: user.phone ?? '',
       addresses,
       defaultAddressId: addresses.find((addr) => addr.isDefault === 1)?.id
     }
@@ -240,7 +240,7 @@ export async function GET() {
       name: user.name || '',
       lastname: user.lastname,
       email: user.email,
-      phone: user.phone,
+      phone: user.phone ?? '',
       addresses: addresses || [],
       defaultAddressId: addresses?.find((addr) => addr.isDefault === 1)?.id
     }

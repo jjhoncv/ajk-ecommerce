@@ -63,7 +63,7 @@ export const FolderCard: FC<FolderCardProps> = ({
             {folder.name}
           </div>
           <div className="text-xs text-gray-400">
-            {new Date(folder.modifiedAt).toLocaleDateString()}
+            {folder.modifiedAt ? new Date(folder.modifiedAt).toLocaleDateString() : ''}
           </div>
         </div>
       </div>

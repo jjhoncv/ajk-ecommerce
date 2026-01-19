@@ -1,13 +1,9 @@
-import Header from '@/components/layout/Header'
-import Layout from '@/components/layout/Layout'
-import { LayoutContent } from '@/components/layout/LayoutContent'
-import SearchFilters from '@/components/search/SearchFilters'
-import SearchResults from '@/components/search/SearchResults'
-import StickyFilters from '@/components/search/StickyFilters'
-import Navigation from '@/components/ui/Navigation/Navigation'
-import { getFilters } from '@/helpers/search.helpers'
-import SearchService from '@/services/search'
-import { type SearchParams } from '@/shared'
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import { SearchFilters, SearchResults, StickyFilters } from '@/module/search/components'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
+import { getFilters } from '@/module/search/helpers/search.helpers'
+import SearchService from '@/module/search/services'
+import { type SearchParams } from '@/module/shared/types/shared'
 import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 interface SearchPageProps {
-  searchParams: SearchParams
+  searchParams: Promise<SearchParams>
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {

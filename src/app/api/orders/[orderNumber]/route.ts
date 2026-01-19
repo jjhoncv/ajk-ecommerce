@@ -4,15 +4,12 @@ import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
-interface Params {
-  orderNumber: string
-}
-
 export async function GET(
   request: NextRequest,
-  { params }: { params: Params }
+  { params }: { params: Promise<{ orderNumber: string }> }
 ) {
   try {
+    const { orderNumber } = await params
     const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
       return NextResponse.json(
@@ -29,7 +26,7 @@ export async function GET(
       )
     }
 
-    const order = await orderModel.getOrderByNumber(params.orderNumber)
+    const order = await orderModel.getOrderByNumber(orderNumber)
     if (!order) {
       return NextResponse.json(
         { error: 'Orden no encontrada' },

@@ -1,0 +1,5 @@
+export { default as MiniCart } from './MiniCart'
+export { MiniCartContent } from './MiniCartContent'
+export { MiniCartItem } from './MiniCartItem'
+export { MiniCartPurchase } from './MiniCartPurchase'
+export { MiniCartEmpty } from './MiniCartEmpty'

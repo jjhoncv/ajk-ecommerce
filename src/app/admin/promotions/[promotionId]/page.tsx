@@ -23,7 +23,7 @@ export default async function AdminPromotionDetailPage({
           title={<PageTitle title="Nueva Promoción" />}
           subtitle="Crear una nueva promoción"
           breadcrumb={[
-            { label: 'Promociones', href: '/admin/promotions' },
+            { label: 'Promociones', url: '/admin/promotions' },
             { label: 'Nueva' }
           ]}
         >
@@ -52,7 +52,7 @@ export default async function AdminPromotionDetailPage({
         title={<PageTitle title={promotion.name} />}
         subtitle="Editar promoción"
         breadcrumb={[
-          { label: 'Promociones', href: '/admin/promotions' },
+          { label: 'Promociones', url: '/admin/promotions' },
           { label: promotion.name }
         ]}
       >

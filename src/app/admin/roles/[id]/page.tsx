@@ -4,7 +4,7 @@ import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
 import { notFound } from 'next/navigation'
 import { type JSX } from 'react'
-import { RoleForm } from '../RoleForm'
+import { RoleForm } from '@/module/users/components/admin'
 
 interface EditRolePageProps {
   params: Promise<{ id: string }>

@@ -4,7 +4,7 @@ import {
   createResponse,
   handleError
 } from '@/module/shared/lib/handlerApi'
-import emailService from '@/services/email'
+import emailService from '@/module/shared/services/email'
 import { type NextRequest } from 'next/server'
 
 export async function POST(req: NextRequest): Promise<Response> {

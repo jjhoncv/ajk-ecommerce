@@ -1,4 +1,4 @@
-import { getProductVariant } from '@/services/product/productVariant'
+import { getProductVariant } from '@/module/products/services/productVariant'
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function GET(

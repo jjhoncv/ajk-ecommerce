@@ -39,7 +39,7 @@ export default async function ProductListPage(): Promise<JSX.Element> {
           <PageButton href="/admin/products/new">Nuevo producto</PageButton>
         }
       >
-        <ProductListView products={products} />
+        <ProductListView products={products as any} />
       </PageUI>
     </LayoutPageAdmin>
   )

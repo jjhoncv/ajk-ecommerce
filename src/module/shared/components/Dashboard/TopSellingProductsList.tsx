@@ -1,6 +1,6 @@
 'use client'
 
-import { type TopSellingProduct } from '@/services/dashboard'
+import { type TopSellingProduct } from '@/module/shared/services/dashboard'
 import { TrendingUp, Trophy } from 'lucide-react'
 import { type JSX } from 'react'
 
