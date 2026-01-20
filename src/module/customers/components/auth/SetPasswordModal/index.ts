@@ -1,0 +1,1 @@
+export { SetPasswordModal } from './SetPasswordModal'

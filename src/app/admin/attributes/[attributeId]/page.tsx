@@ -1,4 +1,4 @@
-import { attributeModel } from '@/module/attributes/core'
+import AttributeService from '@/module/attributes/service/attribute'
 import { AttributeFields } from '@/module/attributes/components/admin/attributeFields'
 import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
@@ -17,9 +17,9 @@ export default async function EditAttributePage({
   params
 }: EditAttributePageProps): Promise<JSX.Element> {
   const { attributeId } = await params
-  const attribute = await attributeModel.getAttributeById(Number(attributeId))
+  const result = await AttributeService.getAttributeWithAudit(Number(attributeId))
 
-  if (attribute == null) {
+  if (result == null || result.attribute == null) {
     return (
       <LayoutPageAdmin>
         <PageUI
@@ -33,6 +33,8 @@ export default async function EditAttributePage({
       </LayoutPageAdmin>
     )
   }
+
+  const { attribute, audit } = result
 
   const fieldsWithValues = mergeFieldsWithData(AttributeFields, {
     name: attribute.name,
@@ -61,6 +63,7 @@ export default async function EditAttributePage({
             fields: fieldsWithValues,
             customFields: { id: attributeId }
           }}
+          audit={audit}
         />
       </PageUI>
     </LayoutPageAdmin>

@@ -1,6 +1,54 @@
 import { executeQuery } from '@/lib/db'
 import { promotionModel, promotionVariantModel } from '../../core'
+import userModel from '@/module/users/core/User.model'
 import { type Promotion, type PromotionVariantWithInfo, type PromotionWithMetrics } from './types'
+
+export interface PromotionAudit {
+  createdAt: Date | null
+  createdByName: string | null
+  updatedAt: Date | null
+  updatedByName: string | null
+}
+
+export interface PromotionWithAudit {
+  promotion: Promotion
+  audit: PromotionAudit
+}
+
+export const getPromotionWithAudit = async (id: number): Promise<PromotionWithAudit | null> => {
+  const promotionRaw = await promotionModel.getPromotionById(id)
+  if (!promotionRaw) return null
+
+  const promotion: Promotion = {
+    id: promotionRaw.id,
+    name: promotionRaw.name,
+    description: promotionRaw.description,
+    discountType: promotionRaw.discountType as 'fixed_amount' | 'percentage',
+    discountValue: Number(promotionRaw.discountValue),
+    startDate: promotionRaw.startDate,
+    endDate: promotionRaw.endDate,
+    minPurchaseAmount: promotionRaw.minPurchaseAmount,
+    imageUrl: promotionRaw.imageUrl,
+    isActive: promotionRaw.isActive,
+    type: promotionRaw.type
+  }
+
+  // Obtener nombres de usuarios
+  const [createdByName, updatedByName] = await Promise.all([
+    promotionRaw.createdBy ? userModel.getUserFullName(promotionRaw.createdBy) : null,
+    promotionRaw.updatedBy ? userModel.getUserFullName(promotionRaw.updatedBy) : null
+  ])
+
+  return {
+    promotion,
+    audit: {
+      createdAt: promotionRaw.createdAt ?? null,
+      createdByName,
+      updatedAt: promotionRaw.updatedAt ?? null,
+      updatedByName
+    }
+  }
+}
 
 export const getPromotions = async (): Promise<Promotion[]> => {
   const promotions = await promotionModel.getPromotions()

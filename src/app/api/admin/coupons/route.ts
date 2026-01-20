@@ -64,6 +64,8 @@ export async function POST(request: Request) {
       )
     }
 
+    const userId = session.user.id ? Number(session.user.id) : null
+
     const couponData = {
       name,
       code: code.toUpperCase(),
@@ -79,7 +81,9 @@ export async function POST(request: Request) {
       isActive: isActive ? 1 : 0,
       usedCount: 0,
       applicableTo: applicableTo || 'all',
-      applicableIds: applicableIds || null
+      applicableIds: applicableIds || null,
+      createdBy: userId,
+      updatedBy: userId
     }
 
     const coupon = await couponModel.createCoupon(couponData)

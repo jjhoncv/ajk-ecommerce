@@ -1,6 +1,7 @@
 import { brandModel } from '@/module/brands/core'
 import { categoryModel } from '@/module/categories/core'
-import { productModel, productAttributeOptionModel, productVariantModel } from '@/module/products/core'
+import { productAttributeOptionModel, productVariantModel } from '@/module/products/core'
+import ProductService from '@/module/products/service/product'
 import { getProductFieldsWithData } from '@/module/products/components/admin/productFields'
 import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
@@ -21,7 +22,7 @@ export default async function EditProductPage({
   params
 }: EditProductPageProps): Promise<JSX.Element> {
   const { productId } = await params
-  const product = await productModel.getProductById(Number(productId))
+  const result = await ProductService.getProductWithAudit(Number(productId))
   const brands = await brandModel.getBrands()
   const categories = await categoryModel.getCategories()
   const productCategories = await categoryModel.getCategoriesByProductId(Number(productId))
@@ -30,7 +31,7 @@ export default async function EditProductPage({
   const variants = await productVariantModel.getProductVariantsByProductId(Number(productId))
   const attributes = await productAttributeOptionModel.getProductAttributesWithOptions(Number(productId))
 
-  if (product == null) {
+  if (result == null || result.product == null) {
     return (
       <LayoutPageAdmin>
         <PageUI
@@ -44,6 +45,8 @@ export default async function EditProductPage({
       </LayoutPageAdmin>
     )
   }
+
+  const { product, audit } = result
 
   const fields = getProductFieldsWithData(brands ?? [], categories ?? [])
   const selectedCategoryIds = productCategories?.map((cat) => cat.id.toString()) || []
@@ -131,6 +134,7 @@ export default async function EditProductPage({
                   fields: fieldsWithValues,
                   customFields: { id: productId }
                 }}
+                audit={audit}
               />
             </div>
           </div>

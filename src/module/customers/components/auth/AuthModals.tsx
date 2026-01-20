@@ -1,6 +1,7 @@
 'use client'
 import { LoginCustomerForm, RegisterCustomerForm } from '@/module/customers/components/auth'
 import { Modal, ModalContent, ModalTitle } from '@/module/shared/components/Modal'
+import { cn } from '@/lib/utils'
 import { type JSX } from 'react'
 
 interface AuthModalsProps {
@@ -22,28 +23,38 @@ export function AuthModals({
   onSwitchToRegister,
   onSwitchToLogin
 }: AuthModalsProps): JSX.Element {
+  // Un solo modal abierto cuando cualquiera de los dos está activo
+  const isOpen = isLoginOpen || isRegisterOpen
+  const isLogin = isLoginOpen
+
   return (
-    <>
-      <Modal isOpen={isLoginOpen} onClose={closeAll} className="max-w-lg">
-        <ModalTitle onClose={closeAll} title="Iniciar sesión" />
-        <ModalContent>
+    <Modal
+      isOpen={isOpen}
+      onClose={closeAll}
+      className={cn(
+        'transition-[max-width] duration-200',
+        isLogin ? 'max-w-lg' : 'max-w-2xl'
+      )}
+    >
+      <ModalTitle
+        onClose={closeAll}
+        title={isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
+      />
+      <ModalContent>
+        {isLogin ? (
           <LoginCustomerForm
             onSuccess={onLoginSuccess}
             onClose={closeAll}
             onSwitchToRegister={onSwitchToRegister}
           />
-        </ModalContent>
-      </Modal>
-      <Modal isOpen={isRegisterOpen} onClose={closeAll} className="max-w-lg">
-        <ModalTitle onClose={closeAll} title="Crear cuenta" />
-        <ModalContent>
+        ) : (
           <RegisterCustomerForm
             onSuccess={onRegisterSuccess}
             onClose={closeAll}
             onSwitchToLogin={onSwitchToLogin}
           />
-        </ModalContent>
-      </Modal>
-    </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

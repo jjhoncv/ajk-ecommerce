@@ -82,6 +82,9 @@ export async function POST(
         ])
 
         if (customer && shippingAddress && orderItems) {
+          // Obtener processingFee de la transacción
+          const processingFee = Number(updatedTransaction.processingFee) || 0
+
           // Enviar email de confirmación (no bloquear si falla)
           emailService
             .sendOrderConfirmationEmail({
@@ -97,6 +100,7 @@ export async function POST(
               subtotal: Number(order.subtotal) || 0,
               discountAmount: Number(order.discountAmount) || 0,
               shippingCost: Number(order.shippingCost) || 0,
+              processingFee,
               taxAmount: Number(order.taxAmount) || 0,
               totalAmount: Number(order.totalAmount) || 0,
               shippingAddress: {

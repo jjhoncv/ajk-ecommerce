@@ -4,7 +4,18 @@ import {
   createResponse,
   handleError
 } from '@/module/shared/lib/handlerApi'
+import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
+import { getServerSession } from 'next-auth'
 import { type NextRequest } from 'next/server'
+
+// Helper para obtener el ID del usuario actual de la sesión admin
+const getCurrentUserId = async (): Promise<number | null> => {
+  const session = await getServerSession(adminAuthOptions)
+  if (session?.user?.id) {
+    return Number(session.user.id)
+  }
+  return null
+}
 
 // Función helper para procesar el formData
 const processFormData = async (formData: FormData) => {
@@ -52,6 +63,8 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       const banner = await oBanner.createBanner({
         title,
         button_text: buttonText,
@@ -59,6 +72,8 @@ export async function POST(req: NextRequest) {
         display_order: Number(displayOrder),
         link,
         subtitle,
+        created_by: userId,
+        updated_by: userId,
         ...itemFile
       })
 
@@ -98,6 +113,8 @@ export async function PATCH(req: NextRequest) {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       const banner = await oBanner.updateBanner(
         {
           title,
@@ -106,6 +123,7 @@ export async function PATCH(req: NextRequest) {
           display_order: Number(displayOrder),
           link,
           subtitle,
+          updated_by: userId,
           ...itemFile
         },
         Number(id)

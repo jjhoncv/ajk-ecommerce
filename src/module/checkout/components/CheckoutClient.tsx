@@ -14,7 +14,7 @@ import {
   type PaymentOption,
   type ShippingOption
 } from '@/types/checkout'
-import { type PaymentMethods } from '@/types/domain'
+import { type CustomersAddresses, type PaymentMethods } from '@/types/domain'
 
 // Components
 import { type CartItem } from '@/module/cart/hooks/useCart/useCart'
@@ -31,11 +31,12 @@ interface CheckoutClientProps {
 }
 
 export default function CheckoutClient({
-  user,
+  user: initialUser,
   paymentMethods
 }: CheckoutClientProps) {
   const router = useRouter()
 
+  const [user, setUser] = useState<CheckoutUser>(initialUser)
   const [state, setState] = useState<CheckoutState>({
     step: 'shipping',
     loading: false,
@@ -44,6 +45,17 @@ export default function CheckoutClient({
 
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [summary, setSummary] = useState<CheckoutSummary | null>(null)
+
+  // Manejar cuando se crea una nueva dirección
+  const handleAddressCreated = (newAddress: CustomersAddresses) => {
+    setUser(prev => ({
+      ...prev,
+      addresses: [...prev.addresses, newAddress],
+      defaultAddressId: prev.addresses.length === 0 ? newAddress.id : prev.defaultAddressId
+    }))
+    // Seleccionar la nueva dirección y recargar datos de checkout
+    handleShippingAddressChange(newAddress.id)
+  }
 
   // Cargar items del carrito desde localStorage
   useEffect(() => {
@@ -58,8 +70,30 @@ export default function CheckoutClient({
           return
         }
 
-        // Obtener datos iniciales del checkout
-        fetchCheckoutData(items)
+        // Solo obtener datos del checkout si hay direcciones
+        if (user.addresses.length > 0) {
+          fetchCheckoutData(items)
+        } else {
+          // Sin direcciones, crear un summary básico para mostrar el carrito
+          const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+          setSummary({
+            items,
+            itemCount: items.length,
+            totalQuantity: items.reduce((acc, item) => acc + item.quantity, 0),
+            calculation: {
+              subtotal,
+              discountAmount: 0,
+              shippingCost: 0,
+              taxAmount: subtotal * 0.18,
+              totalAmount: subtotal * 1.18,
+              estimatedDelivery: null
+            },
+            shippingOptions: [],
+            paymentOptions: [],
+            customerAddresses: [],
+            selectedAddress: undefined
+          })
+        }
       } catch (error) {
         console.error('Error parsing cart:', error)
         router.push('/cart')
@@ -67,7 +101,7 @@ export default function CheckoutClient({
     } else {
       router.push('/cart')
     }
-  }, [router])
+  }, [router, user.addresses.length])
 
   // Obtener datos del checkout desde la API
   const fetchCheckoutData = async (
@@ -449,6 +483,7 @@ export default function CheckoutClient({
             selectedAddressId={state.data.shippingAddressId}
             onAddressChange={handleShippingAddressChange}
             onShippingMethodChange={handleShippingMethodChange}
+            onAddressCreated={handleAddressCreated}
             onNext={nextStep}
             loading={state.loading}
           />

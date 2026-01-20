@@ -1,7 +1,7 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import z from 'zod'
 import { LoginCustomerFormSchema } from './LoginCustomerForm.schema'
 import { type LoginFormData } from './LoginCustomerForm.types'
@@ -20,6 +20,7 @@ interface UseLoginCustomerFormReturn {
     form?: string
   }
   isLoading: boolean
+  isFormValid: boolean
   setEmail: (email: string) => void
   setPassword: (password: string) => void
   handleSubmit: (e: React.FormEvent) => Promise<void>
@@ -36,6 +37,11 @@ export const useLoginCustomerForm = ({
   })
   const [errors, setErrors] = useState<UseLoginCustomerFormReturn['errors']>({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const isFormValid = useMemo(() => {
+    const result = LoginCustomerFormSchema.safeParse(formData)
+    return result.success
+  }, [formData])
 
   const validateField = (field: keyof LoginFormData, value: string): void => {
     try {
@@ -113,6 +119,7 @@ export const useLoginCustomerForm = ({
     password: formData.password,
     errors,
     isLoading,
+    isFormValid,
     setEmail,
     setPassword,
     handleSubmit,

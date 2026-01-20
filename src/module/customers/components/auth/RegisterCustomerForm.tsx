@@ -19,6 +19,7 @@ const RegisterCustomerForm: React.FC<RegisterCustomerFormProps> = ({
     errors,
     message,
     isLoading,
+    isFormValid,
     showPasswords,
     getPasswordCriteriaStatus,
     togglePasswordVisibility,
@@ -52,93 +53,92 @@ const RegisterCustomerForm: React.FC<RegisterCustomerFormProps> = ({
         </div>
       )}
 
-      <form onSubmit={handleFormSubmit} className="space-y-4">
-        <InputField
-          id="username"
-          label="Nombre de usuario"
-          value={formData.username}
-          onChange={(e) => {
-            handleInputChange('username', e.target.value)
-          }}
-          placeholder="juanperez"
-          disabled={isLoading}
-          error={errors.username}
-        />
+      <form onSubmit={handleFormSubmit} className="space-y-4" noValidate>
+        {/* Primera fila: Nombre y Apellido */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <InputField
+            id="name"
+            label="Nombre"
+            value={formData.name}
+            onChange={(e) => {
+              handleInputChange('name', e.target.value)
+            }}
+            disabled={isLoading}
+          />
 
-        <InputField
-          id="name"
-          label="Nombre"
-          value={formData.name}
-          onChange={(e) => {
-            handleInputChange('name', e.target.value)
-          }}
-          placeholder="Juan"
-          disabled={isLoading}
-          error={errors.name}
-        />
+          <InputField
+            id="lastname"
+            label="Apellido"
+            value={formData.lastname}
+            onChange={(e) => {
+              handleInputChange('lastname', e.target.value)
+            }}
+            disabled={isLoading}
+          />
+        </div>
 
-        <InputField
-          id="lastname"
-          label="Apellido"
-          value={formData.lastname}
-          onChange={(e) => {
-            handleInputChange('lastname', e.target.value)
-          }}
-          placeholder="Pérez"
-          disabled={isLoading}
-          error={errors.lastname}
-        />
+        {/* Segunda fila: Usuario y Email */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <InputField
+            id="username"
+            label="Nombre de usuario"
+            value={formData.username}
+            onChange={(e) => {
+              handleInputChange('username', e.target.value)
+            }}
+            disabled={isLoading}
+          />
 
-        <InputField
-          id="email"
-          label="Email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => {
-            handleInputChange('email', e.target.value)
-          }}
-          placeholder="usuario@ejemplo.com"
-          disabled={isLoading}
-          error={errors.email}
-        />
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => {
+              handleInputChange('email', e.target.value)
+            }}
+            disabled={isLoading}
+          />
+        </div>
 
-        <PasswordField
-          id="password"
-          label="Contraseña"
-          value={formData.password}
-          onChange={(value) => {
-            handleInputChange('password', value)
-          }}
-          showPassword={showPasswords.password}
-          onToggleVisibility={() => {
-            togglePasswordVisibility('password')
-          }}
-          error={errors.password}
-          disabled={isLoading}
-          showRequirements
-          criteriaStatus={getPasswordCriteriaStatus}
-        />
+        {/* Tercera fila: Contraseñas */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <PasswordField
+            id="password"
+            label="Contraseña"
+            value={formData.password}
+            onChange={(value) => {
+              handleInputChange('password', value)
+            }}
+            showPassword={showPasswords.password}
+            onToggleVisibility={() => {
+              togglePasswordVisibility('password')
+            }}
+            disabled={isLoading}
+            showRequirements
+            criteriaStatus={getPasswordCriteriaStatus}
+          />
 
-        <PasswordField
-          id="confirmPassword"
-          label="Confirmar contraseña"
-          value={formData.confirmPassword}
-          onChange={(value) => {
-            handleInputChange('confirmPassword', value)
-          }}
-          showPassword={showPasswords.confirmPassword}
-          onToggleVisibility={() => {
-            togglePasswordVisibility('confirmPassword')
-          }}
-          error={errors.confirmPassword}
-          disabled={isLoading}
-          confirmField
-          matchingPassword={formData.password}
-        />
+          <PasswordField
+            id="confirmPassword"
+            label="Confirmar contraseña"
+            value={formData.confirmPassword}
+            onChange={(value) => {
+              handleInputChange('confirmPassword', value)
+            }}
+            showPassword={showPasswords.confirmPassword}
+            onToggleVisibility={() => {
+              togglePasswordVisibility('confirmPassword')
+            }}
+            disabled={isLoading}
+            confirmField
+            matchingPassword={formData.password}
+          />
+        </div>
 
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !isFormValid}
           className="w-full bg-black px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? (

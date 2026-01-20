@@ -1,8 +1,11 @@
-import { getAttributeById, getAttributes } from './attribute'
+import { getAttributeById, getAttributes, getAttributeWithAudit } from './attribute'
+
+export type { AttributeWithAudit } from './attribute'
 
 const AttributeService = {
   getAttributes,
-  getAttributeById
+  getAttributeById,
+  getAttributeWithAudit
 }
 
 export default AttributeService

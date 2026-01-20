@@ -4,7 +4,11 @@ import { type Attributes as Attribute } from '@/types/domain'
 export const AttributeMapper = (data: AttributeRaw): Attribute => {
   return {
     ...data,
-    displayType: data.display_type
+    displayType: data.display_type,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+    createdBy: data.created_by,
+    updatedBy: data.updated_by
   }
 }
 

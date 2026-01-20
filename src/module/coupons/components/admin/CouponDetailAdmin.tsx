@@ -41,14 +41,41 @@ interface CouponUsage {
   usedAt: Date
 }
 
+interface CouponAudit {
+  createdAt: Date | null
+  createdByName: string | null
+  updatedAt: Date | null
+  updatedByName: string | null
+}
+
 interface CouponDetailAdminProps {
   coupon: Coupon | null
   usages: CouponUsage[]
+  audit: CouponAudit | null
+}
+
+// Helper para formatear fechas (zona horaria Lima, Perú)
+const formatAuditDate = (date: Date | null): string => {
+  if (!date) return '—'
+  const d = typeof date === 'string' ? new Date(date) : date
+
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'America/Lima',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }
+
+  return new Intl.DateTimeFormat('es-PE', options).format(d)
 }
 
 export function CouponDetailAdmin({
   coupon,
-  usages
+  usages,
+  audit
 }: CouponDetailAdminProps) {
   const router = useRouter()
   const isNew = !coupon
@@ -473,6 +500,25 @@ export function CouponDetailAdmin({
               </div>
             </div>
           </div>
+
+          {/* Audit info - only for existing coupons */}
+          {!isNew && audit && (
+            <div className="rounded-lg border bg-white p-4">
+              <h3 className="mb-3 text-sm font-semibold">Información</h3>
+              <div className="space-y-3 text-xs">
+                <div>
+                  <p className="font-medium uppercase text-gray-400">Creado</p>
+                  <p className="text-gray-700">{formatAuditDate(audit.createdAt)}</p>
+                  <p className="text-gray-500">{audit.createdByName || '—'}</p>
+                </div>
+                <div>
+                  <p className="font-medium uppercase text-gray-400">Última actualización</p>
+                  <p className="text-gray-700">{formatAuditDate(audit.updatedAt)}</p>
+                  <p className="text-gray-500">{audit.updatedByName || '—'}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Actions */}
           <div className="rounded-lg border bg-white p-4">

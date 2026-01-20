@@ -10,7 +10,11 @@ export const ProductMapper = (data: ProductRaw): Product => {
     brandId: data.brand_id,
     brand: undefined,
     productVariants: undefined,
-    productCategories: undefined
+    productCategories: undefined,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+    createdBy: data.created_by,
+    updatedBy: data.updated_by
   }
 }
 

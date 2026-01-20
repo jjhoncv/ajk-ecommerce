@@ -14,7 +14,11 @@ export const PromotionMapper = (data: PromotionRaw): Promotion => {
     type: data.type,
     imageUrl: data.image_url,
     minPurchaseAmount: data.min_purchase_amount,
-    promotionVariants: undefined
+    promotionVariants: undefined,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+    createdBy: data.created_by,
+    updatedBy: data.updated_by
   }
 }
 

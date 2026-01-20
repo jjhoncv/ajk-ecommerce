@@ -19,7 +19,11 @@ export function CouponMapper(couponRaw: CouponRaw): CouponDomain {
     maxDiscountAmount: couponRaw.max_discount_amount ? Number(couponRaw.max_discount_amount) : null,
     applicableTo: couponRaw.applicable_to ?? null,
     applicableIds: couponRaw.applicable_ids ?? null,
-    couponUsage: null // Loaded separately if needed
+    couponUsage: null, // Loaded separately if needed
+    createdAt: couponRaw.created_at,
+    updatedAt: couponRaw.updated_at,
+    createdBy: couponRaw.created_by,
+    updatedBy: couponRaw.updated_by
   }
 }
 

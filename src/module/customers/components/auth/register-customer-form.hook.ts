@@ -1,5 +1,5 @@
 import { signIn } from 'next-auth/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import z from 'zod'
 import { RegisterCustomerSchema } from './RegisterCustomer.schema'
 import { type RegisterFormData } from './RegisterCustomer.types'
@@ -22,6 +22,7 @@ interface useRegisterCustomerFormReturn {
   errors: Partial<Record<keyof RegisterFormData, string>>
   message: string
   isLoading: boolean
+  isFormValid: boolean
   showPasswords: {
     password: boolean
     confirmPassword: boolean
@@ -57,6 +58,11 @@ export const useRegisterCustomerForm = ({
     password: false,
     confirmPassword: false
   })
+
+  const isFormValid = useMemo(() => {
+    const result = RegisterCustomerSchema.safeParse(formData)
+    return result.success
+  }, [formData])
 
   // Función para verificar los criterios de la contraseña con tipado seguro
   const getPasswordCriteriaStatus = (criteria: PasswordCriterion): boolean => {
@@ -194,6 +200,7 @@ export const useRegisterCustomerForm = ({
     errors,
     message,
     isLoading,
+    isFormValid,
     showPasswords,
     getPasswordCriteriaStatus,
     togglePasswordVisibility,

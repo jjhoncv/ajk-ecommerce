@@ -29,13 +29,8 @@ export default async function CheckoutPage() {
     redirect('/cart')
   }
 
-  // 3. Obtener direcciones del cliente
-  const addresses = await customerAddressModel.getAddressByCustomer(customer.id)
-
-  // Si no tiene direcciones, redirigir a crear una
-  if (!addresses || addresses.length === 0) {
-    redirect('/profile/addresses/new?redirect=/checkout')
-  }
+  // 3. Obtener direcciones del cliente (puede ser null, convertir a array vacío)
+  const addresses = await customerAddressModel.getAddressByCustomer(customer.id) || []
 
   // 4. Obtener métodos de pago activos
   const paymentMethods = await paymentMethodModel.getPaymentMethods()

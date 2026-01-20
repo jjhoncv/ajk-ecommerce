@@ -10,7 +10,11 @@ export const BannerMapper = (data: BannerRaw): Banner => {
     description: data.description,
     imageUrl: data.image_url,
     link: data.link,
-    subtitle: data.subtitle
+    subtitle: data.subtitle,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+    createdBy: data.created_by,
+    updatedBy: data.updated_by
   }
 }
 

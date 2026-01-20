@@ -91,6 +91,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
+    const userId = session.user.id ? Number(session.user.id) : null
     const updateData: any = {}
 
     if (name !== undefined) updateData.name = name
@@ -115,6 +116,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     if (isActive !== undefined) updateData.isActive = isActive ? 1 : 0
     if (applicableTo !== undefined) updateData.applicableTo = applicableTo
     if (applicableIds !== undefined) updateData.applicableIds = applicableIds
+    updateData.updatedBy = userId
 
     const updatedCoupon = await couponModel.updateCoupon(updateData, couponIdNum)
 

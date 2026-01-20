@@ -1,6 +1,7 @@
 'use client'
 import { getPriceIfHasPromotion } from './ProductVariant.helpers'
 import ProductVariantButtonAddToCart from './ProductVariantButtonAddToCart'
+import ProductVariantButtonBuyNow from './ProductVariantButtonBuyNow'
 import { ProductVariantShipping } from './ProductVariantShipping/ProductVariantShipping'
 import { PlusMinusButton } from '@/module/shared/components/ui'
 import { getVariantImages } from '@/module/products/helpers/image.helpers'
@@ -78,12 +79,16 @@ export const ProductVariantPurchase: FC<ProductVariantPurchaseProps> = ({
 
         {/* Botones de acción */}
         <div className="mb-6 space-y-3">
-          <button
-            className="w-full bg-secondary px-4 py-3 font-medium text-white transition-colors hover:bg-secondary-800 disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={variant.stock === 0}
-          >
-            {variant.stock === 0 ? 'Sin stock' : 'Comprar'}
-          </button>
+          <ProductVariantButtonBuyNow
+            quantity={quantity}
+            stock={variant.stock}
+            price={originalPrice}
+            id={variant.id}
+            name={getVariantTitle(product.name, variant)}
+            image={thumbImage}
+            promotionVariants={variant.promotionVariants}
+            variantAttributeOptions={variant.variantAttributeOptions}
+          />
           <ProductVariantButtonAddToCart
             quantity={quantity}
             stock={variant.stock}

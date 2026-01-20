@@ -127,21 +127,25 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
         {currentFilters.attributes &&
           availableFilters?.attributes &&
           Object.entries(currentFilters.attributes).map(
-            ([attributeId, optionIds]) => {
+            ([attributeId, selectedOptionIds]) => {
               const attribute = availableFilters.attributes.find(
                 (attr) => attr.id === parseInt(attributeId)
               )
               if (!attribute) return null
 
-              return optionIds.map((optionId) => {
-                const option = attribute.options.find(
-                  (opt) => opt.id === optionId
-                )
-                if (!option) return null
+              // Encontrar las opciones únicas que están seleccionadas
+              // Una opción está seleccionada si TODOS sus IDs están en selectedOptionIds
+              const selectedOptions = attribute.options.filter((opt) => {
+                const optionIds = opt.id.split(',').map((id) => parseInt(id))
+                return optionIds.every((id) => selectedOptionIds.includes(id))
+              })
+
+              return selectedOptions.map((option) => {
+                const optionIds = option.id.split(',').map((id) => parseInt(id))
 
                 return (
                   <span
-                    key={`${attributeId}-${optionId}`}
+                    key={`${attributeId}-${option.id}`}
                     className="inline-flex items-center rounded-full bg-blue-500 px-2 py-1 text-xs text-white"
                   >
                     {option.value}
@@ -150,8 +154,9 @@ const ActiveFilters: React.FC<ActiveFiltersProps> = ({
                         const currentValues =
                           currentFilters.attributes?.[parseInt(attributeId)] ||
                           []
+                        // Remover todos los IDs asociados a esta opción
                         const newValues = currentValues.filter(
-                          (id) => id !== optionId
+                          (id) => !optionIds.includes(id)
                         )
 
                         const params = new URLSearchParams(

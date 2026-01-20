@@ -1,4 +1,5 @@
 import { couponModel } from '@/module/coupons/core'
+import CouponService from '@/module/coupons/service/coupon'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
@@ -27,7 +28,7 @@ export default async function AdminCouponDetailPage({
             { label: 'Nuevo' }
           ]}
         >
-          <CouponDetailAdmin coupon={null} usages={[]} />
+          <CouponDetailAdmin coupon={null} usages={[]} audit={null} />
         </PageUI>
       </LayoutPageAdmin>
     )
@@ -39,11 +40,12 @@ export default async function AdminCouponDetailPage({
     notFound()
   }
 
-  const coupon = await couponModel.getCouponById(couponIdNum)
-  if (!coupon) {
+  const result = await CouponService.getCouponWithAudit(couponIdNum)
+  if (!result) {
     notFound()
   }
 
+  const { coupon, audit } = result
   const usages = await couponModel.getCouponUsages(couponIdNum)
 
   return (
@@ -56,7 +58,7 @@ export default async function AdminCouponDetailPage({
           { label: coupon.code }
         ]}
       >
-        <CouponDetailAdmin coupon={coupon} usages={usages || []} />
+        <CouponDetailAdmin coupon={coupon} usages={usages || []} audit={audit} />
       </PageUI>
     </LayoutPageAdmin>
   )

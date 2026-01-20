@@ -4,7 +4,18 @@ import {
   createResponse,
   handleError
 } from '@/module/shared/lib/handlerApi'
+import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
+import { getServerSession } from 'next-auth'
 import { type NextRequest } from 'next/server'
+
+// Helper para obtener el ID del usuario actual de la sesión admin
+const getCurrentUserId = async (): Promise<number | null> => {
+  const session = await getServerSession(adminAuthOptions)
+  if (session?.user?.id) {
+    return Number(session.user.id)
+  }
+  return null
+}
 
 export async function GET(): Promise<Response> {
   return await apiHandler(async () => {
@@ -49,9 +60,13 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       await attributeModel.createAttribute({
         name,
-        display_type
+        display_type,
+        created_by: userId,
+        updated_by: userId
       })
 
       return createResponse(
@@ -80,10 +95,13 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       await attributeModel.updateAttribute(
         {
           name,
-          display_type
+          display_type,
+          updated_by: userId
         },
         Number(id)
       )

@@ -173,14 +173,15 @@ export class SearchModel {
     let minPrice = Infinity
     let maxPrice = 0
 
-    // Contadores para atributos
+    // Contadores para atributos (agrupados por valor, no por ID)
     const attributeCount = new Map<
       number,
       {
         name: string
         options: Map<
-          number,
+          string, // Clave es el valor del atributo (ej: "Blanco")
           {
+            ids: Set<number> // Todos los IDs de product_attribute_options con este valor
             value: string
             count: number
           }
@@ -274,26 +275,17 @@ export class SearchModel {
 
                   const attribute = attributeCount.get(attributeId)!
 
-                  // Buscar si ya existe una opcion con el mismo valor
-                  let existingOptionEntry = null
-                  for (const [
-                    optionId,
-                    optionData
-                  ] of attribute.options.entries()) {
-                    if (optionData.value === option.value) {
-                      existingOptionEntry = [optionId, optionData]
-                      break
-                    }
-                  }
+                  // Buscar si ya existe una opcion con el mismo valor (agrupando por valor)
+                  const existingOption = attribute.options.get(option.value)
 
-                  if (existingOptionEntry) {
-                    // Incrementar contador de la opcion existente
-                    ;(
-                      existingOptionEntry[1] as { value: string, count: number }
-                    ).count++
+                  if (existingOption) {
+                    // Agregar el ID a la lista y incrementar contador
+                    existingOption.ids.add(option.id)
+                    existingOption.count++
                   } else {
-                    // Crear nueva opcion
-                    attribute.options.set(option.id, {
+                    // Crear nueva opcion con el valor como clave
+                    attribute.options.set(option.value, {
+                      ids: new Set([option.id]),
                       value: option.value,
                       count: 1
                     })
@@ -326,8 +318,9 @@ export class SearchModel {
         name: data.name,
         displayType: 'pills' as const,
         options: Array.from(data.options.entries()).map(
-          ([optionId, optionData]) => ({
-            id: optionId,
+          ([, optionData]) => ({
+            // Combinar todos los IDs en un string separado por comas
+            id: Array.from(optionData.ids).join(','),
             value: optionData.value,
             count: optionData.count
           })

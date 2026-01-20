@@ -39,11 +39,12 @@ export default async function AdminPromotionDetailPage({
     notFound()
   }
 
-  const promotion = await PromotionService.getPromotionById(promotionIdNum)
-  if (!promotion) {
+  const result = await PromotionService.getPromotionWithAudit(promotionIdNum)
+  if (!result) {
     notFound()
   }
 
+  const { promotion, audit } = result
   const variants = await PromotionService.getPromotionVariantsWithInfo(promotionIdNum)
 
   return (
@@ -56,7 +57,7 @@ export default async function AdminPromotionDetailPage({
           { label: promotion.name }
         ]}
       >
-        <PromotionDetailView promotion={promotion} variants={variants} />
+        <PromotionDetailView promotion={promotion} variants={variants} audit={audit} />
       </PageUI>
     </LayoutPageAdmin>
   )

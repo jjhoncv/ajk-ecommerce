@@ -38,7 +38,7 @@ export interface FilterAttribute {
 }
 
 export interface FilterAttributeOption {
-  id: number
+  id: string  // Puede ser múltiples IDs separados por coma (ej: "6,12" para "Blanco" en múltiples productos)
   value: string
   additionalCost?: number
   count: number

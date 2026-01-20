@@ -22,7 +22,7 @@ import {
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { type JSX, useState } from 'react'
+import { type JSX, useEffect, useMemo, useState } from 'react'
 
 // Definición de estructura de menú con submenús
 interface MenuItemConfig {
@@ -149,7 +149,42 @@ export function AdminSidebar({
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(['catalog'])
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([])
+
+  // Función helper para verificar si una ruta está activa
+  const checkIsActive = (href: string): boolean => {
+    if (href === '/admin') return pathname === '/admin'
+    return pathname?.startsWith(href) ?? false
+  }
+
+  // Calcular qué menús deben estar expandidos según la ruta actual
+  const getActiveMenuIds = useMemo(() => {
+    const activeIds: string[] = []
+    menuConfig.forEach((item) => {
+      if (item.children && item.children.length > 0) {
+        const hasActive = item.children.some((child) => checkIsActive(child.href))
+        if (hasActive) {
+          activeIds.push(item.id)
+        }
+      }
+    })
+    return activeIds
+  }, [pathname])
+
+  // Expandir automáticamente los menús que contienen la ruta activa
+  useEffect(() => {
+    if (getActiveMenuIds.length > 0) {
+      setExpandedMenus((prev) => {
+        const newExpanded = [...prev]
+        getActiveMenuIds.forEach((id) => {
+          if (!newExpanded.includes(id)) {
+            newExpanded.push(id)
+          }
+        })
+        return newExpanded
+      })
+    }
+  }, [getActiveMenuIds])
 
   // Verificar si el usuario tiene acceso a una sección
   const hasAccess = (sectionUrl?: string): boolean => {

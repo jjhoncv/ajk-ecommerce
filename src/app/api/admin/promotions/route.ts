@@ -68,6 +68,8 @@ export async function POST(request: Request) {
       )
     }
 
+    const userId = session.user.id ? Number(session.user.id) : null
+
     const promotionData = {
       name,
       description: description || null,
@@ -81,7 +83,9 @@ export async function POST(request: Request) {
       type: type || null,
       display_order: displayOrder || 0,
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
+      created_by: userId,
+      updated_by: userId
     }
 
     const promotion = await promotionRepository.createPromotion(promotionData)

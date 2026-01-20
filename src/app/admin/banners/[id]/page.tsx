@@ -11,21 +11,25 @@ import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 
 export const revalidate = 0 // Deshabilitar cache estático
 
-export default async function UserEditPage({
+export default async function BannerEditPage({
   params
 }: {
   params: Promise<{ id: number }>
 }): Promise<JSX.Element> {
   const { id } = await params
 
-  const banner = await BannerService.getBanner(id)
+  const result = await BannerService.getBannerWithAudit(Number(id))
+
+  if (result == null || result.banner == null) {
+    return <div>No se encontró el banner</div>
+  }
+
+  const { banner, audit } = result
 
   const fieldsWithValues = mergeFieldsWithData(BannerFields, {
     ...banner,
-    image_url: banner?.image
+    image_url: banner?.image || ''
   })
-
-  if (banner === undefined) return <div>No se encontraron banner</div>
 
   return (
     <LayoutPageAdmin>
@@ -35,7 +39,7 @@ export default async function UserEditPage({
           { label: 'Banners', url: '/admin/banners' },
           { label: 'Editar Banner' }
         ]}
-        subtitle="Editar Banner"
+        subtitle={`Editando: ${banner.title}`}
       >
         <FormCreate
           type="edit"
@@ -45,6 +49,7 @@ export default async function UserEditPage({
             fields: fieldsWithValues,
             customFields: { id }
           }}
+          audit={audit}
         />
       </PageUI>
     </LayoutPageAdmin>

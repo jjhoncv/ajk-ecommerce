@@ -21,6 +21,7 @@ interface OrderConfirmationData {
   subtotal: number
   discountAmount: number
   shippingCost: number
+  processingFee: number
   taxAmount: number
   totalAmount: number
   shippingAddress: {
@@ -168,6 +169,84 @@ class EmailService {
     return await this.sendEmail({
       to: email,
       subject: 'Configura tu contraseña - AJK E-commerce',
+      html
+    })
+  }
+
+  async sendVerificationCodeEmail(
+    email: string,
+    code: string
+  ): Promise<boolean> {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Código de verificación</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td align="center" style="padding: 40px 0;">
+              <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <!-- Header -->
+                <tr>
+                  <td style="padding: 40px 40px 20px 40px; text-align: center; background-color: #000000; border-radius: 8px 8px 0 0;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 24px;">AJK E-commerce</h1>
+                  </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 40px;">
+                    <h2 style="margin: 0 0 20px 0; color: #333333; font-size: 20px; text-align: center;">
+                      Tu código de verificación
+                    </h2>
+                    <p style="margin: 0 0 30px 0; color: #666666; font-size: 16px; line-height: 1.5; text-align: center;">
+                      Ingresa el siguiente código para verificar tu correo electrónico:
+                    </p>
+
+                    <!-- Code Box -->
+                    <table role="presentation" style="margin: 0 auto;">
+                      <tr>
+                        <td style="background-color: #f3f4f6; border-radius: 8px; padding: 20px 40px;">
+                          <span style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #111827;">${code}</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <p style="margin: 30px 0 0 0; color: #999999; font-size: 14px; line-height: 1.5; text-align: center;">
+                      Este código expirará en 10 minutos.
+                    </p>
+                    <p style="margin: 20px 0 0 0; color: #999999; font-size: 14px; line-height: 1.5; text-align: center;">
+                      Si no solicitaste este código, puedes ignorar este correo.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 20px 40px; text-align: center; background-color: #f8f9fa; border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0; color: #999999; font-size: 12px;">
+                      Este es un correo automático. Por favor no respondas a este mensaje.
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #999999; font-size: 12px;">
+                      &copy; ${new Date().getFullYear()} AJK E-commerce. Todos los derechos reservados.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+
+    return await this.sendEmail({
+      to: email,
+      subject: `${code} es tu código de verificación - AJK E-commerce`,
       html
     })
   }
@@ -328,12 +407,18 @@ class EmailService {
                               <td style="padding: 4px 0; color: #6b7280;">IGV (18%)</td>
                               <td style="padding: 4px 0; text-align: right; color: #1f2937;">S/ ${data.taxAmount.toFixed(2)}</td>
                             </tr>
+                            ${data.processingFee > 0 ? `
+                            <tr>
+                              <td style="padding: 4px 0; color: #6b7280;">Comisión de pago</td>
+                              <td style="padding: 4px 0; text-align: right; color: #1f2937;">S/ ${data.processingFee.toFixed(2)}</td>
+                            </tr>
+                            ` : ''}
                             <tr>
                               <td colspan="2" style="padding: 12px 0 0 0; border-top: 1px solid #e5e7eb;"></td>
                             </tr>
                             <tr>
                               <td style="padding: 4px 0; font-weight: 600; font-size: 18px; color: #1f2937;">Total</td>
-                              <td style="padding: 4px 0; text-align: right; font-weight: 600; font-size: 18px; color: #059669;">S/ ${data.totalAmount.toFixed(2)}</td>
+                              <td style="padding: 4px 0; text-align: right; font-weight: 600; font-size: 18px; color: #059669;">S/ ${(data.totalAmount + data.processingFee).toFixed(2)}</td>
                             </tr>
                           </table>
                         </td>

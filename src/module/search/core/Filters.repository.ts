@@ -53,19 +53,21 @@ export class FiltersRepository {
   }
 
   public async getAvailableAttributes(): Promise<FilterAttribute[]> {
+    // Agrupar por valor del atributo para evitar duplicados
+    // (ej: "Blanco" aparece una vez aunque esté en múltiples productos)
     const attributesQuery = `
       SELECT
         a.id,
         a.name,
         a.display_type,
-        pao.id as option_id,
         pao.value as option_value,
+        GROUP_CONCAT(DISTINCT pao.id) as option_ids,
         COUNT(DISTINCT pv.id) as count
       FROM attributes a
       JOIN product_attribute_options pao ON a.id = pao.attribute_id
       JOIN variant_attribute_options vao ON pao.id = vao.product_attribute_option_id
       JOIN product_variants pv ON vao.variant_id = pv.id
-      GROUP BY a.id, pao.id
+      GROUP BY a.id, pao.value
       ORDER BY a.id, count DESC
     `
     const attributeOptions = await executeQuery<
@@ -73,7 +75,7 @@ export class FiltersRepository {
         id: number
         name: string
         display_type: string
-        option_id: number
+        option_ids: string
         option_value: string
         count: number
       }>
@@ -89,7 +91,7 @@ export class FiltersRepository {
 
     attributeOptions.forEach((row) => {
       // Validar que los datos sean correctos
-      if (!row || typeof row.id !== 'number' || !row.name || typeof row.option_id !== 'number') {
+      if (!row || typeof row.id !== 'number' || !row.name || !row.option_ids) {
         console.error('Invalid row data:', row)
         return
       }
@@ -105,8 +107,10 @@ export class FiltersRepository {
 
       const attribute = attributesMap.get(row.id)
       if (attribute) {
+        // Convertir los IDs separados por coma a un string que se usará en el filtro
+        // El ID será los IDs combinados (ej: "6,12" para todos los "Blanco")
         attribute.options.push({
-          id: row.option_id,
+          id: row.option_ids,
           value: row.option_value || '',
           additionalCost: 0,
           count: Number(row.count) || 0

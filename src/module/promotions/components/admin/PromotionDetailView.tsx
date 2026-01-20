@@ -14,14 +14,39 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { type Promotion, type PromotionVariantWithInfo } from '../../service/promotion/types'
 
+interface PromotionAudit {
+  createdAt: Date | null
+  createdByName: string | null
+  updatedAt: Date | null
+  updatedByName: string | null
+}
+
 interface PromotionDetailViewProps {
   promotion: Promotion | null
   variants: PromotionVariantWithInfo[]
+  audit?: PromotionAudit
+}
+
+// Helper para formatear fechas (zona horaria Lima, Perú)
+const formatAuditDate = (date: Date | null): string => {
+  if (!date) return '—'
+  const d = typeof date === 'string' ? new Date(date) : date
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'America/Lima',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }
+  return new Intl.DateTimeFormat('es-PE', options).format(d)
 }
 
 export function PromotionDetailView({
   promotion,
-  variants: initialVariants
+  variants: initialVariants,
+  audit
 }: PromotionDetailViewProps) {
   const router = useRouter()
   const isNew = !promotion
@@ -401,6 +426,24 @@ export function PromotionDetailView({
               </p>
             </div>
           </div>
+
+          {!isNew && audit && (
+            <div className="rounded-lg border bg-white p-4">
+              <h3 className="mb-3 text-sm font-semibold">Información</h3>
+              <div className="space-y-3 text-xs">
+                <div>
+                  <p className="font-medium uppercase text-gray-400">Creado</p>
+                  <p className="text-gray-700">{formatAuditDate(audit.createdAt)}</p>
+                  <p className="text-gray-500">{audit.createdByName || '—'}</p>
+                </div>
+                <div>
+                  <p className="font-medium uppercase text-gray-400">Última actualización</p>
+                  <p className="text-gray-700">{formatAuditDate(audit.updatedAt)}</p>
+                  <p className="text-gray-500">{audit.updatedByName || '—'}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="rounded-lg border bg-white p-4">
             <Button onClick={handleSave} disabled={saving} className="w-full">

@@ -3,7 +3,8 @@ import {
   getPromotionById,
   getPromotions,
   getPromotionsWithMetrics,
-  getPromotionVariantsWithInfo
+  getPromotionVariantsWithInfo,
+  getPromotionWithAudit
 } from './promotion'
 
 const PromotionService = {
@@ -11,7 +12,8 @@ const PromotionService = {
   getPromotionsWithMetrics,
   getPromotionById,
   getPromotionVariantsWithInfo,
-  deletePromotion
+  deletePromotion,
+  getPromotionWithAudit
 }
 
 export default PromotionService

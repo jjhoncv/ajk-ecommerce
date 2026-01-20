@@ -1,8 +1,11 @@
-import { deleteCoupon, getCoupons, getCouponStats } from './coupon'
+import { deleteCoupon, getCoupons, getCouponStats, getCouponWithAudit } from './coupon'
+
+export type { CouponAudit, CouponWithAudit } from './coupon'
 
 const CouponService = {
   getCoupons,
   getCouponStats,
+  getCouponWithAudit,
   deleteCoupon
 }
 

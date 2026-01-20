@@ -5,7 +5,18 @@ import {
   createResponse,
   handleError
 } from '@/module/shared/lib/handlerApi'
+import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
+import { getServerSession } from 'next-auth'
 import { type NextRequest } from 'next/server'
+
+// Helper para obtener el ID del usuario actual de la sesión admin
+const getCurrentUserId = async (): Promise<number | null> => {
+  const session = await getServerSession(adminAuthOptions)
+  if (session?.user?.id) {
+    return Number(session.user.id)
+  }
+  return null
+}
 
 export async function GET(): Promise<Response> {
   return await apiHandler(async () => {
@@ -72,11 +83,15 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       const product = await productModel.createProduct({
         name,
         description,
         base_price: basePrice,
-        brand_id: brandId
+        brand_id: brandId,
+        created_by: userId,
+        updated_by: userId
       })
 
       // Asignar categorías al producto
@@ -113,12 +128,15 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     }
 
     try {
+      const userId = await getCurrentUserId()
+
       await productModel.updateProduct(
         {
           name,
           description,
           base_price: basePrice,
-          brand_id: brandId
+          brand_id: brandId,
+          updated_by: userId
         },
         Number(id)
       )

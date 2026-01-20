@@ -81,6 +81,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       displayOrder
     } = body
 
+    const userId = session.user.id ? Number(session.user.id) : null
+
     const promotionData = {
       name: name || existingPromotion.name,
       description: description !== undefined ? description : existingPromotion.description,
@@ -93,8 +95,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       is_active: isActive !== undefined ? (isActive ? 1 : 0) : existingPromotion.isActive,
       type: type !== undefined ? type : existingPromotion.type,
       display_order: displayOrder !== undefined ? displayOrder : existingPromotion.displayOrder,
-      created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date(),
+      updated_by: userId
     }
 
     const updatedPromotion = await promotionRepository.updatePromotion(promotionData, promotionIdNum)

@@ -22,6 +22,7 @@ export { ProductVariantInfo } from './ProductVariantInfo'
 export { ProductVariantPurchase } from './ProductVariantPurchase'
 export { ProductVariantPromotion } from './ProductVariantPromotion'
 export { default as ProductVariantButtonAddToCart } from './ProductVariantButtonAddToCart'
+export { default as ProductVariantButtonBuyNow } from './ProductVariantButtonBuyNow'
 export { default as ProductVariantAttributeSelector } from './ProductVariantAttributeSelector'
 export { ProductVariantInteractiveShimmer } from './ProductVariantInteractiveShimmer'
 // ProductVariantNotFound no se exporta aquí porque usa Layout que tiene código del servidor

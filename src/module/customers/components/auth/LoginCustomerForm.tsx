@@ -26,6 +26,7 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
     password,
     errors,
     isLoading,
+    isFormValid,
     setEmail,
     setPassword,
     handleSubmit,
@@ -57,17 +58,14 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <InputField
           id="email"
           label="Email"
           type="email"
           value={email}
           onChange={handleEmailChange}
-          placeholder="usuario@ejemplo.com"
-          error={errors.email}
           disabled={isLoading}
-          required
           autoComplete="email"
         />
 
@@ -78,9 +76,7 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
           onChange={handlePasswordChange}
           showPassword={showPassword}
           onToggleVisibility={togglePasswordVisibility}
-          error={errors.password}
           disabled={isLoading}
-          required
           autoComplete="current-password"
         />
 
@@ -107,7 +103,7 @@ const LoginCustomerForm: React.FC<LoginCustomerFormProps> = ({
           </div>
         </div>
 
-        <Button type="submit" disabled={isLoading} className="w-full">
+        <Button type="submit" disabled={isLoading || !isFormValid} className="w-full">
           {isLoading ? (
             <span className="flex items-center justify-center">
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
