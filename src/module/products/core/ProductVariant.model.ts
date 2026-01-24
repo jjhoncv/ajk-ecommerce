@@ -17,7 +17,6 @@ import oProductVariantRep from './ProductVariant.repository'
 
 import { type ProductVariants as ProductVariantRaw } from '@/types/database'
 import {
-  type AttributeOptionImages,
   type ProductAttributeOptionImages,
   type ProductVariants as ProductVariant,
   type VariantAttributeOptions as VariantAttributeOption,
@@ -58,6 +57,23 @@ export class ProductVariantModel {
     const variantRaw = await oProductVariantRep.getProductVariantBySku(sku)
     if (!variantRaw) return undefined
     return ProductVariantMapper(variantRaw)
+  }
+
+  public async getProductVariantBySlug(
+    slug: string
+  ): Promise<ProductVariant | undefined> {
+    const variantRaw = await oProductVariantRep.getProductVariantBySlug(slug)
+    if (!variantRaw) return undefined
+    return ProductVariantMapper(variantRaw)
+  }
+
+  public async updateProductVariantSlug(
+    id: number,
+    slug: string
+  ): Promise<ProductVariant | undefined> {
+    const updated = await oProductVariantRep.updateProductVariantSlug(id, slug)
+    if (!updated) return undefined
+    return ProductVariantMapper(updated)
   }
 
   public async createProductVariant(
@@ -334,7 +350,7 @@ export class ProductVariantModel {
   private async getAttributeImagesForVariant(
     variantId: number,
     productId: number
-  ): Promise<AttributeOptionImages[]> {
+  ): Promise<ProductAttributeOptionImages[]> {
     // Obtener los attribute option IDs de esta variante
     const attributeOptions =
       await oVariantAttributeOptionModel.getVariantAttributeOptionsByVariantId(
@@ -369,7 +385,7 @@ export class ProductVariantModel {
       allImages.push(...images)
     })
 
-    return allImages as unknown as AttributeOptionImages[]
+    return allImages
   }
 
   // ============================================================================

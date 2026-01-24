@@ -12,12 +12,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
 
-interface DistrictInfo {
-  name: string
-  province: string
-  department: string
-}
-
 interface ShippingZoneMethod {
   id: number
   shippingMethodId: number
@@ -28,7 +22,7 @@ interface ShippingZoneMethod {
 interface ShippingZone {
   id: number
   name: string
-  districts: string | DistrictInfo[]
+  districtCount?: number
   isActive: number
   methods?: ShippingZoneMethod[]
 }
@@ -39,17 +33,6 @@ interface ShippingZonesListViewProps {
 
 export const ShippingZonesListView: FC<ShippingZonesListViewProps> = ({ zones }) => {
   const router = useRouter()
-
-  const getDistrictsCount = (districts: string | DistrictInfo[]): number => {
-    if (!districts) return 0
-    if (Array.isArray(districts)) return districts.length
-    try {
-      const parsed = JSON.parse(districts)
-      return Array.isArray(parsed) ? parsed.length : 0
-    } catch {
-      return 0
-    }
-  }
 
   const columns: TableColumn[] = [
     {
@@ -64,14 +47,13 @@ export const ShippingZonesListView: FC<ShippingZonesListViewProps> = ({ zones })
       )
     },
     {
-      key: 'districts',
+      key: 'districtCount',
       label: 'Distritos',
       priority: 'high',
-      sortable: false,
+      sortable: true,
       width: '120px',
-      render: (districts: string | DistrictInfo[]) => {
-        const count = getDistrictsCount(districts)
-        if (count === 0) {
+      render: (count: number | undefined) => {
+        if (!count || count === 0) {
           return (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-500">
               Sin distritos

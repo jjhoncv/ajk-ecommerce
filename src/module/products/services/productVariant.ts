@@ -7,6 +7,7 @@ import { type Products as Product } from '@/types/domain'
 
 export interface ProductVariantData {
   product: Product
+  variantId: number
 }
 
 export const getProductVariant = async (
@@ -28,12 +29,41 @@ export const getProductVariant = async (
     }
 
     return {
-      // variant,
-      product
+      product,
+      variantId
     }
   } catch (error) {
     throw new Error(
       `Error al obtener getProductVariant ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
+  }
+}
+
+export const getProductVariantBySlug = async (
+  slug: string
+): Promise<ProductVariantData | null> => {
+  try {
+    // Obtener la variante por slug
+    const variant = await productVariantModel.getProductVariantBySlug(slug)
+
+    if (!variant) {
+      return null
+    }
+
+    // Obtener el producto completo
+    const product = await productModel.getProductById(variant.productId)
+
+    if (!product) {
+      return null
+    }
+
+    return {
+      product,
+      variantId: variant.id
+    }
+  } catch (error) {
+    throw new Error(
+      `Error al obtener getProductVariantBySlug ${error instanceof Error ? error.message : 'Unknown error'}`
     )
   }
 }

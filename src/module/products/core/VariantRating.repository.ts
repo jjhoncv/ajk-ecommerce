@@ -1,10 +1,92 @@
 import { executeQuery } from '@/lib/db'
-import { type VariantRatings as VariantRatingRaw } from '@/types/database'
+import { type VariantRatings as VariantRatingRaw, type RatingStatus } from '@/types/database'
 
 export class VariantRatingRepository {
   public async getVariantRatings(): Promise<VariantRatingRaw[] | null> {
     const ratings = await executeQuery<VariantRatingRaw[]>({
       query: 'SELECT * FROM variant_ratings ORDER BY created_at DESC'
+    })
+
+    if (ratings.length === 0) return null
+    return ratings
+  }
+
+  // ============================================================================
+  // MÉTODOS PARA ADMIN - MODERACIÓN
+  // ============================================================================
+
+  public async getAllRatingsForAdmin(
+    status?: RatingStatus,
+    limit: number = 50,
+    offset: number = 0
+  ): Promise<VariantRatingRaw[] | null> {
+    let query = `
+      SELECT vr.*
+      FROM variant_ratings vr
+    `
+    const values: (string | number)[] = []
+
+    if (status) {
+      query += ' WHERE vr.status = ?'
+      values.push(status)
+    }
+
+    query += ' ORDER BY vr.created_at DESC LIMIT ? OFFSET ?'
+    values.push(limit, offset)
+
+    const ratings = await executeQuery<VariantRatingRaw[]>({
+      query,
+      values
+    })
+
+    if (ratings.length === 0) return null
+    return ratings
+  }
+
+  public async countRatingsForAdmin(status?: RatingStatus): Promise<number> {
+    let query = 'SELECT COUNT(*) as count FROM variant_ratings'
+    const values: string[] = []
+
+    if (status) {
+      query += ' WHERE status = ?'
+      values.push(status)
+    }
+
+    const result = await executeQuery<Array<{ count: number }>>({
+      query,
+      values
+    })
+
+    return result[0].count
+  }
+
+  public async updateRatingStatus(
+    id: number,
+    status: RatingStatus,
+    reviewedBy: number
+  ): Promise<VariantRatingRaw | null> {
+    await executeQuery({
+      query: `
+        UPDATE variant_ratings
+        SET status = ?, reviewed_by = ?, reviewed_at = NOW(), updated_at = NOW()
+        WHERE id = ?
+      `,
+      values: [status, reviewedBy, id]
+    })
+
+    return await this.getVariantRatingById(id)
+  }
+
+  public async getApprovedVariantRatingsByVariantId(
+    variantId: number
+  ): Promise<VariantRatingRaw[] | null> {
+    const ratings = await executeQuery<VariantRatingRaw[]>({
+      query: `
+        SELECT * FROM variant_ratings
+        WHERE variant_id = ? AND status = 'approved'
+        ORDER BY created_at DESC
+      `,
+      values: [variantId]
     })
 
     if (ratings.length === 0) return null
@@ -24,11 +106,17 @@ export class VariantRatingRepository {
   }
 
   public async getVariantRatingsByVariantId(
-    variantId: number
+    variantId: number,
+    onlyApproved: boolean = true
   ): Promise<VariantRatingRaw[] | null> {
+    let query = 'SELECT * FROM variant_ratings WHERE variant_id = ?'
+    if (onlyApproved) {
+      query += " AND status = 'approved'"
+    }
+    query += ' ORDER BY created_at DESC'
+
     const ratings = await executeQuery<VariantRatingRaw[]>({
-      query:
-        'SELECT * FROM variant_ratings WHERE variant_id = ? ORDER BY created_at DESC',
+      query,
       values: [variantId]
     })
 
@@ -53,8 +141,11 @@ export class VariantRatingRepository {
     variantId: number
   ): Promise<VariantRatingRaw[] | null> {
     const ratings = await executeQuery<VariantRatingRaw[]>({
-      query:
-        'SELECT * FROM variant_ratings WHERE variant_id = ? AND verified_purchase = 1 ORDER BY created_at DESC',
+      query: `
+        SELECT * FROM variant_ratings
+        WHERE variant_id = ? AND verified_purchase = 1 AND status = 'approved'
+        ORDER BY created_at DESC
+      `,
       values: [variantId]
     })
 
@@ -63,17 +154,23 @@ export class VariantRatingRepository {
   }
 
   public async getVariantRatingsByVariantIds(
-    variantIds: number[]
+    variantIds: number[],
+    onlyApproved: boolean = true
   ): Promise<VariantRatingRaw[] | null> {
     if (variantIds.length === 0) return null
 
     const placeholders = variantIds.map(() => '?').join(',')
+    let query = `
+      SELECT * FROM variant_ratings
+      WHERE variant_id IN (${placeholders})
+    `
+    if (onlyApproved) {
+      query += " AND status = 'approved'"
+    }
+    query += ' ORDER BY variant_id, created_at DESC'
+
     const ratings = await executeQuery<VariantRatingRaw[]>({
-      query: `
-        SELECT * FROM variant_ratings
-        WHERE variant_id IN (${placeholders})
-        ORDER BY variant_id, created_at DESC
-      `,
+      query,
       values: variantIds
     })
 
@@ -114,7 +211,7 @@ export class VariantRatingRepository {
           COUNT(*) as total_ratings,
           SUM(CASE WHEN verified_purchase = 1 THEN 1 ELSE 0 END) as verified_ratings
         FROM variant_ratings
-        WHERE variant_id = ?
+        WHERE variant_id = ? AND status = 'approved'
       `,
       values: [variantId]
     })
@@ -132,7 +229,7 @@ export class VariantRatingRepository {
           rating,
           COUNT(*) as count
         FROM variant_ratings
-        WHERE variant_id = ?
+        WHERE variant_id = ? AND status = 'approved'
         GROUP BY rating
         ORDER BY rating DESC
       `,
@@ -200,10 +297,14 @@ export class VariantRatingRepository {
     })
   }
 
-  public async countVariantRatings(variantId: number): Promise<number> {
+  public async countVariantRatings(variantId: number, onlyApproved: boolean = true): Promise<number> {
+    let query = 'SELECT COUNT(*) as count FROM variant_ratings WHERE variant_id = ?'
+    if (onlyApproved) {
+      query += " AND status = 'approved'"
+    }
+
     const result = await executeQuery<Array<{ count: number }>>({
-      query:
-        'SELECT COUNT(*) as count FROM variant_ratings WHERE variant_id = ?',
+      query,
       values: [variantId]
     })
 
@@ -221,6 +322,65 @@ export class VariantRatingRepository {
     })
 
     return result[0].count > 0
+  }
+
+  // ============================================================================
+  // MÉTODOS PARA IMÁGENES DE RATINGS
+  // ============================================================================
+
+  public async createRatingImage(
+    ratingId: number,
+    imageUrl: string
+  ): Promise<{ id: number; ratingId: number; imageUrl: string }> {
+    const result = await executeQuery<{ insertId: number }>({
+      query: 'INSERT INTO rating_images (rating_id, image_url) VALUES (?, ?)',
+      values: [ratingId, imageUrl]
+    })
+
+    return {
+      id: result.insertId,
+      ratingId,
+      imageUrl
+    }
+  }
+
+  public async createRatingImages(
+    ratingId: number,
+    imageUrls: string[]
+  ): Promise<Array<{ id: number; ratingId: number; imageUrl: string }>> {
+    const results: Array<{ id: number; ratingId: number; imageUrl: string }> = []
+
+    for (const imageUrl of imageUrls) {
+      const result = await this.createRatingImage(ratingId, imageUrl)
+      results.push(result)
+    }
+
+    return results
+  }
+
+  public async getRatingImages(
+    ratingId: number
+  ): Promise<Array<{ id: number; imageUrl: string }>> {
+    const images = await executeQuery<Array<{ id: number; image_url: string }>>({
+      query: 'SELECT id, image_url FROM rating_images WHERE rating_id = ?',
+      values: [ratingId]
+    })
+
+    return images.map((img) => ({ id: img.id, imageUrl: img.image_url }))
+  }
+
+  public async deleteRatingImage(id: number): Promise<void> {
+    await executeQuery({
+      query: 'DELETE FROM rating_images WHERE id = ?',
+      values: [id]
+    })
+  }
+
+  public async deleteRatingImages(ratingId: number): Promise<void> {
+    await executeQuery({
+      query: 'DELETE FROM rating_images WHERE rating_id = ?',
+      values: [ratingId]
+    })
   }
 }
 

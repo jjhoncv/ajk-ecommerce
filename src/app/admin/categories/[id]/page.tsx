@@ -22,19 +22,37 @@ export default async function EditCategoryPage({
   const { parent } = await searchParams
   const parentId = parent ? Number(parent) : null
 
+  console.log('[EditCategoryPage] Fetching category with id:', id)
+
   const result = await categoryService.getCategoryWithAudit(Number(id))
 
+  console.log('[EditCategoryPage] Result:', JSON.stringify(result, null, 2))
+
   if (result == null || result.category == null) {
-    return <div>No se encontró la categoría</div>
+    console.log('[EditCategoryPage] Category not found for id:', id)
+    return <div>No se encontró la categoría (ID: {id})</div>
   }
 
   const { category, audit } = result
 
   const fieldsWithValues = mergeFieldsWithData(CategoryFields, {
     ...category,
+    // Basic fields
     parent_id: category.parentId?.toString() || '',
     image_url: category.imageUrl || '',
-    show_nav: category.showNav ? '1' : '0'
+    show_nav: category.showNav ? '1' : '0',
+    slug: category.slug || '',
+    // Banner fields
+    banner_image: category.bannerImage || '',
+    banner_image_mobile: category.bannerImageMobile || '',
+    banner_title: category.bannerTitle || '',
+    banner_subtitle: category.bannerSubtitle || '',
+    banner_description: category.bannerDescription || '',
+    banner_cta_text: category.bannerCtaText || '',
+    banner_cta_link: category.bannerCtaLink || '',
+    // SEO fields
+    meta_title: category.metaTitle || '',
+    meta_description: category.metaDescription || ''
   })
 
   // Construir URL de redirección manteniendo el contexto

@@ -160,15 +160,25 @@ export interface Brands {
 }
 
 export interface Categories {
+  banner_cta_link?: Maybe<Scalars['String']['output']>;
+  banner_cta_text?: Maybe<Scalars['String']['output']>;
+  banner_description?: Maybe<Scalars['String']['output']>;
+  banner_image?: Maybe<Scalars['String']['output']>;
+  banner_image_mobile?: Maybe<Scalars['String']['output']>;
+  banner_subtitle?: Maybe<Scalars['String']['output']>;
+  banner_title?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
   created_by?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   display_order?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   image_url?: Maybe<Scalars['String']['output']>;
+  meta_description?: Maybe<Scalars['String']['output']>;
+  meta_title?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id?: Maybe<Scalars['Int']['output']>;
   show_nav?: Maybe<Scalars['Int']['output']>;
+  slug: Scalars['String']['output'];
   updated_at: Scalars['Timestamp']['output'];
   updated_by?: Maybe<Scalars['Int']['output']>;
 }
@@ -230,6 +240,8 @@ export interface CustomersAddresses {
   created_at: Scalars['Timestamp']['output'];
   department: Scalars['String']['output'];
   district: Scalars['String']['output'];
+  /** FK a la tabla districts */
+  district_id?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   id_customer: Scalars['Int']['output'];
   /** 1 = dirección por defecto */
@@ -239,6 +251,8 @@ export interface CustomersAddresses {
   /** Longitud GPS */
   longitude?: Maybe<Scalars['Float']['output']>;
   province: Scalars['String']['output'];
+  /** Referencia de ubicación */
+  reference?: Maybe<Scalars['String']['output']>;
   /** Nombre de la avenida/calle/jirón */
   street_name: Scalars['String']['output'];
   /** Número de la dirección */
@@ -453,6 +467,8 @@ export interface ProductVariants {
   price: Scalars['Float']['output'];
   product_id: Scalars['Int']['output'];
   sku: Scalars['String']['output'];
+  /** URL-friendly slug para SEO (ej: iphone-16-pro-max-negro-128gb) */
+  slug?: Maybe<Scalars['String']['output']>;
   stock: Scalars['Int']['output'];
   updated_at: Scalars['Timestamp']['output'];
 }
@@ -490,6 +506,7 @@ export interface Promotions {
   is_active?: Maybe<Scalars['Int']['output']>;
   min_purchase_amount?: Maybe<Scalars['Float']['output']>;
   name: Scalars['String']['output'];
+  slug?: Maybe<Scalars['String']['output']>;
   start_date: Scalars['DateTime']['output'];
   type?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['Timestamp']['output'];
@@ -637,12 +654,20 @@ export interface VariantRatingSummary {
   verified_purchases?: Maybe<Scalars['Float']['output']>;
 }
 
+export type RatingStatus =
+  | 'pending'
+  | 'approved'
+  | 'rejected';
+
 export interface VariantRatings {
   created_at: Scalars['Timestamp']['output'];
   customer_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   rating: Scalars['Int']['output'];
   review?: Maybe<Scalars['String']['output']>;
+  reviewed_at?: Maybe<Scalars['Timestamp']['output']>;
+  reviewed_by?: Maybe<Scalars['Int']['output']>;
+  status: RatingStatus;
   title?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['Timestamp']['output'];
   variant_id: Scalars['Int']['output'];

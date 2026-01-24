@@ -52,7 +52,7 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
       if (onClose) {
         onClose()
       }
-      window.location.href = `/categoria/${category.id}`
+      window.location.href = `/categoria/${category.slug}`
     }
   }
 
@@ -144,8 +144,8 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
                     className="group flex w-full items-center justify-between p-3 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-center gap-3">
-                      {category.imageUrl && (
-                        <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-100">
+                      <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-100">
+                        {category.imageUrl ? (
                           <Image
                             src={category.imageUrl}
                             alt={category.name}
@@ -153,8 +153,12 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
                             height={32}
                             className="h-full w-full object-cover"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-gray-200 text-xs font-medium text-gray-400">
+                            {category.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
                       <div className="text-left">
                         <div className="font-medium text-gray-800 transition-colors group-hover:text-primary">
                           {category.name}
@@ -179,7 +183,7 @@ const CategoriesMenu: React.FC<CategoriesMenuProps> = ({
           <div className="p-6 text-center text-gray-500">
             <p>No hay subcategorías disponibles</p>
             <Link
-              href={`/categoria/${currentLevel.category?.id}`}
+              href={`/categoria/${currentLevel.category?.slug}`}
               className="mt-3 inline-block rounded-lg bg-primary px-4 py-2 text-white transition-colors hover:bg-primary/90"
             >
               Ver productos

@@ -6,9 +6,9 @@ export const addressSchema = z.object({
     .min(1, 'El nombre de la dirección es requerido')
     .min(2, 'El nombre debe tener al menos 2 caracteres')
     .max(50, 'El nombre no puede exceder 50 caracteres'),
-  department: z.string().min(1, 'El departamento es requerido'),
-  province: z.string().min(1, 'La provincia es requerida'),
-  district: z.string().min(1, 'El distrito es requerido'),
+  districtId: z
+    .number({ required_error: 'El distrito es requerido' })
+    .min(1, 'Debes seleccionar un distrito'),
   streetName: z
     .string()
     .min(1, 'El nombre de la calle es requerido')
@@ -21,6 +21,10 @@ export const addressSchema = z.object({
   apartment: z
     .string()
     .max(20, 'El apartamento no puede exceder 20 caracteres')
+    .optional(),
+  reference: z
+    .string()
+    .max(200, 'La referencia no puede exceder 200 caracteres')
     .optional(),
   latitude: z
     .number()

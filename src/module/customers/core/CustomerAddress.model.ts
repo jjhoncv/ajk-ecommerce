@@ -32,9 +32,11 @@ export class CustomerAddressModel {
     department: string
     province: string
     district: string
+    districtId?: number
     streetName: string
     streetNumber: string
     apartment?: string
+    reference?: string
     latitude?: number
     longitude?: number
     isDefault?: boolean
@@ -51,9 +53,11 @@ export class CustomerAddressModel {
       department?: string
       province?: string
       district?: string
+      districtId?: number
       streetName?: string
       streetNumber?: string
       apartment?: string
+      reference?: string
       latitude?: number
       longitude?: number
     }

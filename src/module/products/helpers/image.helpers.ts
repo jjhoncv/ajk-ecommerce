@@ -1,6 +1,6 @@
 import { type ProductVariantComplete } from '@/module/products/core'
 import { type ItemImage } from '@/module/shared/types/shared'
-import { type AttributeOptionImages, type ProductVariants } from '@/types/domain'
+import { type ProductVariants } from '@/types/domain'
 
 // Función helper para normalizar las imágenes a ItemImage
 const normalizeToItemImage = (img: any): ItemImage => ({

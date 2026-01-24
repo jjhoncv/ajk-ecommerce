@@ -11,6 +11,7 @@ interface ProductVariantButtonAddToCartProps {
   price: number
   stock: number
   quantity: number
+  slug?: string | null
   promotionVariants?: Array<PromotionVariants | null> | null
   variantAttributeOptions?: Array<VariantAttributeOptions | null> | null
   onCartAction?: () => void
@@ -25,6 +26,7 @@ const ProductVariantButtonAddToCart: React.FC<
   name,
   price,
   stock,
+  slug,
   promotionVariants: pvs,
   variantAttributeOptions,
   onCartAction
@@ -62,6 +64,7 @@ const ProductVariantButtonAddToCart: React.FC<
           name,
           price,
           stock,
+          slug,
           promotionVariants,
           variantAttributeOptions
         },

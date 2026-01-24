@@ -10,6 +10,9 @@ export const VariantRatingMapper = (data: VariantRatingRaw): VariantRating => {
     title: data.title ?? undefined,
     review: data.review ?? undefined,
     verifiedPurchase: Number(data.verified_purchase),
+    status: data.status,
+    reviewedBy: data.reviewed_by ?? undefined,
+    reviewedAt: data.reviewed_at ?? undefined,
     customer: undefined, // Se llena en el modelo con lógica de negocio
     productVariants: undefined, // Se llena en el modelo con lógica de negocio
     ratingImages: undefined // Se llena en el modelo con lógica de negocio

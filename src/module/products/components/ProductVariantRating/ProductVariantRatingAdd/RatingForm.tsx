@@ -21,6 +21,8 @@ export const RatingForm: React.FC<RatingFormProps> = ({
     review,
     images,
     isSubmitting,
+    isProcessingImages,
+    imageProgress,
     error,
     success,
     setRating,
@@ -106,6 +108,8 @@ export const RatingForm: React.FC<RatingFormProps> = ({
         images={images}
         onImageUpload={handleImageUpload}
         onRemoveImage={removeImage}
+        isProcessing={isProcessingImages}
+        progress={imageProgress}
       />
 
       {/* Mensaje de error */}

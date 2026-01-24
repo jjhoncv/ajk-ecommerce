@@ -98,7 +98,7 @@ const CardSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
         💳 Tarjeta de Crédito/Débito
       </h5>
       <p className="mb-2 text-sm text-purple-700">
-        Simula el resultado del pago con tarjeta por S/ {amount.toFixed(2)}
+        Simula el resultado del pago con tarjeta por S/ {Number(amount).toFixed(2)}
       </p>
       <div className="space-y-1 text-xs text-purple-600">
         <p>• Tarjeta: **** **** **** 1234</p>
@@ -145,7 +145,7 @@ const YapeSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
     <div className="rounded-lg border border-purple-200 bg-purple-50 p-3">
       <h5 className="mb-2 font-medium text-purple-800">📱 Yape</h5>
       <p className="mb-2 text-sm text-purple-700">
-        Simula el resultado del pago con Yape por S/ {amount.toFixed(2)}
+        Simula el resultado del pago con Yape por S/ {Number(amount).toFixed(2)}
       </p>
       <div className="space-y-1 text-xs text-purple-600">
         <p>• Número: 999 999 999</p>
@@ -185,7 +185,7 @@ const PlinSandbox = ({ onPaymentAction, processing, amount }: SandboxProps) => (
     <div className="rounded-lg border border-green-200 bg-green-50 p-3">
       <h5 className="mb-2 font-medium text-green-800">📲 Plin</h5>
       <p className="mb-2 text-sm text-green-700">
-        Simula el resultado del pago con Plin por S/ {amount.toFixed(2)}
+        Simula el resultado del pago con Plin por S/ {Number(amount).toFixed(2)}
       </p>
       <div className="space-y-1 text-xs text-green-600">
         <p>• Número: 999 999 999</p>

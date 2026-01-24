@@ -4,6 +4,32 @@ import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 
+// Helper para generar slug SEO-friendly
+const generateSlug = (text: string): string => {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+    .replace(/[^a-z0-9\s-]/g, '') // Remover caracteres especiales
+    .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+    .replace(/-+/g, '-') // Reemplazar múltiples guiones con uno solo
+    .trim()
+}
+
+// Generar slug único para promoción
+const generateUniquePromotionSlug = async (name: string, promotionId: number): Promise<string> => {
+  const baseSlug = generateSlug(name)
+
+  // Verificar si el slug ya existe
+  const existingPromotion = await promotionModel.getPromotionBySlug(baseSlug)
+  if (existingPromotion && existingPromotion.id !== promotionId) {
+    // Si existe y es de otra promoción, agregar el ID
+    return `${baseSlug}-${promotionId}`
+  }
+
+  return baseSlug
+}
+
 interface RouteParams {
   params: Promise<{ promotionId: string }>
 }
@@ -100,6 +126,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const updatedPromotion = await promotionRepository.updatePromotion(promotionData, promotionIdNum)
+
+    // Regenerar slug SEO-friendly si el nombre cambió
+    if (name && name !== existingPromotion.name) {
+      const slug = await generateUniquePromotionSlug(name, promotionIdNum)
+      await promotionModel.updatePromotionSlug(promotionIdNum, slug)
+    }
 
     return NextResponse.json({
       message: 'Promoción actualizada correctamente',

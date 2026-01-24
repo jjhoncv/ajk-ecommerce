@@ -1,6 +1,46 @@
 import { mkdir, writeFile } from 'fs/promises'
 import { join } from 'path'
 
+/**
+ * Guarda una imagen base64 en el servidor
+ */
+export const writeBase64Image = async (
+  uploadDir: string,
+  base64Data: string,
+  prefix: string = 'img'
+): Promise<string> => {
+  // Extraer el tipo de imagen y los datos base64
+  const matches = base64Data.match(/^data:image\/(\w+);base64,(.+)$/)
+  if (!matches) {
+    throw new Error('Formato de imagen base64 inválido')
+  }
+
+  const extension = matches[1]
+  const data = matches[2]
+  const buffer = Buffer.from(data, 'base64')
+
+  // Crear nombre único
+  const timestamp = Date.now()
+  const randomSuffix = Math.round(Math.random() * 1e9)
+  const uniqueFileName = `${prefix}-${timestamp}-${randomSuffix}.${extension}`
+
+  // Crear el directorio si no existe
+  await mkdir(uploadDir, { recursive: true })
+
+  // Guardar el archivo
+  const filePath = join(uploadDir, uniqueFileName)
+  await writeFile(filePath, buffer)
+
+  // Calcular la URL pública
+  const publicIndex = uploadDir.indexOf('public')
+  if (publicIndex !== -1) {
+    const relativePath = uploadDir.substring(publicIndex + 'public'.length)
+    return `${relativePath}/${uniqueFileName}`.replace(/\\/g, '/')
+  }
+
+  return `/uploads/ratings/${uniqueFileName}`
+}
+
 export const writeFileServer = async (
   uploadDir: string,
   file: File,

@@ -9,10 +9,12 @@ import React, { useState } from 'react'
 
 interface ProductCardButtonViewProps {
   variantId: number
+  variantSlug?: string | null
 }
 
 const ProductCardButtonView: React.FC<ProductCardButtonViewProps> = ({
-  variantId
+  variantId,
+  variantSlug
 }) => {
   const [data, setData] = useState<{
     data: ProductVariantData

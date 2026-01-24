@@ -78,7 +78,7 @@ export function AuthModalProvider({ children }: AuthModalProviderProps) {
       <Modal
         isOpen={isAuthOpen}
         onClose={closeAll}
-        className="max-w-md"
+        className="max-w-xl"
       >
         <ModalContent className="p-6">
           <UnifiedAuthForm

@@ -1,11 +1,12 @@
 'use client'
-// 📄 app/checkout/components/ShippingStep.tsx
+
 import { type CheckoutSummary, type CheckoutUser, type ShippingOption } from '@/types/checkout'
 import { type CustomersAddresses } from '@/types/domain'
-import { useEffect, useState } from 'react'
+import { type District } from '@/module/districts/core'
+import { useCallback, useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalTitle } from '@/module/shared/components/Modal'
 import { Button, Input, Label } from '@/module/shared/components/ui'
-import { departments, districtsByProvince } from '@/module/profile/components/Addresses/Addresses.data'
+import { MapPicker } from '@/components/ui/MapPicker'
 import { MapPin } from 'lucide-react'
 
 interface ShippingStepProps {
@@ -41,26 +42,74 @@ export default function ShippingStep({
   const [formError, setFormError] = useState('')
   const [formData, setFormData] = useState({
     alias: '',
-    department: 'LIMA',
-    province: 'LIMA',
-    district: '',
+    districtId: 0,
     streetName: '',
     streetNumber: '',
-    apartment: ''
+    apartment: '',
+    reference: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined
   })
 
-  const availableDistricts = districtsByProvince[formData.province as keyof typeof districtsByProvince] || []
+  // Districts state
+  const [districts, setDistricts] = useState<District[]>([])
+  const [districtsGrouped, setDistrictsGrouped] = useState<Record<string, District[]>>({})
+  const [loadingDistricts, setLoadingDistricts] = useState(true)
+
+  // Load districts on mount
+  useEffect(() => {
+    const loadDistricts = async () => {
+      try {
+        const response = await fetch('/api/districts/grouped')
+        if (response.ok) {
+          const data = await response.json()
+          setDistrictsGrouped(data.districts || {})
+          const allDistricts: District[] = []
+          Object.values(data.districts || {}).forEach((group) => {
+            allDistricts.push(...(group as District[]))
+          })
+          setDistricts(allDistricts)
+        }
+      } catch (error) {
+        console.error('Error loading districts:', error)
+      } finally {
+        setLoadingDistricts(false)
+      }
+    }
+    loadDistricts()
+  }, [])
+
+  const getDistrictName = useCallback((districtId: number | null | undefined): string => {
+    if (!districtId) return ''
+    const district = districts.find(d => d.id === districtId)
+    return district?.name || ''
+  }, [districts])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-    if (name === 'province') {
-      setFormData(prev => ({ ...prev, district: '' }))
+    if (name === 'districtId') {
+      setFormData(prev => ({ ...prev, [name]: parseInt(value) || 0 }))
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }))
     }
   }
 
+  const handleLocationChange = useCallback((lat: number, lng: number) => {
+    setFormData(prev => ({
+      ...prev,
+      latitude: lat,
+      longitude: lng
+    }))
+  }, [])
+
   const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (formData.districtId === 0) {
+      setFormError('Debes seleccionar un distrito')
+      return
+    }
+
     setIsSubmitting(true)
     setFormError('')
 
@@ -77,12 +126,13 @@ export default function ShippingStep({
         setIsModalOpen(false)
         setFormData({
           alias: '',
-          department: 'LIMA',
-          province: 'LIMA',
-          district: '',
+          districtId: 0,
           streetName: '',
           streetNumber: '',
-          apartment: ''
+          apartment: '',
+          reference: '',
+          latitude: undefined,
+          longitude: undefined
         })
       } else {
         const error = await response.json()
@@ -95,22 +145,16 @@ export default function ShippingStep({
     }
   }
 
-  // Auto-seleccionar método de envío cuando:
-  // 1. Hay opciones disponibles y no hay selección
-  // 2. El método seleccionado ya no está disponible (cambió la dirección)
   useEffect(() => {
     if (summary.shippingOptions.length > 0) {
-      // Verificar si el método seleccionado aún está disponible
       const isCurrentSelectionValid = selectedShippingMethod !== null &&
         summary.shippingOptions.some(opt => opt.methodId === selectedShippingMethod)
 
       if (!isCurrentSelectionValid) {
-        // Auto-seleccionar el primer método disponible
         const firstOption = summary.shippingOptions[0]
         setSelectedShippingMethod(firstOption.methodId)
         onShippingMethodChange(firstOption)
       } else if (!summary.selectedShipping && selectedShippingMethod !== null) {
-        // El estado local tiene selección pero el summary no - sincronizar
         const selectedOption = summary.shippingOptions.find(
           opt => opt.methodId === selectedShippingMethod
         )
@@ -177,7 +221,7 @@ export default function ShippingStep({
                       {address.apartment && `, ${address.apartment}`}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {address.district}, {address.province}, {address.department}
+                      {getDistrictName(address.districtId) || address.district}, Lima, Lima
                     </p>
                   </div>
                 </div>
@@ -306,139 +350,147 @@ export default function ShippingStep({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="max-w-2xl"
+        className="max-w-3xl"
       >
         <ModalTitle
           onClose={() => setIsModalOpen(false)}
           title="Agregar dirección"
         />
         <ModalContent>
-          <form onSubmit={handleAddressSubmit} className="space-y-6">
+          <form onSubmit={handleAddressSubmit} className="space-y-5">
             {formError && (
               <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
                 {formError}
               </div>
             )}
 
-            <div className="space-y-4">
-              {/* Nombre de la dirección */}
-              <div className="space-y-2">
+            {/* Ubicación (fija Lima) */}
+            <div className="rounded-lg bg-blue-50 border border-blue-100 p-3">
+              <p className="text-sm text-blue-800">
+                <span className="font-medium">Ubicación:</span> Lima Metropolitana, Perú
+              </p>
+            </div>
+
+            {/* Row 1: Alias y Distrito */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
                 <Label htmlFor="alias" className="text-sm font-medium text-gray-700">
-                  Nombre de la dirección
+                  Nombre de la dirección *
                 </Label>
                 <Input
                   id="alias"
                   name="alias"
                   value={formData.alias}
                   onChange={handleInputChange}
-                  placeholder="ej. Casa, Oficina"
+                  placeholder="ej. Casa, Oficina, Trabajo"
                   required
                 />
               </div>
 
-              {/* Departamento y Provincia */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="department" className="text-sm font-medium text-gray-700">
-                    Departamento
-                  </Label>
-                  <select
-                    id="department"
-                    name="department"
-                    value={formData.department}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  >
-                    {departments.map((dept) => (
-                      <option key={dept} value={dept}>{dept}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="province" className="text-sm font-medium text-gray-700">
-                    Provincia
-                  </Label>
-                  <select
-                    id="province"
-                    name="province"
-                    value={formData.province}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
-                  >
-                    <option value="LIMA">LIMA</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Distrito */}
-              <div className="space-y-2">
-                <Label htmlFor="district" className="text-sm font-medium text-gray-700">
-                  Distrito
+              <div className="space-y-1.5">
+                <Label htmlFor="districtId" className="text-sm font-medium text-gray-700">
+                  Distrito *
                 </Label>
                 <select
-                  id="district"
-                  name="district"
-                  value={formData.district}
+                  id="districtId"
+                  name="districtId"
+                  value={formData.districtId}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                  disabled={loadingDistricts}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
                   required
                 >
-                  <option value="">Selecciona un distrito</option>
-                  {availableDistricts.map((district) => (
-                    <option key={district} value={district}>{district}</option>
+                  <option value={0}>
+                    {loadingDistricts ? 'Cargando...' : 'Selecciona un distrito'}
+                  </option>
+                  {Object.entries(districtsGrouped).map(([zoneName, zoneDistricts]) => (
+                    <optgroup key={zoneName} label={zoneName}>
+                      {zoneDistricts.map((district) => (
+                        <option key={district.id} value={district.id}>
+                          {district.name}
+                        </option>
+                      ))}
+                    </optgroup>
                   ))}
                 </select>
               </div>
+            </div>
 
-              {/* Calle y Número */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="streetName" className="text-sm font-medium text-gray-700">
-                    Nombre de la calle
-                  </Label>
-                  <Input
-                    id="streetName"
-                    name="streetName"
-                    value={formData.streetName}
-                    onChange={handleInputChange}
-                    placeholder="Av. Javier Prado, Jr. Lima"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="streetNumber" className="text-sm font-medium text-gray-700">
-                    Número
-                  </Label>
-                  <Input
-                    id="streetNumber"
-                    name="streetNumber"
-                    value={formData.streetNumber}
-                    onChange={handleInputChange}
-                    placeholder="123"
-                    required
-                  />
-                </div>
+            {/* Row 2: Calle y Número */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <Label htmlFor="streetName" className="text-sm font-medium text-gray-700">
+                  Calle / Avenida / Jirón *
+                </Label>
+                <Input
+                  id="streetName"
+                  name="streetName"
+                  value={formData.streetName}
+                  onChange={handleInputChange}
+                  placeholder="Av. Javier Prado Este"
+                  required
+                />
               </div>
 
-              {/* Apartamento */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
+                <Label htmlFor="streetNumber" className="text-sm font-medium text-gray-700">
+                  Número *
+                </Label>
+                <Input
+                  id="streetNumber"
+                  name="streetNumber"
+                  value={formData.streetNumber}
+                  onChange={handleInputChange}
+                  placeholder="123"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Row 3: Apartamento y Referencia */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
                 <Label htmlFor="apartment" className="text-sm font-medium text-gray-700">
-                  Apartamento / Piso (opcional)
+                  Dpto / Piso / Interior
                 </Label>
                 <Input
                   id="apartment"
                   name="apartment"
                   value={formData.apartment}
                   onChange={handleInputChange}
-                  placeholder="Dpto 101, Piso 2"
+                  placeholder="Dpto 101, Piso 2, Int. B"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="reference" className="text-sm font-medium text-gray-700">
+                  Referencia
+                </Label>
+                <Input
+                  id="reference"
+                  name="reference"
+                  value={formData.reference}
+                  onChange={handleInputChange}
+                  placeholder="Frente al parque, cerca al grifo"
                 />
               </div>
             </div>
 
+            {/* Mapa para ubicación exacta */}
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium text-gray-700">
+                Ubicación en el mapa
+              </Label>
+              <MapPicker
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onLocationChange={handleLocationChange}
+                height="220px"
+              />
+            </div>
+
             {/* Botones */}
-            <div className="flex justify-end gap-3 border-t border-gray-200 pt-6">
+            <div className="flex justify-end gap-3 border-t border-gray-200 pt-5">
               <Button
                 type="button"
                 variant="outline"
@@ -449,8 +501,8 @@ export default function ShippingStep({
               </Button>
               <Button
                 type="submit"
-                disabled={isSubmitting}
-                className="bg-black text-white hover:bg-gray-800"
+                disabled={isSubmitting || loadingDistricts}
+                className="bg-indigo-600 text-white hover:bg-indigo-700"
               >
                 {isSubmitting ? 'Guardando...' : 'Agregar dirección'}
               </Button>

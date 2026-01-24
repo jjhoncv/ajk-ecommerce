@@ -1,10 +1,10 @@
-import { districtsByProvince } from '@/module/profile/components/Addresses/Addresses.data'
 import {
   addressSchema,
   type AddressFormData
 } from '@/module/profile/components/Addresses/Addresses.schema'
+import { type District } from '@/module/districts/core'
 import { type CustomersAddresses } from '@/types/domain'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { z } from 'zod'
 
 interface UseAddressesProps {
@@ -16,6 +16,11 @@ interface UseAddressesReturn {
   addresses: CustomersAddresses[]
   setAddresses: React.Dispatch<React.SetStateAction<CustomersAddresses[]>>
   isLoading: boolean
+
+  // Districts data
+  districts: District[]
+  districtsGrouped: Record<string, District[]>
+  loadingDistricts: boolean
 
   // Modal state
   isModalOpen: boolean
@@ -46,39 +51,75 @@ interface UseAddressesReturn {
   handleDelete: (id: number) => Promise<void>
   handleSetDefault: (id: number) => Promise<void>
 
+  // Map/Location
+  handleLocationChange: (lat: number, lng: number, address?: string) => void
+
   // Helpers
-  availableDistricts: string[]
   resetForm: () => void
   loadAddresses: () => Promise<void>
+  getDistrictName: (districtId: number | null | undefined) => string
+}
+
+const initialFormData: AddressFormData = {
+  alias: '',
+  districtId: 0,
+  streetName: '',
+  streetNumber: '',
+  apartment: '',
+  reference: '',
+  latitude: undefined,
+  longitude: undefined
 }
 
 export const useAddresses = ({
   initialAddresses
 }: UseAddressesProps): UseAddressesReturn => {
-  // Usar directamente las direcciones iniciales del server
   const [addresses, setAddresses] =
     useState<CustomersAddresses[]>(initialAddresses)
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingAddress, setEditingAddress] =
     useState<CustomersAddresses | null>(null)
-  const [formData, setFormData] = useState<AddressFormData>({
-    alias: '',
-    department: 'LIMA',
-    province: 'LIMA',
-    district: '',
-    streetName: '',
-    streetNumber: '',
-    apartment: '',
-    latitude: undefined,
-    longitude: undefined
-  })
+  const [formData, setFormData] = useState<AddressFormData>(initialFormData)
   const [message, setMessage] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // ❌ ELIMINADO: useEffect que hacía fetch innecesario
-  // Solo usar las direcciones que vienen del server como props
+  // Districts state
+  const [districts, setDistricts] = useState<District[]>([])
+  const [districtsGrouped, setDistrictsGrouped] = useState<Record<string, District[]>>({})
+  const [loadingDistricts, setLoadingDistricts] = useState(true)
+
+  // Load districts on mount
+  useEffect(() => {
+    const loadDistricts = async () => {
+      try {
+        const response = await fetch('/api/districts/grouped')
+        if (response.ok) {
+          const data = await response.json()
+          setDistrictsGrouped(data.districts || {})
+
+          // Flatten for easy lookup
+          const allDistricts: District[] = []
+          Object.values(data.districts || {}).forEach((group) => {
+            allDistricts.push(...(group as District[]))
+          })
+          setDistricts(allDistricts)
+        }
+      } catch (error) {
+        console.error('Error loading districts:', error)
+      } finally {
+        setLoadingDistricts(false)
+      }
+    }
+    loadDistricts()
+  }, [])
+
+  const getDistrictName = useCallback((districtId: number | null | undefined): string => {
+    if (!districtId) return ''
+    const district = districts.find(d => d.id === districtId)
+    return district?.name || ''
+  }, [districts])
 
   const loadAddresses = async () => {
     setIsLoading(true)
@@ -104,37 +145,29 @@ export const useAddresses = ({
   ) => {
     const { name, value } = e.target
 
-    // Formatear valor según el campo
-    let formattedValue = value
+    let formattedValue: string | number = value
 
     if (name === 'streetNumber') {
-      // Permitir solo números y letras básicas para números de casa
       formattedValue = value.replace(/[^a-zA-Z0-9-]/g, '')
     }
 
     if (name === 'alias') {
-      // Limpiar caracteres especiales del alias
       formattedValue = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')
+    }
+
+    if (name === 'districtId') {
+      formattedValue = parseInt(value) || 0
     }
 
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === 'latitude' || name === 'longitude'
-          ? value
-            ? parseFloat(value)
-            : undefined
-          : formattedValue
+      [name]: name === 'latitude' || name === 'longitude'
+        ? value ? parseFloat(value) : undefined
+        : formattedValue
     }))
 
-    // Limpiar error del campo actual
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }))
-    }
-
-    // Resetear distrito cuando cambia departamento o provincia
-    if (name === 'department' || name === 'province') {
-      setFormData((prev) => ({ ...prev, district: '' }))
     }
   }
 
@@ -158,17 +191,7 @@ export const useAddresses = ({
   }
 
   const resetForm = () => {
-    setFormData({
-      alias: '',
-      department: 'LIMA',
-      province: 'LIMA',
-      district: '',
-      streetName: '',
-      streetNumber: '',
-      apartment: '',
-      latitude: undefined,
-      longitude: undefined
-    })
+    setFormData(initialFormData)
     setErrors({})
     setMessage('')
   }
@@ -208,7 +231,6 @@ export const useAddresses = ({
       })
 
       if (response.ok) {
-        // ✅ Solo hacer fetch después de crear/actualizar
         await loadAddresses()
         setMessage(
           editingAddress
@@ -216,8 +238,6 @@ export const useAddresses = ({
             : 'Dirección agregada correctamente'
         )
         closeModal()
-
-        // Limpiar mensaje después de 3 segundos
         setTimeout(() => { setMessage('') }, 3000)
       } else {
         const error = await response.json()
@@ -235,12 +255,11 @@ export const useAddresses = ({
     setEditingAddress(address)
     setFormData({
       alias: address.alias,
-      department: address.department,
-      province: address.province,
-      district: address.district,
+      districtId: address.districtId || 0,
       streetName: address.streetName,
       streetNumber: address.streetNumber,
       apartment: address.apartment || '',
+      reference: address.reference || '',
       latitude: address.latitude ? Number(address.latitude) : undefined,
       longitude: address.longitude ? Number(address.longitude) : undefined
     })
@@ -260,7 +279,6 @@ export const useAddresses = ({
       })
 
       if (response.ok) {
-        // ✅ Solo hacer fetch después de eliminar
         await loadAddresses()
         setMessage('Dirección eliminada correctamente')
         setTimeout(() => { setMessage('') }, 3000)
@@ -283,7 +301,6 @@ export const useAddresses = ({
       })
 
       if (response.ok) {
-        // ✅ Solo hacer fetch después de cambiar dirección por defecto
         await loadAddresses()
         setMessage('Dirección por defecto actualizada')
         setTimeout(() => { setMessage('') }, 3000)
@@ -299,47 +316,48 @@ export const useAddresses = ({
     }
   }
 
-  const availableDistricts =
-    districtsByProvince[
-      formData.province as keyof typeof districtsByProvince
-    ] || []
+  const handleLocationChange = useCallback((lat: number, lng: number, _address?: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      latitude: lat,
+      longitude: lng
+    }))
+  }, [])
 
   return {
-    // Addresses data
     addresses,
     setAddresses,
     isLoading,
 
-    // Modal state
+    districts,
+    districtsGrouped,
+    loadingDistricts,
+
     isModalOpen,
     editingAddress,
     openNewAddressModal,
     closeModal,
 
-    // Form data
     formData,
     setFormData,
 
-    // Form validation
     errors,
     validateForm,
 
-    // Form submission
     isSubmitting,
     message,
     handleSubmit,
 
-    // Input handling
     handleInputChange,
 
-    // Address operations
     handleEdit,
     handleDelete,
     handleSetDefault,
 
-    // Helpers
-    availableDistricts,
+    handleLocationChange,
+
     resetForm,
-    loadAddresses
+    loadAddresses,
+    getDistrictName
   }
 }

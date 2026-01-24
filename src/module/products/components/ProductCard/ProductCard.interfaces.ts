@@ -1,9 +1,11 @@
 import { type ProductComplete, type ProductVariantComplete } from '@/module/products/core'
 import { type ItemImage } from '@/module/shared/types/shared'
+import { type VariantActiveOffer } from '@/module/offers/core'
 
 // Props para el componente ProductCard
 export interface ProductCardProps {
   product: ProductComplete
+  offer?: VariantActiveOffer | null
 }
 
 // Props para el componente ProductCardVariants

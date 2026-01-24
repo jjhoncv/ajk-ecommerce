@@ -140,7 +140,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
         {/* Imagen del producto */}
         <div className="flex-shrink-0">
           <div className="relative h-20 w-20 overflow-hidden bg-gray-100">
-            <Link href={`/productos/variante/${item.id}`}>
+            <Link href={`/producto/${item.slug || item.id}`}>
               <Image
                 src={item.image}
                 alt={item.name}
@@ -159,7 +159,7 @@ export const CartPageItem: FC<CartPageItemProps> = ({
               <div className="flex w-full justify-between">
                 <h3 className="line-clamp-2 font-medium text-gray-900">
                   <Link
-                    href={`/productos/variante/${item.id}`}
+                    href={`/producto/${item.slug || item.id}`}
                     className="transition-colors hover:text-blue-600"
                   >
                     <div className="flex items-center">

@@ -34,9 +34,7 @@ const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
               <Link
                 href={
                   category.link ||
-                  `/categoria/${category.title
-                    .toLowerCase()
-                    .replace(/\s+/g, '-')}`
+                  (category.slug ? `/categoria/${category.slug}` : '#')
                 }
                 className="mt-4 inline-flex w-fit items-center gap-2 border border-white px-4 py-2 text-white transition-colors hover:bg-white hover:text-black"
               >

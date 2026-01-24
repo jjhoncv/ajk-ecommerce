@@ -35,32 +35,8 @@ export default async function EditShippingZonePage({
     )
   }
 
-  // Parsear distritos
-  let districts: Array<{ name: string; province: string; department: string }> = []
-  if (zone.districts) {
-    let rawDistricts: any[] = []
-    if (Array.isArray(zone.districts)) {
-      rawDistricts = zone.districts
-    } else if (typeof zone.districts === 'string') {
-      try {
-        rawDistricts = JSON.parse(zone.districts)
-      } catch {
-        rawDistricts = []
-      }
-    }
-    // Filtrar solo distritos válidos con todas las propiedades requeridas
-    districts = rawDistricts.filter(
-      (d): d is { name: string; province: string; department: string } =>
-        d &&
-        typeof d === 'object' &&
-        typeof d.name === 'string' &&
-        typeof d.province === 'string' &&
-        typeof d.department === 'string' &&
-        d.name.trim() !== '' &&
-        d.province.trim() !== '' &&
-        d.department.trim() !== ''
-    )
-  }
+  // Get district IDs from pivot table
+  const districtIds = await shippingZoneModel.getDistrictIdsByZoneId(zone.id)
 
   return (
     <LayoutPageAdmin>
@@ -79,7 +55,7 @@ export default async function EditShippingZonePage({
             initialData={{
               id: zone.id,
               name: zone.name,
-              districts,
+              districtIds,
               isActive: zone.isActive ?? 1
             }}
           />

@@ -42,7 +42,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       label: '',
       priority: 'high',
       sortable: false,
-      width: '60px',
+      width: '5%',
       render: (mainImage: string | null, item: ProductAdmin) => {
         if (!mainImage) {
           return (
@@ -69,7 +69,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       priority: 'high',
       sortable: true,
       searchable: true,
-      width: '200px',
+      width: '30%',
       render: (name: string, item: ProductAdmin) => (
         <div>
           <p className="font-medium text-gray-900">{name}</p>
@@ -84,7 +84,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       label: 'Variantes',
       priority: 'high',
       sortable: true,
-      width: '100px',
+      width: '12%',
       render: (variantsCount: number) => {
         if (variantsCount === 0) {
           return (
@@ -106,7 +106,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       label: 'Stock',
       priority: 'high',
       sortable: true,
-      width: '100px',
+      width: '10%',
       render: (totalStock: number, item: ProductAdmin) => {
         if (item.variantsCount === 0) {
           return <span className="text-sm text-gray-400">-</span>
@@ -142,7 +142,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       label: 'Precio',
       priority: 'high',
       sortable: true,
-      width: '130px',
+      width: '18%',
       render: (minPrice: number, item: ProductAdmin) => {
         if (item.variantsCount === 0 && !item.basePrice) {
           return <span className="text-sm text-gray-400">-</span>
@@ -181,7 +181,7 @@ export const ProductListView: FC<ProductListViewProps> = ({ products }) => {
       label: 'Marca',
       priority: 'medium',
       sortable: false,
-      width: '120px',
+      width: '15%',
       render: (brand: { id: number; name: string } | null) => {
         if (!brand) return <span className="text-sm text-gray-400">-</span>
         return <span className="text-sm text-gray-600">{brand.name}</span>

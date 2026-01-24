@@ -6,6 +6,7 @@ import React from 'react'
 interface Category {
   id: number
   name: string
+  slug: string
   imageUrl: string
   description: string
 }
@@ -34,8 +35,8 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-5">
           {categories.map((category) => (
             <Link
-              key={category.name}
-              href={`/categoria/${category.name.toLowerCase()}`}
+              key={category.id}
+              href={`/categoria/${category.slug}`}
               className="group border border-gray-100 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="flex flex-col items-center text-center">

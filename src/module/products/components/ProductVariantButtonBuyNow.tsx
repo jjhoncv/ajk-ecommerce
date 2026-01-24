@@ -14,6 +14,7 @@ interface ProductVariantButtonBuyNowProps {
   price: number
   stock: number
   quantity: number
+  slug?: string | null
   promotionVariants?: Array<PromotionVariants | null> | null
   variantAttributeOptions?: Array<VariantAttributeOptions | null> | null
 }
@@ -25,6 +26,7 @@ const ProductVariantButtonBuyNow: React.FC<ProductVariantButtonBuyNowProps> = ({
   name,
   price,
   stock,
+  slug,
   promotionVariants: pvs,
   variantAttributeOptions
 }) => {
@@ -56,6 +58,7 @@ const ProductVariantButtonBuyNow: React.FC<ProductVariantButtonBuyNowProps> = ({
           name,
           price,
           stock,
+          slug,
           promotionVariants,
           variantAttributeOptions
         },

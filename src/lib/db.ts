@@ -7,7 +7,8 @@ const db = mysql({
     database: process.env.MYSQL_DATABASE,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    timezone: '-05:00' // Lima, Perú (UTC-5)
+    timezone: '-05:00', // Lima, Perú (UTC-5)
+    charset: 'utf8mb4'
   }
 })
 

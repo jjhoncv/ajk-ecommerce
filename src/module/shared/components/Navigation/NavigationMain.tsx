@@ -22,7 +22,7 @@ export const NavigationMain: FC<NavigationMainProps> = ({
           {promotionsMap.map((promotion, key) => (
             <Link
               key={key}
-              href={`/promotion/${promotion.id}`}
+              href={`/promotion/${promotion.slug}`}
               className="flex items-center gap-2 text-gray-700 transition-colors duration-300 hover:text-primary"
             >
               {promotion.name}
@@ -36,7 +36,7 @@ export const NavigationMain: FC<NavigationMainProps> = ({
           {navCategoriesMap.map((category, key) => (
             <Link
               key={key}
-              href={`/categoria/${category.id}`}
+              href={`/categoria/${category.slug}`}
               className="text-gray-700 transition-colors duration-300 hover:text-primary"
             >
               {category.name}

@@ -5,24 +5,29 @@ import {
   ChevronDown,
   ChevronLeft,
   CreditCard,
+  FolderTree,
   HouseIcon,
+  Image,
   LogOut,
   Menu,
   Package,
   Percent,
+  Settings2,
   ShoppingCart,
-  StickyNote,
+  Star,
   Ticket,
   Truck,
   UserPen,
   Users,
+  UsersRound,
   X,
+  Zap,
   type LucideIcon
 } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { type JSX, useEffect, useMemo, useState } from 'react'
+import { type JSX, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 // Definición de estructura de menú con submenús
 interface MenuItemConfig {
@@ -36,69 +41,131 @@ interface MenuItemConfig {
     sectionUrl?: string
   }>
   sectionUrl?: string
+  section?: string // Grupo al que pertenece
 }
+
+// Definición de secciones del menú
+interface MenuSection {
+  id: string
+  label: string
+}
+
+const menuSections: MenuSection[] = [
+  { id: 'main', label: '' }, // Dashboard sin encabezado
+  { id: 'sales', label: 'Ventas' },
+  { id: 'catalog', label: 'Catálogo' },
+  { id: 'marketing', label: 'Marketing' },
+  { id: 'config', label: 'Configuración' },
+  { id: 'admin', label: 'Administración' }
+]
 
 // Configuración del menú principal con agrupación
 const menuConfig: MenuItemConfig[] = [
+  // === MAIN ===
   {
     id: 'dashboard',
     label: 'Dashboard',
     icon: HouseIcon,
-    href: '/admin'
+    href: '/admin',
+    section: 'main'
+  },
+
+  // === VENTAS ===
+  {
+    id: 'orders',
+    label: 'Órdenes',
+    icon: ShoppingCart,
+    href: '/admin/orders',
+    sectionUrl: '/orders',
+    section: 'sales'
   },
   {
-    id: 'catalog',
-    label: 'Catálogo',
+    id: 'customers',
+    label: 'Clientes',
+    icon: UsersRound,
+    href: '/admin/customers',
+    sectionUrl: '/customers',
+    section: 'sales'
+  },
+  {
+    id: 'ratings',
+    label: 'Valoraciones',
+    icon: Star,
+    href: '/admin/ratings',
+    sectionUrl: '/ratings',
+    section: 'sales'
+  },
+
+  // === CATÁLOGO ===
+  {
+    id: 'products',
+    label: 'Productos',
     icon: Package,
-    children: [
-      { label: 'Productos', href: '/admin/products', sectionUrl: '/products' },
-      {
-        label: 'Categorías',
-        href: '/admin/categories',
-        sectionUrl: '/categories'
-      },
-      {
-        label: 'Atributos',
-        href: '/admin/attributes',
-        sectionUrl: '/attributes'
-      }
-    ]
+    href: '/admin/products',
+    sectionUrl: '/products',
+    section: 'catalog'
+  },
+  {
+    id: 'categories',
+    label: 'Categorías',
+    icon: FolderTree,
+    href: '/admin/categories',
+    sectionUrl: '/categories',
+    section: 'catalog'
+  },
+  {
+    id: 'attributes',
+    label: 'Atributos',
+    icon: Settings2,
+    href: '/admin/attributes',
+    sectionUrl: '/attributes',
+    section: 'catalog'
+  },
+
+  // === MARKETING ===
+  {
+    id: 'offers',
+    label: 'Ofertas',
+    icon: Zap,
+    href: '/admin/offers',
+    sectionUrl: '/offers',
+    section: 'marketing'
   },
   {
     id: 'promotions',
     label: 'Promociones',
     icon: Percent,
     href: '/admin/promotions',
-    sectionUrl: '/promotions'
+    sectionUrl: '/promotions',
+    section: 'marketing'
   },
   {
     id: 'coupons',
     label: 'Cupones',
     icon: Ticket,
     href: '/admin/coupons',
-    sectionUrl: '/coupons'
+    sectionUrl: '/coupons',
+    section: 'marketing'
   },
   {
-    id: 'content',
-    label: 'Contenido',
-    icon: StickyNote,
-    children: [
-      { label: 'Banners', href: '/admin/banners', sectionUrl: '/banners' },
-      { label: 'Páginas', href: '/admin/pages', sectionUrl: '/pages' },
-      { label: 'Servicios', href: '/admin/services', sectionUrl: '/services' },
-      { label: 'Proyectos', href: '/admin/projects', sectionUrl: '/projects' },
-      { label: 'Galería', href: '/admin/gallery', sectionUrl: '/gallery' }
-    ]
+    id: 'banners',
+    label: 'Banners',
+    icon: Image,
+    href: '/admin/banners',
+    sectionUrl: '/banners',
+    section: 'marketing'
   },
+
+  // === CONFIGURACIÓN ===
   {
     id: 'shippings',
     label: 'Envíos',
     icon: Truck,
     children: [
-      { label: 'General', href: '/admin/shippings', sectionUrl: '/shippings' },
       { label: 'Métodos', href: '/admin/shippings/methods', sectionUrl: '/shippings' },
       { label: 'Zonas', href: '/admin/shippings/zones', sectionUrl: '/shippings' }
-    ]
+    ],
+    section: 'config'
   },
   {
     id: 'payments',
@@ -106,15 +173,11 @@ const menuConfig: MenuItemConfig[] = [
     icon: CreditCard,
     children: [
       { label: 'Métodos', href: '/admin/payments/methods', sectionUrl: '/payments' }
-    ]
+    ],
+    section: 'config'
   },
-  {
-    id: 'orders',
-    label: 'Órdenes',
-    icon: ShoppingCart,
-    href: '/admin/orders',
-    sectionUrl: '/orders'
-  },
+
+  // === ADMINISTRACIÓN ===
   {
     id: 'users-section',
     label: 'Usuarios',
@@ -122,14 +185,16 @@ const menuConfig: MenuItemConfig[] = [
     children: [
       { label: 'Usuarios', href: '/admin/users', sectionUrl: '/users' },
       { label: 'Roles', href: '/admin/roles', sectionUrl: '/roles' }
-    ]
+    ],
+    section: 'admin'
   },
   {
     id: 'profile',
     label: 'Mi Perfil',
     icon: UserPen,
     href: '/admin/profile',
-    sectionUrl: '/profile'
+    sectionUrl: '/profile',
+    section: 'admin'
   }
 ]
 
@@ -151,40 +216,56 @@ export function AdminSidebar({
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
-  // Función helper para verificar si una ruta está activa
-  const checkIsActive = (href: string): boolean => {
+  // Refs para control de scroll
+  const navRef = useRef<HTMLElement>(null)
+  const pendingScrollRef = useRef<number | null>(null)
+
+  // Verificar si una ruta está activa
+  const isActive = (href: string): boolean => {
     if (href === '/admin') return pathname === '/admin'
     return pathname?.startsWith(href) ?? false
   }
 
-  // Calcular qué menús deben estar expandidos según la ruta actual
-  const getActiveMenuIds = useMemo(() => {
-    const activeIds: string[] = []
-    menuConfig.forEach((item) => {
-      if (item.children && item.children.length > 0) {
-        const hasActive = item.children.some((child) => checkIsActive(child.href))
-        if (hasActive) {
-          activeIds.push(item.id)
-        }
-      }
-    })
-    return activeIds
+  // Guardar scroll en cada scroll del usuario
+  const handleScroll = (): void => {
+    if (navRef.current && navRef.current.scrollTop > 0) {
+      sessionStorage.setItem('sidebar-scroll', navRef.current.scrollTop.toString())
+    }
+  }
+
+  // Restaurar scroll cuando cambia la ruta
+  useLayoutEffect(() => {
+    const savedScroll = sessionStorage.getItem('sidebar-scroll')
+    if (savedScroll && navRef.current) {
+      navRef.current.scrollTop = parseInt(savedScroll, 10)
+    }
   }, [pathname])
 
   // Expandir automáticamente los menús que contienen la ruta activa
   useEffect(() => {
-    if (getActiveMenuIds.length > 0) {
-      setExpandedMenus((prev) => {
-        const newExpanded = [...prev]
-        getActiveMenuIds.forEach((id) => {
-          if (!newExpanded.includes(id)) {
-            newExpanded.push(id)
-          }
-        })
-        return newExpanded
-      })
+    menuConfig.forEach((item) => {
+      if (item.children?.length && item.children.some((child) => isActive(child.href))) {
+        setExpandedMenus((prev) => prev.includes(item.id) ? prev : [...prev, item.id])
+      }
+    })
+  }, [pathname])
+
+  // Manejar scroll cuando cambia expandedMenus
+  useLayoutEffect(() => {
+    if (!navRef.current) return
+
+    // Toggle manual: restaurar posición guardada
+    if (pendingScrollRef.current !== null) {
+      navRef.current.scrollTop = pendingScrollRef.current
+      pendingScrollRef.current = null
+      return
     }
-  }, [getActiveMenuIds])
+
+    // Si scroll está en 0, ir al item activo (carga inicial)
+    if (navRef.current.scrollTop === 0) {
+      navRef.current.querySelector('[data-active="true"]')?.scrollIntoView({ block: 'center', behavior: 'instant' })
+    }
+  }, [expandedMenus])
 
   // Verificar si el usuario tiene acceso a una sección
   const hasAccess = (sectionUrl?: string): boolean => {
@@ -207,19 +288,21 @@ export function AdminSidebar({
     })
     .filter(Boolean) as MenuItemConfig[]
 
+  // Agrupar menú por secciones
+  const groupedMenu = menuSections.map((section) => ({
+    ...section,
+    items: filteredMenu.filter((item) => item.section === section.id)
+  })).filter((section) => section.items.length > 0)
+
   // Toggle menú desplegable
   const toggleMenu = (menuId: string): void => {
+    // Guardar posición actual antes del cambio de estado
+    pendingScrollRef.current = navRef.current?.scrollTop ?? null
     setExpandedMenus((prev) =>
       prev.includes(menuId)
         ? prev.filter((id) => id !== menuId)
         : [...prev, menuId]
     )
-  }
-
-  // Verificar si una ruta está activa
-  const isActive = (href: string): boolean => {
-    if (href === '/admin') return pathname === '/admin'
-    return pathname?.startsWith(href) ?? false
   }
 
   // Verificar si un menú padre tiene algún hijo activo
@@ -255,73 +338,121 @@ export function AdminSidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
-        <ul className="space-y-1">
-          {filteredMenu.map((item) => (
-            <li key={item.id}>
-              {item.children !== undefined && item.children.length > 0 ? (
-                // Menú con submenús
-                <div>
-                  <button
-                    onClick={() => { toggleMenu(item.id) }}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
-                      hasActiveChild(item.children)
-                        ? 'bg-blue-50 text-blue-700'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <item.icon className="h-5 w-5 flex-shrink-0" />
-                      {!isCollapsed && <span>{item.label}</span>}
-                    </div>
-                    {!isCollapsed && (
-                      <ChevronDown
-                        className={`h-4 w-4 transition-transform ${
-                          expandedMenus.includes(item.id) ? 'rotate-180' : ''
-                        }`}
-                      />
-                    )}
-                  </button>
+      <nav
+        ref={navRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto px-3 py-4"
+      >
+        <div className="space-y-6">
+          {groupedMenu.map((section) => (
+            <div key={section.id}>
+              {/* Section Header */}
+              {section.label && !isCollapsed && (
+                <div className="mb-2 px-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                    {section.label}
+                  </span>
+                </div>
+              )}
+              {section.label && isCollapsed && (
+                <div className="mb-2 flex justify-center">
+                  <div className="h-px w-8 bg-gray-200" />
+                </div>
+              )}
 
-                  {/* Submenú */}
-                  {!isCollapsed && expandedMenus.includes(item.id) && (
-                    <ul className="mt-1 space-y-1 pl-4">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
+              {/* Section Items */}
+              <ul className="space-y-1">
+                {section.items.map((item) => (
+                  <li key={item.id}>
+                    {item.children !== undefined && item.children.length > 0 ? (
+                      // Menú con submenús
+                      <div>
+                        <button
+                          onClick={() => { toggleMenu(item.id) }}
+                          className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm font-medium transition-colors ${
+                            hasActiveChild(item.children)
+                              ? 'bg-blue-50 text-blue-700'
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <item.icon className="h-5 w-5 flex-shrink-0" />
+                            {!isCollapsed && <span>{item.label}</span>}
+                          </div>
+                          {!isCollapsed && (
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform ${
+                                expandedMenus.includes(item.id) ? 'rotate-180' : ''
+                              }`}
+                            />
+                          )}
+                        </button>
+
+                        {/* Submenú */}
+                        {!isCollapsed && expandedMenus.includes(item.id) && (
+                          <ul className="mt-1 space-y-1 pl-4">
+                            {item.children.map((child) => {
+                              const isChildActive = isActive(child.href)
+                              return (
+                                <li key={child.href}>
+                                  <Link
+                                    href={child.href}
+                                    data-active={isChildActive ? 'true' : undefined}
+                                    onClick={(e) => {
+                                      if (isChildActive) {
+                                        e.preventDefault()
+                                        return
+                                      }
+                                      setIsMobileOpen(false)
+                                    }}
+                                    className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
+                                      isChildActive
+                                        ? 'bg-blue-100 font-medium text-blue-700 cursor-default'
+                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                    }`}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        )}
+                      </div>
+                    ) : (
+                      // Menú simple
+                      (() => {
+                        const itemHref = item.href ?? '/admin'
+                        const isItemActive = isActive(itemHref)
+                        return (
                           <Link
-                            href={child.href}
-                            onClick={() => { setIsMobileOpen(false) }}
-                            className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
-                              isActive(child.href)
-                                ? 'bg-blue-100 font-medium text-blue-700'
-                                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                            href={itemHref}
+                            data-active={isItemActive ? 'true' : undefined}
+                            onClick={(e) => {
+                              if (isItemActive) {
+                                e.preventDefault()
+                                return
+                              }
+                              setIsMobileOpen(false)
+                            }}
+                            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                              isItemActive
+                                ? 'bg-blue-50 text-blue-700 cursor-default'
+                                : 'text-gray-700 hover:bg-gray-100'
                             }`}
                           >
-                            {child.label}
+                            <item.icon className="h-5 w-5 flex-shrink-0" />
+                            {!isCollapsed && <span>{item.label}</span>}
                           </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ) : (
-                // Menú simple
-                <Link
-                  href={item.href ?? '/admin'}
-                  onClick={() => { setIsMobileOpen(false) }}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive(item.href ?? '/admin')
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <item.icon className="h-5 w-5 flex-shrink-0" />
-                  {!isCollapsed && <span>{item.label}</span>}
-                </Link>
-              )}
-            </li>
+                        )
+                      })()
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
+        </div>
       </nav>
 
       {/* User Info & Logout */}

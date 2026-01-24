@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import {
+  isValidImageType,
+  processImages,
+  type ProcessedImage,
+  type ProcessingProgress
+} from '../utils/imageProcessor'
 
 export interface UseRatingFormProps {
   onRatingAdded: () => void
@@ -19,32 +25,66 @@ export const useRatingForm = ({
   const [hoverRating, setHoverRating] = useState(0)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('')
-  const [images, setImages] = useState<string[]>([])
+  const [imageFiles, setImageFiles] = useState<ProcessedImage[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isProcessingImages, setIsProcessingImages] = useState(false)
+  const [imageProgress, setImageProgress] = useState<ProcessingProgress | null>(null)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const newImages = Array.from(e.target.files).map((file) => {
-        return URL.createObjectURL(file)
-      })
-      setImages([...images, ...newImages])
+      const files = Array.from(e.target.files)
+      const maxImages = 5
+      const remainingSlots = maxImages - imageFiles.length
+
+      if (remainingSlots <= 0) {
+        setError('Máximo 5 imágenes permitidas')
+        return
+      }
+
+      // Validar tipos de archivo
+      const invalidFiles = files.filter((f) => !isValidImageType(f))
+      if (invalidFiles.length > 0) {
+        setError('Algunos archivos no son imágenes válidas. Usa JPG, PNG o WebP.')
+        return
+      }
+
+      const filesToProcess = files.slice(0, remainingSlots)
+      setIsProcessingImages(true)
+      setError('')
+
+      try {
+        const processed = await processImages(filesToProcess, (progress) => {
+          setImageProgress(progress)
+        })
+
+        setImageFiles([...imageFiles, ...processed])
+        setImageProgress(null)
+      } catch {
+        setError('Error al procesar las imágenes')
+      } finally {
+        setIsProcessingImages(false)
+      }
     }
   }
 
+  // Para compatibilidad con el componente ImageUpload
+  const images = imageFiles.map((img) => img.preview)
+
   const removeImage = (index: number) => {
-    const newImages = [...images]
+    const newImages = [...imageFiles]
     newImages.splice(index, 1)
-    setImages(newImages)
+    setImageFiles(newImages)
   }
 
   const resetForm = () => {
     setRating(0)
     setTitle('')
     setReview('')
-    setImages([])
+    setImageFiles([])
     setError('')
+    setImageProgress(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,7 +111,7 @@ export const useRatingForm = ({
           title: title.trim() || undefined,
           review: review.trim() || undefined,
           verifiedPurchase: 1,
-          images: images.length > 0 ? images : undefined,
+          images: imageFiles.length > 0 ? imageFiles.map((img) => img.base64) : undefined,
           productName,
           variantSku
         })
@@ -119,6 +159,8 @@ export const useRatingForm = ({
     review,
     images,
     isSubmitting,
+    isProcessingImages,
+    imageProgress,
     error,
     success,
 

@@ -1,4 +1,4 @@
-import { productVariantModel, variantAttributeOptionModel } from '@/module/products/core'
+import { productModel, productVariantModel, variantAttributeOptionModel } from '@/module/products/core'
 import {
   apiHandler,
   createResponse,
@@ -8,6 +8,52 @@ import { type NextRequest } from 'next/server'
 
 interface RouteContext {
   params: Promise<{ productId: string }>
+}
+
+// Helper para generar slug SEO-friendly
+const generateSlug = (text: string): string => {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+    .replace(/[^a-z0-9\s-]/g, '') // Remover caracteres especiales
+    .replace(/\s+/g, '-') // Reemplazar espacios con guiones
+    .replace(/-+/g, '-') // Reemplazar múltiples guiones con uno solo
+    .trim()
+}
+
+// Generar slug para variante basado en nombre del producto y atributos
+const generateVariantSlug = async (
+  productId: number,
+  variantId: number
+): Promise<string> => {
+  // Obtener nombre del producto
+  const product = await productModel.getProductById(productId)
+  if (!product) {
+    return `variante-${variantId}`
+  }
+
+  // Obtener atributos de la variante
+  const attributeOptions = await variantAttributeOptionModel.getVariantAttributeOptionsWithDetailsById(variantId)
+
+  let slugParts = [product.name]
+
+  if (attributeOptions && attributeOptions.length > 0) {
+    const attributeValues = attributeOptions
+      .map((opt) => opt.productAttributeOption?.value)
+      .filter((value): value is string => typeof value === 'string')
+    slugParts = [...slugParts, ...attributeValues]
+  }
+
+  const baseSlug = generateSlug(slugParts.join(' '))
+
+  // Verificar si el slug ya existe y hacer único si es necesario
+  const existingVariant = await productVariantModel.getProductVariantBySlug(baseSlug)
+  if (existingVariant && existingVariant.id !== variantId) {
+    return `${baseSlug}-${variantId}`
+  }
+
+  return baseSlug
 }
 
 export async function GET(
@@ -123,6 +169,12 @@ export async function POST(
         )
       }
 
+      // Generar y guardar slug SEO-friendly
+      if (variant) {
+        const slug = await generateVariantSlug(Number(productId), variant.id)
+        await productVariantModel.updateProductVariantSlug(variant.id, slug)
+      }
+
       return createResponse(
         {
           message: 'Variante creada exitosamente',
@@ -141,6 +193,7 @@ export async function PATCH(
   context: RouteContext
 ): Promise<Response> {
   return await apiHandler(async () => {
+    const { productId } = await context.params
     const formData = await req.formData()
     const { id, sku, price, stock, attributes, attributeCosts, imageAttributeId } = await processFormData(formData)
 
@@ -178,6 +231,10 @@ export async function PATCH(
           })
         )
       }
+
+      // Regenerar slug SEO-friendly con los nuevos atributos
+      const slug = await generateVariantSlug(Number(productId), Number(id))
+      await productVariantModel.updateProductVariantSlug(Number(id), slug)
 
       return createResponse(
         {

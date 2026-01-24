@@ -196,7 +196,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
               }
             }}
             placeholder={placeholder}
-            className="w-full rounded-3xl border border-gray-300 py-3 pl-10 pr-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full rounded-3xl border border-gray-200 py-3 pl-10 pr-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <button
             type="submit"
@@ -224,7 +224,9 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
                 <li key={index}>
                   <button
                     type="button"
-                    onClick={() => { handleSuggestionClick(suggestion) }}
+                    onClick={() => {
+                      handleSuggestionClick(suggestion)
+                    }}
                     className={`w-full px-4 py-2 text-left transition-colors hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ${
                       index === selectedIndex ? 'bg-gray-100' : ''
                     }`}

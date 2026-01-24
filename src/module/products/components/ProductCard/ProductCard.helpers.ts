@@ -5,7 +5,6 @@ import { type ItemImage } from '@/module/shared/types/shared'
 type ProductDTO = { variants: Array<{ price: number; promotion?: any; attributes: Array<{ name: string; value: string }>; images?: Array<{ isPrimary?: boolean; imageUrlThumb: string; imageUrlNormal: string }> }> }
 type ProductVariantDTO = { price: number; promotion?: { discountType: string; discountValue: number; promotionPrice?: number } }
 import {
-  type AttributeOptionImages,
   type ProductAttributeOptionImages,
   type ProductVariants,
   type VariantImages

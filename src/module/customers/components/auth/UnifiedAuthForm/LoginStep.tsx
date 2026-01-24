@@ -12,6 +12,7 @@ interface LoginStepProps {
   onPasswordChange: (password: string) => void
   onSubmit: () => void
   onBack: () => void
+  onForgotPassword: () => void
 }
 
 export const LoginStep = ({
@@ -21,7 +22,8 @@ export const LoginStep = ({
   isFormValid,
   onPasswordChange,
   onSubmit,
-  onBack
+  onBack,
+  onForgotPassword
 }: LoginStepProps): JSX.Element => {
   const [isFocused, setIsFocused] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -105,9 +107,13 @@ export const LoginStep = ({
 
       {/* Olvidé contraseña */}
       <div className="text-right">
-        <a href="#" className="text-sm text-blue-600 hover:underline">
+        <button
+          type="button"
+          onClick={onForgotPassword}
+          className="text-sm text-blue-600 hover:underline"
+        >
           ¿Olvidaste tu contraseña?
-        </a>
+        </button>
       </div>
 
       <button

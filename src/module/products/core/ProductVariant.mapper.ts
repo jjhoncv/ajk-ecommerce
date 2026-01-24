@@ -8,6 +8,7 @@ export const ProductVariantMapper = (
     id: data.id,
     productId: data.product_id,
     sku: data.sku,
+    slug: data.slug ?? undefined,
     price: Number(data.price),
     stock: Number(data.stock),
     imageAttributeId: data.image_attribute_id ?? undefined,

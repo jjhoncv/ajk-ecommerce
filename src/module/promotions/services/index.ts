@@ -1,9 +1,10 @@
 import { getBanners } from './banners'
-import { getPromotion, getPromotions } from './promotion'
+import { getPromotion, getPromotionBySlug, getPromotions } from './promotion'
 
 const PromotionService = {
   getPromotions,
   getPromotion,
+  getPromotionBySlug,
   getBanners
 }
 

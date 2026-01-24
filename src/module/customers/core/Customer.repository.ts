@@ -1,6 +1,13 @@
 import { executeQuery } from '@/lib/db'
 import { type Customers as CustomerRaw } from '@/types/database'
 
+export interface CustomerWithStats extends CustomerRaw {
+  orders_count: number
+  total_spent: number
+  addresses_count: number
+  last_order_date: string | null
+}
+
 export class CustomerRepository {
   public async getCustomerByEmail(email: string): Promise<CustomerRaw | null> {
     const customers = await executeQuery<CustomerRaw[]>({
@@ -19,6 +26,77 @@ export class CustomerRepository {
 
     if (customers.length === 0) return null
     return customers
+  }
+
+  public async getCustomersWithStats(): Promise<CustomerWithStats[] | null> {
+    const customers = await executeQuery<CustomerWithStats[]>({
+      query: `
+        SELECT
+          c.*,
+          COALESCE(o.orders_count, 0) as orders_count,
+          COALESCE(o.total_spent, 0) as total_spent,
+          COALESCE(a.addresses_count, 0) as addresses_count,
+          o.last_order_date
+        FROM customers c
+        LEFT JOIN (
+          SELECT
+            customer_id,
+            COUNT(*) as orders_count,
+            SUM(total_amount) as total_spent,
+            MAX(created_at) as last_order_date
+          FROM orders
+          WHERE status != 'cancelled'
+          GROUP BY customer_id
+        ) o ON c.id = o.customer_id
+        LEFT JOIN (
+          SELECT
+            id_customer,
+            COUNT(*) as addresses_count
+          FROM customers_addresses
+          GROUP BY id_customer
+        ) a ON c.id = a.id_customer
+        ORDER BY c.created_at DESC
+      `
+    })
+
+    if (customers.length === 0) return null
+    return customers
+  }
+
+  public async getCustomerWithStats(id: number): Promise<CustomerWithStats | null> {
+    const customers = await executeQuery<CustomerWithStats[]>({
+      query: `
+        SELECT
+          c.*,
+          COALESCE(o.orders_count, 0) as orders_count,
+          COALESCE(o.total_spent, 0) as total_spent,
+          COALESCE(a.addresses_count, 0) as addresses_count,
+          o.last_order_date
+        FROM customers c
+        LEFT JOIN (
+          SELECT
+            customer_id,
+            COUNT(*) as orders_count,
+            SUM(total_amount) as total_spent,
+            MAX(created_at) as last_order_date
+          FROM orders
+          WHERE status != 'cancelled'
+          GROUP BY customer_id
+        ) o ON c.id = o.customer_id
+        LEFT JOIN (
+          SELECT
+            id_customer,
+            COUNT(*) as addresses_count
+          FROM customers_addresses
+          GROUP BY id_customer
+        ) a ON c.id = a.id_customer
+        WHERE c.id = ?
+      `,
+      values: [id]
+    })
+
+    if (customers.length === 0) return null
+    return customers[0]
   }
 
   public async getCustomer(id: number): Promise<CustomerRaw | null> {

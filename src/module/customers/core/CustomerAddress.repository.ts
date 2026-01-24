@@ -43,9 +43,11 @@ export class CustomerAddressRepository {
     department: string
     province: string
     district: string
+    districtId?: number
     streetName: string
     streetNumber: string
     apartment?: string
+    reference?: string
     latitude?: number
     longitude?: number
     isDefault?: boolean
@@ -58,9 +60,9 @@ export class CustomerAddressRepository {
     const result = await executeQuery<{ insertId: number }>({
       query: `
         INSERT INTO customers_addresses (
-          id_customer, alias, department, province, district,
-          street_name, street_number, apartment, latitude, longitude, is_default
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          id_customer, alias, department, province, district, district_id,
+          street_name, street_number, apartment, reference, latitude, longitude, is_default
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       values: [
         data.idCustomer,
@@ -68,9 +70,11 @@ export class CustomerAddressRepository {
         data.department,
         data.province,
         data.district,
+        data.districtId || null,
         data.streetName,
         data.streetNumber,
         data.apartment || null,
+        data.reference || null,
         data.latitude || null,
         data.longitude || null,
         data.isDefault ? 1 : 0
@@ -87,9 +91,11 @@ export class CustomerAddressRepository {
       department?: string
       province?: string
       district?: string
+      districtId?: number
       streetName?: string
       streetNumber?: string
       apartment?: string
+      reference?: string
       latitude?: number
       longitude?: number
     }
@@ -113,6 +119,10 @@ export class CustomerAddressRepository {
       fields.push('district = ?')
       values.push(data.district)
     }
+    if (data.districtId !== undefined) {
+      fields.push('district_id = ?')
+      values.push(data.districtId)
+    }
     if (data.streetName !== undefined) {
       fields.push('street_name = ?')
       values.push(data.streetName)
@@ -124,6 +134,10 @@ export class CustomerAddressRepository {
     if (data.apartment !== undefined) {
       fields.push('apartment = ?')
       values.push(data.apartment)
+    }
+    if (data.reference !== undefined) {
+      fields.push('reference = ?')
+      values.push(data.reference)
     }
     if (data.latitude !== undefined) {
       fields.push('latitude = ?')

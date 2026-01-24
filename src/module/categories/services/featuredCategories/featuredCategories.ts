@@ -16,7 +16,7 @@ export const getFeaturedCategories = async (): Promise<FeaturedCategory[]> => {
       title: `Ofertas en ${category.name}`,
       subtitle: 'Descuentos especiales',
       image: category.imageUrl ?? null,
-      link: 'url-category-mock' + category.name
+      link: `/categoria/${category.slug}`
     }))
 
     return hydrateFeaturedCategories(featuredCategories)

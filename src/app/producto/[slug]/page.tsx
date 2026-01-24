@@ -11,7 +11,7 @@ import { type Metadata } from 'next'
 
 interface ProductVariantPageProps {
   params: Promise<{
-    id: string
+    slug: string
   }>
 }
 
@@ -19,15 +19,14 @@ export async function generateMetadata({
   params
 }: ProductVariantPageProps): Promise<Metadata> {
   try {
-    const { id } = await params
-    const variantId = parseInt(id)
+    const { slug } = await params
 
-    if (isNaN(variantId)) {
-      return generateErrorMetadata('ID de variante inválido')
+    if (!slug) {
+      return generateErrorMetadata('Slug de producto inválido')
     }
 
-    const data = await ProductService.getProductVariant(variantId)
-    return generateProductVariantMetadata(data, variantId)
+    const data = await ProductService.getProductVariantBySlug(slug)
+    return generateProductVariantMetadata(data, data?.variantId ?? 0)
   } catch (error) {
     console.error('Error generating metadata:', error)
     return generateErrorMetadata('Error al cargar el producto')
@@ -37,15 +36,14 @@ export async function generateMetadata({
 export default async function ProductVariantPage({
   params
 }: ProductVariantPageProps) {
-  const { id } = await params
-  const variantId = parseInt(id)
+  const { slug } = await params
 
-  // Validar ID
-  if (isNaN(variantId)) {
+  // Validar slug
+  if (!slug) {
     return <ProductVariantNotFound />
   }
 
-  const data = await ProductService.getProductVariant(variantId)
+  const data = await ProductService.getProductVariantBySlug(slug)
 
   if (!data) {
     return <ProductVariantNotFound />
@@ -54,7 +52,7 @@ export default async function ProductVariantPage({
   const allVariants = (data.product.productVariants || []).filter(
     (v) => v !== null
   )
-  const variant = allVariants.find((variant) => variant.id === variantId)
+  const variant = allVariants.find((variant) => variant.id === data.variantId)
 
   if (!variant) {
     return <ProductVariantNotFound />

@@ -14,7 +14,7 @@ export async function PUT(request: NextRequest) {
 
     // Obtener datos del cuerpo de la petición
     const body = await request.json()
-    const { name, lastname, email } = body
+    const { name, lastname, email, phone, dni } = body
 
     // Validaciones básicas
     if (!name || !lastname || !email) {
@@ -62,7 +62,9 @@ export async function PUT(request: NextRequest) {
       {
         name,
         lastname,
-        email
+        email,
+        phone: phone || null,
+        dni: dni || null
       },
       parseInt(session.user.id)
     )
@@ -80,7 +82,9 @@ export async function PUT(request: NextRequest) {
         id: updatedCustomer.id,
         name: updatedCustomer.name,
         lastname: updatedCustomer.lastname,
-        email: updatedCustomer.email
+        email: updatedCustomer.email,
+        phone: updatedCustomer.phone,
+        dni: updatedCustomer.dni
       }
     })
   } catch (error) {

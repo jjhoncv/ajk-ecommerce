@@ -1,8 +1,11 @@
 import { executeQuery } from '@/lib/db'
-import { type VariantRatings as VariantRatingRaw } from '@/types/database'
+import { type RatingStatus, type VariantRatings as VariantRatingRaw } from '@/types/database'
 import { type VariantRatings as VariantRating } from '@/types/domain'
 
 import {
+  type RatingAdminSearchResult,
+  type RatingForAdmin,
+  type RatingModerationResult,
   type VariantRatingSearchResult,
   type VariantRatingSummary,
   type VariantRatingWithCustomer
@@ -81,10 +84,12 @@ export class VariantRatingModel {
   ): Promise<VariantRatingSearchResult> {
     const offset = (page - 1) * limit
 
+    // Solo mostrar valoraciones aprobadas en el frontend público
     const ratings = await executeQuery<
       Array<VariantRatingRaw & {
         customer_name: string
         customer_photo: string | null
+        created_at: Date
       }>
     >({
       query: `
@@ -97,7 +102,7 @@ export class VariantRatingModel {
         JOIN
           customers c ON vr.customer_id = c.id
         WHERE
-          vr.variant_id = ?
+          vr.variant_id = ? AND vr.status = 'approved'
         ORDER BY
           vr.created_at DESC
         LIMIT ? OFFSET ?
@@ -107,7 +112,7 @@ export class VariantRatingModel {
 
     const countResult = await executeQuery<[{ total: number }]>({
       query:
-        'SELECT COUNT(*) as total FROM variant_ratings WHERE variant_id = ?',
+        "SELECT COUNT(*) as total FROM variant_ratings WHERE variant_id = ? AND status = 'approved'",
       values: [variantId]
     })
     const totalCount = countResult[0]?.total || 0
@@ -115,10 +120,38 @@ export class VariantRatingModel {
 
     const summary = await this.getVariantRatingSummary(variantId)
 
+    // Obtener imágenes de los ratings
+    const ratingIds = ratings.map((r) => r.id)
+    let imagesMap = new Map<number, Array<{ id: number; imageUrl: string }>>()
+
+    if (ratingIds.length > 0) {
+      const placeholders = ratingIds.map(() => '?').join(',')
+      const images = await executeQuery<
+        Array<{ id: number; rating_id: number; image_url: string }>
+      >({
+        query: `SELECT id, rating_id, image_url FROM rating_images WHERE rating_id IN (${placeholders})`,
+        values: ratingIds
+      })
+
+      // Agrupar imágenes por rating_id
+      images.forEach((img) => {
+        if (!imagesMap.has(img.rating_id)) {
+          imagesMap.set(img.rating_id, [])
+        }
+        imagesMap.get(img.rating_id)!.push({ id: img.id, imageUrl: img.image_url })
+      })
+    }
+
     const ratingDTOs: VariantRatingWithCustomer[] = ratings.map((rating) => ({
       ...VariantRatingMapper(rating),
       customerName: rating.customer_name,
-      customerPhoto: rating.customer_photo || undefined
+      customerPhoto: rating.customer_photo || undefined,
+      createdAt: rating.created_at,
+      ratingImages: imagesMap.get(rating.id)?.map((img) => ({
+        id: img.id,
+        imageUrl: img.imageUrl,
+        ratingId: rating.id
+      })) || []
     }))
 
     return {
@@ -133,6 +166,7 @@ export class VariantRatingModel {
   public async getVariantRatingSummary(
     variantId: number
   ): Promise<VariantRatingSummary> {
+    // La vista variant_rating_summary ya filtra por status = 'approved'
     const summary = await executeQuery<
       Array<{
         variant_id: number
@@ -203,7 +237,10 @@ export class VariantRatingModel {
       rating,
       review: review || null,
       title: title || null,
-      verified_purchase: verifiedPurchase ? 1 : 0
+      verified_purchase: verifiedPurchase ? 1 : 0,
+      status: 'pending', // Nueva valoración siempre comienza como pendiente
+      reviewed_by: null,
+      reviewed_at: null
     }
 
     return await this.createVariantRating(ratingData)
@@ -274,6 +311,219 @@ export class VariantRatingModel {
     }
 
     return summariesMap
+  }
+
+  // ============================================================================
+  // MÉTODOS PARA ADMIN - MODERACIÓN
+  // ============================================================================
+
+  public async getRatingsForAdmin(
+    status?: RatingStatus,
+    page: number = 1,
+    limit: number = 20
+  ): Promise<RatingAdminSearchResult> {
+    const offset = (page - 1) * limit
+
+    // Obtener ratings con información de producto, variante y cliente
+    const ratings = await executeQuery<
+      Array<
+        VariantRatingRaw & {
+          customer_name: string
+          customer_lastname: string
+          customer_email: string
+          customer_photo: string | null
+          product_name: string
+          variant_sku: string
+          variant_attributes: string | null
+          reviewer_name: string | null
+        }
+      >
+    >({
+      query: `
+        SELECT
+          vr.*,
+          c.name as customer_name,
+          c.lastname as customer_lastname,
+          c.email as customer_email,
+          c.photo as customer_photo,
+          p.name as product_name,
+          pv.sku as variant_sku,
+          (
+            SELECT GROUP_CONCAT(CONCAT(a.name, ': ', pao.value) SEPARATOR ', ')
+            FROM variant_attribute_options vao
+            JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+            JOIN attributes a ON pao.attribute_id = a.id
+            WHERE vao.variant_id = pv.id
+          ) as variant_attributes,
+          u.name as reviewer_name
+        FROM variant_ratings vr
+        JOIN customers c ON vr.customer_id = c.id
+        JOIN product_variants pv ON vr.variant_id = pv.id
+        JOIN products p ON pv.product_id = p.id
+        LEFT JOIN users u ON vr.reviewed_by = u.id
+        ${status ? 'WHERE vr.status = ?' : ''}
+        ORDER BY vr.created_at DESC
+        LIMIT ? OFFSET ?
+      `,
+      values: status ? [status, limit, offset] : [limit, offset]
+    })
+
+    // Obtener imágenes de los ratings
+    const ratingIds = ratings.map((r) => r.id)
+    let images: Array<{ id: number; rating_id: number; image_url: string }> = []
+
+    if (ratingIds.length > 0) {
+      const placeholders = ratingIds.map(() => '?').join(',')
+      images = await executeQuery<
+        Array<{ id: number; rating_id: number; image_url: string }>
+      >({
+        query: `SELECT id, rating_id, image_url FROM rating_images WHERE rating_id IN (${placeholders})`,
+        values: ratingIds
+      })
+    }
+
+    // Obtener conteos por estado
+    const [pendingCount, approvedCount, rejectedCount, totalCount] =
+      await Promise.all([
+        oVariantRatingRep.countRatingsForAdmin('pending'),
+        oVariantRatingRep.countRatingsForAdmin('approved'),
+        oVariantRatingRep.countRatingsForAdmin('rejected'),
+        oVariantRatingRep.countRatingsForAdmin(status)
+      ])
+
+    const totalPages = Math.ceil(totalCount / limit)
+
+    const ratingsDTO: RatingForAdmin[] = ratings.map((rating) => ({
+      ...VariantRatingMapper(rating),
+      customerName: rating.customer_name,
+      customerLastname: rating.customer_lastname,
+      customerEmail: rating.customer_email,
+      customerPhoto: rating.customer_photo || undefined,
+      productName: rating.product_name,
+      variantSku: rating.variant_sku,
+      variantAttributes: rating.variant_attributes || undefined,
+      reviewerName: rating.reviewer_name || undefined,
+      images: images
+        .filter((img) => img.rating_id === rating.id)
+        .map((img) => ({ id: img.id, imageUrl: img.image_url }))
+    }))
+
+    return {
+      ratings: ratingsDTO,
+      totalCount,
+      page,
+      totalPages,
+      pendingCount,
+      approvedCount,
+      rejectedCount
+    }
+  }
+
+  public async getRatingDetailForAdmin(
+    id: number
+  ): Promise<RatingForAdmin | undefined> {
+    const ratings = await executeQuery<
+      Array<
+        VariantRatingRaw & {
+          customer_name: string
+          customer_lastname: string
+          customer_email: string
+          customer_photo: string | null
+          product_name: string
+          variant_sku: string
+          variant_attributes: string | null
+          reviewer_name: string | null
+        }
+      >
+    >({
+      query: `
+        SELECT
+          vr.*,
+          c.name as customer_name,
+          c.lastname as customer_lastname,
+          c.email as customer_email,
+          c.photo as customer_photo,
+          p.name as product_name,
+          pv.sku as variant_sku,
+          (
+            SELECT GROUP_CONCAT(CONCAT(a.name, ': ', pao.value) SEPARATOR ', ')
+            FROM variant_attribute_options vao
+            JOIN product_attribute_options pao ON vao.product_attribute_option_id = pao.id
+            JOIN attributes a ON pao.attribute_id = a.id
+            WHERE vao.variant_id = pv.id
+          ) as variant_attributes,
+          u.name as reviewer_name
+        FROM variant_ratings vr
+        JOIN customers c ON vr.customer_id = c.id
+        JOIN product_variants pv ON vr.variant_id = pv.id
+        JOIN products p ON pv.product_id = p.id
+        LEFT JOIN users u ON vr.reviewed_by = u.id
+        WHERE vr.id = ?
+      `,
+      values: [id]
+    })
+
+    if (ratings.length === 0) return undefined
+
+    const rating = ratings[0]
+
+    // Obtener imágenes
+    const images = await executeQuery<
+      Array<{ id: number; image_url: string }>
+    >({
+      query: 'SELECT id, image_url FROM rating_images WHERE rating_id = ?',
+      values: [id]
+    })
+
+    return {
+      ...VariantRatingMapper(rating),
+      customerName: rating.customer_name,
+      customerLastname: rating.customer_lastname,
+      customerEmail: rating.customer_email,
+      customerPhoto: rating.customer_photo || undefined,
+      productName: rating.product_name,
+      variantSku: rating.variant_sku,
+      variantAttributes: rating.variant_attributes || undefined,
+      reviewerName: rating.reviewer_name || undefined,
+      images: images.map((img) => ({ id: img.id, imageUrl: img.image_url }))
+    }
+  }
+
+  public async moderateRating(
+    id: number,
+    status: RatingStatus,
+    reviewedBy: number
+  ): Promise<RatingModerationResult> {
+    if (status !== 'approved' && status !== 'rejected') {
+      return {
+        success: false,
+        rating: {} as VariantRating,
+        message: 'Estado inválido. Use "approved" o "rejected".'
+      }
+    }
+
+    const updated = await oVariantRatingRep.updateRatingStatus(
+      id,
+      status,
+      reviewedBy
+    )
+
+    if (!updated) {
+      return {
+        success: false,
+        rating: {} as VariantRating,
+        message: 'No se encontró la valoración.'
+      }
+    }
+
+    const statusMessage =
+      status === 'approved' ? 'aprobada' : 'rechazada'
+
+    return {
+      success: true,
+      rating: VariantRatingMapper(updated),
+      message: `Valoración ${statusMessage} exitosamente.`
+    }
   }
 
   // ============================================================================

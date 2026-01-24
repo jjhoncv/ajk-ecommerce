@@ -4,6 +4,7 @@ import { type MainCategory } from './types'
 export const hydrateCategories = (data: Category[]): MainCategory[] => {
   return data.map((item) => ({
     id: item.id,
+    slug: item.slug,
     imageUrl: item.imageUrl ?? '',
     name: item.name,
     description: item.description ?? '',

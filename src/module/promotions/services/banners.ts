@@ -8,7 +8,7 @@ export const getBanners = async (): Promise<BannerPromotion[]> => {
     title: promotion.name,
     subtitle: promotion.description ?? '',
     image: promotion.imageUrl ?? '',
-    link: `/promotion/${promotion.id}`
+    link: `/promotion/${promotion.slug}`
   }))
 
   return sideBanners

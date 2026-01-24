@@ -19,35 +19,29 @@ export const metadata: Metadata = {
 
 interface PromotionPageProps {
   params: Promise<{
-    id: string
+    slug: string
   }>
-  searchParams: Promise<SearchParams> // ← AGREGADO: Los search params son necesarios para los filtros
+  searchParams: Promise<SearchParams>
 }
 
 export default async function PromotionPage({
   params,
-  searchParams // ← AGREGADO: Recibir searchParams
+  searchParams
 }: PromotionPageProps): Promise<JSX.Element> {
-  const { id } = await params
-  const searchParamsResolved = await searchParams // ← AGREGADO: Resolver searchParams
+  const { slug } = await params
+  const searchParamsResolved = await searchParams
 
-  const promotionId = parseInt(id)
-
-  // Validar ID
-  if (isNaN(promotionId)) {
-    return <PromotionPageNotFound />
-  }
-
-  const promotion = await PromotionService.getPromotion(promotionId)
+  // Buscar promoción por slug
+  const promotion = await PromotionService.getPromotionBySlug(slug)
 
   if (promotion === null) {
     return <PromotionPageNotFound />
   }
 
-  // ← CORREGIDO: Usar searchParams resueltos y agregar promotions al filtro
+  // Usar el ID de la promoción para los filtros de búsqueda
   const filters = getFilters({
     ...searchParamsResolved,
-    promotions: promotionId.toString()
+    promotions: promotion.id.toString()
   })
 
   // Obtener resultados de búsqueda directamente del modelo

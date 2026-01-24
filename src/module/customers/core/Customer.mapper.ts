@@ -8,6 +8,8 @@ export const CustomerMapper = (data: CustomerRaw): Customer => {
     lastname: data.lastname,
     email: data.email,
     password: data.password,
+    phone: data.phone,
+    dni: data.dni,
     photo: data.photo,
     isActive: data.is_active,
     addressId: data.address_id,

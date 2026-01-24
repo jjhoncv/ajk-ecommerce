@@ -32,8 +32,11 @@ export class ShippingZoneModel {
       const methods = await oShippingZoneMethodRep.getZoneMethodsByZoneId(
         zone.id
       )
+      // Get district count from pivot table
+      const districtIds = await oShippingZoneRep.getDistrictIdsByZoneId(zone.id)
       zonesWithMethods.push({
         ...zone,
+        districtCount: districtIds.length,
         methods: methods || []
       })
     }
@@ -125,6 +128,23 @@ export class ShippingZoneModel {
     district: DistrictInfo
   ): Promise<void> {
     await oShippingZoneRep.removeDistrictFromZone(zoneId, district)
+  }
+
+  // Get district IDs from pivot table
+  public async getDistrictIdsByZoneId(zoneId: number): Promise<number[]> {
+    return await oShippingZoneRep.getDistrictIdsByZoneId(zoneId)
+  }
+
+  // Set district IDs for a zone using pivot table
+  public async setDistrictIdsForZone(zoneId: number, districtIds: number[]): Promise<void> {
+    await oShippingZoneRep.setDistrictIdsForZone(zoneId, districtIds)
+  }
+
+  // Find zone by district ID
+  public async getShippingZoneByDistrictId(districtId: number): Promise<ShippingZone | undefined> {
+    const zoneRaw = await oShippingZoneRep.getShippingZoneByDistrictId(districtId)
+    if (!zoneRaw) return undefined
+    return ShippingZoneMapper(zoneRaw)
   }
 
   // Helper method to get formatted districts

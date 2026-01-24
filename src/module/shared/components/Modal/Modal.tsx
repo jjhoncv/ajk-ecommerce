@@ -8,15 +8,17 @@ interface ModalProps {
   onClose: () => void
   children: React.ReactNode
   className?: string
+  zIndex?: number
 }
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   children,
-  className
+  className,
+  zIndex = 9999
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null)
+  const backdropRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [shouldRender, setShouldRender] = useState(false)
@@ -37,23 +39,6 @@ export const Modal: React.FC<ModalProps> = ({
       return () => { clearTimeout(timer) }
     }
   }, [isOpen])
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isOpen &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        onClose()
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isOpen, onClose])
 
   useEffect(() => {
     if (isOpen) {
@@ -79,23 +64,33 @@ export const Modal: React.FC<ModalProps> = ({
     }
   }, [isOpen, onClose])
 
+  // Handle click on backdrop (close only if clicking directly on backdrop, not on modal content)
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === backdropRef.current) {
+      onClose()
+    }
+  }
+
   if (!mounted || !shouldRender) return null
 
   const modalContent = (
     <div
+      ref={backdropRef}
+      onClick={handleBackdropClick}
       className={cn(
-        'fixed inset-0 z-[9999] flex items-center justify-center p-4',
+        'fixed inset-0 flex items-center justify-center p-4 overflow-y-auto',
         'transition-all duration-200 ease-out',
         isVisible ? 'bg-black/98' : 'bg-transparent'
       )}
       style={{
+        zIndex,
         backgroundColor: isVisible ? 'rgba(0, 0, 0, 0.7)' : 'transparent'
       }}
     >
       <div
-        ref={modalRef}
         className={cn(
-          'w-full max-w-md overflow-hidden bg-white px-10 py-5 shadow-xl',
+          'w-full max-w-md bg-white px-10 py-5 shadow-xl my-8',
+          'max-h-[90vh] overflow-y-auto',
           'transform transition-all duration-200 ease-out',
           isVisible
             ? 'translate-y-0 scale-100 opacity-100'

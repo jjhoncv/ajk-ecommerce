@@ -16,6 +16,18 @@ export class PromotionModel {
     return PromotionMapper(brandRaw)
   }
 
+  public async getPromotionBySlug(slug: string): Promise<Promotion | undefined> {
+    const promotionRaw = await oPromotionRep.getPromotionBySlug(slug)
+    if (promotionRaw == null) return undefined
+    return PromotionMapper(promotionRaw)
+  }
+
+  public async updatePromotionSlug(id: number, slug: string): Promise<Promotion | undefined> {
+    const updated = await oPromotionRep.updatePromotionSlug(id, slug)
+    if (updated == null) return undefined
+    return PromotionMapper(updated)
+  }
+
   public async createPromotion(
     brandData: Omit<PromotionRaw, 'id'>
   ): Promise<Promotion | undefined> {

@@ -1,19 +1,19 @@
 // app/api/customer/addresses/route.ts
 import { customerAddressModel } from '@/module/customers/core'
+import { districtModel } from '@/module/districts/core'
 import { authOptions } from '@/lib/auth/auth'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
-// Schema de validación para crear dirección
+// Schema de validación para crear dirección (con districtId)
 const createAddressSchema = z.object({
   alias: z.string().min(1, 'El nombre de la dirección es requerido').max(50),
-  department: z.string().min(1, 'El departamento es requerido'),
-  province: z.string().min(1, 'La provincia es requerida'),
-  district: z.string().min(1, 'El distrito es requerido'),
+  districtId: z.number().min(1, 'El distrito es requerido'),
   streetName: z.string().min(1, 'El nombre de la calle es requerido').max(100),
   streetNumber: z.string().min(1, 'El número de la calle es requerido').max(10),
   apartment: z.string().max(20).optional(),
+  reference: z.string().max(200).optional(),
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
   isDefault: z.boolean().optional()
@@ -23,12 +23,11 @@ const createAddressSchema = z.object({
 const updateAddressSchema = z.object({
   id: z.number().positive('ID de dirección inválido'),
   alias: z.string().min(1).max(50).optional(),
-  department: z.string().min(1).optional(),
-  province: z.string().min(1).optional(),
-  district: z.string().min(1).optional(),
+  districtId: z.number().min(1).optional(),
   streetName: z.string().min(1).max(100).optional(),
   streetNumber: z.string().min(1).max(10).optional(),
   apartment: z.string().max(20).optional(),
+  reference: z.string().max(200).optional(),
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional()
 })
@@ -69,15 +68,26 @@ export async function POST(request: NextRequest) {
     try {
       const validatedData = createAddressSchema.parse(body)
 
+      // Obtener nombre del distrito
+      const district = await districtModel.getDistrictById(validatedData.districtId)
+      if (!district) {
+        return NextResponse.json(
+          { error: 'Distrito no válido' },
+          { status: 400 }
+        )
+      }
+
       const newAddress = await customerAddressModel.createAddress({
         idCustomer: parseInt(session.user.id),
         alias: validatedData.alias,
-        department: validatedData.department,
-        province: validatedData.province,
-        district: validatedData.district,
+        department: 'Lima',
+        province: 'Lima',
+        district: district.name,
+        districtId: validatedData.districtId,
         streetName: validatedData.streetName,
         streetNumber: validatedData.streetNumber,
         apartment: validatedData.apartment,
+        reference: validatedData.reference,
         latitude: validatedData.latitude,
         longitude: validatedData.longitude,
         isDefault: validatedData.isDefault || false
@@ -135,7 +145,7 @@ export async function PUT(request: NextRequest) {
     // Validar datos con Zod
     try {
       const validatedData = updateAddressSchema.parse(body)
-      const { id, ...updateData } = validatedData
+      const { id, districtId, ...updateData } = validatedData
 
       // Verificar que la dirección pertenece al usuario
       const existingAddress = await customerAddressModel.getAddress(id)
@@ -149,9 +159,25 @@ export async function PUT(request: NextRequest) {
         )
       }
 
+      // Si se actualiza el distrito, obtener el nombre
+      let districtName: string | undefined
+      if (districtId) {
+        const district = await districtModel.getDistrictById(districtId)
+        if (!district) {
+          return NextResponse.json(
+            { error: 'Distrito no válido' },
+            { status: 400 }
+          )
+        }
+        districtName = district.name
+      }
+
       const updatedAddress = await customerAddressModel.updateAddress(
         id,
-        updateData
+        {
+          ...updateData,
+          ...(districtId && { districtId, district: districtName })
+        }
       )
 
       if (!updatedAddress) {

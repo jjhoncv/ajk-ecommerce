@@ -7,6 +7,7 @@ export const hydratePromotions = (data: Promotions[]): Promotion[] =>
 export const hydratePromotion = (item: Promotions): Promotion => ({
   id: item.id,
   name: item.name,
+  slug: item.slug ?? undefined,
   discountType: item.discountType,
   discountValue: item.discountValue,
   description: item.description ?? '',

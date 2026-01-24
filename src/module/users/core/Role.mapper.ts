@@ -6,7 +6,7 @@ export const RoleMapper = (data: RoleRaw): Role => {
     id: data.id,
     name: data.name,
     rolesSections: undefined,
-    users: undefined
+    user: undefined
   }
 }
 

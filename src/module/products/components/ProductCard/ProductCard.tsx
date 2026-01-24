@@ -2,6 +2,8 @@
 import { getPriceIfHasPromotion } from '@/module/products/components/ProductVariant.helpers'
 import ProductCardButtonView from './ProductCardButtonView'
 import { PromotionBadge } from './PromotionBadge'
+import { OfferBadge } from '@/module/offers/components/ui'
+import { useOffer } from '@/module/offers/hooks/useOffer'
 import { getVariantImages } from '@/module/products/helpers/image.helpers'
 import { getVariantTitle } from '@/module/products/helpers/productVariant.helpers'
 import Link from 'next/link'
@@ -11,7 +13,7 @@ import { type ProductCardProps } from './ProductCard.interfaces'
 import ProductCardPrice from './ProductCardPrice'
 import ProductCardSlider from './ProductCardSlider'
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) => {
   // Verificar que el producto y sus variantes existan
   if (
     !product?.variants ||
@@ -31,6 +33,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     return null
   }
 
+  // Obtener oferta si no se pasó como prop
+  const { offer: fetchedOffer } = useOffer(offerProp === undefined ? variant.id : null)
+  const offer = offerProp ?? fetchedOffer
+
   const hasDiscount = hasPromotion(variant)
   const images = getVariantImages(variant)
 
@@ -43,30 +49,40 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className={'relative bg-white pb-2 transition-shadow hover:shadow-lg'}>
       <div className="relative">
-        <Link href={`/productos/variante/${variant.id}`} className={'block'}>
+        {/* Badge de oferta sobre la imagen */}
+        {offer && offer.badgeText && (
+          <div className="absolute left-2 top-2 z-10">
+            <OfferBadge
+              text={offer.badgeText}
+              color={offer.badgeColor}
+              size="sm"
+              showIcon
+            />
+          </div>
+        )}
+        {/* Badge de promoción si no hay oferta */}
+        {!offer && hasDiscount && (
+          <div className="absolute left-2 top-2 z-10">
+            <PromotionBadge type={type} name={type} />
+          </div>
+        )}
+
+        <Link href={`/producto/${variant.slug || variant.id}`} className={'block'}>
           <ProductCardSlider images={images} productName={product.name} />
         </Link>
-        <ProductCardButtonView variantId={product.variantId} />
+        <ProductCardButtonView variantId={product.variantId} variantSlug={variant.slug} />
       </div>
 
-      <div className="px-1">
-        <Link href={`/productos/variante/${variant.id}`}>
-          <span className="flex">
-            {/* Promoción */}
-            {hasDiscount && (
-              <div className="flex">
-                <PromotionBadge type={type} name={type} />
-              </div>
-            )}
-            <h3 className="mb-1 line-clamp-1 text-[14px] font-medium leading-[14px] -tracking-wide transition-colors hover:text-primary">
-              {getVariantTitle(product.name, variant)}
-            </h3>
-          </span>
+      <div className="px-2 pt-2">
+        <Link href={`/producto/${variant.slug || variant.id}`}>
+          <h3 className="mb-1 line-clamp-2 text-sm font-medium leading-tight text-gray-800 transition-colors hover:text-primary">
+            {getVariantTitle(product.name, variant)}
+          </h3>
         </Link>
 
         {/* Precio */}
-        <div className="space-y-2">
-          <ProductCardPrice variant={variant} />
+        <div className="mt-1">
+          <ProductCardPrice variant={variant} offer={offer} />
         </div>
       </div>
     </div>

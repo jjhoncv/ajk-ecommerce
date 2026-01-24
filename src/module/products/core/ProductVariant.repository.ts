@@ -63,6 +63,30 @@ export class ProductVariantRepository {
     return variants[0]
   }
 
+  public async getProductVariantBySlug(
+    slug: string
+  ): Promise<ProductVariantRaw | null> {
+    const variants = await executeQuery<ProductVariantRaw[]>({
+      query: 'SELECT * FROM product_variants WHERE slug = ?',
+      values: [slug]
+    })
+
+    if (variants.length === 0) return null
+    return variants[0]
+  }
+
+  public async updateProductVariantSlug(
+    id: number,
+    slug: string
+  ): Promise<ProductVariantRaw | null> {
+    await executeQuery({
+      query: 'UPDATE product_variants SET slug = ? WHERE id = ?',
+      values: [slug, id]
+    })
+
+    return await this.getProductVariantById(id)
+  }
+
   public async createProductVariant(
     variant: Omit<ProductVariantRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<ProductVariantRaw | null> {

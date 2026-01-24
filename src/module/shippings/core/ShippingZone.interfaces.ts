@@ -21,6 +21,7 @@ export interface ShippingZoneMethodExtended {
 
 export interface ShippingZoneWithMethods extends ShippingZone {
   methods?: ShippingZoneMethodWithDetails[]
+  districtCount?: number
 }
 
 export interface ShippingZoneMethodInfo {

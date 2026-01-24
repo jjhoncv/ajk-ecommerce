@@ -1,4 +1,4 @@
-import { type VariantRatings as VariantRating } from '@/types/domain'
+import { type RatingStatus, type VariantRatings as VariantRating } from '@/types/domain'
 
 export interface VariantRatingSummary {
   variantId: number
@@ -15,6 +15,7 @@ export interface VariantRatingSummary {
 export interface VariantRatingWithCustomer extends VariantRating {
   customerName: string
   customerPhoto?: string
+  createdAt?: Date
 }
 
 export interface VariantRatingSearchResult {
@@ -24,3 +25,37 @@ export interface VariantRatingSearchResult {
   totalPages: number
   summary: VariantRatingSummary
 }
+
+// ============================================================================
+// INTERFACES PARA ADMIN - MODERACIÓN
+// ============================================================================
+
+export interface RatingForAdmin extends VariantRating {
+  customerName: string
+  customerLastname: string
+  customerEmail: string
+  customerPhoto?: string
+  productName: string
+  variantSku: string
+  variantAttributes?: string
+  reviewerName?: string
+  images: Array<{ id: number; imageUrl: string }>
+}
+
+export interface RatingAdminSearchResult {
+  ratings: RatingForAdmin[]
+  totalCount: number
+  page: number
+  totalPages: number
+  pendingCount: number
+  approvedCount: number
+  rejectedCount: number
+}
+
+export interface RatingModerationResult {
+  success: boolean
+  rating: VariantRating
+  message: string
+}
+
+export { type RatingStatus }

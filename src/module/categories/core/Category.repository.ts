@@ -61,9 +61,23 @@ export class CategoryRepository {
   }
 
   public async getCategoryById(id: number): Promise<CategoriesRaw | null> {
+    console.log('[CategoryRepository.getCategoryById] Querying category id:', id)
+
     const categories = await executeQuery<CategoriesRaw[]>({
       query: 'SELECT * FROM categories WHERE id = ?',
       values: [id]
+    })
+
+    console.log('[CategoryRepository.getCategoryById] Query result count:', categories?.length ?? 0)
+
+    if (categories.length === 0) return null
+    return categories[0]
+  }
+
+  public async getCategoryBySlug(slug: string): Promise<CategoriesRaw | null> {
+    const categories = await executeQuery<CategoriesRaw[]>({
+      query: 'SELECT * FROM categories WHERE slug = ?',
+      values: [slug]
     })
 
     if (categories.length === 0) return null
@@ -89,7 +103,7 @@ export class CategoryRepository {
   }
 
   public async createCategory(
-    category: Omit<CategoriesRaw, 'id'>
+    category: Omit<CategoriesRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<CategoriesRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: 'INSERT INTO categories SET ?',
@@ -100,7 +114,7 @@ export class CategoryRepository {
   }
 
   public async updateCategory(
-    categoryData: Omit<CategoriesRaw, 'id'>,
+    categoryData: Omit<CategoriesRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<CategoriesRaw | null> {
     await executeQuery({

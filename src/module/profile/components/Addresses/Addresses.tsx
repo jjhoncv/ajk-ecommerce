@@ -1,8 +1,8 @@
 'use client'
 
-import { departments } from '@/module/profile/components/Addresses/Addresses.data'
 import { Button, Input, Label } from '@/module/shared/components/ui'
 import { Modal, ModalContent, ModalTitle } from '@/module/shared/components/Modal'
+import { MapPicker } from '@/components/ui/MapPicker'
 import { type CustomersAddresses } from '@/types/domain'
 import { Home, MapPin, MapPinHouse } from 'lucide-react'
 import { useAddresses } from './use-addresses.hook'
@@ -28,7 +28,10 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
     handleEdit,
     handleDelete,
     handleSetDefault,
-    availableDistricts
+    handleLocationChange,
+    districtsGrouped,
+    loadingDistricts,
+    getDistrictName
   } = useAddresses({ initialAddresses })
 
   if (isLoading) {
@@ -136,9 +139,9 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
                     {address.apartment && `, ${address.apartment}`}
                   </p>
                   <p>
-                    {address.district}, {address.province}
+                    {getDistrictName(address.districtId) || address.district}, Lima
                   </p>
-                  <p>{address.department}, Perú</p>
+                  <p>Lima, Perú</p>
                 </div>
               </div>
 
@@ -181,192 +184,14 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        className="h-full max-w-2xl overflow-y-auto"
+        className="max-w-3xl"
       >
         <ModalTitle
           onClose={closeModal}
           title={`${editingAddress ? 'Editar' : 'Agregar'} dirección`}
         />
         <ModalContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              {/* Nombre de la dirección */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="alias"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Nombre de la dirección
-                </Label>
-                <Input
-                  id="alias"
-                  name="alias"
-                  value={formData.alias}
-                  onChange={handleInputChange}
-                  placeholder="ej. Casa, Oficina, Casa de mamá"
-                  className={`${errors.alias ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
-                />
-                {errors.alias && (
-                  <p className="flex items-center gap-1 text-sm text-red-600">
-                    <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                    {errors.alias}
-                  </p>
-                )}
-              </div>
-
-              {/* Departamento y Provincia */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="department"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Departamento
-                  </Label>
-                  <select
-                    id="department"
-                    name="department"
-                    value={formData.department}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                  >
-                    {departments.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.department && (
-                    <p className="flex items-center gap-1 text-sm text-red-600">
-                      <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                      {errors.department}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="province"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Provincia
-                  </Label>
-                  <select
-                    id="province"
-                    name="province"
-                    value={formData.province}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="LIMA">LIMA</option>
-                  </select>
-                  {errors.province && (
-                    <p className="flex items-center gap-1 text-sm text-red-600">
-                      <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                      {errors.province}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Distrito */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="district"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Distrito
-                </Label>
-                <select
-                  id="district"
-                  name="district"
-                  value={formData.district}
-                  onChange={handleInputChange}
-                  className={`w-full rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 ${errors.district ? 'border-red-500' : 'border-gray-300'}`}
-                >
-                  <option value="">Selecciona un distrito</option>
-                  {availableDistricts.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
-                {errors.district && (
-                  <p className="flex items-center gap-1 text-sm text-red-600">
-                    <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                    {errors.district}
-                  </p>
-                )}
-              </div>
-
-              {/* Avenida/Calle y Número */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="streetName"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Nombre de la calle
-                  </Label>
-                  <Input
-                    id="streetName"
-                    name="streetName"
-                    value={formData.streetName}
-                    onChange={handleInputChange}
-                    placeholder="Av. Javier Prado, Jr. Lima, etc."
-                    className={`${errors.streetName ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
-                  />
-                  {errors.streetName && (
-                    <p className="flex items-center gap-1 text-sm text-red-600">
-                      <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                      {errors.streetName}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="streetNumber"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Número
-                  </Label>
-                  <Input
-                    id="streetNumber"
-                    name="streetNumber"
-                    value={formData.streetNumber}
-                    onChange={handleInputChange}
-                    placeholder="123, 45-A, etc."
-                    className={`${errors.streetNumber ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
-                  />
-                  {errors.streetNumber && (
-                    <p className="flex items-center gap-1 text-sm text-red-600">
-                      <span className="h-1 w-1 rounded-full bg-red-600"></span>
-                      {errors.streetNumber}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Apartamento (opcional) */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="apartment"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Apartamento / Unidad / Piso (opcional)
-                </Label>
-                <Input
-                  id="apartment"
-                  name="apartment"
-                  value={formData.apartment}
-                  onChange={handleInputChange}
-                  placeholder="ej. Apt 3, Dpto 101, Piso 2"
-                  className="border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Mensaje en modal */}
             {message && isModalOpen && (
               <div
@@ -385,8 +210,146 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
               </div>
             )}
 
+            {/* Ubicación (fija Lima) */}
+            <div className="rounded-lg bg-blue-50 border border-blue-100 p-3">
+              <p className="text-sm text-blue-800">
+                <span className="font-medium">Ubicación:</span> Lima Metropolitana, Perú
+              </p>
+            </div>
+
+            {/* Row 1: Alias y Distrito */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="alias" className="text-sm font-medium text-gray-700">
+                  Nombre de la dirección *
+                </Label>
+                <Input
+                  id="alias"
+                  name="alias"
+                  value={formData.alias}
+                  onChange={handleInputChange}
+                  placeholder="ej. Casa, Oficina, Trabajo"
+                  className={`${errors.alias ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
+                />
+                {errors.alias && (
+                  <p className="text-xs text-red-600">{errors.alias}</p>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="districtId" className="text-sm font-medium text-gray-700">
+                  Distrito *
+                </Label>
+                <select
+                  id="districtId"
+                  name="districtId"
+                  value={formData.districtId}
+                  onChange={handleInputChange}
+                  disabled={loadingDistricts}
+                  className={`w-full rounded-lg border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none ${errors.districtId ? 'border-red-500' : 'border-gray-300'}`}
+                >
+                  <option value={0}>
+                    {loadingDistricts ? 'Cargando...' : 'Selecciona un distrito'}
+                  </option>
+                  {Object.entries(districtsGrouped).map(([zoneName, districts]) => (
+                    <optgroup key={zoneName} label={zoneName}>
+                      {districts.map((district) => (
+                        <option key={district.id} value={district.id}>
+                          {district.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                {errors.districtId && (
+                  <p className="text-xs text-red-600">{errors.districtId}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Row 2: Calle y Número */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-2 space-y-1.5">
+                <Label htmlFor="streetName" className="text-sm font-medium text-gray-700">
+                  Calle / Avenida / Jirón *
+                </Label>
+                <Input
+                  id="streetName"
+                  name="streetName"
+                  value={formData.streetName}
+                  onChange={handleInputChange}
+                  placeholder="Av. Javier Prado Este"
+                  className={`${errors.streetName ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
+                />
+                {errors.streetName && (
+                  <p className="text-xs text-red-600">{errors.streetName}</p>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="streetNumber" className="text-sm font-medium text-gray-700">
+                  Número *
+                </Label>
+                <Input
+                  id="streetNumber"
+                  name="streetNumber"
+                  value={formData.streetNumber}
+                  onChange={handleInputChange}
+                  placeholder="123"
+                  className={`${errors.streetNumber ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} focus:ring-2`}
+                />
+                {errors.streetNumber && (
+                  <p className="text-xs text-red-600">{errors.streetNumber}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Row 3: Apartamento y Referencia */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="apartment" className="text-sm font-medium text-gray-700">
+                  Dpto / Piso / Interior
+                </Label>
+                <Input
+                  id="apartment"
+                  name="apartment"
+                  value={formData.apartment}
+                  onChange={handleInputChange}
+                  placeholder="Dpto 101, Piso 2, Int. B"
+                  className="border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="reference" className="text-sm font-medium text-gray-700">
+                  Referencia
+                </Label>
+                <Input
+                  id="reference"
+                  name="reference"
+                  value={formData.reference}
+                  onChange={handleInputChange}
+                  placeholder="Frente al parque, cerca al grifo"
+                  className="border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Mapa para ubicación exacta */}
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium text-gray-700">
+                Ubicación en el mapa
+              </Label>
+              <MapPicker
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onLocationChange={handleLocationChange}
+                height="220px"
+              />
+            </div>
+
             {/* Botones */}
-            <div className="flex justify-end gap-3 border-t border-gray-200 pt-6">
+            <div className="flex justify-end gap-3 border-t border-gray-200 pt-5">
               <Button
                 type="button"
                 variant="outline"
@@ -394,20 +357,20 @@ export default function Addresses({ initialAddresses }: AddressesProps) {
                 disabled={isSubmitting}
                 className="border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50"
               >
-                CANCELAR
+                Cancelar
               </Button>
               <Button
                 type="submit"
-                disabled={isSubmitting}
-                className="min-w-[120px] rounded-lg bg-black px-6 py-2 font-medium text-white hover:bg-gray-800"
+                disabled={isSubmitting || loadingDistricts}
+                className="min-w-[140px] rounded-lg bg-black px-6 py-2 font-medium text-white hover:bg-gray-800"
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                    GUARDANDO...
+                    Guardando...
                   </div>
                 ) : (
-                  `${editingAddress ? 'ACTUALIZAR' : 'AGREGAR'} DIRECCIÓN`
+                  `${editingAddress ? 'Actualizar' : 'Agregar'} dirección`
                 )}
               </Button>
             </div>

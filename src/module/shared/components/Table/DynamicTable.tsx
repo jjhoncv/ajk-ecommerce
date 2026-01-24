@@ -238,9 +238,8 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                       {columns.map((column) => (
                         <th
                           key={column.key}
-                          className={`px-4 py-2 text-left text-xs font-medium uppercase text-gray-600 ${
-                            column.width || 'flex-1'
-                          } ${headerClassName}`}
+                          className={`px-4 py-2 text-left text-xs font-medium uppercase text-gray-600 ${headerClassName}`}
+                          style={{ width: column.width }}
                         >
                           <div className="flex items-center gap-2 py-1">
                             {column.label}
@@ -266,7 +265,7 @@ export const DynamicTable: FC<DynamicTableProps> = ({
                         </th>
                       ))}
                       {(actions.edit || actions.delete) && (
-                        <th className="p-4 pt-0 text-left font-medium text-gray-600" />
+                        <th className="w-16 p-4 pt-0 text-left font-medium text-gray-600" />
                       )}
                     </tr>
                   </thead>

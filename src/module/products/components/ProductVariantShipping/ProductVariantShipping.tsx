@@ -42,7 +42,8 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
     isInitialized,
     hasAddresses,
     hasShippingOptions,
-    selectAddress
+    selectAddress,
+    retry
   } = useProductVariantShipping({
     productVariantId,
     quantity,
@@ -84,7 +85,7 @@ export const ProductVariantShipping: FC<ProductVariantShippingProps> = ({
 
   // Renderizar sin direcciones
   if (!hasAddresses) {
-    return <ProductVariantShippingNotAddress />
+    return <ProductVariantShippingNotAddress onAddressAdded={retry} />
   }
 
   // No hay dirección seleccionada (caso edge)

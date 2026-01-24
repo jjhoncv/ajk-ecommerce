@@ -1,162 +1,131 @@
 'use client'
-import {
-  getDepartments,
-  getDistrictsByProvince,
-  getProvincesByDepartment
-} from '@/module/shippings/data/peru-ubigeo'
+import { type District } from '@/module/districts/core'
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
-import { Loader2, Plus, Trash2 } from 'lucide-react'
+import { Loader2, Plus, Trash2, MapPin } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { type FC, useState, useEffect } from 'react'
-
-interface DistrictInfo {
-  name: string
-  province: string
-  department: string
-}
 
 interface ShippingZoneFormProps {
   type: 'create' | 'edit'
   initialData?: {
     id: number
     name: string
-    districts: DistrictInfo[]
+    districtIds: number[]
     isActive: number
   }
+}
+
+// Nombres amigables para las zonas
+const zoneLabels: Record<string, string> = {
+  lima_centro: 'Lima Centro',
+  lima_norte: 'Lima Norte',
+  lima_sur: 'Lima Sur',
+  lima_este: 'Lima Este',
+  callao: 'Callao'
 }
 
 export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData }) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [loadingDistricts, setLoadingDistricts] = useState(true)
 
   const [formData, setFormData] = useState({
     name: initialData?.name ?? '',
     isActive: initialData?.isActive ?? 1
   })
 
-  const [districts, setDistricts] = useState<DistrictInfo[]>(initialData?.districts ?? [])
+  // Distritos seleccionados (IDs)
+  const [selectedDistrictIds, setSelectedDistrictIds] = useState<number[]>(
+    initialData?.districtIds ?? []
+  )
 
-  // Estados para los combos anidados
-  const [selectedDepartment, setSelectedDepartment] = useState('')
-  const [selectedProvince, setSelectedProvince] = useState('')
-  const [selectedDistrict, setSelectedDistrict] = useState('')
+  // Distritos disponibles agrupados por zona
+  const [districtsGrouped, setDistrictsGrouped] = useState<Record<string, District[]>>({})
+  const [allDistricts, setAllDistricts] = useState<District[]>([])
 
-  // Listas para los combos
-  const [departments] = useState<string[]>(getDepartments())
-  const [provinces, setProvinces] = useState<string[]>([])
-  const [availableDistricts, setAvailableDistricts] = useState<string[]>([])
+  // Zona seleccionada para agregar
+  const [selectedZone, setSelectedZone] = useState('')
+  const [selectedDistrictId, setSelectedDistrictId] = useState<number>(0)
 
-  // Actualizar provincias cuando cambia el departamento
+  // Cargar distritos al montar
   useEffect(() => {
-    if (selectedDepartment) {
-      const provs = getProvincesByDepartment(selectedDepartment)
-      setProvinces(provs)
-      setSelectedProvince('')
-      setSelectedDistrict('')
-      setAvailableDistricts([])
-    } else {
-      setProvinces([])
-      setSelectedProvince('')
-      setSelectedDistrict('')
-      setAvailableDistricts([])
-    }
-  }, [selectedDepartment])
+    const loadDistricts = async () => {
+      try {
+        const response = await fetch('/api/districts/grouped')
+        if (response.ok) {
+          const data = await response.json()
+          setDistrictsGrouped(data.districts || {})
 
-  // Actualizar distritos cuando cambia la provincia
-  useEffect(() => {
-    if (selectedDepartment && selectedProvince) {
-      const dists = getDistrictsByProvince(selectedDepartment, selectedProvince)
-      setAvailableDistricts(dists)
-      setSelectedDistrict('')
-    } else {
-      setAvailableDistricts([])
-      setSelectedDistrict('')
+          // Flatten para búsqueda rápida
+          const all: District[] = []
+          Object.values(data.districts || {}).forEach((group) => {
+            all.push(...(group as District[]))
+          })
+          setAllDistricts(all)
+        }
+      } catch (error) {
+        console.error('Error loading districts:', error)
+        ToastFail('Error al cargar los distritos')
+      } finally {
+        setLoadingDistricts(false)
+      }
     }
-  }, [selectedDepartment, selectedProvince])
+    loadDistricts()
+  }, [])
+
+  // Obtener nombre del distrito por ID
+  const getDistrictById = (id: number): District | undefined => {
+    return allDistricts.find(d => d.id === id)
+  }
+
+  // Distritos disponibles para la zona seleccionada (no ya seleccionados)
+  const availableDistrictsForZone = selectedZone
+    ? (districtsGrouped[selectedZone] || []).filter(d => !selectedDistrictIds.includes(d.id))
+    : []
 
   const handleAddDistrict = () => {
-    if (!selectedDepartment || !selectedProvince || !selectedDistrict) {
-      ToastFail('Selecciona departamento, provincia y distrito')
+    if (!selectedDistrictId) {
+      ToastFail('Selecciona un distrito')
       return
     }
 
-    // Verificar si ya existe
-    const exists = districts.some(
-      d =>
-        d.name.toLowerCase() === selectedDistrict.toLowerCase() &&
-        d.province.toLowerCase() === selectedProvince.toLowerCase() &&
-        d.department.toLowerCase() === selectedDepartment.toLowerCase()
-    )
-
-    if (exists) {
+    if (selectedDistrictIds.includes(selectedDistrictId)) {
       ToastFail('Este distrito ya está agregado')
       return
     }
 
-    setDistricts([
-      ...districts,
-      {
-        name: selectedDistrict,
-        province: selectedProvince,
-        department: selectedDepartment
-      }
-    ])
-
-    // Limpiar selección
-    setSelectedDistrict('')
+    setSelectedDistrictIds([...selectedDistrictIds, selectedDistrictId])
+    setSelectedDistrictId(0)
   }
 
-  const handleAddAllDistrictsFromProvince = () => {
-    if (!selectedDepartment || !selectedProvince) {
-      ToastFail('Selecciona departamento y provincia')
+  const handleAddAllFromZone = () => {
+    if (!selectedZone) {
+      ToastFail('Selecciona una zona')
       return
     }
 
-    const allDistricts = getDistrictsByProvince(selectedDepartment, selectedProvince)
-    let addedCount = 0
+    const zoneDistricts = districtsGrouped[selectedZone] || []
+    const newIds = zoneDistricts
+      .filter(d => !selectedDistrictIds.includes(d.id))
+      .map(d => d.id)
 
-    const newDistricts = [...districts]
-    for (const distName of allDistricts) {
-      const exists = newDistricts.some(
-        d =>
-          d.name.toLowerCase() === distName.toLowerCase() &&
-          d.province.toLowerCase() === selectedProvince.toLowerCase() &&
-          d.department.toLowerCase() === selectedDepartment.toLowerCase()
-      )
-
-      if (!exists) {
-        newDistricts.push({
-          name: distName,
-          province: selectedProvince,
-          department: selectedDepartment
-        })
-        addedCount++
-      }
+    if (newIds.length === 0) {
+      ToastFail('Todos los distritos de esta zona ya están agregados')
+      return
     }
 
-    if (addedCount > 0) {
-      setDistricts(newDistricts)
-      ToastSuccess(`Se agregaron ${addedCount} distritos`)
-    } else {
-      ToastFail('Todos los distritos ya están agregados')
-    }
+    setSelectedDistrictIds([...selectedDistrictIds, ...newIds])
+    ToastSuccess(`Se agregaron ${newIds.length} distritos`)
   }
 
-  const handleRemoveDistrict = (index: number) => {
-    setDistricts(districts.filter((_, i) => i !== index))
+  const handleRemoveDistrict = (districtId: number) => {
+    setSelectedDistrictIds(selectedDistrictIds.filter(id => id !== districtId))
   }
 
-  const handleRemoveAllFromProvince = (department: string, province: string) => {
-    setDistricts(
-      districts.filter(
-        d =>
-          !(
-            d.department.toLowerCase() === department.toLowerCase() &&
-            d.province.toLowerCase() === province.toLowerCase()
-          )
-      )
-    )
+  const handleRemoveAllFromZone = (zoneName: string) => {
+    const zoneDistrictIds = (districtsGrouped[zoneName] || []).map(d => d.id)
+    setSelectedDistrictIds(selectedDistrictIds.filter(id => !zoneDistrictIds.includes(id)))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -167,13 +136,18 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
       return
     }
 
+    if (selectedDistrictIds.length === 0) {
+      ToastFail('Agrega al menos un distrito')
+      return
+    }
+
     setLoading(true)
 
     try {
       const payload = {
         ...(type === 'edit' && { id: initialData?.id }),
         name: formData.name,
-        districts,
+        districtIds: selectedDistrictIds,
         isActive: formData.isActive
       }
 
@@ -193,26 +167,27 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
     }
   }
 
-  // Filtrar distritos válidos y agrupar por departamento y provincia
-  const validDistricts = districts.filter(
-    (d) => d && d.name && d.province && d.department
-  )
-
-  const groupedDistricts = validDistricts.reduce(
-    (acc, district) => {
-      const key = `${district.department}|${district.province}`
-      if (!acc[key]) {
-        acc[key] = {
-          department: district.department,
-          province: district.province,
-          districts: []
-        }
+  // Agrupar distritos seleccionados por zona
+  const selectedDistrictsGrouped = selectedDistrictIds.reduce((acc, districtId) => {
+    const district = getDistrictById(districtId)
+    if (district) {
+      const zoneName = district.zone
+      if (!acc[zoneName]) {
+        acc[zoneName] = []
       }
-      acc[key].districts.push(district.name)
-      return acc
-    },
-    {} as Record<string, { department: string; province: string; districts: string[] }>
-  )
+      acc[zoneName].push(district)
+    }
+    return acc
+  }, {} as Record<string, District[]>)
+
+  if (loadingDistricts) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <span className="ml-2 text-gray-500">Cargando distritos...</span>
+      </div>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -225,7 +200,7 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
             type="text"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Ej: Lima Metropolitana"
+            placeholder="Ej: Lima Centro Premium, Zona Express, etc."
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
           />
         </div>
@@ -243,40 +218,40 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
         </div>
       </div>
 
+      {/* Información de cobertura */}
+      <div className="rounded-lg bg-blue-50 p-4">
+        <div className="flex items-start gap-3">
+          <MapPin className="h-5 w-5 text-blue-600 mt-0.5" />
+          <div>
+            <p className="text-sm font-medium text-blue-900">Cobertura: Lima Metropolitana</p>
+            <p className="text-xs text-blue-700 mt-1">
+              Selecciona los distritos de Lima y Callao que formarán parte de esta zona de envío.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Sección de distritos */}
       <div className="border-t pt-6">
         <h3 className="mb-4 text-lg font-semibold">Distritos incluidos</h3>
 
-        {/* Formulario para agregar distrito con combos anidados */}
+        {/* Formulario para agregar distrito */}
         <div className="mb-4 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4">
-          <div className="grid gap-3 md:grid-cols-4">
+          <div className="grid gap-3 md:grid-cols-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-gray-600">Departamento</label>
+              <label className="mb-1 block text-xs font-medium text-gray-600">Zona geográfica</label>
               <select
-                value={selectedDepartment}
-                onChange={(e) => setSelectedDepartment(e.target.value)}
+                value={selectedZone}
+                onChange={(e) => {
+                  setSelectedZone(e.target.value)
+                  setSelectedDistrictId(0)
+                }}
                 className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
               >
-                <option value="">Seleccionar...</option>
-                {departments.map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-medium text-gray-600">Provincia</label>
-              <select
-                value={selectedProvince}
-                onChange={(e) => setSelectedProvince(e.target.value)}
-                disabled={!selectedDepartment}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
-              >
-                <option value="">Seleccionar...</option>
-                {provinces.map((prov) => (
-                  <option key={prov} value={prov}>
-                    {prov}
+                <option value="">Seleccionar zona...</option>
+                {Object.keys(districtsGrouped).map((zoneName) => (
+                  <option key={zoneName} value={zoneName}>
+                    {zoneLabels[zoneName] || zoneName}
                   </option>
                 ))}
               </select>
@@ -284,15 +259,15 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-600">Distrito</label>
               <select
-                value={selectedDistrict}
-                onChange={(e) => setSelectedDistrict(e.target.value)}
-                disabled={!selectedProvince}
+                value={selectedDistrictId}
+                onChange={(e) => setSelectedDistrictId(parseInt(e.target.value) || 0)}
+                disabled={!selectedZone}
                 className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
               >
-                <option value="">Seleccionar...</option>
-                {availableDistricts.map((dist) => (
-                  <option key={dist} value={dist}>
-                    {dist}
+                <option value={0}>Seleccionar distrito...</option>
+                {availableDistrictsForZone.map((district) => (
+                  <option key={district.id} value={district.id}>
+                    {district.name}
                   </option>
                 ))}
               </select>
@@ -301,7 +276,7 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
               <button
                 type="button"
                 onClick={handleAddDistrict}
-                disabled={!selectedDistrict}
+                disabled={!selectedDistrictId}
                 className="flex items-center justify-center gap-1 rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 <Plus size={16} />
@@ -310,84 +285,75 @@ export const ShippingZoneForm: FC<ShippingZoneFormProps> = ({ type, initialData 
             </div>
           </div>
 
-          {/* Botón para agregar todos los distritos de la provincia */}
-          {selectedProvince && (
+          {/* Botón para agregar todos los distritos de la zona */}
+          {selectedZone && (
             <div className="mt-3 flex items-center gap-2">
               <button
                 type="button"
-                onClick={handleAddAllDistrictsFromProvince}
+                onClick={handleAddAllFromZone}
                 className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
               >
-                + Agregar todos los distritos de {selectedProvince}
+                + Agregar todos los distritos de {zoneLabels[selectedZone] || selectedZone}
               </button>
               <span className="text-xs text-gray-400">
-                ({availableDistricts.length} distritos disponibles)
+                ({availableDistrictsForZone.length} disponibles)
               </span>
             </div>
           )}
         </div>
 
-        {/* Lista de distritos agrupados */}
-        {validDistricts.length === 0 ? (
+        {/* Lista de distritos agrupados por zona */}
+        {selectedDistrictIds.length === 0 ? (
           <p className="text-center text-sm text-gray-500">
             No hay distritos agregados. Agrega al menos uno para que la zona funcione.
           </p>
         ) : (
           <div className="space-y-3">
-            {Object.values(groupedDistricts).map((group) => (
+            {Object.entries(selectedDistrictsGrouped).map(([zoneName, districts]) => (
               <div
-                key={`${group.department}|${group.province}`}
+                key={zoneName}
                 className="rounded-lg border border-gray-200 bg-white"
               >
                 <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-4 py-2">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-gray-700">
-                      {group.department} / {group.province}
+                      {zoneLabels[zoneName] || zoneName}
                     </span>
                     <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
-                      {group.districts.length} distrito{group.districts.length !== 1 ? 's' : ''}
+                      {districts.length} distrito{districts.length !== 1 ? 's' : ''}
                     </span>
                   </div>
                   <button
                     type="button"
-                    onClick={() => handleRemoveAllFromProvince(group.department, group.province)}
+                    onClick={() => handleRemoveAllFromZone(zoneName)}
                     className="text-xs text-red-500 hover:text-red-700 hover:underline"
                   >
                     Eliminar todos
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2 p-3">
-                  {group.districts.map((distName) => {
-                    const distIndex = districts.findIndex(
-                      (d) =>
-                        d.name === distName &&
-                        d.province === group.province &&
-                        d.department === group.department
-                    )
-                    const uniqueKey = `${group.department}-${group.province}-${distName}`
-                    return (
-                      <span
-                        key={uniqueKey}
-                        className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                  {districts.map((district) => (
+                    <span
+                      key={district.id}
+                      className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                    >
+                      {district.name}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDistrict(district.id)}
+                        className="ml-1 rounded-full p-0.5 text-gray-400 hover:bg-gray-200 hover:text-red-500"
                       >
-                        {distName}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveDistrict(distIndex)}
-                          className="ml-1 rounded-full p-0.5 text-gray-400 hover:bg-gray-200 hover:text-red-500"
-                        >
-                          <Trash2 size={12} />
-                        </button>
-                      </span>
-                    )
-                  })}
+                        <Trash2 size={12} />
+                      </button>
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
         )}
         <p className="mt-3 text-xs text-gray-500">
-          {validDistricts.length} distrito{validDistricts.length !== 1 ? 's' : ''} en esta zona
+          {selectedDistrictIds.length} distrito{selectedDistrictIds.length !== 1 ? 's' : ''} en esta zona
         </p>
       </div>
 

@@ -1,10 +1,11 @@
 'use client'
 
-import { type JSX } from 'react'
-import { useUnifiedAuth } from './useUnifiedAuth'
+import { type JSX, useState } from 'react'
 import { EmailStep } from './EmailStep'
 import { LoginStep } from './LoginStep'
+import { useUnifiedAuth } from './useUnifiedAuth'
 import { VerifyCodeStep } from './VerifyCodeStep'
+import { TroubleshootLoginModal } from '../TroubleshootLoginModal'
 
 interface UnifiedAuthFormProps {
   onSuccess?: () => void
@@ -17,6 +18,8 @@ export const UnifiedAuthForm = ({
   onClose,
   onNeedsPasswordSetup
 }: UnifiedAuthFormProps): JSX.Element => {
+  const [isTroubleshootOpen, setIsTroubleshootOpen] = useState(false)
+
   const {
     step,
     email,
@@ -39,13 +42,13 @@ export const UnifiedAuthForm = ({
   const getTitle = (): string => {
     switch (step) {
       case 'email':
-        return 'Inicia sesión o regístrate'
+        return 'Regístrate/Inicia sesión'
       case 'login':
         return 'Iniciar sesión'
       case 'verify':
         return 'Verificar correo'
       default:
-        return 'Inicia sesión o regístrate'
+        return 'Regístrate/Inicia sesión'
     }
   }
 
@@ -68,6 +71,7 @@ export const UnifiedAuthForm = ({
           isFormValid={isFormValid}
           onEmailChange={setEmail}
           onSubmit={handleCheckEmail}
+          onTroubleshootClick={() => setIsTroubleshootOpen(true)}
         />
       )}
 
@@ -80,6 +84,7 @@ export const UnifiedAuthForm = ({
           onPasswordChange={setPassword}
           onSubmit={handleLogin}
           onBack={handleBack}
+          onForgotPassword={() => setIsTroubleshootOpen(true)}
         />
       )}
 
@@ -96,6 +101,12 @@ export const UnifiedAuthForm = ({
           onBack={handleBack}
         />
       )}
+
+      {/* Troubleshoot Login Modal */}
+      <TroubleshootLoginModal
+        isOpen={isTroubleshootOpen}
+        onClose={() => setIsTroubleshootOpen(false)}
+      />
     </div>
   )
 }

@@ -4,9 +4,10 @@ export const ALLOWED_MINICART_ROUTES = [
   '/categories', // Página de categorías
   '/search', // Página de búsqueda
   '/product', // Página de producto individual
+  '/producto', // PDP con slug SEO-friendly
   '/category', // Página de categoría específica
-  '/productos', // Base de productos
-  '/productos/variante' // PDP con variantes
+  '/categoria', // Página de categoría con slug
+  '/productos' // Base de productos
 ]
 
 export const NO_MINICART_ROUTES = [

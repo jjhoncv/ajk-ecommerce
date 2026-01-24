@@ -38,6 +38,12 @@ export class CategoryModel {
     return CategoryMapper(categoryRaw)
   }
 
+  public async getCategoryBySlug(slug: string): Promise<Category | undefined> {
+    const categoryRaw = await oCategoryRep.getCategoryBySlug(slug)
+    if (categoryRaw == null) return undefined
+    return CategoryMapper(categoryRaw)
+  }
+
   public async getCategoriesByProductId(
     productId: number
   ): Promise<Category[] | undefined> {
@@ -46,7 +52,7 @@ export class CategoryModel {
   }
 
   public async createCategory(
-    categoryData: Omit<CategoriesRaw, 'id'>
+    categoryData: Omit<CategoriesRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<Category | undefined> {
     const created = await oCategoryRep.createCategory(categoryData)
     if (created == null) return undefined
@@ -54,7 +60,7 @@ export class CategoryModel {
   }
 
   public async updateCategory(
-    categoryData: Omit<CategoriesRaw, 'id'>,
+    categoryData: Omit<CategoriesRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<Category | undefined> {
     const updated = await oCategoryRep.updateCategory(categoryData, id)

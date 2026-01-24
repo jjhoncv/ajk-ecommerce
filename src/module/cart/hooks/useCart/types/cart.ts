@@ -8,6 +8,7 @@ export interface CartItem {
   image: string
   quantity: number
   stock: number
+  slug?: string | null
   promotionVariants?: Array<PromotionVariants | null> | null
   variantAttributeOptions?: Array<VariantAttributeOptions | null> | null
 }

@@ -145,8 +145,11 @@ const ProductVariantAttributeSelector: React.FC<
         if (response.ok) {
           const newVariantData = await response.json()
 
-          // Actualizar URL sin recargar la página
-          router.push(`/productos/variante/${targetVariant.id}`, {
+          // Actualizar URL sin recargar la página (usar slug si está disponible)
+          const variantUrl = targetVariant.slug
+            ? `/producto/${targetVariant.slug}`
+            : `/producto/${targetVariant.id}`
+          router.push(variantUrl, {
             scroll: false
           })
 

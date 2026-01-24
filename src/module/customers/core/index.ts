@@ -1,5 +1,6 @@
 // Customer exports
 export { default as customerModel } from './Customer.model'
+export { type CustomerWithStatsDTO } from './Customer.model'
 export { CustomerMapper, CustomersMapper } from './Customer.mapper'
 export { default as customerRepository } from './Customer.repository'
 

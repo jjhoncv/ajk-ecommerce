@@ -27,7 +27,7 @@ export class AttributeModel {
    * Create base attribute
    */
   public async createAttribute(
-    attributeData: Omit<AttributeRaw, 'id'>
+    attributeData: Omit<AttributeRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<Attribute | undefined> {
     const created = await oAttributeRep.createAttribute(attributeData)
     if (!created) return undefined
@@ -38,7 +38,7 @@ export class AttributeModel {
    * Update base attribute
    */
   public async updateAttribute(
-    attributeData: Omit<AttributeRaw, 'id'>,
+    attributeData: Omit<AttributeRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<Attribute | undefined> {
     const updated = await oAttributeRep.updateAttribute(attributeData, id)

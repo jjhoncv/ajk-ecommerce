@@ -23,7 +23,7 @@ export class AttributeRepository {
   }
 
   public async createAttribute(
-    attribute: Omit<AttributeRaw, 'id'>
+    attribute: Omit<AttributeRaw, 'id' | 'created_at' | 'updated_at'>
   ): Promise<AttributeRaw | null> {
     const result = await executeQuery<{ insertId: number }>({
       query: 'INSERT INTO attributes SET ?',
@@ -34,7 +34,7 @@ export class AttributeRepository {
   }
 
   public async updateAttribute(
-    attributeData: Omit<AttributeRaw, 'id'>,
+    attributeData: Omit<AttributeRaw, 'id' | 'created_at' | 'updated_at'>,
     id: number
   ): Promise<AttributeRaw | null> {
     await executeQuery({

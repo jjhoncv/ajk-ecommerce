@@ -1,7 +1,11 @@
+'use client'
+
 import { type RatingImages, type VariantRatings } from '@/types/domain'
 import { Check, User } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 import { useRatingDisplay } from './hooks/useRatingDisplay'
+import { RatingImageModal } from './RatingImageModal'
 
 interface RatingItemProps {
   rating: VariantRatings
@@ -9,6 +13,8 @@ interface RatingItemProps {
 
 export const RatingItem: React.FC<RatingItemProps> = ({ rating }) => {
   const { renderStars } = useRatingDisplay()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   const customer = rating.customer
   const customerName = customer
@@ -63,10 +69,15 @@ export const RatingItem: React.FC<RatingItemProps> = ({ rating }) => {
         <div className="mt-2 flex gap-2 overflow-x-auto pb-2">
           {rating.ratingImages
             .filter((image): image is RatingImages => !!image)
-            .map((image) => (
-              <div
+            .map((image, index) => (
+              <button
                 key={image.id}
-                className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md"
+                type="button"
+                onClick={() => {
+                  setSelectedImageIndex(index)
+                  setIsModalOpen(true)
+                }}
+                className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 <Image
                   src={image.imageUrl}
@@ -75,9 +86,21 @@ export const RatingItem: React.FC<RatingItemProps> = ({ rating }) => {
                   sizes="64px"
                   className="object-cover"
                 />
-              </div>
+              </button>
             ))}
         </div>
+      )}
+
+      {/* Modal de imágenes */}
+      {rating.ratingImages && rating.ratingImages.length > 0 && (
+        <RatingImageModal
+          images={rating.ratingImages
+            .filter((image): image is RatingImages => !!image)
+            .map((img) => ({ id: img.id, imageUrl: img.imageUrl }))}
+          initialIndex={selectedImageIndex}
+          isOpen={isModalOpen}
+          onClose={() => { setIsModalOpen(false) }}
+        />
       )}
     </div>
   )

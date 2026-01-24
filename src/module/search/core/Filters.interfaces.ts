@@ -16,6 +16,7 @@ export interface FilterPromotion {
 export interface FilterCategory {
   id: number
   name: string
+  slug?: string
   count: number
 }
 
@@ -38,7 +39,7 @@ export interface FilterAttribute {
 }
 
 export interface FilterAttributeOption {
-  id: string  // Puede ser múltiples IDs separados por coma (ej: "6,12" para "Blanco" en múltiples productos)
+  id: string // Puede ser múltiples IDs separados por coma (ej: "6,12" para "Blanco" en múltiples productos)
   value: string
   additionalCost?: number
   count: number

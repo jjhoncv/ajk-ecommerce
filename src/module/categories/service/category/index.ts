@@ -41,31 +41,44 @@ export const categoryService = {
     return await categoryModel.getCategoryById(id)
   },
 
+  getCategoryBySlug: async (slug: string) => {
+    return await categoryModel.getCategoryBySlug(slug)
+  },
+
   // Obtener categoría con información de auditoría (nombres de usuarios)
   getCategoryWithAudit: async (id: number): Promise<CategoryWithAudit | null> => {
-    const category = await categoryModel.getCategoryById(id)
-    if (!category) return null
+    console.log('[categoryService.getCategoryWithAudit] Fetching category id:', id)
 
-    // Obtener nombres de usuarios
-    const [createdByName, updatedByName] = await Promise.all([
-      category.createdBy ? userModel.getUserFullName(category.createdBy) : null,
-      category.updatedBy ? userModel.getUserFullName(category.updatedBy) : null
-    ])
+    try {
+      const category = await categoryModel.getCategoryById(id)
+      console.log('[categoryService.getCategoryWithAudit] Category result:', category ? 'found' : 'not found')
 
-    return {
-      category,
-      audit: {
-        createdAt: category.createdAt ?? null,
-        createdByName,
-        updatedAt: category.updatedAt ?? null,
-        updatedByName
+      if (!category) return null
+
+      // Obtener nombres de usuarios
+      const [createdByName, updatedByName] = await Promise.all([
+        category.createdBy ? userModel.getUserFullName(category.createdBy) : null,
+        category.updatedBy ? userModel.getUserFullName(category.updatedBy) : null
+      ])
+
+      return {
+        category,
+        audit: {
+          createdAt: category.createdAt ?? null,
+          createdByName,
+          updatedAt: category.updatedAt ?? null,
+          updatedByName
+        }
       }
+    } catch (error) {
+      console.error('[categoryService.getCategoryWithAudit] Error:', error)
+      return null
     }
   },
 
   // Obtener todos los ancestros de una categoría (para breadcrumb)
   getCategoryAncestors: async (categoryId: number) => {
-    const ancestors: Array<{ id: number; name: string; parentId: number | null }> = []
+    const ancestors: Array<{ id: number; name: string; slug: string; parentId: number | null }> = []
     let currentId: number | null = categoryId
 
     while (currentId != null) {
@@ -75,6 +88,7 @@ export const categoryService = {
       ancestors.unshift({
         id: category.id,
         name: category.name,
+        slug: category.slug,
         parentId: category.parentId ?? null
       })
 

@@ -1,7 +1,21 @@
-import { variantRatingModel } from '@/module/products/core'
+import { productVariantModel, variantRatingModel, variantRatingRepository } from '@/module/products/core'
 import { authOptions } from '@/lib/auth/auth'
+import { writeBase64Image } from '@/module/shared/lib/writeFileServer'
 import { getServerSession } from 'next-auth'
 import { type NextRequest, NextResponse } from 'next/server'
+import { join } from 'path'
+
+/**
+ * Genera un slug seguro para usar como nombre de carpeta
+ */
+function sanitizeSlug(slug: string): string {
+  return slug
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remover acentos
+    .replace(/[^a-zA-Z0-9-]/g, '-') // Reemplazar caracteres especiales
+    .replace(/-+/g, '-') // Eliminar guiones múltiples
+    .replace(/^-|-$/g, '') // Eliminar guiones al inicio y final
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,8 +33,8 @@ export async function POST(request: NextRequest) {
       rating,
       review,
       title,
-      verifiedPurchase = false
-      // images = [] // Para futuras implementaciones con imágenes
+      verifiedPurchase = false,
+      images = []
     } = body
 
     // Usar el ID del usuario autenticado
@@ -70,10 +84,36 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // TODO: Si hay imágenes, procesarlas y guardarlas
-    // if (images && images.length > 0) {
-    //   await processRatingImages(newRating.id, images)
-    // }
+    // Procesar y guardar imágenes si las hay
+    if (images && images.length > 0) {
+      try {
+        // Obtener el slug de la variante para organizar las imágenes
+        const variant = await productVariantModel.getProductVariantById(variantId)
+        let folderName = `variant-${variantId}`
+
+        if (variant?.slug) {
+          folderName = sanitizeSlug(variant.slug)
+        }
+
+        const uploadDir = join(process.cwd(), 'public', 'uploads', 'ratings', folderName)
+        const imageUrls: string[] = []
+
+        for (const base64Image of images) {
+          if (typeof base64Image === 'string' && base64Image.startsWith('data:image/')) {
+            const imageUrl = await writeBase64Image(uploadDir, base64Image, `rating-${newRating.id}`)
+            imageUrls.push(imageUrl)
+          }
+        }
+
+        // Guardar URLs en la base de datos
+        if (imageUrls.length > 0) {
+          await variantRatingRepository.createRatingImages(newRating.id, imageUrls)
+        }
+      } catch (imageError) {
+        console.error('Error al procesar imágenes:', imageError)
+        // No fallamos la petición si las imágenes fallan, ya que la valoración ya se creó
+      }
+    }
 
     return NextResponse.json(newRating, { status: 201 })
   } catch (error) {

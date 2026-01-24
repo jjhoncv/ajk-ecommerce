@@ -40,12 +40,71 @@ export class ShippingZoneRepository {
     return zones[0]
   }
 
+  // Get district IDs from pivot table
+  public async getDistrictIdsByZoneId(zoneId: number): Promise<number[]> {
+    const results = await executeQuery<Array<{ district_id: number }>>({
+      query: 'SELECT district_id FROM shipping_zone_districts WHERE zone_id = ?',
+      values: [zoneId]
+    })
+    return results.map(r => r.district_id)
+  }
+
+  // Set district IDs for a zone (replaces existing)
+  public async setDistrictIdsForZone(zoneId: number, districtIds: number[]): Promise<void> {
+    // Delete existing relationships
+    await executeQuery({
+      query: 'DELETE FROM shipping_zone_districts WHERE zone_id = ?',
+      values: [zoneId]
+    })
+
+    // Insert new relationships
+    if (districtIds.length > 0) {
+      const values = districtIds.map(districtId => [zoneId, districtId])
+      await executeQuery({
+        query: 'INSERT INTO shipping_zone_districts (zone_id, district_id) VALUES ?',
+        values: [values]
+      })
+    }
+  }
+
+  // Find zone by district ID (using pivot table)
+  public async getShippingZoneByDistrictId(districtId: number): Promise<ShippingZoneRaw | null> {
+    const zones = await executeQuery<ShippingZoneRaw[]>({
+      query: `
+        SELECT sz.* FROM shipping_zones sz
+        INNER JOIN shipping_zone_districts szd ON sz.id = szd.zone_id
+        WHERE szd.district_id = ?
+        AND sz.is_active = 1
+        LIMIT 1
+      `,
+      values: [districtId]
+    })
+
+    if (zones.length === 0) return null
+    return zones[0]
+  }
+
   public async getShippingZoneByDistrict(
     district: string,
     province?: string,
     department?: string
   ): Promise<ShippingZoneRaw | null> {
-    // Search for zone containing the complete object {name, province, department}
+    // First try to find by district ID through pivot table
+    const zoneByPivot = await executeQuery<ShippingZoneRaw[]>({
+      query: `
+        SELECT sz.* FROM shipping_zones sz
+        INNER JOIN shipping_zone_districts szd ON sz.id = szd.zone_id
+        INNER JOIN districts d ON szd.district_id = d.id
+        WHERE d.name = ?
+        AND sz.is_active = 1
+        LIMIT 1
+      `,
+      values: [district]
+    })
+
+    if (zoneByPivot.length > 0) return zoneByPivot[0]
+
+    // Fallback: Search for zone containing the complete object {name, province, department} (legacy JSON)
     const searchObject = {
       name: district,
       province: province ?? '',
@@ -101,7 +160,13 @@ export class ShippingZoneRepository {
   }
 
   public async deleteShippingZone(id: number): Promise<void> {
-    // First delete relationships with shipping methods
+    // Delete relationships with districts (pivot table)
+    await executeQuery({
+      query: 'DELETE FROM shipping_zone_districts WHERE zone_id = ?',
+      values: [id]
+    })
+
+    // Delete relationships with shipping methods
     await executeQuery({
       query: 'DELETE FROM shipping_zone_methods WHERE shipping_zone_id = ?',
       values: [id]

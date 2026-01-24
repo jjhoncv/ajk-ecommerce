@@ -27,7 +27,7 @@ export async function GET(): Promise<Response> {
 export async function POST(req: NextRequest): Promise<Response> {
   return await apiHandler(async () => {
     const body = await req.json()
-    const { name, districts, isActive } = body
+    const { name, districtIds, isActive } = body
 
     if (!name) {
       return createResponse(
@@ -36,12 +36,25 @@ export async function POST(req: NextRequest): Promise<Response> {
       )
     }
 
+    if (!districtIds || !Array.isArray(districtIds) || districtIds.length === 0) {
+      return createResponse(
+        { error: 'Debe seleccionar al menos un distrito', success: false },
+        400
+      )
+    }
+
     try {
+      // Create zone with empty districts JSON (we'll use pivot table)
       const zone = await shippingZoneModel.createShippingZone({
         name,
-        districts: districts ? JSON.stringify(districts) : '[]',
+        districts: '[]',
         is_active: isActive ?? 1
       })
+
+      if (zone) {
+        // Set district IDs in pivot table
+        await shippingZoneModel.setDistrictIdsForZone(zone.id, districtIds)
+      }
 
       return createResponse(
         {
@@ -60,7 +73,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 export async function PATCH(req: NextRequest): Promise<Response> {
   return await apiHandler(async () => {
     const body = await req.json()
-    const { id, name, districts, isActive } = body
+    const { id, name, districtIds, isActive } = body
 
     if (!id) {
       return createResponse(
@@ -72,10 +85,14 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     try {
       const updateData: any = {}
       if (name !== undefined) updateData.name = name
-      if (districts !== undefined) updateData.districts = JSON.stringify(districts)
       if (isActive !== undefined) updateData.is_active = isActive
 
       const zone = await shippingZoneModel.updateShippingZone(updateData, Number(id))
+
+      // Update district IDs in pivot table if provided
+      if (districtIds !== undefined && Array.isArray(districtIds)) {
+        await shippingZoneModel.setDistrictIdsForZone(Number(id), districtIds)
+      }
 
       return createResponse(
         {

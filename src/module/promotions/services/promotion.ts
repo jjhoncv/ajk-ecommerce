@@ -55,3 +55,25 @@ export const getPromotion = async (id: number): Promise<Promotion | null> => {
     )
   }
 }
+
+export const getPromotionBySlug = async (slug: string): Promise<Promotion | null> => {
+  try {
+    const promotion = await promotionModel.getPromotionBySlug(slug)
+
+    if (promotion == null) {
+      console.log('No se encontró la promoción')
+      return null
+    }
+
+    if (!isPromotionActive(promotion)) {
+      console.log('La promoción no se encuentra vigente')
+      return null
+    }
+
+    return hydratePromotion(promotion)
+  } catch (error) {
+    throw new Error(
+      `Error al obtener getPromotionBySlug ${error instanceof Error ? error.message : 'Unknow error'}`
+    )
+  }
+}
