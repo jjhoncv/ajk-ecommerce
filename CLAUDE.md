@@ -6,6 +6,20 @@ AJK E-Commerce es una tienda en línea completa desarrollada con Next.js 15, dis
 
 ---
 
+## Documentación para Desarrollo de Módulos
+
+> **Para crear o modificar módulos, consultar:** `/docs/module-template.md`
+>
+> Este documento contiene:
+> - Estructura de carpetas del módulo
+> - Patrones de código (Model-Repository-Mapper, Services, Hooks, Helpers)
+> - Acceso a base de datos via Docker (ejecutar SQL directamente, no crear archivos)
+> - Componentes compartidos del admin
+> - Tests E2E
+> - Checklist de completitud
+
+---
+
 ## Stack Tecnológico
 
 ### Frontend
@@ -45,7 +59,8 @@ AJK E-Commerce es una tienda en línea completa desarrollada con Next.js 15, dis
 ajk-ecommerce/
 ├── src/
 │   ├── app/                    # Next.js App Router
-│   │   ├── api/               # API Routes (43 endpoints)
+│   │   ├── api/               # API Routes
+│   │   │   └── admin/         # Endpoints admin por módulo
 │   │   ├── admin/             # Panel de administración
 │   │   ├── account/           # Área de usuario
 │   │   ├── cart/              # Carrito de compras
@@ -56,69 +71,75 @@ ajk-ecommerce/
 │   │   ├── promotion/         # Páginas de promoción
 │   │   └── order/             # Confirmación de orden
 │   │
-│   ├── backend/               # Capa de datos (29 módulos)
-│   │   ├── product/           # Productos
-│   │   ├── product-variant/   # Variantes de producto
-│   │   ├── category/          # Categorías
-│   │   ├── attribute/         # Atributos
-│   │   ├── customer/          # Clientes
-│   │   ├── order/             # Órdenes
-│   │   ├── payment-*/         # Pagos
-│   │   ├── shipping-*/        # Envíos
-│   │   └── ...                # Otros módulos
-│   │
-│   ├── components/            # Componentes React
-│   │   ├── ui/                # Componentes base reutilizables
-│   │   ├── product/           # Componentes de producto
-│   │   ├── cart/              # Componentes de carrito
-│   │   ├── checkout/          # Componentes de checkout
-│   │   ├── search/            # Componentes de búsqueda
-│   │   ├── admin/             # Componentes del admin
-│   │   ├── account/           # Componentes de cuenta
-│   │   └── layout/            # Componentes de layout
-│   │
-│   ├── module/                # Módulos especializados
-│   │   ├── products/          # Gestión de productos (admin)
-│   │   ├── categories/        # Gestión de categorías
-│   │   ├── banners/           # Gestión de banners
-│   │   ├── attributes/        # Gestión de atributos
+│   ├── module/                # ARQUITECTURA PRINCIPAL - Módulos del sistema
+│   │   ├── attributes/        # Atributos de productos
+│   │   ├── banners/           # Banners y sliders
+│   │   ├── brands/            # Marcas
+│   │   ├── cart/              # Carrito
+│   │   ├── categories/        # Categorías jerárquicas
+│   │   ├── checkout/          # Proceso de checkout
+│   │   ├── coupons/           # Cupones de descuento
+│   │   ├── customers/         # Clientes
+│   │   ├── districts/         # Distritos (envío)
+│   │   ├── offers/            # Ofertas
+│   │   ├── orders/            # Órdenes de compra
+│   │   ├── payments/          # Métodos de pago
+│   │   ├── products/          # Productos y variantes
 │   │   ├── profile/           # Perfil de usuario
-│   │   └── shared/            # Componentes compartidos del admin
-│   │
-│   ├── services/              # Lógica de negocio
-│   │   ├── customer/          # Autenticación de clientes
-│   │   ├── user/              # Autenticación de admins
-│   │   ├── product/           # Servicios de producto
-│   │   ├── search/            # Servicios de búsqueda
-│   │   └── promotion/         # Servicios de promociones
-│   │
-│   ├── providers/             # Context Providers
-│   │   ├── cart/              # CartProvider
-│   │   ├── auth-modal/        # AuthModalProvider
-│   │   └── theme/             # ThemeProvider
-│   │
-│   ├── hooks/                 # Custom Hooks
-│   │   ├── useCart/           # Hook del carrito
-│   │   └── ...
+│   │   ├── promotions/        # Promociones
+│   │   ├── ratings/           # Valoraciones
+│   │   ├── roles/             # Roles de admin
+│   │   ├── search/            # Búsqueda avanzada
+│   │   ├── shared/            # Componentes compartidos admin
+│   │   ├── shippings/         # Envíos y zonas
+│   │   └── users/             # Usuarios admin
 │   │
 │   ├── lib/                   # Utilidades
 │   │   ├── db.ts              # Conexión a MySQL
-│   │   ├── auth/              # Configuración de NextAuth
-│   │   └── utils.ts           # Funciones helper
+│   │   └── auth/              # Configuración de NextAuth
 │   │
-│   └── types/                 # Tipos TypeScript
-│       ├── database/          # Tipos de BD (generados)
-│       ├── domain/            # Tipos de dominio (generados)
-│       ├── checkout.ts        # Tipos de checkout
-│       └── next-auth.d.ts     # Extensiones de NextAuth
+│   ├── types/                 # Tipos TypeScript
+│   │   ├── database/          # Tipos de BD (generados)
+│   │   └── domain/            # Tipos de dominio (generados)
+│   │
+│   ├── config/                # Configuración
+│   ├── db/                    # Schema SQL de referencia
+│   └── providers/             # Context Providers (Cart, Auth, Theme)
 │
 ├── public/                    # Archivos estáticos
 │   ├── images/               # Imágenes de productos
 │   └── uploads/              # Archivos subidos
 │
-├── sql-migrations/           # Migraciones SQL
+├── docs/                     # Documentación
+│   └── module-template.md    # Template para crear módulos (LEER PRIMERO)
+│
+├── tests/                    # Tests E2E compartidos
+│   └── e2e/utils.ts          # Utilidades compartidas
+│
 └── scripts/                  # Scripts de generación
 ```
+
+### Estructura de cada Módulo
+
+Cada módulo en `src/module/[modulo]/` sigue esta estructura:
+
+```
+[modulo]/
+├── core/                     # Capa de datos (Model-Repository-Mapper)
+│   ├── [Entidad].model.ts
+│   ├── [Entidad].repository.ts
+│   ├── [Entidad].mapper.ts
+│   └── index.ts
+├── components/
+│   ├── admin/               # UI del panel admin
+│   └── ecommerce/           # UI pública (si aplica)
+├── service/[entidad]/       # Servicios con lógica de negocio
+└── e2e/                     # Tests E2E del módulo
+    ├── admin/
+    └── ecommerce/
+```
+
+> **Ver `/docs/module-template.md` para patrones detallados de cada capa.**
 
 ---
 
@@ -239,72 +260,48 @@ ajk-ecommerce/
 
 ---
 
-## Arquitectura Backend
+## Arquitectura de Módulos
 
 ### Patrón Model-Repository-Mapper
 
-Cada módulo del backend sigue este patrón:
+Cada módulo en `src/module/[modulo]/core/` sigue este patrón:
 
 ```
-backend/[modulo]/
-├── [Modulo].model.ts       # Lógica de negocio
-├── [Modulo].repository.ts  # Acceso a datos (SQL)
-├── [Modulo].mapper.ts      # Transformación de tipos
-├── [Modulo].interfaces.ts  # Interfaces (opcional)
-└── index.ts                # Exportaciones
+module/[modulo]/core/
+├── [Entidad].model.ts       # Lógica de negocio
+├── [Entidad].repository.ts  # Acceso a datos (SQL)
+├── [Entidad].mapper.ts      # Transformación snake_case → camelCase
+├── [Entidad].interfaces.ts  # Interfaces extendidas (opcional)
+└── index.ts                 # Exportaciones
 ```
 
-#### Ejemplo: Product Model
-
-```typescript
-// Product.model.ts
-export class ProductModel {
-  // Obtener productos con datos relacionados
-  public async getProducts(): Promise<Product[] | undefined>
-
-  // Obtener producto completo con variantes, atributos e imágenes
-  public async getProductById(id: number): Promise<Product | undefined>
-
-  // Búsqueda con filtros
-  public async searchProducts(filters: ProductSearchFilters): Promise<ProductSearchResult>
-
-  // CRUD
-  public async createProduct(data): Promise<Product | undefined>
-  public async updateProduct(data, id): Promise<Product | undefined>
-  public async deleteProduct(id): Promise<void>
-}
+**Flujo de datos:**
+```
+BD (snake_case) → Repository → Mapper → Model (camelCase) → Service → API/Component
 ```
 
-```typescript
-// Product.repository.ts
-export class ProductRepository {
-  public async getProducts(): Promise<ProductRaw[] | null> {
-    return await executeQuery<ProductRaw[]>({
-      query: 'SELECT * FROM products ORDER BY id ASC'
-    })
-  }
-}
-```
+> **Ver `/docs/module-template.md` para ejemplos detallados de cada capa.**
 
-### Módulos del Backend
+### Módulos del Sistema
 
-| Módulo | Archivo Principal | Responsabilidad |
-|--------|-------------------|-----------------|
-| product | Product.model.ts | Gestión de productos |
-| product-variant | ProductVariant.model.ts | Variantes con atributos |
-| category | Category.model.ts | Categorías jerárquicas |
-| attribute | Attribute.model.ts | Atributos y opciones |
-| customer | Customer.model.ts | Gestión de clientes |
-| customer-address | CustomerAddress.model.ts | Direcciones |
-| order | Order.model.ts | Órdenes de compra |
-| order-item | OrderItem.model.ts | Items de orden |
-| payment-method | PaymentMethod.model.ts | Métodos de pago |
-| payment-transaction | PaymentTransaction.model.ts | Transacciones |
-| coupon | Coupon.model.ts | Cupones y descuentos |
-| shipping-zone-method | ShippingZoneMethod.model.ts | Costos de envío |
-| promotion | Promotion.model.ts | Promociones |
-| search | Search.model.ts | Búsqueda avanzada |
-| filters | Filters.model.ts | Filtros dinámicos |
+| Módulo | Responsabilidad |
+|--------|-----------------|
+| products | Productos y variantes |
+| categories | Categorías jerárquicas |
+| attributes | Atributos y opciones de variantes |
+| brands | Marcas de productos |
+| banners | Banners y sliders |
+| customers | Clientes y direcciones |
+| orders | Órdenes de compra |
+| payments | Métodos de pago y transacciones |
+| shippings | Zonas y métodos de envío |
+| coupons | Cupones de descuento |
+| promotions | Promociones por variante |
+| ratings | Valoraciones de productos |
+| users | Usuarios administradores |
+| roles | Roles y permisos |
+| search | Búsqueda avanzada |
+| shared | Componentes compartidos del admin |
 
 ---
 
@@ -803,13 +800,19 @@ import type { Product } from '@/types/domain'
 
 ## Notas para Desarrollo
 
-### Agregar Nueva Entidad
-1. Crear migración SQL en `/sql-migrations/`
-2. Crear módulo en `/src/backend/[entidad]/`
-3. Regenerar tipos con `pnpm generate`
-4. Crear service si necesita lógica adicional
-5. Crear API routes en `/src/app/api/`
-6. Crear componentes UI necesarios
+### Agregar Nueva Entidad/Módulo
+
+**IMPORTANTE**: Antes de crear un módulo, leer `/docs/module-template.md` que contiene todos los patrones y convenciones.
+
+1. Ejecutar SQL directamente en Docker (NO crear archivos en sql-migrations/):
+   ```bash
+   docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "CREATE TABLE..."
+   ```
+2. Regenerar tipos con `pnpm generate`
+3. Crear módulo en `/src/module/[entidad]/` siguiendo el template
+4. Crear API routes en `/src/app/api/admin/[entidad]/`
+5. Crear páginas admin en `/src/app/admin/[entidad]/`
+6. Crear tests E2E en `/src/module/[entidad]/e2e/`
 
 ### Agregar Nuevo Atributo de Producto
 1. Insertar en tabla `attributes`

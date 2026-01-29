@@ -1,0 +1,30 @@
+{
+  "project": "ajk-ecommerce",
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-29T00:00:00Z",
+  "modules": {
+    "attributes": { "status": "released", "version": "1.0.0" },
+    "banners": { "status": "released", "version": "1.0.0" },
+    "brands": { "status": "released", "version": "1.0.0" },
+    "cart": { "status": "released", "version": "1.0.0" },
+    "categories": { "status": "released", "version": "1.0.0" },
+    "checkout": { "status": "released", "version": "1.0.0" },
+    "coupons": { "status": "released", "version": "1.0.0" },
+    "customers": { "status": "released", "version": "1.0.0" },
+    "districts": { "status": "released", "version": "1.0.0" },
+    "offers": { "status": "released", "version": "1.0.0" },
+    "orders": { "status": "released", "version": "1.0.0" },
+    "payments": { "status": "released", "version": "1.0.0" },
+    "products": { "status": "released", "version": "1.0.0" },
+    "profile": { "status": "released", "version": "1.0.0" },
+    "promotions": { "status": "released", "version": "1.0.0" },
+    "ratings": { "status": "released", "version": "1.0.0" },
+    "roles": { "status": "released", "version": "1.0.0" },
+    "search": { "status": "released", "version": "1.0.0" },
+    "shared": { "status": "released", "version": "1.0.0" },
+    "shippings": { "status": "released", "version": "1.0.0" },
+    "users": { "status": "released", "version": "1.0.0" }
+  },
+  "activeFeatures": [],
+  "pendingReleases": []
+}

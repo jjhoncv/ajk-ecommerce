@@ -1,0 +1,69 @@
+# Releases de Modulos
+
+Esta carpeta contiene el historial de releases aprobados.
+
+## Convencion de nombres
+
+```
+[modulo]-v[version].md
+```
+
+Ejemplos:
+- tags-v1.0.0.md
+- categories-v1.1.0.md (mejora)
+- reviews-v1.0.0.md
+
+## Quien crea estos archivos
+
+El **Project Owner** crea el release.md cuando el Product Owner aprueba el merge a main.
+
+## Template
+
+```markdown
+# Release: [Modulo] v[version]
+
+## Fecha
+YYYY-MM-DD
+
+## Module Lead
+[identificador]
+
+## Branch
+feature/[modulo]
+
+## PR
+#[numero]
+
+## Modelo de Negocio
+[Resumen de lo que se implemento]
+
+## Componentes
+- core/: Model, Repository, Mapper
+- service/: [servicios creados]
+- components/admin/: [componentes]
+- components/ecommerce/: [si aplica]
+- e2e/: [cantidad de tests]
+
+## Cumplimiento Final
+X/Y items (Z%)
+
+## E2E Tests
+Passed: X
+Failed: 0
+
+## Screenshots
+src/module/[modulo]/e2e/screenshots/
+
+## Toco Shared
+[si/no - lista de archivos]
+
+## Aprobado por
+Product Owner
+```
+
+## Versionamiento
+
+- v1.0.0 - Primera version del modulo
+- v1.1.0 - Mejora menor
+- v1.2.0 - Nueva funcionalidad
+- v2.0.0 - Cambio mayor/breaking change

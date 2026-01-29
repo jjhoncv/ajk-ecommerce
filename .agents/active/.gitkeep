@@ -1,0 +1,97 @@
+# Estados Activos de Modulos
+
+Esta carpeta contiene el estado actual de modulos en desarrollo.
+
+## Convencion de nombres
+
+```
+[modulo]-status.md
+```
+
+Ejemplos:
+- tags-status.md
+- reviews-status.md
+
+## Quien crea estos archivos
+
+El **Module Lead** crea el status.md cuando empieza a trabajar en un modulo.
+
+## Cuando se usa
+
+- Para notificar que un modulo esta en desarrollo
+- Para coordinar cuando se toca shared/
+- Para resolver conflictos entre modulos
+- **Para que otros Module Leads analicen antes de decidir prioridades**
+
+## Template
+
+```markdown
+# Estado: [modulo]
+
+## Module Lead
+[identificador del agente]
+
+## Branch
+feature/[modulo]
+
+## Prioridad Asignada
+[alta/media/baja] - asignada por Project Owner
+
+## Progreso
+- [ ] DBA
+- [ ] Backend
+- [ ] Frontend
+- [ ] QA
+
+## Porcentaje
+0%
+
+## Toca Shared
+Archivos que este modulo modifica o crea en shared/:
+
+| Archivo | Accion | Estado |
+|---------|--------|--------|
+| shared/components/[X].tsx | crear nuevo | pendiente |
+| shared/index.ts | modificar (agregar export) | pendiente |
+
+## Complejidad del Cambio en Shared
+[baja/media/alta]
+
+- Baja: Solo agregar nuevos archivos, exportar en index
+- Media: Modificar archivos existentes sin romper API
+- Alta: Cambios que afectan a otros modulos
+
+## Dependencias
+- Depende de: [lista o "ninguna"]
+- Bloquea a: [lista o "ninguna"]
+
+## Conflictos Activos
+| Con Modulo | Archivos en Comun | Estado | Acuerdo |
+|------------|-------------------|--------|---------|
+| [modulo]   | [archivos]        | [resuelto/pendiente] | [link a acuerdo] |
+
+## Historial
+- YYYY-MM-DD: Inicio de desarrollo
+- YYYY-MM-DD: DBA completado
+- YYYY-MM-DD: Conflicto detectado con [modulo]
+- YYYY-MM-DD: Acuerdo alcanzado - yo voy segundo
+
+## Ultima Actualizacion
+YYYY-MM-DD HH:MM
+```
+
+## Informacion Critica para Analisis
+
+Cuando otro Module Lead revise este archivo, debe poder responder:
+
+1. **¿Que tan avanzado esta?** → Ver Porcentaje y Progreso
+2. **¿Que prioridad tiene?** → Ver Prioridad Asignada
+3. **¿Toca los mismos archivos que yo?** → Ver Toca Shared
+4. **¿Es un cambio complejo?** → Ver Complejidad del Cambio
+5. **¿Ya tiene conflictos con otros?** → Ver Conflictos Activos
+6. **¿De quien depende o a quien bloquea?** → Ver Dependencias
+
+## Limpieza
+
+- Cuando un modulo se mergea a main, el Project Owner mueve este archivo a releases/
+- O simplemente lo elimina despues de crear el archivo de release

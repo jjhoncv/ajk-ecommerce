@@ -1,0 +1,62 @@
+# Specs de Modulos
+
+Esta carpeta contiene los modelos de negocio (testing-spec.md) para modulos nuevos o en desarrollo.
+
+## Convencion de nombres
+
+```
+[modulo]-testing-spec.md
+```
+
+Ejemplos:
+- tags-testing-spec.md
+- reviews-testing-spec.md
+- wishlists-testing-spec.md
+
+## Quien crea estos archivos
+
+El **Project Owner** crea el testing-spec.md cuando el Product Owner solicita un nuevo modulo.
+
+## Contenido tipico
+
+```markdown
+# Testing Spec: [Modulo]
+
+## Descripcion
+[Descripcion del modulo y su proposito]
+
+## Criterios de Aceptacion
+
+### Admin CRUD
+- [ ] Listar [modulo]s
+- [ ] Crear [modulo]
+- [ ] Editar [modulo]
+- [ ] Eliminar [modulo]
+
+### Validaciones
+- [ ] [validacion 1]
+- [ ] [validacion 2]
+
+### Ecommerce (si aplica)
+- [ ] [funcionalidad 1]
+- [ ] [funcionalidad 2]
+
+## Campos de la Tabla
+| Campo | Tipo | Requerido | Descripcion |
+|-------|------|-----------|-------------|
+| name | VARCHAR(255) | Si | Nombre |
+| slug | VARCHAR(255) | Si | URL amigable |
+| ... | ... | ... | ... |
+
+## Dependencias
+- Depende de: [lista o ninguna]
+- Bloquea a: [lista o ninguna]
+```
+
+## Flujo
+
+1. Product Owner solicita modulo
+2. Project Owner crea testing-spec.md aqui
+3. Project Owner asigna Module Lead
+4. Module Lead usa este archivo para dividir tareas
+5. QA usa este archivo para crear tests E2E
