@@ -36,6 +36,66 @@ export interface Scalars {
   Timestamp: { input: Date; output: Date; }
 }
 
+export interface ActiveOffers {
+
+  badgeColor?: Maybe<Scalars['String']['output']>;
+
+  badgeText?: Maybe<Scalars['String']['output']>;
+
+  currentUses?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  discountType: ActiveOffersDiscountType;
+
+  discountValue: Scalars['Float']['output'];
+  endDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+
+  isFeatured?: Maybe<Scalars['Int']['output']>;
+  maxDiscountPercent?: Maybe<Scalars['Float']['output']>;
+
+  maxUses?: Maybe<Scalars['Int']['output']>;
+
+  maxUsesPerCustomer?: Maybe<Scalars['Int']['output']>;
+
+  minPrice?: Maybe<Scalars['Float']['output']>;
+
+  minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
+
+  minQuantity?: Maybe<Scalars['Int']['output']>;
+
+  name: Scalars['String']['output'];
+  offerType: ActiveOffersOfferType;
+
+  priority?: Maybe<Scalars['Int']['output']>;
+
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+
+  showSavings?: Maybe<Scalars['Int']['output']>;
+
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+  startDate: Scalars['DateTime']['output'];
+
+  title: Scalars['String']['output'];
+  totalSold?: Maybe<Scalars['Float']['output']>;
+  totalVariants: Scalars['BigInt']['output'];
+
+}
+
+export type ActiveOffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type ActiveOffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
+
 export interface AttributeOptions {
   additionalCost?: Maybe<Scalars['Float']['output']>;
   attribute?: Maybe<Attributes>;
@@ -46,14 +106,14 @@ export interface AttributeOptions {
 
 export interface Attributes {
   attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   displayType: AttributesDisplayType;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   productAttributeOption?: Maybe<ProductAttributeOptions>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
 }
@@ -67,7 +127,7 @@ export type AttributesDisplayType =
 
 export interface Banner {
   buttonText?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   displayOrder?: Maybe<Scalars['Int']['output']>;
@@ -76,7 +136,7 @@ export interface Banner {
   link?: Maybe<Scalars['String']['output']>;
   subtitle?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
 }
@@ -85,6 +145,7 @@ export interface Brands {
 
   createdBy?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   product?: Maybe<Products>;
 
@@ -93,27 +154,37 @@ export interface Brands {
 }
 
 export interface Categories {
+
   bannerCtaLink?: Maybe<Scalars['String']['output']>;
+
   bannerCtaText?: Maybe<Scalars['String']['output']>;
+
   bannerDescription?: Maybe<Scalars['String']['output']>;
+
   bannerImage?: Maybe<Scalars['String']['output']>;
+
   bannerImageMobile?: Maybe<Scalars['String']['output']>;
+
   bannerSubtitle?: Maybe<Scalars['String']['output']>;
+
   bannerTitle?: Maybe<Scalars['String']['output']>;
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   displayOrder?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   imageUrl?: Maybe<Scalars['String']['output']>;
+
   metaDescription?: Maybe<Scalars['String']['output']>;
+
   metaTitle?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
+  offerCategories?: Maybe<Array<Maybe<OfferCategories>>>;
   parentId?: Maybe<Scalars['Int']['output']>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   showNav?: Maybe<Scalars['Int']['output']>;
   slug: Scalars['String']['output'];
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
 }
@@ -135,7 +206,7 @@ export interface Coupons {
   applicableTo?: Maybe<CouponsApplicableTo>;
   code: Scalars['String']['output'];
   couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   discountType: CouponsDiscountType;
@@ -147,7 +218,7 @@ export interface Coupons {
   minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
   name: Scalars['String']['output'];
   startDate: Scalars['DateTime']['output'];
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   usageLimit?: Maybe<Scalars['Int']['output']>;
   usageLimitPerCustomer?: Maybe<Scalars['Int']['output']>;
@@ -174,8 +245,13 @@ export interface Customers {
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   isActive?: Maybe<Scalars['Int']['output']>;
-  lastname: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+
+  lastname?: Maybe<Scalars['String']['output']>;
+
+  name?: Maybe<Scalars['String']['output']>;
+
+  needsPasswordSetup?: Maybe<Scalars['Int']['output']>;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
   order?: Maybe<Orders>;
   password: Scalars['String']['output'];
 
@@ -193,8 +269,7 @@ export interface CustomersAddresses {
 
   customer?: Maybe<Customers>;
   department: Scalars['String']['output'];
-  district: Scalars['String']['output'];
-  /** FK a la tabla districts */
+  district?: Maybe<Districts>;
   districtId?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   idCustomer: Scalars['Int']['output'];
@@ -206,7 +281,6 @@ export interface CustomersAddresses {
   longitude?: Maybe<Scalars['Float']['output']>;
   order?: Maybe<Orders>;
   province: Scalars['String']['output'];
-  /** Referencia de ubicación */
   reference?: Maybe<Scalars['String']['output']>;
 
   streetName: Scalars['String']['output'];
@@ -214,6 +288,136 @@ export interface CustomersAddresses {
   streetNumber: Scalars['String']['output'];
 
 }
+
+export interface Districts {
+
+  code: Scalars['String']['output'];
+
+  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
+  id: Scalars['Int']['output'];
+
+  isActive: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  shippingZoneDistricts?: Maybe<Array<Maybe<ShippingZoneDistricts>>>;
+
+  zone: DistrictsZone;
+}
+
+export type DistrictsZone =
+  | 'callao'
+  | 'lima_centro'
+  | 'lima_este'
+  | 'lima_norte'
+  | 'lima_sur';
+
+export interface FooterLinks {
+
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+
+  url: Scalars['String']['output'];
+}
+
+export interface OfferCategories {
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  categoryId: Scalars['Int']['output'];
+  offer?: Maybe<Offers>;
+  offerId: Scalars['Int']['output'];
+}
+
+export interface OfferUsage {
+  customer?: Maybe<Customers>;
+  customerId: Scalars['Int']['output'];
+
+  discountAmount: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
+  offer?: Maybe<Offers>;
+  offerId: Scalars['Int']['output'];
+  offerPrice: Scalars['Float']['output'];
+  order?: Maybe<Orders>;
+  orderId: Scalars['Int']['output'];
+  originalPrice: Scalars['Float']['output'];
+  quantity: Scalars['Int']['output'];
+  usedAt: Scalars['Timestamp']['output'];
+  variantId: Scalars['Int']['output'];
+}
+
+export interface OfferVariants {
+
+  id: Scalars['Int']['output'];
+  offer?: Maybe<Offers>;
+  offerId: Scalars['Int']['output'];
+
+  offerPrice: Scalars['Float']['output'];
+
+  originalPrice: Scalars['Float']['output'];
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+
+  soldCount?: Maybe<Scalars['Int']['output']>;
+
+  stockLimit?: Maybe<Scalars['Int']['output']>;
+  variantId: Scalars['Int']['output'];
+}
+
+export interface Offers {
+
+  badgeColor?: Maybe<Scalars['String']['output']>;
+
+  badgeText?: Maybe<Scalars['String']['output']>;
+
+  currentUses?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  discountType: OffersDiscountType;
+
+  discountValue: Scalars['Float']['output'];
+  endDate: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+
+  isFeatured?: Maybe<Scalars['Int']['output']>;
+
+  maxUses?: Maybe<Scalars['Int']['output']>;
+
+  maxUsesPerCustomer?: Maybe<Scalars['Int']['output']>;
+
+  minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
+
+  minQuantity?: Maybe<Scalars['Int']['output']>;
+
+  name: Scalars['String']['output'];
+  offerCategories?: Maybe<Array<Maybe<OfferCategories>>>;
+  offerType: OffersOfferType;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
+  offerVariants?: Maybe<Array<Maybe<OfferVariants>>>;
+
+  priority?: Maybe<Scalars['Int']['output']>;
+
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+
+  showSavings?: Maybe<Scalars['Int']['output']>;
+
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+  startDate: Scalars['DateTime']['output'];
+
+  title: Scalars['String']['output'];
+
+}
+
+export type OffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type OffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
 
 export type OrderBy =
   | 'asc'
@@ -320,6 +524,7 @@ export interface Orders {
 
   estimatedDelivery?: Maybe<Scalars['Date']['output']>;
   id: Scalars['Int']['output'];
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
 
   orderNumber: Scalars['String']['output'];
@@ -500,13 +705,13 @@ export interface ProductVariants {
   id: Scalars['Int']['output'];
 
   imageAttributeId?: Maybe<Scalars['Int']['output']>;
+  offerVariants?: Maybe<Array<Maybe<OfferVariants>>>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
   price: Scalars['Float']['output'];
   product?: Maybe<Products>;
   productId: Scalars['Int']['output'];
   promotionVariants?: Maybe<Array<Maybe<PromotionVariants>>>;
   sku: Scalars['String']['output'];
-  /** URL-friendly slug para SEO */
   slug?: Maybe<Scalars['String']['output']>;
   stock: Scalars['Int']['output'];
 
@@ -519,7 +724,7 @@ export interface Products {
   basePrice?: Maybe<Scalars['Float']['output']>;
   brand?: Maybe<Brands>;
   brandId?: Maybe<Scalars['Int']['output']>;
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
@@ -527,7 +732,7 @@ export interface Products {
   productAttributeOption?: Maybe<ProductAttributeOptions>;
   productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
 }
@@ -543,7 +748,7 @@ export interface PromotionVariants {
 }
 
 export interface Promotions {
-  createdAt?: Maybe<Scalars['Timestamp']['output']>;
+
   createdBy?: Maybe<Scalars['Int']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   discountType: PromotionsDiscountType;
@@ -559,7 +764,7 @@ export interface Promotions {
   slug?: Maybe<Scalars['String']['output']>;
   startDate: Scalars['DateTime']['output'];
   type?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['Timestamp']['output']>;
+
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
 }
@@ -599,6 +804,7 @@ export interface Sections {
   image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
+  sectionGroup?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 }
 
@@ -643,6 +849,15 @@ export interface ShippingMethods {
 
 }
 
+export interface ShippingZoneDistricts {
+
+  district?: Maybe<Districts>;
+  districtId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  shippingZone?: Maybe<ShippingZones>;
+  zoneId: Scalars['Int']['output'];
+}
+
 export interface ShippingZoneMethods {
   cost: Scalars['Float']['output'];
 
@@ -664,7 +879,40 @@ export interface ShippingZones {
   id: Scalars['Int']['output'];
   isActive?: Maybe<Scalars['Int']['output']>;
   name: Scalars['String']['output'];
+  shippingZoneDistricts?: Maybe<Array<Maybe<ShippingZoneDistricts>>>;
   shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+
+}
+
+export interface StoreConfig {
+  address?: Maybe<Scalars['String']['output']>;
+  businessHours?: Maybe<Scalars['String']['output']>;
+
+  email?: Maybe<Scalars['String']['output']>;
+  facebookUrl?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  instagramUrl?: Maybe<Scalars['String']['output']>;
+  logoHeight?: Maybe<Scalars['Int']['output']>;
+  logoUrl?: Maybe<Scalars['String']['output']>;
+  logoWidth?: Maybe<Scalars['Int']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  storeDescription?: Maybe<Scalars['String']['output']>;
+  storeName: Scalars['String']['output'];
+  twitterUrl?: Maybe<Scalars['String']['output']>;
+
+  whatsappNumber?: Maybe<Scalars['String']['output']>;
+}
+
+export interface StoreFeatures {
+
+  description: Scalars['String']['output'];
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+
+  icon: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+
+  title: Scalars['String']['output'];
 
 }
 
@@ -688,7 +936,59 @@ export interface Users {
   role?: Maybe<Roles>;
   roleId?: Maybe<Scalars['Int']['output']>;
 
+  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
 }
+
+export interface VariantActiveOffers {
+
+  badgeColor?: Maybe<Scalars['String']['output']>;
+
+  badgeText?: Maybe<Scalars['String']['output']>;
+  discountPercent?: Maybe<Scalars['Float']['output']>;
+  discountType: VariantActiveOffersDiscountType;
+
+  discountValue: Scalars['Float']['output'];
+  endDate: Scalars['DateTime']['output'];
+  offerId: Scalars['Int']['output'];
+
+  offerName: Scalars['String']['output'];
+
+  offerPrice: Scalars['Float']['output'];
+
+  offerTitle: Scalars['String']['output'];
+  offerType: VariantActiveOffersOfferType;
+
+  originalPrice: Scalars['Float']['output'];
+
+  priority?: Maybe<Scalars['Int']['output']>;
+  remainingStock?: Maybe<Scalars['BigInt']['output']>;
+  savingsAmount: Scalars['Float']['output'];
+
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+
+  showSavings?: Maybe<Scalars['Int']['output']>;
+
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+
+  soldCount?: Maybe<Scalars['Int']['output']>;
+  startDate: Scalars['DateTime']['output'];
+
+  stockLimit?: Maybe<Scalars['Int']['output']>;
+  variantId: Scalars['Int']['output'];
+}
+
+export type VariantActiveOffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type VariantActiveOffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
 
 export interface VariantAttributeOptions {
 
@@ -743,12 +1043,8 @@ export interface VariantRatingSummary {
   verifiedPurchases?: Maybe<Scalars['Float']['output']>;
 }
 
-export type RatingStatus =
-  | 'pending'
-  | 'approved'
-  | 'rejected';
-
 export interface VariantRatings {
+
   customer?: Maybe<Customers>;
   customerId: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
@@ -758,8 +1054,24 @@ export interface VariantRatings {
   review?: Maybe<Scalars['String']['output']>;
   reviewedAt?: Maybe<Scalars['Timestamp']['output']>;
   reviewedBy?: Maybe<Scalars['Int']['output']>;
-  status: RatingStatus;
+  status: Scalars['String']['output'];
   title?: Maybe<Scalars['String']['output']>;
+
+  user?: Maybe<Users>;
   variantId: Scalars['Int']['output'];
   verifiedPurchase: Scalars['Int']['output'];
 }
+
+export interface VerificationCodes {
+  code: Scalars['String']['output'];
+
+  email: Scalars['String']['output'];
+  expiresAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  type?: Maybe<VerificationCodesType>;
+  usedAt?: Maybe<Scalars['DateTime']['output']>;
+}
+
+export type VerificationCodesType =
+  | 'password_reset'
+  | 'verification';

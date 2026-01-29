@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react'
 import { type JSX, type ReactNode } from 'react'
-import { CartButton, Logo } from '@/module/shared/components/ui'
+import { CartButton } from '@/module/shared/components/ui'
+import ServerLogo from '@/module/shared/components/ui/ServerLogo'
 import { SearchBar } from '@/module/search/components'
 import ServerAuthButton from '@/module/customers/components/auth/ServerAuthButton'
 
@@ -17,7 +18,7 @@ const Header = async ({
     <header className="sticky top-0 z-50 border-b border-none border-gray-200 bg-white">
       <div className="mx-auto max-w-screen-4xl px-12 py-4">
         <div className="flex items-center justify-between gap-6">
-          <Logo />
+          <ServerLogo showDescription={false} />
           {navigationType === 'mini' && children}
 
           {/* Search */}

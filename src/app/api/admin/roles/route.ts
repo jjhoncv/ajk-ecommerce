@@ -89,31 +89,36 @@ export async function PATCH(req: NextRequest): Promise<Response> {
         id,
         name,
         sectionIds
-      }: { id: number; name: string; sectionIds: number[] } = await req.json()
+      }: { id: number; name?: string; sectionIds: number[] } = await req.json()
 
-      if (id == null || name === '' || name == null) {
+      if (id == null) {
         return createResponse(
-          { error: 'ID y nombre son requeridos', success: false },
+          { error: 'ID es requerido', success: false },
           400
         )
       }
 
-      // No permitir editar el rol superadmin (id = 1)
-      if (id === 1) {
-        return createResponse(
-          { error: 'No se puede editar el rol de superadmin', success: false },
-          403
-        )
-      }
+      // Para roles del sistema (id <= 2), solo permitir actualizar secciones
+      const isSystemRole = id <= 2
 
-      // Actualizar el rol
-      const role = await roleModel.updateRole({ name }, id)
+      if (!isSystemRole) {
+        // Para roles normales, el nombre es requerido
+        if (name === '' || name == null) {
+          return createResponse(
+            { error: 'El nombre es requerido', success: false },
+            400
+          )
+        }
 
-      if (role == null) {
-        return createResponse(
-          { error: 'Error al actualizar el rol', success: false },
-          500
-        )
+        // Actualizar el nombre del rol
+        const role = await roleModel.updateRole({ name }, id)
+
+        if (role == null) {
+          return createResponse(
+            { error: 'Error al actualizar el rol', success: false },
+            500
+          )
+        }
       }
 
       // Actualizar secciones: eliminar todas y agregar las nuevas
@@ -127,10 +132,15 @@ export async function PATCH(req: NextRequest): Promise<Response> {
         )
       }
 
+      // Obtener el rol actualizado
+      const updatedRole = await roleModel.getRole(id)
+
       return createResponse(
         {
-          data: role,
-          message: 'Rol actualizado exitosamente',
+          data: updatedRole,
+          message: isSystemRole
+            ? 'Secciones del rol actualizadas exitosamente'
+            : 'Rol actualizado exitosamente',
           success: true
         },
         200

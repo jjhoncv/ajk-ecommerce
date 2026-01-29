@@ -8,7 +8,6 @@ export const getAllCategories = async (): Promise<MainCategory[]> => {
     const categoriesData = await categoryModel.getCategories()
 
     if (categoriesData == null || categoriesData.length === 0) {
-      console.error('No se encontraron categorías')
       return []
     }
 

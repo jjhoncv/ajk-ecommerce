@@ -1,20 +1,26 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
+interface PopupState {
+  item: any
+  show: boolean
+  target: HTMLElement
+  render: (id: string) => React.ReactNode
+}
+
 export const PopupTableMenuAction = () => {
-  const [open, setOpen] = useState<{
-    item?: any
-    show: boolean
-    target?: HTMLElement
-    render?: (id: string) => React.ReactNode
-  }>()
+  const [popupState, setPopupState] = useState<PopupState | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 })
 
-  const updateMenuPosition = () => {
-    if (!open?.target || !dropdownRef.current) return
+  // Use ref to store the current popup state for event handler
+  const popupStateRef = useRef<PopupState | null>(null)
+  popupStateRef.current = popupState
 
-    const targetRect = open.target.getBoundingClientRect()
+  const updateMenuPosition = useCallback(() => {
+    if (!popupState?.target || !dropdownRef.current) return
+
+    const targetRect = popupState.target.getBoundingClientRect()
     const menuRect = dropdownRef.current.getBoundingClientRect()
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
@@ -43,68 +49,80 @@ export const PopupTableMenuAction = () => {
     top = Math.max(8, Math.min(top, windowHeight - menuRect.height - 8))
 
     setMenuPosition({ top, left })
-  }
+  }, [popupState?.target])
 
+  // Handle popup events with stable listener
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        event.target !== open?.target
-      ) {
-        setOpen({ show: false })
-      }
-    }
-
-    const handleResize = () => {
-      updateMenuPosition()
-    }
-
-    const handleScroll = () => {
-      updateMenuPosition()
-    }
-
     const handlePopupEvent = (e: CustomEvent) => {
       e.stopImmediatePropagation()
       const targetElement = e.detail.target as HTMLElement
       const render = e.detail.render as (id: string) => React.ReactNode
       const item = e.detail.item
 
-      setOpen((prev) => ({
-        item,
-        show: !prev?.show,
-        target: targetElement,
-        render
-      }))
+      const currentState = popupStateRef.current
+
+      // Check if clicking the same item (by ID, not DOM element)
+      const isSameItem = currentState?.item?.id === item?.id
+      const isCurrentlyShowing = currentState?.show === true
+
+      if (isSameItem && isCurrentlyShowing) {
+        // Toggle off - clicking same item's button while open
+        setPopupState(null)
+      } else {
+        // Open for new item (or reopen for same item if was closed)
+        setPopupState({
+          item,
+          show: true,
+          target: targetElement,
+          render
+        })
+      }
     }
 
-    if (open?.show) {
-      window.addEventListener('resize', handleResize)
-      window.addEventListener('scroll', handleScroll, true)
-      document.addEventListener('mousedown', handleClickOutside)
-      requestAnimationFrame(updateMenuPosition)
-    }
-
-    document.addEventListener(
-      'sendPopupEvent',
-      handlePopupEvent as EventListener
-    )
+    document.addEventListener('sendPopupEvent', handlePopupEvent as EventListener)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('scroll', handleScroll, true)
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener(
-        'sendPopupEvent',
-        handlePopupEvent as EventListener
-      )
+      document.removeEventListener('sendPopupEvent', handlePopupEvent as EventListener)
     }
-  }, [open?.show, open?.target, open?.render, open?.item])
+  }, []) // Empty deps - handler uses ref for current state
 
-  if (!open?.show) return null
+  // Handle click outside
+  useEffect(() => {
+    if (!popupState?.show) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        event.target !== popupState?.target
+      ) {
+        setPopupState(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [popupState?.show, popupState?.target])
+
+  // Handle resize and scroll
+  useEffect(() => {
+    if (!popupState?.show) return
+
+    window.addEventListener('resize', updateMenuPosition)
+    window.addEventListener('scroll', updateMenuPosition, true)
+    requestAnimationFrame(updateMenuPosition)
+
+    return () => {
+      window.removeEventListener('resize', updateMenuPosition)
+      window.removeEventListener('scroll', updateMenuPosition, true)
+    }
+  }, [popupState?.show, updateMenuPosition])
+
+  if (!popupState?.show) return null
 
   const menuContent = (
     <div
+      id="popup-table-menu"
       ref={dropdownRef}
       style={{
         position: 'fixed',
@@ -115,7 +133,7 @@ export const PopupTableMenuAction = () => {
       className="w-48 rounded-lg border bg-white py-1 shadow-lg"
     >
       <div className="flex flex-col gap-1">
-        {open?.render?.(open.item.id)}
+        {popupState.render(popupState.item.id)}
       </div>
     </div>
   )

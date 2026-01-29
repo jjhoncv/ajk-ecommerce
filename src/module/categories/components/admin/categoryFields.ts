@@ -60,11 +60,6 @@ export const CategoryFields: Field[] = [
     type: 'textarea'
   },
   {
-    key: 'parent_id',
-    label: 'Categoría Padre',
-    type: 'text'
-  },
-  {
     key: 'show_nav',
     label: 'Mostrar en navegación',
     type: 'select',

@@ -18,6 +18,8 @@ directive @mysqlTableForeign(subgraph: String, columnName: String) on FIELD_DEFI
 directive @mysqlCount(subgraph: String, table: String) on FIELD_DEFINITION
 
 type Query {
+  activeOffers(limit: Int, offset: Int, where: ActiveOffersWhereInput, orderBy: ActiveOffersOrderByInput): [ActiveOffers] @mysqlSelect(subgraph: "Database", table: "active_offers")
+  countActiveOffers(where: ActiveOffersWhereInput): Int @mysqlCount(subgraph: "Database", table: "active_offers")
   attributeOptions(limit: Int, offset: Int, where: AttributeOptionsWhereInput, orderBy: AttributeOptionsOrderByInput): [AttributeOptions] @mysqlSelect(subgraph: "Database", table: "attribute_options")
   countAttributeOptions(where: AttributeOptionsWhereInput): Int @mysqlCount(subgraph: "Database", table: "attribute_options")
   attributes(limit: Int, offset: Int, where: AttributesWhereInput, orderBy: AttributesOrderByInput): [Attributes] @mysqlSelect(subgraph: "Database", table: "attributes")
@@ -36,6 +38,18 @@ type Query {
   countCustomers(where: CustomersWhereInput): Int @mysqlCount(subgraph: "Database", table: "customers")
   customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses")
   countCustomersAddresses(where: CustomersAddressesWhereInput): Int @mysqlCount(subgraph: "Database", table: "customers_addresses")
+  districts(limit: Int, offset: Int, where: DistrictsWhereInput, orderBy: DistrictsOrderByInput): [Districts] @mysqlSelect(subgraph: "Database", table: "districts")
+  countDistricts(where: DistrictsWhereInput): Int @mysqlCount(subgraph: "Database", table: "districts")
+  footerLinks(limit: Int, offset: Int, where: FooterLinksWhereInput, orderBy: FooterLinksOrderByInput): [FooterLinks] @mysqlSelect(subgraph: "Database", table: "footer_links")
+  countFooterLinks(where: FooterLinksWhereInput): Int @mysqlCount(subgraph: "Database", table: "footer_links")
+  offerCategories(limit: Int, offset: Int, where: OfferCategoriesWhereInput, orderBy: OfferCategoriesOrderByInput): [OfferCategories] @mysqlSelect(subgraph: "Database", table: "offer_categories")
+  countOfferCategories(where: OfferCategoriesWhereInput): Int @mysqlCount(subgraph: "Database", table: "offer_categories")
+  offerUsage(limit: Int, offset: Int, where: OfferUsageWhereInput, orderBy: OfferUsageOrderByInput): [OfferUsage] @mysqlSelect(subgraph: "Database", table: "offer_usage")
+  countOfferUsage(where: OfferUsageWhereInput): Int @mysqlCount(subgraph: "Database", table: "offer_usage")
+  offerVariants(limit: Int, offset: Int, where: OfferVariantsWhereInput, orderBy: OfferVariantsOrderByInput): [OfferVariants] @mysqlSelect(subgraph: "Database", table: "offer_variants")
+  countOfferVariants(where: OfferVariantsWhereInput): Int @mysqlCount(subgraph: "Database", table: "offer_variants")
+  offers(limit: Int, offset: Int, where: OffersWhereInput, orderBy: OffersOrderByInput): [Offers] @mysqlSelect(subgraph: "Database", table: "offers")
+  countOffers(where: OffersWhereInput): Int @mysqlCount(subgraph: "Database", table: "offers")
   orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items")
   countOrderItems(where: OrderItemsWhereInput): Int @mysqlCount(subgraph: "Database", table: "order_items")
   orderSummary(limit: Int, offset: Int, where: OrderSummaryWhereInput, orderBy: OrderSummaryOrderByInput): [OrderSummary] @mysqlSelect(subgraph: "Database", table: "order_summary")
@@ -82,12 +96,20 @@ type Query {
   countServicesImages(where: ServicesImagesWhereInput): Int @mysqlCount(subgraph: "Database", table: "services_images")
   shippingMethods(limit: Int, offset: Int, where: ShippingMethodsWhereInput, orderBy: ShippingMethodsOrderByInput): [ShippingMethods] @mysqlSelect(subgraph: "Database", table: "shipping_methods")
   countShippingMethods(where: ShippingMethodsWhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_methods")
+  shippingZoneDistricts(limit: Int, offset: Int, where: ShippingZoneDistrictsWhereInput, orderBy: ShippingZoneDistrictsOrderByInput): [ShippingZoneDistricts] @mysqlSelect(subgraph: "Database", table: "shipping_zone_districts")
+  countShippingZoneDistricts(where: ShippingZoneDistrictsWhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_zone_districts")
   shippingZoneMethods(limit: Int, offset: Int, where: ShippingZoneMethodsWhereInput, orderBy: ShippingZoneMethodsOrderByInput): [ShippingZoneMethods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods")
   countShippingZoneMethods(where: ShippingZoneMethodsWhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_zone_methods")
   shippingZones(limit: Int, offset: Int, where: ShippingZonesWhereInput, orderBy: ShippingZonesOrderByInput): [ShippingZones] @mysqlSelect(subgraph: "Database", table: "shipping_zones")
   countShippingZones(where: ShippingZonesWhereInput): Int @mysqlCount(subgraph: "Database", table: "shipping_zones")
+  storeConfig(limit: Int, offset: Int, where: StoreConfigWhereInput, orderBy: StoreConfigOrderByInput): [StoreConfig] @mysqlSelect(subgraph: "Database", table: "store_config")
+  countStoreConfig(where: StoreConfigWhereInput): Int @mysqlCount(subgraph: "Database", table: "store_config")
+  storeFeatures(limit: Int, offset: Int, where: StoreFeaturesWhereInput, orderBy: StoreFeaturesOrderByInput): [StoreFeatures] @mysqlSelect(subgraph: "Database", table: "store_features")
+  countStoreFeatures(where: StoreFeaturesWhereInput): Int @mysqlCount(subgraph: "Database", table: "store_features")
   users(limit: Int, offset: Int, where: UsersWhereInput, orderBy: UsersOrderByInput): [Users] @mysqlSelect(subgraph: "Database", table: "users")
   countUsers(where: UsersWhereInput): Int @mysqlCount(subgraph: "Database", table: "users")
+  variantActiveOffers(limit: Int, offset: Int, where: VariantActiveOffersWhereInput, orderBy: VariantActiveOffersOrderByInput): [VariantActiveOffers] @mysqlSelect(subgraph: "Database", table: "variant_active_offers")
+  countVariantActiveOffers(where: VariantActiveOffersWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_active_offers")
   variantAttributeOptions(limit: Int, offset: Int, where: VariantAttributeOptionsWhereInput, orderBy: VariantAttributeOptionsOrderByInput): [VariantAttributeOptions] @mysqlSelect(subgraph: "Database", table: "variant_attribute_options")
   countVariantAttributeOptions(where: VariantAttributeOptionsWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_attribute_options")
   variantImages(limit: Int, offset: Int, where: VariantImagesWhereInput, orderBy: VariantImagesOrderByInput): [VariantImages] @mysqlSelect(subgraph: "Database", table: "variant_images")
@@ -96,9 +118,14 @@ type Query {
   countVariantRatingSummary(where: VariantRatingSummaryWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_rating_summary")
   variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings")
   countVariantRatings(where: VariantRatingsWhereInput): Int @mysqlCount(subgraph: "Database", table: "variant_ratings")
+  verificationCodes(limit: Int, offset: Int, where: VerificationCodesWhereInput, orderBy: VerificationCodesOrderByInput): [VerificationCodes] @mysqlSelect(subgraph: "Database", table: "verification_codes")
+  countVerificationCodes(where: VerificationCodesWhereInput): Int @mysqlCount(subgraph: "Database", table: "verification_codes")
 }
 
 type Mutation {
+  insertActiveOffers(active_offers: ActiveOffersInsertInput!): ActiveOffers @mysqlInsert(subgraph: "Database", table: "active_offers", primaryKeys: [])
+  updateActiveOffers(active_offers: ActiveOffersUpdateInput!, where: ActiveOffersWhereInput): ActiveOffers @mysqlUpdate(subgraph: "Database", table: "active_offers")
+  deleteActiveOffers(where: ActiveOffersWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "active_offers")
   insertAttributeOptions(attribute_options: AttributeOptionsInsertInput!): AttributeOptions @mysqlInsert(subgraph: "Database", table: "attribute_options", primaryKeys: ["id"])
   updateAttributeOptions(attribute_options: AttributeOptionsUpdateInput!, where: AttributeOptionsWhereInput): AttributeOptions @mysqlUpdate(subgraph: "Database", table: "attribute_options")
   deleteAttributeOptions(where: AttributeOptionsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "attribute_options")
@@ -126,6 +153,24 @@ type Mutation {
   insertCustomersAddresses(customers_addresses: CustomersAddressesInsertInput!): CustomersAddresses @mysqlInsert(subgraph: "Database", table: "customers_addresses", primaryKeys: ["id"])
   updateCustomersAddresses(customers_addresses: CustomersAddressesUpdateInput!, where: CustomersAddressesWhereInput): CustomersAddresses @mysqlUpdate(subgraph: "Database", table: "customers_addresses")
   deleteCustomersAddresses(where: CustomersAddressesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "customers_addresses")
+  insertDistricts(districts: DistrictsInsertInput!): Districts @mysqlInsert(subgraph: "Database", table: "districts", primaryKeys: ["id"])
+  updateDistricts(districts: DistrictsUpdateInput!, where: DistrictsWhereInput): Districts @mysqlUpdate(subgraph: "Database", table: "districts")
+  deleteDistricts(where: DistrictsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "districts")
+  insertFooterLinks(footer_links: FooterLinksInsertInput!): FooterLinks @mysqlInsert(subgraph: "Database", table: "footer_links", primaryKeys: ["id"])
+  updateFooterLinks(footer_links: FooterLinksUpdateInput!, where: FooterLinksWhereInput): FooterLinks @mysqlUpdate(subgraph: "Database", table: "footer_links")
+  deleteFooterLinks(where: FooterLinksWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "footer_links")
+  insertOfferCategories(offer_categories: OfferCategoriesInsertInput!): OfferCategories @mysqlInsert(subgraph: "Database", table: "offer_categories", primaryKeys: ["offer_id", "category_id"])
+  updateOfferCategories(offer_categories: OfferCategoriesUpdateInput!, where: OfferCategoriesWhereInput): OfferCategories @mysqlUpdate(subgraph: "Database", table: "offer_categories")
+  deleteOfferCategories(where: OfferCategoriesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "offer_categories")
+  insertOfferUsage(offer_usage: OfferUsageInsertInput!): OfferUsage @mysqlInsert(subgraph: "Database", table: "offer_usage", primaryKeys: ["id"])
+  updateOfferUsage(offer_usage: OfferUsageUpdateInput!, where: OfferUsageWhereInput): OfferUsage @mysqlUpdate(subgraph: "Database", table: "offer_usage")
+  deleteOfferUsage(where: OfferUsageWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "offer_usage")
+  insertOfferVariants(offer_variants: OfferVariantsInsertInput!): OfferVariants @mysqlInsert(subgraph: "Database", table: "offer_variants", primaryKeys: ["id"])
+  updateOfferVariants(offer_variants: OfferVariantsUpdateInput!, where: OfferVariantsWhereInput): OfferVariants @mysqlUpdate(subgraph: "Database", table: "offer_variants")
+  deleteOfferVariants(where: OfferVariantsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "offer_variants")
+  insertOffers(offers: OffersInsertInput!): Offers @mysqlInsert(subgraph: "Database", table: "offers", primaryKeys: ["id"])
+  updateOffers(offers: OffersUpdateInput!, where: OffersWhereInput): Offers @mysqlUpdate(subgraph: "Database", table: "offers")
+  deleteOffers(where: OffersWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "offers")
   insertOrderItems(order_items: OrderItemsInsertInput!): OrderItems @mysqlInsert(subgraph: "Database", table: "order_items", primaryKeys: ["id"])
   updateOrderItems(order_items: OrderItemsUpdateInput!, where: OrderItemsWhereInput): OrderItems @mysqlUpdate(subgraph: "Database", table: "order_items")
   deleteOrderItems(where: OrderItemsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "order_items")
@@ -195,15 +240,27 @@ type Mutation {
   insertShippingMethods(shipping_methods: ShippingMethodsInsertInput!): ShippingMethods @mysqlInsert(subgraph: "Database", table: "shipping_methods", primaryKeys: ["id"])
   updateShippingMethods(shipping_methods: ShippingMethodsUpdateInput!, where: ShippingMethodsWhereInput): ShippingMethods @mysqlUpdate(subgraph: "Database", table: "shipping_methods")
   deleteShippingMethods(where: ShippingMethodsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_methods")
+  insertShippingZoneDistricts(shipping_zone_districts: ShippingZoneDistrictsInsertInput!): ShippingZoneDistricts @mysqlInsert(subgraph: "Database", table: "shipping_zone_districts", primaryKeys: ["id"])
+  updateShippingZoneDistricts(shipping_zone_districts: ShippingZoneDistrictsUpdateInput!, where: ShippingZoneDistrictsWhereInput): ShippingZoneDistricts @mysqlUpdate(subgraph: "Database", table: "shipping_zone_districts")
+  deleteShippingZoneDistricts(where: ShippingZoneDistrictsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_zone_districts")
   insertShippingZoneMethods(shipping_zone_methods: ShippingZoneMethodsInsertInput!): ShippingZoneMethods @mysqlInsert(subgraph: "Database", table: "shipping_zone_methods", primaryKeys: ["id"])
   updateShippingZoneMethods(shipping_zone_methods: ShippingZoneMethodsUpdateInput!, where: ShippingZoneMethodsWhereInput): ShippingZoneMethods @mysqlUpdate(subgraph: "Database", table: "shipping_zone_methods")
   deleteShippingZoneMethods(where: ShippingZoneMethodsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_zone_methods")
   insertShippingZones(shipping_zones: ShippingZonesInsertInput!): ShippingZones @mysqlInsert(subgraph: "Database", table: "shipping_zones", primaryKeys: ["id"])
   updateShippingZones(shipping_zones: ShippingZonesUpdateInput!, where: ShippingZonesWhereInput): ShippingZones @mysqlUpdate(subgraph: "Database", table: "shipping_zones")
   deleteShippingZones(where: ShippingZonesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "shipping_zones")
+  insertStoreConfig(store_config: StoreConfigInsertInput!): StoreConfig @mysqlInsert(subgraph: "Database", table: "store_config", primaryKeys: ["id"])
+  updateStoreConfig(store_config: StoreConfigUpdateInput!, where: StoreConfigWhereInput): StoreConfig @mysqlUpdate(subgraph: "Database", table: "store_config")
+  deleteStoreConfig(where: StoreConfigWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "store_config")
+  insertStoreFeatures(store_features: StoreFeaturesInsertInput!): StoreFeatures @mysqlInsert(subgraph: "Database", table: "store_features", primaryKeys: ["id"])
+  updateStoreFeatures(store_features: StoreFeaturesUpdateInput!, where: StoreFeaturesWhereInput): StoreFeatures @mysqlUpdate(subgraph: "Database", table: "store_features")
+  deleteStoreFeatures(where: StoreFeaturesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "store_features")
   insertUsers(users: UsersInsertInput!): Users @mysqlInsert(subgraph: "Database", table: "users", primaryKeys: ["id"])
   updateUsers(users: UsersUpdateInput!, where: UsersWhereInput): Users @mysqlUpdate(subgraph: "Database", table: "users")
   deleteUsers(where: UsersWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "users")
+  insertVariantActiveOffers(variant_active_offers: VariantActiveOffersInsertInput!): VariantActiveOffers @mysqlInsert(subgraph: "Database", table: "variant_active_offers", primaryKeys: [])
+  updateVariantActiveOffers(variant_active_offers: VariantActiveOffersUpdateInput!, where: VariantActiveOffersWhereInput): VariantActiveOffers @mysqlUpdate(subgraph: "Database", table: "variant_active_offers")
+  deleteVariantActiveOffers(where: VariantActiveOffersWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_active_offers")
   insertVariantAttributeOptions(variant_attribute_options: VariantAttributeOptionsInsertInput!): VariantAttributeOptions @mysqlInsert(subgraph: "Database", table: "variant_attribute_options", primaryKeys: ["variant_id", "product_attribute_option_id"])
   updateVariantAttributeOptions(variant_attribute_options: VariantAttributeOptionsUpdateInput!, where: VariantAttributeOptionsWhereInput): VariantAttributeOptions @mysqlUpdate(subgraph: "Database", table: "variant_attribute_options")
   deleteVariantAttributeOptions(where: VariantAttributeOptionsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_attribute_options")
@@ -216,6 +273,191 @@ type Mutation {
   insertVariantRatings(variant_ratings: VariantRatingsInsertInput!): VariantRatings @mysqlInsert(subgraph: "Database", table: "variant_ratings", primaryKeys: ["id"])
   updateVariantRatings(variant_ratings: VariantRatingsUpdateInput!, where: VariantRatingsWhereInput): VariantRatings @mysqlUpdate(subgraph: "Database", table: "variant_ratings")
   deleteVariantRatings(where: VariantRatingsWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "variant_ratings")
+  insertVerificationCodes(verification_codes: VerificationCodesInsertInput!): VerificationCodes @mysqlInsert(subgraph: "Database", table: "verification_codes", primaryKeys: ["id"])
+  updateVerificationCodes(verification_codes: VerificationCodesUpdateInput!, where: VerificationCodesWhereInput): VerificationCodes @mysqlUpdate(subgraph: "Database", table: "verification_codes")
+  deleteVerificationCodes(where: VerificationCodesWhereInput): Boolean @mysqlDelete(subgraph: "Database", table: "verification_codes")
+}
+
+"""VIEW"""
+type ActiveOffers {
+  id: Int!
+  """Nombre interno de la oferta"""
+  name: String!
+  """TÃ­tulo visible para el cliente"""
+  title: String!
+  description: String
+  offerType: ActiveOffersOfferType!
+  discountType: ActiveOffersDiscountType!
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  totalVariants: BigInt!
+  totalSold: Float
+  """Precio final de la oferta"""
+  minPrice: Float
+  maxDiscountPercent: Float
+}
+
+enum ActiveOffersOfferType {
+  flash_sale
+  daily_deal
+  clearance
+  bundle
+  volume_discount
+  seasonal
+}
+
+enum ActiveOffersDiscountType {
+  percentage
+  fixed_amount
+  fixed_price
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+"""
+scalar BigInt
+
+"""VIEW"""
+input ActiveOffersWhereInput {
+  id: String
+  """Nombre interno de la oferta"""
+  name: String
+  """TÃ­tulo visible para el cliente"""
+  title: String
+  description: String
+  offerType: String
+  discountType: String
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: String
+  startDate: String
+  endDate: String
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: String
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: String
+  """Contador de usos actuales"""
+  currentUses: String
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: String
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: String
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: String
+  """Mostrar indicador de stock"""
+  showStockIndicator: String
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: String
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: String
+  isActive: String
+  """Destacar en home/landing"""
+  isFeatured: String
+  createdAt: String
+  updatedAt: String
+  totalVariants: String
+  totalSold: String
+  """Precio final de la oferta"""
+  minPrice: String
+  maxDiscountPercent: String
+}
+
+"""VIEW"""
+input ActiveOffersOrderByInput {
+  id: OrderBy
+  """Nombre interno de la oferta"""
+  name: OrderBy
+  """TÃ­tulo visible para el cliente"""
+  title: OrderBy
+  description: OrderBy
+  offerType: OrderBy
+  discountType: OrderBy
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: OrderBy
+  startDate: OrderBy
+  endDate: OrderBy
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: OrderBy
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: OrderBy
+  """Contador de usos actuales"""
+  currentUses: OrderBy
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: OrderBy
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: OrderBy
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: OrderBy
+  """Color del badge"""
+  badgeColor: OrderBy
+  """Mostrar contador regresivo"""
+  showCountdown: OrderBy
+  """Mostrar indicador de stock"""
+  showStockIndicator: OrderBy
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: OrderBy
+  imageUrl: OrderBy
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: OrderBy
+  isActive: OrderBy
+  """Destacar en home/landing"""
+  isFeatured: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  totalVariants: OrderBy
+  totalSold: OrderBy
+  """Precio final de la oferta"""
+  minPrice: OrderBy
+  maxDiscountPercent: OrderBy
+}
+
+enum OrderBy {
+  asc
+  desc
 }
 
 type AttributeOptions {
@@ -248,11 +490,6 @@ enum AttributesDisplayType {
   custom
 }
 
-"""
-The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
-
 input AttributeOptionsWhereInput {
   id: String
   attributeId: String
@@ -265,11 +502,6 @@ input AttributeOptionsOrderByInput {
   attributeId: OrderBy
   value: OrderBy
   additionalCost: OrderBy
-}
-
-enum OrderBy {
-  asc
-  desc
 }
 
 type Users {
@@ -292,6 +524,7 @@ type Users {
   products(limit: Int, offset: Int, where: ProductsWhereInput, orderBy: ProductsOrderByInput): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["updated_by", "id"]])
   promotions(limit: Int, offset: Int, where: PromotionsWhereInput, orderBy: PromotionsOrderByInput): [Promotions] @mysqlSelect(subgraph: "Database", table: "promotions", columnMap: [["updated_by", "id"]])
   roles(where: RolesWhereInput, orderBy: RolesOrderByInput, limit: Int, offset: Int): [Roles] @mysqlSelect(subgraph: "Database", table: "roles", columnMap: [["id", "role_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "role_id")
+  variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["reviewed_by", "id"]])
 }
 
 input AttributesWhereInput {
@@ -389,6 +622,7 @@ input BannerOrderByInput {
 type Brands {
   id: Int!
   name: String!
+  imageUrl: String
   createdAt: Timestamp!
   updatedAt: Timestamp!
   createdBy: Int
@@ -572,6 +806,7 @@ type ProductVariants {
   id: Int!
   productId: Int!
   sku: String!
+  slug: String
   price: Float!
   stock: Int!
   createdAt: Timestamp!
@@ -580,6 +815,7 @@ type ProductVariants {
   ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images)
   """
   imageAttributeId: Int
+  offerVariants(limit: Int, offset: Int, where: OfferVariantsWhereInput, orderBy: OfferVariantsOrderByInput): [OfferVariants] @mysqlSelect(subgraph: "Database", table: "offer_variants", columnMap: [["variant_id", "id"]])
   orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["variant_id", "id"]])
   attributes(where: AttributesWhereInput, orderBy: AttributesOrderByInput, limit: Int, offset: Int): [Attributes] @mysqlSelect(subgraph: "Database", table: "attributes", columnMap: [["id", "image_attribute_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "image_attribute_id")
   products(where: ProductsWhereInput, orderBy: ProductsOrderByInput, limit: Int, offset: Int): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
@@ -589,95 +825,355 @@ type ProductVariants {
   variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["variant_id", "id"]])
 }
 
-"""Items/productos de cada orden"""
-type OrderItems {
+"""Variantes incluidas en cada oferta"""
+type OfferVariants {
   id: Int!
-  orderId: Int!
-  """Variante del producto comprada"""
+  offerId: Int!
   variantId: Int!
-  """Nombre del producto al momento de compra"""
-  productName: String!
-  """SKU de la variante"""
-  variantSku: String!
-  """Atributos de la variante (color, talla, etc.)"""
-  variantAttributes: JSON
-  quantity: Int!
-  """Precio unitario al momento de compra"""
-  unitPrice: Float!
-  """Precio total (quantity * unit_price)"""
-  totalPrice: Float!
-  """Descuento aplicado a este item"""
-  discountAmount: Float
-  orders(where: OrdersWhereInput, orderBy: OrdersOrderByInput, limit: Int, offset: Int): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+  """Precio final de la oferta"""
+  offerPrice: Float!
+  """Precio original al momento de crear"""
+  originalPrice: Float!
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  createdAt: Timestamp!
+  offers(where: OffersWhereInput, orderBy: OffersOrderByInput, limit: Int, offset: Int): [Offers] @mysqlSelect(subgraph: "Database", table: "offers", columnMap: [["id", "offer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "offer_id")
   productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
-
-"""Órdenes principales del ecommerce"""
-type Orders {
+"""Ofertas y descuentos especiales"""
+type Offers {
   id: Int!
-  customerId: Int!
-  """Número único de orden (ORD-2025-001234)"""
-  orderNumber: String!
-  status: OrdersStatus!
+  """Nombre interno de la oferta"""
+  name: String!
+  """TÃ­tulo visible para el cliente"""
+  title: String!
+  description: String
+  offerType: OffersOfferType!
+  discountType: OffersDiscountType!
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
   createdAt: Timestamp!
   updatedAt: Timestamp!
-  """Subtotal antes de descuentos"""
-  subtotal: Float!
-  """Descuento aplicado"""
-  discountAmount: Float
-  """Costo de envío"""
-  shippingCost: Float
-  """Impuestos (IGV)"""
-  taxAmount: Float
-  """Total final a pagar"""
-  totalAmount: Float!
-  """Dirección de envío"""
-  shippingAddressId: Int!
-  """Método de envío"""
-  shippingMethod: String
-  """Fecha estimada de entrega"""
-  estimatedDelivery: Date
-  """Método de pago usado"""
-  paymentMethod: String
-  paymentStatus: OrdersPaymentStatus!
-  """Fecha de pago confirmado"""
-  paidAt: Timestamp
-  """Notas del cliente"""
-  customerNotes: String
-  """Notas internas del admin"""
-  adminNotes: String
-  couponUsage(limit: Int, offset: Int, where: CouponUsageWhereInput, orderBy: CouponUsageOrderByInput): [CouponUsage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["order_id", "id"]])
-  orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["order_id", "id"]])
-  orderTracking(limit: Int, offset: Int, where: OrderTrackingWhereInput, orderBy: OrderTrackingOrderByInput): [OrderTracking] @mysqlSelect(subgraph: "Database", table: "order_tracking", columnMap: [["order_id", "id"]])
+  offerCategories(limit: Int, offset: Int, where: OfferCategoriesWhereInput, orderBy: OfferCategoriesOrderByInput): [OfferCategories] @mysqlSelect(subgraph: "Database", table: "offer_categories", columnMap: [["offer_id", "id"]])
+  offerUsage(limit: Int, offset: Int, where: OfferUsageWhereInput, orderBy: OfferUsageOrderByInput): [OfferUsage] @mysqlSelect(subgraph: "Database", table: "offer_usage", columnMap: [["offer_id", "id"]])
+  offerVariants(limit: Int, offset: Int, where: OfferVariantsWhereInput, orderBy: OfferVariantsOrderByInput): [OfferVariants] @mysqlSelect(subgraph: "Database", table: "offer_variants", columnMap: [["offer_id", "id"]])
+}
+
+enum OffersOfferType {
+  flash_sale
+  daily_deal
+  clearance
+  bundle
+  volume_discount
+  seasonal
+}
+
+enum OffersDiscountType {
+  percentage
+  fixed_amount
+  fixed_price
+}
+
+"""CategorÃ­as completas en oferta"""
+type OfferCategories {
+  offerId: Int!
+  categoryId: Int!
+  categories(where: CategoriesWhereInput, orderBy: CategoriesOrderByInput, limit: Int, offset: Int): [Categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
+  offers(where: OffersWhereInput, orderBy: OffersOrderByInput, limit: Int, offset: Int): [Offers] @mysqlSelect(subgraph: "Database", table: "offers", columnMap: [["id", "offer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "offer_id")
+}
+
+type Categories {
+  id: Int!
+  name: String!
+  description: String
+  parentId: Int
+  imageUrl: String
+  showNav: Int
+  displayOrder: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  createdBy: Int
+  updatedBy: Int
+  """Banner image for desktop"""
+  bannerImage: String
+  """Banner image for mobile"""
+  bannerImageMobile: String
+  """Banner title (defaults to category name if empty)"""
+  bannerTitle: String
+  """Banner subtitle"""
+  bannerSubtitle: String
+  """Banner description text"""
+  bannerDescription: String
+  """Call to action button text"""
+  bannerCtaText: String
+  """Call to action button link"""
+  bannerCtaLink: String
+  """SEO meta title"""
+  metaTitle: String
+  """SEO meta description"""
+  metaDescription: String
+  slug: String!
+  users(where: UsersWhereInput, orderBy: UsersOrderByInput, limit: Int, offset: Int): [Users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
+  offerCategories(limit: Int, offset: Int, where: OfferCategoriesWhereInput, orderBy: OfferCategoriesOrderByInput): [OfferCategories] @mysqlSelect(subgraph: "Database", table: "offer_categories", columnMap: [["category_id", "id"]])
+  productCategories(limit: Int, offset: Int, where: ProductCategoriesWhereInput, orderBy: ProductCategoriesOrderByInput): [ProductCategories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
+}
+
+"""CategorÃ­as completas en oferta"""
+input OfferCategoriesWhereInput {
+  offerId: String
+  categoryId: String
+}
+
+"""CategorÃ­as completas en oferta"""
+input OfferCategoriesOrderByInput {
+  offerId: OrderBy
+  categoryId: OrderBy
+}
+
+type ProductCategories {
+  productId: Int!
+  categoryId: Int!
+  categories(where: CategoriesWhereInput, orderBy: CategoriesOrderByInput, limit: Int, offset: Int): [Categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
+  products(where: ProductsWhereInput, orderBy: ProductsOrderByInput, limit: Int, offset: Int): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
+}
+
+input CategoriesWhereInput {
+  id: String
+  name: String
+  description: String
+  parentId: String
+  imageUrl: String
+  showNav: String
+  displayOrder: String
+  createdAt: String
+  updatedAt: String
+  createdBy: String
+  updatedBy: String
+  """Banner image for desktop"""
+  bannerImage: String
+  """Banner image for mobile"""
+  bannerImageMobile: String
+  """Banner title (defaults to category name if empty)"""
+  bannerTitle: String
+  """Banner subtitle"""
+  bannerSubtitle: String
+  """Banner description text"""
+  bannerDescription: String
+  """Call to action button text"""
+  bannerCtaText: String
+  """Call to action button link"""
+  bannerCtaLink: String
+  """SEO meta title"""
+  metaTitle: String
+  """SEO meta description"""
+  metaDescription: String
+  slug: String
+}
+
+input CategoriesOrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  parentId: OrderBy
+  imageUrl: OrderBy
+  showNav: OrderBy
+  displayOrder: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  createdBy: OrderBy
+  updatedBy: OrderBy
+  """Banner image for desktop"""
+  bannerImage: OrderBy
+  """Banner image for mobile"""
+  bannerImageMobile: OrderBy
+  """Banner title (defaults to category name if empty)"""
+  bannerTitle: OrderBy
+  """Banner subtitle"""
+  bannerSubtitle: OrderBy
+  """Banner description text"""
+  bannerDescription: OrderBy
+  """Call to action button text"""
+  bannerCtaText: OrderBy
+  """Call to action button link"""
+  bannerCtaLink: OrderBy
+  """SEO meta title"""
+  metaTitle: OrderBy
+  """SEO meta description"""
+  metaDescription: OrderBy
+  slug: OrderBy
+}
+
+input ProductCategoriesWhereInput {
+  productId: String
+  categoryId: String
+}
+
+input ProductCategoriesOrderByInput {
+  productId: OrderBy
+  categoryId: OrderBy
+}
+
+"""Ofertas y descuentos especiales"""
+input OffersWhereInput {
+  id: String
+  """Nombre interno de la oferta"""
+  name: String
+  """TÃ­tulo visible para el cliente"""
+  title: String
+  description: String
+  offerType: String
+  discountType: String
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: String
+  startDate: String
+  endDate: String
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: String
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: String
+  """Contador de usos actuales"""
+  currentUses: String
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: String
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: String
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: String
+  """Mostrar indicador de stock"""
+  showStockIndicator: String
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: String
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: String
+  isActive: String
+  """Destacar en home/landing"""
+  isFeatured: String
+  createdAt: String
+  updatedAt: String
+}
+
+"""Ofertas y descuentos especiales"""
+input OffersOrderByInput {
+  id: OrderBy
+  """Nombre interno de la oferta"""
+  name: OrderBy
+  """TÃ­tulo visible para el cliente"""
+  title: OrderBy
+  description: OrderBy
+  offerType: OrderBy
+  discountType: OrderBy
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: OrderBy
+  startDate: OrderBy
+  endDate: OrderBy
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: OrderBy
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: OrderBy
+  """Contador de usos actuales"""
+  currentUses: OrderBy
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: OrderBy
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: OrderBy
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: OrderBy
+  """Color del badge"""
+  badgeColor: OrderBy
+  """Mostrar contador regresivo"""
+  showCountdown: OrderBy
+  """Mostrar indicador de stock"""
+  showStockIndicator: OrderBy
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: OrderBy
+  imageUrl: OrderBy
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: OrderBy
+  isActive: OrderBy
+  """Destacar en home/landing"""
+  isFeatured: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+"""Historial de uso de ofertas"""
+type OfferUsage {
+  id: Int!
+  offerId: Int!
+  customerId: Int!
+  orderId: Int!
+  variantId: Int!
+  quantity: Int!
+  originalPrice: Float!
+  offerPrice: Float!
+  """Ahorro total"""
+  discountAmount: Float!
+  usedAt: Timestamp!
   customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
-  customersAddresses(where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput, limit: Int, offset: Int): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id", "shipping_address_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_address_id")
-  paymentTransactions(limit: Int, offset: Int, where: PaymentTransactionsWhereInput, orderBy: PaymentTransactionsOrderByInput): [PaymentTransactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions", columnMap: [["order_id", "id"]])
+  offers(where: OffersWhereInput, orderBy: OffersOrderByInput, limit: Int, offset: Int): [Offers] @mysqlSelect(subgraph: "Database", table: "offers", columnMap: [["id", "offer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "offer_id")
+  orders(where: OrdersWhereInput, orderBy: OrdersOrderByInput, limit: Int, offset: Int): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
 }
 
-enum OrdersStatus {
-  pending
-  processing
-  shipped
-  delivered
-  cancelled
-  refunded
-}
-
-"""
-A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar Date
-
-enum OrdersPaymentStatus {
-  pending
-  paid
-  failed
-  refunded
+type Customers {
+  id: Int!
+  email: String!
+  password: String!
+  addressId: Int
+  isActive: Int
+  """1 = usuario necesita crear contraseÃ±a"""
+  needsPasswordSetup: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  """Apellido del cliente"""
+  lastname: String
+  photo: String
+  """Nombre del cliente"""
+  name: String
+  """numero de celular"""
+  phone: String
+  """Documento de identidad """
+  dni: String
+  couponUsage(limit: Int, offset: Int, where: CouponUsageWhereInput, orderBy: CouponUsageOrderByInput): [CouponUsage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["customer_id", "id"]])
+  customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
+  offerUsage(limit: Int, offset: Int, where: OfferUsageWhereInput, orderBy: OfferUsageOrderByInput): [OfferUsage] @mysqlSelect(subgraph: "Database", table: "offer_usage", columnMap: [["customer_id", "id"]])
+  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
+  variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
 }
 
 type CouponUsage {
@@ -722,16 +1218,16 @@ enum CouponsDiscountType {
   percentage
 }
 
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
-
 enum CouponsApplicableTo {
   all
   categories
   products
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 input CouponUsageWhereInput {
   id: String
@@ -797,63 +1293,20 @@ input CouponsOrderByInput {
   updatedBy: OrderBy
 }
 
-type Customers {
-  id: Int!
-  email: String!
-  password: String!
-  addressId: Int
-  isActive: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  lastname: String!
-  photo: String
-  name: String!
-  """numero de celular"""
-  phone: String
-  """Documento de identidad """
-  dni: String
-  couponUsage(limit: Int, offset: Int, where: CouponUsageWhereInput, orderBy: CouponUsageOrderByInput): [CouponUsage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["customer_id", "id"]])
-  customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id_customer", "id"]])
-  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["customer_id", "id"]])
-  variantRatings(limit: Int, offset: Int, where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["customer_id", "id"]])
-}
-
-type CustomersAddresses {
-  id: Int!
-  idCustomer: Int!
-  """Nombre de la dirección (Casa, Oficina, etc.)"""
-  alias: String!
-  department: String!
-  province: String!
-  district: String!
-  """Nombre de la avenida/calle/jirón"""
-  streetName: String!
-  """Número de la dirección"""
-  streetNumber: String!
-  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
-  apartment: String
-  """Latitud GPS"""
-  latitude: Float
-  """Longitud GPS"""
-  longitude: Float
-  """1 = dirección por defecto"""
-  isDefault: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
-  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["shipping_address_id", "id"]])
-}
-
 input CustomersWhereInput {
   id: String
   email: String
   password: String
   addressId: String
   isActive: String
+  """1 = usuario necesita crear contraseÃ±a"""
+  needsPasswordSetup: String
   createdAt: String
   updatedAt: String
+  """Apellido del cliente"""
   lastname: String
   photo: String
+  """Nombre del cliente"""
   name: String
   """numero de celular"""
   phone: String
@@ -867,15 +1320,136 @@ input CustomersOrderByInput {
   password: OrderBy
   addressId: OrderBy
   isActive: OrderBy
+  """1 = usuario necesita crear contraseÃ±a"""
+  needsPasswordSetup: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
+  """Apellido del cliente"""
   lastname: OrderBy
   photo: OrderBy
+  """Nombre del cliente"""
   name: OrderBy
   """numero de celular"""
   phone: OrderBy
   """Documento de identidad """
   dni: OrderBy
+}
+
+"""Órdenes principales del ecommerce"""
+type Orders {
+  id: Int!
+  customerId: Int!
+  """Número único de orden (ORD-2025-001234)"""
+  orderNumber: String!
+  status: OrdersStatus!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  """Subtotal antes de descuentos"""
+  subtotal: Float!
+  """Descuento aplicado"""
+  discountAmount: Float
+  """Costo de envío"""
+  shippingCost: Float
+  """Impuestos (IGV)"""
+  taxAmount: Float
+  """Total final a pagar"""
+  totalAmount: Float!
+  """Dirección de envío"""
+  shippingAddressId: Int!
+  """Método de envío"""
+  shippingMethod: String
+  """Fecha estimada de entrega"""
+  estimatedDelivery: Date
+  """Método de pago usado"""
+  paymentMethod: String
+  paymentStatus: OrdersPaymentStatus!
+  """Fecha de pago confirmado"""
+  paidAt: Timestamp
+  """Notas del cliente"""
+  customerNotes: String
+  """Notas internas del admin"""
+  adminNotes: String
+  couponUsage(limit: Int, offset: Int, where: CouponUsageWhereInput, orderBy: CouponUsageOrderByInput): [CouponUsage] @mysqlSelect(subgraph: "Database", table: "coupon_usage", columnMap: [["order_id", "id"]])
+  offerUsage(limit: Int, offset: Int, where: OfferUsageWhereInput, orderBy: OfferUsageOrderByInput): [OfferUsage] @mysqlSelect(subgraph: "Database", table: "offer_usage", columnMap: [["order_id", "id"]])
+  orderItems(limit: Int, offset: Int, where: OrderItemsWhereInput, orderBy: OrderItemsOrderByInput): [OrderItems] @mysqlSelect(subgraph: "Database", table: "order_items", columnMap: [["order_id", "id"]])
+  orderTracking(limit: Int, offset: Int, where: OrderTrackingWhereInput, orderBy: OrderTrackingOrderByInput): [OrderTracking] @mysqlSelect(subgraph: "Database", table: "order_tracking", columnMap: [["order_id", "id"]])
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
+  customersAddresses(where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput, limit: Int, offset: Int): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["id", "shipping_address_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_address_id")
+  paymentTransactions(limit: Int, offset: Int, where: PaymentTransactionsWhereInput, orderBy: PaymentTransactionsOrderByInput): [PaymentTransactions] @mysqlSelect(subgraph: "Database", table: "payment_transactions", columnMap: [["order_id", "id"]])
+}
+
+enum OrdersStatus {
+  pending
+  processing
+  shipped
+  delivered
+  cancelled
+  refunded
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+enum OrdersPaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+"""Historial de uso de ofertas"""
+input OfferUsageWhereInput {
+  id: String
+  offerId: String
+  customerId: String
+  orderId: String
+  variantId: String
+  quantity: String
+  originalPrice: String
+  offerPrice: String
+  """Ahorro total"""
+  discountAmount: String
+  usedAt: String
+}
+
+"""Historial de uso de ofertas"""
+input OfferUsageOrderByInput {
+  id: OrderBy
+  offerId: OrderBy
+  customerId: OrderBy
+  orderId: OrderBy
+  variantId: OrderBy
+  quantity: OrderBy
+  originalPrice: OrderBy
+  offerPrice: OrderBy
+  """Ahorro total"""
+  discountAmount: OrderBy
+  usedAt: OrderBy
+}
+
+"""Items/productos de cada orden"""
+type OrderItems {
+  id: Int!
+  orderId: Int!
+  """Variante del producto comprada"""
+  variantId: Int!
+  """Nombre del producto al momento de compra"""
+  productName: String!
+  """SKU de la variante"""
+  variantSku: String!
+  """Atributos de la variante (color, talla, etc.)"""
+  variantAttributes: JSON
+  quantity: Int!
+  """Precio unitario al momento de compra"""
+  unitPrice: Float!
+  """Precio total (quantity * unit_price)"""
+  totalPrice: Float!
+  """Descuento aplicado a este item"""
+  discountAmount: Float
+  orders(where: OrdersWhereInput, orderBy: OrdersOrderByInput, limit: Int, offset: Int): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["id", "order_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "order_id")
+  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
 }
 
 """Órdenes principales del ecommerce"""
@@ -950,119 +1524,11 @@ input OrdersOrderByInput {
   adminNotes: OrderBy
 }
 
-input CustomersAddressesWhereInput {
-  id: String
-  idCustomer: String
-  """Nombre de la dirección (Casa, Oficina, etc.)"""
-  alias: String
-  department: String
-  province: String
-  district: String
-  """Nombre de la avenida/calle/jirón"""
-  streetName: String
-  """Número de la dirección"""
-  streetNumber: String
-  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
-  apartment: String
-  """Latitud GPS"""
-  latitude: String
-  """Longitud GPS"""
-  longitude: String
-  """1 = dirección por defecto"""
-  isDefault: String
-  createdAt: String
-  updatedAt: String
-}
-
-input CustomersAddressesOrderByInput {
-  id: OrderBy
-  idCustomer: OrderBy
-  """Nombre de la dirección (Casa, Oficina, etc.)"""
-  alias: OrderBy
-  department: OrderBy
-  province: OrderBy
-  district: OrderBy
-  """Nombre de la avenida/calle/jirón"""
-  streetName: OrderBy
-  """Número de la dirección"""
-  streetNumber: OrderBy
-  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
-  apartment: OrderBy
-  """Latitud GPS"""
-  latitude: OrderBy
-  """Longitud GPS"""
-  longitude: OrderBy
-  """1 = dirección por defecto"""
-  isDefault: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-}
-
-type VariantRatings {
-  id: Int!
-  variantId: Int!
-  customerId: Int!
-  rating: Int!
-  review: String
-  title: String
-  verifiedPurchase: Int!
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  ratingImages(limit: Int, offset: Int, where: RatingImagesWhereInput, orderBy: RatingImagesOrderByInput): [RatingImages] @mysqlSelect(subgraph: "Database", table: "rating_images", columnMap: [["rating_id", "id"]])
-  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
-  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
-}
-
-type RatingImages {
-  id: Int!
-  ratingId: Int!
-  imageUrl: String!
-  createdAt: Timestamp!
-  variantRatings(where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput, limit: Int, offset: Int): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["id", "rating_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "rating_id")
-}
-
-input VariantRatingsWhereInput {
-  id: String
-  variantId: String
-  customerId: String
-  rating: String
-  review: String
-  title: String
-  verifiedPurchase: String
-  createdAt: String
-  updatedAt: String
-}
-
-input VariantRatingsOrderByInput {
-  id: OrderBy
-  variantId: OrderBy
-  customerId: OrderBy
-  rating: OrderBy
-  review: OrderBy
-  title: OrderBy
-  verifiedPurchase: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-}
-
-input RatingImagesWhereInput {
-  id: String
-  ratingId: String
-  imageUrl: String
-  createdAt: String
-}
-
-input RatingImagesOrderByInput {
-  id: OrderBy
-  ratingId: OrderBy
-  imageUrl: OrderBy
-  createdAt: OrderBy
-}
-
 input ProductVariantsWhereInput {
   id: String
   productId: String
   sku: String
+  slug: String
   price: String
   stock: String
   createdAt: String
@@ -1077,6 +1543,7 @@ input ProductVariantsOrderByInput {
   id: OrderBy
   productId: OrderBy
   sku: OrderBy
+  slug: OrderBy
   price: OrderBy
   stock: OrderBy
   createdAt: OrderBy
@@ -1198,6 +1665,269 @@ input OrderTrackingOrderByInput {
   deliveredTo: OrderBy
   """Notas de entrega"""
   deliveryNotes: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+type CustomersAddresses {
+  id: Int!
+  idCustomer: Int!
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String!
+  department: String!
+  province: String!
+  district: String!
+  districtId: Int
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String!
+  """Número de la dirección"""
+  streetNumber: String!
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  reference: String
+  """Latitud GPS"""
+  latitude: Float
+  """Longitud GPS"""
+  longitude: Float
+  """1 = dirección por defecto"""
+  isDefault: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "id_customer"]]) @mysqlTableForeign(subgraph: "Database", columnName: "id_customer")
+  districts(where: DistrictsWhereInput, orderBy: DistrictsOrderByInput, limit: Int, offset: Int): [Districts] @mysqlSelect(subgraph: "Database", table: "districts", columnMap: [["id", "district_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "district_id")
+  orders(limit: Int, offset: Int, where: OrdersWhereInput, orderBy: OrdersOrderByInput): [Orders] @mysqlSelect(subgraph: "Database", table: "orders", columnMap: [["shipping_address_id", "id"]])
+}
+
+type Districts {
+  id: Int!
+  """CÃ³digo INEI del distrito"""
+  code: String!
+  name: String!
+  """Zona geogrÃ¡fica"""
+  zone: DistrictsZone!
+  """Si tiene cobertura de delivery"""
+  isActive: Int!
+  createdAt: Timestamp!
+  customersAddresses(limit: Int, offset: Int, where: CustomersAddressesWhereInput, orderBy: CustomersAddressesOrderByInput): [CustomersAddresses] @mysqlSelect(subgraph: "Database", table: "customers_addresses", columnMap: [["district_id", "id"]])
+  shippingZoneDistricts(limit: Int, offset: Int, where: ShippingZoneDistrictsWhereInput, orderBy: ShippingZoneDistrictsOrderByInput): [ShippingZoneDistricts] @mysqlSelect(subgraph: "Database", table: "shipping_zone_districts", columnMap: [["district_id", "id"]])
+}
+
+enum DistrictsZone {
+  lima_centro
+  lima_norte
+  lima_sur
+  lima_este
+  callao
+}
+
+input CustomersAddressesWhereInput {
+  id: String
+  idCustomer: String
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: String
+  department: String
+  province: String
+  district: String
+  districtId: String
+  """Nombre de la avenida/calle/jirón"""
+  streetName: String
+  """Número de la dirección"""
+  streetNumber: String
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: String
+  reference: String
+  """Latitud GPS"""
+  latitude: String
+  """Longitud GPS"""
+  longitude: String
+  """1 = dirección por defecto"""
+  isDefault: String
+  createdAt: String
+  updatedAt: String
+}
+
+input CustomersAddressesOrderByInput {
+  id: OrderBy
+  idCustomer: OrderBy
+  """Nombre de la dirección (Casa, Oficina, etc.)"""
+  alias: OrderBy
+  department: OrderBy
+  province: OrderBy
+  district: OrderBy
+  districtId: OrderBy
+  """Nombre de la avenida/calle/jirón"""
+  streetName: OrderBy
+  """Número de la dirección"""
+  streetNumber: OrderBy
+  """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
+  apartment: OrderBy
+  reference: OrderBy
+  """Latitud GPS"""
+  latitude: OrderBy
+  """Longitud GPS"""
+  longitude: OrderBy
+  """1 = dirección por defecto"""
+  isDefault: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+type ShippingZoneDistricts {
+  id: Int!
+  zoneId: Int!
+  districtId: Int!
+  createdAt: Timestamp!
+  districts(where: DistrictsWhereInput, orderBy: DistrictsOrderByInput, limit: Int, offset: Int): [Districts] @mysqlSelect(subgraph: "Database", table: "districts", columnMap: [["id", "district_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "district_id")
+  shippingZones(where: ShippingZonesWhereInput, orderBy: ShippingZonesOrderByInput, limit: Int, offset: Int): [ShippingZones] @mysqlSelect(subgraph: "Database", table: "shipping_zones", columnMap: [["id", "zone_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "zone_id")
+}
+
+input DistrictsWhereInput {
+  id: String
+  """CÃ³digo INEI del distrito"""
+  code: String
+  name: String
+  """Zona geogrÃ¡fica"""
+  zone: String
+  """Si tiene cobertura de delivery"""
+  isActive: String
+  createdAt: String
+}
+
+input DistrictsOrderByInput {
+  id: OrderBy
+  """CÃ³digo INEI del distrito"""
+  code: OrderBy
+  name: OrderBy
+  """Zona geogrÃ¡fica"""
+  zone: OrderBy
+  """Si tiene cobertura de delivery"""
+  isActive: OrderBy
+  createdAt: OrderBy
+}
+
+type ShippingZones {
+  id: Int!
+  name: String!
+  districts: JSON!
+  isActive: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  shippingZoneDistricts(limit: Int, offset: Int, where: ShippingZoneDistrictsWhereInput, orderBy: ShippingZoneDistrictsOrderByInput): [ShippingZoneDistricts] @mysqlSelect(subgraph: "Database", table: "shipping_zone_districts", columnMap: [["zone_id", "id"]])
+  shippingZoneMethods(limit: Int, offset: Int, where: ShippingZoneMethodsWhereInput, orderBy: ShippingZoneMethodsOrderByInput): [ShippingZoneMethods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_zone_id", "id"]])
+}
+
+input ShippingZoneDistrictsWhereInput {
+  id: String
+  zoneId: String
+  districtId: String
+  createdAt: String
+}
+
+input ShippingZoneDistrictsOrderByInput {
+  id: OrderBy
+  zoneId: OrderBy
+  districtId: OrderBy
+  createdAt: OrderBy
+}
+
+type ShippingZoneMethods {
+  id: Int!
+  shippingMethodId: Int!
+  shippingZoneId: Int!
+  cost: Float!
+  freeShippingThreshold: Float!
+  estimatedDaysMin: Int
+  estimatedDaysMax: Int
+  isActive: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  shippingMethods(where: ShippingMethodsWhereInput, orderBy: ShippingMethodsOrderByInput, limit: Int, offset: Int): [ShippingMethods] @mysqlSelect(subgraph: "Database", table: "shipping_methods", columnMap: [["id", "shipping_method_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_method_id")
+  shippingZones(where: ShippingZonesWhereInput, orderBy: ShippingZonesOrderByInput, limit: Int, offset: Int): [ShippingZones] @mysqlSelect(subgraph: "Database", table: "shipping_zones", columnMap: [["id", "shipping_zone_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_zone_id")
+}
+
+type ShippingMethods {
+  id: Int!
+  name: String!
+  description: String
+  baseCost: Float!
+  freeShippingThreshold: Float
+  estimatedDaysMin: Int
+  estimatedDaysMax: Int
+  isActive: Int
+  displayOrder: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  shippingZoneMethods(limit: Int, offset: Int, where: ShippingZoneMethodsWhereInput, orderBy: ShippingZoneMethodsOrderByInput): [ShippingZoneMethods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_method_id", "id"]])
+}
+
+input ShippingZoneMethodsWhereInput {
+  id: String
+  shippingMethodId: String
+  shippingZoneId: String
+  cost: String
+  freeShippingThreshold: String
+  estimatedDaysMin: String
+  estimatedDaysMax: String
+  isActive: String
+  createdAt: String
+  updatedAt: String
+}
+
+input ShippingZoneMethodsOrderByInput {
+  id: OrderBy
+  shippingMethodId: OrderBy
+  shippingZoneId: OrderBy
+  cost: OrderBy
+  freeShippingThreshold: OrderBy
+  estimatedDaysMin: OrderBy
+  estimatedDaysMax: OrderBy
+  isActive: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+input ShippingMethodsWhereInput {
+  id: String
+  name: String
+  description: String
+  baseCost: String
+  freeShippingThreshold: String
+  estimatedDaysMin: String
+  estimatedDaysMax: String
+  isActive: String
+  displayOrder: String
+  createdAt: String
+  updatedAt: String
+}
+
+input ShippingMethodsOrderByInput {
+  id: OrderBy
+  name: OrderBy
+  description: OrderBy
+  baseCost: OrderBy
+  freeShippingThreshold: OrderBy
+  estimatedDaysMin: OrderBy
+  estimatedDaysMax: OrderBy
+  isActive: OrderBy
+  displayOrder: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+}
+
+input ShippingZonesWhereInput {
+  id: String
+  name: String
+  districts: String
+  isActive: String
+  createdAt: String
+  updatedAt: String
+}
+
+input ShippingZonesOrderByInput {
+  id: OrderBy
+  name: OrderBy
+  districts: OrderBy
+  isActive: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
 }
@@ -1330,6 +2060,109 @@ input PaymentMethodsOrderByInput {
   updatedAt: OrderBy
 }
 
+type VariantRatings {
+  id: Int!
+  variantId: Int!
+  customerId: Int!
+  rating: Int!
+  review: String
+  title: String
+  verifiedPurchase: Int!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  status: String!
+  reviewedBy: Int
+  reviewedAt: Timestamp
+  ratingImages(limit: Int, offset: Int, where: RatingImagesWhereInput, orderBy: RatingImagesOrderByInput): [RatingImages] @mysqlSelect(subgraph: "Database", table: "rating_images", columnMap: [["rating_id", "id"]])
+  customers(where: CustomersWhereInput, orderBy: CustomersOrderByInput, limit: Int, offset: Int): [Customers] @mysqlSelect(subgraph: "Database", table: "customers", columnMap: [["id", "customer_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "customer_id")
+  productVariants(where: ProductVariantsWhereInput, orderBy: ProductVariantsOrderByInput, limit: Int, offset: Int): [ProductVariants] @mysqlSelect(subgraph: "Database", table: "product_variants", columnMap: [["id", "variant_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "variant_id")
+  users(where: UsersWhereInput, orderBy: UsersOrderByInput, limit: Int, offset: Int): [Users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "reviewed_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "reviewed_by")
+}
+
+type RatingImages {
+  id: Int!
+  ratingId: Int!
+  imageUrl: String!
+  createdAt: Timestamp!
+  variantRatings(where: VariantRatingsWhereInput, orderBy: VariantRatingsOrderByInput, limit: Int, offset: Int): [VariantRatings] @mysqlSelect(subgraph: "Database", table: "variant_ratings", columnMap: [["id", "rating_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "rating_id")
+}
+
+input VariantRatingsWhereInput {
+  id: String
+  variantId: String
+  customerId: String
+  rating: String
+  review: String
+  title: String
+  verifiedPurchase: String
+  createdAt: String
+  updatedAt: String
+  status: String
+  reviewedBy: String
+  reviewedAt: String
+}
+
+input VariantRatingsOrderByInput {
+  id: OrderBy
+  variantId: OrderBy
+  customerId: OrderBy
+  rating: OrderBy
+  review: OrderBy
+  title: OrderBy
+  verifiedPurchase: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  status: OrderBy
+  reviewedBy: OrderBy
+  reviewedAt: OrderBy
+}
+
+input RatingImagesWhereInput {
+  id: String
+  ratingId: String
+  imageUrl: String
+  createdAt: String
+}
+
+input RatingImagesOrderByInput {
+  id: OrderBy
+  ratingId: OrderBy
+  imageUrl: OrderBy
+  createdAt: OrderBy
+}
+
+"""Variantes incluidas en cada oferta"""
+input OfferVariantsWhereInput {
+  id: String
+  offerId: String
+  variantId: String
+  """Precio final de la oferta"""
+  offerPrice: String
+  """Precio original al momento de crear"""
+  originalPrice: String
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: String
+  """Unidades vendidas en esta oferta"""
+  soldCount: String
+  createdAt: String
+}
+
+"""Variantes incluidas en cada oferta"""
+input OfferVariantsOrderByInput {
+  id: OrderBy
+  offerId: OrderBy
+  variantId: OrderBy
+  """Precio final de la oferta"""
+  offerPrice: OrderBy
+  """Precio original al momento de crear"""
+  originalPrice: OrderBy
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: OrderBy
+  """Unidades vendidas en esta oferta"""
+  soldCount: OrderBy
+  createdAt: OrderBy
+}
+
 type PromotionVariants {
   promotionId: Int!
   variantId: Int!
@@ -1343,6 +2176,7 @@ type PromotionVariants {
 type Promotions {
   id: Int!
   name: String!
+  slug: String
   description: String
   startDate: DateTime!
   endDate: DateTime!
@@ -1385,6 +2219,7 @@ input PromotionVariantsOrderByInput {
 input PromotionsWhereInput {
   id: String
   name: String
+  slug: String
   description: String
   startDate: String
   endDate: String
@@ -1404,6 +2239,7 @@ input PromotionsWhereInput {
 input PromotionsOrderByInput {
   id: OrderBy
   name: OrderBy
+  slug: OrderBy
   description: OrderBy
   startDate: OrderBy
   endDate: OrderBy
@@ -1514,70 +2350,10 @@ input VariantImagesOrderByInput {
   updatedAt: OrderBy
 }
 
-type ProductCategories {
-  productId: Int!
-  categoryId: Int!
-  categories(where: CategoriesWhereInput, orderBy: CategoriesOrderByInput, limit: Int, offset: Int): [Categories] @mysqlSelect(subgraph: "Database", table: "categories", columnMap: [["id", "category_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "category_id")
-  products(where: ProductsWhereInput, orderBy: ProductsOrderByInput, limit: Int, offset: Int): [Products] @mysqlSelect(subgraph: "Database", table: "products", columnMap: [["id", "product_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "product_id")
-}
-
-type Categories {
-  id: Int!
-  name: String!
-  description: String
-  parentId: Int
-  imageUrl: String
-  showNav: Int
-  displayOrder: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  createdBy: Int
-  updatedBy: Int
-  users(where: UsersWhereInput, orderBy: UsersOrderByInput, limit: Int, offset: Int): [Users] @mysqlSelect(subgraph: "Database", table: "users", columnMap: [["id", "updated_by"]]) @mysqlTableForeign(subgraph: "Database", columnName: "updated_by")
-  productCategories(limit: Int, offset: Int, where: ProductCategoriesWhereInput, orderBy: ProductCategoriesOrderByInput): [ProductCategories] @mysqlSelect(subgraph: "Database", table: "product_categories", columnMap: [["category_id", "id"]])
-}
-
-input ProductCategoriesWhereInput {
-  productId: String
-  categoryId: String
-}
-
-input ProductCategoriesOrderByInput {
-  productId: OrderBy
-  categoryId: OrderBy
-}
-
-input CategoriesWhereInput {
-  id: String
-  name: String
-  description: String
-  parentId: String
-  imageUrl: String
-  showNav: String
-  displayOrder: String
-  createdAt: String
-  updatedAt: String
-  createdBy: String
-  updatedBy: String
-}
-
-input CategoriesOrderByInput {
-  id: OrderBy
-  name: OrderBy
-  description: OrderBy
-  parentId: OrderBy
-  imageUrl: OrderBy
-  showNav: OrderBy
-  displayOrder: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-  createdBy: OrderBy
-  updatedBy: OrderBy
-}
-
 input BrandsWhereInput {
   id: String
   name: String
+  imageUrl: String
   createdAt: String
   updatedAt: String
   createdBy: String
@@ -1587,6 +2363,7 @@ input BrandsWhereInput {
 input BrandsOrderByInput {
   id: OrderBy
   name: OrderBy
+  imageUrl: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
   createdBy: OrderBy
@@ -1658,6 +2435,7 @@ type Sections {
   url: String
   image: String
   displayOrder: Int
+  sectionGroup: String
   rolesSections(limit: Int, offset: Int, where: RolesSectionsWhereInput, orderBy: RolesSectionsOrderByInput): [RolesSections] @mysqlSelect(subgraph: "Database", table: "roles_sections", columnMap: [["id_section", "id"]])
 }
 
@@ -1679,6 +2457,7 @@ input SectionsWhereInput {
   url: String
   image: String
   displayOrder: String
+  sectionGroup: String
 }
 
 input SectionsOrderByInput {
@@ -1687,6 +2466,37 @@ input SectionsOrderByInput {
   url: OrderBy
   image: OrderBy
   displayOrder: OrderBy
+  sectionGroup: OrderBy
+}
+
+type FooterLinks {
+  id: Int!
+  name: String!
+  url: String!
+  displayOrder: Int
+  isActive: Int
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+}
+
+input FooterLinksWhereInput {
+  id: String
+  name: String
+  url: String
+  displayOrder: String
+  isActive: String
+  createdAt: String
+  updatedAt: String
+}
+
+input FooterLinksOrderByInput {
+  id: OrderBy
+  name: OrderBy
+  url: OrderBy
+  displayOrder: OrderBy
+  isActive: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
 }
 
 """VIEW"""
@@ -1727,11 +2537,6 @@ enum OrderSummaryPaymentStatus {
   failed
   refunded
 }
-
-"""
-The `BigInt` scalar type represents non-fractional signed whole numeric values.
-"""
-scalar BigInt
 
 """VIEW"""
 input OrderSummaryWhereInput {
@@ -1913,116 +2718,235 @@ input ServicesImagesOrderByInput {
   imageUrl: OrderBy
 }
 
-type ShippingMethods {
+type StoreConfig {
   id: Int!
-  name: String!
-  description: String
-  baseCost: Float!
-  freeShippingThreshold: Float
-  estimatedDaysMin: Int
-  estimatedDaysMax: Int
-  isActive: Int
+  storeName: String!
+  storeDescription: String
+  logoUrl: String
+  address: String
+  businessHours: String
+  phone: String
+  email: String
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  whatsappNumber: String
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  logoWidth: Int
+  logoHeight: Int
+}
+
+input StoreConfigWhereInput {
+  id: String
+  storeName: String
+  storeDescription: String
+  logoUrl: String
+  address: String
+  businessHours: String
+  phone: String
+  email: String
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  whatsappNumber: String
+  createdAt: String
+  updatedAt: String
+  logoWidth: String
+  logoHeight: String
+}
+
+input StoreConfigOrderByInput {
+  id: OrderBy
+  storeName: OrderBy
+  storeDescription: OrderBy
+  logoUrl: OrderBy
+  address: OrderBy
+  businessHours: OrderBy
+  phone: OrderBy
+  email: OrderBy
+  instagramUrl: OrderBy
+  facebookUrl: OrderBy
+  twitterUrl: OrderBy
+  whatsappNumber: OrderBy
+  createdAt: OrderBy
+  updatedAt: OrderBy
+  logoWidth: OrderBy
+  logoHeight: OrderBy
+}
+
+type StoreFeatures {
+  id: Int!
+  """Nombre del icono: shipping, discount, delivery, secure, etc."""
+  icon: String!
+  """Titulo del beneficio"""
+  title: String!
+  """Descripcion corta"""
+  description: String!
   displayOrder: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  shippingZoneMethods(limit: Int, offset: Int, where: ShippingZoneMethodsWhereInput, orderBy: ShippingZoneMethodsOrderByInput): [ShippingZoneMethods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_method_id", "id"]])
-}
-
-type ShippingZoneMethods {
-  id: Int!
-  shippingMethodId: Int!
-  shippingZoneId: Int!
-  cost: Float!
-  freeShippingThreshold: Float!
-  estimatedDaysMin: Int
-  estimatedDaysMax: Int
   isActive: Int
   createdAt: Timestamp!
   updatedAt: Timestamp!
-  shippingMethods(where: ShippingMethodsWhereInput, orderBy: ShippingMethodsOrderByInput, limit: Int, offset: Int): [ShippingMethods] @mysqlSelect(subgraph: "Database", table: "shipping_methods", columnMap: [["id", "shipping_method_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_method_id")
-  shippingZones(where: ShippingZonesWhereInput, orderBy: ShippingZonesOrderByInput, limit: Int, offset: Int): [ShippingZones] @mysqlSelect(subgraph: "Database", table: "shipping_zones", columnMap: [["id", "shipping_zone_id"]]) @mysqlTableForeign(subgraph: "Database", columnName: "shipping_zone_id")
 }
 
-input ShippingMethodsWhereInput {
+input StoreFeaturesWhereInput {
   id: String
-  name: String
+  """Nombre del icono: shipping, discount, delivery, secure, etc."""
+  icon: String
+  """Titulo del beneficio"""
+  title: String
+  """Descripcion corta"""
   description: String
-  baseCost: String
-  freeShippingThreshold: String
-  estimatedDaysMin: String
-  estimatedDaysMax: String
-  isActive: String
   displayOrder: String
+  isActive: String
   createdAt: String
   updatedAt: String
 }
 
-input ShippingMethodsOrderByInput {
+input StoreFeaturesOrderByInput {
   id: OrderBy
-  name: OrderBy
+  """Nombre del icono: shipping, discount, delivery, secure, etc."""
+  icon: OrderBy
+  """Titulo del beneficio"""
+  title: OrderBy
+  """Descripcion corta"""
   description: OrderBy
-  baseCost: OrderBy
-  freeShippingThreshold: OrderBy
-  estimatedDaysMin: OrderBy
-  estimatedDaysMax: OrderBy
-  isActive: OrderBy
   displayOrder: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
-}
-
-type ShippingZones {
-  id: Int!
-  name: String!
-  districts: JSON!
-  isActive: Int
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  shippingZoneMethods(limit: Int, offset: Int, where: ShippingZoneMethodsWhereInput, orderBy: ShippingZoneMethodsOrderByInput): [ShippingZoneMethods] @mysqlSelect(subgraph: "Database", table: "shipping_zone_methods", columnMap: [["shipping_zone_id", "id"]])
-}
-
-input ShippingZoneMethodsWhereInput {
-  id: String
-  shippingMethodId: String
-  shippingZoneId: String
-  cost: String
-  freeShippingThreshold: String
-  estimatedDaysMin: String
-  estimatedDaysMax: String
-  isActive: String
-  createdAt: String
-  updatedAt: String
-}
-
-input ShippingZoneMethodsOrderByInput {
-  id: OrderBy
-  shippingMethodId: OrderBy
-  shippingZoneId: OrderBy
-  cost: OrderBy
-  freeShippingThreshold: OrderBy
-  estimatedDaysMin: OrderBy
-  estimatedDaysMax: OrderBy
   isActive: OrderBy
   createdAt: OrderBy
   updatedAt: OrderBy
 }
 
-input ShippingZonesWhereInput {
-  id: String
-  name: String
-  districts: String
-  isActive: String
-  createdAt: String
-  updatedAt: String
+"""VIEW"""
+type VariantActiveOffers {
+  variantId: Int!
+  offerId: Int!
+  """Precio final de la oferta"""
+  offerPrice: Float!
+  """Precio original al momento de crear"""
+  originalPrice: Float!
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  remainingStock: BigInt
+  """Nombre interno de la oferta"""
+  offerName: String!
+  """TÃ­tulo visible para el cliente"""
+  offerTitle: String!
+  offerType: VariantActiveOffersOfferType!
+  discountType: VariantActiveOffersDiscountType!
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  discountPercent: Float
+  savingsAmount: Float!
 }
 
-input ShippingZonesOrderByInput {
-  id: OrderBy
-  name: OrderBy
-  districts: OrderBy
-  isActive: OrderBy
-  createdAt: OrderBy
-  updatedAt: OrderBy
+enum VariantActiveOffersOfferType {
+  flash_sale
+  daily_deal
+  clearance
+  bundle
+  volume_discount
+  seasonal
+}
+
+enum VariantActiveOffersDiscountType {
+  percentage
+  fixed_amount
+  fixed_price
+}
+
+"""VIEW"""
+input VariantActiveOffersWhereInput {
+  variantId: String
+  offerId: String
+  """Precio final de la oferta"""
+  offerPrice: String
+  """Precio original al momento de crear"""
+  originalPrice: String
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: String
+  """Unidades vendidas en esta oferta"""
+  soldCount: String
+  remainingStock: String
+  """Nombre interno de la oferta"""
+  offerName: String
+  """TÃ­tulo visible para el cliente"""
+  offerTitle: String
+  offerType: String
+  discountType: String
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: String
+  startDate: String
+  endDate: String
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: String
+  """Mostrar indicador de stock"""
+  showStockIndicator: String
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: String
+  discountPercent: String
+  savingsAmount: String
+}
+
+"""VIEW"""
+input VariantActiveOffersOrderByInput {
+  variantId: OrderBy
+  offerId: OrderBy
+  """Precio final de la oferta"""
+  offerPrice: OrderBy
+  """Precio original al momento de crear"""
+  originalPrice: OrderBy
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: OrderBy
+  """Unidades vendidas en esta oferta"""
+  soldCount: OrderBy
+  remainingStock: OrderBy
+  """Nombre interno de la oferta"""
+  offerName: OrderBy
+  """TÃ­tulo visible para el cliente"""
+  offerTitle: OrderBy
+  offerType: OrderBy
+  discountType: OrderBy
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: OrderBy
+  startDate: OrderBy
+  endDate: OrderBy
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: OrderBy
+  """Color del badge"""
+  badgeColor: OrderBy
+  """Mostrar contador regresivo"""
+  showCountdown: OrderBy
+  """Mostrar indicador de stock"""
+  showStockIndicator: OrderBy
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: OrderBy
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: OrderBy
+  discountPercent: OrderBy
+  savingsAmount: OrderBy
 }
 
 """VIEW"""
@@ -2062,6 +2986,139 @@ input VariantRatingSummaryOrderByInput {
   twoStar: OrderBy
   oneStar: OrderBy
   verifiedPurchases: OrderBy
+}
+
+type VerificationCodes {
+  id: Int!
+  email: String!
+  code: String!
+  type: VerificationCodesType
+  expiresAt: DateTime!
+  usedAt: DateTime
+  createdAt: Timestamp!
+}
+
+enum VerificationCodesType {
+  verification
+  password_reset
+}
+
+input VerificationCodesWhereInput {
+  id: String
+  email: String
+  code: String
+  type: String
+  expiresAt: String
+  usedAt: String
+  createdAt: String
+}
+
+input VerificationCodesOrderByInput {
+  id: OrderBy
+  email: OrderBy
+  code: OrderBy
+  type: OrderBy
+  expiresAt: OrderBy
+  usedAt: OrderBy
+  createdAt: OrderBy
+}
+
+"""VIEW"""
+input ActiveOffersInsertInput {
+  id: Int
+  """Nombre interno de la oferta"""
+  name: String!
+  """TÃ­tulo visible para el cliente"""
+  title: String!
+  description: String
+  offerType: ActiveOffersOfferType
+  discountType: ActiveOffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  totalVariants: BigInt
+  totalSold: Float
+  """Precio final de la oferta"""
+  minPrice: Float
+  maxDiscountPercent: Float
+}
+
+"""VIEW"""
+input ActiveOffersUpdateInput {
+  id: Int
+  """Nombre interno de la oferta"""
+  name: String
+  """TÃ­tulo visible para el cliente"""
+  title: String
+  description: String
+  offerType: ActiveOffersOfferType
+  discountType: ActiveOffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float
+  startDate: DateTime
+  endDate: DateTime
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  totalVariants: BigInt
+  totalSold: Float
+  """Precio final de la oferta"""
+  minPrice: Float
+  maxDiscountPercent: Float
 }
 
 input AttributeOptionsInsertInput {
@@ -2131,6 +3188,7 @@ input BannerUpdateInput {
 input BrandsInsertInput {
   id: Int
   name: String!
+  imageUrl: String
   createdAt: Timestamp
   updatedAt: Timestamp
   createdBy: Int
@@ -2140,6 +3198,7 @@ input BrandsInsertInput {
 input BrandsUpdateInput {
   id: Int
   name: String
+  imageUrl: String
   createdAt: Timestamp
   updatedAt: Timestamp
   createdBy: Int
@@ -2158,6 +3217,25 @@ input CategoriesInsertInput {
   updatedAt: Timestamp
   createdBy: Int
   updatedBy: Int
+  """Banner image for desktop"""
+  bannerImage: String
+  """Banner image for mobile"""
+  bannerImageMobile: String
+  """Banner title (defaults to category name if empty)"""
+  bannerTitle: String
+  """Banner subtitle"""
+  bannerSubtitle: String
+  """Banner description text"""
+  bannerDescription: String
+  """Call to action button text"""
+  bannerCtaText: String
+  """Call to action button link"""
+  bannerCtaLink: String
+  """SEO meta title"""
+  metaTitle: String
+  """SEO meta description"""
+  metaDescription: String
+  slug: String!
 }
 
 input CategoriesUpdateInput {
@@ -2172,6 +3250,25 @@ input CategoriesUpdateInput {
   updatedAt: Timestamp
   createdBy: Int
   updatedBy: Int
+  """Banner image for desktop"""
+  bannerImage: String
+  """Banner image for mobile"""
+  bannerImageMobile: String
+  """Banner title (defaults to category name if empty)"""
+  bannerTitle: String
+  """Banner subtitle"""
+  bannerSubtitle: String
+  """Banner description text"""
+  bannerDescription: String
+  """Call to action button text"""
+  bannerCtaText: String
+  """Call to action button link"""
+  bannerCtaLink: String
+  """SEO meta title"""
+  metaTitle: String
+  """SEO meta description"""
+  metaDescription: String
+  slug: String
 }
 
 input CouponUsageInsertInput {
@@ -2244,11 +3341,15 @@ input CustomersInsertInput {
   password: String!
   addressId: Int
   isActive: Int
+  """1 = usuario necesita crear contraseÃ±a"""
+  needsPasswordSetup: Int
   createdAt: Timestamp
   updatedAt: Timestamp
-  lastname: String!
+  """Apellido del cliente"""
+  lastname: String
   photo: String
-  name: String!
+  """Nombre del cliente"""
+  name: String
   """numero de celular"""
   phone: String
   """Documento de identidad """
@@ -2261,10 +3362,14 @@ input CustomersUpdateInput {
   password: String
   addressId: Int
   isActive: Int
+  """1 = usuario necesita crear contraseÃ±a"""
+  needsPasswordSetup: Int
   createdAt: Timestamp
   updatedAt: Timestamp
+  """Apellido del cliente"""
   lastname: String
   photo: String
+  """Nombre del cliente"""
   name: String
   """numero de celular"""
   phone: String
@@ -2280,12 +3385,14 @@ input CustomersAddressesInsertInput {
   department: String
   province: String
   district: String!
+  districtId: Int
   """Nombre de la avenida/calle/jirón"""
   streetName: String!
   """Número de la dirección"""
   streetNumber: String!
   """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
   apartment: String
+  reference: String
   """Latitud GPS"""
   latitude: Float
   """Longitud GPS"""
@@ -2304,18 +3411,226 @@ input CustomersAddressesUpdateInput {
   department: String
   province: String
   district: String
+  districtId: Int
   """Nombre de la avenida/calle/jirón"""
   streetName: String
   """Número de la dirección"""
   streetNumber: String
   """Dpto/Interior/Piso/Lote/Bloque (opcional)"""
   apartment: String
+  reference: String
   """Latitud GPS"""
   latitude: Float
   """Longitud GPS"""
   longitude: Float
   """1 = dirección por defecto"""
   isDefault: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+input DistrictsInsertInput {
+  id: Int
+  """CÃ³digo INEI del distrito"""
+  code: String!
+  name: String!
+  """Zona geogrÃ¡fica"""
+  zone: DistrictsZone!
+  """Si tiene cobertura de delivery"""
+  isActive: Int
+  createdAt: Timestamp
+}
+
+input DistrictsUpdateInput {
+  id: Int
+  """CÃ³digo INEI del distrito"""
+  code: String
+  name: String
+  """Zona geogrÃ¡fica"""
+  zone: DistrictsZone
+  """Si tiene cobertura de delivery"""
+  isActive: Int
+  createdAt: Timestamp
+}
+
+input FooterLinksInsertInput {
+  id: Int
+  name: String!
+  url: String!
+  displayOrder: Int
+  isActive: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+input FooterLinksUpdateInput {
+  id: Int
+  name: String
+  url: String
+  displayOrder: Int
+  isActive: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+"""CategorÃ­as completas en oferta"""
+input OfferCategoriesInsertInput {
+  offerId: Int!
+  categoryId: Int!
+}
+
+"""CategorÃ­as completas en oferta"""
+input OfferCategoriesUpdateInput {
+  offerId: Int
+  categoryId: Int
+}
+
+"""Historial de uso de ofertas"""
+input OfferUsageInsertInput {
+  id: Int
+  offerId: Int!
+  customerId: Int!
+  orderId: Int!
+  variantId: Int!
+  quantity: Int
+  originalPrice: Float!
+  offerPrice: Float!
+  """Ahorro total"""
+  discountAmount: Float!
+  usedAt: Timestamp
+}
+
+"""Historial de uso de ofertas"""
+input OfferUsageUpdateInput {
+  id: Int
+  offerId: Int
+  customerId: Int
+  orderId: Int
+  variantId: Int
+  quantity: Int
+  originalPrice: Float
+  offerPrice: Float
+  """Ahorro total"""
+  discountAmount: Float
+  usedAt: Timestamp
+}
+
+"""Variantes incluidas en cada oferta"""
+input OfferVariantsInsertInput {
+  id: Int
+  offerId: Int!
+  variantId: Int!
+  """Precio final de la oferta"""
+  offerPrice: Float!
+  """Precio original al momento de crear"""
+  originalPrice: Float!
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  createdAt: Timestamp
+}
+
+"""Variantes incluidas en cada oferta"""
+input OfferVariantsUpdateInput {
+  id: Int
+  offerId: Int
+  variantId: Int
+  """Precio final de la oferta"""
+  offerPrice: Float
+  """Precio original al momento de crear"""
+  originalPrice: Float
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  createdAt: Timestamp
+}
+
+"""Ofertas y descuentos especiales"""
+input OffersInsertInput {
+  id: Int
+  """Nombre interno de la oferta"""
+  name: String!
+  """TÃ­tulo visible para el cliente"""
+  title: String!
+  description: String
+  offerType: OffersOfferType
+  discountType: OffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+"""Ofertas y descuentos especiales"""
+input OffersUpdateInput {
+  id: Int
+  """Nombre interno de la oferta"""
+  name: String
+  """TÃ­tulo visible para el cliente"""
+  title: String
+  description: String
+  offerType: OffersOfferType
+  discountType: OffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float
+  startDate: DateTime
+  endDate: DateTime
+  """MÃ¡ximo de usos totales (NULL = ilimitado)"""
+  maxUses: Int
+  """MÃ¡ximo por cliente"""
+  maxUsesPerCustomer: Int
+  """Contador de usos actuales"""
+  currentUses: Int
+  """Cantidad mÃ­nima para aplicar"""
+  minQuantity: Int
+  """Monto mÃ­nimo de compra"""
+  minPurchaseAmount: Float
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  imageUrl: String
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  isActive: Int
+  """Destacar en home/landing"""
+  isFeatured: Int
   createdAt: Timestamp
   updatedAt: Timestamp
 }
@@ -2736,6 +4051,7 @@ input ProductVariantsInsertInput {
   id: Int
   productId: Int!
   sku: String!
+  slug: String
   price: Float!
   stock: Int
   createdAt: Timestamp
@@ -2750,6 +4066,7 @@ input ProductVariantsUpdateInput {
   id: Int
   productId: Int
   sku: String
+  slug: String
   price: Float
   stock: Int
   createdAt: Timestamp
@@ -2803,6 +4120,7 @@ input PromotionVariantsUpdateInput {
 input PromotionsInsertInput {
   id: Int
   name: String!
+  slug: String
   description: String
   startDate: DateTime!
   endDate: DateTime!
@@ -2822,6 +4140,7 @@ input PromotionsInsertInput {
 input PromotionsUpdateInput {
   id: Int
   name: String
+  slug: String
   description: String
   startDate: DateTime
   endDate: DateTime
@@ -2884,6 +4203,7 @@ input SectionsInsertInput {
   url: String
   image: String
   displayOrder: Int
+  sectionGroup: String
 }
 
 input SectionsUpdateInput {
@@ -2892,6 +4212,7 @@ input SectionsUpdateInput {
   url: String
   image: String
   displayOrder: Int
+  sectionGroup: String
 }
 
 input ServicesInsertInput {
@@ -2970,6 +4291,20 @@ input ShippingMethodsUpdateInput {
   updatedAt: Timestamp
 }
 
+input ShippingZoneDistrictsInsertInput {
+  id: Int
+  zoneId: Int!
+  districtId: Int!
+  createdAt: Timestamp
+}
+
+input ShippingZoneDistrictsUpdateInput {
+  id: Int
+  zoneId: Int
+  districtId: Int
+  createdAt: Timestamp
+}
+
 input ShippingZoneMethodsInsertInput {
   id: Int
   shippingMethodId: Int!
@@ -3014,6 +4349,72 @@ input ShippingZonesUpdateInput {
   updatedAt: Timestamp
 }
 
+input StoreConfigInsertInput {
+  id: Int
+  storeName: String
+  storeDescription: String
+  logoUrl: String
+  address: String
+  businessHours: String
+  phone: String
+  email: String
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  whatsappNumber: String
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  logoWidth: Int
+  logoHeight: Int
+}
+
+input StoreConfigUpdateInput {
+  id: Int
+  storeName: String
+  storeDescription: String
+  logoUrl: String
+  address: String
+  businessHours: String
+  phone: String
+  email: String
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  whatsappNumber: String
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  logoWidth: Int
+  logoHeight: Int
+}
+
+input StoreFeaturesInsertInput {
+  id: Int
+  """Nombre del icono: shipping, discount, delivery, secure, etc."""
+  icon: String!
+  """Titulo del beneficio"""
+  title: String!
+  """Descripcion corta"""
+  description: String!
+  displayOrder: Int
+  isActive: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+input StoreFeaturesUpdateInput {
+  id: Int
+  """Nombre del icono: shipping, discount, delivery, secure, etc."""
+  icon: String
+  """Titulo del beneficio"""
+  title: String
+  """Descripcion corta"""
+  description: String
+  displayOrder: Int
+  isActive: Int
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
 input UsersInsertInput {
   id: Int
   name: String!
@@ -3038,6 +4439,84 @@ input UsersUpdateInput {
   updatedAt: Timestamp
   lastname: String
   photo: String
+}
+
+"""VIEW"""
+input VariantActiveOffersInsertInput {
+  variantId: Int!
+  offerId: Int!
+  """Precio final de la oferta"""
+  offerPrice: Float!
+  """Precio original al momento de crear"""
+  originalPrice: Float!
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  remainingStock: BigInt
+  """Nombre interno de la oferta"""
+  offerName: String!
+  """TÃ­tulo visible para el cliente"""
+  offerTitle: String!
+  offerType: VariantActiveOffersOfferType
+  discountType: VariantActiveOffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float!
+  startDate: DateTime!
+  endDate: DateTime!
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  discountPercent: Float
+  savingsAmount: Float
+}
+
+"""VIEW"""
+input VariantActiveOffersUpdateInput {
+  variantId: Int
+  offerId: Int
+  """Precio final de la oferta"""
+  offerPrice: Float
+  """Precio original al momento de crear"""
+  originalPrice: Float
+  """Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite)"""
+  stockLimit: Int
+  """Unidades vendidas en esta oferta"""
+  soldCount: Int
+  remainingStock: BigInt
+  """Nombre interno de la oferta"""
+  offerName: String
+  """TÃ­tulo visible para el cliente"""
+  offerTitle: String
+  offerType: VariantActiveOffersOfferType
+  discountType: VariantActiveOffersDiscountType
+  """Valor del descuento (% o monto fijo)"""
+  discountValue: Float
+  startDate: DateTime
+  endDate: DateTime
+  """Texto del badge (FLASH, -50%, HOT)"""
+  badgeText: String
+  """Color del badge"""
+  badgeColor: String
+  """Mostrar contador regresivo"""
+  showCountdown: Int
+  """Mostrar indicador de stock"""
+  showStockIndicator: Int
+  """Mostrar cuÃ¡nto ahorra"""
+  showSavings: Int
+  """Mayor nÃºmero = mayor prioridad"""
+  priority: Int
+  discountPercent: Float
+  savingsAmount: Float
 }
 
 """AsociaciÃ³n entre variantes y opciones de atributos del producto"""
@@ -3136,6 +4615,9 @@ input VariantRatingsInsertInput {
   verifiedPurchase: Int
   createdAt: Timestamp
   updatedAt: Timestamp
+  status: String
+  reviewedBy: Int
+  reviewedAt: Timestamp
 }
 
 input VariantRatingsUpdateInput {
@@ -3148,4 +4630,27 @@ input VariantRatingsUpdateInput {
   verifiedPurchase: Int
   createdAt: Timestamp
   updatedAt: Timestamp
+  status: String
+  reviewedBy: Int
+  reviewedAt: Timestamp
+}
+
+input VerificationCodesInsertInput {
+  id: Int
+  email: String!
+  code: String!
+  type: VerificationCodesType
+  expiresAt: DateTime!
+  usedAt: DateTime
+  createdAt: Timestamp
+}
+
+input VerificationCodesUpdateInput {
+  id: Int
+  email: String
+  code: String
+  type: VerificationCodesType
+  expiresAt: DateTime
+  usedAt: DateTime
+  createdAt: Timestamp
 }

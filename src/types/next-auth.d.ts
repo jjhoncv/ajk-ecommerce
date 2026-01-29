@@ -7,6 +7,7 @@ export interface AdminSection {
   url: string
   image?: string
   displayOrder?: number
+  sectionGroup?: string
 }
 
 declare module 'next-auth' {

@@ -16,11 +16,6 @@ export default async function EditRolePage({
   const { id } = await params
   const roleId = parseInt(id)
 
-  // No permitir editar roles del sistema
-  if (roleId <= 2) {
-    notFound()
-  }
-
   const role = await roleModel.getRole(roleId)
   if (role == null) {
     notFound()
@@ -29,11 +24,14 @@ export default async function EditRolePage({
   const sections = await sectionModel.getSectionsByRole(roleId)
   const sectionIds = sections?.map((s) => s.id) ?? []
 
+  // Roles del sistema (id <= 2) solo pueden editar secciones
+  const isSystemRole = roleId <= 2
+
   return (
     <LayoutPageAdmin>
       <PageUI
-        title={<PageTitle title="Editar Rol" />}
-        subtitle={`Editando: ${role.name}`}
+        title={<PageTitle title={isSystemRole ? 'Editar Secciones' : 'Editar Rol'} />}
+        subtitle={`${isSystemRole ? 'Configurando secciones de' : 'Editando'}: ${role.name}`}
         breadcrumb={[
           { label: 'Roles', url: '/admin/roles' },
           { label: role.name }
@@ -41,6 +39,7 @@ export default async function EditRolePage({
       >
         <RoleForm
           roleId={roleId}
+          isSystemRole={isSystemRole}
           initialData={{
             name: role.name,
             sectionIds

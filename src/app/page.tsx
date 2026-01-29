@@ -2,7 +2,6 @@ import { Header, Layout, LayoutContent } from '@/module/shared/components/layout
 import {
   DailyDeals,
   Features,
-  Newsletter,
   PopularProducts
 } from '@/module/shared/components/sections'
 import Navigation from '@/module/shared/components/Navigation/Navigation'
@@ -10,6 +9,7 @@ import HeroSlider from '@/module/banners/components/HeroSlider'
 import BannerService from '@/module/banners/service/banner'
 import Categories from '@/module/categories/Categories'
 import FeaturedCategories from '@/module/categories/FeaturedCategories'
+import Brands from '@/module/brands/components/ecommerce/Brands'
 
 // services
 import CategoryService from '@/module/categories/services'
@@ -18,6 +18,7 @@ import { getFeaturedCategories } from '@/module/categories/services/featuredCate
 import { getFeatures } from '@/module/shared/services/features/features'
 import { getPopularProducts } from '@/module/products/services/popularProducts'
 import PromotionService from '@/module/promotions/services'
+import BrandService from '@/module/brands/service/brand'
 import { type Metadata } from 'next'
 import { type JSX } from 'react'
 
@@ -35,6 +36,7 @@ export default async function HomePage(): Promise<JSX.Element> {
   const features = await getFeatures()
   const featureCategories = await getFeaturedCategories()
   const sideBanners = await PromotionService.getBanners()
+  const brands = await BrandService.getBrands()
 
   return (
     <Layout>
@@ -46,9 +48,9 @@ export default async function HomePage(): Promise<JSX.Element> {
         <Features features={features} />
         <Categories categories={mainCategories} />
         <FeaturedCategories categories={featureCategories} />
+        <Brands brands={brands} />
         <PopularProducts products={popularProducts} />
         <DailyDeals products={dealsProducts} />
-        <Newsletter />
       </LayoutContent>
     </Layout>
   )

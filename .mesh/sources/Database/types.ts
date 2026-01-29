@@ -22,19 +22,21 @@ export type Scalars = {
   Int: { input: number; output: number; }
   /** The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
   Float: { input: number; output: number; }
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: { input: Date | string; output: Date | string; }
   /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
   Timestamp: { input: Date | string | number; output: Date | string | number; }
+  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
+  BigInt: { input: bigint; output: bigint; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
   /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Date: { input: Date | string; output: Date | string; }
-  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: Date | string; output: Date | string; }
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: { input: bigint; output: bigint; }
 };
 
 export type Query = {
+  active_offers?: Maybe<Array<Maybe<active_offers>>>;
+  count_active_offers?: Maybe<Scalars['Int']['output']>;
   attribute_options?: Maybe<Array<Maybe<attribute_options>>>;
   count_attribute_options?: Maybe<Scalars['Int']['output']>;
   attributes?: Maybe<Array<Maybe<attributes>>>;
@@ -53,6 +55,18 @@ export type Query = {
   count_customers?: Maybe<Scalars['Int']['output']>;
   customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
   count_customers_addresses?: Maybe<Scalars['Int']['output']>;
+  districts?: Maybe<Array<Maybe<districts>>>;
+  count_districts?: Maybe<Scalars['Int']['output']>;
+  footer_links?: Maybe<Array<Maybe<footer_links>>>;
+  count_footer_links?: Maybe<Scalars['Int']['output']>;
+  offer_categories?: Maybe<Array<Maybe<offer_categories>>>;
+  count_offer_categories?: Maybe<Scalars['Int']['output']>;
+  offer_usage?: Maybe<Array<Maybe<offer_usage>>>;
+  count_offer_usage?: Maybe<Scalars['Int']['output']>;
+  offer_variants?: Maybe<Array<Maybe<offer_variants>>>;
+  count_offer_variants?: Maybe<Scalars['Int']['output']>;
+  offers?: Maybe<Array<Maybe<offers>>>;
+  count_offers?: Maybe<Scalars['Int']['output']>;
   order_items?: Maybe<Array<Maybe<order_items>>>;
   count_order_items?: Maybe<Scalars['Int']['output']>;
   order_summary?: Maybe<Array<Maybe<order_summary>>>;
@@ -99,12 +113,20 @@ export type Query = {
   count_services_images?: Maybe<Scalars['Int']['output']>;
   shipping_methods?: Maybe<Array<Maybe<shipping_methods>>>;
   count_shipping_methods?: Maybe<Scalars['Int']['output']>;
+  shipping_zone_districts?: Maybe<Array<Maybe<shipping_zone_districts>>>;
+  count_shipping_zone_districts?: Maybe<Scalars['Int']['output']>;
   shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
   count_shipping_zone_methods?: Maybe<Scalars['Int']['output']>;
   shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
   count_shipping_zones?: Maybe<Scalars['Int']['output']>;
+  store_config?: Maybe<Array<Maybe<store_config>>>;
+  count_store_config?: Maybe<Scalars['Int']['output']>;
+  store_features?: Maybe<Array<Maybe<store_features>>>;
+  count_store_features?: Maybe<Scalars['Int']['output']>;
   users?: Maybe<Array<Maybe<users>>>;
   count_users?: Maybe<Scalars['Int']['output']>;
+  variant_active_offers?: Maybe<Array<Maybe<variant_active_offers>>>;
+  count_variant_active_offers?: Maybe<Scalars['Int']['output']>;
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
   count_variant_attribute_options?: Maybe<Scalars['Int']['output']>;
   variant_images?: Maybe<Array<Maybe<variant_images>>>;
@@ -113,6 +135,21 @@ export type Query = {
   count_variant_rating_summary?: Maybe<Scalars['Int']['output']>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
   count_variant_ratings?: Maybe<Scalars['Int']['output']>;
+  verification_codes?: Maybe<Array<Maybe<verification_codes>>>;
+  count_verification_codes?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type Queryactive_offersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<active_offers_WhereInput>;
+  orderBy?: InputMaybe<active_offers_OrderByInput>;
+};
+
+
+export type Querycount_active_offersArgs = {
+  where?: InputMaybe<active_offers_WhereInput>;
 };
 
 
@@ -230,6 +267,84 @@ export type Querycustomers_addressesArgs = {
 
 export type Querycount_customers_addressesArgs = {
   where?: InputMaybe<customers_addresses_WhereInput>;
+};
+
+
+export type QuerydistrictsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<districts_WhereInput>;
+  orderBy?: InputMaybe<districts_OrderByInput>;
+};
+
+
+export type Querycount_districtsArgs = {
+  where?: InputMaybe<districts_WhereInput>;
+};
+
+
+export type Queryfooter_linksArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<footer_links_WhereInput>;
+  orderBy?: InputMaybe<footer_links_OrderByInput>;
+};
+
+
+export type Querycount_footer_linksArgs = {
+  where?: InputMaybe<footer_links_WhereInput>;
+};
+
+
+export type Queryoffer_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_categories_WhereInput>;
+  orderBy?: InputMaybe<offer_categories_OrderByInput>;
+};
+
+
+export type Querycount_offer_categoriesArgs = {
+  where?: InputMaybe<offer_categories_WhereInput>;
+};
+
+
+export type Queryoffer_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_usage_WhereInput>;
+  orderBy?: InputMaybe<offer_usage_OrderByInput>;
+};
+
+
+export type Querycount_offer_usageArgs = {
+  where?: InputMaybe<offer_usage_WhereInput>;
+};
+
+
+export type Queryoffer_variantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_variants_WhereInput>;
+  orderBy?: InputMaybe<offer_variants_OrderByInput>;
+};
+
+
+export type Querycount_offer_variantsArgs = {
+  where?: InputMaybe<offer_variants_WhereInput>;
+};
+
+
+export type QueryoffersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offers_WhereInput>;
+  orderBy?: InputMaybe<offers_OrderByInput>;
+};
+
+
+export type Querycount_offersArgs = {
+  where?: InputMaybe<offers_WhereInput>;
 };
 
 
@@ -532,6 +647,19 @@ export type Querycount_shipping_methodsArgs = {
 };
 
 
+export type Queryshipping_zone_districtsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_districts_OrderByInput>;
+};
+
+
+export type Querycount_shipping_zone_districtsArgs = {
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+};
+
+
 export type Queryshipping_zone_methodsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -558,6 +686,32 @@ export type Querycount_shipping_zonesArgs = {
 };
 
 
+export type Querystore_configArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<store_config_WhereInput>;
+  orderBy?: InputMaybe<store_config_OrderByInput>;
+};
+
+
+export type Querycount_store_configArgs = {
+  where?: InputMaybe<store_config_WhereInput>;
+};
+
+
+export type Querystore_featuresArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<store_features_WhereInput>;
+  orderBy?: InputMaybe<store_features_OrderByInput>;
+};
+
+
+export type Querycount_store_featuresArgs = {
+  where?: InputMaybe<store_features_WhereInput>;
+};
+
+
 export type QueryusersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -568,6 +722,19 @@ export type QueryusersArgs = {
 
 export type Querycount_usersArgs = {
   where?: InputMaybe<users_WhereInput>;
+};
+
+
+export type Queryvariant_active_offersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<variant_active_offers_WhereInput>;
+  orderBy?: InputMaybe<variant_active_offers_OrderByInput>;
+};
+
+
+export type Querycount_variant_active_offersArgs = {
+  where?: InputMaybe<variant_active_offers_WhereInput>;
 };
 
 
@@ -621,6 +788,183 @@ export type Queryvariant_ratingsArgs = {
 export type Querycount_variant_ratingsArgs = {
   where?: InputMaybe<variant_ratings_WhereInput>;
 };
+
+
+export type Queryverification_codesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<verification_codes_WhereInput>;
+  orderBy?: InputMaybe<verification_codes_OrderByInput>;
+};
+
+
+export type Querycount_verification_codesArgs = {
+  where?: InputMaybe<verification_codes_WhereInput>;
+};
+
+/** VIEW */
+export type active_offers = {
+  id: Scalars['Int']['output'];
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  offer_type: active_offers_offer_type;
+  discount_type: active_offers_discount_type;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  start_date: Scalars['DateTime']['output'];
+  end_date: Scalars['DateTime']['output'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: Maybe<Scalars['Int']['output']>;
+  /** Contador de usos actuales */
+  current_uses?: Maybe<Scalars['Int']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: Maybe<Scalars['Int']['output']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  is_featured?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  total_variants: Scalars['BigInt']['output'];
+  total_sold?: Maybe<Scalars['Float']['output']>;
+  /** Precio final de la oferta */
+  min_price?: Maybe<Scalars['Float']['output']>;
+  max_discount_percent?: Maybe<Scalars['Float']['output']>;
+};
+
+export type active_offers_offer_type =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type active_offers_discount_type =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** VIEW */
+export type active_offers_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<Scalars['String']['input']>;
+  discount_type?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['String']['input']>;
+  start_date?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['String']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['String']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  total_variants?: InputMaybe<Scalars['String']['input']>;
+  total_sold?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  min_price?: InputMaybe<Scalars['String']['input']>;
+  max_discount_percent?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type active_offers_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  offer_type?: InputMaybe<OrderBy>;
+  discount_type?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<OrderBy>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<OrderBy>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<OrderBy>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badge_color?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  total_variants?: InputMaybe<OrderBy>;
+  total_sold?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  min_price?: InputMaybe<OrderBy>;
+  max_discount_percent?: InputMaybe<OrderBy>;
+};
+
+export type OrderBy =
+  | 'asc'
+  | 'desc';
 
 export type attribute_options = {
   id: Scalars['Int']['output'];
@@ -705,10 +1049,6 @@ export type attribute_options_OrderByInput = {
   additional_cost?: InputMaybe<OrderBy>;
 };
 
-export type OrderBy =
-  | 'asc'
-  | 'desc';
-
 export type users = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -729,6 +1069,7 @@ export type users = {
   products?: Maybe<Array<Maybe<products>>>;
   promotions?: Maybe<Array<Maybe<promotions>>>;
   roles?: Maybe<Array<Maybe<roles>>>;
+  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
 };
 
 
@@ -801,6 +1142,14 @@ export type usersrolesArgs = {
   orderBy?: InputMaybe<roles_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type usersvariant_ratingsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<variant_ratings_WhereInput>;
+  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
 };
 
 export type attributes_WhereInput = {
@@ -906,6 +1255,7 @@ export type banner_OrderByInput = {
 export type brands = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
   created_by?: Maybe<Scalars['Int']['output']>;
@@ -1207,12 +1557,14 @@ export type product_variants = {
   id: Scalars['Int']['output'];
   product_id: Scalars['Int']['output'];
   sku: Scalars['String']['output'];
+  slug?: Maybe<Scalars['String']['output']>;
   price: Scalars['Float']['output'];
   stock: Scalars['Int']['output'];
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
   /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
   image_attribute_id?: Maybe<Scalars['Int']['output']>;
+  offer_variants?: Maybe<Array<Maybe<offer_variants>>>;
   order_items?: Maybe<Array<Maybe<order_items>>>;
   attributes?: Maybe<Array<Maybe<attributes>>>;
   products?: Maybe<Array<Maybe<products>>>;
@@ -1220,6 +1572,14 @@ export type product_variants = {
   variant_attribute_options?: Maybe<Array<Maybe<variant_attribute_options>>>;
   variant_images?: Maybe<Array<Maybe<variant_images>>>;
   variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type product_variantsoffer_variantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_variants_WhereInput>;
+  orderBy?: InputMaybe<offer_variants_OrderByInput>;
 };
 
 
@@ -1278,119 +1638,435 @@ export type product_variantsvariant_ratingsArgs = {
   orderBy?: InputMaybe<variant_ratings_OrderByInput>;
 };
 
-/** Items/productos de cada orden */
-export type order_items = {
+/** Variantes incluidas en cada oferta */
+export type offer_variants = {
   id: Scalars['Int']['output'];
-  order_id: Scalars['Int']['output'];
-  /** Variante del producto comprada */
+  offer_id: Scalars['Int']['output'];
   variant_id: Scalars['Int']['output'];
-  /** Nombre del producto al momento de compra */
-  product_name: Scalars['String']['output'];
-  /** SKU de la variante */
-  variant_sku: Scalars['String']['output'];
-  /** Atributos de la variante (color, talla, etc.) */
-  variant_attributes?: Maybe<Scalars['JSON']['output']>;
-  quantity: Scalars['Int']['output'];
-  /** Precio unitario al momento de compra */
-  unit_price: Scalars['Float']['output'];
-  /** Precio total (quantity * unit_price) */
-  total_price: Scalars['Float']['output'];
-  /** Descuento aplicado a este item */
-  discount_amount?: Maybe<Scalars['Float']['output']>;
-  orders?: Maybe<Array<Maybe<orders>>>;
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['output'];
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['output'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: Maybe<Scalars['Int']['output']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  offers?: Maybe<Array<Maybe<offers>>>;
   product_variants?: Maybe<Array<Maybe<product_variants>>>;
 };
 
 
-/** Items/productos de cada orden */
-export type order_itemsordersArgs = {
-  where?: InputMaybe<orders_WhereInput>;
-  orderBy?: InputMaybe<orders_OrderByInput>;
+/** Variantes incluidas en cada oferta */
+export type offer_variantsoffersArgs = {
+  where?: InputMaybe<offers_WhereInput>;
+  orderBy?: InputMaybe<offers_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-/** Items/productos de cada orden */
-export type order_itemsproduct_variantsArgs = {
+/** Variantes incluidas en cada oferta */
+export type offer_variantsproduct_variantsArgs = {
   where?: InputMaybe<product_variants_WhereInput>;
   orderBy?: InputMaybe<product_variants_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-/** Órdenes principales del ecommerce */
-export type orders = {
+/** Ofertas y descuentos especiales */
+export type offers = {
   id: Scalars['Int']['output'];
-  customer_id: Scalars['Int']['output'];
-  /** Número único de orden (ORD-2025-001234) */
-  order_number: Scalars['String']['output'];
-  status: orders_status;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  offer_type: offers_offer_type;
+  discount_type: offers_discount_type;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  start_date: Scalars['DateTime']['output'];
+  end_date: Scalars['DateTime']['output'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: Maybe<Scalars['Int']['output']>;
+  /** Contador de usos actuales */
+  current_uses?: Maybe<Scalars['Int']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: Maybe<Scalars['Int']['output']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  is_featured?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
-  /** Subtotal antes de descuentos */
-  subtotal: Scalars['Float']['output'];
-  /** Descuento aplicado */
-  discount_amount?: Maybe<Scalars['Float']['output']>;
-  /** Costo de envío */
-  shipping_cost?: Maybe<Scalars['Float']['output']>;
-  /** Impuestos (IGV) */
-  tax_amount?: Maybe<Scalars['Float']['output']>;
-  /** Total final a pagar */
-  total_amount: Scalars['Float']['output'];
-  /** Dirección de envío */
-  shipping_address_id: Scalars['Int']['output'];
-  /** Método de envío */
-  shipping_method?: Maybe<Scalars['String']['output']>;
-  /** Fecha estimada de entrega */
-  estimated_delivery?: Maybe<Scalars['Date']['output']>;
-  /** Método de pago usado */
-  payment_method?: Maybe<Scalars['String']['output']>;
-  payment_status: orders_payment_status;
-  /** Fecha de pago confirmado */
-  paid_at?: Maybe<Scalars['Timestamp']['output']>;
-  /** Notas del cliente */
-  customer_notes?: Maybe<Scalars['String']['output']>;
-  /** Notas internas del admin */
-  admin_notes?: Maybe<Scalars['String']['output']>;
-  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
-  order_items?: Maybe<Array<Maybe<order_items>>>;
-  order_tracking?: Maybe<Array<Maybe<order_tracking>>>;
+  offer_categories?: Maybe<Array<Maybe<offer_categories>>>;
+  offer_usage?: Maybe<Array<Maybe<offer_usage>>>;
+  offer_variants?: Maybe<Array<Maybe<offer_variants>>>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type offersoffer_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_categories_WhereInput>;
+  orderBy?: InputMaybe<offer_categories_OrderByInput>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type offersoffer_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_usage_WhereInput>;
+  orderBy?: InputMaybe<offer_usage_OrderByInput>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type offersoffer_variantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_variants_WhereInput>;
+  orderBy?: InputMaybe<offer_variants_OrderByInput>;
+};
+
+export type offers_offer_type =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type offers_discount_type =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** CategorÃ­as completas en oferta */
+export type offer_categories = {
+  offer_id: Scalars['Int']['output'];
+  category_id: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<categories>>>;
+  offers?: Maybe<Array<Maybe<offers>>>;
+};
+
+
+/** CategorÃ­as completas en oferta */
+export type offer_categoriescategoriesArgs = {
+  where?: InputMaybe<categories_WhereInput>;
+  orderBy?: InputMaybe<categories_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** CategorÃ­as completas en oferta */
+export type offer_categoriesoffersArgs = {
+  where?: InputMaybe<offers_WhereInput>;
+  orderBy?: InputMaybe<offers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type categories = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
+  show_nav?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  created_by?: Maybe<Scalars['Int']['output']>;
+  updated_by?: Maybe<Scalars['Int']['output']>;
+  /** Banner image for desktop */
+  banner_image?: Maybe<Scalars['String']['output']>;
+  /** Banner image for mobile */
+  banner_image_mobile?: Maybe<Scalars['String']['output']>;
+  /** Banner title (defaults to category name if empty) */
+  banner_title?: Maybe<Scalars['String']['output']>;
+  /** Banner subtitle */
+  banner_subtitle?: Maybe<Scalars['String']['output']>;
+  /** Banner description text */
+  banner_description?: Maybe<Scalars['String']['output']>;
+  /** Call to action button text */
+  banner_cta_text?: Maybe<Scalars['String']['output']>;
+  /** Call to action button link */
+  banner_cta_link?: Maybe<Scalars['String']['output']>;
+  /** SEO meta title */
+  meta_title?: Maybe<Scalars['String']['output']>;
+  /** SEO meta description */
+  meta_description?: Maybe<Scalars['String']['output']>;
+  slug: Scalars['String']['output'];
+  users?: Maybe<Array<Maybe<users>>>;
+  offer_categories?: Maybe<Array<Maybe<offer_categories>>>;
+  product_categories?: Maybe<Array<Maybe<product_categories>>>;
+};
+
+
+export type categoriesusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type categoriesoffer_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_categories_WhereInput>;
+  orderBy?: InputMaybe<offer_categories_OrderByInput>;
+};
+
+
+export type categoriesproduct_categoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<product_categories_WhereInput>;
+  orderBy?: InputMaybe<product_categories_OrderByInput>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type offer_categories_WhereInput = {
+  offer_id?: InputMaybe<Scalars['String']['input']>;
+  category_id?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type offer_categories_OrderByInput = {
+  offer_id?: InputMaybe<OrderBy>;
+  category_id?: InputMaybe<OrderBy>;
+};
+
+export type product_categories = {
+  product_id: Scalars['Int']['output'];
+  category_id: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<categories>>>;
+  products?: Maybe<Array<Maybe<products>>>;
+};
+
+
+export type product_categoriescategoriesArgs = {
+  where?: InputMaybe<categories_WhereInput>;
+  orderBy?: InputMaybe<categories_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type product_categoriesproductsArgs = {
+  where?: InputMaybe<products_WhereInput>;
+  orderBy?: InputMaybe<products_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type categories_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  parent_id?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  show_nav?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  created_by?: InputMaybe<Scalars['String']['input']>;
+  updated_by?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for desktop */
+  banner_image?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  banner_image_mobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  banner_title?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  banner_subtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  banner_description?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  banner_cta_text?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  banner_cta_link?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  meta_title?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  meta_description?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type categories_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  parent_id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  show_nav?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  created_by?: InputMaybe<OrderBy>;
+  updated_by?: InputMaybe<OrderBy>;
+  /** Banner image for desktop */
+  banner_image?: InputMaybe<OrderBy>;
+  /** Banner image for mobile */
+  banner_image_mobile?: InputMaybe<OrderBy>;
+  /** Banner title (defaults to category name if empty) */
+  banner_title?: InputMaybe<OrderBy>;
+  /** Banner subtitle */
+  banner_subtitle?: InputMaybe<OrderBy>;
+  /** Banner description text */
+  banner_description?: InputMaybe<OrderBy>;
+  /** Call to action button text */
+  banner_cta_text?: InputMaybe<OrderBy>;
+  /** Call to action button link */
+  banner_cta_link?: InputMaybe<OrderBy>;
+  /** SEO meta title */
+  meta_title?: InputMaybe<OrderBy>;
+  /** SEO meta description */
+  meta_description?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
+};
+
+export type product_categories_WhereInput = {
+  product_id?: InputMaybe<Scalars['String']['input']>;
+  category_id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type product_categories_OrderByInput = {
+  product_id?: InputMaybe<OrderBy>;
+  category_id?: InputMaybe<OrderBy>;
+};
+
+/** Ofertas y descuentos especiales */
+export type offers_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<Scalars['String']['input']>;
+  discount_type?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['String']['input']>;
+  start_date?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['String']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['String']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['String']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type offers_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  offer_type?: InputMaybe<OrderBy>;
+  discount_type?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<OrderBy>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<OrderBy>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<OrderBy>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badge_color?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+/** Historial de uso de ofertas */
+export type offer_usage = {
+  id: Scalars['Int']['output'];
+  offer_id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  variant_id: Scalars['Int']['output'];
+  quantity: Scalars['Int']['output'];
+  original_price: Scalars['Float']['output'];
+  offer_price: Scalars['Float']['output'];
+  /** Ahorro total */
+  discount_amount: Scalars['Float']['output'];
+  used_at: Scalars['Timestamp']['output'];
   customers?: Maybe<Array<Maybe<customers>>>;
-  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
-  payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
+  offers?: Maybe<Array<Maybe<offers>>>;
+  orders?: Maybe<Array<Maybe<orders>>>;
 };
 
 
-/** Órdenes principales del ecommerce */
-export type orderscoupon_usageArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<coupon_usage_WhereInput>;
-  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type ordersorder_itemsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<order_items_WhereInput>;
-  orderBy?: InputMaybe<order_items_OrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type ordersorder_trackingArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<order_tracking_WhereInput>;
-  orderBy?: InputMaybe<order_tracking_OrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type orderscustomersArgs = {
+/** Historial de uso de ofertas */
+export type offer_usagecustomersArgs = {
   where?: InputMaybe<customers_WhereInput>;
   orderBy?: InputMaybe<customers_OrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1398,36 +2074,88 @@ export type orderscustomersArgs = {
 };
 
 
-/** Órdenes principales del ecommerce */
-export type orderscustomers_addressesArgs = {
+/** Historial de uso de ofertas */
+export type offer_usageoffersArgs = {
+  where?: InputMaybe<offers_WhereInput>;
+  orderBy?: InputMaybe<offers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Historial de uso de ofertas */
+export type offer_usageordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type customers = {
+  id: Scalars['Int']['output'];
+  email: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  address_id?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  /** Apellido del cliente */
+  lastname?: Maybe<Scalars['String']['output']>;
+  photo?: Maybe<Scalars['String']['output']>;
+  /** Nombre del cliente */
+  name?: Maybe<Scalars['String']['output']>;
+  /** numero de celular */
+  phone?: Maybe<Scalars['String']['output']>;
+  /** Documento de identidad  */
+  dni?: Maybe<Scalars['String']['output']>;
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
+  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+  offer_usage?: Maybe<Array<Maybe<offer_usage>>>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type customerscoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
+};
+
+
+export type customerscustomers_addressesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<customers_addresses_WhereInput>;
   orderBy?: InputMaybe<customers_addresses_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-/** Órdenes principales del ecommerce */
-export type orderspayment_transactionsArgs = {
+export type customersoffer_usageArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<payment_transactions_WhereInput>;
-  orderBy?: InputMaybe<payment_transactions_OrderByInput>;
+  where?: InputMaybe<offer_usage_WhereInput>;
+  orderBy?: InputMaybe<offer_usage_OrderByInput>;
 };
 
-export type orders_status =
-  | 'pending'
-  | 'processing'
-  | 'shipped'
-  | 'delivered'
-  | 'cancelled'
-  | 'refunded';
 
-export type orders_payment_status =
-  | 'pending'
-  | 'paid'
-  | 'failed'
-  | 'refunded';
+export type customersordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+};
+
+
+export type customersvariant_ratingsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<variant_ratings_WhereInput>;
+  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
+};
 
 export type coupon_usage = {
   id: Scalars['Int']['output'];
@@ -1579,111 +2307,20 @@ export type coupons_OrderByInput = {
   updated_by?: InputMaybe<OrderBy>;
 };
 
-export type customers = {
-  id: Scalars['Int']['output'];
-  email: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  address_id?: Maybe<Scalars['Int']['output']>;
-  is_active?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  lastname: Scalars['String']['output'];
-  photo?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  /** numero de celular */
-  phone?: Maybe<Scalars['String']['output']>;
-  /** Documento de identidad  */
-  dni?: Maybe<Scalars['String']['output']>;
-  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
-  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
-  orders?: Maybe<Array<Maybe<orders>>>;
-  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
-};
-
-
-export type customerscoupon_usageArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<coupon_usage_WhereInput>;
-  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
-};
-
-
-export type customerscustomers_addressesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<customers_addresses_WhereInput>;
-  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
-};
-
-
-export type customersordersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<orders_WhereInput>;
-  orderBy?: InputMaybe<orders_OrderByInput>;
-};
-
-
-export type customersvariant_ratingsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<variant_ratings_WhereInput>;
-  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
-};
-
-export type customers_addresses = {
-  id: Scalars['Int']['output'];
-  id_customer: Scalars['Int']['output'];
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias: Scalars['String']['output'];
-  department: Scalars['String']['output'];
-  province: Scalars['String']['output'];
-  district: Scalars['String']['output'];
-  /** Nombre de la avenida/calle/jirón */
-  street_name: Scalars['String']['output'];
-  /** Número de la dirección */
-  street_number: Scalars['String']['output'];
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: Maybe<Scalars['String']['output']>;
-  /** Latitud GPS */
-  latitude?: Maybe<Scalars['Float']['output']>;
-  /** Longitud GPS */
-  longitude?: Maybe<Scalars['Float']['output']>;
-  /** 1 = dirección por defecto */
-  is_default?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  customers?: Maybe<Array<Maybe<customers>>>;
-  orders?: Maybe<Array<Maybe<orders>>>;
-};
-
-
-export type customers_addressescustomersArgs = {
-  where?: InputMaybe<customers_WhereInput>;
-  orderBy?: InputMaybe<customers_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type customers_addressesordersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<orders_WhereInput>;
-  orderBy?: InputMaybe<orders_OrderByInput>;
-};
-
 export type customers_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   address_id?: InputMaybe<Scalars['String']['input']>;
   is_active?: InputMaybe<Scalars['String']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del cliente */
   name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
@@ -1697,15 +2334,210 @@ export type customers_OrderByInput = {
   password?: InputMaybe<OrderBy>;
   address_id?: InputMaybe<OrderBy>;
   is_active?: InputMaybe<OrderBy>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<OrderBy>;
   photo?: InputMaybe<OrderBy>;
+  /** Nombre del cliente */
   name?: InputMaybe<OrderBy>;
   /** numero de celular */
   phone?: InputMaybe<OrderBy>;
   /** Documento de identidad  */
   dni?: InputMaybe<OrderBy>;
+};
+
+/** Órdenes principales del ecommerce */
+export type orders = {
+  id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  order_number: Scalars['String']['output'];
+  status: orders_status;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  /** Subtotal antes de descuentos */
+  subtotal: Scalars['Float']['output'];
+  /** Descuento aplicado */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  /** Costo de envío */
+  shipping_cost?: Maybe<Scalars['Float']['output']>;
+  /** Impuestos (IGV) */
+  tax_amount?: Maybe<Scalars['Float']['output']>;
+  /** Total final a pagar */
+  total_amount: Scalars['Float']['output'];
+  /** Dirección de envío */
+  shipping_address_id: Scalars['Int']['output'];
+  /** Método de envío */
+  shipping_method?: Maybe<Scalars['String']['output']>;
+  /** Fecha estimada de entrega */
+  estimated_delivery?: Maybe<Scalars['Date']['output']>;
+  /** Método de pago usado */
+  payment_method?: Maybe<Scalars['String']['output']>;
+  payment_status: orders_payment_status;
+  /** Fecha de pago confirmado */
+  paid_at?: Maybe<Scalars['Timestamp']['output']>;
+  /** Notas del cliente */
+  customer_notes?: Maybe<Scalars['String']['output']>;
+  /** Notas internas del admin */
+  admin_notes?: Maybe<Scalars['String']['output']>;
+  coupon_usage?: Maybe<Array<Maybe<coupon_usage>>>;
+  offer_usage?: Maybe<Array<Maybe<offer_usage>>>;
+  order_items?: Maybe<Array<Maybe<order_items>>>;
+  order_tracking?: Maybe<Array<Maybe<order_tracking>>>;
+  customers?: Maybe<Array<Maybe<customers>>>;
+  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+  payment_transactions?: Maybe<Array<Maybe<payment_transactions>>>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscoupon_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<coupon_usage_WhereInput>;
+  orderBy?: InputMaybe<coupon_usage_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type ordersoffer_usageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<offer_usage_WhereInput>;
+  orderBy?: InputMaybe<offer_usage_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type ordersorder_itemsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_items_WhereInput>;
+  orderBy?: InputMaybe<order_items_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type ordersorder_trackingArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<order_tracking_WhereInput>;
+  orderBy?: InputMaybe<order_tracking_OrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderscustomers_addressesArgs = {
+  where?: InputMaybe<customers_addresses_WhereInput>;
+  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type orderspayment_transactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<payment_transactions_WhereInput>;
+  orderBy?: InputMaybe<payment_transactions_OrderByInput>;
+};
+
+export type orders_status =
+  | 'pending'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
+
+export type orders_payment_status =
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded';
+
+/** Historial de uso de ofertas */
+export type offer_usage_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  offer_id?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  order_id?: InputMaybe<Scalars['String']['input']>;
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['String']['input']>;
+  original_price?: InputMaybe<Scalars['String']['input']>;
+  offer_price?: InputMaybe<Scalars['String']['input']>;
+  /** Ahorro total */
+  discount_amount?: InputMaybe<Scalars['String']['input']>;
+  used_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type offer_usage_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  offer_id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  order_id?: InputMaybe<OrderBy>;
+  variant_id?: InputMaybe<OrderBy>;
+  quantity?: InputMaybe<OrderBy>;
+  original_price?: InputMaybe<OrderBy>;
+  offer_price?: InputMaybe<OrderBy>;
+  /** Ahorro total */
+  discount_amount?: InputMaybe<OrderBy>;
+  used_at?: InputMaybe<OrderBy>;
+};
+
+/** Items/productos de cada orden */
+export type order_items = {
+  id: Scalars['Int']['output'];
+  order_id: Scalars['Int']['output'];
+  /** Variante del producto comprada */
+  variant_id: Scalars['Int']['output'];
+  /** Nombre del producto al momento de compra */
+  product_name: Scalars['String']['output'];
+  /** SKU de la variante */
+  variant_sku: Scalars['String']['output'];
+  /** Atributos de la variante (color, talla, etc.) */
+  variant_attributes?: Maybe<Scalars['JSON']['output']>;
+  quantity: Scalars['Int']['output'];
+  /** Precio unitario al momento de compra */
+  unit_price: Scalars['Float']['output'];
+  /** Precio total (quantity * unit_price) */
+  total_price: Scalars['Float']['output'];
+  /** Descuento aplicado a este item */
+  discount_amount?: Maybe<Scalars['Float']['output']>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+};
+
+
+/** Items/productos de cada orden */
+export type order_itemsordersArgs = {
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Items/productos de cada orden */
+export type order_itemsproduct_variantsArgs = {
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Órdenes principales del ecommerce */
@@ -1780,151 +2612,11 @@ export type orders_OrderByInput = {
   admin_notes?: InputMaybe<OrderBy>;
 };
 
-export type customers_addresses_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_customer?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias?: InputMaybe<Scalars['String']['input']>;
-  department?: InputMaybe<Scalars['String']['input']>;
-  province?: InputMaybe<Scalars['String']['input']>;
-  district?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de la avenida/calle/jirón */
-  street_name?: InputMaybe<Scalars['String']['input']>;
-  /** Número de la dirección */
-  street_number?: InputMaybe<Scalars['String']['input']>;
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: InputMaybe<Scalars['String']['input']>;
-  /** Latitud GPS */
-  latitude?: InputMaybe<Scalars['String']['input']>;
-  /** Longitud GPS */
-  longitude?: InputMaybe<Scalars['String']['input']>;
-  /** 1 = dirección por defecto */
-  is_default?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type customers_addresses_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  id_customer?: InputMaybe<OrderBy>;
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias?: InputMaybe<OrderBy>;
-  department?: InputMaybe<OrderBy>;
-  province?: InputMaybe<OrderBy>;
-  district?: InputMaybe<OrderBy>;
-  /** Nombre de la avenida/calle/jirón */
-  street_name?: InputMaybe<OrderBy>;
-  /** Número de la dirección */
-  street_number?: InputMaybe<OrderBy>;
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: InputMaybe<OrderBy>;
-  /** Latitud GPS */
-  latitude?: InputMaybe<OrderBy>;
-  /** Longitud GPS */
-  longitude?: InputMaybe<OrderBy>;
-  /** 1 = dirección por defecto */
-  is_default?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
-export type variant_ratings = {
-  id: Scalars['Int']['output'];
-  variant_id: Scalars['Int']['output'];
-  customer_id: Scalars['Int']['output'];
-  rating: Scalars['Int']['output'];
-  review?: Maybe<Scalars['String']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  verified_purchase: Scalars['Int']['output'];
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  rating_images?: Maybe<Array<Maybe<rating_images>>>;
-  customers?: Maybe<Array<Maybe<customers>>>;
-  product_variants?: Maybe<Array<Maybe<product_variants>>>;
-};
-
-
-export type variant_ratingsrating_imagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<rating_images_WhereInput>;
-  orderBy?: InputMaybe<rating_images_OrderByInput>;
-};
-
-
-export type variant_ratingscustomersArgs = {
-  where?: InputMaybe<customers_WhereInput>;
-  orderBy?: InputMaybe<customers_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type variant_ratingsproduct_variantsArgs = {
-  where?: InputMaybe<product_variants_WhereInput>;
-  orderBy?: InputMaybe<product_variants_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type rating_images = {
-  id: Scalars['Int']['output'];
-  rating_id: Scalars['Int']['output'];
-  image_url: Scalars['String']['output'];
-  created_at: Scalars['Timestamp']['output'];
-  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
-};
-
-
-export type rating_imagesvariant_ratingsArgs = {
-  where?: InputMaybe<variant_ratings_WhereInput>;
-  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type variant_ratings_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  variant_id?: InputMaybe<Scalars['String']['input']>;
-  customer_id?: InputMaybe<Scalars['String']['input']>;
-  rating?: InputMaybe<Scalars['String']['input']>;
-  review?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  verified_purchase?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type variant_ratings_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  variant_id?: InputMaybe<OrderBy>;
-  customer_id?: InputMaybe<OrderBy>;
-  rating?: InputMaybe<OrderBy>;
-  review?: InputMaybe<OrderBy>;
-  title?: InputMaybe<OrderBy>;
-  verified_purchase?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
-export type rating_images_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  rating_id?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type rating_images_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  rating_id?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-};
-
 export type product_variants_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   product_id?: InputMaybe<Scalars['String']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['String']['input']>;
   stock?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
@@ -1937,6 +2629,7 @@ export type product_variants_OrderByInput = {
   id?: InputMaybe<OrderBy>;
   product_id?: InputMaybe<OrderBy>;
   sku?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   stock?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
@@ -2064,6 +2757,364 @@ export type order_tracking_OrderByInput = {
   delivered_to?: InputMaybe<OrderBy>;
   /** Notas de entrega */
   delivery_notes?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type customers_addresses = {
+  id: Scalars['Int']['output'];
+  id_customer: Scalars['Int']['output'];
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias: Scalars['String']['output'];
+  department: Scalars['String']['output'];
+  province: Scalars['String']['output'];
+  district: Scalars['String']['output'];
+  district_id?: Maybe<Scalars['Int']['output']>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name: Scalars['String']['output'];
+  /** Número de la dirección */
+  street_number: Scalars['String']['output'];
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: Maybe<Scalars['String']['output']>;
+  reference?: Maybe<Scalars['String']['output']>;
+  /** Latitud GPS */
+  latitude?: Maybe<Scalars['Float']['output']>;
+  /** Longitud GPS */
+  longitude?: Maybe<Scalars['Float']['output']>;
+  /** 1 = dirección por defecto */
+  is_default?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  customers?: Maybe<Array<Maybe<customers>>>;
+  districts?: Maybe<Array<Maybe<districts>>>;
+  orders?: Maybe<Array<Maybe<orders>>>;
+};
+
+
+export type customers_addressescustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type customers_addressesdistrictsArgs = {
+  where?: InputMaybe<districts_WhereInput>;
+  orderBy?: InputMaybe<districts_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type customers_addressesordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<orders_WhereInput>;
+  orderBy?: InputMaybe<orders_OrderByInput>;
+};
+
+export type districts = {
+  id: Scalars['Int']['output'];
+  /** CÃ³digo INEI del distrito */
+  code: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  /** Zona geogrÃ¡fica */
+  zone: districts_zone;
+  /** Si tiene cobertura de delivery */
+  is_active: Scalars['Int']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  customers_addresses?: Maybe<Array<Maybe<customers_addresses>>>;
+  shipping_zone_districts?: Maybe<Array<Maybe<shipping_zone_districts>>>;
+};
+
+
+export type districtscustomers_addressesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<customers_addresses_WhereInput>;
+  orderBy?: InputMaybe<customers_addresses_OrderByInput>;
+};
+
+
+export type districtsshipping_zone_districtsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_districts_OrderByInput>;
+};
+
+export type districts_zone =
+  | 'lima_centro'
+  | 'lima_norte'
+  | 'lima_sur'
+  | 'lima_este'
+  | 'callao';
+
+export type customers_addresses_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  id_customer?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<Scalars['String']['input']>;
+  department?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name?: InputMaybe<Scalars['String']['input']>;
+  /** Número de la dirección */
+  street_number?: InputMaybe<Scalars['String']['input']>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<Scalars['String']['input']>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<Scalars['String']['input']>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type customers_addresses_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  id_customer?: InputMaybe<OrderBy>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<OrderBy>;
+  department?: InputMaybe<OrderBy>;
+  province?: InputMaybe<OrderBy>;
+  district?: InputMaybe<OrderBy>;
+  district_id?: InputMaybe<OrderBy>;
+  /** Nombre de la avenida/calle/jirón */
+  street_name?: InputMaybe<OrderBy>;
+  /** Número de la dirección */
+  street_number?: InputMaybe<OrderBy>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<OrderBy>;
+  reference?: InputMaybe<OrderBy>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<OrderBy>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<OrderBy>;
+  /** 1 = dirección por defecto */
+  is_default?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zone_districts = {
+  id: Scalars['Int']['output'];
+  zone_id: Scalars['Int']['output'];
+  district_id: Scalars['Int']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  districts?: Maybe<Array<Maybe<districts>>>;
+  shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
+};
+
+
+export type shipping_zone_districtsdistrictsArgs = {
+  where?: InputMaybe<districts_WhereInput>;
+  orderBy?: InputMaybe<districts_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type shipping_zone_districtsshipping_zonesArgs = {
+  where?: InputMaybe<shipping_zones_WhereInput>;
+  orderBy?: InputMaybe<shipping_zones_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type districts_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<Scalars['String']['input']>;
+  /** Si tiene cobertura de delivery */
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type districts_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<OrderBy>;
+  /** Si tiene cobertura de delivery */
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zones = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  districts: Scalars['JSON']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_zone_districts?: Maybe<Array<Maybe<shipping_zone_districts>>>;
+  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
+};
+
+
+export type shipping_zonesshipping_zone_districtsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_districts_OrderByInput>;
+};
+
+
+export type shipping_zonesshipping_zone_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
+};
+
+export type shipping_zone_districts_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  zone_id?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_zone_districts_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  zone_id?: InputMaybe<OrderBy>;
+  district_id?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zone_methods = {
+  id: Scalars['Int']['output'];
+  shipping_method_id: Scalars['Int']['output'];
+  shipping_zone_id: Scalars['Int']['output'];
+  cost: Scalars['Float']['output'];
+  free_shipping_threshold: Scalars['Float']['output'];
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_methods?: Maybe<Array<Maybe<shipping_methods>>>;
+  shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
+};
+
+
+export type shipping_zone_methodsshipping_methodsArgs = {
+  where?: InputMaybe<shipping_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_methods_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type shipping_zone_methodsshipping_zonesArgs = {
+  where?: InputMaybe<shipping_zones_WhereInput>;
+  orderBy?: InputMaybe<shipping_zones_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type shipping_methods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  base_cost: Scalars['Float']['output'];
+  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
+  estimated_days_min?: Maybe<Scalars['Int']['output']>;
+  estimated_days_max?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
+};
+
+
+export type shipping_methodsshipping_zone_methodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<shipping_zone_methods_WhereInput>;
+  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
+};
+
+export type shipping_zone_methods_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  shipping_method_id?: InputMaybe<Scalars['String']['input']>;
+  shipping_zone_id?: InputMaybe<Scalars['String']['input']>;
+  cost?: InputMaybe<Scalars['String']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_zone_methods_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  shipping_method_id?: InputMaybe<OrderBy>;
+  shipping_zone_id?: InputMaybe<OrderBy>;
+  cost?: InputMaybe<OrderBy>;
+  free_shipping_threshold?: InputMaybe<OrderBy>;
+  estimated_days_min?: InputMaybe<OrderBy>;
+  estimated_days_max?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_methods_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  base_cost?: InputMaybe<Scalars['String']['input']>;
+  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
+  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_methods_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  base_cost?: InputMaybe<OrderBy>;
+  free_shipping_threshold?: InputMaybe<OrderBy>;
+  estimated_days_min?: InputMaybe<OrderBy>;
+  estimated_days_max?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+};
+
+export type shipping_zones_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type shipping_zones_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  districts?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
 };
@@ -2218,6 +3269,149 @@ export type payment_methods_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
+export type variant_ratings = {
+  id: Scalars['Int']['output'];
+  variant_id: Scalars['Int']['output'];
+  customer_id: Scalars['Int']['output'];
+  rating: Scalars['Int']['output'];
+  review?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  verified_purchase: Scalars['Int']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  status: Scalars['String']['output'];
+  reviewed_by?: Maybe<Scalars['Int']['output']>;
+  reviewed_at?: Maybe<Scalars['Timestamp']['output']>;
+  rating_images?: Maybe<Array<Maybe<rating_images>>>;
+  customers?: Maybe<Array<Maybe<customers>>>;
+  product_variants?: Maybe<Array<Maybe<product_variants>>>;
+  users?: Maybe<Array<Maybe<users>>>;
+};
+
+
+export type variant_ratingsrating_imagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<rating_images_WhereInput>;
+  orderBy?: InputMaybe<rating_images_OrderByInput>;
+};
+
+
+export type variant_ratingscustomersArgs = {
+  where?: InputMaybe<customers_WhereInput>;
+  orderBy?: InputMaybe<customers_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type variant_ratingsproduct_variantsArgs = {
+  where?: InputMaybe<product_variants_WhereInput>;
+  orderBy?: InputMaybe<product_variants_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type variant_ratingsusersArgs = {
+  where?: InputMaybe<users_WhereInput>;
+  orderBy?: InputMaybe<users_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type rating_images = {
+  id: Scalars['Int']['output'];
+  rating_id: Scalars['Int']['output'];
+  image_url: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  variant_ratings?: Maybe<Array<Maybe<variant_ratings>>>;
+};
+
+
+export type rating_imagesvariant_ratingsArgs = {
+  where?: InputMaybe<variant_ratings_WhereInput>;
+  orderBy?: InputMaybe<variant_ratings_OrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type variant_ratings_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  customer_id?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  verified_purchase?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewed_by?: InputMaybe<Scalars['String']['input']>;
+  reviewed_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type variant_ratings_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  variant_id?: InputMaybe<OrderBy>;
+  customer_id?: InputMaybe<OrderBy>;
+  rating?: InputMaybe<OrderBy>;
+  review?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  verified_purchase?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  reviewed_by?: InputMaybe<OrderBy>;
+  reviewed_at?: InputMaybe<OrderBy>;
+};
+
+export type rating_images_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  rating_id?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type rating_images_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  rating_id?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type offer_variants_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  offer_id?: InputMaybe<Scalars['String']['input']>;
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<Scalars['String']['input']>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<Scalars['String']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['String']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type offer_variants_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  offer_id?: InputMaybe<OrderBy>;
+  variant_id?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<OrderBy>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<OrderBy>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<OrderBy>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
 export type promotion_variants = {
   promotion_id: Scalars['Int']['output'];
   variant_id: Scalars['Int']['output'];
@@ -2247,6 +3441,7 @@ export type promotion_variantspromotionsArgs = {
 export type promotions = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  slug?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   start_date: Scalars['DateTime']['output'];
   end_date: Scalars['DateTime']['output'];
@@ -2304,6 +3499,7 @@ export type promotion_variants_OrderByInput = {
 export type promotions_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   start_date?: InputMaybe<Scalars['String']['input']>;
   end_date?: InputMaybe<Scalars['String']['input']>;
@@ -2323,6 +3519,7 @@ export type promotions_WhereInput = {
 export type promotions_OrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   start_date?: InputMaybe<OrderBy>;
   end_date?: InputMaybe<OrderBy>;
@@ -2441,102 +3638,10 @@ export type variant_images_OrderByInput = {
   updated_at?: InputMaybe<OrderBy>;
 };
 
-export type product_categories = {
-  product_id: Scalars['Int']['output'];
-  category_id: Scalars['Int']['output'];
-  categories?: Maybe<Array<Maybe<categories>>>;
-  products?: Maybe<Array<Maybe<products>>>;
-};
-
-
-export type product_categoriescategoriesArgs = {
-  where?: InputMaybe<categories_WhereInput>;
-  orderBy?: InputMaybe<categories_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type product_categoriesproductsArgs = {
-  where?: InputMaybe<products_WhereInput>;
-  orderBy?: InputMaybe<products_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parent_id?: Maybe<Scalars['Int']['output']>;
-  image_url?: Maybe<Scalars['String']['output']>;
-  show_nav?: Maybe<Scalars['Int']['output']>;
-  display_order?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  created_by?: Maybe<Scalars['Int']['output']>;
-  updated_by?: Maybe<Scalars['Int']['output']>;
-  users?: Maybe<Array<Maybe<users>>>;
-  product_categories?: Maybe<Array<Maybe<product_categories>>>;
-};
-
-
-export type categoriesusersArgs = {
-  where?: InputMaybe<users_WhereInput>;
-  orderBy?: InputMaybe<users_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type categoriesproduct_categoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<product_categories_WhereInput>;
-  orderBy?: InputMaybe<product_categories_OrderByInput>;
-};
-
-export type product_categories_WhereInput = {
-  product_id?: InputMaybe<Scalars['String']['input']>;
-  category_id?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type product_categories_OrderByInput = {
-  product_id?: InputMaybe<OrderBy>;
-  category_id?: InputMaybe<OrderBy>;
-};
-
-export type categories_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parent_id?: InputMaybe<Scalars['String']['input']>;
-  image_url?: InputMaybe<Scalars['String']['input']>;
-  show_nav?: InputMaybe<Scalars['String']['input']>;
-  display_order?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-  created_by?: InputMaybe<Scalars['String']['input']>;
-  updated_by?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type categories_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parent_id?: InputMaybe<OrderBy>;
-  image_url?: InputMaybe<OrderBy>;
-  show_nav?: InputMaybe<OrderBy>;
-  display_order?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-  created_by?: InputMaybe<OrderBy>;
-  updated_by?: InputMaybe<OrderBy>;
-};
-
 export type brands_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
   created_by?: InputMaybe<Scalars['String']['input']>;
@@ -2546,6 +3651,7 @@ export type brands_WhereInput = {
 export type brands_OrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  image_url?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
   created_by?: InputMaybe<OrderBy>;
@@ -2657,6 +3763,7 @@ export type sections = {
   url?: Maybe<Scalars['String']['output']>;
   image?: Maybe<Scalars['String']['output']>;
   display_order?: Maybe<Scalars['Int']['output']>;
+  section_group?: Maybe<Scalars['String']['output']>;
   roles_sections?: Maybe<Array<Maybe<roles_sections>>>;
 };
 
@@ -2686,6 +3793,7 @@ export type sections_WhereInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['String']['input']>;
+  section_group?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type sections_OrderByInput = {
@@ -2694,6 +3802,37 @@ export type sections_OrderByInput = {
   url?: InputMaybe<OrderBy>;
   image?: InputMaybe<OrderBy>;
   display_order?: InputMaybe<OrderBy>;
+  section_group?: InputMaybe<OrderBy>;
+};
+
+export type footer_links = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+};
+
+export type footer_links_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type footer_links_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+  display_order?: InputMaybe<OrderBy>;
+  is_active?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -2929,148 +4068,233 @@ export type services_images_OrderByInput = {
   image_url?: InputMaybe<OrderBy>;
 };
 
-export type shipping_methods = {
+export type store_config = {
   id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  base_cost: Scalars['Float']['output'];
-  free_shipping_threshold?: Maybe<Scalars['Float']['output']>;
-  estimated_days_min?: Maybe<Scalars['Int']['output']>;
-  estimated_days_max?: Maybe<Scalars['Int']['output']>;
-  is_active?: Maybe<Scalars['Int']['output']>;
+  store_name: Scalars['String']['output'];
+  store_description?: Maybe<Scalars['String']['output']>;
+  logo_url?: Maybe<Scalars['String']['output']>;
+  address?: Maybe<Scalars['String']['output']>;
+  business_hours?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  instagram_url?: Maybe<Scalars['String']['output']>;
+  facebook_url?: Maybe<Scalars['String']['output']>;
+  twitter_url?: Maybe<Scalars['String']['output']>;
+  whatsapp_number?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  logo_width?: Maybe<Scalars['Int']['output']>;
+  logo_height?: Maybe<Scalars['Int']['output']>;
+};
+
+export type store_config_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  store_name?: InputMaybe<Scalars['String']['input']>;
+  store_description?: InputMaybe<Scalars['String']['input']>;
+  logo_url?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  business_hours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagram_url?: InputMaybe<Scalars['String']['input']>;
+  facebook_url?: InputMaybe<Scalars['String']['input']>;
+  twitter_url?: InputMaybe<Scalars['String']['input']>;
+  whatsapp_number?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['String']['input']>;
+  logo_width?: InputMaybe<Scalars['String']['input']>;
+  logo_height?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type store_config_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  store_name?: InputMaybe<OrderBy>;
+  store_description?: InputMaybe<OrderBy>;
+  logo_url?: InputMaybe<OrderBy>;
+  address?: InputMaybe<OrderBy>;
+  business_hours?: InputMaybe<OrderBy>;
+  phone?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  instagram_url?: InputMaybe<OrderBy>;
+  facebook_url?: InputMaybe<OrderBy>;
+  twitter_url?: InputMaybe<OrderBy>;
+  whatsapp_number?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+  updated_at?: InputMaybe<OrderBy>;
+  logo_width?: InputMaybe<OrderBy>;
+  logo_height?: InputMaybe<OrderBy>;
+};
+
+export type store_features = {
+  id: Scalars['Int']['output'];
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon: Scalars['String']['output'];
+  /** Titulo del beneficio */
+  title: Scalars['String']['output'];
+  /** Descripcion corta */
+  description: Scalars['String']['output'];
   display_order?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
-};
-
-
-export type shipping_methodsshipping_zone_methodsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<shipping_zone_methods_WhereInput>;
-  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
-};
-
-export type shipping_zone_methods = {
-  id: Scalars['Int']['output'];
-  shipping_method_id: Scalars['Int']['output'];
-  shipping_zone_id: Scalars['Int']['output'];
-  cost: Scalars['Float']['output'];
-  free_shipping_threshold: Scalars['Float']['output'];
-  estimated_days_min?: Maybe<Scalars['Int']['output']>;
-  estimated_days_max?: Maybe<Scalars['Int']['output']>;
   is_active?: Maybe<Scalars['Int']['output']>;
   created_at: Scalars['Timestamp']['output'];
   updated_at: Scalars['Timestamp']['output'];
-  shipping_methods?: Maybe<Array<Maybe<shipping_methods>>>;
-  shipping_zones?: Maybe<Array<Maybe<shipping_zones>>>;
 };
 
-
-export type shipping_zone_methodsshipping_methodsArgs = {
-  where?: InputMaybe<shipping_methods_WhereInput>;
-  orderBy?: InputMaybe<shipping_methods_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type shipping_zone_methodsshipping_zonesArgs = {
-  where?: InputMaybe<shipping_zones_WhereInput>;
-  orderBy?: InputMaybe<shipping_zones_OrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type shipping_methods_WhereInput = {
+export type store_features_WhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Descripcion corta */
   description?: InputMaybe<Scalars['String']['input']>;
-  base_cost?: InputMaybe<Scalars['String']['input']>;
-  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
-  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
-  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
-  is_active?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['String']['input']>;
+  is_active?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type shipping_methods_OrderByInput = {
+export type store_features_OrderByInput = {
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<OrderBy>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<OrderBy>;
+  /** Descripcion corta */
   description?: InputMaybe<OrderBy>;
-  base_cost?: InputMaybe<OrderBy>;
-  free_shipping_threshold?: InputMaybe<OrderBy>;
-  estimated_days_min?: InputMaybe<OrderBy>;
-  estimated_days_max?: InputMaybe<OrderBy>;
-  is_active?: InputMaybe<OrderBy>;
   display_order?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
-};
-
-export type shipping_zones = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  districts: Scalars['JSON']['output'];
-  is_active?: Maybe<Scalars['Int']['output']>;
-  created_at: Scalars['Timestamp']['output'];
-  updated_at: Scalars['Timestamp']['output'];
-  shipping_zone_methods?: Maybe<Array<Maybe<shipping_zone_methods>>>;
-};
-
-
-export type shipping_zonesshipping_zone_methodsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<shipping_zone_methods_WhereInput>;
-  orderBy?: InputMaybe<shipping_zone_methods_OrderByInput>;
-};
-
-export type shipping_zone_methods_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  shipping_method_id?: InputMaybe<Scalars['String']['input']>;
-  shipping_zone_id?: InputMaybe<Scalars['String']['input']>;
-  cost?: InputMaybe<Scalars['String']['input']>;
-  free_shipping_threshold?: InputMaybe<Scalars['String']['input']>;
-  estimated_days_min?: InputMaybe<Scalars['String']['input']>;
-  estimated_days_max?: InputMaybe<Scalars['String']['input']>;
-  is_active?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type shipping_zone_methods_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  shipping_method_id?: InputMaybe<OrderBy>;
-  shipping_zone_id?: InputMaybe<OrderBy>;
-  cost?: InputMaybe<OrderBy>;
-  free_shipping_threshold?: InputMaybe<OrderBy>;
-  estimated_days_min?: InputMaybe<OrderBy>;
-  estimated_days_max?: InputMaybe<OrderBy>;
   is_active?: InputMaybe<OrderBy>;
   created_at?: InputMaybe<OrderBy>;
   updated_at?: InputMaybe<OrderBy>;
 };
 
-export type shipping_zones_WhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  districts?: InputMaybe<Scalars['String']['input']>;
-  is_active?: InputMaybe<Scalars['String']['input']>;
-  created_at?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['String']['input']>;
+/** VIEW */
+export type variant_active_offers = {
+  variant_id: Scalars['Int']['output'];
+  offer_id: Scalars['Int']['output'];
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['output'];
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['output'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: Maybe<Scalars['Int']['output']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: Maybe<Scalars['Int']['output']>;
+  remaining_stock?: Maybe<Scalars['BigInt']['output']>;
+  /** Nombre interno de la oferta */
+  offer_name: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  offer_title: Scalars['String']['output'];
+  offer_type: variant_active_offers_offer_type;
+  discount_type: variant_active_offers_discount_type;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  start_date: Scalars['DateTime']['output'];
+  end_date: Scalars['DateTime']['output'];
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  discount_percent?: Maybe<Scalars['Float']['output']>;
+  savings_amount: Scalars['Float']['output'];
 };
 
-export type shipping_zones_OrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  districts?: InputMaybe<OrderBy>;
-  is_active?: InputMaybe<OrderBy>;
-  created_at?: InputMaybe<OrderBy>;
-  updated_at?: InputMaybe<OrderBy>;
+export type variant_active_offers_offer_type =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type variant_active_offers_discount_type =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** VIEW */
+export type variant_active_offers_WhereInput = {
+  variant_id?: InputMaybe<Scalars['String']['input']>;
+  offer_id?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<Scalars['String']['input']>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<Scalars['String']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['String']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['String']['input']>;
+  remaining_stock?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  offer_name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  offer_title?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<Scalars['String']['input']>;
+  discount_type?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['String']['input']>;
+  start_date?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  discount_percent?: InputMaybe<Scalars['String']['input']>;
+  savings_amount?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type variant_active_offers_OrderByInput = {
+  variant_id?: InputMaybe<OrderBy>;
+  offer_id?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<OrderBy>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<OrderBy>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<OrderBy>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<OrderBy>;
+  remaining_stock?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  offer_name?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  offer_title?: InputMaybe<OrderBy>;
+  offer_type?: InputMaybe<OrderBy>;
+  discount_type?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badge_color?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  discount_percent?: InputMaybe<OrderBy>;
+  savings_amount?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3112,7 +4336,44 @@ export type variant_rating_summary_OrderByInput = {
   verified_purchases?: InputMaybe<OrderBy>;
 };
 
+export type verification_codes = {
+  id: Scalars['Int']['output'];
+  email: Scalars['String']['output'];
+  code: Scalars['String']['output'];
+  type?: Maybe<verification_codes_type>;
+  expires_at: Scalars['DateTime']['output'];
+  used_at?: Maybe<Scalars['DateTime']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+};
+
+export type verification_codes_type =
+  | 'verification'
+  | 'password_reset';
+
+export type verification_codes_WhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  expires_at?: InputMaybe<Scalars['String']['input']>;
+  used_at?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type verification_codes_OrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
+  expires_at?: InputMaybe<OrderBy>;
+  used_at?: InputMaybe<OrderBy>;
+  created_at?: InputMaybe<OrderBy>;
+};
+
 export type Mutation = {
+  insert_active_offers?: Maybe<active_offers>;
+  update_active_offers?: Maybe<active_offers>;
+  delete_active_offers?: Maybe<Scalars['Boolean']['output']>;
   insert_attribute_options?: Maybe<attribute_options>;
   update_attribute_options?: Maybe<attribute_options>;
   delete_attribute_options?: Maybe<Scalars['Boolean']['output']>;
@@ -3140,6 +4401,24 @@ export type Mutation = {
   insert_customers_addresses?: Maybe<customers_addresses>;
   update_customers_addresses?: Maybe<customers_addresses>;
   delete_customers_addresses?: Maybe<Scalars['Boolean']['output']>;
+  insert_districts?: Maybe<districts>;
+  update_districts?: Maybe<districts>;
+  delete_districts?: Maybe<Scalars['Boolean']['output']>;
+  insert_footer_links?: Maybe<footer_links>;
+  update_footer_links?: Maybe<footer_links>;
+  delete_footer_links?: Maybe<Scalars['Boolean']['output']>;
+  insert_offer_categories?: Maybe<offer_categories>;
+  update_offer_categories?: Maybe<offer_categories>;
+  delete_offer_categories?: Maybe<Scalars['Boolean']['output']>;
+  insert_offer_usage?: Maybe<offer_usage>;
+  update_offer_usage?: Maybe<offer_usage>;
+  delete_offer_usage?: Maybe<Scalars['Boolean']['output']>;
+  insert_offer_variants?: Maybe<offer_variants>;
+  update_offer_variants?: Maybe<offer_variants>;
+  delete_offer_variants?: Maybe<Scalars['Boolean']['output']>;
+  insert_offers?: Maybe<offers>;
+  update_offers?: Maybe<offers>;
+  delete_offers?: Maybe<Scalars['Boolean']['output']>;
   insert_order_items?: Maybe<order_items>;
   update_order_items?: Maybe<order_items>;
   delete_order_items?: Maybe<Scalars['Boolean']['output']>;
@@ -3209,15 +4488,27 @@ export type Mutation = {
   insert_shipping_methods?: Maybe<shipping_methods>;
   update_shipping_methods?: Maybe<shipping_methods>;
   delete_shipping_methods?: Maybe<Scalars['Boolean']['output']>;
+  insert_shipping_zone_districts?: Maybe<shipping_zone_districts>;
+  update_shipping_zone_districts?: Maybe<shipping_zone_districts>;
+  delete_shipping_zone_districts?: Maybe<Scalars['Boolean']['output']>;
   insert_shipping_zone_methods?: Maybe<shipping_zone_methods>;
   update_shipping_zone_methods?: Maybe<shipping_zone_methods>;
   delete_shipping_zone_methods?: Maybe<Scalars['Boolean']['output']>;
   insert_shipping_zones?: Maybe<shipping_zones>;
   update_shipping_zones?: Maybe<shipping_zones>;
   delete_shipping_zones?: Maybe<Scalars['Boolean']['output']>;
+  insert_store_config?: Maybe<store_config>;
+  update_store_config?: Maybe<store_config>;
+  delete_store_config?: Maybe<Scalars['Boolean']['output']>;
+  insert_store_features?: Maybe<store_features>;
+  update_store_features?: Maybe<store_features>;
+  delete_store_features?: Maybe<Scalars['Boolean']['output']>;
   insert_users?: Maybe<users>;
   update_users?: Maybe<users>;
   delete_users?: Maybe<Scalars['Boolean']['output']>;
+  insert_variant_active_offers?: Maybe<variant_active_offers>;
+  update_variant_active_offers?: Maybe<variant_active_offers>;
+  delete_variant_active_offers?: Maybe<Scalars['Boolean']['output']>;
   insert_variant_attribute_options?: Maybe<variant_attribute_options>;
   update_variant_attribute_options?: Maybe<variant_attribute_options>;
   delete_variant_attribute_options?: Maybe<Scalars['Boolean']['output']>;
@@ -3230,6 +4521,25 @@ export type Mutation = {
   insert_variant_ratings?: Maybe<variant_ratings>;
   update_variant_ratings?: Maybe<variant_ratings>;
   delete_variant_ratings?: Maybe<Scalars['Boolean']['output']>;
+  insert_verification_codes?: Maybe<verification_codes>;
+  update_verification_codes?: Maybe<verification_codes>;
+  delete_verification_codes?: Maybe<Scalars['Boolean']['output']>;
+};
+
+
+export type Mutationinsert_active_offersArgs = {
+  active_offers: active_offers_InsertInput;
+};
+
+
+export type Mutationupdate_active_offersArgs = {
+  active_offers: active_offers_UpdateInput;
+  where?: InputMaybe<active_offers_WhereInput>;
+};
+
+
+export type Mutationdelete_active_offersArgs = {
+  where?: InputMaybe<active_offers_WhereInput>;
 };
 
 
@@ -3374,6 +4684,102 @@ export type Mutationupdate_customers_addressesArgs = {
 
 export type Mutationdelete_customers_addressesArgs = {
   where?: InputMaybe<customers_addresses_WhereInput>;
+};
+
+
+export type Mutationinsert_districtsArgs = {
+  districts: districts_InsertInput;
+};
+
+
+export type Mutationupdate_districtsArgs = {
+  districts: districts_UpdateInput;
+  where?: InputMaybe<districts_WhereInput>;
+};
+
+
+export type Mutationdelete_districtsArgs = {
+  where?: InputMaybe<districts_WhereInput>;
+};
+
+
+export type Mutationinsert_footer_linksArgs = {
+  footer_links: footer_links_InsertInput;
+};
+
+
+export type Mutationupdate_footer_linksArgs = {
+  footer_links: footer_links_UpdateInput;
+  where?: InputMaybe<footer_links_WhereInput>;
+};
+
+
+export type Mutationdelete_footer_linksArgs = {
+  where?: InputMaybe<footer_links_WhereInput>;
+};
+
+
+export type Mutationinsert_offer_categoriesArgs = {
+  offer_categories: offer_categories_InsertInput;
+};
+
+
+export type Mutationupdate_offer_categoriesArgs = {
+  offer_categories: offer_categories_UpdateInput;
+  where?: InputMaybe<offer_categories_WhereInput>;
+};
+
+
+export type Mutationdelete_offer_categoriesArgs = {
+  where?: InputMaybe<offer_categories_WhereInput>;
+};
+
+
+export type Mutationinsert_offer_usageArgs = {
+  offer_usage: offer_usage_InsertInput;
+};
+
+
+export type Mutationupdate_offer_usageArgs = {
+  offer_usage: offer_usage_UpdateInput;
+  where?: InputMaybe<offer_usage_WhereInput>;
+};
+
+
+export type Mutationdelete_offer_usageArgs = {
+  where?: InputMaybe<offer_usage_WhereInput>;
+};
+
+
+export type Mutationinsert_offer_variantsArgs = {
+  offer_variants: offer_variants_InsertInput;
+};
+
+
+export type Mutationupdate_offer_variantsArgs = {
+  offer_variants: offer_variants_UpdateInput;
+  where?: InputMaybe<offer_variants_WhereInput>;
+};
+
+
+export type Mutationdelete_offer_variantsArgs = {
+  where?: InputMaybe<offer_variants_WhereInput>;
+};
+
+
+export type Mutationinsert_offersArgs = {
+  offers: offers_InsertInput;
+};
+
+
+export type Mutationupdate_offersArgs = {
+  offers: offers_UpdateInput;
+  where?: InputMaybe<offers_WhereInput>;
+};
+
+
+export type Mutationdelete_offersArgs = {
+  where?: InputMaybe<offers_WhereInput>;
 };
 
 
@@ -3745,6 +5151,22 @@ export type Mutationdelete_shipping_methodsArgs = {
 };
 
 
+export type Mutationinsert_shipping_zone_districtsArgs = {
+  shipping_zone_districts: shipping_zone_districts_InsertInput;
+};
+
+
+export type Mutationupdate_shipping_zone_districtsArgs = {
+  shipping_zone_districts: shipping_zone_districts_UpdateInput;
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+};
+
+
+export type Mutationdelete_shipping_zone_districtsArgs = {
+  where?: InputMaybe<shipping_zone_districts_WhereInput>;
+};
+
+
 export type Mutationinsert_shipping_zone_methodsArgs = {
   shipping_zone_methods: shipping_zone_methods_InsertInput;
 };
@@ -3777,6 +5199,38 @@ export type Mutationdelete_shipping_zonesArgs = {
 };
 
 
+export type Mutationinsert_store_configArgs = {
+  store_config: store_config_InsertInput;
+};
+
+
+export type Mutationupdate_store_configArgs = {
+  store_config: store_config_UpdateInput;
+  where?: InputMaybe<store_config_WhereInput>;
+};
+
+
+export type Mutationdelete_store_configArgs = {
+  where?: InputMaybe<store_config_WhereInput>;
+};
+
+
+export type Mutationinsert_store_featuresArgs = {
+  store_features: store_features_InsertInput;
+};
+
+
+export type Mutationupdate_store_featuresArgs = {
+  store_features: store_features_UpdateInput;
+  where?: InputMaybe<store_features_WhereInput>;
+};
+
+
+export type Mutationdelete_store_featuresArgs = {
+  where?: InputMaybe<store_features_WhereInput>;
+};
+
+
 export type Mutationinsert_usersArgs = {
   users: users_InsertInput;
 };
@@ -3790,6 +5244,22 @@ export type Mutationupdate_usersArgs = {
 
 export type Mutationdelete_usersArgs = {
   where?: InputMaybe<users_WhereInput>;
+};
+
+
+export type Mutationinsert_variant_active_offersArgs = {
+  variant_active_offers: variant_active_offers_InsertInput;
+};
+
+
+export type Mutationupdate_variant_active_offersArgs = {
+  variant_active_offers: variant_active_offers_UpdateInput;
+  where?: InputMaybe<variant_active_offers_WhereInput>;
+};
+
+
+export type Mutationdelete_variant_active_offersArgs = {
+  where?: InputMaybe<variant_active_offers_WhereInput>;
 };
 
 
@@ -3854,6 +5324,120 @@ export type Mutationupdate_variant_ratingsArgs = {
 
 export type Mutationdelete_variant_ratingsArgs = {
   where?: InputMaybe<variant_ratings_WhereInput>;
+};
+
+
+export type Mutationinsert_verification_codesArgs = {
+  verification_codes: verification_codes_InsertInput;
+};
+
+
+export type Mutationupdate_verification_codesArgs = {
+  verification_codes: verification_codes_UpdateInput;
+  where?: InputMaybe<verification_codes_WhereInput>;
+};
+
+
+export type Mutationdelete_verification_codesArgs = {
+  where?: InputMaybe<verification_codes_WhereInput>;
+};
+
+/** VIEW */
+export type active_offers_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<active_offers_offer_type>;
+  discount_type?: InputMaybe<active_offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['input'];
+  start_date: Scalars['DateTime']['input'];
+  end_date: Scalars['DateTime']['input'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  total_variants?: InputMaybe<Scalars['BigInt']['input']>;
+  total_sold?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio final de la oferta */
+  min_price?: InputMaybe<Scalars['Float']['input']>;
+  max_discount_percent?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** VIEW */
+export type active_offers_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<active_offers_offer_type>;
+  discount_type?: InputMaybe<active_offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['Float']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  total_variants?: InputMaybe<Scalars['BigInt']['input']>;
+  total_sold?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio final de la oferta */
+  min_price?: InputMaybe<Scalars['Float']['input']>;
+  max_discount_percent?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type attribute_options_InsertInput = {
@@ -3923,6 +5507,7 @@ export type banner_UpdateInput = {
 export type brands_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  image_url?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   created_by?: InputMaybe<Scalars['Int']['input']>;
@@ -3932,6 +5517,7 @@ export type brands_InsertInput = {
 export type brands_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   created_by?: InputMaybe<Scalars['Int']['input']>;
@@ -3950,6 +5536,25 @@ export type categories_InsertInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   created_by?: InputMaybe<Scalars['Int']['input']>;
   updated_by?: InputMaybe<Scalars['Int']['input']>;
+  /** Banner image for desktop */
+  banner_image?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  banner_image_mobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  banner_title?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  banner_subtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  banner_description?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  banner_cta_text?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  banner_cta_link?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  meta_title?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  meta_description?: InputMaybe<Scalars['String']['input']>;
+  slug: Scalars['String']['input'];
 };
 
 export type categories_UpdateInput = {
@@ -3964,6 +5569,25 @@ export type categories_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   created_by?: InputMaybe<Scalars['Int']['input']>;
   updated_by?: InputMaybe<Scalars['Int']['input']>;
+  /** Banner image for desktop */
+  banner_image?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  banner_image_mobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  banner_title?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  banner_subtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  banner_description?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  banner_cta_text?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  banner_cta_link?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  meta_title?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  meta_description?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type coupon_usage_InsertInput = {
@@ -4036,11 +5660,15 @@ export type customers_InsertInput = {
   password: Scalars['String']['input'];
   address_id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
-  lastname: Scalars['String']['input'];
+  /** Apellido del cliente */
+  lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
+  /** Nombre del cliente */
+  name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
   /** Documento de identidad  */
@@ -4053,10 +5681,14 @@ export type customers_UpdateInput = {
   password?: InputMaybe<Scalars['String']['input']>;
   address_id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del cliente */
   name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
@@ -4072,12 +5704,14 @@ export type customers_addresses_InsertInput = {
   department?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   district: Scalars['String']['input'];
+  district_id?: InputMaybe<Scalars['Int']['input']>;
   /** Nombre de la avenida/calle/jirón */
   street_name: Scalars['String']['input'];
   /** Número de la dirección */
   street_number: Scalars['String']['input'];
   /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
   apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
   /** Latitud GPS */
   latitude?: InputMaybe<Scalars['Float']['input']>;
   /** Longitud GPS */
@@ -4096,18 +5730,226 @@ export type customers_addresses_UpdateInput = {
   department?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   district?: InputMaybe<Scalars['String']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
   /** Nombre de la avenida/calle/jirón */
   street_name?: InputMaybe<Scalars['String']['input']>;
   /** Número de la dirección */
   street_number?: InputMaybe<Scalars['String']['input']>;
   /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
   apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
   /** Latitud GPS */
   latitude?: InputMaybe<Scalars['Float']['input']>;
   /** Longitud GPS */
   longitude?: InputMaybe<Scalars['Float']['input']>;
   /** 1 = dirección por defecto */
   is_default?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type districts_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  /** Zona geogrÃ¡fica */
+  zone: districts_zone;
+  /** Si tiene cobertura de delivery */
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type districts_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<districts_zone>;
+  /** Si tiene cobertura de delivery */
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type footer_links_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type footer_links_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type offer_categories_InsertInput = {
+  offer_id: Scalars['Int']['input'];
+  category_id: Scalars['Int']['input'];
+};
+
+/** CategorÃ­as completas en oferta */
+export type offer_categories_UpdateInput = {
+  offer_id?: InputMaybe<Scalars['Int']['input']>;
+  category_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type offer_usage_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offer_id: Scalars['Int']['input'];
+  customer_id: Scalars['Int']['input'];
+  order_id: Scalars['Int']['input'];
+  variant_id: Scalars['Int']['input'];
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  original_price: Scalars['Float']['input'];
+  offer_price: Scalars['Float']['input'];
+  /** Ahorro total */
+  discount_amount: Scalars['Float']['input'];
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type offer_usage_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offer_id?: InputMaybe<Scalars['Int']['input']>;
+  customer_id?: InputMaybe<Scalars['Int']['input']>;
+  order_id?: InputMaybe<Scalars['Int']['input']>;
+  variant_id?: InputMaybe<Scalars['Int']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  original_price?: InputMaybe<Scalars['Float']['input']>;
+  offer_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Ahorro total */
+  discount_amount?: InputMaybe<Scalars['Float']['input']>;
+  used_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type offer_variants_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offer_id: Scalars['Int']['input'];
+  variant_id: Scalars['Int']['input'];
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['input'];
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['input'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type offer_variants_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offer_id?: InputMaybe<Scalars['Int']['input']>;
+  variant_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type offers_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<offers_offer_type>;
+  discount_type?: InputMaybe<offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['input'];
+  start_date: Scalars['DateTime']['input'];
+  end_date: Scalars['DateTime']['input'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type offers_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<offers_offer_type>;
+  discount_type?: InputMaybe<offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['Float']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  current_uses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  image_url?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  is_featured?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
@@ -4528,6 +6370,7 @@ export type product_variants_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   product_id: Scalars['Int']['input'];
   sku: Scalars['String']['input'];
+  slug?: InputMaybe<Scalars['String']['input']>;
   price: Scalars['Float']['input'];
   stock?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4540,6 +6383,7 @@ export type product_variants_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   product_id?: InputMaybe<Scalars['Int']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   stock?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4591,6 +6435,7 @@ export type promotion_variants_UpdateInput = {
 export type promotions_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   start_date: Scalars['DateTime']['input'];
   end_date: Scalars['DateTime']['input'];
@@ -4610,6 +6455,7 @@ export type promotions_InsertInput = {
 export type promotions_UpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   start_date?: InputMaybe<Scalars['DateTime']['input']>;
   end_date?: InputMaybe<Scalars['DateTime']['input']>;
@@ -4672,6 +6518,7 @@ export type sections_InsertInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  section_group?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type sections_UpdateInput = {
@@ -4680,6 +6527,7 @@ export type sections_UpdateInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   display_order?: InputMaybe<Scalars['Int']['input']>;
+  section_group?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type services_InsertInput = {
@@ -4758,6 +6606,20 @@ export type shipping_methods_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+export type shipping_zone_districts_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  zone_id: Scalars['Int']['input'];
+  district_id: Scalars['Int']['input'];
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type shipping_zone_districts_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  zone_id?: InputMaybe<Scalars['Int']['input']>;
+  district_id?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type shipping_zone_methods_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   shipping_method_id: Scalars['Int']['input'];
@@ -4802,6 +6664,72 @@ export type shipping_zones_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+export type store_config_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  store_name?: InputMaybe<Scalars['String']['input']>;
+  store_description?: InputMaybe<Scalars['String']['input']>;
+  logo_url?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  business_hours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagram_url?: InputMaybe<Scalars['String']['input']>;
+  facebook_url?: InputMaybe<Scalars['String']['input']>;
+  twitter_url?: InputMaybe<Scalars['String']['input']>;
+  whatsapp_number?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  logo_width?: InputMaybe<Scalars['Int']['input']>;
+  logo_height?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type store_config_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  store_name?: InputMaybe<Scalars['String']['input']>;
+  store_description?: InputMaybe<Scalars['String']['input']>;
+  logo_url?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  business_hours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagram_url?: InputMaybe<Scalars['String']['input']>;
+  facebook_url?: InputMaybe<Scalars['String']['input']>;
+  twitter_url?: InputMaybe<Scalars['String']['input']>;
+  whatsapp_number?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  logo_width?: InputMaybe<Scalars['Int']['input']>;
+  logo_height?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type store_features_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon: Scalars['String']['input'];
+  /** Titulo del beneficio */
+  title: Scalars['String']['input'];
+  /** Descripcion corta */
+  description: Scalars['String']['input'];
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type store_features_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Descripcion corta */
+  description?: InputMaybe<Scalars['String']['input']>;
+  display_order?: InputMaybe<Scalars['Int']['input']>;
+  is_active?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type users_InsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -4826,6 +6754,84 @@ export type users_UpdateInput = {
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type variant_active_offers_InsertInput = {
+  variant_id: Scalars['Int']['input'];
+  offer_id: Scalars['Int']['input'];
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['input'];
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['input'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['Int']['input']>;
+  remaining_stock?: InputMaybe<Scalars['BigInt']['input']>;
+  /** Nombre interno de la oferta */
+  offer_name: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  offer_title: Scalars['String']['input'];
+  offer_type?: InputMaybe<variant_active_offers_offer_type>;
+  discount_type?: InputMaybe<variant_active_offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['input'];
+  start_date: Scalars['DateTime']['input'];
+  end_date: Scalars['DateTime']['input'];
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  discount_percent?: InputMaybe<Scalars['Float']['input']>;
+  savings_amount?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** VIEW */
+export type variant_active_offers_UpdateInput = {
+  variant_id?: InputMaybe<Scalars['Int']['input']>;
+  offer_id?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio final de la oferta */
+  offer_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio original al momento de crear */
+  original_price?: InputMaybe<Scalars['Float']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: InputMaybe<Scalars['Int']['input']>;
+  remaining_stock?: InputMaybe<Scalars['BigInt']['input']>;
+  /** Nombre interno de la oferta */
+  offer_name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  offer_title?: InputMaybe<Scalars['String']['input']>;
+  offer_type?: InputMaybe<variant_active_offers_offer_type>;
+  discount_type?: InputMaybe<variant_active_offers_discount_type>;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value?: InputMaybe<Scalars['Float']['input']>;
+  start_date?: InputMaybe<Scalars['DateTime']['input']>;
+  end_date?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badge_color?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: InputMaybe<Scalars['Int']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  discount_percent?: InputMaybe<Scalars['Float']['input']>;
+  savings_amount?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** AsociaciÃ³n entre variantes y opciones de atributos del producto */
@@ -4924,6 +6930,9 @@ export type variant_ratings_InsertInput = {
   verified_purchase?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewed_by?: InputMaybe<Scalars['Int']['input']>;
+  reviewed_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type variant_ratings_UpdateInput = {
@@ -4936,10 +6945,37 @@ export type variant_ratings_UpdateInput = {
   verified_purchase?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['Timestamp']['input']>;
   updated_at?: InputMaybe<Scalars['Timestamp']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewed_by?: InputMaybe<Scalars['Int']['input']>;
+  reviewed_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type verification_codes_InsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  email: Scalars['String']['input'];
+  code: Scalars['String']['input'];
+  type?: InputMaybe<verification_codes_type>;
+  expires_at: Scalars['DateTime']['input'];
+  used_at?: InputMaybe<Scalars['DateTime']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type verification_codes_UpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<verification_codes_type>;
+  expires_at?: InputMaybe<Scalars['DateTime']['input']>;
+  used_at?: InputMaybe<Scalars['DateTime']['input']>;
+  created_at?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
   export type QuerySdk = {
       /** undefined **/
+  active_offers: InContextSdkMethod<Query['active_offers'], Queryactive_offersArgs, MeshContext>,
+  /** undefined **/
+  count_active_offers: InContextSdkMethod<Query['count_active_offers'], Querycount_active_offersArgs, MeshContext>,
+  /** undefined **/
   attribute_options: InContextSdkMethod<Query['attribute_options'], Queryattribute_optionsArgs, MeshContext>,
   /** undefined **/
   count_attribute_options: InContextSdkMethod<Query['count_attribute_options'], Querycount_attribute_optionsArgs, MeshContext>,
@@ -4975,6 +7011,30 @@ export type variant_ratings_UpdateInput = {
   customers_addresses: InContextSdkMethod<Query['customers_addresses'], Querycustomers_addressesArgs, MeshContext>,
   /** undefined **/
   count_customers_addresses: InContextSdkMethod<Query['count_customers_addresses'], Querycount_customers_addressesArgs, MeshContext>,
+  /** undefined **/
+  districts: InContextSdkMethod<Query['districts'], QuerydistrictsArgs, MeshContext>,
+  /** undefined **/
+  count_districts: InContextSdkMethod<Query['count_districts'], Querycount_districtsArgs, MeshContext>,
+  /** undefined **/
+  footer_links: InContextSdkMethod<Query['footer_links'], Queryfooter_linksArgs, MeshContext>,
+  /** undefined **/
+  count_footer_links: InContextSdkMethod<Query['count_footer_links'], Querycount_footer_linksArgs, MeshContext>,
+  /** undefined **/
+  offer_categories: InContextSdkMethod<Query['offer_categories'], Queryoffer_categoriesArgs, MeshContext>,
+  /** undefined **/
+  count_offer_categories: InContextSdkMethod<Query['count_offer_categories'], Querycount_offer_categoriesArgs, MeshContext>,
+  /** undefined **/
+  offer_usage: InContextSdkMethod<Query['offer_usage'], Queryoffer_usageArgs, MeshContext>,
+  /** undefined **/
+  count_offer_usage: InContextSdkMethod<Query['count_offer_usage'], Querycount_offer_usageArgs, MeshContext>,
+  /** undefined **/
+  offer_variants: InContextSdkMethod<Query['offer_variants'], Queryoffer_variantsArgs, MeshContext>,
+  /** undefined **/
+  count_offer_variants: InContextSdkMethod<Query['count_offer_variants'], Querycount_offer_variantsArgs, MeshContext>,
+  /** undefined **/
+  offers: InContextSdkMethod<Query['offers'], QueryoffersArgs, MeshContext>,
+  /** undefined **/
+  count_offers: InContextSdkMethod<Query['count_offers'], Querycount_offersArgs, MeshContext>,
   /** undefined **/
   order_items: InContextSdkMethod<Query['order_items'], Queryorder_itemsArgs, MeshContext>,
   /** undefined **/
@@ -5068,6 +7128,10 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_shipping_methods: InContextSdkMethod<Query['count_shipping_methods'], Querycount_shipping_methodsArgs, MeshContext>,
   /** undefined **/
+  shipping_zone_districts: InContextSdkMethod<Query['shipping_zone_districts'], Queryshipping_zone_districtsArgs, MeshContext>,
+  /** undefined **/
+  count_shipping_zone_districts: InContextSdkMethod<Query['count_shipping_zone_districts'], Querycount_shipping_zone_districtsArgs, MeshContext>,
+  /** undefined **/
   shipping_zone_methods: InContextSdkMethod<Query['shipping_zone_methods'], Queryshipping_zone_methodsArgs, MeshContext>,
   /** undefined **/
   count_shipping_zone_methods: InContextSdkMethod<Query['count_shipping_zone_methods'], Querycount_shipping_zone_methodsArgs, MeshContext>,
@@ -5076,9 +7140,21 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   count_shipping_zones: InContextSdkMethod<Query['count_shipping_zones'], Querycount_shipping_zonesArgs, MeshContext>,
   /** undefined **/
+  store_config: InContextSdkMethod<Query['store_config'], Querystore_configArgs, MeshContext>,
+  /** undefined **/
+  count_store_config: InContextSdkMethod<Query['count_store_config'], Querycount_store_configArgs, MeshContext>,
+  /** undefined **/
+  store_features: InContextSdkMethod<Query['store_features'], Querystore_featuresArgs, MeshContext>,
+  /** undefined **/
+  count_store_features: InContextSdkMethod<Query['count_store_features'], Querycount_store_featuresArgs, MeshContext>,
+  /** undefined **/
   users: InContextSdkMethod<Query['users'], QueryusersArgs, MeshContext>,
   /** undefined **/
   count_users: InContextSdkMethod<Query['count_users'], Querycount_usersArgs, MeshContext>,
+  /** undefined **/
+  variant_active_offers: InContextSdkMethod<Query['variant_active_offers'], Queryvariant_active_offersArgs, MeshContext>,
+  /** undefined **/
+  count_variant_active_offers: InContextSdkMethod<Query['count_variant_active_offers'], Querycount_variant_active_offersArgs, MeshContext>,
   /** undefined **/
   variant_attribute_options: InContextSdkMethod<Query['variant_attribute_options'], Queryvariant_attribute_optionsArgs, MeshContext>,
   /** undefined **/
@@ -5094,11 +7170,21 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   variant_ratings: InContextSdkMethod<Query['variant_ratings'], Queryvariant_ratingsArgs, MeshContext>,
   /** undefined **/
-  count_variant_ratings: InContextSdkMethod<Query['count_variant_ratings'], Querycount_variant_ratingsArgs, MeshContext>
+  count_variant_ratings: InContextSdkMethod<Query['count_variant_ratings'], Querycount_variant_ratingsArgs, MeshContext>,
+  /** undefined **/
+  verification_codes: InContextSdkMethod<Query['verification_codes'], Queryverification_codesArgs, MeshContext>,
+  /** undefined **/
+  count_verification_codes: InContextSdkMethod<Query['count_verification_codes'], Querycount_verification_codesArgs, MeshContext>
   };
 
   export type MutationSdk = {
       /** undefined **/
+  insert_active_offers: InContextSdkMethod<Mutation['insert_active_offers'], Mutationinsert_active_offersArgs, MeshContext>,
+  /** undefined **/
+  update_active_offers: InContextSdkMethod<Mutation['update_active_offers'], Mutationupdate_active_offersArgs, MeshContext>,
+  /** undefined **/
+  delete_active_offers: InContextSdkMethod<Mutation['delete_active_offers'], Mutationdelete_active_offersArgs, MeshContext>,
+  /** undefined **/
   insert_attribute_options: InContextSdkMethod<Mutation['insert_attribute_options'], Mutationinsert_attribute_optionsArgs, MeshContext>,
   /** undefined **/
   update_attribute_options: InContextSdkMethod<Mutation['update_attribute_options'], Mutationupdate_attribute_optionsArgs, MeshContext>,
@@ -5152,6 +7238,42 @@ export type variant_ratings_UpdateInput = {
   update_customers_addresses: InContextSdkMethod<Mutation['update_customers_addresses'], Mutationupdate_customers_addressesArgs, MeshContext>,
   /** undefined **/
   delete_customers_addresses: InContextSdkMethod<Mutation['delete_customers_addresses'], Mutationdelete_customers_addressesArgs, MeshContext>,
+  /** undefined **/
+  insert_districts: InContextSdkMethod<Mutation['insert_districts'], Mutationinsert_districtsArgs, MeshContext>,
+  /** undefined **/
+  update_districts: InContextSdkMethod<Mutation['update_districts'], Mutationupdate_districtsArgs, MeshContext>,
+  /** undefined **/
+  delete_districts: InContextSdkMethod<Mutation['delete_districts'], Mutationdelete_districtsArgs, MeshContext>,
+  /** undefined **/
+  insert_footer_links: InContextSdkMethod<Mutation['insert_footer_links'], Mutationinsert_footer_linksArgs, MeshContext>,
+  /** undefined **/
+  update_footer_links: InContextSdkMethod<Mutation['update_footer_links'], Mutationupdate_footer_linksArgs, MeshContext>,
+  /** undefined **/
+  delete_footer_links: InContextSdkMethod<Mutation['delete_footer_links'], Mutationdelete_footer_linksArgs, MeshContext>,
+  /** undefined **/
+  insert_offer_categories: InContextSdkMethod<Mutation['insert_offer_categories'], Mutationinsert_offer_categoriesArgs, MeshContext>,
+  /** undefined **/
+  update_offer_categories: InContextSdkMethod<Mutation['update_offer_categories'], Mutationupdate_offer_categoriesArgs, MeshContext>,
+  /** undefined **/
+  delete_offer_categories: InContextSdkMethod<Mutation['delete_offer_categories'], Mutationdelete_offer_categoriesArgs, MeshContext>,
+  /** undefined **/
+  insert_offer_usage: InContextSdkMethod<Mutation['insert_offer_usage'], Mutationinsert_offer_usageArgs, MeshContext>,
+  /** undefined **/
+  update_offer_usage: InContextSdkMethod<Mutation['update_offer_usage'], Mutationupdate_offer_usageArgs, MeshContext>,
+  /** undefined **/
+  delete_offer_usage: InContextSdkMethod<Mutation['delete_offer_usage'], Mutationdelete_offer_usageArgs, MeshContext>,
+  /** undefined **/
+  insert_offer_variants: InContextSdkMethod<Mutation['insert_offer_variants'], Mutationinsert_offer_variantsArgs, MeshContext>,
+  /** undefined **/
+  update_offer_variants: InContextSdkMethod<Mutation['update_offer_variants'], Mutationupdate_offer_variantsArgs, MeshContext>,
+  /** undefined **/
+  delete_offer_variants: InContextSdkMethod<Mutation['delete_offer_variants'], Mutationdelete_offer_variantsArgs, MeshContext>,
+  /** undefined **/
+  insert_offers: InContextSdkMethod<Mutation['insert_offers'], Mutationinsert_offersArgs, MeshContext>,
+  /** undefined **/
+  update_offers: InContextSdkMethod<Mutation['update_offers'], Mutationupdate_offersArgs, MeshContext>,
+  /** undefined **/
+  delete_offers: InContextSdkMethod<Mutation['delete_offers'], Mutationdelete_offersArgs, MeshContext>,
   /** undefined **/
   insert_order_items: InContextSdkMethod<Mutation['insert_order_items'], Mutationinsert_order_itemsArgs, MeshContext>,
   /** undefined **/
@@ -5291,6 +7413,12 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   delete_shipping_methods: InContextSdkMethod<Mutation['delete_shipping_methods'], Mutationdelete_shipping_methodsArgs, MeshContext>,
   /** undefined **/
+  insert_shipping_zone_districts: InContextSdkMethod<Mutation['insert_shipping_zone_districts'], Mutationinsert_shipping_zone_districtsArgs, MeshContext>,
+  /** undefined **/
+  update_shipping_zone_districts: InContextSdkMethod<Mutation['update_shipping_zone_districts'], Mutationupdate_shipping_zone_districtsArgs, MeshContext>,
+  /** undefined **/
+  delete_shipping_zone_districts: InContextSdkMethod<Mutation['delete_shipping_zone_districts'], Mutationdelete_shipping_zone_districtsArgs, MeshContext>,
+  /** undefined **/
   insert_shipping_zone_methods: InContextSdkMethod<Mutation['insert_shipping_zone_methods'], Mutationinsert_shipping_zone_methodsArgs, MeshContext>,
   /** undefined **/
   update_shipping_zone_methods: InContextSdkMethod<Mutation['update_shipping_zone_methods'], Mutationupdate_shipping_zone_methodsArgs, MeshContext>,
@@ -5303,11 +7431,29 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   delete_shipping_zones: InContextSdkMethod<Mutation['delete_shipping_zones'], Mutationdelete_shipping_zonesArgs, MeshContext>,
   /** undefined **/
+  insert_store_config: InContextSdkMethod<Mutation['insert_store_config'], Mutationinsert_store_configArgs, MeshContext>,
+  /** undefined **/
+  update_store_config: InContextSdkMethod<Mutation['update_store_config'], Mutationupdate_store_configArgs, MeshContext>,
+  /** undefined **/
+  delete_store_config: InContextSdkMethod<Mutation['delete_store_config'], Mutationdelete_store_configArgs, MeshContext>,
+  /** undefined **/
+  insert_store_features: InContextSdkMethod<Mutation['insert_store_features'], Mutationinsert_store_featuresArgs, MeshContext>,
+  /** undefined **/
+  update_store_features: InContextSdkMethod<Mutation['update_store_features'], Mutationupdate_store_featuresArgs, MeshContext>,
+  /** undefined **/
+  delete_store_features: InContextSdkMethod<Mutation['delete_store_features'], Mutationdelete_store_featuresArgs, MeshContext>,
+  /** undefined **/
   insert_users: InContextSdkMethod<Mutation['insert_users'], Mutationinsert_usersArgs, MeshContext>,
   /** undefined **/
   update_users: InContextSdkMethod<Mutation['update_users'], Mutationupdate_usersArgs, MeshContext>,
   /** undefined **/
   delete_users: InContextSdkMethod<Mutation['delete_users'], Mutationdelete_usersArgs, MeshContext>,
+  /** undefined **/
+  insert_variant_active_offers: InContextSdkMethod<Mutation['insert_variant_active_offers'], Mutationinsert_variant_active_offersArgs, MeshContext>,
+  /** undefined **/
+  update_variant_active_offers: InContextSdkMethod<Mutation['update_variant_active_offers'], Mutationupdate_variant_active_offersArgs, MeshContext>,
+  /** undefined **/
+  delete_variant_active_offers: InContextSdkMethod<Mutation['delete_variant_active_offers'], Mutationdelete_variant_active_offersArgs, MeshContext>,
   /** undefined **/
   insert_variant_attribute_options: InContextSdkMethod<Mutation['insert_variant_attribute_options'], Mutationinsert_variant_attribute_optionsArgs, MeshContext>,
   /** undefined **/
@@ -5331,7 +7477,13 @@ export type variant_ratings_UpdateInput = {
   /** undefined **/
   update_variant_ratings: InContextSdkMethod<Mutation['update_variant_ratings'], Mutationupdate_variant_ratingsArgs, MeshContext>,
   /** undefined **/
-  delete_variant_ratings: InContextSdkMethod<Mutation['delete_variant_ratings'], Mutationdelete_variant_ratingsArgs, MeshContext>
+  delete_variant_ratings: InContextSdkMethod<Mutation['delete_variant_ratings'], Mutationdelete_variant_ratingsArgs, MeshContext>,
+  /** undefined **/
+  insert_verification_codes: InContextSdkMethod<Mutation['insert_verification_codes'], Mutationinsert_verification_codesArgs, MeshContext>,
+  /** undefined **/
+  update_verification_codes: InContextSdkMethod<Mutation['update_verification_codes'], Mutationupdate_verification_codesArgs, MeshContext>,
+  /** undefined **/
+  delete_verification_codes: InContextSdkMethod<Mutation['delete_verification_codes'], Mutationdelete_verification_codesArgs, MeshContext>
   };
 
   export type SubscriptionSdk = {

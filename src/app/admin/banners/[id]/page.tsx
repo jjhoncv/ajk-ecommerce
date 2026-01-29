@@ -21,7 +21,16 @@ export default async function BannerEditPage({
   const result = await BannerService.getBannerWithAudit(Number(id))
 
   if (result == null || result.banner == null) {
-    return <div>No se encontró el banner</div>
+    return (
+      <LayoutPageAdmin>
+        <PageUI
+          title={<PageTitle title="No encontrado" />}
+          breadcrumb={[{ label: 'Banners', url: '/admin/banners' }]}
+        >
+          <p className="text-gray-500">El banner no existe o fue eliminado.</p>
+        </PageUI>
+      </LayoutPageAdmin>
+    )
   }
 
   const { banner, audit } = result

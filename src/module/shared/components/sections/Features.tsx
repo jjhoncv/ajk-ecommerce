@@ -7,6 +7,11 @@ interface FeaturesProps {
 }
 
 const Features: React.FC<FeaturesProps> = ({ features }) => {
+  // No mostrar la sección si no hay features configurados
+  if (!features || features.length === 0) {
+    return null
+  }
+
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case 'shipping':

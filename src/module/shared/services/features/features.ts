@@ -1,8 +1,14 @@
-import { dataMock } from './mock'
+import { StoreFeatureModel } from './StoreFeature.model'
 import { type Feature } from './types'
 
 export const getFeatures = async (): Promise<Feature[]> => {
-  return await new Promise((resolve) => {
-    resolve(dataMock)
-  })
+  const model = new StoreFeatureModel()
+  const storeFeatures = await model.getActiveFeatures()
+
+  // Mapear de StoreFeature a Feature (formato esperado por el componente)
+  return storeFeatures.map((sf) => ({
+    icon: sf.icon,
+    title: sf.title,
+    description: sf.description
+  }))
 }

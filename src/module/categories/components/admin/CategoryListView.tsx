@@ -9,7 +9,7 @@ import {
 } from '@/module/shared/components/Table/DynamicTable'
 import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
 import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
-import { FolderOpen } from 'lucide-react'
+import { FolderOpen, FolderPlus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { type FC } from 'react'
@@ -172,6 +172,8 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
               ? `/admin/categories/${id}?parent=${parentId}`
               : `/admin/categories/${id}`
 
+          const addSubcategoryUrl = `/admin/categories/new?parent=${id}`
+
           return (
             <>
               <Link
@@ -189,7 +191,14 @@ export const CategoryListView: FC<CategoryListViewProps> = ({
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                   <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                 </svg>
-                Edit
+                Editar
+              </Link>
+              <Link
+                href={addSubcategoryUrl}
+                className="flex cursor-pointer items-center gap-3 rounded px-4 py-2 text-sm font-light text-blue-600 transition-colors hover:bg-blue-50"
+              >
+                <FolderPlus size={18} strokeWidth={1} />
+                Añadir subcategoría
               </Link>
               <RemoveAction id={id} baseURL="/admin/categories" />
             </>

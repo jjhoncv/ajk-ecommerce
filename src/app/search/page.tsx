@@ -27,6 +27,23 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     filters: availableFilters
   } = await SearchService.getSearchParams(filters)
 
+  // Si no hay productos y no hay filtros disponibles, no mostrar nada
+  const hasNoData =
+    products.length === 0 &&
+    (!availableFilters.categories || availableFilters.categories.length === 0) &&
+    (!availableFilters.attributes || availableFilters.attributes.length === 0)
+
+  if (hasNoData) {
+    return (
+      <Layout>
+        <Header navigationType="mini">
+          <Navigation type="mini" />
+        </Header>
+        <LayoutContent className="px-0 py-0" />
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <Header navigationType="mini">

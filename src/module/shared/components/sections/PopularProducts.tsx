@@ -9,6 +9,11 @@ interface PopularProductsProps {
 }
 
 const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
+  // No mostrar la sección si no hay productos populares
+  if (!products || products.length === 0) {
+    return null
+  }
+
   return (
     <section className="mx-auto max-w-screen-4xl px-12 py-8">
       <div className="mb-6 flex items-center justify-between">
@@ -22,13 +27,9 @@ const PopularProducts: React.FC<PopularProductsProps> = ({ products }) => {
         </Link>
       </div>
       <div className="grid grid-cols-6 gap-6">
-        {products?.map((item) => (
+        {products.map((item) => (
           <ProductCard key={item.variantId} product={item} />
-        )) || (
-          <div className="col-span-5 py-8 text-center text-gray-500">
-            No hay productos disponibles
-          </div>
-        )}
+        ))}
       </div>
     </section>
   )

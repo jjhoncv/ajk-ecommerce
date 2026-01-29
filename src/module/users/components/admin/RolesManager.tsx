@@ -89,23 +89,25 @@ export function RolesManager(): JSX.Element {
                   </p>
                 </div>
               </div>
-              {role.id > 2 && (
-                <div className="flex gap-1">
-                  <Link
-                    href={`/admin/roles/${role.id}`}
-                    className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </Link>
+              <div className="flex gap-1">
+                <Link
+                  href={`/admin/roles/${role.id}`}
+                  className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                  title={role.id <= 2 ? 'Editar secciones' : 'Editar rol'}
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Link>
+                {role.id > 2 && (
                   <button
                     onClick={() => void handleDelete(role.id)}
                     disabled={deleting === role.id}
                     className="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                    title="Eliminar rol"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {role.sections.length > 0 && (
@@ -129,7 +131,7 @@ export function RolesManager(): JSX.Element {
             {role.id <= 2 && (
               <div className="mt-4">
                 <span className="text-xs text-amber-600">
-                  Rol del sistema (no editable)
+                  Rol del sistema (solo se pueden editar secciones)
                 </span>
               </div>
             )}

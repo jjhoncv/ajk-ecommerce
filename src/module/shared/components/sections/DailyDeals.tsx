@@ -15,6 +15,11 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
   bannerTitle = 'Trae la naturaleza a tu hogar',
   products
 }) => {
+  // No mostrar la sección si no hay productos en oferta
+  if (!products || products.length === 0) {
+    return null
+  }
+
   return (
     <section className="mx-auto max-w-screen-4xl px-12 py-8">
       <div className="mb-6 flex items-center justify-between">
@@ -59,13 +64,9 @@ const DailyDeals: React.FC<DailyDealsProps> = ({
         {/* Products Grid */}
         <div className="md:col-span-10">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {products?.map((item) => (
+            {products.map((item) => (
               <ProductCard key={item.variantId || item.id} product={item} />
-            )) || (
-              <div className="col-span-4 py-8 text-center text-gray-500">
-                No hay ofertas disponibles
-              </div>
-            )}
+            ))}
           </div>
         </div>
       </div>

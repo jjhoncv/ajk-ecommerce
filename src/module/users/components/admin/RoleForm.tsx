@@ -16,13 +16,14 @@ interface Section {
 
 interface RoleFormProps {
   roleId?: number
+  isSystemRole?: boolean
   initialData?: {
     name: string
     sectionIds: number[]
   }
 }
 
-export function RoleForm({ roleId, initialData }: RoleFormProps): JSX.Element {
+export function RoleForm({ roleId, isSystemRole = false, initialData }: RoleFormProps): JSX.Element {
   const router = useRouter()
   const [name, setName] = useState(initialData?.name ?? '')
   const [selectedSections, setSelectedSections] = useState<number[]>(
@@ -69,7 +70,7 @@ export function RoleForm({ roleId, initialData }: RoleFormProps): JSX.Element {
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
 
-    if (name.trim() === '') {
+    if (!isSystemRole && name.trim() === '') {
       ToastFail('El nombre del rol es requerido')
       return
     }
@@ -99,23 +100,33 @@ export function RoleForm({ roleId, initialData }: RoleFormProps): JSX.Element {
 
   return (
     <form onSubmit={(e) => void handleSubmit(e)} className="mt-6 space-y-6">
-      <div className="rounded-lg border bg-white p-6">
-        <h3 className="mb-4 font-semibold text-gray-900">
-          Información del Rol
-        </h3>
-        <div className="max-w-md">
-          <label className="mb-2 block text-sm font-medium text-gray-700">
-            Nombre del rol
-          </label>
-          <Input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Ej: Editor, Vendedor, Soporte..."
-            className="bg-white"
-          />
+      {!isSystemRole && (
+        <div className="rounded-lg border bg-white p-6">
+          <h3 className="mb-4 font-semibold text-gray-900">
+            Información del Rol
+          </h3>
+          <div className="max-w-md">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Nombre del rol
+            </label>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Ej: Editor, Vendedor, Soporte..."
+              className="bg-white"
+            />
+          </div>
         </div>
-      </div>
+      )}
+
+      {isSystemRole && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm text-amber-800">
+            <strong>Rol del sistema:</strong> {name}. Solo puedes modificar las secciones asignadas a este rol.
+          </p>
+        </div>
+      )}
 
       <div className="rounded-lg border bg-white p-6">
         <div className="mb-4 flex items-center justify-between">

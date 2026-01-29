@@ -94,9 +94,9 @@ export const Alert: FC<AlertProps> = ({
     <div>
       <div
         onClick={handleClose}
-        className="fixed inset-0 z-40 bg-black/30"
+        className="fixed inset-0 z-[10000] bg-black/30"
       />
-      <div className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-xl md:w-[450px]">
+      <div className="fixed left-1/2 top-1/2 z-[10001] w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-xl md:w-[450px]">
         <div className="p-2">
           <div className="relative px-3 py-3 font-semibold">
             {title ?? 'Confirmar eliminación'}

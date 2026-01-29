@@ -16,6 +16,11 @@ interface CategoriesProps {
 }
 
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {
+  // No mostrar la sección si no hay categorías
+  if (!categories || categories.length === 0) {
+    return null
+  }
+
   return (
     <section className="bg-gray-50 py-12">
       <div className="mx-auto max-w-screen-4xl px-12">

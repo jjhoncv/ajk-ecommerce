@@ -11,6 +11,11 @@ interface FeaturedCategoriesProps {
 const FeaturedCategories: React.FC<FeaturedCategoriesProps> = ({
   categories
 }) => {
+  // No mostrar la sección si no hay categorías destacadas
+  if (!categories || categories.length === 0) {
+    return null
+  }
+
   return (
     <section className="mx-auto max-w-screen-4xl px-12 py-8">
       <h2 className="mb-6 text-2xl font-bold">Categorías Destacadas</h2>

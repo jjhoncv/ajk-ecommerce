@@ -29,8 +29,18 @@ export default async function EditCategoryPage({
   console.log('[EditCategoryPage] Result:', JSON.stringify(result, null, 2))
 
   if (result == null || result.category == null) {
-    console.log('[EditCategoryPage] Category not found for id:', id)
-    return <div>No se encontró la categoría (ID: {id})</div>
+    return (
+      <LayoutPageAdmin>
+        <PageUI
+          title={<PageTitle title="No encontrada" />}
+          breadcrumb={[
+            { label: 'Categorías', url: '/admin/categories' }
+          ]}
+        >
+          <p className="text-gray-500">La categoría no existe o fue eliminada.</p>
+        </PageUI>
+      </LayoutPageAdmin>
+    )
   }
 
   const { category, audit } = result

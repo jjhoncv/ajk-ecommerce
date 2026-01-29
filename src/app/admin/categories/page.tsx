@@ -33,11 +33,96 @@ export default async function CategoryListPage({
   }
 
   if (categories.length === 0) {
-    const message =
+    const emptyMessage =
       parentId != null
         ? `No se encontraron subcategorías para "${parentCategory?.name || 'esta categoría'}"`
-        : 'No se encontraron categorías'
-    return <div>{message}</div>
+        : 'No hay categorías creadas'
+
+    const emptySubtitle =
+      parentId != null
+        ? 'Puedes crear una subcategoría usando el botón de arriba'
+        : 'Comienza creando tu primera categoría para organizar tus productos'
+
+    // Construir breadcrumb para estado vacío
+    const emptyBreadcrumb: Array<{ label: string; url: string }> = [
+      { label: 'Categorías', url: '/admin/categories' }
+    ]
+    ancestors.forEach((ancestor, index) => {
+      const isLast = index === ancestors.length - 1
+      emptyBreadcrumb.push({
+        label: ancestor.name,
+        url: isLast ? '' : `/admin/categories?parent=${ancestor.id}`
+      })
+    })
+
+    const emptyTitle = parentCategory ? parentCategory.name : 'Categorías'
+
+    return (
+      <LayoutPageAdmin>
+        <PageUI
+          title={<PageTitle title={emptyTitle} />}
+          subtitle={emptySubtitle}
+          breadcrumb={emptyBreadcrumb}
+          options={
+            <div className="flex gap-2">
+              {parentCategory != null && (
+                <PageButton
+                  href={
+                    parentCategory.parentId != null
+                      ? `/admin/categories?parent=${parentCategory.parentId}`
+                      : '/admin/categories'
+                  }
+                >
+                  ↑ Ir a nivel superior
+                </PageButton>
+              )}
+              <PageButton
+                href={
+                  parentId != null
+                    ? `/admin/categories/new?parent=${parentId}`
+                    : '/admin/categories/new'
+                }
+              >
+                Nueva categoría
+              </PageButton>
+            </div>
+          }
+        >
+          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+            <div className="mb-4 rounded-full bg-gray-100 p-4">
+              <svg
+                className="h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                />
+              </svg>
+            </div>
+            <h3 className="mb-2 text-lg font-medium text-gray-900">
+              {emptyMessage}
+            </h3>
+            <p className="mb-6 max-w-sm text-sm text-gray-500">
+              {emptySubtitle}
+            </p>
+            <PageButton
+              href={
+                parentId != null
+                  ? `/admin/categories/new?parent=${parentId}`
+                  : '/admin/categories/new'
+              }
+            >
+              + Crear {parentId != null ? 'subcategoría' : 'categoría'}
+            </PageButton>
+          </div>
+        </PageUI>
+      </LayoutPageAdmin>
+    )
   }
 
   // Obtener información de qué categorías tienen subcategorías

@@ -36,17 +36,19 @@ export type Scalars = {
   Int: { input: number; output: number; }
   /** The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
   Float: { input: number; output: number; }
+  DateTime: { input: Date | string; output: Date | string; }
   Timestamp: { input: Date | string | number; output: Date | string | number; }
+  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
+  BigInt: { input: bigint; output: bigint; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
   /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Date: { input: Date | string; output: Date | string; }
-  DateTime: { input: Date | string; output: Date | string; }
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: { input: bigint; output: bigint; }
 };
 
 export type Query = {
+  activeOffers?: Maybe<Array<Maybe<ActiveOffers>>>;
+  countActiveOffers?: Maybe<Scalars['Int']['output']>;
   attributeOptions?: Maybe<Array<Maybe<AttributeOptions>>>;
   countAttributeOptions?: Maybe<Scalars['Int']['output']>;
   attributes?: Maybe<Array<Maybe<Attributes>>>;
@@ -65,6 +67,18 @@ export type Query = {
   countCustomers?: Maybe<Scalars['Int']['output']>;
   customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
   countCustomersAddresses?: Maybe<Scalars['Int']['output']>;
+  districts?: Maybe<Array<Maybe<Districts>>>;
+  countDistricts?: Maybe<Scalars['Int']['output']>;
+  footerLinks?: Maybe<Array<Maybe<FooterLinks>>>;
+  countFooterLinks?: Maybe<Scalars['Int']['output']>;
+  offerCategories?: Maybe<Array<Maybe<OfferCategories>>>;
+  countOfferCategories?: Maybe<Scalars['Int']['output']>;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
+  countOfferUsage?: Maybe<Scalars['Int']['output']>;
+  offerVariants?: Maybe<Array<Maybe<OfferVariants>>>;
+  countOfferVariants?: Maybe<Scalars['Int']['output']>;
+  offers?: Maybe<Array<Maybe<Offers>>>;
+  countOffers?: Maybe<Scalars['Int']['output']>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
   countOrderItems?: Maybe<Scalars['Int']['output']>;
   orderSummary?: Maybe<Array<Maybe<OrderSummary>>>;
@@ -111,12 +125,20 @@ export type Query = {
   countServicesImages?: Maybe<Scalars['Int']['output']>;
   shippingMethods?: Maybe<Array<Maybe<ShippingMethods>>>;
   countShippingMethods?: Maybe<Scalars['Int']['output']>;
+  shippingZoneDistricts?: Maybe<Array<Maybe<ShippingZoneDistricts>>>;
+  countShippingZoneDistricts?: Maybe<Scalars['Int']['output']>;
   shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
   countShippingZoneMethods?: Maybe<Scalars['Int']['output']>;
   shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
   countShippingZones?: Maybe<Scalars['Int']['output']>;
+  storeConfig?: Maybe<Array<Maybe<StoreConfig>>>;
+  countStoreConfig?: Maybe<Scalars['Int']['output']>;
+  storeFeatures?: Maybe<Array<Maybe<StoreFeatures>>>;
+  countStoreFeatures?: Maybe<Scalars['Int']['output']>;
   users?: Maybe<Array<Maybe<Users>>>;
   countUsers?: Maybe<Scalars['Int']['output']>;
+  variantActiveOffers?: Maybe<Array<Maybe<VariantActiveOffers>>>;
+  countVariantActiveOffers?: Maybe<Scalars['Int']['output']>;
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
   countVariantAttributeOptions?: Maybe<Scalars['Int']['output']>;
   variantImages?: Maybe<Array<Maybe<VariantImages>>>;
@@ -125,6 +147,21 @@ export type Query = {
   countVariantRatingSummary?: Maybe<Scalars['Int']['output']>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
   countVariantRatings?: Maybe<Scalars['Int']['output']>;
+  verificationCodes?: Maybe<Array<Maybe<VerificationCodes>>>;
+  countVerificationCodes?: Maybe<Scalars['Int']['output']>;
+};
+
+
+export type QueryactiveOffersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ActiveOffersWhereInput>;
+  orderBy?: InputMaybe<ActiveOffersOrderByInput>;
+};
+
+
+export type QuerycountActiveOffersArgs = {
+  where?: InputMaybe<ActiveOffersWhereInput>;
 };
 
 
@@ -242,6 +279,84 @@ export type QuerycustomersAddressesArgs = {
 
 export type QuerycountCustomersAddressesArgs = {
   where?: InputMaybe<CustomersAddressesWhereInput>;
+};
+
+
+export type QuerydistrictsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<DistrictsWhereInput>;
+  orderBy?: InputMaybe<DistrictsOrderByInput>;
+};
+
+
+export type QuerycountDistrictsArgs = {
+  where?: InputMaybe<DistrictsWhereInput>;
+};
+
+
+export type QueryfooterLinksArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<FooterLinksWhereInput>;
+  orderBy?: InputMaybe<FooterLinksOrderByInput>;
+};
+
+
+export type QuerycountFooterLinksArgs = {
+  where?: InputMaybe<FooterLinksWhereInput>;
+};
+
+
+export type QueryofferCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+  orderBy?: InputMaybe<OfferCategoriesOrderByInput>;
+};
+
+
+export type QuerycountOfferCategoriesArgs = {
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+};
+
+
+export type QueryofferUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferUsageWhereInput>;
+  orderBy?: InputMaybe<OfferUsageOrderByInput>;
+};
+
+
+export type QuerycountOfferUsageArgs = {
+  where?: InputMaybe<OfferUsageWhereInput>;
+};
+
+
+export type QueryofferVariantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferVariantsWhereInput>;
+  orderBy?: InputMaybe<OfferVariantsOrderByInput>;
+};
+
+
+export type QuerycountOfferVariantsArgs = {
+  where?: InputMaybe<OfferVariantsWhereInput>;
+};
+
+
+export type QueryoffersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OffersWhereInput>;
+  orderBy?: InputMaybe<OffersOrderByInput>;
+};
+
+
+export type QuerycountOffersArgs = {
+  where?: InputMaybe<OffersWhereInput>;
 };
 
 
@@ -544,6 +659,19 @@ export type QuerycountShippingMethodsArgs = {
 };
 
 
+export type QueryshippingZoneDistrictsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneDistrictsOrderByInput>;
+};
+
+
+export type QuerycountShippingZoneDistrictsArgs = {
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+};
+
+
 export type QueryshippingZoneMethodsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -570,6 +698,32 @@ export type QuerycountShippingZonesArgs = {
 };
 
 
+export type QuerystoreConfigArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<StoreConfigWhereInput>;
+  orderBy?: InputMaybe<StoreConfigOrderByInput>;
+};
+
+
+export type QuerycountStoreConfigArgs = {
+  where?: InputMaybe<StoreConfigWhereInput>;
+};
+
+
+export type QuerystoreFeaturesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<StoreFeaturesWhereInput>;
+  orderBy?: InputMaybe<StoreFeaturesOrderByInput>;
+};
+
+
+export type QuerycountStoreFeaturesArgs = {
+  where?: InputMaybe<StoreFeaturesWhereInput>;
+};
+
+
 export type QueryusersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -580,6 +734,19 @@ export type QueryusersArgs = {
 
 export type QuerycountUsersArgs = {
   where?: InputMaybe<UsersWhereInput>;
+};
+
+
+export type QueryvariantActiveOffersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<VariantActiveOffersWhereInput>;
+  orderBy?: InputMaybe<VariantActiveOffersOrderByInput>;
+};
+
+
+export type QuerycountVariantActiveOffersArgs = {
+  where?: InputMaybe<VariantActiveOffersWhereInput>;
 };
 
 
@@ -634,7 +801,23 @@ export type QuerycountVariantRatingsArgs = {
   where?: InputMaybe<VariantRatingsWhereInput>;
 };
 
+
+export type QueryverificationCodesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<VerificationCodesWhereInput>;
+  orderBy?: InputMaybe<VerificationCodesOrderByInput>;
+};
+
+
+export type QuerycountVerificationCodesArgs = {
+  where?: InputMaybe<VerificationCodesWhereInput>;
+};
+
 export type Mutation = {
+  insertActiveOffers?: Maybe<ActiveOffers>;
+  updateActiveOffers?: Maybe<ActiveOffers>;
+  deleteActiveOffers?: Maybe<Scalars['Boolean']['output']>;
   insertAttributeOptions?: Maybe<AttributeOptions>;
   updateAttributeOptions?: Maybe<AttributeOptions>;
   deleteAttributeOptions?: Maybe<Scalars['Boolean']['output']>;
@@ -662,6 +845,24 @@ export type Mutation = {
   insertCustomersAddresses?: Maybe<CustomersAddresses>;
   updateCustomersAddresses?: Maybe<CustomersAddresses>;
   deleteCustomersAddresses?: Maybe<Scalars['Boolean']['output']>;
+  insertDistricts?: Maybe<Districts>;
+  updateDistricts?: Maybe<Districts>;
+  deleteDistricts?: Maybe<Scalars['Boolean']['output']>;
+  insertFooterLinks?: Maybe<FooterLinks>;
+  updateFooterLinks?: Maybe<FooterLinks>;
+  deleteFooterLinks?: Maybe<Scalars['Boolean']['output']>;
+  insertOfferCategories?: Maybe<OfferCategories>;
+  updateOfferCategories?: Maybe<OfferCategories>;
+  deleteOfferCategories?: Maybe<Scalars['Boolean']['output']>;
+  insertOfferUsage?: Maybe<OfferUsage>;
+  updateOfferUsage?: Maybe<OfferUsage>;
+  deleteOfferUsage?: Maybe<Scalars['Boolean']['output']>;
+  insertOfferVariants?: Maybe<OfferVariants>;
+  updateOfferVariants?: Maybe<OfferVariants>;
+  deleteOfferVariants?: Maybe<Scalars['Boolean']['output']>;
+  insertOffers?: Maybe<Offers>;
+  updateOffers?: Maybe<Offers>;
+  deleteOffers?: Maybe<Scalars['Boolean']['output']>;
   insertOrderItems?: Maybe<OrderItems>;
   updateOrderItems?: Maybe<OrderItems>;
   deleteOrderItems?: Maybe<Scalars['Boolean']['output']>;
@@ -731,15 +932,27 @@ export type Mutation = {
   insertShippingMethods?: Maybe<ShippingMethods>;
   updateShippingMethods?: Maybe<ShippingMethods>;
   deleteShippingMethods?: Maybe<Scalars['Boolean']['output']>;
+  insertShippingZoneDistricts?: Maybe<ShippingZoneDistricts>;
+  updateShippingZoneDistricts?: Maybe<ShippingZoneDistricts>;
+  deleteShippingZoneDistricts?: Maybe<Scalars['Boolean']['output']>;
   insertShippingZoneMethods?: Maybe<ShippingZoneMethods>;
   updateShippingZoneMethods?: Maybe<ShippingZoneMethods>;
   deleteShippingZoneMethods?: Maybe<Scalars['Boolean']['output']>;
   insertShippingZones?: Maybe<ShippingZones>;
   updateShippingZones?: Maybe<ShippingZones>;
   deleteShippingZones?: Maybe<Scalars['Boolean']['output']>;
+  insertStoreConfig?: Maybe<StoreConfig>;
+  updateStoreConfig?: Maybe<StoreConfig>;
+  deleteStoreConfig?: Maybe<Scalars['Boolean']['output']>;
+  insertStoreFeatures?: Maybe<StoreFeatures>;
+  updateStoreFeatures?: Maybe<StoreFeatures>;
+  deleteStoreFeatures?: Maybe<Scalars['Boolean']['output']>;
   insertUsers?: Maybe<Users>;
   updateUsers?: Maybe<Users>;
   deleteUsers?: Maybe<Scalars['Boolean']['output']>;
+  insertVariantActiveOffers?: Maybe<VariantActiveOffers>;
+  updateVariantActiveOffers?: Maybe<VariantActiveOffers>;
+  deleteVariantActiveOffers?: Maybe<Scalars['Boolean']['output']>;
   insertVariantAttributeOptions?: Maybe<VariantAttributeOptions>;
   updateVariantAttributeOptions?: Maybe<VariantAttributeOptions>;
   deleteVariantAttributeOptions?: Maybe<Scalars['Boolean']['output']>;
@@ -752,6 +965,25 @@ export type Mutation = {
   insertVariantRatings?: Maybe<VariantRatings>;
   updateVariantRatings?: Maybe<VariantRatings>;
   deleteVariantRatings?: Maybe<Scalars['Boolean']['output']>;
+  insertVerificationCodes?: Maybe<VerificationCodes>;
+  updateVerificationCodes?: Maybe<VerificationCodes>;
+  deleteVerificationCodes?: Maybe<Scalars['Boolean']['output']>;
+};
+
+
+export type MutationinsertActiveOffersArgs = {
+  active_offers: ActiveOffersInsertInput;
+};
+
+
+export type MutationupdateActiveOffersArgs = {
+  active_offers: ActiveOffersUpdateInput;
+  where?: InputMaybe<ActiveOffersWhereInput>;
+};
+
+
+export type MutationdeleteActiveOffersArgs = {
+  where?: InputMaybe<ActiveOffersWhereInput>;
 };
 
 
@@ -896,6 +1128,102 @@ export type MutationupdateCustomersAddressesArgs = {
 
 export type MutationdeleteCustomersAddressesArgs = {
   where?: InputMaybe<CustomersAddressesWhereInput>;
+};
+
+
+export type MutationinsertDistrictsArgs = {
+  districts: DistrictsInsertInput;
+};
+
+
+export type MutationupdateDistrictsArgs = {
+  districts: DistrictsUpdateInput;
+  where?: InputMaybe<DistrictsWhereInput>;
+};
+
+
+export type MutationdeleteDistrictsArgs = {
+  where?: InputMaybe<DistrictsWhereInput>;
+};
+
+
+export type MutationinsertFooterLinksArgs = {
+  footer_links: FooterLinksInsertInput;
+};
+
+
+export type MutationupdateFooterLinksArgs = {
+  footer_links: FooterLinksUpdateInput;
+  where?: InputMaybe<FooterLinksWhereInput>;
+};
+
+
+export type MutationdeleteFooterLinksArgs = {
+  where?: InputMaybe<FooterLinksWhereInput>;
+};
+
+
+export type MutationinsertOfferCategoriesArgs = {
+  offer_categories: OfferCategoriesInsertInput;
+};
+
+
+export type MutationupdateOfferCategoriesArgs = {
+  offer_categories: OfferCategoriesUpdateInput;
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+};
+
+
+export type MutationdeleteOfferCategoriesArgs = {
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+};
+
+
+export type MutationinsertOfferUsageArgs = {
+  offer_usage: OfferUsageInsertInput;
+};
+
+
+export type MutationupdateOfferUsageArgs = {
+  offer_usage: OfferUsageUpdateInput;
+  where?: InputMaybe<OfferUsageWhereInput>;
+};
+
+
+export type MutationdeleteOfferUsageArgs = {
+  where?: InputMaybe<OfferUsageWhereInput>;
+};
+
+
+export type MutationinsertOfferVariantsArgs = {
+  offer_variants: OfferVariantsInsertInput;
+};
+
+
+export type MutationupdateOfferVariantsArgs = {
+  offer_variants: OfferVariantsUpdateInput;
+  where?: InputMaybe<OfferVariantsWhereInput>;
+};
+
+
+export type MutationdeleteOfferVariantsArgs = {
+  where?: InputMaybe<OfferVariantsWhereInput>;
+};
+
+
+export type MutationinsertOffersArgs = {
+  offers: OffersInsertInput;
+};
+
+
+export type MutationupdateOffersArgs = {
+  offers: OffersUpdateInput;
+  where?: InputMaybe<OffersWhereInput>;
+};
+
+
+export type MutationdeleteOffersArgs = {
+  where?: InputMaybe<OffersWhereInput>;
 };
 
 
@@ -1267,6 +1595,22 @@ export type MutationdeleteShippingMethodsArgs = {
 };
 
 
+export type MutationinsertShippingZoneDistrictsArgs = {
+  shipping_zone_districts: ShippingZoneDistrictsInsertInput;
+};
+
+
+export type MutationupdateShippingZoneDistrictsArgs = {
+  shipping_zone_districts: ShippingZoneDistrictsUpdateInput;
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+};
+
+
+export type MutationdeleteShippingZoneDistrictsArgs = {
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+};
+
+
 export type MutationinsertShippingZoneMethodsArgs = {
   shipping_zone_methods: ShippingZoneMethodsInsertInput;
 };
@@ -1299,6 +1643,38 @@ export type MutationdeleteShippingZonesArgs = {
 };
 
 
+export type MutationinsertStoreConfigArgs = {
+  store_config: StoreConfigInsertInput;
+};
+
+
+export type MutationupdateStoreConfigArgs = {
+  store_config: StoreConfigUpdateInput;
+  where?: InputMaybe<StoreConfigWhereInput>;
+};
+
+
+export type MutationdeleteStoreConfigArgs = {
+  where?: InputMaybe<StoreConfigWhereInput>;
+};
+
+
+export type MutationinsertStoreFeaturesArgs = {
+  store_features: StoreFeaturesInsertInput;
+};
+
+
+export type MutationupdateStoreFeaturesArgs = {
+  store_features: StoreFeaturesUpdateInput;
+  where?: InputMaybe<StoreFeaturesWhereInput>;
+};
+
+
+export type MutationdeleteStoreFeaturesArgs = {
+  where?: InputMaybe<StoreFeaturesWhereInput>;
+};
+
+
 export type MutationinsertUsersArgs = {
   users: UsersInsertInput;
 };
@@ -1312,6 +1688,22 @@ export type MutationupdateUsersArgs = {
 
 export type MutationdeleteUsersArgs = {
   where?: InputMaybe<UsersWhereInput>;
+};
+
+
+export type MutationinsertVariantActiveOffersArgs = {
+  variant_active_offers: VariantActiveOffersInsertInput;
+};
+
+
+export type MutationupdateVariantActiveOffersArgs = {
+  variant_active_offers: VariantActiveOffersUpdateInput;
+  where?: InputMaybe<VariantActiveOffersWhereInput>;
+};
+
+
+export type MutationdeleteVariantActiveOffersArgs = {
+  where?: InputMaybe<VariantActiveOffersWhereInput>;
 };
 
 
@@ -1377,6 +1769,186 @@ export type MutationupdateVariantRatingsArgs = {
 export type MutationdeleteVariantRatingsArgs = {
   where?: InputMaybe<VariantRatingsWhereInput>;
 };
+
+
+export type MutationinsertVerificationCodesArgs = {
+  verification_codes: VerificationCodesInsertInput;
+};
+
+
+export type MutationupdateVerificationCodesArgs = {
+  verification_codes: VerificationCodesUpdateInput;
+  where?: InputMaybe<VerificationCodesWhereInput>;
+};
+
+
+export type MutationdeleteVerificationCodesArgs = {
+  where?: InputMaybe<VerificationCodesWhereInput>;
+};
+
+/** VIEW */
+export type ActiveOffers = {
+  id: Scalars['Int']['output'];
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  offerType: ActiveOffersOfferType;
+  discountType: ActiveOffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['output'];
+  startDate: Scalars['DateTime']['output'];
+  endDate: Scalars['DateTime']['output'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: Maybe<Scalars['Int']['output']>;
+  /** Contador de usos actuales */
+  currentUses?: Maybe<Scalars['Int']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: Maybe<Scalars['Int']['output']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badgeColor?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  isFeatured?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  totalVariants: Scalars['BigInt']['output'];
+  totalSold?: Maybe<Scalars['Float']['output']>;
+  /** Precio final de la oferta */
+  minPrice?: Maybe<Scalars['Float']['output']>;
+  maxDiscountPercent?: Maybe<Scalars['Float']['output']>;
+};
+
+export type ActiveOffersOfferType =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type ActiveOffersDiscountType =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** VIEW */
+export type ActiveOffersWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<Scalars['String']['input']>;
+  discountType?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['String']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['String']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  totalVariants?: InputMaybe<Scalars['String']['input']>;
+  totalSold?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  minPrice?: InputMaybe<Scalars['String']['input']>;
+  maxDiscountPercent?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type ActiveOffersOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  offerType?: InputMaybe<OrderBy>;
+  discountType?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  endDate?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<OrderBy>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<OrderBy>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<OrderBy>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  totalVariants?: InputMaybe<OrderBy>;
+  totalSold?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  minPrice?: InputMaybe<OrderBy>;
+  maxDiscountPercent?: InputMaybe<OrderBy>;
+};
+
+export type OrderBy =
+  | 'asc'
+  | 'desc';
 
 export type AttributeOptions = {
   id: Scalars['Int']['output'];
@@ -1461,10 +2033,6 @@ export type AttributeOptionsOrderByInput = {
   additionalCost?: InputMaybe<OrderBy>;
 };
 
-export type OrderBy =
-  | 'asc'
-  | 'desc';
-
 export type Users = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -1485,6 +2053,7 @@ export type Users = {
   products?: Maybe<Array<Maybe<Products>>>;
   promotions?: Maybe<Array<Maybe<Promotions>>>;
   roles?: Maybe<Array<Maybe<Roles>>>;
+  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
 };
 
 
@@ -1557,6 +2126,14 @@ export type UsersrolesArgs = {
   orderBy?: InputMaybe<RolesOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type UsersvariantRatingsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<VariantRatingsWhereInput>;
+  orderBy?: InputMaybe<VariantRatingsOrderByInput>;
 };
 
 export type AttributesWhereInput = {
@@ -1662,6 +2239,7 @@ export type BannerOrderByInput = {
 export type Brands = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
   createdBy?: Maybe<Scalars['Int']['output']>;
@@ -1963,12 +2541,14 @@ export type ProductVariants = {
   id: Scalars['Int']['output'];
   productId: Scalars['Int']['output'];
   sku: Scalars['String']['output'];
+  slug?: Maybe<Scalars['String']['output']>;
   price: Scalars['Float']['output'];
   stock: Scalars['Int']['output'];
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
   /** ID del atributo que controla las imágenes de esta variante (NULL = usar variant_images) */
   imageAttributeId?: Maybe<Scalars['Int']['output']>;
+  offerVariants?: Maybe<Array<Maybe<OfferVariants>>>;
   orderItems?: Maybe<Array<Maybe<OrderItems>>>;
   attributes?: Maybe<Array<Maybe<Attributes>>>;
   products?: Maybe<Array<Maybe<Products>>>;
@@ -1976,6 +2556,14 @@ export type ProductVariants = {
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
   variantImages?: Maybe<Array<Maybe<VariantImages>>>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
+};
+
+
+export type ProductVariantsofferVariantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferVariantsWhereInput>;
+  orderBy?: InputMaybe<OfferVariantsOrderByInput>;
 };
 
 
@@ -2034,119 +2622,435 @@ export type ProductVariantsvariantRatingsArgs = {
   orderBy?: InputMaybe<VariantRatingsOrderByInput>;
 };
 
-/** Items/productos de cada orden */
-export type OrderItems = {
+/** Variantes incluidas en cada oferta */
+export type OfferVariants = {
   id: Scalars['Int']['output'];
-  orderId: Scalars['Int']['output'];
-  /** Variante del producto comprada */
+  offerId: Scalars['Int']['output'];
   variantId: Scalars['Int']['output'];
-  /** Nombre del producto al momento de compra */
-  productName: Scalars['String']['output'];
-  /** SKU de la variante */
-  variantSku: Scalars['String']['output'];
-  /** Atributos de la variante (color, talla, etc.) */
-  variantAttributes?: Maybe<Scalars['JSON']['output']>;
-  quantity: Scalars['Int']['output'];
-  /** Precio unitario al momento de compra */
-  unitPrice: Scalars['Float']['output'];
-  /** Precio total (quantity * unit_price) */
-  totalPrice: Scalars['Float']['output'];
-  /** Descuento aplicado a este item */
-  discountAmount?: Maybe<Scalars['Float']['output']>;
-  orders?: Maybe<Array<Maybe<Orders>>>;
+  /** Precio final de la oferta */
+  offerPrice: Scalars['Float']['output'];
+  /** Precio original al momento de crear */
+  originalPrice: Scalars['Float']['output'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: Maybe<Scalars['Int']['output']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  offers?: Maybe<Array<Maybe<Offers>>>;
   productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
 };
 
 
-/** Items/productos de cada orden */
-export type OrderItemsordersArgs = {
-  where?: InputMaybe<OrdersWhereInput>;
-  orderBy?: InputMaybe<OrdersOrderByInput>;
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsoffersArgs = {
+  where?: InputMaybe<OffersWhereInput>;
+  orderBy?: InputMaybe<OffersOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-/** Items/productos de cada orden */
-export type OrderItemsproductVariantsArgs = {
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsproductVariantsArgs = {
   where?: InputMaybe<ProductVariantsWhereInput>;
   orderBy?: InputMaybe<ProductVariantsOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
-/** Órdenes principales del ecommerce */
-export type Orders = {
+/** Ofertas y descuentos especiales */
+export type Offers = {
   id: Scalars['Int']['output'];
-  customerId: Scalars['Int']['output'];
-  /** Número único de orden (ORD-2025-001234) */
-  orderNumber: Scalars['String']['output'];
-  status: OrdersStatus;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  offerType: OffersOfferType;
+  discountType: OffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['output'];
+  startDate: Scalars['DateTime']['output'];
+  endDate: Scalars['DateTime']['output'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: Maybe<Scalars['Int']['output']>;
+  /** Contador de usos actuales */
+  currentUses?: Maybe<Scalars['Int']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: Maybe<Scalars['Int']['output']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: Maybe<Scalars['Float']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badgeColor?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  isFeatured?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
-  /** Subtotal antes de descuentos */
-  subtotal: Scalars['Float']['output'];
-  /** Descuento aplicado */
-  discountAmount?: Maybe<Scalars['Float']['output']>;
-  /** Costo de envío */
-  shippingCost?: Maybe<Scalars['Float']['output']>;
-  /** Impuestos (IGV) */
-  taxAmount?: Maybe<Scalars['Float']['output']>;
-  /** Total final a pagar */
-  totalAmount: Scalars['Float']['output'];
-  /** Dirección de envío */
-  shippingAddressId: Scalars['Int']['output'];
-  /** Método de envío */
-  shippingMethod?: Maybe<Scalars['String']['output']>;
-  /** Fecha estimada de entrega */
-  estimatedDelivery?: Maybe<Scalars['Date']['output']>;
-  /** Método de pago usado */
-  paymentMethod?: Maybe<Scalars['String']['output']>;
-  paymentStatus: OrdersPaymentStatus;
-  /** Fecha de pago confirmado */
-  paidAt?: Maybe<Scalars['Timestamp']['output']>;
-  /** Notas del cliente */
-  customerNotes?: Maybe<Scalars['String']['output']>;
-  /** Notas internas del admin */
-  adminNotes?: Maybe<Scalars['String']['output']>;
-  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
-  orderItems?: Maybe<Array<Maybe<OrderItems>>>;
-  orderTracking?: Maybe<Array<Maybe<OrderTracking>>>;
+  offerCategories?: Maybe<Array<Maybe<OfferCategories>>>;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
+  offerVariants?: Maybe<Array<Maybe<OfferVariants>>>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type OffersofferCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+  orderBy?: InputMaybe<OfferCategoriesOrderByInput>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type OffersofferUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferUsageWhereInput>;
+  orderBy?: InputMaybe<OfferUsageOrderByInput>;
+};
+
+
+/** Ofertas y descuentos especiales */
+export type OffersofferVariantsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferVariantsWhereInput>;
+  orderBy?: InputMaybe<OfferVariantsOrderByInput>;
+};
+
+export type OffersOfferType =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type OffersDiscountType =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategories = {
+  offerId: Scalars['Int']['output'];
+  categoryId: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  offers?: Maybe<Array<Maybe<Offers>>>;
+};
+
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriescategoriesArgs = {
+  where?: InputMaybe<CategoriesWhereInput>;
+  orderBy?: InputMaybe<CategoriesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriesoffersArgs = {
+  where?: InputMaybe<OffersWhereInput>;
+  orderBy?: InputMaybe<OffersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Categories = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  parentId?: Maybe<Scalars['Int']['output']>;
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  showNav?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  /** Banner image for desktop */
+  bannerImage?: Maybe<Scalars['String']['output']>;
+  /** Banner image for mobile */
+  bannerImageMobile?: Maybe<Scalars['String']['output']>;
+  /** Banner title (defaults to category name if empty) */
+  bannerTitle?: Maybe<Scalars['String']['output']>;
+  /** Banner subtitle */
+  bannerSubtitle?: Maybe<Scalars['String']['output']>;
+  /** Banner description text */
+  bannerDescription?: Maybe<Scalars['String']['output']>;
+  /** Call to action button text */
+  bannerCtaText?: Maybe<Scalars['String']['output']>;
+  /** Call to action button link */
+  bannerCtaLink?: Maybe<Scalars['String']['output']>;
+  /** SEO meta title */
+  metaTitle?: Maybe<Scalars['String']['output']>;
+  /** SEO meta description */
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  slug: Scalars['String']['output'];
+  users?: Maybe<Array<Maybe<Users>>>;
+  offerCategories?: Maybe<Array<Maybe<OfferCategories>>>;
+  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
+};
+
+
+export type CategoriesusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CategoriesofferCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferCategoriesWhereInput>;
+  orderBy?: InputMaybe<OfferCategoriesOrderByInput>;
+};
+
+
+export type CategoriesproductCategoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProductCategoriesWhereInput>;
+  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriesWhereInput = {
+  offerId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriesOrderByInput = {
+  offerId?: InputMaybe<OrderBy>;
+  categoryId?: InputMaybe<OrderBy>;
+};
+
+export type ProductCategories = {
+  productId: Scalars['Int']['output'];
+  categoryId: Scalars['Int']['output'];
+  categories?: Maybe<Array<Maybe<Categories>>>;
+  products?: Maybe<Array<Maybe<Products>>>;
+};
+
+
+export type ProductCategoriescategoriesArgs = {
+  where?: InputMaybe<CategoriesWhereInput>;
+  orderBy?: InputMaybe<CategoriesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ProductCategoriesproductsArgs = {
+  where?: InputMaybe<ProductsWhereInput>;
+  orderBy?: InputMaybe<ProductsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CategoriesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  parentId?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  showNav?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  createdBy?: InputMaybe<Scalars['String']['input']>;
+  updatedBy?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for desktop */
+  bannerImage?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  bannerImageMobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  bannerTitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  bannerSubtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  bannerDescription?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  bannerCtaText?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  bannerCtaLink?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  metaTitle?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  metaDescription?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CategoriesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  parentId?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  showNav?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  createdBy?: InputMaybe<OrderBy>;
+  updatedBy?: InputMaybe<OrderBy>;
+  /** Banner image for desktop */
+  bannerImage?: InputMaybe<OrderBy>;
+  /** Banner image for mobile */
+  bannerImageMobile?: InputMaybe<OrderBy>;
+  /** Banner title (defaults to category name if empty) */
+  bannerTitle?: InputMaybe<OrderBy>;
+  /** Banner subtitle */
+  bannerSubtitle?: InputMaybe<OrderBy>;
+  /** Banner description text */
+  bannerDescription?: InputMaybe<OrderBy>;
+  /** Call to action button text */
+  bannerCtaText?: InputMaybe<OrderBy>;
+  /** Call to action button link */
+  bannerCtaLink?: InputMaybe<OrderBy>;
+  /** SEO meta title */
+  metaTitle?: InputMaybe<OrderBy>;
+  /** SEO meta description */
+  metaDescription?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
+};
+
+export type ProductCategoriesWhereInput = {
+  productId?: InputMaybe<Scalars['String']['input']>;
+  categoryId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ProductCategoriesOrderByInput = {
+  productId?: InputMaybe<OrderBy>;
+  categoryId?: InputMaybe<OrderBy>;
+};
+
+/** Ofertas y descuentos especiales */
+export type OffersWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<Scalars['String']['input']>;
+  discountType?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['String']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['String']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['String']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type OffersOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  offerType?: InputMaybe<OrderBy>;
+  discountType?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  endDate?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<OrderBy>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<OrderBy>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<OrderBy>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<OrderBy>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+/** Historial de uso de ofertas */
+export type OfferUsage = {
+  id: Scalars['Int']['output'];
+  offerId: Scalars['Int']['output'];
+  customerId: Scalars['Int']['output'];
+  orderId: Scalars['Int']['output'];
+  variantId: Scalars['Int']['output'];
+  quantity: Scalars['Int']['output'];
+  originalPrice: Scalars['Float']['output'];
+  offerPrice: Scalars['Float']['output'];
+  /** Ahorro total */
+  discountAmount: Scalars['Float']['output'];
+  usedAt: Scalars['Timestamp']['output'];
   customers?: Maybe<Array<Maybe<Customers>>>;
-  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
-  paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
+  offers?: Maybe<Array<Maybe<Offers>>>;
+  orders?: Maybe<Array<Maybe<Orders>>>;
 };
 
 
-/** Órdenes principales del ecommerce */
-export type OrderscouponUsageArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<CouponUsageWhereInput>;
-  orderBy?: InputMaybe<CouponUsageOrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type OrdersorderItemsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<OrderItemsWhereInput>;
-  orderBy?: InputMaybe<OrderItemsOrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type OrdersorderTrackingArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<OrderTrackingWhereInput>;
-  orderBy?: InputMaybe<OrderTrackingOrderByInput>;
-};
-
-
-/** Órdenes principales del ecommerce */
-export type OrderscustomersArgs = {
+/** Historial de uso de ofertas */
+export type OfferUsagecustomersArgs = {
   where?: InputMaybe<CustomersWhereInput>;
   orderBy?: InputMaybe<CustomersOrderByInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2154,36 +3058,88 @@ export type OrderscustomersArgs = {
 };
 
 
-/** Órdenes principales del ecommerce */
-export type OrderscustomersAddressesArgs = {
+/** Historial de uso de ofertas */
+export type OfferUsageoffersArgs = {
+  where?: InputMaybe<OffersWhereInput>;
+  orderBy?: InputMaybe<OffersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Historial de uso de ofertas */
+export type OfferUsageordersArgs = {
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type Customers = {
+  id: Scalars['Int']['output'];
+  email: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  addressId?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needsPasswordSetup?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  /** Apellido del cliente */
+  lastname?: Maybe<Scalars['String']['output']>;
+  photo?: Maybe<Scalars['String']['output']>;
+  /** Nombre del cliente */
+  name?: Maybe<Scalars['String']['output']>;
+  /** numero de celular */
+  phone?: Maybe<Scalars['String']['output']>;
+  /** Documento de identidad  */
+  dni?: Maybe<Scalars['String']['output']>;
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
+  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
+  orders?: Maybe<Array<Maybe<Orders>>>;
+  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
+};
+
+
+export type CustomerscouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
+};
+
+
+export type CustomerscustomersAddressesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CustomersAddressesWhereInput>;
   orderBy?: InputMaybe<CustomersAddressesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-/** Órdenes principales del ecommerce */
-export type OrderspaymentTransactionsArgs = {
+export type CustomersofferUsageArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<PaymentTransactionsWhereInput>;
-  orderBy?: InputMaybe<PaymentTransactionsOrderByInput>;
+  where?: InputMaybe<OfferUsageWhereInput>;
+  orderBy?: InputMaybe<OfferUsageOrderByInput>;
 };
 
-export type OrdersStatus =
-  | 'pending'
-  | 'processing'
-  | 'shipped'
-  | 'delivered'
-  | 'cancelled'
-  | 'refunded';
 
-export type OrdersPaymentStatus =
-  | 'pending'
-  | 'paid'
-  | 'failed'
-  | 'refunded';
+export type CustomersordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+};
+
+
+export type CustomersvariantRatingsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<VariantRatingsWhereInput>;
+  orderBy?: InputMaybe<VariantRatingsOrderByInput>;
+};
 
 export type CouponUsage = {
   id: Scalars['Int']['output'];
@@ -2335,111 +3291,20 @@ export type CouponsOrderByInput = {
   updatedBy?: InputMaybe<OrderBy>;
 };
 
-export type Customers = {
-  id: Scalars['Int']['output'];
-  email: Scalars['String']['output'];
-  password: Scalars['String']['output'];
-  addressId?: Maybe<Scalars['Int']['output']>;
-  isActive?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  lastname: Scalars['String']['output'];
-  photo?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  /** numero de celular */
-  phone?: Maybe<Scalars['String']['output']>;
-  /** Documento de identidad  */
-  dni?: Maybe<Scalars['String']['output']>;
-  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
-  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
-  orders?: Maybe<Array<Maybe<Orders>>>;
-  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
-};
-
-
-export type CustomerscouponUsageArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<CouponUsageWhereInput>;
-  orderBy?: InputMaybe<CouponUsageOrderByInput>;
-};
-
-
-export type CustomerscustomersAddressesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<CustomersAddressesWhereInput>;
-  orderBy?: InputMaybe<CustomersAddressesOrderByInput>;
-};
-
-
-export type CustomersordersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<OrdersWhereInput>;
-  orderBy?: InputMaybe<OrdersOrderByInput>;
-};
-
-
-export type CustomersvariantRatingsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<VariantRatingsWhereInput>;
-  orderBy?: InputMaybe<VariantRatingsOrderByInput>;
-};
-
-export type CustomersAddresses = {
-  id: Scalars['Int']['output'];
-  idCustomer: Scalars['Int']['output'];
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias: Scalars['String']['output'];
-  department: Scalars['String']['output'];
-  province: Scalars['String']['output'];
-  district: Scalars['String']['output'];
-  /** Nombre de la avenida/calle/jirón */
-  streetName: Scalars['String']['output'];
-  /** Número de la dirección */
-  streetNumber: Scalars['String']['output'];
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: Maybe<Scalars['String']['output']>;
-  /** Latitud GPS */
-  latitude?: Maybe<Scalars['Float']['output']>;
-  /** Longitud GPS */
-  longitude?: Maybe<Scalars['Float']['output']>;
-  /** 1 = dirección por defecto */
-  isDefault?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  customers?: Maybe<Array<Maybe<Customers>>>;
-  orders?: Maybe<Array<Maybe<Orders>>>;
-};
-
-
-export type CustomersAddressescustomersArgs = {
-  where?: InputMaybe<CustomersWhereInput>;
-  orderBy?: InputMaybe<CustomersOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type CustomersAddressesordersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<OrdersWhereInput>;
-  orderBy?: InputMaybe<OrdersOrderByInput>;
-};
-
 export type CustomersWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   addressId?: InputMaybe<Scalars['String']['input']>;
   isActive?: InputMaybe<Scalars['String']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needsPasswordSetup?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del cliente */
   name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
@@ -2453,15 +3318,210 @@ export type CustomersOrderByInput = {
   password?: InputMaybe<OrderBy>;
   addressId?: InputMaybe<OrderBy>;
   isActive?: InputMaybe<OrderBy>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needsPasswordSetup?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<OrderBy>;
   photo?: InputMaybe<OrderBy>;
+  /** Nombre del cliente */
   name?: InputMaybe<OrderBy>;
   /** numero de celular */
   phone?: InputMaybe<OrderBy>;
   /** Documento de identidad  */
   dni?: InputMaybe<OrderBy>;
+};
+
+/** Órdenes principales del ecommerce */
+export type Orders = {
+  id: Scalars['Int']['output'];
+  customerId: Scalars['Int']['output'];
+  /** Número único de orden (ORD-2025-001234) */
+  orderNumber: Scalars['String']['output'];
+  status: OrdersStatus;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  /** Subtotal antes de descuentos */
+  subtotal: Scalars['Float']['output'];
+  /** Descuento aplicado */
+  discountAmount?: Maybe<Scalars['Float']['output']>;
+  /** Costo de envío */
+  shippingCost?: Maybe<Scalars['Float']['output']>;
+  /** Impuestos (IGV) */
+  taxAmount?: Maybe<Scalars['Float']['output']>;
+  /** Total final a pagar */
+  totalAmount: Scalars['Float']['output'];
+  /** Dirección de envío */
+  shippingAddressId: Scalars['Int']['output'];
+  /** Método de envío */
+  shippingMethod?: Maybe<Scalars['String']['output']>;
+  /** Fecha estimada de entrega */
+  estimatedDelivery?: Maybe<Scalars['Date']['output']>;
+  /** Método de pago usado */
+  paymentMethod?: Maybe<Scalars['String']['output']>;
+  paymentStatus: OrdersPaymentStatus;
+  /** Fecha de pago confirmado */
+  paidAt?: Maybe<Scalars['Timestamp']['output']>;
+  /** Notas del cliente */
+  customerNotes?: Maybe<Scalars['String']['output']>;
+  /** Notas internas del admin */
+  adminNotes?: Maybe<Scalars['String']['output']>;
+  couponUsage?: Maybe<Array<Maybe<CouponUsage>>>;
+  offerUsage?: Maybe<Array<Maybe<OfferUsage>>>;
+  orderItems?: Maybe<Array<Maybe<OrderItems>>>;
+  orderTracking?: Maybe<Array<Maybe<OrderTracking>>>;
+  customers?: Maybe<Array<Maybe<Customers>>>;
+  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
+  paymentTransactions?: Maybe<Array<Maybe<PaymentTransactions>>>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrderscouponUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CouponUsageWhereInput>;
+  orderBy?: InputMaybe<CouponUsageOrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrdersofferUsageArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfferUsageWhereInput>;
+  orderBy?: InputMaybe<OfferUsageOrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrdersorderItemsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OrderItemsWhereInput>;
+  orderBy?: InputMaybe<OrderItemsOrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrdersorderTrackingArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OrderTrackingWhereInput>;
+  orderBy?: InputMaybe<OrderTrackingOrderByInput>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrderscustomersArgs = {
+  where?: InputMaybe<CustomersWhereInput>;
+  orderBy?: InputMaybe<CustomersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrderscustomersAddressesArgs = {
+  where?: InputMaybe<CustomersAddressesWhereInput>;
+  orderBy?: InputMaybe<CustomersAddressesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Órdenes principales del ecommerce */
+export type OrderspaymentTransactionsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PaymentTransactionsWhereInput>;
+  orderBy?: InputMaybe<PaymentTransactionsOrderByInput>;
+};
+
+export type OrdersStatus =
+  | 'pending'
+  | 'processing'
+  | 'shipped'
+  | 'delivered'
+  | 'cancelled'
+  | 'refunded';
+
+export type OrdersPaymentStatus =
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded';
+
+/** Historial de uso de ofertas */
+export type OfferUsageWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  offerId?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  orderId?: InputMaybe<Scalars['String']['input']>;
+  variantId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['String']['input']>;
+  originalPrice?: InputMaybe<Scalars['String']['input']>;
+  offerPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Ahorro total */
+  discountAmount?: InputMaybe<Scalars['String']['input']>;
+  usedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type OfferUsageOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  offerId?: InputMaybe<OrderBy>;
+  customerId?: InputMaybe<OrderBy>;
+  orderId?: InputMaybe<OrderBy>;
+  variantId?: InputMaybe<OrderBy>;
+  quantity?: InputMaybe<OrderBy>;
+  originalPrice?: InputMaybe<OrderBy>;
+  offerPrice?: InputMaybe<OrderBy>;
+  /** Ahorro total */
+  discountAmount?: InputMaybe<OrderBy>;
+  usedAt?: InputMaybe<OrderBy>;
+};
+
+/** Items/productos de cada orden */
+export type OrderItems = {
+  id: Scalars['Int']['output'];
+  orderId: Scalars['Int']['output'];
+  /** Variante del producto comprada */
+  variantId: Scalars['Int']['output'];
+  /** Nombre del producto al momento de compra */
+  productName: Scalars['String']['output'];
+  /** SKU de la variante */
+  variantSku: Scalars['String']['output'];
+  /** Atributos de la variante (color, talla, etc.) */
+  variantAttributes?: Maybe<Scalars['JSON']['output']>;
+  quantity: Scalars['Int']['output'];
+  /** Precio unitario al momento de compra */
+  unitPrice: Scalars['Float']['output'];
+  /** Precio total (quantity * unit_price) */
+  totalPrice: Scalars['Float']['output'];
+  /** Descuento aplicado a este item */
+  discountAmount?: Maybe<Scalars['Float']['output']>;
+  orders?: Maybe<Array<Maybe<Orders>>>;
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+};
+
+
+/** Items/productos de cada orden */
+export type OrderItemsordersArgs = {
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** Items/productos de cada orden */
+export type OrderItemsproductVariantsArgs = {
+  where?: InputMaybe<ProductVariantsWhereInput>;
+  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Órdenes principales del ecommerce */
@@ -2536,151 +3596,11 @@ export type OrdersOrderByInput = {
   adminNotes?: InputMaybe<OrderBy>;
 };
 
-export type CustomersAddressesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  idCustomer?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias?: InputMaybe<Scalars['String']['input']>;
-  department?: InputMaybe<Scalars['String']['input']>;
-  province?: InputMaybe<Scalars['String']['input']>;
-  district?: InputMaybe<Scalars['String']['input']>;
-  /** Nombre de la avenida/calle/jirón */
-  streetName?: InputMaybe<Scalars['String']['input']>;
-  /** Número de la dirección */
-  streetNumber?: InputMaybe<Scalars['String']['input']>;
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: InputMaybe<Scalars['String']['input']>;
-  /** Latitud GPS */
-  latitude?: InputMaybe<Scalars['String']['input']>;
-  /** Longitud GPS */
-  longitude?: InputMaybe<Scalars['String']['input']>;
-  /** 1 = dirección por defecto */
-  isDefault?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CustomersAddressesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  idCustomer?: InputMaybe<OrderBy>;
-  /** Nombre de la dirección (Casa, Oficina, etc.) */
-  alias?: InputMaybe<OrderBy>;
-  department?: InputMaybe<OrderBy>;
-  province?: InputMaybe<OrderBy>;
-  district?: InputMaybe<OrderBy>;
-  /** Nombre de la avenida/calle/jirón */
-  streetName?: InputMaybe<OrderBy>;
-  /** Número de la dirección */
-  streetNumber?: InputMaybe<OrderBy>;
-  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
-  apartment?: InputMaybe<OrderBy>;
-  /** Latitud GPS */
-  latitude?: InputMaybe<OrderBy>;
-  /** Longitud GPS */
-  longitude?: InputMaybe<OrderBy>;
-  /** 1 = dirección por defecto */
-  isDefault?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type VariantRatings = {
-  id: Scalars['Int']['output'];
-  variantId: Scalars['Int']['output'];
-  customerId: Scalars['Int']['output'];
-  rating: Scalars['Int']['output'];
-  review?: Maybe<Scalars['String']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  verifiedPurchase: Scalars['Int']['output'];
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  ratingImages?: Maybe<Array<Maybe<RatingImages>>>;
-  customers?: Maybe<Array<Maybe<Customers>>>;
-  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
-};
-
-
-export type VariantRatingsratingImagesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<RatingImagesWhereInput>;
-  orderBy?: InputMaybe<RatingImagesOrderByInput>;
-};
-
-
-export type VariantRatingscustomersArgs = {
-  where?: InputMaybe<CustomersWhereInput>;
-  orderBy?: InputMaybe<CustomersOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type VariantRatingsproductVariantsArgs = {
-  where?: InputMaybe<ProductVariantsWhereInput>;
-  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type RatingImages = {
-  id: Scalars['Int']['output'];
-  ratingId: Scalars['Int']['output'];
-  imageUrl: Scalars['String']['output'];
-  createdAt: Scalars['Timestamp']['output'];
-  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
-};
-
-
-export type RatingImagesvariantRatingsArgs = {
-  where?: InputMaybe<VariantRatingsWhereInput>;
-  orderBy?: InputMaybe<VariantRatingsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type VariantRatingsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  variantId?: InputMaybe<Scalars['String']['input']>;
-  customerId?: InputMaybe<Scalars['String']['input']>;
-  rating?: InputMaybe<Scalars['String']['input']>;
-  review?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-  verifiedPurchase?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type VariantRatingsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  variantId?: InputMaybe<OrderBy>;
-  customerId?: InputMaybe<OrderBy>;
-  rating?: InputMaybe<OrderBy>;
-  review?: InputMaybe<OrderBy>;
-  title?: InputMaybe<OrderBy>;
-  verifiedPurchase?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type RatingImagesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  ratingId?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type RatingImagesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  ratingId?: InputMaybe<OrderBy>;
-  imageUrl?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-};
-
 export type ProductVariantsWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   productId?: InputMaybe<Scalars['String']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['String']['input']>;
   stock?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
@@ -2693,6 +3613,7 @@ export type ProductVariantsOrderByInput = {
   id?: InputMaybe<OrderBy>;
   productId?: InputMaybe<OrderBy>;
   sku?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   price?: InputMaybe<OrderBy>;
   stock?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
@@ -2820,6 +3741,364 @@ export type OrderTrackingOrderByInput = {
   deliveredTo?: InputMaybe<OrderBy>;
   /** Notas de entrega */
   deliveryNotes?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type CustomersAddresses = {
+  id: Scalars['Int']['output'];
+  idCustomer: Scalars['Int']['output'];
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias: Scalars['String']['output'];
+  department: Scalars['String']['output'];
+  province: Scalars['String']['output'];
+  district: Scalars['String']['output'];
+  districtId?: Maybe<Scalars['Int']['output']>;
+  /** Nombre de la avenida/calle/jirón */
+  streetName: Scalars['String']['output'];
+  /** Número de la dirección */
+  streetNumber: Scalars['String']['output'];
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: Maybe<Scalars['String']['output']>;
+  reference?: Maybe<Scalars['String']['output']>;
+  /** Latitud GPS */
+  latitude?: Maybe<Scalars['Float']['output']>;
+  /** Longitud GPS */
+  longitude?: Maybe<Scalars['Float']['output']>;
+  /** 1 = dirección por defecto */
+  isDefault?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  customers?: Maybe<Array<Maybe<Customers>>>;
+  districts?: Maybe<Array<Maybe<Districts>>>;
+  orders?: Maybe<Array<Maybe<Orders>>>;
+};
+
+
+export type CustomersAddressescustomersArgs = {
+  where?: InputMaybe<CustomersWhereInput>;
+  orderBy?: InputMaybe<CustomersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CustomersAddressesdistrictsArgs = {
+  where?: InputMaybe<DistrictsWhereInput>;
+  orderBy?: InputMaybe<DistrictsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type CustomersAddressesordersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OrdersWhereInput>;
+  orderBy?: InputMaybe<OrdersOrderByInput>;
+};
+
+export type Districts = {
+  id: Scalars['Int']['output'];
+  /** CÃ³digo INEI del distrito */
+  code: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  /** Zona geogrÃ¡fica */
+  zone: DistrictsZone;
+  /** Si tiene cobertura de delivery */
+  isActive: Scalars['Int']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  customersAddresses?: Maybe<Array<Maybe<CustomersAddresses>>>;
+  shippingZoneDistricts?: Maybe<Array<Maybe<ShippingZoneDistricts>>>;
+};
+
+
+export type DistrictscustomersAddressesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CustomersAddressesWhereInput>;
+  orderBy?: InputMaybe<CustomersAddressesOrderByInput>;
+};
+
+
+export type DistrictsshippingZoneDistrictsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneDistrictsOrderByInput>;
+};
+
+export type DistrictsZone =
+  | 'lima_centro'
+  | 'lima_norte'
+  | 'lima_sur'
+  | 'lima_este'
+  | 'callao';
+
+export type CustomersAddressesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  idCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<Scalars['String']['input']>;
+  department?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  district?: InputMaybe<Scalars['String']['input']>;
+  districtId?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre de la avenida/calle/jirón */
+  streetName?: InputMaybe<Scalars['String']['input']>;
+  /** Número de la dirección */
+  streetNumber?: InputMaybe<Scalars['String']['input']>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<Scalars['String']['input']>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<Scalars['String']['input']>;
+  /** 1 = dirección por defecto */
+  isDefault?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CustomersAddressesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  idCustomer?: InputMaybe<OrderBy>;
+  /** Nombre de la dirección (Casa, Oficina, etc.) */
+  alias?: InputMaybe<OrderBy>;
+  department?: InputMaybe<OrderBy>;
+  province?: InputMaybe<OrderBy>;
+  district?: InputMaybe<OrderBy>;
+  districtId?: InputMaybe<OrderBy>;
+  /** Nombre de la avenida/calle/jirón */
+  streetName?: InputMaybe<OrderBy>;
+  /** Número de la dirección */
+  streetNumber?: InputMaybe<OrderBy>;
+  /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
+  apartment?: InputMaybe<OrderBy>;
+  reference?: InputMaybe<OrderBy>;
+  /** Latitud GPS */
+  latitude?: InputMaybe<OrderBy>;
+  /** Longitud GPS */
+  longitude?: InputMaybe<OrderBy>;
+  /** 1 = dirección por defecto */
+  isDefault?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZoneDistricts = {
+  id: Scalars['Int']['output'];
+  zoneId: Scalars['Int']['output'];
+  districtId: Scalars['Int']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  districts?: Maybe<Array<Maybe<Districts>>>;
+  shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
+};
+
+
+export type ShippingZoneDistrictsdistrictsArgs = {
+  where?: InputMaybe<DistrictsWhereInput>;
+  orderBy?: InputMaybe<DistrictsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ShippingZoneDistrictsshippingZonesArgs = {
+  where?: InputMaybe<ShippingZonesWhereInput>;
+  orderBy?: InputMaybe<ShippingZonesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type DistrictsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<Scalars['String']['input']>;
+  /** Si tiene cobertura de delivery */
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type DistrictsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<OrderBy>;
+  /** Si tiene cobertura de delivery */
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZones = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  districts: Scalars['JSON']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingZoneDistricts?: Maybe<Array<Maybe<ShippingZoneDistricts>>>;
+  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+};
+
+
+export type ShippingZonesshippingZoneDistrictsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneDistrictsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneDistrictsOrderByInput>;
+};
+
+
+export type ShippingZonesshippingZoneMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
+};
+
+export type ShippingZoneDistrictsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  zoneId?: InputMaybe<Scalars['String']['input']>;
+  districtId?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingZoneDistrictsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  zoneId?: InputMaybe<OrderBy>;
+  districtId?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZoneMethods = {
+  id: Scalars['Int']['output'];
+  shippingMethodId: Scalars['Int']['output'];
+  shippingZoneId: Scalars['Int']['output'];
+  cost: Scalars['Float']['output'];
+  freeShippingThreshold: Scalars['Float']['output'];
+  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
+  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingMethods?: Maybe<Array<Maybe<ShippingMethods>>>;
+  shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
+};
+
+
+export type ShippingZoneMethodsshippingMethodsArgs = {
+  where?: InputMaybe<ShippingMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingMethodsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type ShippingZoneMethodsshippingZonesArgs = {
+  where?: InputMaybe<ShippingZonesWhereInput>;
+  orderBy?: InputMaybe<ShippingZonesOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ShippingMethods = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  baseCost: Scalars['Float']['output'];
+  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
+  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
+  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
+};
+
+
+export type ShippingMethodsshippingZoneMethodsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
+  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
+};
+
+export type ShippingZoneMethodsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  shippingMethodId?: InputMaybe<Scalars['String']['input']>;
+  shippingZoneId?: InputMaybe<Scalars['String']['input']>;
+  cost?: InputMaybe<Scalars['String']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingZoneMethodsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  shippingMethodId?: InputMaybe<OrderBy>;
+  shippingZoneId?: InputMaybe<OrderBy>;
+  cost?: InputMaybe<OrderBy>;
+  freeShippingThreshold?: InputMaybe<OrderBy>;
+  estimatedDaysMin?: InputMaybe<OrderBy>;
+  estimatedDaysMax?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingMethodsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  baseCost?: InputMaybe<Scalars['String']['input']>;
+  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
+  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingMethodsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  description?: InputMaybe<OrderBy>;
+  baseCost?: InputMaybe<OrderBy>;
+  freeShippingThreshold?: InputMaybe<OrderBy>;
+  estimatedDaysMin?: InputMaybe<OrderBy>;
+  estimatedDaysMax?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+};
+
+export type ShippingZonesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  districts?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShippingZonesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  districts?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
 };
@@ -2974,6 +4253,149 @@ export type PaymentMethodsOrderByInput = {
   updatedAt?: InputMaybe<OrderBy>;
 };
 
+export type VariantRatings = {
+  id: Scalars['Int']['output'];
+  variantId: Scalars['Int']['output'];
+  customerId: Scalars['Int']['output'];
+  rating: Scalars['Int']['output'];
+  review?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  verifiedPurchase: Scalars['Int']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  status: Scalars['String']['output'];
+  reviewedBy?: Maybe<Scalars['Int']['output']>;
+  reviewedAt?: Maybe<Scalars['Timestamp']['output']>;
+  ratingImages?: Maybe<Array<Maybe<RatingImages>>>;
+  customers?: Maybe<Array<Maybe<Customers>>>;
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+  users?: Maybe<Array<Maybe<Users>>>;
+};
+
+
+export type VariantRatingsratingImagesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RatingImagesWhereInput>;
+  orderBy?: InputMaybe<RatingImagesOrderByInput>;
+};
+
+
+export type VariantRatingscustomersArgs = {
+  where?: InputMaybe<CustomersWhereInput>;
+  orderBy?: InputMaybe<CustomersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type VariantRatingsproductVariantsArgs = {
+  where?: InputMaybe<ProductVariantsWhereInput>;
+  orderBy?: InputMaybe<ProductVariantsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type VariantRatingsusersArgs = {
+  where?: InputMaybe<UsersWhereInput>;
+  orderBy?: InputMaybe<UsersOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type RatingImages = {
+  id: Scalars['Int']['output'];
+  ratingId: Scalars['Int']['output'];
+  imageUrl: Scalars['String']['output'];
+  createdAt: Scalars['Timestamp']['output'];
+  variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
+};
+
+
+export type RatingImagesvariantRatingsArgs = {
+  where?: InputMaybe<VariantRatingsWhereInput>;
+  orderBy?: InputMaybe<VariantRatingsOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type VariantRatingsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  variantId?: InputMaybe<Scalars['String']['input']>;
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  rating?: InputMaybe<Scalars['String']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  verifiedPurchase?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewedBy?: InputMaybe<Scalars['String']['input']>;
+  reviewedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type VariantRatingsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  variantId?: InputMaybe<OrderBy>;
+  customerId?: InputMaybe<OrderBy>;
+  rating?: InputMaybe<OrderBy>;
+  review?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  verifiedPurchase?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  status?: InputMaybe<OrderBy>;
+  reviewedBy?: InputMaybe<OrderBy>;
+  reviewedAt?: InputMaybe<OrderBy>;
+};
+
+export type RatingImagesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  ratingId?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RatingImagesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  ratingId?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  offerId?: InputMaybe<Scalars['String']['input']>;
+  variantId?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['String']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  offerId?: InputMaybe<OrderBy>;
+  variantId?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<OrderBy>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<OrderBy>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<OrderBy>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
 export type PromotionVariants = {
   promotionId: Scalars['Int']['output'];
   variantId: Scalars['Int']['output'];
@@ -3003,6 +4425,7 @@ export type PromotionVariantspromotionsArgs = {
 export type Promotions = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+  slug?: Maybe<Scalars['String']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   startDate: Scalars['DateTime']['output'];
   endDate: Scalars['DateTime']['output'];
@@ -3060,6 +4483,7 @@ export type PromotionVariantsOrderByInput = {
 export type PromotionsWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   startDate?: InputMaybe<Scalars['String']['input']>;
   endDate?: InputMaybe<Scalars['String']['input']>;
@@ -3079,6 +4503,7 @@ export type PromotionsWhereInput = {
 export type PromotionsOrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  slug?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   startDate?: InputMaybe<OrderBy>;
   endDate?: InputMaybe<OrderBy>;
@@ -3197,102 +4622,10 @@ export type VariantImagesOrderByInput = {
   updatedAt?: InputMaybe<OrderBy>;
 };
 
-export type ProductCategories = {
-  productId: Scalars['Int']['output'];
-  categoryId: Scalars['Int']['output'];
-  categories?: Maybe<Array<Maybe<Categories>>>;
-  products?: Maybe<Array<Maybe<Products>>>;
-};
-
-
-export type ProductCategoriescategoriesArgs = {
-  where?: InputMaybe<CategoriesWhereInput>;
-  orderBy?: InputMaybe<CategoriesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type ProductCategoriesproductsArgs = {
-  where?: InputMaybe<ProductsWhereInput>;
-  orderBy?: InputMaybe<ProductsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type Categories = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  parentId?: Maybe<Scalars['Int']['output']>;
-  imageUrl?: Maybe<Scalars['String']['output']>;
-  showNav?: Maybe<Scalars['Int']['output']>;
-  displayOrder?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  createdBy?: Maybe<Scalars['Int']['output']>;
-  updatedBy?: Maybe<Scalars['Int']['output']>;
-  users?: Maybe<Array<Maybe<Users>>>;
-  productCategories?: Maybe<Array<Maybe<ProductCategories>>>;
-};
-
-
-export type CategoriesusersArgs = {
-  where?: InputMaybe<UsersWhereInput>;
-  orderBy?: InputMaybe<UsersOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type CategoriesproductCategoriesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ProductCategoriesWhereInput>;
-  orderBy?: InputMaybe<ProductCategoriesOrderByInput>;
-};
-
-export type ProductCategoriesWhereInput = {
-  productId?: InputMaybe<Scalars['String']['input']>;
-  categoryId?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductCategoriesOrderByInput = {
-  productId?: InputMaybe<OrderBy>;
-  categoryId?: InputMaybe<OrderBy>;
-};
-
-export type CategoriesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  parentId?: InputMaybe<Scalars['String']['input']>;
-  imageUrl?: InputMaybe<Scalars['String']['input']>;
-  showNav?: InputMaybe<Scalars['String']['input']>;
-  displayOrder?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-  createdBy?: InputMaybe<Scalars['String']['input']>;
-  updatedBy?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type CategoriesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  description?: InputMaybe<OrderBy>;
-  parentId?: InputMaybe<OrderBy>;
-  imageUrl?: InputMaybe<OrderBy>;
-  showNav?: InputMaybe<OrderBy>;
-  displayOrder?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  createdBy?: InputMaybe<OrderBy>;
-  updatedBy?: InputMaybe<OrderBy>;
-};
-
 export type BrandsWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
   createdBy?: InputMaybe<Scalars['String']['input']>;
@@ -3302,6 +4635,7 @@ export type BrandsWhereInput = {
 export type BrandsOrderByInput = {
   id?: InputMaybe<OrderBy>;
   name?: InputMaybe<OrderBy>;
+  imageUrl?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
   createdBy?: InputMaybe<OrderBy>;
@@ -3413,6 +4747,7 @@ export type Sections = {
   url?: Maybe<Scalars['String']['output']>;
   image?: Maybe<Scalars['String']['output']>;
   displayOrder?: Maybe<Scalars['Int']['output']>;
+  sectionGroup?: Maybe<Scalars['String']['output']>;
   rolesSections?: Maybe<Array<Maybe<RolesSections>>>;
 };
 
@@ -3442,6 +4777,7 @@ export type SectionsWhereInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['String']['input']>;
+  sectionGroup?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SectionsOrderByInput = {
@@ -3450,6 +4786,37 @@ export type SectionsOrderByInput = {
   url?: InputMaybe<OrderBy>;
   image?: InputMaybe<OrderBy>;
   displayOrder?: InputMaybe<OrderBy>;
+  sectionGroup?: InputMaybe<OrderBy>;
+};
+
+export type FooterLinks = {
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  isActive?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+};
+
+export type FooterLinksWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type FooterLinksOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  url?: InputMaybe<OrderBy>;
+  displayOrder?: InputMaybe<OrderBy>;
+  isActive?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3685,148 +5052,233 @@ export type ServicesImagesOrderByInput = {
   imageUrl?: InputMaybe<OrderBy>;
 };
 
-export type ShippingMethods = {
+export type StoreConfig = {
   id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  description?: Maybe<Scalars['String']['output']>;
-  baseCost: Scalars['Float']['output'];
-  freeShippingThreshold?: Maybe<Scalars['Float']['output']>;
-  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
-  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
-  isActive?: Maybe<Scalars['Int']['output']>;
+  storeName: Scalars['String']['output'];
+  storeDescription?: Maybe<Scalars['String']['output']>;
+  logoUrl?: Maybe<Scalars['String']['output']>;
+  address?: Maybe<Scalars['String']['output']>;
+  businessHours?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  instagramUrl?: Maybe<Scalars['String']['output']>;
+  facebookUrl?: Maybe<Scalars['String']['output']>;
+  twitterUrl?: Maybe<Scalars['String']['output']>;
+  whatsappNumber?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+  updatedAt: Scalars['Timestamp']['output'];
+  logoWidth?: Maybe<Scalars['Int']['output']>;
+  logoHeight?: Maybe<Scalars['Int']['output']>;
+};
+
+export type StoreConfigWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  storeName?: InputMaybe<Scalars['String']['input']>;
+  storeDescription?: InputMaybe<Scalars['String']['input']>;
+  logoUrl?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  businessHours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagramUrl?: InputMaybe<Scalars['String']['input']>;
+  facebookUrl?: InputMaybe<Scalars['String']['input']>;
+  twitterUrl?: InputMaybe<Scalars['String']['input']>;
+  whatsappNumber?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['String']['input']>;
+  logoWidth?: InputMaybe<Scalars['String']['input']>;
+  logoHeight?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StoreConfigOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  storeName?: InputMaybe<OrderBy>;
+  storeDescription?: InputMaybe<OrderBy>;
+  logoUrl?: InputMaybe<OrderBy>;
+  address?: InputMaybe<OrderBy>;
+  businessHours?: InputMaybe<OrderBy>;
+  phone?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  instagramUrl?: InputMaybe<OrderBy>;
+  facebookUrl?: InputMaybe<OrderBy>;
+  twitterUrl?: InputMaybe<OrderBy>;
+  whatsappNumber?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  logoWidth?: InputMaybe<OrderBy>;
+  logoHeight?: InputMaybe<OrderBy>;
+};
+
+export type StoreFeatures = {
+  id: Scalars['Int']['output'];
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon: Scalars['String']['output'];
+  /** Titulo del beneficio */
+  title: Scalars['String']['output'];
+  /** Descripcion corta */
+  description: Scalars['String']['output'];
   displayOrder?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
-};
-
-
-export type ShippingMethodsshippingZoneMethodsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
-  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
-};
-
-export type ShippingZoneMethods = {
-  id: Scalars['Int']['output'];
-  shippingMethodId: Scalars['Int']['output'];
-  shippingZoneId: Scalars['Int']['output'];
-  cost: Scalars['Float']['output'];
-  freeShippingThreshold: Scalars['Float']['output'];
-  estimatedDaysMin?: Maybe<Scalars['Int']['output']>;
-  estimatedDaysMax?: Maybe<Scalars['Int']['output']>;
   isActive?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Timestamp']['output'];
   updatedAt: Scalars['Timestamp']['output'];
-  shippingMethods?: Maybe<Array<Maybe<ShippingMethods>>>;
-  shippingZones?: Maybe<Array<Maybe<ShippingZones>>>;
 };
 
-
-export type ShippingZoneMethodsshippingMethodsArgs = {
-  where?: InputMaybe<ShippingMethodsWhereInput>;
-  orderBy?: InputMaybe<ShippingMethodsOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type ShippingZoneMethodsshippingZonesArgs = {
-  where?: InputMaybe<ShippingZonesWhereInput>;
-  orderBy?: InputMaybe<ShippingZonesOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type ShippingMethodsWhereInput = {
+export type StoreFeaturesWhereInput = {
   id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Descripcion corta */
   description?: InputMaybe<Scalars['String']['input']>;
-  baseCost?: InputMaybe<Scalars['String']['input']>;
-  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
-  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
-  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ShippingMethodsOrderByInput = {
+export type StoreFeaturesOrderByInput = {
   id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<OrderBy>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<OrderBy>;
+  /** Descripcion corta */
   description?: InputMaybe<OrderBy>;
-  baseCost?: InputMaybe<OrderBy>;
-  freeShippingThreshold?: InputMaybe<OrderBy>;
-  estimatedDaysMin?: InputMaybe<OrderBy>;
-  estimatedDaysMax?: InputMaybe<OrderBy>;
-  isActive?: InputMaybe<OrderBy>;
   displayOrder?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-};
-
-export type ShippingZones = {
-  id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
-  districts: Scalars['JSON']['output'];
-  isActive?: Maybe<Scalars['Int']['output']>;
-  createdAt: Scalars['Timestamp']['output'];
-  updatedAt: Scalars['Timestamp']['output'];
-  shippingZoneMethods?: Maybe<Array<Maybe<ShippingZoneMethods>>>;
-};
-
-
-export type ShippingZonesshippingZoneMethodsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<ShippingZoneMethodsWhereInput>;
-  orderBy?: InputMaybe<ShippingZoneMethodsOrderByInput>;
-};
-
-export type ShippingZoneMethodsWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  shippingMethodId?: InputMaybe<Scalars['String']['input']>;
-  shippingZoneId?: InputMaybe<Scalars['String']['input']>;
-  cost?: InputMaybe<Scalars['String']['input']>;
-  freeShippingThreshold?: InputMaybe<Scalars['String']['input']>;
-  estimatedDaysMin?: InputMaybe<Scalars['String']['input']>;
-  estimatedDaysMax?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ShippingZoneMethodsOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  shippingMethodId?: InputMaybe<OrderBy>;
-  shippingZoneId?: InputMaybe<OrderBy>;
-  cost?: InputMaybe<OrderBy>;
-  freeShippingThreshold?: InputMaybe<OrderBy>;
-  estimatedDaysMin?: InputMaybe<OrderBy>;
-  estimatedDaysMax?: InputMaybe<OrderBy>;
   isActive?: InputMaybe<OrderBy>;
   createdAt?: InputMaybe<OrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
 };
 
-export type ShippingZonesWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  districts?: InputMaybe<Scalars['String']['input']>;
-  isActive?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['String']['input']>;
+/** VIEW */
+export type VariantActiveOffers = {
+  variantId: Scalars['Int']['output'];
+  offerId: Scalars['Int']['output'];
+  /** Precio final de la oferta */
+  offerPrice: Scalars['Float']['output'];
+  /** Precio original al momento de crear */
+  originalPrice: Scalars['Float']['output'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: Maybe<Scalars['Int']['output']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: Maybe<Scalars['Int']['output']>;
+  remainingStock?: Maybe<Scalars['BigInt']['output']>;
+  /** Nombre interno de la oferta */
+  offerName: Scalars['String']['output'];
+  /** TÃ­tulo visible para el cliente */
+  offerTitle: Scalars['String']['output'];
+  offerType: VariantActiveOffersOfferType;
+  discountType: VariantActiveOffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['output'];
+  startDate: Scalars['DateTime']['output'];
+  endDate: Scalars['DateTime']['output'];
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: Maybe<Scalars['String']['output']>;
+  /** Color del badge */
+  badgeColor?: Maybe<Scalars['String']['output']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: Maybe<Scalars['Int']['output']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  discountPercent?: Maybe<Scalars['Float']['output']>;
+  savingsAmount: Scalars['Float']['output'];
 };
 
-export type ShippingZonesOrderByInput = {
-  id?: InputMaybe<OrderBy>;
-  name?: InputMaybe<OrderBy>;
-  districts?: InputMaybe<OrderBy>;
-  isActive?: InputMaybe<OrderBy>;
-  createdAt?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
+export type VariantActiveOffersOfferType =
+  | 'flash_sale'
+  | 'daily_deal'
+  | 'clearance'
+  | 'bundle'
+  | 'volume_discount'
+  | 'seasonal';
+
+export type VariantActiveOffersDiscountType =
+  | 'percentage'
+  | 'fixed_amount'
+  | 'fixed_price';
+
+/** VIEW */
+export type VariantActiveOffersWhereInput = {
+  variantId?: InputMaybe<Scalars['String']['input']>;
+  offerId?: InputMaybe<Scalars['String']['input']>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<Scalars['String']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['String']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['String']['input']>;
+  remainingStock?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre interno de la oferta */
+  offerName?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  offerTitle?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<Scalars['String']['input']>;
+  discountType?: InputMaybe<Scalars['String']['input']>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['String']['input']>;
+  discountPercent?: InputMaybe<Scalars['String']['input']>;
+  savingsAmount?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type VariantActiveOffersOrderByInput = {
+  variantId?: InputMaybe<OrderBy>;
+  offerId?: InputMaybe<OrderBy>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<OrderBy>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<OrderBy>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<OrderBy>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<OrderBy>;
+  remainingStock?: InputMaybe<OrderBy>;
+  /** Nombre interno de la oferta */
+  offerName?: InputMaybe<OrderBy>;
+  /** TÃ­tulo visible para el cliente */
+  offerTitle?: InputMaybe<OrderBy>;
+  offerType?: InputMaybe<OrderBy>;
+  discountType?: InputMaybe<OrderBy>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<OrderBy>;
+  startDate?: InputMaybe<OrderBy>;
+  endDate?: InputMaybe<OrderBy>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<OrderBy>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<OrderBy>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<OrderBy>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<OrderBy>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<OrderBy>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<OrderBy>;
+  discountPercent?: InputMaybe<OrderBy>;
+  savingsAmount?: InputMaybe<OrderBy>;
 };
 
 /** VIEW */
@@ -3866,6 +5318,138 @@ export type VariantRatingSummaryOrderByInput = {
   twoStar?: InputMaybe<OrderBy>;
   oneStar?: InputMaybe<OrderBy>;
   verifiedPurchases?: InputMaybe<OrderBy>;
+};
+
+export type VerificationCodes = {
+  id: Scalars['Int']['output'];
+  email: Scalars['String']['output'];
+  code: Scalars['String']['output'];
+  type?: Maybe<VerificationCodesType>;
+  expiresAt: Scalars['DateTime']['output'];
+  usedAt?: Maybe<Scalars['DateTime']['output']>;
+  createdAt: Scalars['Timestamp']['output'];
+};
+
+export type VerificationCodesType =
+  | 'verification'
+  | 'password_reset';
+
+export type VerificationCodesWhereInput = {
+  id?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  expiresAt?: InputMaybe<Scalars['String']['input']>;
+  usedAt?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type VerificationCodesOrderByInput = {
+  id?: InputMaybe<OrderBy>;
+  email?: InputMaybe<OrderBy>;
+  code?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
+  expiresAt?: InputMaybe<OrderBy>;
+  usedAt?: InputMaybe<OrderBy>;
+  createdAt?: InputMaybe<OrderBy>;
+};
+
+/** VIEW */
+export type ActiveOffersInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<ActiveOffersOfferType>;
+  discountType?: InputMaybe<ActiveOffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['input'];
+  startDate: Scalars['DateTime']['input'];
+  endDate: Scalars['DateTime']['input'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  totalVariants?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSold?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio final de la oferta */
+  minPrice?: InputMaybe<Scalars['Float']['input']>;
+  maxDiscountPercent?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** VIEW */
+export type ActiveOffersUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<ActiveOffersOfferType>;
+  discountType?: InputMaybe<ActiveOffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['Float']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  totalVariants?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSold?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio final de la oferta */
+  minPrice?: InputMaybe<Scalars['Float']['input']>;
+  maxDiscountPercent?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AttributeOptionsInsertInput = {
@@ -3935,6 +5519,7 @@ export type BannerUpdateInput = {
 export type BrandsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   createdBy?: InputMaybe<Scalars['Int']['input']>;
@@ -3944,6 +5529,7 @@ export type BrandsInsertInput = {
 export type BrandsUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   createdBy?: InputMaybe<Scalars['Int']['input']>;
@@ -3962,6 +5548,25 @@ export type CategoriesInsertInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   createdBy?: InputMaybe<Scalars['Int']['input']>;
   updatedBy?: InputMaybe<Scalars['Int']['input']>;
+  /** Banner image for desktop */
+  bannerImage?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  bannerImageMobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  bannerTitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  bannerSubtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  bannerDescription?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  bannerCtaText?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  bannerCtaLink?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  metaTitle?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  metaDescription?: InputMaybe<Scalars['String']['input']>;
+  slug: Scalars['String']['input'];
 };
 
 export type CategoriesUpdateInput = {
@@ -3976,6 +5581,25 @@ export type CategoriesUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   createdBy?: InputMaybe<Scalars['Int']['input']>;
   updatedBy?: InputMaybe<Scalars['Int']['input']>;
+  /** Banner image for desktop */
+  bannerImage?: InputMaybe<Scalars['String']['input']>;
+  /** Banner image for mobile */
+  bannerImageMobile?: InputMaybe<Scalars['String']['input']>;
+  /** Banner title (defaults to category name if empty) */
+  bannerTitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner subtitle */
+  bannerSubtitle?: InputMaybe<Scalars['String']['input']>;
+  /** Banner description text */
+  bannerDescription?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button text */
+  bannerCtaText?: InputMaybe<Scalars['String']['input']>;
+  /** Call to action button link */
+  bannerCtaLink?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta title */
+  metaTitle?: InputMaybe<Scalars['String']['input']>;
+  /** SEO meta description */
+  metaDescription?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CouponUsageInsertInput = {
@@ -4048,11 +5672,15 @@ export type CustomersInsertInput = {
   password: Scalars['String']['input'];
   addressId?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needsPasswordSetup?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
-  lastname: Scalars['String']['input'];
+  /** Apellido del cliente */
+  lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
-  name: Scalars['String']['input'];
+  /** Nombre del cliente */
+  name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
   /** Documento de identidad  */
@@ -4065,10 +5693,14 @@ export type CustomersUpdateInput = {
   password?: InputMaybe<Scalars['String']['input']>;
   addressId?: InputMaybe<Scalars['Int']['input']>;
   isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needsPasswordSetup?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  /** Apellido del cliente */
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+  /** Nombre del cliente */
   name?: InputMaybe<Scalars['String']['input']>;
   /** numero de celular */
   phone?: InputMaybe<Scalars['String']['input']>;
@@ -4084,12 +5716,14 @@ export type CustomersAddressesInsertInput = {
   department?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   district: Scalars['String']['input'];
+  districtId?: InputMaybe<Scalars['Int']['input']>;
   /** Nombre de la avenida/calle/jirón */
   streetName: Scalars['String']['input'];
   /** Número de la dirección */
   streetNumber: Scalars['String']['input'];
   /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
   apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
   /** Latitud GPS */
   latitude?: InputMaybe<Scalars['Float']['input']>;
   /** Longitud GPS */
@@ -4108,18 +5742,226 @@ export type CustomersAddressesUpdateInput = {
   department?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   district?: InputMaybe<Scalars['String']['input']>;
+  districtId?: InputMaybe<Scalars['Int']['input']>;
   /** Nombre de la avenida/calle/jirón */
   streetName?: InputMaybe<Scalars['String']['input']>;
   /** Número de la dirección */
   streetNumber?: InputMaybe<Scalars['String']['input']>;
   /** Dpto/Interior/Piso/Lote/Bloque (opcional) */
   apartment?: InputMaybe<Scalars['String']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
   /** Latitud GPS */
   latitude?: InputMaybe<Scalars['Float']['input']>;
   /** Longitud GPS */
   longitude?: InputMaybe<Scalars['Float']['input']>;
   /** 1 = dirección por defecto */
   isDefault?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type DistrictsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  /** Zona geogrÃ¡fica */
+  zone: DistrictsZone;
+  /** Si tiene cobertura de delivery */
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type DistrictsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** CÃ³digo INEI del distrito */
+  code?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Zona geogrÃ¡fica */
+  zone?: InputMaybe<DistrictsZone>;
+  /** Si tiene cobertura de delivery */
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type FooterLinksInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type FooterLinksUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriesInsertInput = {
+  offerId: Scalars['Int']['input'];
+  categoryId: Scalars['Int']['input'];
+};
+
+/** CategorÃ­as completas en oferta */
+export type OfferCategoriesUpdateInput = {
+  offerId?: InputMaybe<Scalars['Int']['input']>;
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type OfferUsageInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offerId: Scalars['Int']['input'];
+  customerId: Scalars['Int']['input'];
+  orderId: Scalars['Int']['input'];
+  variantId: Scalars['Int']['input'];
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  originalPrice: Scalars['Float']['input'];
+  offerPrice: Scalars['Float']['input'];
+  /** Ahorro total */
+  discountAmount: Scalars['Float']['input'];
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Historial de uso de ofertas */
+export type OfferUsageUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offerId?: InputMaybe<Scalars['Int']['input']>;
+  customerId?: InputMaybe<Scalars['Int']['input']>;
+  orderId?: InputMaybe<Scalars['Int']['input']>;
+  variantId?: InputMaybe<Scalars['Int']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  originalPrice?: InputMaybe<Scalars['Float']['input']>;
+  offerPrice?: InputMaybe<Scalars['Float']['input']>;
+  /** Ahorro total */
+  discountAmount?: InputMaybe<Scalars['Float']['input']>;
+  usedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offerId: Scalars['Int']['input'];
+  variantId: Scalars['Int']['input'];
+  /** Precio final de la oferta */
+  offerPrice: Scalars['Float']['input'];
+  /** Precio original al momento de crear */
+  originalPrice: Scalars['Float']['input'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Variantes incluidas en cada oferta */
+export type OfferVariantsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  offerId?: InputMaybe<Scalars['Int']['input']>;
+  variantId?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<Scalars['Float']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type OffersInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<OffersOfferType>;
+  discountType?: InputMaybe<OffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['input'];
+  startDate: Scalars['DateTime']['input'];
+  endDate: Scalars['DateTime']['input'];
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+/** Ofertas y descuentos especiales */
+export type OffersUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre interno de la oferta */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  title?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<OffersOfferType>;
+  discountType?: InputMaybe<OffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['Float']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  maxUses?: InputMaybe<Scalars['Int']['input']>;
+  /** MÃ¡ximo por cliente */
+  maxUsesPerCustomer?: InputMaybe<Scalars['Int']['input']>;
+  /** Contador de usos actuales */
+  currentUses?: InputMaybe<Scalars['Int']['input']>;
+  /** Cantidad mÃ­nima para aplicar */
+  minQuantity?: InputMaybe<Scalars['Int']['input']>;
+  /** Monto mÃ­nimo de compra */
+  minPurchaseAmount?: InputMaybe<Scalars['Float']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  /** Destacar en home/landing */
+  isFeatured?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
@@ -4540,6 +6382,7 @@ export type ProductVariantsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   productId: Scalars['Int']['input'];
   sku: Scalars['String']['input'];
+  slug?: InputMaybe<Scalars['String']['input']>;
   price: Scalars['Float']['input'];
   stock?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4552,6 +6395,7 @@ export type ProductVariantsUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   productId?: InputMaybe<Scalars['Int']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   stock?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
@@ -4603,6 +6447,7 @@ export type PromotionVariantsUpdateInput = {
 export type PromotionsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   startDate: Scalars['DateTime']['input'];
   endDate: Scalars['DateTime']['input'];
@@ -4622,6 +6467,7 @@ export type PromotionsInsertInput = {
 export type PromotionsUpdateInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   startDate?: InputMaybe<Scalars['DateTime']['input']>;
   endDate?: InputMaybe<Scalars['DateTime']['input']>;
@@ -4684,6 +6530,7 @@ export type SectionsInsertInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  sectionGroup?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SectionsUpdateInput = {
@@ -4692,6 +6539,7 @@ export type SectionsUpdateInput = {
   url?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
   displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  sectionGroup?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ServicesInsertInput = {
@@ -4770,6 +6618,20 @@ export type ShippingMethodsUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+export type ShippingZoneDistrictsInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  zoneId: Scalars['Int']['input'];
+  districtId: Scalars['Int']['input'];
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type ShippingZoneDistrictsUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  zoneId?: InputMaybe<Scalars['Int']['input']>;
+  districtId?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type ShippingZoneMethodsInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   shippingMethodId: Scalars['Int']['input'];
@@ -4814,6 +6676,72 @@ export type ShippingZonesUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
+export type StoreConfigInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  storeName?: InputMaybe<Scalars['String']['input']>;
+  storeDescription?: InputMaybe<Scalars['String']['input']>;
+  logoUrl?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  businessHours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagramUrl?: InputMaybe<Scalars['String']['input']>;
+  facebookUrl?: InputMaybe<Scalars['String']['input']>;
+  twitterUrl?: InputMaybe<Scalars['String']['input']>;
+  whatsappNumber?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  logoWidth?: InputMaybe<Scalars['Int']['input']>;
+  logoHeight?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type StoreConfigUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  storeName?: InputMaybe<Scalars['String']['input']>;
+  storeDescription?: InputMaybe<Scalars['String']['input']>;
+  logoUrl?: InputMaybe<Scalars['String']['input']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  businessHours?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  instagramUrl?: InputMaybe<Scalars['String']['input']>;
+  facebookUrl?: InputMaybe<Scalars['String']['input']>;
+  twitterUrl?: InputMaybe<Scalars['String']['input']>;
+  whatsappNumber?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  logoWidth?: InputMaybe<Scalars['Int']['input']>;
+  logoHeight?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type StoreFeaturesInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon: Scalars['String']['input'];
+  /** Titulo del beneficio */
+  title: Scalars['String']['input'];
+  /** Descripcion corta */
+  description: Scalars['String']['input'];
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type StoreFeaturesUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon?: InputMaybe<Scalars['String']['input']>;
+  /** Titulo del beneficio */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Descripcion corta */
+  description?: InputMaybe<Scalars['String']['input']>;
+  displayOrder?: InputMaybe<Scalars['Int']['input']>;
+  isActive?: InputMaybe<Scalars['Int']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
 export type UsersInsertInput = {
   id?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
@@ -4838,6 +6766,84 @@ export type UsersUpdateInput = {
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
   lastname?: InputMaybe<Scalars['String']['input']>;
   photo?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** VIEW */
+export type VariantActiveOffersInsertInput = {
+  variantId: Scalars['Int']['input'];
+  offerId: Scalars['Int']['input'];
+  /** Precio final de la oferta */
+  offerPrice: Scalars['Float']['input'];
+  /** Precio original al momento de crear */
+  originalPrice: Scalars['Float']['input'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['Int']['input']>;
+  remainingStock?: InputMaybe<Scalars['BigInt']['input']>;
+  /** Nombre interno de la oferta */
+  offerName: Scalars['String']['input'];
+  /** TÃ­tulo visible para el cliente */
+  offerTitle: Scalars['String']['input'];
+  offerType?: InputMaybe<VariantActiveOffersOfferType>;
+  discountType?: InputMaybe<VariantActiveOffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue: Scalars['Float']['input'];
+  startDate: Scalars['DateTime']['input'];
+  endDate: Scalars['DateTime']['input'];
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  discountPercent?: InputMaybe<Scalars['Float']['input']>;
+  savingsAmount?: InputMaybe<Scalars['Float']['input']>;
+};
+
+/** VIEW */
+export type VariantActiveOffersUpdateInput = {
+  variantId?: InputMaybe<Scalars['Int']['input']>;
+  offerId?: InputMaybe<Scalars['Int']['input']>;
+  /** Precio final de la oferta */
+  offerPrice?: InputMaybe<Scalars['Float']['input']>;
+  /** Precio original al momento de crear */
+  originalPrice?: InputMaybe<Scalars['Float']['input']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stockLimit?: InputMaybe<Scalars['Int']['input']>;
+  /** Unidades vendidas en esta oferta */
+  soldCount?: InputMaybe<Scalars['Int']['input']>;
+  remainingStock?: InputMaybe<Scalars['BigInt']['input']>;
+  /** Nombre interno de la oferta */
+  offerName?: InputMaybe<Scalars['String']['input']>;
+  /** TÃ­tulo visible para el cliente */
+  offerTitle?: InputMaybe<Scalars['String']['input']>;
+  offerType?: InputMaybe<VariantActiveOffersOfferType>;
+  discountType?: InputMaybe<VariantActiveOffersDiscountType>;
+  /** Valor del descuento (% o monto fijo) */
+  discountValue?: InputMaybe<Scalars['Float']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badgeText?: InputMaybe<Scalars['String']['input']>;
+  /** Color del badge */
+  badgeColor?: InputMaybe<Scalars['String']['input']>;
+  /** Mostrar contador regresivo */
+  showCountdown?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar indicador de stock */
+  showStockIndicator?: InputMaybe<Scalars['Int']['input']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  showSavings?: InputMaybe<Scalars['Int']['input']>;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: InputMaybe<Scalars['Int']['input']>;
+  discountPercent?: InputMaybe<Scalars['Float']['input']>;
+  savingsAmount?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** AsociaciÃ³n entre variantes y opciones de atributos del producto */
@@ -4936,6 +6942,9 @@ export type VariantRatingsInsertInput = {
   verifiedPurchase?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewedBy?: InputMaybe<Scalars['Int']['input']>;
+  reviewedAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type VariantRatingsUpdateInput = {
@@ -4948,6 +6957,29 @@ export type VariantRatingsUpdateInput = {
   verifiedPurchase?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
   updatedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  reviewedBy?: InputMaybe<Scalars['Int']['input']>;
+  reviewedAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type VerificationCodesInsertInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  email: Scalars['String']['input'];
+  code: Scalars['String']['input'];
+  type?: InputMaybe<VerificationCodesType>;
+  expiresAt: Scalars['DateTime']['input'];
+  usedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
+};
+
+export type VerificationCodesUpdateInput = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<VerificationCodesType>;
+  expiresAt?: InputMaybe<Scalars['DateTime']['input']>;
+  usedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  createdAt?: InputMaybe<Scalars['Timestamp']['input']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -5038,16 +7070,23 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Mutation: ResolverTypeWrapper<{}>;
-  AttributeOptions: ResolverTypeWrapper<AttributeOptions>;
+  ActiveOffers: ResolverTypeWrapper<ActiveOffers>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  ActiveOffersOfferType: ActiveOffersOfferType;
+  ActiveOffersDiscountType: ActiveOffersDiscountType;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
+  BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
+  ActiveOffersWhereInput: ActiveOffersWhereInput;
+  ActiveOffersOrderByInput: ActiveOffersOrderByInput;
+  OrderBy: OrderBy;
+  AttributeOptions: ResolverTypeWrapper<AttributeOptions>;
   Attributes: ResolverTypeWrapper<Attributes>;
   AttributesDisplayType: AttributesDisplayType;
-  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
-  OrderBy: OrderBy;
   Users: ResolverTypeWrapper<Users>;
   AttributesWhereInput: AttributesWhereInput;
   AttributesOrderByInput: AttributesOrderByInput;
@@ -5069,35 +7108,43 @@ export type ResolversTypes = ResolversObject<{
   ProductsOrderByInput: ProductsOrderByInput;
   VariantAttributeOptions: ResolverTypeWrapper<VariantAttributeOptions>;
   ProductVariants: ResolverTypeWrapper<ProductVariants>;
-  OrderItems: ResolverTypeWrapper<OrderItems>;
-  JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
-  Orders: ResolverTypeWrapper<Orders>;
-  OrdersStatus: OrdersStatus;
-  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
-  OrdersPaymentStatus: OrdersPaymentStatus;
+  OfferVariants: ResolverTypeWrapper<OfferVariants>;
+  Offers: ResolverTypeWrapper<Offers>;
+  OffersOfferType: OffersOfferType;
+  OffersDiscountType: OffersDiscountType;
+  OfferCategories: ResolverTypeWrapper<OfferCategories>;
+  Categories: ResolverTypeWrapper<Categories>;
+  OfferCategoriesWhereInput: OfferCategoriesWhereInput;
+  OfferCategoriesOrderByInput: OfferCategoriesOrderByInput;
+  ProductCategories: ResolverTypeWrapper<ProductCategories>;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  OffersWhereInput: OffersWhereInput;
+  OffersOrderByInput: OffersOrderByInput;
+  OfferUsage: ResolverTypeWrapper<OfferUsage>;
+  Customers: ResolverTypeWrapper<Customers>;
   CouponUsage: ResolverTypeWrapper<CouponUsage>;
   Coupons: ResolverTypeWrapper<Coupons>;
   CouponsDiscountType: CouponsDiscountType;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   CouponsApplicableTo: CouponsApplicableTo;
+  JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   CouponUsageWhereInput: CouponUsageWhereInput;
   CouponUsageOrderByInput: CouponUsageOrderByInput;
   CouponsWhereInput: CouponsWhereInput;
   CouponsOrderByInput: CouponsOrderByInput;
-  Customers: ResolverTypeWrapper<Customers>;
-  CustomersAddresses: ResolverTypeWrapper<CustomersAddresses>;
   CustomersWhereInput: CustomersWhereInput;
   CustomersOrderByInput: CustomersOrderByInput;
+  Orders: ResolverTypeWrapper<Orders>;
+  OrdersStatus: OrdersStatus;
+  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
+  OrdersPaymentStatus: OrdersPaymentStatus;
+  OfferUsageWhereInput: OfferUsageWhereInput;
+  OfferUsageOrderByInput: OfferUsageOrderByInput;
+  OrderItems: ResolverTypeWrapper<OrderItems>;
   OrdersWhereInput: OrdersWhereInput;
   OrdersOrderByInput: OrdersOrderByInput;
-  CustomersAddressesWhereInput: CustomersAddressesWhereInput;
-  CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
-  VariantRatings: ResolverTypeWrapper<VariantRatings>;
-  RatingImages: ResolverTypeWrapper<RatingImages>;
-  VariantRatingsWhereInput: VariantRatingsWhereInput;
-  VariantRatingsOrderByInput: VariantRatingsOrderByInput;
-  RatingImagesWhereInput: RatingImagesWhereInput;
-  RatingImagesOrderByInput: RatingImagesOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
   OrderItemsWhereInput: OrderItemsWhereInput;
@@ -5106,6 +7153,25 @@ export type ResolversTypes = ResolversObject<{
   OrderTrackingStatus: OrderTrackingStatus;
   OrderTrackingWhereInput: OrderTrackingWhereInput;
   OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  CustomersAddresses: ResolverTypeWrapper<CustomersAddresses>;
+  Districts: ResolverTypeWrapper<Districts>;
+  DistrictsZone: DistrictsZone;
+  CustomersAddressesWhereInput: CustomersAddressesWhereInput;
+  CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
+  ShippingZoneDistricts: ResolverTypeWrapper<ShippingZoneDistricts>;
+  DistrictsWhereInput: DistrictsWhereInput;
+  DistrictsOrderByInput: DistrictsOrderByInput;
+  ShippingZones: ResolverTypeWrapper<ShippingZones>;
+  ShippingZoneDistrictsWhereInput: ShippingZoneDistrictsWhereInput;
+  ShippingZoneDistrictsOrderByInput: ShippingZoneDistrictsOrderByInput;
+  ShippingZoneMethods: ResolverTypeWrapper<ShippingZoneMethods>;
+  ShippingMethods: ResolverTypeWrapper<ShippingMethods>;
+  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
+  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
+  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
+  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
+  ShippingZonesWhereInput: ShippingZonesWhereInput;
+  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
   PaymentTransactions: ResolverTypeWrapper<PaymentTransactions>;
   PaymentTransactionsStatus: PaymentTransactionsStatus;
   PaymentMethods: ResolverTypeWrapper<PaymentMethods>;
@@ -5114,6 +7180,14 @@ export type ResolversTypes = ResolversObject<{
   PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
   PaymentMethodsWhereInput: PaymentMethodsWhereInput;
   PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
+  VariantRatings: ResolverTypeWrapper<VariantRatings>;
+  RatingImages: ResolverTypeWrapper<RatingImages>;
+  VariantRatingsWhereInput: VariantRatingsWhereInput;
+  VariantRatingsOrderByInput: VariantRatingsOrderByInput;
+  RatingImagesWhereInput: RatingImagesWhereInput;
+  RatingImagesOrderByInput: RatingImagesOrderByInput;
+  OfferVariantsWhereInput: OfferVariantsWhereInput;
+  OfferVariantsOrderByInput: OfferVariantsOrderByInput;
   PromotionVariants: ResolverTypeWrapper<PromotionVariants>;
   Promotions: ResolverTypeWrapper<Promotions>;
   PromotionsDiscountType: PromotionsDiscountType;
@@ -5127,12 +7201,6 @@ export type ResolversTypes = ResolversObject<{
   VariantImagesImageType: VariantImagesImageType;
   VariantImagesWhereInput: VariantImagesWhereInput;
   VariantImagesOrderByInput: VariantImagesOrderByInput;
-  ProductCategories: ResolverTypeWrapper<ProductCategories>;
-  Categories: ResolverTypeWrapper<Categories>;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
   BrandsWhereInput: BrandsWhereInput;
   BrandsOrderByInput: BrandsOrderByInput;
   PasswordSetupTokens: ResolverTypeWrapper<PasswordSetupTokens>;
@@ -5147,10 +7215,12 @@ export type ResolversTypes = ResolversObject<{
   RolesSectionsOrderByInput: RolesSectionsOrderByInput;
   SectionsWhereInput: SectionsWhereInput;
   SectionsOrderByInput: SectionsOrderByInput;
+  FooterLinks: ResolverTypeWrapper<FooterLinks>;
+  FooterLinksWhereInput: FooterLinksWhereInput;
+  FooterLinksOrderByInput: FooterLinksOrderByInput;
   OrderSummary: ResolverTypeWrapper<OrderSummary>;
   OrderSummaryStatus: OrderSummaryStatus;
   OrderSummaryPaymentStatus: OrderSummaryPaymentStatus;
-  BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   OrderSummaryWhereInput: OrderSummaryWhereInput;
   OrderSummaryOrderByInput: OrderSummaryOrderByInput;
   Permissions: ResolverTypeWrapper<Permissions>;
@@ -5165,21 +7235,29 @@ export type ResolversTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
-  ShippingMethods: ResolverTypeWrapper<ShippingMethods>;
-  ShippingZoneMethods: ResolverTypeWrapper<ShippingZoneMethods>;
-  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
-  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
-  ShippingZones: ResolverTypeWrapper<ShippingZones>;
-  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
-  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
-  ShippingZonesWhereInput: ShippingZonesWhereInput;
-  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
+  StoreConfig: ResolverTypeWrapper<StoreConfig>;
+  StoreConfigWhereInput: StoreConfigWhereInput;
+  StoreConfigOrderByInput: StoreConfigOrderByInput;
+  StoreFeatures: ResolverTypeWrapper<StoreFeatures>;
+  StoreFeaturesWhereInput: StoreFeaturesWhereInput;
+  StoreFeaturesOrderByInput: StoreFeaturesOrderByInput;
+  VariantActiveOffers: ResolverTypeWrapper<VariantActiveOffers>;
+  VariantActiveOffersOfferType: VariantActiveOffersOfferType;
+  VariantActiveOffersDiscountType: VariantActiveOffersDiscountType;
+  VariantActiveOffersWhereInput: VariantActiveOffersWhereInput;
+  VariantActiveOffersOrderByInput: VariantActiveOffersOrderByInput;
   VariantRatingSummary: ResolverTypeWrapper<VariantRatingSummary>;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
+  VerificationCodes: ResolverTypeWrapper<VerificationCodes>;
+  VerificationCodesType: VerificationCodesType;
+  VerificationCodesWhereInput: VerificationCodesWhereInput;
+  VerificationCodesOrderByInput: VerificationCodesOrderByInput;
+  ActiveOffersInsertInput: ActiveOffersInsertInput;
+  ActiveOffersUpdateInput: ActiveOffersUpdateInput;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   AttributeOptionsInsertInput: AttributeOptionsInsertInput;
   AttributeOptionsUpdateInput: AttributeOptionsUpdateInput;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   AttributesInsertInput: AttributesInsertInput;
   AttributesUpdateInput: AttributesUpdateInput;
   BannerInsertInput: BannerInsertInput;
@@ -5196,6 +7274,18 @@ export type ResolversTypes = ResolversObject<{
   CustomersUpdateInput: CustomersUpdateInput;
   CustomersAddressesInsertInput: CustomersAddressesInsertInput;
   CustomersAddressesUpdateInput: CustomersAddressesUpdateInput;
+  DistrictsInsertInput: DistrictsInsertInput;
+  DistrictsUpdateInput: DistrictsUpdateInput;
+  FooterLinksInsertInput: FooterLinksInsertInput;
+  FooterLinksUpdateInput: FooterLinksUpdateInput;
+  OfferCategoriesInsertInput: OfferCategoriesInsertInput;
+  OfferCategoriesUpdateInput: OfferCategoriesUpdateInput;
+  OfferUsageInsertInput: OfferUsageInsertInput;
+  OfferUsageUpdateInput: OfferUsageUpdateInput;
+  OfferVariantsInsertInput: OfferVariantsInsertInput;
+  OfferVariantsUpdateInput: OfferVariantsUpdateInput;
+  OffersInsertInput: OffersInsertInput;
+  OffersUpdateInput: OffersUpdateInput;
   OrderItemsInsertInput: OrderItemsInsertInput;
   OrderItemsUpdateInput: OrderItemsUpdateInput;
   OrderSummaryInsertInput: OrderSummaryInsertInput;
@@ -5242,12 +7332,20 @@ export type ResolversTypes = ResolversObject<{
   ServicesImagesUpdateInput: ServicesImagesUpdateInput;
   ShippingMethodsInsertInput: ShippingMethodsInsertInput;
   ShippingMethodsUpdateInput: ShippingMethodsUpdateInput;
+  ShippingZoneDistrictsInsertInput: ShippingZoneDistrictsInsertInput;
+  ShippingZoneDistrictsUpdateInput: ShippingZoneDistrictsUpdateInput;
   ShippingZoneMethodsInsertInput: ShippingZoneMethodsInsertInput;
   ShippingZoneMethodsUpdateInput: ShippingZoneMethodsUpdateInput;
   ShippingZonesInsertInput: ShippingZonesInsertInput;
   ShippingZonesUpdateInput: ShippingZonesUpdateInput;
+  StoreConfigInsertInput: StoreConfigInsertInput;
+  StoreConfigUpdateInput: StoreConfigUpdateInput;
+  StoreFeaturesInsertInput: StoreFeaturesInsertInput;
+  StoreFeaturesUpdateInput: StoreFeaturesUpdateInput;
   UsersInsertInput: UsersInsertInput;
   UsersUpdateInput: UsersUpdateInput;
+  VariantActiveOffersInsertInput: VariantActiveOffersInsertInput;
+  VariantActiveOffersUpdateInput: VariantActiveOffersUpdateInput;
   VariantAttributeOptionsInsertInput: VariantAttributeOptionsInsertInput;
   VariantAttributeOptionsUpdateInput: VariantAttributeOptionsUpdateInput;
   VariantImagesInsertInput: VariantImagesInsertInput;
@@ -5256,18 +7354,25 @@ export type ResolversTypes = ResolversObject<{
   VariantRatingSummaryUpdateInput: VariantRatingSummaryUpdateInput;
   VariantRatingsInsertInput: VariantRatingsInsertInput;
   VariantRatingsUpdateInput: VariantRatingsUpdateInput;
+  VerificationCodesInsertInput: VerificationCodesInsertInput;
+  VerificationCodesUpdateInput: VerificationCodesUpdateInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Mutation: {};
-  AttributeOptions: AttributeOptions;
+  ActiveOffers: ActiveOffers;
   Int: Scalars['Int']['output'];
   String: Scalars['String']['output'];
   Float: Scalars['Float']['output'];
-  Attributes: Attributes;
+  DateTime: Scalars['DateTime']['output'];
   Timestamp: Scalars['Timestamp']['output'];
+  BigInt: Scalars['BigInt']['output'];
+  ActiveOffersWhereInput: ActiveOffersWhereInput;
+  ActiveOffersOrderByInput: ActiveOffersOrderByInput;
+  AttributeOptions: AttributeOptions;
+  Attributes: Attributes;
   AttributeOptionsWhereInput: AttributeOptionsWhereInput;
   AttributeOptionsOrderByInput: AttributeOptionsOrderByInput;
   Users: Users;
@@ -5290,31 +7395,37 @@ export type ResolversParentTypes = ResolversObject<{
   ProductsOrderByInput: ProductsOrderByInput;
   VariantAttributeOptions: VariantAttributeOptions;
   ProductVariants: ProductVariants;
-  OrderItems: OrderItems;
-  JSON: Scalars['JSON']['output'];
-  Orders: Orders;
-  Date: Scalars['Date']['output'];
+  OfferVariants: OfferVariants;
+  Offers: Offers;
+  OfferCategories: OfferCategories;
+  Categories: Categories;
+  OfferCategoriesWhereInput: OfferCategoriesWhereInput;
+  OfferCategoriesOrderByInput: OfferCategoriesOrderByInput;
+  ProductCategories: ProductCategories;
+  CategoriesWhereInput: CategoriesWhereInput;
+  CategoriesOrderByInput: CategoriesOrderByInput;
+  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
+  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
+  OffersWhereInput: OffersWhereInput;
+  OffersOrderByInput: OffersOrderByInput;
+  OfferUsage: OfferUsage;
+  Customers: Customers;
   CouponUsage: CouponUsage;
   Coupons: Coupons;
-  DateTime: Scalars['DateTime']['output'];
+  JSON: Scalars['JSON']['output'];
   CouponUsageWhereInput: CouponUsageWhereInput;
   CouponUsageOrderByInput: CouponUsageOrderByInput;
   CouponsWhereInput: CouponsWhereInput;
   CouponsOrderByInput: CouponsOrderByInput;
-  Customers: Customers;
-  CustomersAddresses: CustomersAddresses;
   CustomersWhereInput: CustomersWhereInput;
   CustomersOrderByInput: CustomersOrderByInput;
+  Orders: Orders;
+  Date: Scalars['Date']['output'];
+  OfferUsageWhereInput: OfferUsageWhereInput;
+  OfferUsageOrderByInput: OfferUsageOrderByInput;
+  OrderItems: OrderItems;
   OrdersWhereInput: OrdersWhereInput;
   OrdersOrderByInput: OrdersOrderByInput;
-  CustomersAddressesWhereInput: CustomersAddressesWhereInput;
-  CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
-  VariantRatings: VariantRatings;
-  RatingImages: RatingImages;
-  VariantRatingsWhereInput: VariantRatingsWhereInput;
-  VariantRatingsOrderByInput: VariantRatingsOrderByInput;
-  RatingImagesWhereInput: RatingImagesWhereInput;
-  RatingImagesOrderByInput: RatingImagesOrderByInput;
   ProductVariantsWhereInput: ProductVariantsWhereInput;
   ProductVariantsOrderByInput: ProductVariantsOrderByInput;
   OrderItemsWhereInput: OrderItemsWhereInput;
@@ -5322,12 +7433,38 @@ export type ResolversParentTypes = ResolversObject<{
   OrderTracking: OrderTracking;
   OrderTrackingWhereInput: OrderTrackingWhereInput;
   OrderTrackingOrderByInput: OrderTrackingOrderByInput;
+  CustomersAddresses: CustomersAddresses;
+  Districts: Districts;
+  CustomersAddressesWhereInput: CustomersAddressesWhereInput;
+  CustomersAddressesOrderByInput: CustomersAddressesOrderByInput;
+  ShippingZoneDistricts: ShippingZoneDistricts;
+  DistrictsWhereInput: DistrictsWhereInput;
+  DistrictsOrderByInput: DistrictsOrderByInput;
+  ShippingZones: ShippingZones;
+  ShippingZoneDistrictsWhereInput: ShippingZoneDistrictsWhereInput;
+  ShippingZoneDistrictsOrderByInput: ShippingZoneDistrictsOrderByInput;
+  ShippingZoneMethods: ShippingZoneMethods;
+  ShippingMethods: ShippingMethods;
+  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
+  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
+  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
+  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
+  ShippingZonesWhereInput: ShippingZonesWhereInput;
+  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
   PaymentTransactions: PaymentTransactions;
   PaymentMethods: PaymentMethods;
   PaymentTransactionsWhereInput: PaymentTransactionsWhereInput;
   PaymentTransactionsOrderByInput: PaymentTransactionsOrderByInput;
   PaymentMethodsWhereInput: PaymentMethodsWhereInput;
   PaymentMethodsOrderByInput: PaymentMethodsOrderByInput;
+  VariantRatings: VariantRatings;
+  RatingImages: RatingImages;
+  VariantRatingsWhereInput: VariantRatingsWhereInput;
+  VariantRatingsOrderByInput: VariantRatingsOrderByInput;
+  RatingImagesWhereInput: RatingImagesWhereInput;
+  RatingImagesOrderByInput: RatingImagesOrderByInput;
+  OfferVariantsWhereInput: OfferVariantsWhereInput;
+  OfferVariantsOrderByInput: OfferVariantsOrderByInput;
   PromotionVariants: PromotionVariants;
   Promotions: Promotions;
   PromotionVariantsWhereInput: PromotionVariantsWhereInput;
@@ -5339,12 +7476,6 @@ export type ResolversParentTypes = ResolversObject<{
   VariantImages: VariantImages;
   VariantImagesWhereInput: VariantImagesWhereInput;
   VariantImagesOrderByInput: VariantImagesOrderByInput;
-  ProductCategories: ProductCategories;
-  Categories: Categories;
-  ProductCategoriesWhereInput: ProductCategoriesWhereInput;
-  ProductCategoriesOrderByInput: ProductCategoriesOrderByInput;
-  CategoriesWhereInput: CategoriesWhereInput;
-  CategoriesOrderByInput: CategoriesOrderByInput;
   BrandsWhereInput: BrandsWhereInput;
   BrandsOrderByInput: BrandsOrderByInput;
   PasswordSetupTokens: PasswordSetupTokens;
@@ -5359,8 +7490,10 @@ export type ResolversParentTypes = ResolversObject<{
   RolesSectionsOrderByInput: RolesSectionsOrderByInput;
   SectionsWhereInput: SectionsWhereInput;
   SectionsOrderByInput: SectionsOrderByInput;
+  FooterLinks: FooterLinks;
+  FooterLinksWhereInput: FooterLinksWhereInput;
+  FooterLinksOrderByInput: FooterLinksOrderByInput;
   OrderSummary: OrderSummary;
-  BigInt: Scalars['BigInt']['output'];
   OrderSummaryWhereInput: OrderSummaryWhereInput;
   OrderSummaryOrderByInput: OrderSummaryOrderByInput;
   Permissions: Permissions;
@@ -5375,21 +7508,26 @@ export type ResolversParentTypes = ResolversObject<{
   ServicesOrderByInput: ServicesOrderByInput;
   ServicesImagesWhereInput: ServicesImagesWhereInput;
   ServicesImagesOrderByInput: ServicesImagesOrderByInput;
-  ShippingMethods: ShippingMethods;
-  ShippingZoneMethods: ShippingZoneMethods;
-  ShippingMethodsWhereInput: ShippingMethodsWhereInput;
-  ShippingMethodsOrderByInput: ShippingMethodsOrderByInput;
-  ShippingZones: ShippingZones;
-  ShippingZoneMethodsWhereInput: ShippingZoneMethodsWhereInput;
-  ShippingZoneMethodsOrderByInput: ShippingZoneMethodsOrderByInput;
-  ShippingZonesWhereInput: ShippingZonesWhereInput;
-  ShippingZonesOrderByInput: ShippingZonesOrderByInput;
+  StoreConfig: StoreConfig;
+  StoreConfigWhereInput: StoreConfigWhereInput;
+  StoreConfigOrderByInput: StoreConfigOrderByInput;
+  StoreFeatures: StoreFeatures;
+  StoreFeaturesWhereInput: StoreFeaturesWhereInput;
+  StoreFeaturesOrderByInput: StoreFeaturesOrderByInput;
+  VariantActiveOffers: VariantActiveOffers;
+  VariantActiveOffersWhereInput: VariantActiveOffersWhereInput;
+  VariantActiveOffersOrderByInput: VariantActiveOffersOrderByInput;
   VariantRatingSummary: VariantRatingSummary;
   VariantRatingSummaryWhereInput: VariantRatingSummaryWhereInput;
   VariantRatingSummaryOrderByInput: VariantRatingSummaryOrderByInput;
+  VerificationCodes: VerificationCodes;
+  VerificationCodesWhereInput: VerificationCodesWhereInput;
+  VerificationCodesOrderByInput: VerificationCodesOrderByInput;
+  ActiveOffersInsertInput: ActiveOffersInsertInput;
+  ActiveOffersUpdateInput: ActiveOffersUpdateInput;
+  Boolean: Scalars['Boolean']['output'];
   AttributeOptionsInsertInput: AttributeOptionsInsertInput;
   AttributeOptionsUpdateInput: AttributeOptionsUpdateInput;
-  Boolean: Scalars['Boolean']['output'];
   AttributesInsertInput: AttributesInsertInput;
   AttributesUpdateInput: AttributesUpdateInput;
   BannerInsertInput: BannerInsertInput;
@@ -5406,6 +7544,18 @@ export type ResolversParentTypes = ResolversObject<{
   CustomersUpdateInput: CustomersUpdateInput;
   CustomersAddressesInsertInput: CustomersAddressesInsertInput;
   CustomersAddressesUpdateInput: CustomersAddressesUpdateInput;
+  DistrictsInsertInput: DistrictsInsertInput;
+  DistrictsUpdateInput: DistrictsUpdateInput;
+  FooterLinksInsertInput: FooterLinksInsertInput;
+  FooterLinksUpdateInput: FooterLinksUpdateInput;
+  OfferCategoriesInsertInput: OfferCategoriesInsertInput;
+  OfferCategoriesUpdateInput: OfferCategoriesUpdateInput;
+  OfferUsageInsertInput: OfferUsageInsertInput;
+  OfferUsageUpdateInput: OfferUsageUpdateInput;
+  OfferVariantsInsertInput: OfferVariantsInsertInput;
+  OfferVariantsUpdateInput: OfferVariantsUpdateInput;
+  OffersInsertInput: OffersInsertInput;
+  OffersUpdateInput: OffersUpdateInput;
   OrderItemsInsertInput: OrderItemsInsertInput;
   OrderItemsUpdateInput: OrderItemsUpdateInput;
   OrderSummaryInsertInput: OrderSummaryInsertInput;
@@ -5452,12 +7602,20 @@ export type ResolversParentTypes = ResolversObject<{
   ServicesImagesUpdateInput: ServicesImagesUpdateInput;
   ShippingMethodsInsertInput: ShippingMethodsInsertInput;
   ShippingMethodsUpdateInput: ShippingMethodsUpdateInput;
+  ShippingZoneDistrictsInsertInput: ShippingZoneDistrictsInsertInput;
+  ShippingZoneDistrictsUpdateInput: ShippingZoneDistrictsUpdateInput;
   ShippingZoneMethodsInsertInput: ShippingZoneMethodsInsertInput;
   ShippingZoneMethodsUpdateInput: ShippingZoneMethodsUpdateInput;
   ShippingZonesInsertInput: ShippingZonesInsertInput;
   ShippingZonesUpdateInput: ShippingZonesUpdateInput;
+  StoreConfigInsertInput: StoreConfigInsertInput;
+  StoreConfigUpdateInput: StoreConfigUpdateInput;
+  StoreFeaturesInsertInput: StoreFeaturesInsertInput;
+  StoreFeaturesUpdateInput: StoreFeaturesUpdateInput;
   UsersInsertInput: UsersInsertInput;
   UsersUpdateInput: UsersUpdateInput;
+  VariantActiveOffersInsertInput: VariantActiveOffersInsertInput;
+  VariantActiveOffersUpdateInput: VariantActiveOffersUpdateInput;
   VariantAttributeOptionsInsertInput: VariantAttributeOptionsInsertInput;
   VariantAttributeOptionsUpdateInput: VariantAttributeOptionsUpdateInput;
   VariantImagesInsertInput: VariantImagesInsertInput;
@@ -5466,6 +7624,8 @@ export type ResolversParentTypes = ResolversObject<{
   VariantRatingSummaryUpdateInput: VariantRatingSummaryUpdateInput;
   VariantRatingsInsertInput: VariantRatingsInsertInput;
   VariantRatingsUpdateInput: VariantRatingsUpdateInput;
+  VerificationCodesInsertInput: VerificationCodesInsertInput;
+  VerificationCodesUpdateInput: VerificationCodesUpdateInput;
 }>;
 
 export type transportDirectiveArgs = {
@@ -5522,6 +7682,8 @@ export type mysqlCountDirectiveArgs = {
 export type mysqlCountDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = mysqlCountDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  activeOffers?: Resolver<Maybe<Array<Maybe<ResolversTypes['ActiveOffers']>>>, ParentType, ContextType, Partial<QueryactiveOffersArgs>>;
+  countActiveOffers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountActiveOffersArgs>>;
   attributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['AttributeOptions']>>>, ParentType, ContextType, Partial<QueryattributeOptionsArgs>>;
   countAttributeOptions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountAttributeOptionsArgs>>;
   attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<QueryattributesArgs>>;
@@ -5540,6 +7702,18 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countCustomers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCustomersArgs>>;
   customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<QuerycustomersAddressesArgs>>;
   countCustomersAddresses?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountCustomersAddressesArgs>>;
+  districts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Districts']>>>, ParentType, ContextType, Partial<QuerydistrictsArgs>>;
+  countDistricts?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountDistrictsArgs>>;
+  footerLinks?: Resolver<Maybe<Array<Maybe<ResolversTypes['FooterLinks']>>>, ParentType, ContextType, Partial<QueryfooterLinksArgs>>;
+  countFooterLinks?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountFooterLinksArgs>>;
+  offerCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferCategories']>>>, ParentType, ContextType, Partial<QueryofferCategoriesArgs>>;
+  countOfferCategories?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOfferCategoriesArgs>>;
+  offerUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferUsage']>>>, ParentType, ContextType, Partial<QueryofferUsageArgs>>;
+  countOfferUsage?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOfferUsageArgs>>;
+  offerVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferVariants']>>>, ParentType, ContextType, Partial<QueryofferVariantsArgs>>;
+  countOfferVariants?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOfferVariantsArgs>>;
+  offers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Offers']>>>, ParentType, ContextType, Partial<QueryoffersArgs>>;
+  countOffers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOffersArgs>>;
   orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<QueryorderItemsArgs>>;
   countOrderItems?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountOrderItemsArgs>>;
   orderSummary?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderSummary']>>>, ParentType, ContextType, Partial<QueryorderSummaryArgs>>;
@@ -5586,12 +7760,20 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countServicesImages?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountServicesImagesArgs>>;
   shippingMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingMethods']>>>, ParentType, ContextType, Partial<QueryshippingMethodsArgs>>;
   countShippingMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingMethodsArgs>>;
+  shippingZoneDistricts?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneDistricts']>>>, ParentType, ContextType, Partial<QueryshippingZoneDistrictsArgs>>;
+  countShippingZoneDistricts?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingZoneDistrictsArgs>>;
   shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<QueryshippingZoneMethodsArgs>>;
   countShippingZoneMethods?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingZoneMethodsArgs>>;
   shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<QueryshippingZonesArgs>>;
   countShippingZones?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountShippingZonesArgs>>;
+  storeConfig?: Resolver<Maybe<Array<Maybe<ResolversTypes['StoreConfig']>>>, ParentType, ContextType, Partial<QuerystoreConfigArgs>>;
+  countStoreConfig?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountStoreConfigArgs>>;
+  storeFeatures?: Resolver<Maybe<Array<Maybe<ResolversTypes['StoreFeatures']>>>, ParentType, ContextType, Partial<QuerystoreFeaturesArgs>>;
+  countStoreFeatures?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountStoreFeaturesArgs>>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<QueryusersArgs>>;
   countUsers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountUsersArgs>>;
+  variantActiveOffers?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantActiveOffers']>>>, ParentType, ContextType, Partial<QueryvariantActiveOffersArgs>>;
+  countVariantActiveOffers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantActiveOffersArgs>>;
   variantAttributeOptions?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantAttributeOptions']>>>, ParentType, ContextType, Partial<QueryvariantAttributeOptionsArgs>>;
   countVariantAttributeOptions?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantAttributeOptionsArgs>>;
   variantImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantImages']>>>, ParentType, ContextType, Partial<QueryvariantImagesArgs>>;
@@ -5600,9 +7782,14 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   countVariantRatingSummary?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantRatingSummaryArgs>>;
   variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<QueryvariantRatingsArgs>>;
   countVariantRatings?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVariantRatingsArgs>>;
+  verificationCodes?: Resolver<Maybe<Array<Maybe<ResolversTypes['VerificationCodes']>>>, ParentType, ContextType, Partial<QueryverificationCodesArgs>>;
+  countVerificationCodes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<QuerycountVerificationCodesArgs>>;
 }>;
 
 export type MutationResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  insertActiveOffers?: Resolver<Maybe<ResolversTypes['ActiveOffers']>, ParentType, ContextType, RequireFields<MutationinsertActiveOffersArgs, 'active_offers'>>;
+  updateActiveOffers?: Resolver<Maybe<ResolversTypes['ActiveOffers']>, ParentType, ContextType, RequireFields<MutationupdateActiveOffersArgs, 'active_offers'>>;
+  deleteActiveOffers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteActiveOffersArgs>>;
   insertAttributeOptions?: Resolver<Maybe<ResolversTypes['AttributeOptions']>, ParentType, ContextType, RequireFields<MutationinsertAttributeOptionsArgs, 'attribute_options'>>;
   updateAttributeOptions?: Resolver<Maybe<ResolversTypes['AttributeOptions']>, ParentType, ContextType, RequireFields<MutationupdateAttributeOptionsArgs, 'attribute_options'>>;
   deleteAttributeOptions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteAttributeOptionsArgs>>;
@@ -5630,6 +7817,24 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertCustomersAddresses?: Resolver<Maybe<ResolversTypes['CustomersAddresses']>, ParentType, ContextType, RequireFields<MutationinsertCustomersAddressesArgs, 'customers_addresses'>>;
   updateCustomersAddresses?: Resolver<Maybe<ResolversTypes['CustomersAddresses']>, ParentType, ContextType, RequireFields<MutationupdateCustomersAddressesArgs, 'customers_addresses'>>;
   deleteCustomersAddresses?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteCustomersAddressesArgs>>;
+  insertDistricts?: Resolver<Maybe<ResolversTypes['Districts']>, ParentType, ContextType, RequireFields<MutationinsertDistrictsArgs, 'districts'>>;
+  updateDistricts?: Resolver<Maybe<ResolversTypes['Districts']>, ParentType, ContextType, RequireFields<MutationupdateDistrictsArgs, 'districts'>>;
+  deleteDistricts?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteDistrictsArgs>>;
+  insertFooterLinks?: Resolver<Maybe<ResolversTypes['FooterLinks']>, ParentType, ContextType, RequireFields<MutationinsertFooterLinksArgs, 'footer_links'>>;
+  updateFooterLinks?: Resolver<Maybe<ResolversTypes['FooterLinks']>, ParentType, ContextType, RequireFields<MutationupdateFooterLinksArgs, 'footer_links'>>;
+  deleteFooterLinks?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteFooterLinksArgs>>;
+  insertOfferCategories?: Resolver<Maybe<ResolversTypes['OfferCategories']>, ParentType, ContextType, RequireFields<MutationinsertOfferCategoriesArgs, 'offer_categories'>>;
+  updateOfferCategories?: Resolver<Maybe<ResolversTypes['OfferCategories']>, ParentType, ContextType, RequireFields<MutationupdateOfferCategoriesArgs, 'offer_categories'>>;
+  deleteOfferCategories?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOfferCategoriesArgs>>;
+  insertOfferUsage?: Resolver<Maybe<ResolversTypes['OfferUsage']>, ParentType, ContextType, RequireFields<MutationinsertOfferUsageArgs, 'offer_usage'>>;
+  updateOfferUsage?: Resolver<Maybe<ResolversTypes['OfferUsage']>, ParentType, ContextType, RequireFields<MutationupdateOfferUsageArgs, 'offer_usage'>>;
+  deleteOfferUsage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOfferUsageArgs>>;
+  insertOfferVariants?: Resolver<Maybe<ResolversTypes['OfferVariants']>, ParentType, ContextType, RequireFields<MutationinsertOfferVariantsArgs, 'offer_variants'>>;
+  updateOfferVariants?: Resolver<Maybe<ResolversTypes['OfferVariants']>, ParentType, ContextType, RequireFields<MutationupdateOfferVariantsArgs, 'offer_variants'>>;
+  deleteOfferVariants?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOfferVariantsArgs>>;
+  insertOffers?: Resolver<Maybe<ResolversTypes['Offers']>, ParentType, ContextType, RequireFields<MutationinsertOffersArgs, 'offers'>>;
+  updateOffers?: Resolver<Maybe<ResolversTypes['Offers']>, ParentType, ContextType, RequireFields<MutationupdateOffersArgs, 'offers'>>;
+  deleteOffers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOffersArgs>>;
   insertOrderItems?: Resolver<Maybe<ResolversTypes['OrderItems']>, ParentType, ContextType, RequireFields<MutationinsertOrderItemsArgs, 'order_items'>>;
   updateOrderItems?: Resolver<Maybe<ResolversTypes['OrderItems']>, ParentType, ContextType, RequireFields<MutationupdateOrderItemsArgs, 'order_items'>>;
   deleteOrderItems?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteOrderItemsArgs>>;
@@ -5699,15 +7904,27 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertShippingMethods?: Resolver<Maybe<ResolversTypes['ShippingMethods']>, ParentType, ContextType, RequireFields<MutationinsertShippingMethodsArgs, 'shipping_methods'>>;
   updateShippingMethods?: Resolver<Maybe<ResolversTypes['ShippingMethods']>, ParentType, ContextType, RequireFields<MutationupdateShippingMethodsArgs, 'shipping_methods'>>;
   deleteShippingMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingMethodsArgs>>;
+  insertShippingZoneDistricts?: Resolver<Maybe<ResolversTypes['ShippingZoneDistricts']>, ParentType, ContextType, RequireFields<MutationinsertShippingZoneDistrictsArgs, 'shipping_zone_districts'>>;
+  updateShippingZoneDistricts?: Resolver<Maybe<ResolversTypes['ShippingZoneDistricts']>, ParentType, ContextType, RequireFields<MutationupdateShippingZoneDistrictsArgs, 'shipping_zone_districts'>>;
+  deleteShippingZoneDistricts?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingZoneDistrictsArgs>>;
   insertShippingZoneMethods?: Resolver<Maybe<ResolversTypes['ShippingZoneMethods']>, ParentType, ContextType, RequireFields<MutationinsertShippingZoneMethodsArgs, 'shipping_zone_methods'>>;
   updateShippingZoneMethods?: Resolver<Maybe<ResolversTypes['ShippingZoneMethods']>, ParentType, ContextType, RequireFields<MutationupdateShippingZoneMethodsArgs, 'shipping_zone_methods'>>;
   deleteShippingZoneMethods?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingZoneMethodsArgs>>;
   insertShippingZones?: Resolver<Maybe<ResolversTypes['ShippingZones']>, ParentType, ContextType, RequireFields<MutationinsertShippingZonesArgs, 'shipping_zones'>>;
   updateShippingZones?: Resolver<Maybe<ResolversTypes['ShippingZones']>, ParentType, ContextType, RequireFields<MutationupdateShippingZonesArgs, 'shipping_zones'>>;
   deleteShippingZones?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteShippingZonesArgs>>;
+  insertStoreConfig?: Resolver<Maybe<ResolversTypes['StoreConfig']>, ParentType, ContextType, RequireFields<MutationinsertStoreConfigArgs, 'store_config'>>;
+  updateStoreConfig?: Resolver<Maybe<ResolversTypes['StoreConfig']>, ParentType, ContextType, RequireFields<MutationupdateStoreConfigArgs, 'store_config'>>;
+  deleteStoreConfig?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteStoreConfigArgs>>;
+  insertStoreFeatures?: Resolver<Maybe<ResolversTypes['StoreFeatures']>, ParentType, ContextType, RequireFields<MutationinsertStoreFeaturesArgs, 'store_features'>>;
+  updateStoreFeatures?: Resolver<Maybe<ResolversTypes['StoreFeatures']>, ParentType, ContextType, RequireFields<MutationupdateStoreFeaturesArgs, 'store_features'>>;
+  deleteStoreFeatures?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteStoreFeaturesArgs>>;
   insertUsers?: Resolver<Maybe<ResolversTypes['Users']>, ParentType, ContextType, RequireFields<MutationinsertUsersArgs, 'users'>>;
   updateUsers?: Resolver<Maybe<ResolversTypes['Users']>, ParentType, ContextType, RequireFields<MutationupdateUsersArgs, 'users'>>;
   deleteUsers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteUsersArgs>>;
+  insertVariantActiveOffers?: Resolver<Maybe<ResolversTypes['VariantActiveOffers']>, ParentType, ContextType, RequireFields<MutationinsertVariantActiveOffersArgs, 'variant_active_offers'>>;
+  updateVariantActiveOffers?: Resolver<Maybe<ResolversTypes['VariantActiveOffers']>, ParentType, ContextType, RequireFields<MutationupdateVariantActiveOffersArgs, 'variant_active_offers'>>;
+  deleteVariantActiveOffers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantActiveOffersArgs>>;
   insertVariantAttributeOptions?: Resolver<Maybe<ResolversTypes['VariantAttributeOptions']>, ParentType, ContextType, RequireFields<MutationinsertVariantAttributeOptionsArgs, 'variant_attribute_options'>>;
   updateVariantAttributeOptions?: Resolver<Maybe<ResolversTypes['VariantAttributeOptions']>, ParentType, ContextType, RequireFields<MutationupdateVariantAttributeOptionsArgs, 'variant_attribute_options'>>;
   deleteVariantAttributeOptions?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantAttributeOptionsArgs>>;
@@ -5720,7 +7937,55 @@ export type MutationResolvers<ContextType = MeshContext, ParentType extends Reso
   insertVariantRatings?: Resolver<Maybe<ResolversTypes['VariantRatings']>, ParentType, ContextType, RequireFields<MutationinsertVariantRatingsArgs, 'variant_ratings'>>;
   updateVariantRatings?: Resolver<Maybe<ResolversTypes['VariantRatings']>, ParentType, ContextType, RequireFields<MutationupdateVariantRatingsArgs, 'variant_ratings'>>;
   deleteVariantRatings?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVariantRatingsArgs>>;
+  insertVerificationCodes?: Resolver<Maybe<ResolversTypes['VerificationCodes']>, ParentType, ContextType, RequireFields<MutationinsertVerificationCodesArgs, 'verification_codes'>>;
+  updateVerificationCodes?: Resolver<Maybe<ResolversTypes['VerificationCodes']>, ParentType, ContextType, RequireFields<MutationupdateVerificationCodesArgs, 'verification_codes'>>;
+  deleteVerificationCodes?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, Partial<MutationdeleteVerificationCodesArgs>>;
 }>;
+
+export type ActiveOffersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ActiveOffers'] = ResolversParentTypes['ActiveOffers']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  offerType?: Resolver<ResolversTypes['ActiveOffersOfferType'], ParentType, ContextType>;
+  discountType?: Resolver<ResolversTypes['ActiveOffersDiscountType'], ParentType, ContextType>;
+  discountValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  maxUses?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  maxUsesPerCustomer?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  currentUses?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  minQuantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  minPurchaseAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  badgeText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  badgeColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showCountdown?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showStockIndicator?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showSavings?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isFeatured?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  totalVariants?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalSold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  minPrice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  maxDiscountPercent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
+export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
+  name: 'Timestamp';
+}
+
+export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
+  name: 'BigInt';
+}
 
 export type AttributeOptionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['AttributeOptions'] = ResolversParentTypes['AttributeOptions']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -5746,10 +8011,6 @@ export type AttributesResolvers<ContextType = MeshContext, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
-  name: 'Timestamp';
-}
-
 export type UsersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Users'] = ResolversParentTypes['Users']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -5770,6 +8031,7 @@ export type UsersResolvers<ContextType = MeshContext, ParentType extends Resolve
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<UsersproductsArgs>>;
   promotions?: Resolver<Maybe<Array<Maybe<ResolversTypes['Promotions']>>>, ParentType, ContextType, Partial<UserspromotionsArgs>>;
   roles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Roles']>>>, ParentType, ContextType, Partial<UsersrolesArgs>>;
+  variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<UsersvariantRatingsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -5793,6 +8055,7 @@ export type BannerResolvers<ContextType = MeshContext, ParentType extends Resolv
 export type BrandsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Brands'] = ResolversParentTypes['Brands']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -5864,11 +8127,13 @@ export type ProductVariantsResolvers<ContextType = MeshContext, ParentType exten
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   sku?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   stock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   imageAttributeId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  offerVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferVariants']>>>, ParentType, ContextType, Partial<ProductVariantsofferVariantsArgs>>;
   orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<ProductVariantsorderItemsArgs>>;
   attributes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Attributes']>>>, ParentType, ContextType, Partial<ProductVariantsattributesArgs>>;
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductVariantsproductsArgs>>;
@@ -5879,58 +8144,134 @@ export type ProductVariantsResolvers<ContextType = MeshContext, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type OrderItemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OrderItems'] = ResolversParentTypes['OrderItems']> = ResolversObject<{
+export type OfferVariantsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OfferVariants'] = ResolversParentTypes['OfferVariants']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  offerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  variantSku?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  variantAttributes?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  unitPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  totalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  discountAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OrderItemsordersArgs>>;
-  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<OrderItemsproductVariantsArgs>>;
+  offerPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  originalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  stockLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  soldCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  offers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Offers']>>>, ParentType, ContextType, Partial<OfferVariantsoffersArgs>>;
+  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<OfferVariantsproductVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface JSONScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
-  name: 'JSON';
-}
-
-export type OrdersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Orders'] = ResolversParentTypes['Orders']> = ResolversObject<{
+export type OffersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Offers'] = ResolversParentTypes['Offers']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  customerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  orderNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OrdersStatus'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  offerType?: Resolver<ResolversTypes['OffersOfferType'], ParentType, ContextType>;
+  discountType?: Resolver<ResolversTypes['OffersDiscountType'], ParentType, ContextType>;
+  discountValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  maxUses?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  maxUsesPerCustomer?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  currentUses?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  minQuantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  minPurchaseAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  badgeText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  badgeColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showCountdown?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showStockIndicator?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showSavings?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isFeatured?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  subtotal?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  discountAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  shippingCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  taxAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  totalAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  shippingAddressId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  shippingMethod?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  estimatedDelivery?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  paymentMethod?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  paymentStatus?: Resolver<ResolversTypes['OrdersPaymentStatus'], ParentType, ContextType>;
-  paidAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  customerNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  adminNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<OrderscouponUsageArgs>>;
-  orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<OrdersorderItemsArgs>>;
-  orderTracking?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderTracking']>>>, ParentType, ContextType, Partial<OrdersorderTrackingArgs>>;
-  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<OrderscustomersArgs>>;
-  customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<OrderscustomersAddressesArgs>>;
-  paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<OrderspaymentTransactionsArgs>>;
+  offerCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferCategories']>>>, ParentType, ContextType, Partial<OffersofferCategoriesArgs>>;
+  offerUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferUsage']>>>, ParentType, ContextType, Partial<OffersofferUsageArgs>>;
+  offerVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferVariants']>>>, ParentType, ContextType, Partial<OffersofferVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
-  name: 'Date';
-}
+export type OfferCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OfferCategories'] = ResolversParentTypes['OfferCategories']> = ResolversObject<{
+  offerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<OfferCategoriescategoriesArgs>>;
+  offers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Offers']>>>, ParentType, ContextType, Partial<OfferCategoriesoffersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showNav?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  bannerImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerImageMobile?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerTitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerSubtitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerDescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerCtaText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bannerCtaLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  metaTitle?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  metaDescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<CategoriesusersArgs>>;
+  offerCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferCategories']>>>, ParentType, ContextType, Partial<CategoriesofferCategoriesArgs>>;
+  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
+  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<ProductCategoriescategoriesArgs>>;
+  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductCategoriesproductsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type OfferUsageResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OfferUsage'] = ResolversParentTypes['OfferUsage']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  offerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  customerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  originalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  offerPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  discountAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  usedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<OfferUsagecustomersArgs>>;
+  offers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Offers']>>>, ParentType, ContextType, Partial<OfferUsageoffersArgs>>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OfferUsageordersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CustomersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Customers'] = ResolversParentTypes['Customers']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  addressId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  needsPasswordSetup?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  lastname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dni?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CustomerscouponUsageArgs>>;
+  customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<CustomerscustomersAddressesArgs>>;
+  offerUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferUsage']>>>, ParentType, ContextType, Partial<CustomersofferUsageArgs>>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersordersArgs>>;
+  variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<CustomersvariantRatingsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export type CouponUsageResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['CouponUsage'] = ResolversParentTypes['CouponUsage']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -5971,72 +8312,57 @@ export type CouponsResolvers<ContextType = MeshContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
+export interface JSONScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+  name: 'JSON';
 }
 
-export type CustomersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Customers'] = ResolversParentTypes['Customers']> = ResolversObject<{
+export type OrdersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Orders'] = ResolversParentTypes['Orders']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  addressId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  lastname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  dni?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<CustomerscouponUsageArgs>>;
-  customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<CustomerscustomersAddressesArgs>>;
-  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersordersArgs>>;
-  variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<CustomersvariantRatingsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CustomersAddressesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['CustomersAddresses'] = ResolversParentTypes['CustomersAddresses']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  idCustomer?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  alias?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  department?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  province?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  district?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  streetName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  streetNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  apartment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  latitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  longitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  isDefault?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<CustomersAddressescustomersArgs>>;
-  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersAddressesordersArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type VariantRatingsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantRatings'] = ResolversParentTypes['VariantRatings']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   customerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  review?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  verifiedPurchase?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  orderNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OrdersStatus'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  ratingImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['RatingImages']>>>, ParentType, ContextType, Partial<VariantRatingsratingImagesArgs>>;
-  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<VariantRatingscustomersArgs>>;
-  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<VariantRatingsproductVariantsArgs>>;
+  subtotal?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  discountAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  shippingCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  taxAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  totalAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  shippingAddressId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shippingMethod?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  estimatedDelivery?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  paymentMethod?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  paymentStatus?: Resolver<ResolversTypes['OrdersPaymentStatus'], ParentType, ContextType>;
+  paidAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  customerNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  adminNotes?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  couponUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['CouponUsage']>>>, ParentType, ContextType, Partial<OrderscouponUsageArgs>>;
+  offerUsage?: Resolver<Maybe<Array<Maybe<ResolversTypes['OfferUsage']>>>, ParentType, ContextType, Partial<OrdersofferUsageArgs>>;
+  orderItems?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderItems']>>>, ParentType, ContextType, Partial<OrdersorderItemsArgs>>;
+  orderTracking?: Resolver<Maybe<Array<Maybe<ResolversTypes['OrderTracking']>>>, ParentType, ContextType, Partial<OrdersorderTrackingArgs>>;
+  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<OrderscustomersArgs>>;
+  customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<OrderscustomersAddressesArgs>>;
+  paymentTransactions?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymentTransactions']>>>, ParentType, ContextType, Partial<OrderspaymentTransactionsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type RatingImagesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['RatingImages'] = ResolversParentTypes['RatingImages']> = ResolversObject<{
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
+export type OrderItemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['OrderItems'] = ResolversParentTypes['OrderItems']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  ratingId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<RatingImagesvariantRatingsArgs>>;
+  orderId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  variantSku?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  variantAttributes?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  unitPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  discountAmount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OrderItemsordersArgs>>;
+  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<OrderItemsproductVariantsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -6054,6 +8380,95 @@ export type OrderTrackingResolvers<ContextType = MeshContext, ParentType extends
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<OrderTrackingordersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CustomersAddressesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['CustomersAddresses'] = ResolversParentTypes['CustomersAddresses']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  idCustomer?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  alias?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  department?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  province?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  district?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  districtId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  streetName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  streetNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  apartment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  reference?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  latitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  longitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  isDefault?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<CustomersAddressescustomersArgs>>;
+  districts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Districts']>>>, ParentType, ContextType, Partial<CustomersAddressesdistrictsArgs>>;
+  orders?: Resolver<Maybe<Array<Maybe<ResolversTypes['Orders']>>>, ParentType, ContextType, Partial<CustomersAddressesordersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DistrictsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Districts'] = ResolversParentTypes['Districts']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  zone?: Resolver<ResolversTypes['DistrictsZone'], ParentType, ContextType>;
+  isActive?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  customersAddresses?: Resolver<Maybe<Array<Maybe<ResolversTypes['CustomersAddresses']>>>, ParentType, ContextType, Partial<DistrictscustomersAddressesArgs>>;
+  shippingZoneDistricts?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneDistricts']>>>, ParentType, ContextType, Partial<DistrictsshippingZoneDistrictsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingZoneDistrictsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZoneDistricts'] = ResolversParentTypes['ShippingZoneDistricts']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  zoneId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  districtId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  districts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Districts']>>>, ParentType, ContextType, Partial<ShippingZoneDistrictsdistrictsArgs>>;
+  shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<ShippingZoneDistrictsshippingZonesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingZonesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZones'] = ResolversParentTypes['ShippingZones']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  districts?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingZoneDistricts?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneDistricts']>>>, ParentType, ContextType, Partial<ShippingZonesshippingZoneDistrictsArgs>>;
+  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingZonesshippingZoneMethodsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingZoneMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZoneMethods'] = ResolversParentTypes['ShippingZoneMethods']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shippingMethodId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shippingZoneId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  cost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  freeShippingThreshold?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingMethods']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingMethodsArgs>>;
+  shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingZonesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShippingMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingMethods'] = ResolversParentTypes['ShippingMethods']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  baseCost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  freeShippingThreshold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingMethodsshippingZoneMethodsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -6099,6 +8514,35 @@ export type PaymentMethodsResolvers<ContextType = MeshContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type VariantRatingsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantRatings'] = ResolversParentTypes['VariantRatings']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  customerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  rating?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  review?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  verifiedPurchase?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  reviewedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  reviewedAt?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  ratingImages?: Resolver<Maybe<Array<Maybe<ResolversTypes['RatingImages']>>>, ParentType, ContextType, Partial<VariantRatingsratingImagesArgs>>;
+  customers?: Resolver<Maybe<Array<Maybe<ResolversTypes['Customers']>>>, ParentType, ContextType, Partial<VariantRatingscustomersArgs>>;
+  productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<VariantRatingsproductVariantsArgs>>;
+  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<VariantRatingsusersArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type RatingImagesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['RatingImages'] = ResolversParentTypes['RatingImages']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ratingId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  variantRatings?: Resolver<Maybe<Array<Maybe<ResolversTypes['VariantRatings']>>>, ParentType, ContextType, Partial<RatingImagesvariantRatingsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type PromotionVariantsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PromotionVariants'] = ResolversParentTypes['PromotionVariants']> = ResolversObject<{
   promotionId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -6113,6 +8557,7 @@ export type PromotionVariantsResolvers<ContextType = MeshContext, ParentType ext
 export type PromotionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Promotions'] = ResolversParentTypes['Promotions']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -6145,31 +8590,6 @@ export type VariantImagesResolvers<ContextType = MeshContext, ParentType extends
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   productVariants?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductVariants']>>>, ParentType, ContextType, Partial<VariantImagesproductVariantsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ProductCategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProductCategories'] = ResolversParentTypes['ProductCategories']> = ResolversObject<{
-  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  categoryId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  categories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Categories']>>>, ParentType, ContextType, Partial<ProductCategoriescategoriesArgs>>;
-  products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Products']>>>, ParentType, ContextType, Partial<ProductCategoriesproductsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type CategoriesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Categories'] = ResolversParentTypes['Categories']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  parentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  imageUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  showNav?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  updatedBy?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['Users']>>>, ParentType, ContextType, Partial<CategoriesusersArgs>>;
-  productCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['ProductCategories']>>>, ParentType, ContextType, Partial<CategoriesproductCategoriesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -6209,7 +8629,19 @@ export type SectionsResolvers<ContextType = MeshContext, ParentType extends Reso
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  sectionGroup?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   rolesSections?: Resolver<Maybe<Array<Maybe<ResolversTypes['RolesSections']>>>, ParentType, ContextType, Partial<SectionsrolesSectionsArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FooterLinksResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FooterLinks'] = ResolversParentTypes['FooterLinks']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -6230,10 +8662,6 @@ export type OrderSummaryResolvers<ContextType = MeshContext, ParentType extends 
   courierCompany?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
-
-export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
-  name: 'BigInt';
-}
 
 export type PermissionsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Permissions'] = ResolversParentTypes['Permissions']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -6284,46 +8712,61 @@ export type ServicesImagesResolvers<ContextType = MeshContext, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ShippingMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingMethods'] = ResolversParentTypes['ShippingMethods']> = ResolversObject<{
+export type StoreConfigResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['StoreConfig'] = ResolversParentTypes['StoreConfig']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  baseCost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  freeShippingThreshold?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  storeName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  storeDescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  logoUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  address?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  businessHours?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  instagramUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  facebookUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  twitterUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  whatsappNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  logoWidth?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  logoHeight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type StoreFeaturesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['StoreFeatures'] = ResolversParentTypes['StoreFeatures']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   displayOrder?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingMethodsshippingZoneMethodsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ShippingZoneMethodsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZoneMethods'] = ResolversParentTypes['ShippingZoneMethods']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  shippingMethodId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  shippingZoneId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  cost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  freeShippingThreshold?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  estimatedDaysMin?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  estimatedDaysMax?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  shippingMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingMethods']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingMethodsArgs>>;
-  shippingZones?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZones']>>>, ParentType, ContextType, Partial<ShippingZoneMethodsshippingZonesArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ShippingZonesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShippingZones'] = ResolversParentTypes['ShippingZones']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  districts?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
-  isActive?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  shippingZoneMethods?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingZoneMethods']>>>, ParentType, ContextType, Partial<ShippingZonesshippingZoneMethodsArgs>>;
+export type VariantActiveOffersResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VariantActiveOffers'] = ResolversParentTypes['VariantActiveOffers']> = ResolversObject<{
+  variantId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  offerId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  offerPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  originalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  stockLimit?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  soldCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  remainingStock?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  offerName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  offerTitle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  offerType?: Resolver<ResolversTypes['VariantActiveOffersOfferType'], ParentType, ContextType>;
+  discountType?: Resolver<ResolversTypes['VariantActiveOffersDiscountType'], ParentType, ContextType>;
+  discountValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  badgeText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  badgeColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  showCountdown?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showStockIndicator?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  showSavings?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  discountPercent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  savingsAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -6340,12 +8783,26 @@ export type VariantRatingSummaryResolvers<ContextType = MeshContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type VerificationCodesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['VerificationCodes'] = ResolversParentTypes['VerificationCodes']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['VerificationCodesType']>, ParentType, ContextType>;
+  expiresAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  usedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  ActiveOffers?: ActiveOffersResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
+  Timestamp?: GraphQLScalarType;
+  BigInt?: GraphQLScalarType;
   AttributeOptions?: AttributeOptionsResolvers<ContextType>;
   Attributes?: AttributesResolvers<ContextType>;
-  Timestamp?: GraphQLScalarType;
   Users?: UsersResolvers<ContextType>;
   Banner?: BannerResolvers<ContextType>;
   Brands?: BrandsResolvers<ContextType>;
@@ -6354,39 +8811,48 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ProductAttributeOptionImages?: ProductAttributeOptionImagesResolvers<ContextType>;
   VariantAttributeOptions?: VariantAttributeOptionsResolvers<ContextType>;
   ProductVariants?: ProductVariantsResolvers<ContextType>;
-  OrderItems?: OrderItemsResolvers<ContextType>;
+  OfferVariants?: OfferVariantsResolvers<ContextType>;
+  Offers?: OffersResolvers<ContextType>;
+  OfferCategories?: OfferCategoriesResolvers<ContextType>;
+  Categories?: CategoriesResolvers<ContextType>;
+  ProductCategories?: ProductCategoriesResolvers<ContextType>;
+  OfferUsage?: OfferUsageResolvers<ContextType>;
+  Customers?: CustomersResolvers<ContextType>;
+  CouponUsage?: CouponUsageResolvers<ContextType>;
+  Coupons?: CouponsResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   Orders?: OrdersResolvers<ContextType>;
   Date?: GraphQLScalarType;
-  CouponUsage?: CouponUsageResolvers<ContextType>;
-  Coupons?: CouponsResolvers<ContextType>;
-  DateTime?: GraphQLScalarType;
-  Customers?: CustomersResolvers<ContextType>;
-  CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
-  VariantRatings?: VariantRatingsResolvers<ContextType>;
-  RatingImages?: RatingImagesResolvers<ContextType>;
+  OrderItems?: OrderItemsResolvers<ContextType>;
   OrderTracking?: OrderTrackingResolvers<ContextType>;
+  CustomersAddresses?: CustomersAddressesResolvers<ContextType>;
+  Districts?: DistrictsResolvers<ContextType>;
+  ShippingZoneDistricts?: ShippingZoneDistrictsResolvers<ContextType>;
+  ShippingZones?: ShippingZonesResolvers<ContextType>;
+  ShippingZoneMethods?: ShippingZoneMethodsResolvers<ContextType>;
+  ShippingMethods?: ShippingMethodsResolvers<ContextType>;
   PaymentTransactions?: PaymentTransactionsResolvers<ContextType>;
   PaymentMethods?: PaymentMethodsResolvers<ContextType>;
+  VariantRatings?: VariantRatingsResolvers<ContextType>;
+  RatingImages?: RatingImagesResolvers<ContextType>;
   PromotionVariants?: PromotionVariantsResolvers<ContextType>;
   Promotions?: PromotionsResolvers<ContextType>;
   VariantImages?: VariantImagesResolvers<ContextType>;
-  ProductCategories?: ProductCategoriesResolvers<ContextType>;
-  Categories?: CategoriesResolvers<ContextType>;
   PasswordSetupTokens?: PasswordSetupTokensResolvers<ContextType>;
   Roles?: RolesResolvers<ContextType>;
   RolesSections?: RolesSectionsResolvers<ContextType>;
   Sections?: SectionsResolvers<ContextType>;
+  FooterLinks?: FooterLinksResolvers<ContextType>;
   OrderSummary?: OrderSummaryResolvers<ContextType>;
-  BigInt?: GraphQLScalarType;
   Permissions?: PermissionsResolvers<ContextType>;
   ProductRatingSummary?: ProductRatingSummaryResolvers<ContextType>;
   Services?: ServicesResolvers<ContextType>;
   ServicesImages?: ServicesImagesResolvers<ContextType>;
-  ShippingMethods?: ShippingMethodsResolvers<ContextType>;
-  ShippingZoneMethods?: ShippingZoneMethodsResolvers<ContextType>;
-  ShippingZones?: ShippingZonesResolvers<ContextType>;
+  StoreConfig?: StoreConfigResolvers<ContextType>;
+  StoreFeatures?: StoreFeaturesResolvers<ContextType>;
+  VariantActiveOffers?: VariantActiveOffersResolvers<ContextType>;
   VariantRatingSummary?: VariantRatingSummaryResolvers<ContextType>;
+  VerificationCodes?: VerificationCodesResolvers<ContextType>;
 }>;
 
 export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{

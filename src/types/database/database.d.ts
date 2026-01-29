@@ -28,6 +28,19 @@ export interface Scalars {
   Timestamp: { input: Date; output: Date; }
 }
 
+export type ActiveOffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type ActiveOffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
+
 export type AttributesDisplayType =
   | 'color'
   | 'custom'
@@ -43,6 +56,26 @@ export type CouponsApplicableTo =
 export type CouponsDiscountType =
   | 'fixed_amount'
   | 'percentage';
+
+export type DistrictsZone =
+  | 'callao'
+  | 'lima_centro'
+  | 'lima_este'
+  | 'lima_norte'
+  | 'lima_sur';
+
+export type OffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type OffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
 
 export type OrderSummaryPaymentStatus =
   | 'failed'
@@ -107,6 +140,19 @@ export type PromotionsDiscountType =
   | 'fixed_amount'
   | 'percentage';
 
+export type VariantActiveOffersDiscountType =
+  | 'fixed_amount'
+  | 'fixed_price'
+  | 'percentage';
+
+export type VariantActiveOffersOfferType =
+  | 'bundle'
+  | 'clearance'
+  | 'daily_deal'
+  | 'flash_sale'
+  | 'seasonal'
+  | 'volume_discount';
+
 export type VariantImagesImageType =
   | 'back'
   | 'bottom'
@@ -117,6 +163,58 @@ export type VariantImagesImageType =
   | 'packaging'
   | 'right'
   | 'top';
+
+export type VerificationCodesType =
+  | 'password_reset'
+  | 'verification';
+
+export interface ActiveOffers {
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  /** Contador de usos actuales */
+  current_uses?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  discount_type: ActiveOffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  end_date: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  is_featured?: Maybe<Scalars['Int']['output']>;
+  max_discount_percent?: Maybe<Scalars['Float']['output']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: Maybe<Scalars['Int']['output']>;
+  /** Precio final de la oferta */
+  min_price?: Maybe<Scalars['Float']['output']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: Maybe<Scalars['Int']['output']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  offer_type: ActiveOffersOfferType;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  start_date: Scalars['DateTime']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
+  total_sold?: Maybe<Scalars['Float']['output']>;
+  total_variants: Scalars['BigInt']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
 
 export interface AttributeOptions {
   additional_cost?: Maybe<Scalars['Float']['output']>;
@@ -154,18 +252,26 @@ export interface Brands {
   created_at: Scalars['Timestamp']['output'];
   created_by?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   updated_at: Scalars['Timestamp']['output'];
   updated_by?: Maybe<Scalars['Int']['output']>;
 }
 
 export interface Categories {
+  /** Call to action button link */
   banner_cta_link?: Maybe<Scalars['String']['output']>;
+  /** Call to action button text */
   banner_cta_text?: Maybe<Scalars['String']['output']>;
+  /** Banner description text */
   banner_description?: Maybe<Scalars['String']['output']>;
+  /** Banner image for desktop */
   banner_image?: Maybe<Scalars['String']['output']>;
+  /** Banner image for mobile */
   banner_image_mobile?: Maybe<Scalars['String']['output']>;
+  /** Banner subtitle */
   banner_subtitle?: Maybe<Scalars['String']['output']>;
+  /** Banner title (defaults to category name if empty) */
   banner_title?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Timestamp']['output'];
   created_by?: Maybe<Scalars['Int']['output']>;
@@ -173,7 +279,9 @@ export interface Categories {
   display_order?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   image_url?: Maybe<Scalars['String']['output']>;
+  /** SEO meta description */
   meta_description?: Maybe<Scalars['String']['output']>;
+  /** SEO meta title */
   meta_title?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent_id?: Maybe<Scalars['Int']['output']>;
@@ -223,8 +331,12 @@ export interface Customers {
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Int']['output']>;
-  lastname: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  /** Apellido del cliente */
+  lastname?: Maybe<Scalars['String']['output']>;
+  /** Nombre del cliente */
+  name?: Maybe<Scalars['String']['output']>;
+  /** 1 = usuario necesita crear contraseÃ±a */
+  needs_password_setup?: Maybe<Scalars['Int']['output']>;
   password: Scalars['String']['output'];
   /** numero de celular */
   phone?: Maybe<Scalars['String']['output']>;
@@ -240,7 +352,6 @@ export interface CustomersAddresses {
   created_at: Scalars['Timestamp']['output'];
   department: Scalars['String']['output'];
   district: Scalars['String']['output'];
-  /** FK a la tabla districts */
   district_id?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
   id_customer: Scalars['Int']['output'];
@@ -251,12 +362,110 @@ export interface CustomersAddresses {
   /** Longitud GPS */
   longitude?: Maybe<Scalars['Float']['output']>;
   province: Scalars['String']['output'];
-  /** Referencia de ubicación */
   reference?: Maybe<Scalars['String']['output']>;
   /** Nombre de la avenida/calle/jirón */
   street_name: Scalars['String']['output'];
   /** Número de la dirección */
   street_number: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface Districts {
+  /** CÃ³digo INEI del distrito */
+  code: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  id: Scalars['Int']['output'];
+  /** Si tiene cobertura de delivery */
+  is_active: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  /** Zona geogrÃ¡fica */
+  zone: DistrictsZone;
+}
+
+export interface FooterLinks {
+  created_at: Scalars['Timestamp']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  url: Scalars['String']['output'];
+}
+
+export interface OfferCategories {
+  category_id: Scalars['Int']['output'];
+  offer_id: Scalars['Int']['output'];
+}
+
+export interface OfferUsage {
+  customer_id: Scalars['Int']['output'];
+  /** Ahorro total */
+  discount_amount: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
+  offer_id: Scalars['Int']['output'];
+  offer_price: Scalars['Float']['output'];
+  order_id: Scalars['Int']['output'];
+  original_price: Scalars['Float']['output'];
+  quantity: Scalars['Int']['output'];
+  used_at: Scalars['Timestamp']['output'];
+  variant_id: Scalars['Int']['output'];
+}
+
+export interface OfferVariants {
+  created_at: Scalars['Timestamp']['output'];
+  id: Scalars['Int']['output'];
+  offer_id: Scalars['Int']['output'];
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['output'];
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['output'];
+  /** Unidades vendidas en esta oferta */
+  sold_count?: Maybe<Scalars['Int']['output']>;
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: Maybe<Scalars['Int']['output']>;
+  variant_id: Scalars['Int']['output'];
+}
+
+export interface Offers {
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  /** Contador de usos actuales */
+  current_uses?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  discount_type: OffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  end_date: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  image_url?: Maybe<Scalars['String']['output']>;
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** Destacar en home/landing */
+  is_featured?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo de usos totales (NULL = ilimitado) */
+  max_uses?: Maybe<Scalars['Int']['output']>;
+  /** MÃ¡ximo por cliente */
+  max_uses_per_customer?: Maybe<Scalars['Int']['output']>;
+  /** Monto mÃ­nimo de compra */
+  min_purchase_amount?: Maybe<Scalars['Float']['output']>;
+  /** Cantidad mÃ­nima para aplicar */
+  min_quantity?: Maybe<Scalars['Int']['output']>;
+  /** Nombre interno de la oferta */
+  name: Scalars['String']['output'];
+  offer_type: OffersOfferType;
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  start_date: Scalars['DateTime']['output'];
+  /** TÃ­tulo visible para el cliente */
+  title: Scalars['String']['output'];
   updated_at: Scalars['Timestamp']['output'];
 }
 
@@ -467,7 +676,6 @@ export interface ProductVariants {
   price: Scalars['Float']['output'];
   product_id: Scalars['Int']['output'];
   sku: Scalars['String']['output'];
-  /** URL-friendly slug para SEO (ej: iphone-16-pro-max-negro-128gb) */
   slug?: Maybe<Scalars['String']['output']>;
   stock: Scalars['Int']['output'];
   updated_at: Scalars['Timestamp']['output'];
@@ -538,6 +746,7 @@ export interface Sections {
   id: Scalars['Int']['output'];
   image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  section_group?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
 }
 
@@ -579,6 +788,13 @@ export interface ShippingMethods {
   updated_at: Scalars['Timestamp']['output'];
 }
 
+export interface ShippingZoneDistricts {
+  created_at: Scalars['Timestamp']['output'];
+  district_id: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  zone_id: Scalars['Int']['output'];
+}
+
 export interface ShippingZoneMethods {
   cost: Scalars['Float']['output'];
   created_at: Scalars['Timestamp']['output'];
@@ -601,6 +817,39 @@ export interface ShippingZones {
   updated_at: Scalars['Timestamp']['output'];
 }
 
+export interface StoreConfig {
+  address?: Maybe<Scalars['String']['output']>;
+  business_hours?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  email?: Maybe<Scalars['String']['output']>;
+  facebook_url?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  instagram_url?: Maybe<Scalars['String']['output']>;
+  logo_height?: Maybe<Scalars['Int']['output']>;
+  logo_url?: Maybe<Scalars['String']['output']>;
+  logo_width?: Maybe<Scalars['Int']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  store_description?: Maybe<Scalars['String']['output']>;
+  store_name: Scalars['String']['output'];
+  twitter_url?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['Timestamp']['output'];
+  whatsapp_number?: Maybe<Scalars['String']['output']>;
+}
+
+export interface StoreFeatures {
+  created_at: Scalars['Timestamp']['output'];
+  /** Descripcion corta */
+  description: Scalars['String']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  /** nombre del icono: shipping, discount, delivery, secure, etc. */
+  icon: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  /** Titulo del beneficio */
+  title: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
 export interface Users {
   created_at: Scalars['Timestamp']['output'];
   email: Scalars['String']['output'];
@@ -612,6 +861,44 @@ export interface Users {
   photo?: Maybe<Scalars['String']['output']>;
   role_id?: Maybe<Scalars['Int']['output']>;
   updated_at: Scalars['Timestamp']['output'];
+}
+
+export interface VariantActiveOffers {
+  /** Color del badge */
+  badge_color?: Maybe<Scalars['String']['output']>;
+  /** Texto del badge (FLASH, -50%, HOT) */
+  badge_text?: Maybe<Scalars['String']['output']>;
+  discount_percent?: Maybe<Scalars['Float']['output']>;
+  discount_type: VariantActiveOffersDiscountType;
+  /** Valor del descuento (% o monto fijo) */
+  discount_value: Scalars['Float']['output'];
+  end_date: Scalars['DateTime']['output'];
+  offer_id: Scalars['Int']['output'];
+  /** Nombre interno de la oferta */
+  offer_name: Scalars['String']['output'];
+  /** Precio final de la oferta */
+  offer_price: Scalars['Float']['output'];
+  /** TÃ­tulo visible para el cliente */
+  offer_title: Scalars['String']['output'];
+  offer_type: VariantActiveOffersOfferType;
+  /** Precio original al momento de crear */
+  original_price: Scalars['Float']['output'];
+  /** Mayor nÃºmero = mayor prioridad */
+  priority?: Maybe<Scalars['Int']['output']>;
+  remaining_stock?: Maybe<Scalars['BigInt']['output']>;
+  savings_amount: Scalars['Float']['output'];
+  /** Mostrar contador regresivo */
+  show_countdown?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar cuÃ¡nto ahorra */
+  show_savings?: Maybe<Scalars['Int']['output']>;
+  /** Mostrar indicador de stock */
+  show_stock_indicator?: Maybe<Scalars['Int']['output']>;
+  /** Unidades vendidas en esta oferta */
+  sold_count?: Maybe<Scalars['Int']['output']>;
+  start_date: Scalars['DateTime']['output'];
+  /** Stock mÃ¡ximo para esta oferta (NULL = sin lÃ­mite) */
+  stock_limit?: Maybe<Scalars['Int']['output']>;
+  variant_id: Scalars['Int']['output'];
 }
 
 export interface VariantAttributeOptions {
@@ -654,11 +941,6 @@ export interface VariantRatingSummary {
   verified_purchases?: Maybe<Scalars['Float']['output']>;
 }
 
-export type RatingStatus =
-  | 'pending'
-  | 'approved'
-  | 'rejected';
-
 export interface VariantRatings {
   created_at: Scalars['Timestamp']['output'];
   customer_id: Scalars['Int']['output'];
@@ -667,9 +949,19 @@ export interface VariantRatings {
   review?: Maybe<Scalars['String']['output']>;
   reviewed_at?: Maybe<Scalars['Timestamp']['output']>;
   reviewed_by?: Maybe<Scalars['Int']['output']>;
-  status: RatingStatus;
+  status: Scalars['String']['output'];
   title?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['Timestamp']['output'];
   variant_id: Scalars['Int']['output'];
   verified_purchase: Scalars['Int']['output'];
+}
+
+export interface VerificationCodes {
+  code: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  email: Scalars['String']['output'];
+  expires_at: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  type?: Maybe<VerificationCodesType>;
+  used_at?: Maybe<Scalars['DateTime']['output']>;
 }
