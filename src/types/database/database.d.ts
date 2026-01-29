@@ -850,6 +850,18 @@ export interface StoreFeatures {
   updated_at: Scalars['Timestamp']['output'];
 }
 
+export interface Tags {
+  color?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['Timestamp']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  position?: Maybe<Scalars['Int']['output']>;
+  slug: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+}
+
 export interface Users {
   created_at: Scalars['Timestamp']['output'];
   email: Scalars['String']['output'];

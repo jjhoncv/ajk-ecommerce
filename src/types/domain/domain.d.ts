@@ -916,6 +916,18 @@ export interface StoreFeatures {
 
 }
 
+export interface Tags {
+  color?: Maybe<Scalars['String']['output']>;
+
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  position?: Maybe<Scalars['Int']['output']>;
+  slug: Scalars['String']['output'];
+
+}
+
 export interface Users {
   attribute?: Maybe<Attributes>;
   banner?: Maybe<Array<Maybe<Banner>>>;
