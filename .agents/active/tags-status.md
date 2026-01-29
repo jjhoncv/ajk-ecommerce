@@ -13,10 +13,10 @@ media
 - [x] DBA
 - [x] Backend
 - [x] Frontend
-- [ ] QA
+- [x] QA
 
 ## Porcentaje
-75%
+100%
 
 ## Toca Shared
 | Archivo | Acción | Estado |
