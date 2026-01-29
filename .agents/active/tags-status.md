@@ -11,12 +11,12 @@ media
 
 ## Progreso
 - [x] DBA
-- [ ] Backend
-- [ ] Frontend
+- [x] Backend
+- [x] Frontend
 - [ ] QA
 
 ## Porcentaje
-25%
+75%
 
 ## Toca Shared
 | Archivo | Acción | Estado |
