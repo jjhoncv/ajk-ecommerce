@@ -24,8 +24,5 @@
     "shared": { "status": "released", "version": "1.0.0" },
     "shippings": { "status": "released", "version": "1.0.0" },
     "users": { "status": "released", "version": "1.0.0" },
-    "tags": { "status": "in-progress", "version": "0.0.0", "assignedDate": "2026-01-29" }
   },
-  "activeFeatures": ["tags"],
-  "pendingReleases": []
 }

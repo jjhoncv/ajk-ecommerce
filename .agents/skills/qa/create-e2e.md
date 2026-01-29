@@ -4,13 +4,24 @@
 QA
 
 ## Trigger
-Module Lead asigna tarea de crear tests (después de Frontend)
+Module Lead asigna tarea de crear tests (después de Frontend y Backend)
 
 ## Inputs
 - Nombre del módulo
 - `.agents/specs/[modulo]-testing-spec.md`
 - UI del admin ya funcionando
+- API endpoints funcionando
 - Branch de trabajo
+
+---
+
+## Prerequisitos
+
+Antes de crear tests, verificar que:
+1. Servidor de desarrollo corriendo (`pnpm dev`)
+2. Páginas admin existen y funcionan
+3. API endpoints responden correctamente
+4. No hay errores de lint
 
 ---
 
@@ -24,330 +35,236 @@ ls src/app/admin/[modulo]/
 
 # Debe mostrar: page.tsx, new/, [id]/
 
+# Verificar que API existe
+ls src/app/api/admin/[modulo]/
+
 # Cambiar a branch
 git checkout feature/[modulo]
 git pull origin feature/[modulo]
 ```
 
-### 2. Crear Estructura E2E
+### 2. Ejecutar Lint Antes de Tests
+
+```bash
+pnpm lint
+```
+
+Si hay errores de lint, reportar y NO continuar con tests.
+
+### 3. Crear Estructura E2E
 
 ```bash
 mkdir -p src/module/[modulo]/e2e/fixtures
-mkdir -p src/module/[modulo]/e2e/screenshots
+mkdir -p src/module/[modulo]/e2e/admin
 ```
 
-### 3. Crear Fixtures
+### 4. Crear Fixtures
 
 ```typescript
-// src/module/[modulo]/e2e/fixtures/[modulo].fixture.ts
-export const [modulo]Fixtures = {
+// src/module/[modulo]/e2e/fixtures/[modulo].data.ts
+export const [modulo]TestData = {
   valid: {
-    name: "Test [Entidad]",
-    slug: "test-[modulo]",
-    description: "Descripción de prueba para E2E",
-    isActive: true,
-    position: 1,
-  },
-  invalid: {
-    name: "",
-    slug: "con espacios invalidos",
+    name: 'Test [Entidad] E2E',
+    slug: 'test-[modulo]-e2e',
+    description: 'Descripción de prueba para E2E'
   },
   update: {
-    name: "Test [Entidad] Actualizado",
-    description: "Descripción actualizada en E2E",
+    name: 'Test [Entidad] Actualizado',
+    description: 'Descripción actualizada en E2E'
   },
-};
+  invalid: {
+    name: '',
+    slug: ''
+  }
+}
 ```
 
-### 4. Crear admin.test.ts
+### 5. Crear Test de Admin CRUD
 
 ```typescript
-// src/module/[modulo]/e2e/admin.test.ts
-import { Page } from "playwright";
-import { [modulo]Fixtures } from "./fixtures/[modulo].fixture";
+// src/module/[modulo]/e2e/admin/[modulo].spec.ts
+import { test, expect } from '@playwright/test'
+import { [modulo]TestData } from '../fixtures/[modulo].data'
 
-async function takeScreenshot(page: Page, name: string) {
-  await page.screenshot({
-    path: `src/module/[modulo]/e2e/screenshots/${name}`,
-    fullPage: true,
-  });
-}
+// URLs
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+const ADMIN_URL = `${BASE_URL}/admin/[modulo]`
+const LOGIN_URL = `${BASE_URL}/admin/login`
 
-export async function adminTests(page: Page, baseUrl: string) {
-  let passed = 0;
-  let failed = 0;
+// Credenciales de admin
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@test.com'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
 
-  // Test 1: Navegar a lista
-  console.log("📋 Test 1: Navegar a lista de [modulo]s");
-  try {
-    await page.goto(`${baseUrl}/admin/[modulo]`);
-    await page.waitForSelector("h1");
-    const title = await page.textContent("h1");
-    if (!title?.includes("[Entidad]")) throw new Error("Título incorrecto");
-    await takeScreenshot(page, "01-list.png");
-    console.log("  ✅ Lista cargada correctamente");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "01-list-error.png");
-    failed++;
-  }
+test.describe('[Entidad]s Admin CRUD', () => {
+  test.beforeEach(async ({ page }) => {
+    // Login admin
+    await page.goto(LOGIN_URL)
+    await page.fill('input[name="email"]', ADMIN_EMAIL)
+    await page.fill('input[name="password"]', ADMIN_PASSWORD)
+    await page.click('button[type="submit"]')
+    await page.waitForURL('**/admin/**')
+  })
 
-  // Test 2: Abrir formulario nuevo
-  console.log("📋 Test 2: Abrir formulario nuevo");
-  try {
-    await page.click('a[href="/admin/[modulo]/new"]');
-    await page.waitForSelector("form");
-    await takeScreenshot(page, "02-new-form.png");
-    console.log("  ✅ Formulario nuevo abierto");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "02-new-form-error.png");
-    failed++;
-  }
+  test('should display [modulo]s list page', async ({ page }) => {
+    await page.goto(ADMIN_URL)
 
-  // Test 3: Validaciones de formulario
-  console.log("📋 Test 3: Validaciones de formulario");
-  try {
+    // Verificar título
+    await expect(page.locator('h1')).toContainText('[Entidad]')
+
+    // Verificar botón de nuevo
+    await expect(page.locator('a[href="/admin/[modulo]/new"]')).toBeVisible()
+  })
+
+  test('should navigate to new [modulo] form', async ({ page }) => {
+    await page.goto(ADMIN_URL)
+
+    // Click en nuevo
+    await page.click('a[href="/admin/[modulo]/new"]')
+    await page.waitForURL('**/admin/[modulo]/new')
+
+    // Verificar formulario
+    await expect(page.locator('form')).toBeVisible()
+    await expect(page.locator('input[name="name"]')).toBeVisible()
+  })
+
+  test('should show validation errors on empty form', async ({ page }) => {
+    await page.goto(`${ADMIN_URL}/new`)
+
     // Intentar enviar sin datos
-    await page.click('button[type="submit"]');
-    // Esperar validación HTML5 o mensaje de error
-    await page.waitForTimeout(500);
-    await takeScreenshot(page, "03-validation-errors.png");
-    console.log("  ✅ Validaciones funcionando");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "03-validation-error.png");
-    failed++;
-  }
+    await page.click('button[type="submit"]')
 
-  // Test 4: Crear item
-  console.log("📋 Test 4: Crear nuevo [modulo]");
-  try {
-    const fixture = [modulo]Fixtures.valid;
-    await page.fill('input[name="name"]', fixture.name);
-    await page.fill('input[name="slug"]', fixture.slug);
-    await page.fill('textarea[name="description"]', fixture.description);
-    await takeScreenshot(page, "04-form-filled.png");
+    // Esperar validación
+    await page.waitForTimeout(500)
 
-    await page.click('button[type="submit"]');
-    await page.waitForURL("**/admin/[modulo]");
-    await page.waitForTimeout(500);
-    await takeScreenshot(page, "05-created.png");
-    console.log("  ✅ Item creado exitosamente");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "04-create-error.png");
-    failed++;
-  }
+    // El formulario debe seguir visible (no redirige)
+    await expect(page.locator('form')).toBeVisible()
+  })
 
-  // Test 5: Verificar item en lista
-  console.log("📋 Test 5: Verificar item en lista");
-  try {
-    const itemName = await page.textContent(`text=${[modulo]Fixtures.valid.name}`);
-    if (!itemName) throw new Error("Item no encontrado en lista");
-    console.log("  ✅ Item visible en lista");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    failed++;
-  }
+  test('should create new [modulo]', async ({ page }) => {
+    await page.goto(`${ADMIN_URL}/new`)
 
-  // Test 6: Editar item
-  console.log("📋 Test 6: Editar [modulo]");
-  try {
-    // Click en el primer link de editar
-    await page.click('table tbody tr:first-child a[href*="/admin/[modulo]/"]');
-    await page.waitForSelector("form");
-    await takeScreenshot(page, "06-edit-form.png");
+    // Llenar formulario
+    await page.fill('input[name="name"]', [modulo]TestData.valid.name)
+    await page.fill('input[name="slug"]', [modulo]TestData.valid.slug)
+
+    const descriptionField = page.locator('textarea[name="description"]')
+    if (await descriptionField.isVisible()) {
+      await descriptionField.fill([modulo]TestData.valid.description)
+    }
+
+    // Enviar
+    await page.click('button[type="submit"]')
+
+    // Esperar redirección a lista
+    await page.waitForURL(ADMIN_URL)
+
+    // Verificar que el item aparece en la lista
+    await expect(page.locator(`text=${[modulo]TestData.valid.name}`)).toBeVisible()
+  })
+
+  test('should edit existing [modulo]', async ({ page }) => {
+    await page.goto(ADMIN_URL)
+
+    // Click en editar del primer item
+    const editLink = page.locator('table tbody tr:first-child a[href*="/admin/[modulo]/"]').first()
+    await editLink.click()
+
+    // Esperar carga del formulario
+    await page.waitForSelector('form')
 
     // Modificar nombre
-    await page.fill('input[name="name"]', [modulo]Fixtures.update.name);
-    await page.click('button[type="submit"]');
-    await page.waitForURL("**/admin/[modulo]");
-    await takeScreenshot(page, "07-edited.png");
-    console.log("  ✅ Item editado exitosamente");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "06-edit-error.png");
-    failed++;
-  }
+    await page.fill('input[name="name"]', [modulo]TestData.update.name)
 
-  // Test 7: Eliminar item
-  console.log("📋 Test 7: Eliminar [modulo]");
-  try {
-    // Manejar el diálogo de confirmación
-    page.on("dialog", (dialog) => dialog.accept());
-
-    await page.click('table tbody tr:first-child button[data-action="delete"]');
-    await page.waitForTimeout(1000);
-    await takeScreenshot(page, "08-deleted.png");
-    console.log("  ✅ Item eliminado exitosamente");
-    passed++;
-  } catch (error) {
-    console.log("  ❌ Error:", error);
-    await takeScreenshot(page, "07-delete-error.png");
-    failed++;
-  }
-
-  return { passed, failed };
-}
-```
-
-### 5. Crear index.ts (Runner)
-
-```typescript
-// src/module/[modulo]/e2e/index.ts
-import { chromium, Browser, Page } from "playwright";
-import { adminTests } from "./admin.test";
-
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@test.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
-
-async function runTests() {
-  console.log("🚀 Iniciando tests E2E para [modulo]...\n");
-  console.log(`📍 Base URL: ${BASE_URL}\n`);
-
-  const browser: Browser = await chromium.launch({
-    headless: true,
-  });
-  const context = await browser.newContext({
-    viewport: { width: 1280, height: 720 },
-  });
-  const page: Page = await context.newPage();
-
-  let totalPassed = 0;
-  let totalFailed = 0;
-
-  try {
-    // Login admin
-    console.log("🔐 Iniciando sesión admin...");
-    await page.goto(`${BASE_URL}/admin/login`);
-    await page.fill('input[name="email"]', ADMIN_EMAIL);
-    await page.fill('input[name="password"]', ADMIN_PASSWORD);
-    await page.click('button[type="submit"]');
+    // Guardar
+    await page.click('button[type="submit"]')
 
     // Esperar redirección
-    await page.waitForURL("**/admin/**", { timeout: 10000 });
-    console.log("✅ Login exitoso\n");
+    await page.waitForURL(ADMIN_URL)
 
-    // Ejecutar tests de admin
-    console.log("=" .repeat(50));
-    console.log("TESTS ADMIN CRUD");
-    console.log("=".repeat(50) + "\n");
+    // Verificar cambio
+    await expect(page.locator(`text=${[modulo]TestData.update.name}`)).toBeVisible()
+  })
 
-    const adminResults = await adminTests(page, BASE_URL);
-    totalPassed += adminResults.passed;
-    totalFailed += adminResults.failed;
+  test('should delete [modulo]', async ({ page }) => {
+    await page.goto(ADMIN_URL)
 
-  } catch (error) {
-    console.error("❌ Error durante tests:", error);
-    totalFailed++;
+    // Contar items antes
+    const itemsCountBefore = await page.locator('table tbody tr').count()
 
-    // Screenshot de error
-    await page.screenshot({
-      path: "src/module/[modulo]/e2e/screenshots/error-fatal.png",
-      fullPage: true,
-    });
-  } finally {
-    await browser.close();
-  }
+    // Aceptar diálogo de confirmación
+    page.on('dialog', dialog => dialog.accept())
 
-  // Resumen final
-  console.log("\n" + "=".repeat(50));
-  console.log("📊 RESUMEN DE TESTS");
-  console.log("=".repeat(50));
-  console.log(`✅ Passed: ${totalPassed}`);
-  console.log(`❌ Failed: ${totalFailed}`);
-  console.log(`📁 Screenshots: src/module/[modulo]/e2e/screenshots/`);
-  console.log("=".repeat(50));
+    // Click en eliminar del primer item
+    await page.click('table tbody tr:first-child [data-action="delete"]')
 
-  // Exit code basado en resultados
-  process.exit(totalFailed > 0 ? 1 : 0);
-}
+    // Esperar que se actualice
+    await page.waitForTimeout(1000)
+    await page.reload()
 
-runTests();
+    // Verificar que hay un item menos (o lista vacía)
+    const itemsCountAfter = await page.locator('table tbody tr').count()
+    expect(itemsCountAfter).toBeLessThan(itemsCountBefore)
+  })
+})
 ```
 
-### 6. Crear testing-spec.md
-
-```markdown
-<!-- src/module/[modulo]/e2e/testing-spec.md -->
-# Testing Spec: [Modulo]
-
-## Criterios de Aceptación - Cobertura E2E
-
-### Admin CRUD
-| Criterio | Test | Estado |
-|----------|------|--------|
-| Listar [modulo]s | Test 1: Navegar a lista | ✅ |
-| Formulario nuevo | Test 2: Abrir formulario | ✅ |
-| Validaciones | Test 3: Validaciones | ✅ |
-| Crear [modulo] | Test 4: Crear | ✅ |
-| Ver en lista | Test 5: Verificar | ✅ |
-| Editar [modulo] | Test 6: Editar | ✅ |
-| Eliminar [modulo] | Test 7: Eliminar | ✅ |
-
-## Cobertura
-**Total: 7/7 tests (100%)**
-
-## Screenshots Generados
-| # | Archivo | Descripción |
-|---|---------|-------------|
-| 1 | 01-list.png | Página de lista |
-| 2 | 02-new-form.png | Formulario nuevo vacío |
-| 3 | 03-validation-errors.png | Errores de validación |
-| 4 | 04-form-filled.png | Formulario lleno |
-| 5 | 05-created.png | Item creado en lista |
-| 6 | 06-edit-form.png | Formulario de edición |
-| 7 | 07-edited.png | Item editado en lista |
-| 8 | 08-deleted.png | Item eliminado |
-
-## Comando de Ejecución
-```bash
-npx tsx src/module/[modulo]/e2e/index.ts
-```
-
-## Variables de Entorno
-```bash
-BASE_URL=http://localhost:3000
-ADMIN_EMAIL=admin@test.com
-ADMIN_PASSWORD=admin123
-```
-```
-
-### 7. Ejecutar Tests
+### 6. Ejecutar Tests
 
 ```bash
-# Asegurarse que el servidor está corriendo
-# En otra terminal: pnpm dev
+# Asegurarse que el servidor está corriendo en otra terminal
+# pnpm dev
 
-# Ejecutar tests
-npx tsx src/module/[modulo]/e2e/index.ts
+# Ejecutar tests del módulo
+npx playwright test src/module/[modulo]/e2e/ --headed
+
+# O sin UI
+npx playwright test src/module/[modulo]/e2e/
 ```
 
-### 8. Verificar Screenshots
+### 7. Revisar Resultados
 
 ```bash
-ls -la src/module/[modulo]/e2e/screenshots/
-
-# Debe mostrar:
-# 01-list.png
-# 02-new-form.png
-# 03-validation-errors.png
-# 04-form-filled.png
-# 05-created.png
-# 06-edit-form.png
-# 07-edited.png
-# 08-deleted.png
+# Ver reporte HTML
+npx playwright show-report
 ```
 
-### 9. Commit
+### 8. Si Hay Errores
+
+#### Errores de Lint:
+```
+BLOQUEADO: Errores de lint detectados
+
+DETALLES:
+  - [Archivo]: [Mensaje de error]
+  - [Archivo]: [Mensaje de error]
+
+ACCIÓN REQUERIDA:
+  Backend/Frontend debe corregir los errores de lint antes de tests
+```
+
+#### Errores de Tests:
+```
+TESTS FALLANDO: [modulo]
+
+RESULTADOS:
+  ✅ Passed: X
+  ❌ Failed: Y
+
+FALLAS DETALLADAS:
+
+1. Test: [nombre del test]
+   Error: [mensaje de error]
+   Posible causa: [análisis]
+
+2. Test: [nombre del test]
+   Error: [mensaje de error]
+   Posible causa: [análisis]
+
+RECOMENDACIÓN:
+  - [Backend/Frontend] debe revisar: [descripción]
+```
+
+### 9. Commit (solo si todos los tests pasan)
 
 ```bash
 git add src/module/[modulo]/e2e/
@@ -363,75 +280,60 @@ COMPLETADO: E2E tests para [modulo]
 COMMIT: test([modulo]): add e2e tests
 
 ARCHIVOS CREADOS:
-  - src/module/[modulo]/e2e/index.ts
-  - src/module/[modulo]/e2e/admin.test.ts
-  - src/module/[modulo]/e2e/fixtures/[modulo].fixture.ts
-  - src/module/[modulo]/e2e/testing-spec.md
-  - src/module/[modulo]/e2e/screenshots/ (8 capturas)
+  - src/module/[modulo]/e2e/fixtures/[modulo].data.ts
+  - src/module/[modulo]/e2e/admin/[modulo].spec.ts
 
 RESULTADOS:
-  ✅ Passed: 7
+  ✅ Passed: 5
   ❌ Failed: 0
 
-COBERTURA: 100% (7/7 criterios)
+COBERTURA: 100% (5/5 criterios)
 
 TESTS EJECUTADOS:
-  1. Navegar a lista - ✅
-  2. Abrir formulario nuevo - ✅
+  1. Lista de [modulo]s - ✅
+  2. Navegación a formulario nuevo - ✅
   3. Validaciones de formulario - ✅
-  4. Crear item - ✅
-  5. Verificar en lista - ✅
-  6. Editar item - ✅
-  7. Eliminar item - ✅
+  4. Crear [modulo] - ✅
+  5. Editar [modulo] - ✅
+  6. Eliminar [modulo] - ✅
 
-SCREENSHOTS: src/module/[modulo]/e2e/screenshots/
+LINT: ✅ Sin errores
 
 NOTAS: [observaciones si las hay]
 ```
 
 ---
 
-## Si Hay Tests Fallando
+## Verificaciones Críticas
 
-Reportar detalladamente:
+### Antes de empezar:
+- [ ] `pnpm lint` pasa sin errores
+- [ ] `pnpm dev` está corriendo
+- [ ] Páginas admin cargan correctamente
+- [ ] API responde correctamente
 
-```
-TESTS FALLANDO: [modulo]
-
-RESULTADOS:
-  ✅ Passed: X
-  ❌ Failed: Y
-
-FALLAS DETALLADAS:
-
-1. Test: [nombre del test]
-   Error: [mensaje de error]
-   Screenshot: [nombre del archivo]
-   Posible causa: [análisis]
-
-2. Test: [nombre del test]
-   Error: [mensaje de error]
-   Screenshot: [nombre del archivo]
-   Posible causa: [análisis]
-
-RECOMENDACIÓN:
-  - [Backend/Frontend] debe revisar: [descripción]
-```
+### Después de tests:
+- [ ] Todos los tests pasan
+- [ ] No hay errores de consola
+- [ ] No hay warnings de TypeScript
+- [ ] Screenshots no muestran errores
 
 ---
 
 ## Outputs
 - `src/module/[modulo]/e2e/` completo
-- Tests ejecutados
-- Screenshots generados
+- Tests ejecutados y pasando
 - Resultados reportados
+- Lint verificado
 
 ## Next
 - Module Lead calcula cumplimiento
 - Si todo pasa: proponer release
 
 ## NO Hacer
+- NO ejecutar tests si hay errores de lint
 - NO modificar base de datos
 - NO modificar código de core/ o service/
 - NO modificar componentes
-- NO ejecutar sin UI funcionando
+- NO hacer commit si tests fallan
+- NO continuar sin servidor de desarrollo corriendo

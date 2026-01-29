@@ -14,13 +14,33 @@ Module Lead asigna tarea de crear frontend (después de DBA)
 
 ---
 
+## Componentes Compartidos a Usar
+
+**IMPORTANTE**: El proyecto tiene componentes compartidos en `@/module/shared/`. SIEMPRE usarlos.
+
+| Componente | Import | Uso |
+|------------|--------|-----|
+| `DynamicTable` | `@/module/shared/components/Table/DynamicTable` | Tabla con búsqueda, paginación, ordenamiento |
+| `FormCreate` | `@/module/shared/components/FormCreate/FormCreate` | Formulario con validaciones |
+| `LayoutPageAdmin` | `@/module/shared/components/LayoutPageAdmin` | Layout de página admin |
+| `PageUI` | `@/module/shared/components/Page/Page` | Contenedor de página |
+| `PageTitle` | `@/module/shared/components/Page/PageTitle` | Título de página |
+| `PageButton` | `@/module/shared/components/Page/PageButton` | Botón de acción |
+| `Alert` | `@/module/shared/components/Alert/Alert` | Confirmación de eliminación |
+| `RemoveAction` | `@/module/shared/components/Table/Actions` | Acción de eliminar |
+| `FetchCustomBody` | `@/module/shared/lib/FetchCustomBody` | Fetch con FormData |
+| `ToastSuccess/ToastFail` | `@/module/shared/lib/splash` | Notificaciones |
+| `mergeFieldsWithData` | `@/module/shared/components/FormCreate/mergeFieldsWithData` | Merge para editar |
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos
 
 ```bash
 # Verificar que types existen
-grep -r "[Entidad]" src/types/ || echo "ERROR: Types no encontrados"
+grep -A 5 "export interface [Entidad]" src/types/domain/domain.d.ts
 
 # Cambiar a branch
 git checkout feature/[modulo]
@@ -32,512 +52,407 @@ git pull origin feature/[modulo]
 ```bash
 mkdir -p src/module/[modulo]/components/admin
 mkdir -p src/app/admin/[modulo]/new
-mkdir -p src/app/admin/[modulo]/[id]
+mkdir -p "src/app/admin/[modulo]/[id]"
 ```
 
-### 3. Crear [Entidad]Fields.tsx
+### 3. Crear [entidad]Fields.ts
+
+**IMPORTANTE**: Usar `Field` type de FormCreate.
 
 ```typescript
-// src/module/[modulo]/components/admin/[Entidad]Fields.tsx
-import { FieldConfig } from "@/module/shared/types/field-config";
+// src/module/[modulo]/components/admin/[entidad]Fields.ts
+import {
+  type Field,
+  type FileOptions
+} from '@/module/shared/components/FormCreate/types/fileManagement'
 
-export const [Entidad]Fields: FieldConfig[] = [
+export const [Entidad]FileOptions: FileOptions = {
+  maxFileSize: 0.5 * 1024 * 1024, // 500KB
+  dimensions: {
+    min: { width: 200, height: 200 },
+    max: { width: 800, height: 800 }
+  },
+  acceptImageTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+}
+
+export const [Entidad]Fields: Field[] = [
   {
-    name: "name",
-    label: "Nombre",
-    type: "text",
-    required: true,
-    placeholder: "Ingrese el nombre",
-    validation: {
-      minLength: 2,
-      maxLength: 100,
+    key: 'name',
+    label: 'Nombre',
+    type: 'text',
+    required: {
+      min: 'Nombre es requerido'
+    }
+  },
+  {
+    key: 'slug',
+    label: 'URL amigable (slug)',
+    type: 'text',
+    required: {
+      min: 'Slug es requerido'
     },
+    placeholder: 'ej: mi-[modulo] (se genera automáticamente)'
   },
   {
-    name: "slug",
-    label: "Slug",
-    type: "text",
-    required: true,
-    placeholder: "nombre-en-url",
-    helperText: "URL amigable (sin espacios, minúsculas)",
-    validation: {
-      pattern: "^[a-z0-9-]+$",
-    },
+    key: 'description',
+    label: 'Descripción',
+    type: 'textarea'
   },
   {
-    name: "description",
-    label: "Descripción",
-    type: "textarea",
+    key: 'image_url',
+    label: 'Imagen',
+    type: 'file',
+    multiple: false,
     required: false,
-    placeholder: "Descripción opcional",
-  },
-  {
-    name: "isActive",
-    label: "Activo",
-    type: "switch",
-    required: false,
-    defaultValue: true,
-  },
-  {
-    name: "position",
-    label: "Posición",
-    type: "number",
-    required: false,
-    defaultValue: 0,
-    helperText: "Orden de aparición",
-  },
-];
+    options: [Entidad]FileOptions
+  }
+]
 ```
 
 ### 4. Crear [Entidad]ListView.tsx
 
+**IMPORTANTE**: Usar `DynamicTable`, `Alert`, `FetchCustomBody` de shared.
+
 ```typescript
 // src/module/[modulo]/components/admin/[Entidad]ListView.tsx
-"use client";
+'use client'
+import { type [Entidad] } from '@/module/[modulo]/service/[modulo]/types'
+import { Alert } from '@/module/shared/components/Alert/Alert'
+import { PreviewImageList } from '@/module/shared/components/PreviewImageList'
+import { RemoveAction } from '@/module/shared/components/Table/Actions'
+import {
+  DynamicTable,
+  type TableColumn
+} from '@/module/shared/components/Table/DynamicTable'
+import { FetchCustomBody } from '@/module/shared/lib/FetchCustomBody'
+import { ToastFail, ToastSuccess } from '@/module/shared/lib/splash'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { type FC } from 'react'
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
-
-interface [Entidad] {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  isActive: boolean;
-  position: number;
+interface [Entidad]ListViewProps {
+  items: [Entidad][]
 }
 
-export function [Entidad]ListView() {
-  const [items, setItems] = useState<[Entidad][]>([]);
-  const [loading, setLoading] = useState(true);
+export const [Entidad]ListView: FC<[Entidad]ListViewProps> = ({ items }) => {
+  const router = useRouter()
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const fetchItems = async () => {
-    try {
-      const response = await fetch("/api/admin/[modulo]");
-      const data = await response.json();
-      setItems(data);
-    } catch (error) {
-      console.error("Error fetching [modulo]:", error);
-    } finally {
-      setLoading(false);
+  const columns: TableColumn[] = [
+    {
+      key: 'displayOrder',
+      label: '#',
+      priority: 'high',
+      sortable: true,
+      width: '5%',
+      render: (order: number) => (
+        <span className="text-sm font-medium text-gray-500">{order}</span>
+      )
+    },
+    {
+      key: 'imageUrl',
+      label: 'Imagen',
+      priority: 'high',
+      sortable: false,
+      render: (imageURL: string) => <PreviewImageList imageURL={imageURL} />,
+      width: '10%'
+    },
+    {
+      key: 'name',
+      label: 'Nombre',
+      priority: 'high',
+      sortable: true,
+      searchable: true,
+      width: '50%'
+    },
+    {
+      key: 'slug',
+      label: 'Slug',
+      priority: 'medium',
+      sortable: true,
+      width: '25%',
+      render: (slug: string) => (
+        <span className="text-sm text-gray-500">{slug}</span>
+      )
     }
-  };
+  ]
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("¿Está seguro de eliminar este elemento?")) return;
-
+  const handleRemove = async (id: string | null): Promise<void> => {
+    if (id == null || id === '') return
     try {
-      await fetch(`/api/admin/[modulo]/${id}`, { method: "DELETE" });
-      setItems(items.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting item:", error);
+      const message = await FetchCustomBody({
+        data: { id },
+        method: 'DELETE',
+        url: '/api/admin/[modulo]'
+      })
+
+      ToastSuccess(message)
+      router.push('/admin/[modulo]')
+      router.refresh()
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Error desconocido'
+      ToastFail(errorMessage)
     }
-  };
-
-  if (loading) {
-    return <div className="p-4">Cargando...</div>;
-  }
-
-  if (items.length === 0) {
-    return (
-      <div className="p-4 text-center text-gray-500">
-        No hay elementos. <Link href="/admin/[modulo]/new" className="text-primary">Crear uno</Link>
-      </div>
-    );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Nombre
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Slug
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Estado
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Posición
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Acciones
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">{item.name}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-500">{item.slug}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    item.isActive
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
+    <>
+      <Alert
+        message="¿Estás seguro de eliminar este elemento?"
+        onSuccess={() => {
+          const urlParams = new URLSearchParams(window.location.search)
+          const id = urlParams.get('id')
+          void handleRemove(id)
+        }}
+        onCancel={() => {
+          router.replace('/admin/[modulo]')
+        }}
+      />
+      <DynamicTable
+        columns={columns}
+        data={items}
+        renderActions={(id: string) => {
+          return (
+            <>
+              <Link
+                href={`/admin/[modulo]/${id}`}
+                className="flex cursor-pointer items-center gap-3 rounded px-4 py-2 text-sm font-light transition-colors hover:bg-slate-100"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
                 >
-                  {item.isActive ? "Activo" : "Inactivo"}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {item.position}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <Link
-                  href={`/admin/[modulo]/${item.id}`}
-                  className="text-primary hover:text-primary/80 mr-4"
-                >
-                  <Pencil className="h-4 w-4 inline" />
-                </Link>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-600 hover:text-red-900"
-                  data-action="delete"
-                >
-                  <Trash2 className="h-4 w-4 inline" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Editar
+              </Link>
+              <RemoveAction id={id} baseURL="/admin/[modulo]" />
+            </>
+          )
+        }}
+        enableSearch
+        enablePagination
+        enableSort
+        pageSize={10}
+        pageSizeOptions={[5, 10, 20, 50]}
+      />
+    </>
+  )
 }
 ```
 
-### 5. Crear components/admin/index.ts
+### 5. Crear Página de Lista (page.tsx)
 
-```typescript
-// src/module/[modulo]/components/admin/index.ts
-export * from "./[Entidad]Fields";
-export * from "./[Entidad]ListView";
-```
-
-### 6. Crear Página de Lista
+**IMPORTANTE**: Usar `LayoutPageAdmin`, `PageUI`, `PageTitle`, `PageButton`.
 
 ```typescript
 // src/app/admin/[modulo]/page.tsx
-import { Metadata } from "next";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { [Entidad]ListView } from "@/module/[modulo]/components/admin";
+import { [Entidad]ListView } from '@/module/[modulo]/components/admin/[Entidad]ListView'
+import [entidad]Service from '@/module/[modulo]/service/[modulo]'
+import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
+import { PageUI } from '@/module/shared/components/Page/Page'
+import { PageButton } from '@/module/shared/components/Page/PageButton'
+import { PageTitle } from '@/module/shared/components/Page/PageTitle'
+import { type JSX } from 'react'
 
-export const metadata: Metadata = {
-  title: "[Entidad]s | Admin",
-};
+export default async function [Entidad]ListPage(): Promise<JSX.Element> {
+  const items = await [entidad]Service.get[Entidad]s()
 
-export default function [Entidad]sPage() {
-  return (
-    <div className="container mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">[Entidad]s</h1>
-        <Link
-          href="/admin/[modulo]/new"
-          className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+  if (items.length === 0) {
+    return (
+      <LayoutPageAdmin>
+        <PageUI
+          title={<PageTitle title="[Entidad]s" />}
+          subtitle="No hay [modulo]s creados"
+          breadcrumb={[{ label: '[Entidad]s', url: '/admin/[modulo]' }]}
+          options={
+            <PageButton href="/admin/[modulo]/new">
+              Nuevo [Entidad]
+            </PageButton>
+          }
         >
-          <Plus className="h-4 w-4 mr-2" />
-          Nuevo [Entidad]
-        </Link>
-      </div>
-      <div className="bg-white rounded-lg shadow">
-        <[Entidad]ListView />
-      </div>
-    </div>
-  );
+          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+            <div className="mb-4 rounded-full bg-gray-100 p-4">
+              <svg
+                className="h-12 w-12 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                />
+              </svg>
+            </div>
+            <h3 className="mb-2 text-lg font-medium text-gray-900">
+              No hay [modulo]s creados
+            </h3>
+            <p className="mb-6 max-w-sm text-sm text-gray-500">
+              Comienza creando tu primer [modulo]
+            </p>
+            <PageButton href="/admin/[modulo]/new">
+              + Crear [modulo]
+            </PageButton>
+          </div>
+        </PageUI>
+      </LayoutPageAdmin>
+    )
+  }
+
+  return (
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="[Entidad]s" />}
+        subtitle="Gestiona los [modulo]s"
+        breadcrumb={[{ label: '[Entidad]s', url: '/admin/[modulo]' }]}
+        options={
+          <PageButton href="/admin/[modulo]/new">
+            Nuevo [Entidad]
+          </PageButton>
+        }
+      >
+        <[Entidad]ListView items={items} />
+      </PageUI>
+    </LayoutPageAdmin>
+  )
 }
 ```
 
-### 7. Crear Página New
+### 6. Crear Página New (new/page.tsx)
+
+**IMPORTANTE**: Usar `FormCreate` de shared.
 
 ```typescript
 // src/app/admin/[modulo]/new/page.tsx
-"use client";
+import { [Entidad]Fields } from '@/module/[modulo]/components/admin/[entidad]Fields'
+import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
+import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
+import { PageUI } from '@/module/shared/components/Page/Page'
+import { PageTitle } from '@/module/shared/components/Page/PageTitle'
+import { type JSX } from 'react'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { [Entidad]Fields } from "@/module/[modulo]/components/admin";
-
-export default function New[Entidad]Page() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrors({});
-
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, any> = {};
-
-    [Entidad]Fields.forEach((field) => {
-      const value = formData.get(field.name);
-      if (field.type === "switch") {
-        data[field.name] = value === "on";
-      } else if (field.type === "number") {
-        data[field.name] = value ? parseInt(value as string) : 0;
-      } else {
-        data[field.name] = value;
-      }
-    });
-
-    try {
-      const response = await fetch("/api/admin/[modulo]", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al crear");
-      }
-
-      router.push("/admin/[modulo]");
-    } catch (error) {
-      setErrors({ general: "Error al crear el elemento" });
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default async function New[Entidad]Page(): Promise<JSX.Element> {
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Nuevo [Entidad]</h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit}>
-          {[Entidad]Fields.map((field) => (
-            <div key={field.name} className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {field.label}
-                {field.required && <span className="text-red-500">*</span>}
-              </label>
-              {field.type === "textarea" ? (
-                <textarea
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  rows={3}
-                />
-              ) : field.type === "switch" ? (
-                <input
-                  type="checkbox"
-                  name={field.name}
-                  defaultChecked={field.defaultValue as boolean}
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                />
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  defaultValue={field.defaultValue as string | number}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              )}
-              {field.helperText && (
-                <p className="mt-1 text-sm text-gray-500">{field.helperText}</p>
-              )}
-              {errors[field.name] && (
-                <p className="mt-1 text-sm text-red-500 error-message" data-error>
-                  {errors[field.name]}
-                </p>
-              )}
-            </div>
-          ))}
-          {errors.general && (
-            <p className="mb-4 text-sm text-red-500">{errors.general}</p>
-          )}
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50"
-            >
-              {loading ? "Guardando..." : "Guardar"}
-            </button>
-            <Link
-              href="/admin/[modulo]"
-              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
-            >
-              Cancelar
-            </Link>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="Nuevo [Entidad]" />}
+        subtitle="Crear un nuevo [modulo]"
+        breadcrumb={[
+          { label: '[Entidad]s', url: '/admin/[modulo]' },
+          { label: 'Nuevo [Entidad]' }
+        ]}
+      >
+        <FormCreate
+          api={{
+            url: '/api/admin/[modulo]',
+            method: 'POST',
+            withFiles: true
+          }}
+          form={{
+            redirect: '/admin/[modulo]',
+            fields: [Entidad]Fields
+          }}
+        />
+      </PageUI>
+    </LayoutPageAdmin>
+  )
 }
 ```
 
-### 8. Crear Página Edit
+### 7. Crear Página Edit ([id]/page.tsx)
+
+**IMPORTANTE**: Usar `mergeFieldsWithData` para precargar datos.
 
 ```typescript
 // src/app/admin/[modulo]/[id]/page.tsx
-"use client";
+import { [Entidad]Fields } from '@/module/[modulo]/components/admin/[entidad]Fields'
+import [entidad]Service from '@/module/[modulo]/service/[modulo]'
+import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
+import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
+import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
+import { PageUI } from '@/module/shared/components/Page/Page'
+import { PageTitle } from '@/module/shared/components/Page/PageTitle'
+import { type JSX } from 'react'
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { [Entidad]Fields } from "@/module/[modulo]/components/admin";
+export const revalidate = 0 // Deshabilitar cache estático
 
-interface [Entidad] {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  isActive: boolean;
-  position: number;
+interface Edit[Entidad]PageProps {
+  params: Promise<{ id: string }>
 }
 
-export default function Edit[Entidad]Page({ params }: { params: { id: string } }) {
-  const router = useRouter();
-  const [item, setItem] = useState<[Entidad] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+export default async function Edit[Entidad]Page({
+  params
+}: Edit[Entidad]PageProps): Promise<JSX.Element> {
+  const { id } = await params
 
-  useEffect(() => {
-    fetch(`/api/admin/[modulo]/${params.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setItem(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        router.push("/admin/[modulo]");
-      });
-  }, [params.id, router]);
+  const result = await [entidad]Service.get[Entidad]WithAudit(Number(id))
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    setErrors({});
-
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, any> = {};
-
-    [Entidad]Fields.forEach((field) => {
-      const value = formData.get(field.name);
-      if (field.type === "switch") {
-        data[field.name] = value === "on";
-      } else if (field.type === "number") {
-        data[field.name] = value ? parseInt(value as string) : 0;
-      } else {
-        data[field.name] = value;
-      }
-    });
-
-    try {
-      const response = await fetch(`/api/admin/[modulo]/${params.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al actualizar");
-      }
-
-      router.push("/admin/[modulo]");
-    } catch (error) {
-      setErrors({ general: "Error al actualizar el elemento" });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  if (loading) {
-    return <div className="container mx-auto py-6">Cargando...</div>;
+  if (result == null || result.[entidad] == null) {
+    return (
+      <LayoutPageAdmin>
+        <PageUI
+          title={<PageTitle title="No encontrado" />}
+          breadcrumb={[{ label: '[Entidad]s', url: '/admin/[modulo]' }]}
+        >
+          <p className="text-gray-500">El [modulo] no existe o fue eliminado.</p>
+        </PageUI>
+      </LayoutPageAdmin>
+    )
   }
 
-  if (!item) {
-    return <div className="container mx-auto py-6">No encontrado</div>;
-  }
+  const { [entidad], audit } = result
+
+  const fieldsWithValues = mergeFieldsWithData([Entidad]Fields, {
+    ...([entidad] as Record<string, unknown>),
+    image_url: [entidad].imageUrl || '',
+    slug: [entidad].slug || ''
+  })
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Editar [Entidad]</h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit}>
-          {[Entidad]Fields.map((field) => (
-            <div key={field.name} className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {field.label}
-                {field.required && <span className="text-red-500">*</span>}
-              </label>
-              {field.type === "textarea" ? (
-                <textarea
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  defaultValue={(item as any)[field.name] || ""}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  rows={3}
-                />
-              ) : field.type === "switch" ? (
-                <input
-                  type="checkbox"
-                  name={field.name}
-                  defaultChecked={(item as any)[field.name]}
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                />
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  defaultValue={(item as any)[field.name] || ""}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              )}
-              {field.helperText && (
-                <p className="mt-1 text-sm text-gray-500">{field.helperText}</p>
-              )}
-            </div>
-          ))}
-          {errors.general && (
-            <p className="mb-4 text-sm text-red-500">{errors.general}</p>
-          )}
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50"
-            >
-              {saving ? "Guardando..." : "Guardar"}
-            </button>
-            <Link
-              href="/admin/[modulo]"
-              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
-            >
-              Cancelar
-            </Link>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    <LayoutPageAdmin>
+      <PageUI
+        title={<PageTitle title="Editar [Entidad]" />}
+        subtitle={`Editando: ${[entidad].name}`}
+        breadcrumb={[
+          { label: '[Entidad]s', url: '/admin/[modulo]' },
+          { label: 'Editar [Entidad]' }
+        ]}
+      >
+        <FormCreate
+          type="edit"
+          api={{
+            url: '/api/admin/[modulo]',
+            method: 'PATCH',
+            withFiles: true
+          }}
+          form={{
+            redirect: '/admin/[modulo]',
+            fields: fieldsWithValues,
+            customFields: { id }
+          }}
+          audit={audit}
+        />
+      </PageUI>
+    </LayoutPageAdmin>
+  )
 }
 ```
+
+### 8. Ejecutar Lint
+
+```bash
+pnpm lint
+```
+
+Si hay errores, corregirlos antes de continuar.
 
 ### 9. Commit
 
@@ -556,22 +471,29 @@ COMPLETADO: Frontend admin para [modulo]
 COMMIT: feat([modulo]): add admin components and pages
 
 ARCHIVOS CREADOS:
-  - src/module/[modulo]/components/admin/[Entidad]Fields.tsx
+  - src/module/[modulo]/components/admin/[entidad]Fields.ts
   - src/module/[modulo]/components/admin/[Entidad]ListView.tsx
-  - src/module/[modulo]/components/admin/index.ts
   - src/app/admin/[modulo]/page.tsx
   - src/app/admin/[modulo]/new/page.tsx
   - src/app/admin/[modulo]/[id]/page.tsx
 
 PÁGINAS:
-  - /admin/[modulo]     - Lista con tabla
-  - /admin/[modulo]/new - Formulario de creación
-  - /admin/[modulo]/[id] - Formulario de edición
+  - /admin/[modulo]      - Lista con DynamicTable
+  - /admin/[modulo]/new  - FormCreate para crear
+  - /admin/[modulo]/[id] - FormCreate para editar
+
+COMPONENTES SHARED USADOS:
+  - DynamicTable (tabla con búsqueda, paginación)
+  - FormCreate (formulario con validación)
+  - LayoutPageAdmin, PageUI, PageTitle, PageButton
+  - Alert (confirmación de eliminación)
+  - FetchCustomBody, ToastSuccess, ToastFail
+  - mergeFieldsWithData (precarga de datos en edit)
 
 FUNCIONALIDADES:
-  - Listar con estado activo/inactivo
+  - Listar con ordenamiento y búsqueda
   - Crear con validaciones
-  - Editar con carga de datos
+  - Editar con datos precargados y audit info
   - Eliminar con confirmación
 
 NOTAS: [observaciones si las hay]
@@ -582,12 +504,17 @@ NOTAS: [observaciones si las hay]
 ## Outputs
 - `src/module/[modulo]/components/admin/` completo
 - `src/app/admin/[modulo]/` con 3 páginas
+- Lint verificado
 - Commit realizado
 
 ## Next
 - QA puede probar la UI
 
 ## NO Hacer
+- NO crear componentes custom de tabla/formulario - usar shared
+- NO usar fetch directo - usar FetchCustomBody
+- NO usar JSON en API - usar FormData
 - NO modificar base de datos
 - NO crear core/ o service/
 - NO crear tests E2E
+- NO hacer commit sin pasar lint
