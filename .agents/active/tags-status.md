@@ -10,13 +10,13 @@ feature/tags
 media
 
 ## Progreso
-- [ ] DBA
+- [x] DBA
 - [ ] Backend
 - [ ] Frontend
 - [ ] QA
 
 ## Porcentaje
-0%
+25%
 
 ## Toca Shared
 | Archivo | Acción | Estado |
