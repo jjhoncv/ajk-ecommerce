@@ -123,12 +123,84 @@ Usar comentarios claros para que el Integrador los encuentre fácilmente:
 // TODO: MOCK - Eliminar mockData
 ```
 
-### Después de UI Aprobada
+### Validación QA - Etapa 1 (Mocks)
+
+Cuando termines los componentes y páginas con mocks:
+
+1. Notificar a QA para que valide la UI
+2. QA toma screenshots de las páginas ecommerce
+3. Module Lead valida screenshots vs modelo de negocio
+4. **Aprobación Etapa 1**: UI con mocks ✓
+
+```
+SOLICITUD A QA - ETAPA 1 (MOCKS)
+================================
+MÓDULO: [modulo]
+TIPO: Ecommerce UI con datos mock
+
+PÁGINAS A VALIDAR:
+- /[modulo] - Listado
+- /[modulo]/[slug] - Detalle
+- Homepage section (si aplica)
+
+NOTA: Los datos son mocks, validar solo diseño/layout/UX
+```
+
+### Después de Aprobación Etapa 1
 
 El **Agente Integrador** (skill: `integrator/connect-ecommerce.md`):
 1. Busca todos los `TODO: MOCK`
-2. Reemplaza mocks con calls a services reales
-3. Ejecuta test de integración
+2. Conecta con services reales
+3. **Si los tipos cambiaron** vs los mocks → te notifica
+
+### Posibles Cambios del Integrador
+
+El Backend es la "fuente de verdad". Los datos reales pueden tener:
+- Más campos que los mocks
+- Menos campos que los mocks
+- Tipos diferentes
+
+Si el Integrador detecta diferencias:
+```
+CAMBIOS DETECTADOS POR INTEGRADOR
+=================================
+MÓDULO: [modulo]
+
+DIFERENCIAS vs MOCKS:
+- Campo 'color' ahora es opcional (era required en mock)
+- Nuevo campo 'createdAt' disponible
+- Campo 'subtitle' no existe en datos reales
+
+ACCIÓN REQUERIDA:
+Frontend debe ajustar componentes para manejar estos cambios
+```
+
+### Ajustes Post-Integración
+
+Si el Integrador reporta cambios:
+1. Ajustar componentes para nuevos tipos
+2. Manejar campos opcionales
+3. Quitar campos que no existen
+
+### Validación QA - Etapa 2 (Datos Reales)
+
+Después de la integración:
+1. QA toma nuevos screenshots con datos reales
+2. Module Lead valida screenshots
+3. **Aprobación Etapa 2**: UI con datos reales ✓
+
+```
+SOLICITUD A QA - ETAPA 2 (DATOS REALES)
+=======================================
+MÓDULO: [modulo]
+TIPO: Ecommerce UI con datos reales
+
+VERIFICAR:
+- Datos del Admin se muestran correctamente
+- Imágenes cargan
+- Links funcionan
+- No hay errores de tipos
+```
 
 ---
 

@@ -19,11 +19,22 @@ Module Lead indica que Admin UI y Ecommerce UI están aprobados (ambos >= 90%)
 Antes de ejecutar este skill, verificar:
 
 ```
-✅ Admin UI aprobado (screenshots validados)
-✅ Ecommerce UI aprobado (screenshots validados con mocks)
+✅ Admin UI aprobado (screenshots validados) - FASE 1 COMPLETA
+✅ Ecommerce UI Etapa 1 aprobado (mocks) - UI validada con datos mock
 ✅ Backend Ecommerce services creados
-✅ Todos los tests E2E pasando
+✅ Tests E2E Admin pasando
 ```
+
+---
+
+## ⚠️ IMPORTANTE: Backend es Fuente de Verdad
+
+Los tipos del Backend son la **fuente de verdad**. Los mocks del Frontend pueden estar desactualizados.
+
+**Tu responsabilidad**:
+1. Detectar diferencias entre mocks y tipos reales
+2. Comunicar cambios a Frontend
+3. Coordinar iteración con Frontend + QA si es necesario
 
 ---
 
@@ -168,40 +179,115 @@ const featured[Entidad]s = await [Entidad]Service.getFeatured[Entidad]s(3)
 <Featured[Entidad]s items={featured[Entidad]s} />
 ```
 
-### 7. Verificar Tipos
+### 7. Comparar Tipos Mock vs Reales
 
-Asegurar que los tipos del mock coinciden con los tipos reales:
+**PASO CRÍTICO**: Comparar lo que Frontend esperaba (mocks) vs lo que Backend retorna.
 
-```typescript
-// Los componentes esperan:
-interface [Entidad]Card {
+```bash
+# Ver tipos que Frontend usó en mocks
+grep -A 20 "mockItems\|mockData\|TODO: MOCK" src/app/[modulo]/
+
+# Ver tipos reales del Backend
+cat src/module/[modulo]/services/types.ts
+```
+
+### 8. Detectar Diferencias
+
+Crear reporte de diferencias:
+
+```
+ANÁLISIS DE TIPOS - MOCK vs REAL
+================================
+
+TIPO MOCK (usado por Frontend):
+{
   id: number
   name: string
   slug: string
-  imageUrl: string | null
-  description: string | null
+  description: string
 }
 
-// Verificar que el service retorna el mismo tipo
+TIPO REAL (Backend):
+{
+  id: number
+  name: string
+  slug: string
+  imageUrl: string | null    ← NUEVO
+  description: string | null ← CAMBIÓ (ahora nullable)
+  color: string              ← NUEVO
+}
+
+DIFERENCIAS DETECTADAS:
+- [+] Campo 'imageUrl' nuevo (Frontend no lo maneja)
+- [~] Campo 'description' ahora nullable (Frontend asume string)
+- [+] Campo 'color' nuevo (Frontend no lo muestra)
 ```
 
-### 8. Test de Integración
+### 9. Si HAY Diferencias → Comunicar a Frontend
 
-Ejecutar tests E2E de ecommerce con datos reales:
+```
+NOTIFICACIÓN A FRONTEND
+=======================
+MÓDULO: [modulo]
+INTEGRADOR: Detecté diferencias entre tus mocks y los datos reales
 
-```bash
-# Primero, crear datos desde Admin
-# (ya deberían existir de los tests de Admin)
+CAMBIOS QUE DEBES MANEJAR:
 
-# Ejecutar tests ecommerce
-npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+1. NUEVO CAMPO 'imageUrl':
+   - Tipo: string | null
+   - Dónde: [Entidad]Card, [Entidad]Detail
+   - Acción: Agregar renderizado de imagen si existe
+
+2. CAMPO 'description' AHORA NULLABLE:
+   - Antes: string
+   - Ahora: string | null
+   - Acción: Agregar chequeo null antes de renderizar
+
+3. NUEVO CAMPO 'color':
+   - Tipo: string
+   - Uso sugerido: Badge con color de fondo
+   - Acción: Mostrar badge si deseas (opcional)
+
+DESPUÉS DE TUS CAMBIOS:
+- Notifica a QA para Etapa 2 de validación
 ```
 
-Verificar:
-- [ ] Página de listado muestra datos reales
-- [ ] Página de detalle carga item real
+### 10. Si NO HAY Diferencias → Continuar
+
+Si los tipos coinciden exactamente, continuar con la integración directa.
+
+### 11. Reemplazar Mocks (después de confirmar tipos)
+
+### 12. Solicitar Validación QA - Etapa 2
+
+Después de integrar (y después de que Frontend ajuste si hubo diferencias):
+
+```
+SOLICITUD A QA - ETAPA 2 (DATOS REALES)
+=======================================
+MÓDULO: [modulo]
+TIPO: Ecommerce UI con datos reales
+INTEGRADOR: Conexión completada
+
+VERIFICAR:
+- [ ] Datos del Admin se muestran correctamente
+- [ ] Imágenes cargan (si hay campo imagen)
+- [ ] Links funcionan (/[modulo]/[slug])
 - [ ] Página 404 funciona con slug inexistente
+- [ ] No hay errores de consola (tipos)
 - [ ] Homepage section muestra items (si aplica)
+
+PREREQUISITO: Datos deben existir en Admin
+(usar datos creados durante tests E2E Admin)
+```
+
+### 13. Esperar Aprobación Etapa 2
+
+QA ejecuta tests y toma screenshots con datos reales.
+Module Lead valida screenshots.
+
+- Si aprueba → Módulo completo
+- Si rechaza → Iterar (puede requerir cambios en Frontend o Backend)
 
 ### 9. Commit
 

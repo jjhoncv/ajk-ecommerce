@@ -300,17 +300,21 @@ Task({
 })
 ```
 
-### 5b. Asignar a QA - Ecommerce (Solo si ecommerceEnabled: true)
+### 5b. Asignar a QA - Ecommerce ETAPA 1 (Mocks)
+
+**NOTA**: Esta es la primera validación, con datos mock.
 
 ```typescript
 Task({
-  description: "QA: Create [modulo] ecommerce E2E tests",
+  description: "QA: Validate [modulo] ecommerce UI (mocks) - Stage 1",
   prompt: `
-    TAREA: Crear E2E tests ECOMMERCE para [modulo]
+    TAREA: Validar E2E Ecommerce ETAPA 1 (con mocks)
     ROL: QA
-    MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+    MÓDULO: [modulo]
     BRANCH: feature/[modulo]
     SKILL: .agents/skills/qa/create-ecommerce-e2e.md
+
+    ETAPA: 1 de 2 (validación con datos mock)
 
     ARCHIVOS A CREAR:
     - src/module/[modulo]/e2e/ecommerce/01-public.ts
@@ -318,25 +322,38 @@ Task({
     - src/module/[modulo]/e2e/index-ecommerce.ts
 
     CASOS A PROBAR:
-    - TC-E01: Homepage section
-    - TC-E02: List page
-    - TC-E03: Cards info
+    - TC-E01: Homepage section (si aplica)
+    - TC-E02: List page - diseño y layout
+    - TC-E03: Cards info - estructura visual
     - TC-E04: Navigation to detail
-    - TC-E05: Detail content
+    - TC-E05: Detail content - diseño
     - TC-E06: 404 page
     - TC-E07: Responsive mobile
 
-    NOTA: NO hacer login - páginas públicas
+    IMPORTANTE:
+    - Los datos son MOCKS (no reales)
+    - Validar DISEÑO y LAYOUT, no datos específicos
+    - Screenshots para validar UI
 
     AL COMPLETAR:
-    1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+    1. Ejecutar tests
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
-    3. NO hacer commit - esperar validación
+    3. Notificar: "ETAPA 1 - UI con mocks lista para validación"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
 })
 ```
+
+### Validar Etapa 1 - UI con Mocks
+
+Validar screenshots de ecommerce con mocks:
+- ¿El diseño corresponde al modelo de negocio?
+- ¿El layout es correcto?
+- ¿La UX es adecuada?
+
+**Si aprueba Etapa 1**: Continuar con Integrador
+**Si rechaza**: Frontend corrige → QA re-valida
 
 ### 6. Esperar QA - Recibir Screenshots
 
@@ -438,7 +455,7 @@ Iteraciones: [N]
 
 ### 10. Asignar Integrador (Si ecommerceEnabled: true)
 
-**Solo después de que Admin Y Ecommerce UI estén aprobados (>= 90%).**
+**Solo después de que Admin Y Ecommerce UI Etapa 1 estén aprobados.**
 
 ```typescript
 Task({
@@ -452,36 +469,73 @@ Task({
 
     PREREQUISITOS CUMPLIDOS:
     ✅ Admin UI aprobado (>= 90%)
-    ✅ Ecommerce UI aprobado (>= 90%) - funcionando con mocks
+    ✅ Ecommerce UI Etapa 1 aprobado (mocks)
 
     TU TRABAJO:
-    1. Buscar todos los "TODO: MOCK" en src/app/[modulo]/
-    2. Reemplazar mocks con calls a services reales
-    3. Decidir: SSR (para SEO) o API (para interactivo)
-    4. Ejecutar test de integración
-    5. Commit final
+    1. Comparar tipos MOCK vs tipos REALES del backend
+    2. Si hay diferencias → Notificar a Frontend
+    3. Reemplazar mocks con calls a services reales
+    4. Solicitar validación QA Etapa 2
 
-    ARCHIVOS A MODIFICAR:
-    - src/app/[modulo]/page.tsx
-    - src/app/[modulo]/[slug]/page.tsx
-    - src/app/page.tsx (si hay section en homepage)
+    IMPORTANTE:
+    - Backend es FUENTE DE VERDAD
+    - Si tipos cambiaron, Frontend debe ajustar
+    - Coordinar iteración Frontend + QA si es necesario
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
 })
 ```
 
-### 11. Test Final de Integración
+### 11. Manejar Cambios de Tipos (si aplica)
 
-Después del Integrador:
+Si Integrador reporta diferencias entre mocks y datos reales:
 
-```bash
-# Ejecutar ambos tests E2E
-npx tsx src/module/[modulo]/e2e/index-admin.ts
-npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+1. **Frontend ajusta** componentes para nuevos tipos
+2. **QA re-valida** con datos reales
+
+### 12. QA Ecommerce ETAPA 2 (Datos Reales)
+
+```typescript
+Task({
+  description: "QA: Validate [modulo] ecommerce with real data - Stage 2",
+  prompt: `
+    TAREA: Validar E2E Ecommerce ETAPA 2 (datos reales)
+    ROL: QA
+    MÓDULO: [modulo]
+    BRANCH: feature/[modulo]
+
+    ETAPA: 2 de 2 (validación con datos reales)
+
+    VERIFICAR:
+    - Datos del Admin se muestran correctamente
+    - Imágenes cargan (si hay campo imagen)
+    - Links funcionan
+    - No hay errores de consola
+    - Datos reales corresponden al modelo de negocio
+
+    PREREQUISITO: Datos deben existir en Admin
+
+    AL COMPLETAR:
+    1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+    2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
+    3. Notificar: "ETAPA 2 - UI con datos reales lista para validación"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
-Si ambos pasan → Ejecutar `propose-release.md`
+### 13. Validar Etapa 2 y Finalizar
+
+Si QA Etapa 2 aprueba (>= 90%):
+- Módulo COMPLETO
+- Ejecutar `propose-release.md`
+
+Si rechaza:
+- Identificar si es problema de Frontend, Backend o Integrador
+- Asignar corrección
+- Re-validar
 
 ---
 
