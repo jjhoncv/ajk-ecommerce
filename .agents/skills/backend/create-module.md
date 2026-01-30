@@ -14,6 +14,27 @@ Module Lead asigna tarea de crear backend (después de DBA)
 
 ---
 
+## ⛔ AUTOSUFICIENCIA - NO REVISAR OTROS MÓDULOS
+
+**Este skill contiene TODOS los patrones que necesitas.**
+
+- ❌ NO leer código de otros módulos (banners, brands, categories, etc.)
+- ❌ NO buscar "ejemplos" en el codebase
+- ❌ NO usar Glob/Grep para ver cómo lo hacen otros módulos
+
+**Solo necesitas:**
+1. Leer el spec del módulo (`.agents/specs/[modulo]-testing-spec.md`)
+2. Leer los types generados (`src/types/database/` y `src/types/domain/`)
+3. Seguir los templates de ESTE skill reemplazando los placeholders
+
+**Placeholders a reemplazar:**
+- `[modulo]` → nombre del módulo en minúsculas (ej: `tags`)
+- `[Entidad]` → nombre de la entidad en PascalCase (ej: `Tag`)
+- `[entidad]` → nombre de la entidad en camelCase (ej: `tag`)
+- `[tabla]` → nombre de la tabla en la BD (ej: `tags`)
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos

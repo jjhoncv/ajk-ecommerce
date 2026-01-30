@@ -58,6 +58,17 @@ Las utilidades YA incluyen todo lo necesario:
 - `itemExistsInTable()`
 - Y muchas más...
 
+### NO REVISAR TESTS DE OTROS MÓDULOS
+
+- ❌ NO leer tests E2E de otros módulos (banners, brands, etc.)
+- ❌ NO buscar "ejemplos" de tests en el codebase
+- ❌ NO usar Glob/Grep para ver cómo lo hacen otros módulos
+
+**Solo necesitas:**
+1. Leer `tests/e2e/E2E-MODULE-INIT.md` y `tests/e2e/utils/index.ts`
+2. Seguir los templates de ESTE skill
+3. Reemplazar placeholders con el nombre del módulo
+
 ---
 
 ## CONFIGURACIÓN CRÍTICA

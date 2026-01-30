@@ -13,6 +13,21 @@ Module Lead asigna tarea de crear tabla
 
 ---
 
+## ⛔ AUTOSUFICIENCIA - NO REVISAR OTROS MÓDULOS
+
+**Este skill contiene TODOS los patrones que necesitas.**
+
+- ❌ NO leer tablas de otros módulos para ver su estructura
+- ❌ NO buscar "ejemplos" en la base de datos
+- ❌ NO usar DESCRIBE en otras tablas como referencia
+
+**Solo necesitas:**
+1. Leer el spec del módulo (`.agents/specs/[modulo]-testing-spec.md`)
+2. El spec contiene el SQL exacto para crear la tabla
+3. Seguir los templates de ESTE skill
+
+---
+
 ## Steps
 
 ### 1. Leer Especificación
