@@ -169,7 +169,7 @@ Si hay errores, corregirlos antes de continuar.
 
 ```bash
 git add .
-git commit -m "feat([modulo]): create [modulo] table and add to sidebar"
+git commit -m "feat([modulo]): DBA create [modulo] table and add to sidebar"
 git push origin feature/[modulo]
 ```
 

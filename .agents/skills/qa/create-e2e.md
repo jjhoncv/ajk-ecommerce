@@ -905,7 +905,7 @@ QA: Proceder con commit
 git add src/module/[modulo]/e2e/
 
 git commit -m "$(cat <<'EOF'
-test([modulo]): add e2e exploratory tests with screenshots
+test([modulo]): QA add e2e exploratory tests with screenshots
 
 - Add test runner with Puppeteer
 - Add exploratory tests for CRUD operations

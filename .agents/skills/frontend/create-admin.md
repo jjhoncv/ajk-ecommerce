@@ -485,7 +485,7 @@ Si hay errores, corregirlos antes de continuar.
 git add src/module/[modulo]/components/
 git add src/app/admin/[modulo]/
 
-git commit -m "feat([modulo]): add admin components and pages"
+git commit -m "feat([modulo]): FRONTEND add admin components and pages"
 git push origin feature/[modulo]
 ```
 

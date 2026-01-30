@@ -516,7 +516,7 @@ git add src/module/[modulo]/core/
 git add src/module/[modulo]/service/
 git add src/app/api/admin/[modulo]/
 
-git commit -m "feat([modulo]): add core, service and API routes"
+git commit -m "feat([modulo]): BACKEND add core, service and API routes"
 git push origin feature/[modulo]
 ```
 
