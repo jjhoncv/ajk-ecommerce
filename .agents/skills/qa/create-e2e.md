@@ -76,6 +76,34 @@ Referencia obligatoria: `tests/e2e/E2E-MODULE-INIT.md`
 
 ---
 
+## IMPORTANTE: Ubicación de Archivos E2E
+
+**CRÍTICO**: Todos los archivos E2E del módulo van DENTRO del módulo:
+
+```
+src/module/[modulo]/e2e/           ✅ CORRECTO
+├── data.ts
+├── utils.ts
+├── index.ts
+├── cleanup.ts
+├── admin/
+│   └── 01-crud.ts
+├── fixtures/
+└── screenshots/                   ✅ Screenshots AQUÍ
+    └── *.png
+```
+
+**NO usar `/tests/e2e/` para archivos del módulo:**
+
+```
+tests/e2e/screenshots/             ❌ INCORRECTO - NO guardar aquí
+tests/e2e/[modulo]/                ❌ INCORRECTO - NO crear carpetas aquí
+```
+
+La carpeta `/tests/e2e/utils/` solo contiene utilidades COMPARTIDAS. Cada módulo tiene su propia carpeta E2E.
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos
