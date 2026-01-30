@@ -12,6 +12,30 @@ Después de `start-module.md`
 
 ---
 
+## 🔓 AUTONOMÍA DE AGENTES
+
+**Los agentes tienen AUTONOMÍA TOTAL** - no piden permiso para crear/editar archivos.
+
+Al lanzar cada agente con Task tool, usar estos `allowed_tools`:
+
+```typescript
+// DBA
+allowed_tools: ["Read", "Glob", "Grep", "Bash"]
+
+// Backend
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+
+// Frontend
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+
+// QA
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+```
+
+Esto permite que trabajen sin interrupciones.
+
+---
+
 ## ⚠️ IMPORTANTE: Verificar Sección Ecommerce del Spec
 
 **ANTES DE ASIGNAR TAREAS**, revisar el spec:
@@ -35,30 +59,37 @@ Si `ecommerceEnabled: false`:
 
 ### 1. Asignar a DBA (Primero)
 
-```
-TAREA: Crear tabla [modulo]
-ROL: DBA
-MODELO: .agents/specs/[modulo]-testing-spec.md
-BRANCH: feature/[modulo]
+Lanzar agente con Task tool:
 
-COLUMNAS REQUERIDAS:
-- id: CHAR(36) PRIMARY KEY
-- name: VARCHAR(255) NOT NULL
-- slug: VARCHAR(255) NOT NULL UNIQUE
-- description: TEXT
-- is_active: BOOLEAN DEFAULT TRUE
-- position: INT DEFAULT 0
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
-- [otros campos del spec]
+```typescript
+Task({
+  description: "DBA: Create [modulo] table",
+  prompt: `
+    TAREA: Crear tabla [modulo]
+    ROL: DBA
+    MODELO: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/dba/create-table.md
 
-AL COMPLETAR:
-1. Ejecutar: pnpm generate
-2. Verificar types en src/types/
-3. Commit: feat([modulo]): create [modulo] table
-4. Notificarme
+    COLUMNAS REQUERIDAS:
+    - id: CHAR(36) PRIMARY KEY
+    - name: VARCHAR(255) NOT NULL
+    - slug: VARCHAR(255) NOT NULL UNIQUE
+    - description: TEXT
+    - is_active: BOOLEAN DEFAULT TRUE
+    - display_order: INT DEFAULT 0
+    - created_at: TIMESTAMP
+    - updated_at: TIMESTAMP
+    - [otros campos del spec]
 
-SKILL: .agents/skills/dba/create-table.md
+    AL COMPLETAR:
+    1. Ejecutar: pnpm generate
+    2. Verificar types en src/types/
+    3. Commit: feat([modulo]): DBA create table
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### 2. Esperar Completado de DBA
@@ -70,48 +101,62 @@ Cuando DBA notifica completado:
 
 ### 3. Asignar a Backend y Frontend (Paralelo)
 
-**A Backend:**
+Lanzar AMBOS agentes en paralelo con Task tool:
 
+**Backend:**
+
+```typescript
+Task({
+  description: "Backend: Create [modulo] core and API",
+  prompt: `
+    TAREA: Crear backend para [modulo]
+    ROL: Backend
+    MODELO: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/backend/create-module.md
+
+    ARCHIVOS A CREAR:
+    - src/module/[modulo]/core/[Entidad].model.ts
+    - src/module/[modulo]/core/[Entidad].repository.ts
+    - src/module/[modulo]/core/[Entidad].mapper.ts
+    - src/module/[modulo]/core/index.ts
+    - src/module/[modulo]/service/[entidad]/[entidad].service.ts
+    - src/module/[modulo]/service/[entidad]/index.ts
+    - src/app/api/admin/[modulo]/route.ts
+    - src/app/api/admin/[modulo]/[id]/route.ts
+
+    AL COMPLETAR: Commit con feat([modulo]): BACKEND add core and API
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
-TAREA: Crear backend para [modulo]
-ROL: Backend
-MODELO: .agents/specs/[modulo]-testing-spec.md
-BRANCH: feature/[modulo]
 
-ARCHIVOS A CREAR:
-- src/module/[modulo]/core/model.ts
-- src/module/[modulo]/core/repository.ts
-- src/module/[modulo]/core/mapper.ts
-- src/module/[modulo]/core/index.ts
-- src/module/[modulo]/service/[modulo].service.ts
-- src/module/[modulo]/service/index.ts
-- src/app/api/admin/[modulo]/route.ts
-- src/app/api/admin/[modulo]/[id]/route.ts
+**Frontend:**
 
-DEPENDENCIA: Types generados por DBA (ya listos)
-REFERENCIA: docs/module-template.md
-SKILL: .agents/skills/backend/create-module.md
-```
+```typescript
+Task({
+  description: "Frontend: Create [modulo] admin UI",
+  prompt: `
+    TAREA: Crear frontend admin para [modulo]
+    ROL: Frontend
+    MODELO: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/frontend/create-admin.md
 
-**A Frontend:**
+    ARCHIVOS A CREAR:
+    - src/module/[modulo]/components/admin/[Entidad]Fields.tsx
+    - src/module/[modulo]/components/admin/[Entidad]ListView.tsx
+    - src/module/[modulo]/components/admin/index.ts
+    - src/app/admin/[modulo]/page.tsx
+    - src/app/admin/[modulo]/new/page.tsx
+    - src/app/admin/[modulo]/[id]/page.tsx
 
-```
-TAREA: Crear frontend admin para [modulo]
-ROL: Frontend
-MODELO: .agents/specs/[modulo]-testing-spec.md
-BRANCH: feature/[modulo]
-
-ARCHIVOS A CREAR:
-- src/module/[modulo]/components/admin/[Entidad]Fields.tsx
-- src/module/[modulo]/components/admin/[Entidad]ListView.tsx
-- src/module/[modulo]/components/admin/index.ts
-- src/app/admin/[modulo]/page.tsx
-- src/app/admin/[modulo]/new/page.tsx
-- src/app/admin/[modulo]/[id]/page.tsx
-
-DEPENDENCIA: Types generados por DBA (ya listos)
-REFERENCIA: docs/module-template.md
-SKILL: .agents/skills/frontend/create-admin.md
+    AL COMPLETAR: Commit con feat([modulo]): FRONTEND add admin components
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### 4. Esperar Backend y Frontend (Admin)
@@ -127,52 +172,65 @@ Cuando ambos notifican completado:
 
 ### 3b. Asignar Backend Ecommerce (Después de Backend Admin)
 
-```
-TAREA: Crear backend ecommerce para [modulo]
-ROL: Backend
-MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
-BRANCH: feature/[modulo]
+```typescript
+Task({
+  description: "Backend: Create [modulo] ecommerce services",
+  prompt: `
+    TAREA: Crear backend ecommerce para [modulo]
+    ROL: Backend
+    MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/backend/create-ecommerce.md
 
-ARCHIVOS A CREAR:
-- src/module/[modulo]/services/types.ts
-- src/module/[modulo]/services/hydrators.ts
-- src/module/[modulo]/services/[modulo].ts
-- src/module/[modulo]/services/index.ts
+    ARCHIVOS A CREAR:
+    - src/module/[modulo]/services/types.ts
+    - src/module/[modulo]/services/hydrators.ts
+    - src/module/[modulo]/services/[modulo].ts
+    - src/module/[modulo]/services/index.ts
 
-FUNCIONES REQUERIDAS:
-- get[Entidad]s() - Todos los items para listado
-- getActive[Entidad]s() - Solo items activos
-- getFeatured[Entidad]s(limit) - Items destacados para homepage
-- get[Entidad]BySlug(slug) - Un item por slug
+    FUNCIONES REQUERIDAS:
+    - get[Entidad]s() - Todos los items
+    - getActive[Entidad]s() - Solo activos
+    - getFeatured[Entidad]s(limit) - Destacados
+    - get[Entidad]BySlug(slug) - Por slug
 
-NOTA: NO crear APIs REST - usar SSR con servicios directos
-SKILL: .agents/skills/backend/create-ecommerce.md
+    NOTA: NO crear APIs REST - usar SSR
+    AL COMPLETAR: Commit con feat([modulo]): BACKEND add ecommerce services
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### 4b. Asignar Frontend Ecommerce (Después de Backend Ecommerce)
 
-```
-TAREA: Crear frontend ecommerce para [modulo]
-ROL: Frontend
-MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
-BRANCH: feature/[modulo]
+```typescript
+Task({
+  description: "Frontend: Create [modulo] ecommerce UI",
+  prompt: `
+    TAREA: Crear frontend ecommerce para [modulo]
+    ROL: Frontend
+    MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/frontend/create-ecommerce.md
 
-COMPONENTES A CREAR:
-- src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx
-- src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx
-- src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx
-- src/module/[modulo]/components/ecommerce/index.ts
+    COMPONENTES A CREAR:
+    - src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx
+    - src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx
+    - src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx
+    - src/module/[modulo]/components/ecommerce/index.ts
 
-PÁGINAS A CREAR (según spec):
-- src/app/[modulo]/page.tsx - Listado
-- src/app/[modulo]/[slug]/page.tsx - Detalle
-- src/app/[modulo]/[slug]/not-found.tsx - 404
+    PÁGINAS A CREAR:
+    - src/app/[modulo]/page.tsx - Listado
+    - src/app/[modulo]/[slug]/page.tsx - Detalle
+    - src/app/[modulo]/[slug]/not-found.tsx - 404
 
-INTEGRACIÓN HOMEPAGE (si spec lo indica):
-- Agregar sección en src/app/page.tsx
-
-NOTA: Usar SSR - llamar servicios directamente, NO fetch a APIs
-SKILL: .agents/skills/frontend/create-ecommerce.md
+    NOTA: Usar SSR - NO fetch a APIs
+    AL COMPLETAR: Commit con feat([modulo]): FRONTEND add ecommerce components
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### Esperar Backend y Frontend Ecommerce
@@ -185,59 +243,72 @@ Cuando ambos notifican completado:
 
 ### 5. Asignar a QA - Admin (Después de Frontend Admin)
 
-```
-TAREA: Crear E2E tests ADMIN para [modulo]
-ROL: QA
-MODELO: .agents/specs/[modulo]-testing-spec.md
-BRANCH: feature/[modulo]
+```typescript
+Task({
+  description: "QA: Create [modulo] admin E2E tests",
+  prompt: `
+    TAREA: Crear E2E tests ADMIN para [modulo]
+    ROL: QA
+    MODELO: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/qa/create-e2e.md
 
-ARCHIVOS A CREAR:
-- src/module/[modulo]/e2e/admin/01-crud.ts
-- src/module/[modulo]/e2e/admin/02-validations.ts
-- src/module/[modulo]/e2e/fixtures/[modulo].fixture.ts
-- src/module/[modulo]/e2e/data-admin.ts
-- src/module/[modulo]/e2e/utils.ts
-- src/module/[modulo]/e2e/index-admin.ts
-- src/module/[modulo]/e2e/screenshots/admin/
+    ARCHIVOS A CREAR:
+    - src/module/[modulo]/e2e/admin/01-crud.ts
+    - src/module/[modulo]/e2e/admin/02-validations.ts
+    - src/module/[modulo]/e2e/fixtures/[modulo].fixture.ts
+    - src/module/[modulo]/e2e/data-admin.ts
+    - src/module/[modulo]/e2e/utils.ts
+    - src/module/[modulo]/e2e/index-admin.ts
 
-DEPENDENCIA: Frontend Admin completado
+    IMPORTANTE: Verificar que servidor está corriendo (curl localhost:3000)
 
-EJECUTAR AL COMPLETAR:
-npx tsx src/module/[modulo]/e2e/index-admin.ts
-
-SKILL: .agents/skills/qa/create-e2e.md
+    AL COMPLETAR:
+    1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-admin.ts
+    2. Screenshots en: src/module/[modulo]/e2e/screenshots/admin/
+    3. NO hacer commit - esperar validación de Module Lead
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### 5b. Asignar a QA - Ecommerce (Solo si ecommerceEnabled: true)
 
-```
-TAREA: Crear E2E tests ECOMMERCE para [modulo]
-ROL: QA
-MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
-BRANCH: feature/[modulo]
+```typescript
+Task({
+  description: "QA: Create [modulo] ecommerce E2E tests",
+  prompt: `
+    TAREA: Crear E2E tests ECOMMERCE para [modulo]
+    ROL: QA
+    MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/qa/create-ecommerce-e2e.md
 
-ARCHIVOS A CREAR:
-- src/module/[modulo]/e2e/ecommerce/01-public.ts
-- src/module/[modulo]/e2e/data-ecommerce.ts
-- src/module/[modulo]/e2e/index-ecommerce.ts
-- src/module/[modulo]/e2e/screenshots/ecommerce/
+    ARCHIVOS A CREAR:
+    - src/module/[modulo]/e2e/ecommerce/01-public.ts
+    - src/module/[modulo]/e2e/data-ecommerce.ts
+    - src/module/[modulo]/e2e/index-ecommerce.ts
 
-CASOS A PROBAR:
-- TC-E01: Homepage muestra sección (si aplica)
-- TC-E02: Página de listado
-- TC-E03: Cards con información
-- TC-E04: Navegación a detalle
-- TC-E05: Contenido de detalle
-- TC-E06: Página 404
-- TC-E07: Responsive mobile
+    CASOS A PROBAR:
+    - TC-E01: Homepage section
+    - TC-E02: List page
+    - TC-E03: Cards info
+    - TC-E04: Navigation to detail
+    - TC-E05: Detail content
+    - TC-E06: 404 page
+    - TC-E07: Responsive mobile
 
-NOTA: NO hacer login - son páginas públicas
-DEPENDENCIA: Frontend Ecommerce completado
+    NOTA: NO hacer login - páginas públicas
 
-EJECUTAR AL COMPLETAR:
-npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
-
-SKILL: .agents/skills/qa/create-ecommerce-e2e.md
+    AL COMPLETAR:
+    1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+    2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
+    3. NO hacer commit - esperar validación
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
 ```
 
 ### 6. Esperar QA - Recibir Screenshots
