@@ -41,7 +41,46 @@ cat src/app/admin/[moduloExistente]/[id]/page.tsx
 cat src/module/[moduloExistente]/components/admin/[Entidad]Fields.tsx
 ```
 
-### 1.2 Identificar Puntos de Integración
+### 1.2 Entender PROFUNDAMENTE el Módulo Existente
+
+**CRÍTICO**: No solo leer, sino ENTENDER cómo funciona el módulo existente.
+
+```bash
+# BACKEND: Entender el modelo de datos
+cat src/module/[moduloExistente]/core/[Entidad].model.ts
+cat src/module/[moduloExistente]/core/[Entidad].repository.ts
+cat src/module/[moduloExistente]/core/[Entidad].mapper.ts
+
+# BACKEND: Entender servicios y lógica de negocio
+cat src/module/[moduloExistente]/service/[entidad]/index.ts
+cat src/module/[moduloExistente]/services/types.ts
+cat src/module/[moduloExistente]/services/hydrators.ts
+
+# FRONTEND ADMIN: Entender componentes actuales
+cat src/module/[moduloExistente]/components/admin/[Entidad]Fields.tsx
+cat src/module/[moduloExistente]/components/admin/[Entidad]ListView.tsx
+cat src/app/admin/[moduloExistente]/[id]/page.tsx
+
+# FRONTEND ECOMMERCE: Entender componentes públicos
+cat src/module/[moduloExistente]/components/ecommerce/[Entidad]Card.tsx
+cat src/module/[moduloExistente]/components/ecommerce/[Entidad]Detail.tsx
+# O buscar componentes compartidos
+cat src/components/ui/ProductCard/ProductCard.tsx
+cat src/app/productos/[slug]/page.tsx
+
+# E2E EXISTENTES: Entender qué tests ya existen
+ls -la src/module/[moduloExistente]/e2e/
+cat src/module/[moduloExistente]/e2e/index.ts
+```
+
+**Preguntas a responder:**
+- ¿Qué relaciones ya tiene el módulo? (FKs, pivots)
+- ¿Cómo se muestran los datos relacionados en admin?
+- ¿Qué información se muestra en ProductCard?
+- ¿Qué información se muestra en página de detalle?
+- ¿Qué tests E2E ya existen que podrían romperse?
+
+### 1.3 Identificar Puntos de Integración
 
 Documentar:
 ```
@@ -436,6 +475,32 @@ const filteredProducts = products.filter(p =>
 
 ## 🧪 FASE 6: TESTS DE INTEGRACIÓN (QA)
 
+### 6.0 PRIMERO: Ejecutar Tests E2E EXISTENTES (Regression)
+
+**CRÍTICO**: Antes de agregar tests nuevos, verificar que no rompimos nada.
+
+```bash
+# Ejecutar tests E2E existentes del módulo que modificamos
+npx tsx src/module/[moduloExistente]/e2e/index.ts
+
+# Si hay tests de admin
+npx tsx src/module/[moduloExistente]/e2e/index-admin.ts
+
+# Si hay tests de ecommerce
+npx tsx src/module/[moduloExistente]/e2e/index-ecommerce.ts
+```
+
+**Si algún test existente FALLA:**
+- La integración rompió algo
+- Identificar qué se rompió
+- Corregir ANTES de continuar
+- Re-ejecutar hasta que pasen
+
+**Log obligatorio:**
+```bash
+./.agents/scripts/log.sh "QA" "Tests existentes de [moduloExistente]: X/Y pasaron"
+```
+
 ### 6.1 Crear Tests E2E de Integración
 
 En `src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts`:
@@ -445,18 +510,63 @@ En `src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts`:
 // TC-INT-02: Ver [nuevoModulo]s en edit page
 // TC-INT-03: Guardar cambios de asociación
 // TC-INT-04: Desasociar [nuevoModulo]s
-// TC-INT-05: Ver [nuevoModulo]s en ecommerce (si aplica)
+// TC-INT-05: Ver [nuevoModulo]s en ecommerce - ProductCard
+// TC-INT-06: Ver [nuevoModulo]s en ecommerce - ProductDetail
 ```
 
 ### 6.2 Screenshots de Integración
 
+**Admin (validar selector funciona):**
 ```
-screenshots/integration/
-├── admin-edit-with-[nuevoModulo]-selector.png
-├── admin-[nuevoModulo]s-selected.png
-├── admin-list-with-[nuevoModulo]-badges.png
-├── ecommerce-card-with-[nuevoModulo]-badge.png
-└── ecommerce-detail-with-[nuevoModulo]s.png
+screenshots/integration/admin/
+├── admin-edit-without-[nuevoModulo]s.png      # Estado inicial
+├── admin-edit-[nuevoModulo]-selector.png      # Selector visible
+├── admin-edit-[nuevoModulo]s-selected.png     # Tags seleccionados
+├── admin-edit-after-save.png                   # Después de guardar
+└── admin-list-with-[nuevoModulo]-badges.png   # Lista con badges
+```
+
+**Ecommerce (validar modelo de negocio visual):**
+```
+screenshots/integration/ecommerce/
+├── ecommerce-product-card-with-[nuevoModulo].png    # Card con tag badge
+├── ecommerce-product-card-multiple-[nuevoModulo]s.png # Card con varios tags
+├── ecommerce-product-detail-[nuevoModulo]s.png      # Detalle con tags
+├── ecommerce-list-filtered-by-[nuevoModulo].png     # Filtrado (si aplica)
+└── ecommerce-mobile-[nuevoModulo]-visible.png       # Responsive
+```
+
+### 6.3 Solicitar Validación a Module Lead
+
+**IMPORTANTE**: Los screenshots de ecommerce requieren validación del Module Lead para confirmar que el modelo de negocio está correcto.
+
+Notificar:
+```
+INTEGRACIÓN [nuevoModulo] con [moduloExistente] - SCREENSHOTS LISTOS
+====================================================================
+
+TIPO: Validación de integración ecommerce
+ESTADO: Esperando validación de Module Lead
+
+TESTS REGRESSION (existentes): [X]/[Y] pasaron ✅
+TESTS INTEGRACIÓN (nuevos): [X]/[Y] pasaron
+
+SCREENSHOTS ADMIN:
+  - Selector de [nuevoModulo] funciona
+  - Asociaciones se guardan
+  - Badges visibles en lista
+
+SCREENSHOTS ECOMMERCE:
+  📸 ProductCard con [nuevoModulo] badge
+  📸 ProductDetail con [nuevoModulo]s
+  📸 Vista mobile
+
+UBICACIÓN: src/module/[moduloExistente]/e2e/screenshots/integration/
+
+SOLICITO: Validación de que visualización corresponde al modelo de negocio
+- ¿Los tags se ven donde deben verse?
+- ¿El diseño es apropiado (badges, colores, posición)?
+- ¿La información mostrada es correcta?
 ```
 
 ---
@@ -464,30 +574,45 @@ screenshots/integration/
 ## ✅ CHECKLIST FINAL
 
 ### Base de Datos
-- [ ] Tabla pivote creada
+- [ ] Verificado que tabla pivote no existía previamente
+- [ ] Tabla pivote creada (o usada existente)
 - [ ] FK y constraints correctos
 - [ ] Índices para performance
 - [ ] Types regenerados
 
 ### Backend
+- [ ] Leído y entendido módulo existente (model, repository, service)
 - [ ] Repository extendido con métodos de relación
 - [ ] Service/hydrator incluye relación
 - [ ] API de asociación funciona
 
 ### Frontend Admin
+- [ ] Leído y entendido componentes existentes
 - [ ] Selector de [nuevoModulo]s en edit page
 - [ ] Asociaciones se guardan correctamente
 - [ ] ListView muestra badges
 
 ### Frontend Ecommerce
-- [ ] Cards muestran badges
-- [ ] Detalle muestra [nuevoModulo]s
+- [ ] Leído ProductCard/ProductDetail existentes
+- [ ] ProductCard muestra badges de [nuevoModulo]
+- [ ] ProductDetail muestra [nuevoModulo]s
+- [ ] Vista responsive funciona
 - [ ] Filtros funcionan (si aplica)
 
-### QA
-- [ ] Tests de integración pasan
-- [ ] Screenshots de admin
-- [ ] Screenshots de ecommerce
+### QA - Regression
+- [ ] Tests E2E EXISTENTES del módulo siguen pasando
+- [ ] No se rompió ninguna funcionalidad previa
+
+### QA - Integración
+- [ ] Tests de integración nuevos pasan
+- [ ] Screenshots de admin (selector, badges)
+- [ ] Screenshots de ecommerce (ProductCard, ProductDetail)
+- [ ] Screenshots de mobile
+
+### Validación Module Lead
+- [ ] Screenshots admin validados
+- [ ] Screenshots ecommerce validados vs modelo de negocio
+- [ ] Cumplimiento >= 90%
 
 ---
 

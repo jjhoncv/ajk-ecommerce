@@ -764,9 +764,58 @@ Cuando Integration Lead complete:
 - [ ] Repository de [moduloExistente] tiene métodos de relación
 - [ ] Edit page de [moduloExistente] tiene selector
 - [ ] List view de [moduloExistente] muestra badges
-- [ ] Ecommerce muestra relación (si aplica)
-- [ ] Tests de integración pasan
-- [ ] Screenshots de integración validados
+- [ ] Tests existentes siguen pasando (regression)
+- [ ] Tests de integración nuevos pasan
+- [ ] Screenshots de integración validados (ver 16b)
+
+### 16b. Validar Screenshots de Integración Ecommerce
+
+**CRÍTICO**: Validar que la integración cumple el MODELO DE NEGOCIO visual.
+
+**Screenshots Admin a validar:**
+| Screenshot | Validar |
+|------------|---------|
+| admin-edit-selector | ¿Selector de [nuevoModulo] visible y funcional? |
+| admin-edit-selected | ¿Se pueden seleccionar múltiples? |
+| admin-list-badges | ¿Badges visibles en la lista? |
+
+**Screenshots Ecommerce a validar (MODELO DE NEGOCIO):**
+| Screenshot | Validar |
+|------------|---------|
+| ProductCard con tag | ¿El badge está en posición correcta? ¿Color visible? |
+| ProductDetail con tags | ¿Los tags se muestran donde deben? |
+| Mobile responsive | ¿Tags visibles en mobile? |
+
+**Preguntas de validación:**
+1. ¿La visualización de [nuevoModulo] corresponde al modelo de negocio?
+2. ¿Los badges/tags están donde el usuario los espera ver?
+3. ¿El diseño es consistente con el resto del sitio?
+4. ¿La información mostrada es útil para el cliente final?
+
+**Respuesta de validación:**
+```
+VALIDACIÓN INTEGRACIÓN [nuevoModulo] ↔ [moduloExistente]
+========================================================
+
+ADMIN:
+  - Selector: [✅/❌] [comentario]
+  - Guardado: [✅/❌] [comentario]
+  - Lista badges: [✅/❌] [comentario]
+
+ECOMMERCE:
+  - ProductCard: [✅/❌] [comentario sobre posición, diseño]
+  - ProductDetail: [✅/❌] [comentario]
+  - Mobile: [✅/❌] [comentario]
+
+MODELO DE NEGOCIO:
+  - ¿Tags ayudan al cliente a encontrar productos? [Sí/No]
+  - ¿Visualización es apropiada? [Sí/No]
+
+RESULTADO: [APROBADO >= 90% / RECHAZADO < 90%]
+CUMPLIMIENTO: [X]%
+
+[Si rechazado, lista de correcciones necesarias]
+```
 
 **Si >= 90% cumplimiento:**
 - Integración APROBADA
