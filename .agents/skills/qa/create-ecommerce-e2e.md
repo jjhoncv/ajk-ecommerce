@@ -95,6 +95,78 @@ IMPACTO: [mínimo/bajo]
 
 ---
 
+## 🔄 FLUJO DE ITERACIÓN (Si Module Lead rechaza)
+
+```
+QA ejecuta tests → Screenshots → Module Lead valida
+                                        │
+                                        ▼
+                              ┌─────────────────┐
+                              │ ¿Cumple >= 90%? │
+                              └────────┬────────┘
+                                       │
+                    ┌──────────────────┴──────────────────┐
+                    │ NO                                  │ SÍ
+                    ▼                                     ▼
+        ┌───────────────────┐                    ┌──────────────┐
+        │ Module Lead       │                    │ APROBADO     │
+        │ identifica        │                    │ QA puede     │
+        │ problemas         │                    │ hacer commit │
+        └────────┬──────────┘                    └──────────────┘
+                 │
+                 ▼
+        ┌───────────────────┐
+        │ Asigna corrección │
+        │ a Frontend        │
+        │ Ecommerce         │
+        └────────┬──────────┘
+                 │
+                 ▼
+        ┌───────────────────┐
+        │ Frontend corrige  │
+        │ UI según feedback │
+        └────────┬──────────┘
+                 │
+                 ▼
+        ┌───────────────────┐
+        │ QA re-ejecuta     │
+        │ tests             │◄─────── (Iterar hasta aprobar)
+        └────────┬──────────┘
+                 │
+                 ▼
+           (Volver arriba)
+```
+
+### Si Module Lead rechaza tus screenshots
+
+1. **Recibirás feedback específico:**
+```
+RECHAZO ECOMMERCE - ITERACIÓN REQUERIDA
+=======================================
+MÓDULO: [modulo]
+ETAPA: [1 o 2]
+CUMPLIMIENTO: [X]% (< 90%)
+
+PROBLEMAS DETECTADOS:
+1. [screenshot] - [problema específico]
+2. [screenshot] - [problema específico]
+
+RESPONSABLE: Frontend Ecommerce
+CORRECCIONES:
+- [qué debe corregir]
+```
+
+2. **NO hagas commit** - espera a que Frontend corrija
+
+3. **Cuando Frontend notifique que corrigió:**
+   - Re-ejecuta los tests: `npx tsx src/module/[modulo]/e2e/index-ecommerce.ts`
+   - Nuevos screenshots se generan automáticamente
+   - Notifica a Module Lead para re-validación
+
+4. **Repetir hasta >= 90% de cumplimiento**
+
+---
+
 ## ✅ CHECKLIST DE VALIDACIÓN VISUAL (Para Module Lead)
 
 Cuando QA entregue screenshots, Module Lead debe validar:

@@ -743,8 +743,80 @@ NOTAS: Usa SSR - servicios llamados directamente, no APIs
 ## Next
 - QA puede probar visualmente el ecommerce
 
+---
+
+## 🔄 ITERACIÓN: Si QA/Module Lead rechazan
+
+Después de entregar tus componentes, QA toma screenshots y Module Lead valida.
+
+### Si recibes solicitud de corrección:
+
+```
+CORRECCIÓN REQUERIDA: Ecommerce UI
+==================================
+MÓDULO: [modulo]
+ETAPA: [1-Mocks / 2-Datos Reales]
+
+PROBLEMAS DETECTADOS:
+1. Screenshot: [nombre]
+   Problema: [descripción]
+   Corrección: [qué debes cambiar]
+
+2. Screenshot: [nombre]
+   ...
+```
+
+### Proceso de corrección:
+
+1. **Leer el feedback** - Entender exactamente qué está mal
+2. **Ubicar el archivo** - El feedback indica qué componente/página
+3. **Corregir** - Hacer los cambios necesarios
+4. **NO hacer commit** - Solo corregir el código
+5. **Notificar a Module Lead:**
+
+```
+CORRECCIÓN COMPLETADA: Ecommerce UI
+===================================
+MÓDULO: [modulo]
+
+PROBLEMAS CORREGIDOS:
+1. [problema] → [cómo lo corregiste]
+2. [problema] → [cómo lo corregiste]
+
+ARCHIVOS MODIFICADOS:
+- src/module/[modulo]/components/ecommerce/[archivo].tsx
+- src/app/[modulo]/page.tsx
+
+SOLICITO: QA re-ejecute tests para nuevos screenshots
+```
+
+### Problemas comunes y soluciones:
+
+| Problema | Causa | Solución |
+|----------|-------|----------|
+| Sin Header/Footer | No usa `<Layout>` | Envolver en `<Layout><Header>...<LayoutContent>` |
+| Layout descuadrado | CSS incorrecto | Verificar `max-w-screen-xl`, `px-4`, `mx-auto` |
+| Imagen no muestra | `imageUrl` null sin fallback | Agregar placeholder/icono cuando no hay imagen |
+| 404 sin layout | `not-found.tsx` sin Layout | Agregar Layout a not-found.tsx |
+| Mobile overflow | Grid no responsive | Usar `grid-cols-1 sm:grid-cols-2 md:grid-cols-3` |
+| Cards sin link | Falta `href` | Envolver en `<Link href={...}>` |
+
+### Iterar hasta aprobación
+
+```
+Frontend corrige → QA re-ejecuta tests → Module Lead valida
+                                                │
+                          ┌─────────────────────┴─────────────────────┐
+                          │ < 90%                                     │ >= 90%
+                          ▼                                           ▼
+                   (Volver a corregir)                         ✅ APROBADO
+```
+
+---
+
 ## NO Hacer
 - ❌ NO crear APIs REST
 - ❌ NO usar fetch para obtener datos (usar servicios directamente)
 - ❌ NO modificar componentes admin
 - ❌ NO modificar services/ del módulo
+- ❌ NO hacer commit hasta que Module Lead apruebe
