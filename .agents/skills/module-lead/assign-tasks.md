@@ -99,6 +99,45 @@ Si `ecommerceEnabled: false`:
 
 ---
 
+## 🔗 IMPORTANTE: Verificar Sección Integración del Spec
+
+**ANTES DE ASIGNAR TAREAS**, revisar si hay integración:
+
+```markdown
+## Integración con Módulos Existentes
+### Estado de Integración
+- **requiereIntegracion**: [true/false]  ← ¡VERIFICAR!
+- **moduloRelacionado**: [products/categories/etc]
+```
+
+Si `requiereIntegracion: true`:
+- Después de completar el módulo standalone, lanzar **Integration Lead**
+- El Integration Lead extenderá el módulo existente
+- Ver sección "14. Asignar Integration Lead" de este documento
+
+### Flujo con Integración
+
+```
+FASE 1: Módulo Standalone
+=========================
+DBA → Backend → Frontend → QA Admin
+         ↓
+    Módulo [nuevo] funciona solo
+         ↓
+FASE 2: Integración
+===================
+Integration Lead:
+  1. Crear tabla pivote
+  2. Extender backend de [moduloExistente]
+  3. Agregar selector en admin de [moduloExistente]
+  4. Mostrar en ecommerce de [moduloExistente]
+  5. QA de integración
+         ↓
+    [nuevo] integrado con [existente]
+```
+
+---
+
 ## 🚨 ORDEN ESTRICTO DE DESARROLLO
 
 ```
@@ -632,6 +671,111 @@ Si QA Etapa 2 aprueba (>= 90%):
 Si rechaza:
 - Identificar si es problema de Frontend, Backend o Integrador
 - Asignar corrección
+- Re-validar
+
+---
+
+## INTEGRACIÓN CON MÓDULOS EXISTENTES
+
+### 14. Verificar si requiere Integración
+
+**Después de completar el módulo standalone**, revisar spec:
+
+```markdown
+## Integración con Módulos Existentes
+- **requiereIntegracion**: true  ← Si es true, continuar
+- **moduloRelacionado**: products
+```
+
+Si `requiereIntegracion: true`, lanzar Integration Lead.
+
+### 15. Asignar Integration Lead (Si requiereIntegracion: true)
+
+```typescript
+Task({
+  description: "Integration Lead: Integrate [nuevoModulo] with [moduloExistente]",
+  prompt: `
+    TAREA: Integrar [nuevoModulo] con [moduloExistente]
+    ROL: Integration Lead
+    SKILL: .agents/skills/integration-lead/integrate-module.md
+
+    CONTEXTO:
+    - Módulo nuevo: [nuevoModulo] (standalone completado)
+    - Módulo existente: [moduloExistente]
+    - Spec: .agents/specs/[nuevoModulo]-testing-spec.md (sección Integración)
+    - Branch: feature/[nuevoModulo]
+
+    DEL SPEC:
+    - Tipo relación: [M:N / 1:N]
+    - Nivel asociación: [producto / variante]
+    - Tabla pivote: [moduloExistente]_[nuevoModulo]s
+
+    TU TRABAJO:
+    1. Leer y entender módulo existente:
+       - src/module/[moduloExistente]/core/
+       - src/module/[moduloExistente]/components/admin/
+       - src/app/admin/[moduloExistente]/
+
+    2. Crear tabla pivote (DBA):
+       - Ejecutar SQL según spec
+       - pnpm generate
+
+    3. Extender Backend de [moduloExistente]:
+       - Métodos en repository: get[NuevoModulo]s, set[NuevoModulo]s
+       - Hydrator para incluir relación
+       - API endpoint de asociación
+
+    4. Extender Frontend Admin de [moduloExistente]:
+       - Selector de [nuevoModulo] en edit page
+       - Badges en list view
+
+    5. Extender Frontend Ecommerce (si aplica):
+       - Mostrar [nuevoModulo]s en cards de producto
+       - Mostrar en página de detalle
+
+    6. QA de Integración:
+       - Tests de asociar/desasociar
+       - Screenshots de admin con selector
+       - Screenshots de ecommerce con badges
+
+    IMPORTANTE:
+    - NO modificar el módulo [nuevoModulo] (ya está completo)
+    - SOLO extender [moduloExistente] para usar [nuevoModulo]
+    - Commits: feat([moduloExistente]): integrate [nuevoModulo]
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Iniciando integración [nuevoModulo] con [moduloExistente]"
+    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Tabla pivote creada"
+    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Backend extendido"
+    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Frontend Admin extendido"
+    - Final: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "INTEGRACIÓN COMPLETADA"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Task", "AskUserQuestion"]
+})
+```
+
+### 16. Validar Integración
+
+Cuando Integration Lead complete:
+
+**Checklist de Integración:**
+- [ ] Tabla pivote existe y types regenerados
+- [ ] Repository de [moduloExistente] tiene métodos de relación
+- [ ] Edit page de [moduloExistente] tiene selector
+- [ ] List view de [moduloExistente] muestra badges
+- [ ] Ecommerce muestra relación (si aplica)
+- [ ] Tests de integración pasan
+- [ ] Screenshots de integración validados
+
+**Si >= 90% cumplimiento:**
+- Integración APROBADA
+- Módulo completamente funcional
+- Ejecutar `propose-release.md`
+
+**Si < 90%:**
+- Identificar problemas
+- Integration Lead corrige
 - Re-validar
 
 ---

@@ -54,9 +54,40 @@ Con el conocimiento del equipo, analizar:
    - ¿Qué de lo que pide YA SABEMOS hacer?
    - ¿Hay algo que requiera capacidades nuevas?
 
-3. **Identificar relaciones**
+3. **Identificar relaciones con módulos EXISTENTES**
    - ¿Se relaciona con productos? ¿Categorías? ¿Órdenes?
+   - ¿El módulo relacionado YA EXISTE en el sistema?
    - ¿Requiere tabla pivote? (el equipo puede hacerlo)
+
+### 1.3 CRÍTICO: Verificar Módulos Existentes
+
+**SIEMPRE** revisar `.agents/project.json` para ver módulos ya creados:
+
+```bash
+cat .agents/project.json | grep -A 2 '"status": "released"'
+```
+
+**Si el nuevo módulo se relaciona con uno existente**, seguir:
+→ `.agents/skills/project-owner/analyze-integration.md`
+
+Ejemplos de integraciones comunes:
+| Nuevo Módulo | Se relaciona con | Tipo | Pregunta clave |
+|--------------|------------------|------|----------------|
+| tags | products | M:N | ¿A nivel producto o variante? |
+| reviews | products/variants | M:N | ¿Reviews de producto o variante? |
+| wishlists | customers + variants | M:N | ¿Guardar variante específica? |
+| collections | products | M:N | ¿Colecciones manuales o automáticas? |
+
+**PREGUNTA OBLIGATORIA** cuando hay relación con módulo existente:
+```
+Tu módulo [nuevo] se relaciona con [existente].
+¿A qué nivel debe ser la asociación?
+- A nivel de [entidad principal]
+- A nivel de [sub-entidad] (si aplica, ej: variante)
+- Ambos niveles
+
+Esto determina: tabla pivote, UI de admin, visualización ecommerce.
+```
 
 ### 1.3 Preparar Propuesta
 
@@ -225,6 +256,42 @@ Crear archivo `.agents/specs/[modulo]-testing-spec.md`:
 - [ ] Meta title dinámico
 - [ ] Meta description dinámico
 - [ ] Open Graph tags
+
+---
+
+## Integración con Módulos Existentes
+
+### Estado de Integración
+- **requiereIntegracion**: [true/false]
+- **moduloRelacionado**: [products/categories/customers/ninguno]
+- **tipoRelacion**: [M:N / 1:N / 1:1 / ninguna]
+- **nivelAsociacion**: [producto / variante / ambos / N/A]
+
+### Tabla Pivote (si M:N)
+```sql
+CREATE TABLE [modulo_existente]_[nuevo_modulo]s (
+  id CHAR(36) PRIMARY KEY,
+  [modulo_existente]_id CHAR(36) NOT NULL,
+  [nuevo_modulo]_id CHAR(36) NOT NULL,
+  display_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY ([modulo_existente]_id) REFERENCES [modulo_existente](id) ON DELETE CASCADE,
+  FOREIGN KEY ([nuevo_modulo]_id) REFERENCES [nuevo_modulo]s(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_association ([modulo_existente]_id, [nuevo_modulo]_id)
+);
+```
+
+### Tareas de Integración
+- [ ] DBA: Crear tabla pivote
+- [ ] Backend: Extender repository/service del módulo existente
+- [ ] Frontend Admin: Agregar selector en edit page del módulo existente
+- [ ] Frontend Ecommerce: Mostrar relación en cards/detalle (si aplica)
+- [ ] QA: Tests de asociación/desasociación
+
+### Ecommerce de Integración (diferente a ecommerce standalone)
+El "ecommerce" del nuevo módulo puede ser su visualización DENTRO del módulo existente:
+- **Ejemplo tags**: No tiene `/tags` público, pero se muestra como badges en `/productos/[slug]`
+- **Ejemplo reviews**: No tiene `/reviews` público, pero se muestra en página de producto
 
 ---
 
