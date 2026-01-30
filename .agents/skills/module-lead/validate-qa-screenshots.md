@@ -494,9 +494,140 @@ QA: AUTORIZADO PARA COMMIT
 
 ---
 
+---
+
+## 🛒 VALIDACIÓN DE SCREENSHOTS ECOMMERCE
+
+### Dos Etapas de Validación
+
+#### Etapa 1: Frontend UI + Mocks
+```
+QA notifica:
+  TESTS ECOMMERCE - ETAPA 1 (MOCKS): [modulo]
+  TIPO: Validación UI con datos mock
+```
+
+**Qué validar en Etapa 1:**
+- Diseño y layout (NO los datos específicos)
+- Estructura de página correcta
+- Componentes funcionan visualmente
+
+#### Etapa 2: Frontend UI + Datos Reales
+```
+QA notifica:
+  TESTS ECOMMERCE - ETAPA 2 (DATOS REALES): [modulo]
+  TIPO: Validación UI con datos del Admin
+```
+
+**Qué validar en Etapa 2:**
+- Todo lo de Etapa 1 PLUS
+- Datos del Admin se muestran correctamente
+- Imágenes cargan
+- Integración completa funciona
+
+---
+
+### Checklist de Evaluación Ecommerce
+
+Para cada screenshot de ecommerce:
+
+```
+EVALUACIÓN SCREENSHOTS ECOMMERCE
+================================
+
+Spec: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+Etapa: [1-Mocks / 2-Datos Reales]
+
+Screenshot: e00-page-structure.png
+  - ¿Header del sitio visible?: [SI/NO]
+  - ¿Footer del sitio visible?: [SI/NO]
+  - ¿Navegación funcional?: [SI/NO]
+  Cumple: [SI/NO]
+
+Screenshot: e01-homepage-section.png
+  - ¿Sección del módulo visible?: [SI/NO]
+  - ¿Título de sección?: [SI/NO]
+  - ¿Items mostrados?: [SI/NO]
+  Cumple: [SI/NO]
+
+Screenshot: e02-list-page.png
+  - ¿Header/Footer presentes?: [SI/NO]
+  - ¿Título H1 visible?: [SI/NO]
+  - ¿Grilla de items ordenada?: [SI/NO]
+  - ¿Cards con imagen/placeholder?: [SI/NO]
+  - ¿Cards con título?: [SI/NO]
+  - ¿Cards clickeables?: [SI/NO]
+  Cumple: [SI/NO]
+
+Screenshot: e04-detail-page.png
+  - ¿Header/Footer presentes?: [SI/NO]
+  - ¿Título del item visible?: [SI/NO]
+  - ¿Imagen (si existe)?: [SI/NO]
+  - ¿Descripción (si existe)?: [SI/NO]
+  - ¿Layout correcto?: [SI/NO]
+  Cumple: [SI/NO]
+
+Screenshot: e06-404-page.png
+  - ¿Header/Footer presentes?: [SI/NO]
+  - ¿Mensaje "No encontrado"?: [SI/NO]
+  - ¿Link de regreso?: [SI/NO]
+  Cumple: [SI/NO]
+
+Screenshot: e07-mobile-list.png
+  - ¿Header adaptado a mobile?: [SI/NO]
+  - ¿Grilla 1-2 columnas?: [SI/NO]
+  - ¿Texto legible?: [SI/NO]
+  - ¿No hay overflow horizontal?: [SI/NO]
+  Cumple: [SI/NO]
+
+CRITERIOS ESPECÍFICOS DEL SPEC:
+(Agregar según modelo de negocio, ej: badges de color, campos especiales)
+  - [Campo especial 1]: [SI/NO]
+  - [Campo especial 2]: [SI/NO]
+```
+
+### Diferencias entre Etapas
+
+| Criterio | Etapa 1 (Mocks) | Etapa 2 (Datos Reales) |
+|----------|-----------------|------------------------|
+| Header/Footer | Obligatorio | Obligatorio |
+| Layout | Validar | Validar |
+| Datos correctos | No aplica (son mocks) | **Validar** |
+| Imágenes cargan | Placeholder OK | **Deben cargar** |
+| Links funcionan | Estructura OK | **URLs reales** |
+| Cantidad items | Fija (mocks) | **Según Admin** |
+
+### Problemas Comunes en Ecommerce
+
+```
+PROBLEMA: Página sin Header/Footer
+CAUSA: Frontend no usó <Layout> del sitio
+RESPONSABLE: Frontend
+CORRECCIÓN: Envolver página en Layout, Header, LayoutContent
+
+PROBLEMA: Imágenes no cargan (Etapa 2)
+CAUSA: URLs incorrectas o imágenes no subidas en Admin
+RESPONSABLE: Verificar Admin primero, luego Frontend
+CORRECCIÓN: Verificar que existen datos con imágenes en Admin
+
+PROBLEMA: Página 404 sin layout
+CAUSA: not-found.tsx no usa Layout
+RESPONSABLE: Frontend
+CORRECCIÓN: Agregar Layout a not-found.tsx
+
+PROBLEMA: Mobile overflow horizontal
+CAUSA: Grilla no responsive
+RESPONSABLE: Frontend
+CORRECCIÓN: Verificar grid-cols responsive
+```
+
+---
+
 ## NO Hacer
 
 - NO aprobar si cumplimiento < 90%
 - NO ignorar screenshots con errores visuales
 - NO permitir commit de QA sin validación
 - NO saltarse la comparación con el spec
+- NO aprobar Etapa 2 sin que Etapa 1 esté aprobada
+- NO aprobar ecommerce sin Header/Footer visibles

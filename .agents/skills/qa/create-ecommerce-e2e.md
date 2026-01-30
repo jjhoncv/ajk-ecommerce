@@ -71,6 +71,119 @@ IMPACTO: [mínimo/bajo]
 
 ---
 
+## 📋 DOS ETAPAS DE VALIDACIÓN
+
+### Etapa 1: Frontend UI + Mocks
+- Se ejecuta cuando Frontend termina componentes con datos mock
+- Valida que la UI se vea correctamente
+- Los datos son ficticios pero representativos
+- **Objetivo**: Aprobar diseño/layout/UX
+
+### Etapa 2: Frontend UI + Datos Reales
+- Se ejecuta después de que Integrador conecte con backend real
+- Los datos vienen del Admin (creados previamente)
+- **Objetivo**: Aprobar integración completa
+
+### Qué cambia entre etapas
+
+| Aspecto | Etapa 1 (Mocks) | Etapa 2 (Datos Reales) |
+|---------|-----------------|------------------------|
+| Datos | Ficticios hardcodeados | Desde base de datos |
+| Imágenes | Placeholders o nulls | URLs reales del Admin |
+| Cantidad items | Fija (2-3 mocks) | Variable (según Admin) |
+| Validación | Layout, diseño, UX | Integración, datos correctos |
+
+---
+
+## ✅ CHECKLIST DE VALIDACIÓN VISUAL (Para Module Lead)
+
+Cuando QA entregue screenshots, Module Lead debe validar:
+
+### Estructura de Página
+- [ ] **Header presente** - Navegación del sitio visible
+- [ ] **Footer presente** - Pie de página del sitio visible
+- [ ] **Layout correcto** - Contenido centrado, márgenes apropiados
+
+### Página de Listado (/[modulo])
+- [ ] **Título visible** - H1 descriptivo
+- [ ] **Grilla ordenada** - Cards alineadas correctamente
+- [ ] **Cards completas** - Imagen (o placeholder), título, descripción
+- [ ] **Links funcionales** - Cada card es clickeable
+
+### Página de Detalle (/[modulo]/[slug])
+- [ ] **Header/Footer** - Misma estructura que listado
+- [ ] **Título prominente** - Nombre del item visible
+- [ ] **Imagen** - Si existe, se muestra correctamente
+- [ ] **Descripción** - Texto legible y formateado
+
+### Página 404 (/[modulo]/slug-inexistente)
+- [ ] **Header/Footer** - Mantiene estructura del sitio
+- [ ] **Mensaje claro** - "No encontrado" o similar
+- [ ] **Link de regreso** - Botón para volver al listado
+
+### Responsive (Mobile)
+- [ ] **Header adaptado** - Navegación mobile
+- [ ] **Grilla adaptada** - 1-2 columnas en mobile
+- [ ] **Texto legible** - Tamaños apropiados
+
+### Consistencia con Modelo de Negocio
+- [ ] **Campos correctos** - Se muestran los campos del spec
+- [ ] **Formato apropiado** - Colores, badges, etc. según spec
+- [ ] **Sin errores visuales** - No hay elementos rotos o descuadrados
+
+---
+
+## 🔍 TESTS ADICIONALES: Header y Footer
+
+Agregar estos tests a `01-public.ts`:
+
+```typescript
+// TC-E00: Verificar estructura de página (Header/Footer)
+try {
+  log('TC-E00: Verificar Header y Footer')
+  await goto(ECOMMERCE_URLS.list)
+  await wait(2000)
+
+  const page = getPage()
+
+  const structure = await page.evaluate(() => {
+    // Verificar header (navegación)
+    const hasHeader = document.querySelector('header') !== null ||
+                      document.querySelector('nav') !== null ||
+                      document.querySelector('[class*="header"]') !== null
+
+    // Verificar footer
+    const hasFooter = document.querySelector('footer') !== null ||
+                      document.querySelector('[class*="footer"]') !== null
+
+    // Verificar que no es página huérfana
+    const hasLayout = document.querySelector('[class*="layout"]') !== null ||
+                      (hasHeader && hasFooter)
+
+    return { hasHeader, hasFooter, hasLayout }
+  })
+
+  await takeScreenshot('e00-page-structure', SCREENSHOTS_DIR)
+
+  log(`  - Header: ${structure.hasHeader ? '✓' : '✗'}`)
+  log(`  - Footer: ${structure.hasFooter ? '✓' : '✗'}`)
+  log(`  - Layout: ${structure.hasLayout ? '✓' : '✗'}`)
+
+  if (structure.hasHeader && structure.hasFooter) {
+    log('  ✓ Estructura de página correcta')
+    results.passed++
+  } else {
+    throw new Error('Falta Header o Footer - página no usa Layout del sitio')
+  }
+} catch (e: any) {
+  log(`  ✗ FAILED: ${e.message}`)
+  await takeScreenshot('e00-structure-ERROR', SCREENSHOTS_DIR)
+  results.failed++
+}
+```
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos
@@ -523,19 +636,23 @@ Screenshots esperados:
 
 ### 8. Notificar a Module Lead
 
-```
-TESTS ECOMMERCE EJECUTADOS: [modulo]
-====================================
+**Para Etapa 1 (Mocks):**
 
+```
+TESTS ECOMMERCE - ETAPA 1 (MOCKS): [modulo]
+===========================================
+
+TIPO: Validación UI con datos mock
 ESTADO: Esperando validación de screenshots
 
-RESULTADOS:
+RESULTADOS TESTS:
   ✓ Passed: [X]
   ✗ Failed: [Y]
 
 SCREENSHOTS: src/module/[modulo]/e2e/screenshots/ecommerce/
 
 CASOS PROBADOS:
+  - TC-E00: Estructura página (Header/Footer)
   - TC-E01: Sección en homepage
   - TC-E02: Página de listado
   - TC-E03: Cards con información
@@ -544,7 +661,45 @@ CASOS PROBADOS:
   - TC-E06: Página 404
   - TC-E07: Responsive mobile
 
-SOLICITO: Validación de screenshots vs modelo de negocio
+CHECKLIST PARA MODULE LEAD:
+  [ ] Header visible en todas las páginas
+  [ ] Footer visible en todas las páginas
+  [ ] Layout ordenado y centrado
+  [ ] Cards muestran: imagen/placeholder, título, descripción
+  [ ] Página 404 tiene mensaje claro y link de regreso
+  [ ] Mobile: grilla adaptada, texto legible
+  [ ] Diseño consistente con modelo de negocio
+
+NOTA: Datos son MOCKS - validar solo diseño/layout/UX
+```
+
+**Para Etapa 2 (Datos Reales):**
+
+```
+TESTS ECOMMERCE - ETAPA 2 (DATOS REALES): [modulo]
+==================================================
+
+TIPO: Validación UI con datos del Admin
+ESTADO: Esperando validación de screenshots
+
+PREREQUISITO: Integrador ya conectó con backend real
+
+RESULTADOS TESTS:
+  ✓ Passed: [X]
+  ✗ Failed: [Y]
+
+SCREENSHOTS: src/module/[modulo]/e2e/screenshots/ecommerce/
+
+CHECKLIST PARA MODULE LEAD:
+  [ ] Header/Footer presentes
+  [ ] Datos del Admin se muestran correctamente
+  [ ] Imágenes cargan (si existen en Admin)
+  [ ] Cantidad de items coincide con Admin
+  [ ] Links funcionan (/[modulo]/[slug-real])
+  [ ] No hay errores de consola (verificar manualmente)
+  [ ] Página 404 funciona con slug inexistente
+
+NOTA: Datos son REALES del Admin - validar integración completa
 ```
 
 ### 9. Commit (después de aprobación)
