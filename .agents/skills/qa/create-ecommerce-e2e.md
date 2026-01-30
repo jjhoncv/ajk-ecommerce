@@ -619,21 +619,19 @@ import { run[Entidad]EcommerceTests } from './ecommerce/01-public'
 
 const SCREENSHOTS_DIR = path.join(__dirname, 'screenshots/ecommerce')
 
-function cleanupScreenshots(): void {
-  if (fs.existsSync(SCREENSHOTS_DIR)) {
-    const files = fs.readdirSync(SCREENSHOTS_DIR)
-    let cleaned = 0
-    for (const file of files) {
-      if (file.endsWith('.png')) {
-        fs.unlinkSync(path.join(SCREENSHOTS_DIR, file))
-        cleaned++
-      }
-    }
-    if (cleaned > 0) {
-      console.log(`🧹 Cleaned up ${cleaned} previous screenshots`)
-    }
-  } else {
+/**
+ * Preparar carpeta de screenshots
+ * NOTA: NO se eliminan screenshots anteriores - se mantienen como evidencia
+ */
+function prepareScreenshotsDir(): void {
+  if (!fs.existsSync(SCREENSHOTS_DIR)) {
     fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true })
+    console.log('📁 Carpeta de screenshots creada')
+  } else {
+    const files = fs.readdirSync(SCREENSHOTS_DIR).filter(f => f.endsWith('.png'))
+    if (files.length > 0) {
+      console.log(`📸 Screenshots existentes: ${files.length} (se mantienen como evidencia)`)
+    }
   }
 }
 
@@ -641,7 +639,8 @@ async function main(): Promise<void> {
   console.log('🛒 [MODULO] E2E ECOMMERCE TESTS')
   console.log('='.repeat(50))
 
-  cleanupScreenshots()
+  // Preparar carpeta de screenshots (NO eliminar anteriores)
+  prepareScreenshotsDir()
 
   try {
     log('Iniciando browser...')
@@ -808,3 +807,52 @@ EOF
 - ❌ NO probar funcionalidad admin
 - ❌ NO instalar dependencias
 - ❌ NO usar Playwright
+- ❌ NO eliminar screenshots - mantenerlos como evidencia y commitearlos
+
+---
+
+## 🛑 IMPORTANTE: Detener el Servidor al Finalizar
+
+Si QA inició el servidor de desarrollo para los tests, **DEBE detenerlo al finalizar**:
+
+```bash
+# Encontrar el proceso del servidor
+lsof -ti :3000 | xargs kill -9 2>/dev/null || true
+```
+
+**En el código del test runner**, agregar al `finally` block:
+
+```typescript
+} finally {
+  await closeBrowser()
+
+  // Si QA inició el servidor, detenerlo
+  if (serverStartedByQA) {
+    execSync('lsof -ti :3000 | xargs kill -9 2>/dev/null || true')
+    console.log('🛑 Servidor detenido')
+  }
+}
+```
+
+**Razón**: Dejar servidores corriendo consume recursos y puede causar conflictos.
+
+---
+
+## 📸 IMPORTANTE: Screenshots como Evidencia
+
+Los screenshots **NO se eliminan** - son evidencia del proceso de validación:
+
+1. **Mantener screenshots válidos** - Evidencia de que el flujo funciona
+2. **Commitear screenshots** - Parte del historial del módulo
+3. **Nombrar con timestamp** - Permite ver evolución entre iteraciones
+
+```bash
+# Al hacer commit, incluir screenshots
+git add src/module/[modulo]/e2e/screenshots/ecommerce/
+```
+
+Los screenshots sirven para:
+- Validación visual por Module Lead
+- Documentación del estado actual del ecommerce
+- Debugging de problemas futuros
+- Evidencia de cumplimiento del modelo de negocio

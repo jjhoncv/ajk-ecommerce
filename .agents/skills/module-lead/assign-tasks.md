@@ -36,6 +36,50 @@ Esto permite que trabajen sin interrupciones y puedan hacer preguntas al usuario
 
 ---
 
+## 📝 OBLIGATORIO: Activity Log
+
+**TODOS los agentes DEBEN registrar su progreso en `.agents/activity.log`**
+
+### Comando para registrar
+
+```bash
+./.agents/scripts/log.sh "AGENTE" "mensaje"
+```
+
+### Ejemplos de uso
+
+```bash
+# Al iniciar
+./.agents/scripts/log.sh "DBA" "Iniciando creación de tabla tags"
+
+# Progreso
+./.agents/scripts/log.sh "DBA" "Tabla tags creada con 11 campos"
+
+# Al completar
+./.agents/scripts/log.sh "DBA" "TAREA COMPLETADA - Siguiente agente: BACKEND"
+
+# Si hay error
+./.agents/scripts/log.sh "BACKEND" "ERROR: No se pudo crear endpoint - falta tipo en domain"
+```
+
+### En el prompt de cada agente, incluir
+
+Agregar al final de cada prompt de agente:
+
+```
+OBLIGATORIO - ACTIVITY LOG:
+- Registrar inicio: ./.agents/scripts/log.sh "[AGENTE]" "Iniciando [tarea]"
+- Registrar progreso significativo
+- Registrar TAREA COMPLETADA al finalizar
+- Registrar ERROR si hay problemas
+
+Referencia: .agents/activity-log-guide.md
+```
+
+**Sin logs en activity.log, no se puede dar seguimiento al trabajo de los agentes.**
+
+---
+
 ## ⚠️ IMPORTANTE: Verificar Sección Ecommerce del Spec
 
 **ANTES DE ASIGNAR TAREAS**, revisar el spec:
@@ -113,6 +157,11 @@ Task({
     1. Ejecutar: pnpm generate
     2. Verificar types en src/types/
     3. Commit: feat([modulo]): DBA create table
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "DBA" "Iniciando creación tabla [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "DBA" "Tabla creada con X campos"
+    - Final: ./.agents/scripts/log.sh "DBA" "TAREA COMPLETADA - Siguiente: BACKEND"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -153,6 +202,12 @@ Task({
     - src/app/api/admin/[modulo]/[id]/route.ts
 
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add core and API
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "BACKEND" "Iniciando backend [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "BACKEND" "Core creado: model, repository, mapper"
+    - Progreso: ./.agents/scripts/log.sh "BACKEND" "API Routes creadas"
+    - Final: ./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA - Siguiente: FRONTEND"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -180,6 +235,12 @@ Task({
     - src/app/admin/[modulo]/[id]/page.tsx
 
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add admin components
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend admin [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Componentes creados: Fields, ListView"
+    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Páginas creadas: list, new, edit"
+    - Final: ./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA - Siguiente: QA"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -223,6 +284,10 @@ Task({
 
     NOTA: NO crear APIs REST - usar SSR
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add ecommerce services
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "BACKEND" "Iniciando backend ecommerce [modulo]"
+    - Final: ./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA ecommerce services"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -254,6 +319,12 @@ Task({
 
     NOTA: Usar SSR - NO fetch a APIs
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add ecommerce components
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend ecommerce [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Componentes ecommerce creados"
+    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Páginas públicas creadas"
+    - Final: ./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA ecommerce UI"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -294,6 +365,13 @@ Task({
     1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-admin.ts
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/admin/
     3. NO hacer commit - esperar validación de Module Lead
+    4. NO eliminar screenshots - mantener como evidencia
+    5. Detener servidor si lo iniciaste
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E tests admin [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "QA" "Tests ejecutados: X/Y pasaron"
+    - Final: ./.agents/scripts/log.sh "QA" "Esperando validación de Module Lead"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -339,6 +417,13 @@ Task({
     1. Ejecutar tests
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
     3. Notificar: "ETAPA 1 - UI con mocks lista para validación"
+    4. NO eliminar screenshots - mantener como evidencia
+    5. Detener servidor si lo iniciaste
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E ecommerce ETAPA 1 [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "QA" "Tests ejecutados: X/Y pasaron"
+    - Final: ./.agents/scripts/log.sh "QA" "ETAPA 1 - Esperando validación Module Lead"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -481,6 +566,11 @@ Task({
     - Backend es FUENTE DE VERDAD
     - Si tipos cambiaron, Frontend debe ajustar
     - Coordinar iteración Frontend + QA si es necesario
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "INTEGRATOR" "Iniciando integración ecommerce [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "INTEGRATOR" "Comparando tipos mock vs real"
+    - Final: ./.agents/scripts/log.sh "INTEGRATOR" "TAREA COMPLETADA - integración lista"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -520,6 +610,13 @@ Task({
     1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
     3. Notificar: "ETAPA 2 - UI con datos reales lista para validación"
+    4. NO eliminar screenshots - mantener como evidencia
+    5. Detener servidor si lo iniciaste
+
+    ACTIVITY LOG (OBLIGATORIO):
+    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E ecommerce ETAPA 2 [modulo]"
+    - Progreso: ./.agents/scripts/log.sh "QA" "Tests con datos reales: X/Y pasaron"
+    - Final: ./.agents/scripts/log.sh "QA" "ETAPA 2 - Esperando validación Module Lead"
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
