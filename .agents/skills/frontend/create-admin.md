@@ -554,6 +554,43 @@ NOTAS: [observaciones si las hay]
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend admin [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "FRONTEND" "🔍 Analizando: spec para campos del formulario"
+./.agents/scripts/log.sh "FRONTEND" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "FRONTEND" "✓ Encontrado: X campos para formulario"
+
+# Decisiones
+./.agents/scripts/log.sh "FRONTEND" "❓ Pregunta: ¿Qué tipo de input para campo color?"
+./.agents/scripts/log.sh "FRONTEND" "💡 Decisión: Usar color picker nativo con preview"
+
+# Microtareas
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/module/[modulo]/components/admin/[entidad]Fields.ts"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/module/[modulo]/components/admin/[Entidad]ListView.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/app/admin/[modulo]/page.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/app/admin/[modulo]/new/page.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/app/admin/[modulo]/[id]/page.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Ejecutando pnpm lint"
+
+# Problemas y resoluciones
+./.agents/scripts/log.sh "FRONTEND" "⚠️ Problema: [descripción]"
+./.agents/scripts/log.sh "FRONTEND" "✓ Resuelto: [cómo]"
+
+# Completado
+./.agents/scripts/log.sh "FRONTEND" "✓ Componentes creados: [entidad]Fields, [Entidad]ListView"
+./.agents/scripts/log.sh "FRONTEND" "✓ Páginas creadas: list, new, edit"
+./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/components/admin/` completo
 - `src/app/admin/[modulo]/` con 3 páginas

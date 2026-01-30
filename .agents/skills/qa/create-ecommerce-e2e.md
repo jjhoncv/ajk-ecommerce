@@ -796,6 +796,38 @@ EOF
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "QA" "Iniciando E2E tests ecommerce [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "QA" "🔍 Analizando: spec sección Ecommerce"
+./.agents/scripts/log.sh "QA" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "QA" "✓ Encontrado: X páginas públicas a probar"
+
+# Verificaciones
+./.agents/scripts/log.sh "QA" "→ Verificando servidor en localhost:3000"
+./.agents/scripts/log.sh "QA" "→ Verificando datos existen en BD"
+
+# Microtareas
+./.agents/scripts/log.sh "QA" "→ Creando src/module/[modulo]/e2e/ecommerce/01-public.ts"
+./.agents/scripts/log.sh "QA" "→ Ejecutando tests ecommerce"
+./.agents/scripts/log.sh "QA" "→ Capturando screenshots"
+
+# Resultados
+./.agents/scripts/log.sh "QA" "✓ Tests ejecutados: X/Y pasaron"
+./.agents/scripts/log.sh "QA" "✓ Screenshots: homepage, list, detail, mobile"
+
+# Completado
+./.agents/scripts/log.sh "QA" "Esperando validación de Module Lead"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/e2e/ecommerce/` con tests
 - `src/module/[modulo]/e2e/screenshots/ecommerce/` con evidencia

@@ -312,6 +312,36 @@ NOTAS: NO se crean APIs REST - usar SSR con servicios directos
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "BACKEND" "Iniciando backend ecommerce [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "BACKEND" "🔍 Analizando: spec sección Ecommerce"
+./.agents/scripts/log.sh "BACKEND" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "BACKEND" "✓ Encontrado: ecommerceEnabled=true, páginas públicas requeridas"
+
+# Decisiones
+./.agents/scripts/log.sh "BACKEND" "❓ Pregunta: ¿Qué hydrators necesito?"
+./.agents/scripts/log.sh "BACKEND" "💡 Decisión: hydrateForCard y hydrateForDetail"
+
+# Microtareas
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/services/types.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/services/hydrators.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/services/[modulo].ts"
+./.agents/scripts/log.sh "BACKEND" "→ Ejecutando pnpm lint"
+
+# Completado
+./.agents/scripts/log.sh "BACKEND" "✓ Services creados: types, hydrators, [modulo]"
+./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/services/` completo
 - Hydrators para transformar domain → UI

@@ -582,6 +582,43 @@ NOTAS: [observaciones si las hay]
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "BACKEND" "Iniciando backend [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "BACKEND" "🔍 Analizando: spec y types generados"
+./.agents/scripts/log.sh "BACKEND" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "BACKEND" "→ Leyendo src/types/domain/domain.d.ts"
+./.agents/scripts/log.sh "BACKEND" "✓ Encontrado: interface [Entidad] con X campos"
+
+# Decisiones
+./.agents/scripts/log.sh "BACKEND" "❓ Pregunta: ¿Qué validaciones necesita el endpoint POST?"
+./.agents/scripts/log.sh "BACKEND" "💡 Decisión: Validar name (required, min 2 chars) y slug (unique)"
+
+# Microtareas
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/core/[Entidad].model.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/core/[Entidad].repository.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/[modulo]/core/[Entidad].mapper.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Creando API route POST /api/admin/[modulo]"
+./.agents/scripts/log.sh "BACKEND" "→ Ejecutando pnpm lint"
+
+# Problemas y resoluciones
+./.agents/scripts/log.sh "BACKEND" "⚠️ Problema: Import error en mapper"
+./.agents/scripts/log.sh "BACKEND" "✓ Resuelto: Corregido path del import"
+
+# Completado
+./.agents/scripts/log.sh "BACKEND" "✓ Core completado: model, repository, mapper"
+./.agents/scripts/log.sh "BACKEND" "✓ API Routes creadas: GET, POST, PATCH, DELETE"
+./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/core/` completo (class-based)
 - `src/module/[modulo]/service/` completo

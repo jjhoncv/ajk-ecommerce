@@ -1033,6 +1033,43 @@ Module Lead revisa screenshots vs spec
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "QA" "Iniciando E2E tests admin [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "QA" "🔍 Analizando: spec para casos de prueba"
+./.agents/scripts/log.sh "QA" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "QA" "✓ Encontrado: X casos de prueba requeridos"
+
+# Verificaciones
+./.agents/scripts/log.sh "QA" "→ Verificando servidor en localhost:3000"
+./.agents/scripts/log.sh "QA" "✓ Servidor respondiendo"
+
+# Microtareas
+./.agents/scripts/log.sh "QA" "→ Creando src/module/[modulo]/e2e/data.ts"
+./.agents/scripts/log.sh "QA" "→ Creando src/module/[modulo]/e2e/utils.ts"
+./.agents/scripts/log.sh "QA" "→ Creando src/module/[modulo]/e2e/admin/01-crud.ts"
+./.agents/scripts/log.sh "QA" "→ Ejecutando tests: npx tsx src/module/[modulo]/e2e/index.ts"
+
+# Resultados
+./.agents/scripts/log.sh "QA" "✓ Tests ejecutados: X/Y pasaron"
+./.agents/scripts/log.sh "QA" "✓ Screenshots generados: [lista]"
+
+# Problemas
+./.agents/scripts/log.sh "QA" "⚠️ Problema: Test X falló - [razón]"
+./.agents/scripts/log.sh "QA" "✓ Resuelto: [cómo]" # o reportar al Module Lead
+
+# Completado
+./.agents/scripts/log.sh "QA" "Esperando validación de Module Lead"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/e2e/` completo con:
   - `data.ts` - Datos de prueba

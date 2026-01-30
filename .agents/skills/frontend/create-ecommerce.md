@@ -734,6 +734,39 @@ NOTAS: Usa SSR - servicios llamados directamente, no APIs
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend ecommerce [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "FRONTEND" "🔍 Analizando: spec sección Ecommerce"
+./.agents/scripts/log.sh "FRONTEND" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "FRONTEND" "✓ Encontrado: Grid, Featured, Detail components requeridos"
+
+# Decisiones
+./.agents/scripts/log.sh "FRONTEND" "❓ Pregunta: ¿Qué layout usar para el grid?"
+./.agents/scripts/log.sh "FRONTEND" "💡 Decisión: Grid responsive 4 columnas desktop, 2 mobile"
+
+# Microtareas
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/app/[modulo]/page.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Creando src/app/[modulo]/[slug]/page.tsx"
+./.agents/scripts/log.sh "FRONTEND" "→ Ejecutando pnpm lint"
+
+# Completado
+./.agents/scripts/log.sh "FRONTEND" "✓ Componentes ecommerce creados"
+./.agents/scripts/log.sh "FRONTEND" "✓ Páginas públicas creadas"
+./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA"
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/components/ecommerce/` completo
 - Páginas públicas (si aplica)

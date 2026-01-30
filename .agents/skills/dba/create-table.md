@@ -314,6 +314,40 @@ SIEMPRE incluir:
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "DBA" "Iniciando creación tabla [modulo]"
+
+# Análisis y decisiones
+./.agents/scripts/log.sh "DBA" "🔍 Analizando: spec para identificar campos"
+./.agents/scripts/log.sh "DBA" "→ Leyendo .agents/specs/[modulo]-testing-spec.md"
+./.agents/scripts/log.sh "DBA" "✓ Encontrado: X campos requeridos"
+./.agents/scripts/log.sh "DBA" "❓ Pregunta: ¿Necesita campo image_url?"
+./.agents/scripts/log.sh "DBA" "💡 Decisión: Sí, según spec tiene imagen"
+
+# Microtareas
+./.agents/scripts/log.sh "DBA" "→ Verificando si tabla existe"
+./.agents/scripts/log.sh "DBA" "→ Ejecutando CREATE TABLE"
+./.agents/scripts/log.sh "DBA" "✓ Tabla creada con X campos"
+./.agents/scripts/log.sh "DBA" "→ Insertando en sections (sidebar)"
+./.agents/scripts/log.sh "DBA" "→ Insertando en roles_sections"
+./.agents/scripts/log.sh "DBA" "→ Ejecutando pnpm generate"
+./.agents/scripts/log.sh "DBA" "✓ Types regenerados"
+
+# Problemas y resoluciones
+./.agents/scripts/log.sh "DBA" "⚠️ Problema: [descripción]"
+./.agents/scripts/log.sh "DBA" "✓ Resuelto: [cómo]"
+
+# Completado
+./.agents/scripts/log.sh "DBA" "TAREA COMPLETADA - Tabla [modulo] + sidebar + types"
+```
+
+---
+
 ## Outputs
 - Tabla creada en MySQL
 - Types regenerados en `src/types/database/` y `src/types/domain/`

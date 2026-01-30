@@ -331,6 +331,42 @@ COMMIT: feat([modulo]): INTEGRATOR connect ecommerce with real backend
 
 ---
 
+## 📝 ACTIVITY LOG (Obligatorio)
+
+**Registrar TODO el proceso de trabajo, no solo inicio/fin.**
+
+```bash
+# Inicio
+./.agents/scripts/log.sh "INTEGRATOR" "Iniciando integración ecommerce [modulo]"
+
+# Análisis
+./.agents/scripts/log.sh "INTEGRATOR" "🔍 Analizando: tipos mock vs tipos reales"
+./.agents/scripts/log.sh "INTEGRATOR" "→ Leyendo componentes ecommerce actuales"
+./.agents/scripts/log.sh "INTEGRATOR" "→ Comparando con services del backend"
+./.agents/scripts/log.sh "INTEGRATOR" "✓ Encontrado: X diferencias entre mock y real"
+
+# Decisiones
+./.agents/scripts/log.sh "INTEGRATOR" "❓ Pregunta: ¿Cómo manejar campos faltantes?"
+./.agents/scripts/log.sh "INTEGRATOR" "💡 Decisión: Agregar valores default para campos opcionales"
+
+# Microtareas
+./.agents/scripts/log.sh "INTEGRATOR" "→ Modificando [Entidad]Grid.tsx para usar service"
+./.agents/scripts/log.sh "INTEGRATOR" "→ Modificando [Entidad]Detail.tsx para usar service"
+./.agents/scripts/log.sh "INTEGRATOR" "→ Removiendo datos mock"
+./.agents/scripts/log.sh "INTEGRATOR" "→ Verificando que páginas cargan datos reales"
+
+# Problemas y resoluciones
+./.agents/scripts/log.sh "INTEGRATOR" "⚠️ Problema: [descripción]"
+./.agents/scripts/log.sh "INTEGRATOR" "✓ Resuelto: [cómo]"
+
+# Completado
+./.agents/scripts/log.sh "INTEGRATOR" "✓ Mocks removidos"
+./.agents/scripts/log.sh "INTEGRATOR" "✓ Services conectados"
+./.agents/scripts/log.sh "INTEGRATOR" "TAREA COMPLETADA"
+```
+
+---
+
 ## Outputs
 - Mocks removidos de Frontend Ecommerce
 - Páginas conectadas con services reales
