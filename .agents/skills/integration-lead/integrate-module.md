@@ -74,12 +74,60 @@ PUNTO DE INTEGRACIÓN PROPUESTO:
 
 ---
 
-## 🗄️ FASE 2: CREAR TABLA PIVOTE (DBA)
+## 🗄️ FASE 2: VERIFICAR Y CREAR TABLA PIVOTE (DBA)
 
-### 2.1 Crear Tabla
+### 2.0 PRIMERO: Verificar Tablas Existentes
+
+**CRÍTICO**: Antes de crear cualquier tabla, verificar qué ya existe:
 
 ```bash
-# Crear tabla pivote
+# Ver TODAS las tablas del sistema
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES;"
+
+# Buscar tablas relacionadas con el módulo existente
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '%product%';"
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '%tag%';"
+
+# Ver estructura de tablas pivote existentes (ejemplos del sistema)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE product_categories;"
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE variant_attribute_options;"
+
+# Verificar si la tabla pivote que necesitamos YA EXISTE
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE 'product_tags';"
+```
+
+### Escenarios posibles:
+
+| Escenario | Acción |
+|-----------|--------|
+| **Tabla pivote YA existe** | NO crear. Usar la existente. Verificar estructura. |
+| **FK ya existe en tabla principal** | NO crear pivote. Es relación 1:N, no M:N. |
+| **No existe ninguna relación** | Crear tabla pivote nueva. |
+
+### Si la tabla YA EXISTE:
+
+```bash
+# Ver su estructura actual
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE product_tags;"
+
+# Ver datos existentes (si hay)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SELECT COUNT(*) FROM product_tags;"
+```
+
+**Si existe y tiene la estructura correcta:**
+- NO crear nada
+- Saltar a FASE 3 (Backend)
+- Documentar: "Tabla pivote ya existía"
+
+**Si existe pero con estructura diferente:**
+- Analizar diferencias
+- Preguntar antes de modificar
+- Posiblemente solo agregar índices faltantes
+
+### 2.1 Crear Tabla (SOLO si no existe)
+
+```bash
+# SOLO ejecutar si verificación anterior confirmó que NO existe
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
 CREATE TABLE [moduloExistente]_[nuevoModulo]s (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),

@@ -49,15 +49,53 @@ git checkout feature/[modulo]
 git pull origin feature/[modulo]
 ```
 
-### 3. Verificar si Tabla Existe
+### 3. CRÍTICO: Verificar Tablas Existentes
+
+**ANTES de crear cualquier tabla, verificar qué ya existe en el sistema:**
 
 ```bash
-docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]'"
+# Ver TODAS las tablas del sistema
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES;"
+
+# Buscar si la tabla principal ya existe
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]%';"
+
+# Si el módulo tiene relaciones, buscar tablas pivote existentes
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE 'product_%';"
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '%_[modulo]%';"
 ```
 
-Si existe, verificar estructura antes de modificar.
+### Escenarios y acciones:
 
-### 4. Crear Tabla
+| Escenario | Verificación | Acción |
+|-----------|--------------|--------|
+| **Tabla principal existe** | `SHOW TABLES LIKE '[modulo]'` devuelve resultado | NO crear. Verificar estructura con DESCRIBE. |
+| **Tabla pivote existe** | Ej: `product_tags` ya existe | NO crear pivote. Usar la existente. |
+| **FK ya existe** | Columna `[modulo]_id` en otra tabla | Relación 1:N ya configurada. |
+| **Nada existe** | Queries vacíos | Proceder a crear tabla nueva. |
+
+### Si la tabla YA EXISTE:
+
+```bash
+# Ver estructura actual
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE [modulo];"
+
+# Ver índices
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW INDEX FROM [modulo];"
+
+# Ver foreign keys
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+SELECT CONSTRAINT_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = '[modulo]' AND TABLE_SCHEMA = 'ajkecommerce'
+AND REFERENCED_TABLE_NAME IS NOT NULL;
+"
+```
+
+**Si existe con estructura correcta:** Saltar a paso 6 (Regenerar Types)
+**Si existe con estructura diferente:** Analizar y preguntar antes de modificar
+
+### 4. Crear Tabla (SOLO si no existe)
 
 **IMPORTANTE**: El proyecto usa `INT AUTO_INCREMENT` para IDs, no UUID.
 
