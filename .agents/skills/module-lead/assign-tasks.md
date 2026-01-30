@@ -864,11 +864,36 @@ git push origin feature/[modulo]
 ./.agents/scripts/log.sh "MODULE-LEAD" "COMMIT FINAL - Módulo [modulo] completo en feature/[modulo]"
 ```
 
-**NUNCA declarar "MÓDULO COMPLETO" sin haber hecho el commit final.**
+**NUNCA declarar "MÓDULO COMPLETO" sin cumplir TODOS estos requisitos:**
 
-El commit debe incluir:
+### Checklist Pre-Completado (OBLIGATORIO)
+
+**Para módulo standalone:**
+- [ ] QA Admin ejecutó tests y >= 90% pasaron
+- [ ] Screenshots de admin existen y fueron validados
+- [ ] Commit final realizado
+
+**Para módulo con integración (requiereIntegracion: true):**
+- [ ] Todo lo anterior de standalone
+- [ ] Module Expert generó reporte de análisis
+- [ ] Integration Lead completó la integración
+- [ ] **QA Integración creó tests en módulo EXISTENTE** (ej: `src/module/products/e2e/integration/tags.ts`)
+- [ ] **Screenshots de integración existen:**
+  - Admin: selector funcionando
+  - Ecommerce: badges/componentes visibles en ProductCard/Detail
+- [ ] Module Lead validó screenshots vs modelo de negocio
+- [ ] Commit final incluye TODOS los archivos
+
+### Si falla algún punto:
+1. NO declarar completo
+2. Identificar qué falta
+3. Lanzar agente correspondiente para completar
+4. Repetir validación
+
+### El commit debe incluir:
 - Todos los archivos creados por DBA, Backend, Frontend, QA
 - Todos los archivos de integración (si aplica)
+- Tests de integración en módulo existente (si aplica)
 - Screenshots de E2E como evidencia
 - Activity log actualizado
 
