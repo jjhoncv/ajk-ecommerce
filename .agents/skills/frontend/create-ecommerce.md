@@ -220,6 +220,60 @@ VERIFICAR:
 
 ---
 
+## 🏗️ ESTRUCTURA DE LAYOUT OBLIGATORIA
+
+**TODAS las páginas ecommerce DEBEN usar el layout del sitio** para mantener consistencia visual (header, navegación, footer).
+
+### Componentes de Layout Disponibles
+
+```typescript
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
+```
+
+| Componente | Propósito |
+|------------|-----------|
+| `Layout` | Wrapper principal, **incluye Footer automáticamente** |
+| `Header` | Cabecera del sitio |
+| `Navigation` | Menú de navegación |
+| `LayoutContent` | Contenedor del contenido principal |
+
+### Estructura Obligatoria de Página
+
+```tsx
+// ✅ CORRECTO - Incluye header y footer
+export default async function [Entidad]sPage() {
+  return (
+    <Layout>
+      <Header navigationType="mini">
+        <Navigation type="mini" />
+      </Header>
+
+      <LayoutContent>
+        {/* Contenido de la página aquí */}
+      </LayoutContent>
+    </Layout>
+  )
+}
+
+// ❌ INCORRECTO - Sin layout, la página no tendrá header/footer
+export default async function [Entidad]sPage() {
+  return (
+    <main>
+      {/* Contenido huérfano sin header/footer */}
+    </main>
+  )
+}
+```
+
+### Props de Header y Navigation
+
+- `navigationType="mini"` - Header compacto (para páginas internas)
+- `navigationType="full"` - Header completo (para homepage)
+- `type="mini"` en Navigation - Navegación simplificada
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos
@@ -489,6 +543,8 @@ mkdir -p "src/app/[modulo]/[slug]"
 
 ```typescript
 // src/app/[modulo]/page.tsx
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import { [Entidad]Grid } from '@/module/[modulo]/components/ecommerce'
 import [Entidad]Service from '@/module/[modulo]/services'
 import { type Metadata } from 'next'
@@ -502,10 +558,18 @@ export default async function [Entidad]sPage() {
   const items = await [Entidad]Service.getActive[Entidad]s()
 
   return (
-    <main className="container mx-auto px-4">
-      <h1 className="mb-8 text-3xl font-bold">Nuestros [Entidad]s</h1>
-      <[Entidad]Grid items={items} columns={4} />
-    </main>
+    <Layout>
+      <Header navigationType="mini">
+        <Navigation type="mini" />
+      </Header>
+
+      <LayoutContent>
+        <div className="mx-auto max-w-screen-xl px-4 py-8">
+          <h1 className="mb-8 text-3xl font-bold text-gray-900">Nuestros [Entidad]s</h1>
+          <[Entidad]Grid items={items} columns={4} />
+        </div>
+      </LayoutContent>
+    </Layout>
   )
 }
 ```
@@ -514,6 +578,8 @@ export default async function [Entidad]sPage() {
 
 ```typescript
 // src/app/[modulo]/[slug]/page.tsx
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import { [Entidad]Detail } from '@/module/[modulo]/components/ecommerce'
 import [Entidad]Service from '@/module/[modulo]/services'
 import { notFound } from 'next/navigation'
@@ -546,9 +612,17 @@ export default async function [Entidad]Page({ params }: PageProps) {
   }
 
   return (
-    <main className="container mx-auto px-4">
-      <[Entidad]Detail item={item} />
-    </main>
+    <Layout>
+      <Header navigationType="mini">
+        <Navigation type="mini" />
+      </Header>
+
+      <LayoutContent>
+        <div className="mx-auto max-w-screen-xl px-4 py-8">
+          <[Entidad]Detail item={item} />
+        </div>
+      </LayoutContent>
+    </Layout>
   )
 }
 ```
@@ -557,22 +631,32 @@ export default async function [Entidad]Page({ params }: PageProps) {
 
 ```typescript
 // src/app/[modulo]/[slug]/not-found.tsx
+import { Header, Layout, LayoutContent } from '@/module/shared/components/layout'
+import Navigation from '@/module/shared/components/Navigation/Navigation'
 import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <main className="container mx-auto flex min-h-[50vh] flex-col items-center justify-center px-4">
-      <h1 className="mb-4 text-4xl font-bold text-gray-900">No encontrado</h1>
-      <p className="mb-8 text-gray-600">
-        El [modulo] que buscas no existe o fue eliminado.
-      </p>
-      <Link
-        href="/[modulo]"
-        className="rounded-lg bg-primary-600 px-6 py-3 text-white hover:bg-primary-700"
-      >
-        Ver todos los [modulo]s
-      </Link>
-    </main>
+    <Layout>
+      <Header navigationType="mini">
+        <Navigation type="mini" />
+      </Header>
+
+      <LayoutContent>
+        <div className="mx-auto flex min-h-[50vh] max-w-screen-xl flex-col items-center justify-center px-4">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900">No encontrado</h1>
+          <p className="mb-8 text-gray-600">
+            El [modulo] que buscas no existe o fue eliminado.
+          </p>
+          <Link
+            href="/[modulo]"
+            className="rounded-lg bg-primary-600 px-6 py-3 text-white hover:bg-primary-700"
+          >
+            Ver todos los [modulo]s
+          </Link>
+        </div>
+      </LayoutContent>
+    </Layout>
   )
 }
 ```
