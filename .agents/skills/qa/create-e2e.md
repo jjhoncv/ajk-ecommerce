@@ -113,6 +113,50 @@ Antes de crear tests, verificar que:
 
 ---
 
+## ⚠️ VERIFICAR SERVIDOR ANTES DE EJECUTAR TESTS
+
+**CRÍTICO**: Los tests E2E requieren que el servidor esté corriendo. SIEMPRE verificar antes de ejecutar.
+
+### Verificar si el servidor está corriendo
+
+```bash
+# Verificar puerto 3000 (más común)
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/admin
+
+# Si devuelve 200 o 302 → servidor OK
+# Si falla o devuelve 000 → servidor NO está corriendo
+```
+
+### Si el servidor NO está corriendo
+
+```bash
+# Opción 1: Iniciar en background (recomendado para tests)
+pnpm dev &
+sleep 10  # Esperar que inicie
+
+# Opción 2: Verificar si hay otro proceso usando el puerto
+lsof -i :3000
+
+# Opción 3: Si hay errores de TypeScript, el servidor no iniciará
+# En ese caso, reportar al Module Lead y NO continuar con tests
+```
+
+### Manejar errores de servidor
+
+Si el servidor devuelve 500 Internal Server Error:
+1. **NO intentar ejecutar tests** - fallarán todos
+2. **Reportar en activity.log** el problema encontrado
+3. **Notificar a Module Lead** para que Frontend/Backend corrijan
+4. **Esperar** a que el servidor esté funcionando antes de reintentar
+
+```
+[TIMESTAMP] [QA] ERROR: Servidor devuelve 500 - Tests no pueden ejecutarse
+[TIMESTAMP] [QA] Causa: [descripción del error si es visible]
+[TIMESTAMP] [QA] Acción: Esperando corrección de Frontend/Backend
+```
+
+---
+
 ## IMPORTANTE: Framework de Testing
 
 Este proyecto usa **Puppeteer** (NO Playwright) con utilidades compartidas en `tests/e2e/utils/`.

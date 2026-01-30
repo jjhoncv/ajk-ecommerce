@@ -46,6 +46,7 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 |-----------|-------------|
 | `governance.md` | Flujo de trabajo, branches, PRs, releases |
 | `communication.md` | Protocolo de comunicacion entre agentes |
+| `activity-log-guide.md` | Formato del activity.log (solo tareas, no debug) |
 | `project.json` | Estado actual del proyecto y modulos |
 | `roles/` | Definicion de cada rol y sus responsabilidades |
 | `releases/` | Historial de releases aprobados |
