@@ -16,27 +16,51 @@ Usuario solicita nuevo módulo o funcionalidad
 
 **El Project Owner NO es un tomador de pedidos. Es un consultor estratégico.**
 
-### 1.1 Analizar la Solicitud
+### 1.1 Conocer las Capacidades del Equipo
 
-Antes de hacer preguntas, analizar:
+Antes de proponer, revisar qué puede hacer cada rol:
 
-1. **Entender el propósito de negocio**
+```
+LEER SKILLS DEL EQUIPO:
+- .agents/skills/dba/create-table.md
+- .agents/skills/backend/create-module.md
+- .agents/skills/backend/create-ecommerce.md
+- .agents/skills/frontend/create-admin.md
+- .agents/skills/frontend/create-ecommerce.md
+- .agents/skills/qa/create-e2e.md
+- .agents/skills/qa/create-ecommerce-e2e.md
+```
+
+De estos skills, el equipo PUEDE:
+
+| Rol | Capacidades |
+|-----|-------------|
+| **DBA** | Crear tablas MySQL con: id, name, slug, description, image_url, is_active, display_order, timestamps. Generar tipos TypeScript. |
+| **Backend Admin** | Model-Repository-Mapper, Services, APIs REST CRUD con validaciones Zod. |
+| **Backend Ecommerce** | Services SSR con hydrators (NO APIs REST para público). |
+| **Frontend Admin** | Componentes Fields/ListView, páginas list/new/edit, drag & drop, upload de imágenes. |
+| **Frontend Ecommerce** | Grid, Featured, Detail components. Páginas públicas con SSR y SEO dinámico. |
+| **QA** | Tests E2E con Puppeteer, screenshots para validación visual. |
+
+### 1.2 Analizar la Solicitud
+
+Con el conocimiento del equipo, analizar:
+
+1. **Entender qué quiere el usuario**
    - ¿Qué problema resuelve este módulo?
-   - ¿Cómo encaja con los módulos existentes?
-   - ¿Hay módulos similares que ya existen? (categories, brands, banners)
+   - ¿Cuál es el valor de negocio?
 
-2. **Revisar el contexto del ecommerce**
-   - Leer `CLAUDE.md` para entender la arquitectura
-   - Ver qué módulos existen en `src/module/`
-   - Identificar patrones y convenciones del proyecto
+2. **Mapear a capacidades del equipo**
+   - ¿Qué de lo que pide YA SABEMOS hacer?
+   - ¿Hay algo que requiera capacidades nuevas?
 
-3. **Identificar dependencias**
-   - ¿Este módulo se relaciona con productos? ¿Categorías? ¿Órdenes?
-   - ¿Requiere tabla pivote (many-to-many)?
+3. **Identificar relaciones**
+   - ¿Se relaciona con productos? ¿Categorías? ¿Órdenes?
+   - ¿Requiere tabla pivote? (el equipo puede hacerlo)
 
-### 1.2 Preparar Propuesta
+### 1.3 Preparar Propuesta
 
-Basado en el análisis, preparar:
+Basado en las capacidades del equipo, preparar:
 
 ```
 ANÁLISIS DE TU SOLICITUD: [nombre módulo]
@@ -46,42 +70,63 @@ ENTENDIMIENTO:
 [Parafrasear lo que el usuario pidió para confirmar entendimiento]
 
 PROPÓSITO DE NEGOCIO:
-[Explicar cómo este módulo aporta valor al ecommerce]
-
-MÓDULOS RELACIONADOS:
-[Listar módulos existentes que se relacionan]
+[Explicar cómo este módulo aporta valor]
 
 ---
 
-MIS RECOMENDACIONES:
+LO QUE MI EQUIPO PUEDE CONSTRUIR:
 
-1. CAMPOS SUGERIDOS:
-   - name (obligatorio) - Nombre del [entidad]
-   - slug (obligatorio) - URL amigable, auto-generado
-   - description (opcional) - Descripción para SEO
-   - image_url (opcional) - Imagen representativa
-   - is_active (default: true) - Control de visibilidad
-   - display_order (default: 0) - Ordenamiento manual
+1. BASE DE DATOS (DBA):
+   Campos estándar que manejamos:
+   - id (CHAR 36, UUID)
+   - name (VARCHAR 255, obligatorio)
+   - slug (VARCHAR 255, único, auto-generado)
+   - description (TEXT, opcional)
+   - image_url (VARCHAR 500, opcional)
+   - is_active (BOOLEAN, default true)
+   - display_order (INT, para ordenamiento)
+   - created_at, updated_at (timestamps)
 
-2. FUNCIONALIDADES ADMIN:
+   [Proponer campos adicionales específicos si aplica]
+
+2. ADMIN (Backend + Frontend):
    - CRUD completo con validaciones
-   - Ordenamiento drag & drop (si display_order existe)
-   - Preview de imagen (si image_url existe)
+   - Listado con paginación
+   - Ordenamiento drag & drop (si hay display_order)
+   - Upload de imagen (si hay image_url)
+   - Formulario con validaciones en tiempo real
 
-3. CONSIDERACIONES ECOMMERCE:
-   [Proponer si debería tener presencia pública o no, y por qué]
+3. ECOMMERCE (si aplica):
+   - Página de listado público (/[modulo])
+   - Página de detalle (/[modulo]/[slug])
+   - Componente Grid para mostrar items
+   - Componente Featured para destacados
+   - SEO dinámico (meta title, description)
+   - Página 404 personalizada
+   - Diseño responsive
 
-4. RELACIONES CON OTROS MÓDULOS:
-   [Si aplica, proponer relaciones - ej: tags → productos]
-
-5. BUENAS PRÁCTICAS APLICADAS:
-   - Slug único para URLs SEO-friendly
-   - Soft delete con is_active (no borrado físico)
-   - Timestamps para auditoría
+4. TESTING (QA):
+   - Tests E2E automatizados
+   - Screenshots para validación visual
+   - Cobertura: CRUD admin + páginas públicas
 
 ---
 
-PREGUNTAS PARA DEFINIR MEJOR:
+MI PROPUESTA PARA [módulo]:
+
+ADMIN:
+[Describir qué tendría el admin basado en capacidades]
+
+ECOMMERCE:
+[Proponer si debería tener presencia pública y qué incluiría]
+[Si no aplica, explicar por qué solo admin]
+
+RELACIONES:
+[Si se relaciona con productos u otros módulos, proponer cómo]
+
+---
+
+PREGUNTAS PARA AFINAR:
 ```
 
 ---
