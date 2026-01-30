@@ -605,7 +605,52 @@ Solo existen estos tipos de campo:
 { key: 'order', type: 'number' }     // ERROR: 'number' no es FieldType válido
 ```
 
-### 3. URL de DELETE debe incluir el ID
+### 3. Propiedades VÁLIDAS de Field
+
+La interfaz `Field` solo tiene estas propiedades:
+
+| Propiedad | Tipo | Descripción |
+|-----------|------|-------------|
+| `key` | string | Nombre del campo (requerido) |
+| `label` | string | Etiqueta visible |
+| `value` | any | Valor inicial/default |
+| `required` | boolean \| FieldRequired | Si es requerido |
+| `type` | FieldType | Tipo de campo |
+| `multiple` | boolean | Para archivos múltiples |
+| `options` | FileOptions | Opciones para tipo 'file' |
+| `selectOptions` | SelectOption[] | Opciones para tipo 'select' |
+| `checkboxItems` | CheckboxItem[] | Items para 'checkbox-group' |
+| `placeholder` | string | Placeholder del input |
+
+**NO EXISTE**: `defaultValue` - usar `value` en su lugar.
+
+```typescript
+// ✅ CORRECTO - Usar 'value' para valor default
+{ key: 'color', type: 'text', value: '#6B7280' }
+{ key: 'is_active', type: 'checkbox-group', value: true }
+
+// ❌ INCORRECTO - 'defaultValue' NO existe en Field
+{ key: 'color', type: 'text', defaultValue: '#6B7280' }  // ERROR: Property 'defaultValue' does not exist
+```
+
+### 4. Type Casting en Edit Page
+
+Cuando uses `mergeFieldsWithData`, castea el objeto primero a `unknown`:
+
+```typescript
+// ✅ CORRECTO - Doble cast para evitar error TS2352
+const fieldsWithValues = mergeFieldsWithData([Entidad]Fields, {
+  ...([entidad] as unknown as Record<string, unknown>),
+  // overrides aquí
+})
+
+// ❌ INCORRECTO - Cast directo causa error
+const fieldsWithValues = mergeFieldsWithData([Entidad]Fields, {
+  ...([entidad] as Record<string, unknown>),  // ERROR TS2352
+})
+```
+
+### 5. URL de DELETE debe incluir el ID
 
 ```typescript
 // ✅ CORRECTO - ID en la URL
