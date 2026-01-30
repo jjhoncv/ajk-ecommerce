@@ -829,11 +829,57 @@ CUMPLIMIENTO: [X]%
 
 ---
 
+## 🚨 PASO FINAL OBLIGATORIO: COMMIT DE MÓDULO COMPLETO
+
+**CRÍTICO**: Después de que TODAS las fases estén completas (standalone + integración si aplica), el Module Lead DEBE hacer un commit final.
+
+### 17. Commit Final del Módulo
+
+```bash
+# 1. Verificar estado
+git status
+
+# 2. Si hay cambios sin commit
+git add .
+
+# 3. Commit con mensaje descriptivo
+git commit -m "$(cat <<'EOF'
+feat([modulo]): complete module with integration
+
+- Tables: [modulo], [pivote si aplica]
+- Backend: core, API routes, integration endpoints
+- Frontend Admin: Fields, ListView, pages, selector
+- Frontend Ecommerce: badges/components (if applicable)
+- E2E tests: admin CRUD + integration tests
+- Screenshots: validated by Module Lead
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+EOF
+)"
+
+# 4. Push al branch
+git push origin feature/[modulo]
+
+# 5. Registrar en activity log
+./.agents/scripts/log.sh "MODULE-LEAD" "COMMIT FINAL - Módulo [modulo] completo en feature/[modulo]"
+```
+
+**NUNCA declarar "MÓDULO COMPLETO" sin haber hecho el commit final.**
+
+El commit debe incluir:
+- Todos los archivos creados por DBA, Backend, Frontend, QA
+- Todos los archivos de integración (si aplica)
+- Screenshots de E2E como evidencia
+- Activity log actualizado
+
+---
+
 ## Outputs
 - Tareas asignadas a cada agente
 - `.agents/active/[modulo]-status.md` actualizado
 - Progreso monitoreado
 - Ecommerce integrado con datos reales (si aplica)
+- **Commit final realizado en branch feature/[modulo]**
 
 ## Next
 - Monitorear completados
