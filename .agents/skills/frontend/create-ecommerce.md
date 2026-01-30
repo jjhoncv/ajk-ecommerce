@@ -68,11 +68,17 @@ IMPACTO: [mínimo/bajo]
 
 ### Cómo definir Mocks
 
-Coordinar con Backend para obtener los **tipos exactos**:
+**⚠️ ANTES de crear mocks, SIEMPRE leer `src/module/[modulo]/services/types.ts` para usar los tipos exactos del Backend.**
+
+```bash
+# Leer tipos definidos por Backend
+cat src/module/[modulo]/services/types.ts
+```
+
+Usar esos tipos exactos para los mocks:
 
 ```typescript
-// Pedir a Backend: ¿Qué tipo retorna el service?
-// src/module/[modulo]/services/types.ts
+// Backend definió en services/types.ts:
 export interface [Entidad]Card {
   id: number
   name: string
@@ -80,6 +86,8 @@ export interface [Entidad]Card {
   imageUrl: string | null
   description: string | null
 }
+
+// Frontend usa EXACTAMENTE ese tipo para mocks
 ```
 
 ### Crear Mocks en las Páginas
