@@ -179,13 +179,18 @@ export const [Entidad]ListView: FC<[Entidad]ListViewProps> = ({ items }) => {
   const handleRemove = async (id: string | null): Promise<void> => {
     if (id == null || id === '') return
     try {
-      const message = await FetchCustomBody({
-        data: { id },
-        method: 'DELETE',
-        url: '/api/admin/[modulo]'
+      // IMPORTANTE: El DELETE debe ir a /api/admin/[modulo]/${id}
+      // NO a /api/admin/[modulo] - esto causa error 405
+      const response = await fetch(`/api/admin/[modulo]/${id}`, {
+        method: 'DELETE'
       })
 
-      ToastSuccess(message)
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Error al eliminar')
+      }
+
+      ToastSuccess('[Entidad] eliminado correctamente')
       router.push('/admin/[modulo]')
       router.refresh()
     } catch (error: unknown) {
@@ -551,6 +556,24 @@ Solo existen estos tipos de campo:
 { key: 'color', type: 'color' }      // ERROR: 'color' no es FieldType válido
 { key: 'order', type: 'number' }     // ERROR: 'number' no es FieldType válido
 ```
+
+### 3. URL de DELETE debe incluir el ID
+
+```typescript
+// ✅ CORRECTO - ID en la URL
+const response = await fetch(`/api/admin/[modulo]/${id}`, {
+  method: 'DELETE'
+})
+
+// ❌ INCORRECTO - Causa error 405 Method Not Allowed
+await FetchCustomBody({
+  data: { id },
+  method: 'DELETE',
+  url: '/api/admin/[modulo]'  // ← Falta el ID en la URL
+})
+```
+
+**Razón**: El endpoint DELETE está en `/api/admin/[modulo]/[id]/route.ts`, NO en `/api/admin/[modulo]/route.ts`.
 
 ---
 
