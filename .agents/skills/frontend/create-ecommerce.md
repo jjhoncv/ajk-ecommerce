@@ -55,6 +55,83 @@ IMPACTO: [mínimo/bajo]
 
 ---
 
+## 📋 PATRÓN DE MOCKS/CONTRATOS
+
+**El Frontend Ecommerce trabaja con MOCKS** hasta que el Agente Integrador conecte con datos reales.
+
+### Por qué usar Mocks
+
+1. No depender de datos del Admin (que puede estar en desarrollo)
+2. Permitir desarrollo paralelo Frontend/Backend
+3. Validar UI independientemente
+4. QA puede probar la UI sin datos reales
+
+### Cómo definir Mocks
+
+Coordinar con Backend para obtener los **tipos exactos**:
+
+```typescript
+// Pedir a Backend: ¿Qué tipo retorna el service?
+// src/module/[modulo]/services/types.ts
+export interface [Entidad]Card {
+  id: number
+  name: string
+  slug: string
+  imageUrl: string | null
+  description: string | null
+}
+```
+
+### Crear Mocks en las Páginas
+
+```typescript
+// src/app/[modulo]/page.tsx
+// TODO: MOCK - Reemplazar con [Entidad]Service.getActive[Entidad]s()
+const mockItems: [Entidad]Card[] = [
+  {
+    id: 1,
+    name: 'Ejemplo Tag 1',
+    slug: 'ejemplo-tag-1',
+    imageUrl: null,
+    description: 'Descripción de ejemplo'
+  },
+  {
+    id: 2,
+    name: 'Ejemplo Tag 2',
+    slug: 'ejemplo-tag-2',
+    imageUrl: null,
+    description: 'Otra descripción'
+  }
+]
+
+export default async function [Modulo]sPage() {
+  // TODO: MOCK - Descomentar cuando Integrador conecte
+  // const items = await [Entidad]Service.getActive[Entidad]s()
+  const items = mockItems
+
+  return <[Entidad]Grid items={items} />
+}
+```
+
+### Marcar claramente los TODOs
+
+Usar comentarios claros para que el Integrador los encuentre fácilmente:
+
+```typescript
+// TODO: MOCK - Reemplazar con service real
+// TODO: MOCK - Descomentar línea siguiente
+// TODO: MOCK - Eliminar mockData
+```
+
+### Después de UI Aprobada
+
+El **Agente Integrador** (skill: `integrator/connect-ecommerce.md`):
+1. Busca todos los `TODO: MOCK`
+2. Reemplaza mocks con calls a services reales
+3. Ejecuta test de integración
+
+---
+
 ## IMPORTANTE: Ecommerce usa SSR
 
 - Las páginas son Server Components (async)

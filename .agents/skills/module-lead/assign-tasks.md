@@ -55,6 +55,33 @@ Si `ecommerceEnabled: false`:
 
 ---
 
+## 🚨 ORDEN ESTRICTO DE DESARROLLO
+
+```
+FASE 1: ADMIN (Iteraciones hasta 100%)
+======================================
+DBA → Backend Admin → Frontend Admin → QA Admin
+                                          ↓
+                              Validar screenshots
+                                          ↓
+                              ¿Cumplimiento >= 90%?
+                                    │
+                        NO ←────────┼────────→ SÍ
+                         │                      │
+                    Iterar                Admin ✓ APROBADO
+                    (corregir)                  │
+                         │                      ↓
+                         └──────────────→ FASE 2: ECOMMERCE
+```
+
+**REGLA CRÍTICA**: NO pasar a Ecommerce hasta que Admin tenga >= 90% de cumplimiento.
+
+- Si Admin tiene errores → iterar hasta resolverlos
+- Si hay campo imagen → E2E debe probar upload (ver patrón en skill QA)
+- Los datos creados en Admin son necesarios para probar Ecommerce
+
+---
+
 ## Steps
 
 ### 1. Asignar a DBA (Primero)
@@ -409,7 +436,52 @@ Total: [X]/[Y] = [Z]%
 Iteraciones: [N]
 ```
 
-Ejecutar `propose-release.md`
+### 10. Asignar Integrador (Si ecommerceEnabled: true)
+
+**Solo después de que Admin Y Ecommerce UI estén aprobados (>= 90%).**
+
+```typescript
+Task({
+  description: "Integrator: Connect [modulo] ecommerce with real backend",
+  prompt: `
+    TAREA: Integrar ecommerce con backend real
+    ROL: Integrator
+    MÓDULO: [modulo]
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/integrator/connect-ecommerce.md
+
+    PREREQUISITOS CUMPLIDOS:
+    ✅ Admin UI aprobado (>= 90%)
+    ✅ Ecommerce UI aprobado (>= 90%) - funcionando con mocks
+
+    TU TRABAJO:
+    1. Buscar todos los "TODO: MOCK" en src/app/[modulo]/
+    2. Reemplazar mocks con calls a services reales
+    3. Decidir: SSR (para SEO) o API (para interactivo)
+    4. Ejecutar test de integración
+    5. Commit final
+
+    ARCHIVOS A MODIFICAR:
+    - src/app/[modulo]/page.tsx
+    - src/app/[modulo]/[slug]/page.tsx
+    - src/app/page.tsx (si hay section en homepage)
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+})
+```
+
+### 11. Test Final de Integración
+
+Después del Integrador:
+
+```bash
+# Ejecutar ambos tests E2E
+npx tsx src/module/[modulo]/e2e/index-admin.ts
+npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+```
+
+Si ambos pasan → Ejecutar `propose-release.md`
 
 ---
 
@@ -417,6 +489,7 @@ Ejecutar `propose-release.md`
 - Tareas asignadas a cada agente
 - `.agents/active/[modulo]-status.md` actualizado
 - Progreso monitoreado
+- Ecommerce integrado con datos reales (si aplica)
 
 ## Next
 - Monitorear completados

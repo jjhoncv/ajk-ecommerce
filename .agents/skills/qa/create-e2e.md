@@ -1059,3 +1059,98 @@ Module Lead revisa screenshots vs spec
 - ❌ NO saltarse la validación de Module Lead
 - ❌ NO usar credenciales de placeholder (admin/12345678) - usar las reales
 - ❌ NO asumir que el servidor está en puerto 3000 - verificar primero
+
+---
+
+## 📸 APRENDIZAJE: Manejo de Imágenes en E2E
+
+Si el módulo tiene **campo de imagen**, seguir este patrón:
+
+### 1. Preparación de Fixtures
+
+Del modelo de negocio (spec) obtener:
+- ¿Campo imagen obligatorio u opcional?
+- Dimensiones recomendadas (ej: 1200x400 para banners)
+- Formato (jpg, png, webp)
+
+Crear imagen de prueba:
+```
+src/module/[modulo]/e2e/fixtures/
+└── test-[modulo]-[ancho]x[alto].[ext]
+    Ejemplo: test-banner-1200x400.jpg
+```
+
+### 2. En utils.ts - Crear Wrapper
+
+```typescript
+import path from 'path'
+
+const MODULE_DIR = path.join(__dirname)
+export const FIXTURES_DIR = path.join(MODULE_DIR, 'fixtures')
+
+export const TEST_IMAGES = {
+  main: path.join(FIXTURES_DIR, 'test-[modulo]-400x400.jpg')
+}
+
+/**
+ * Wrapper para upload de imagen del módulo
+ * Sube a: public/uploads/e2e/{YYYYMMDD}/[modulo]/
+ */
+export async function upload[Modulo]Image(imagePath: string): Promise<boolean> {
+  const { uploadImageToField, getTestDate } = await import('../../../../tests/e2e/utils')
+  return uploadImageToField('Imagen', imagePath, {
+    filePattern: '[modulo]',
+    uploadWaitTime: 3000,
+    uploadPath: `e2e/${getTestDate()}/[modulo]`
+  })
+}
+```
+
+### 3. Flujo de Upload (automático)
+
+El `uploadImageToField` hace internamente:
+1. Crea carpeta via API: `/api/admin/library/folder`
+2. Click campo imagen → abre DialogAssets
+3. Navega a carpeta `e2e/YYYYMMDD/[modulo]/`
+4. Click "Añadir más archivos" → BrowserFiles
+5. Click "Examinar archivos" → input file
+6. Selecciona archivo de fixtures/
+7. Click "Subir X archivo(s) a la librería"
+8. Selecciona archivo subido
+9. Click "Aceptar"
+
+### 4. Uso en Tests
+
+```typescript
+import { upload[Modulo]Image, TEST_IMAGES, fieldHasImage } from '../utils'
+
+// Durante creación con imagen:
+await fillTextField('name', TEST_DATA.name)
+await upload[Modulo]Image(TEST_IMAGES.main)  // Subir imagen
+await submitForm()
+await wait(1500)
+
+// Verificar que imagen se guardó:
+const hasImage = await fieldHasImage('Imagen')
+if (!hasImage) throw new Error('Imagen no se guardó')
+```
+
+### 5. En cleanup.ts - Limpiar Uploads
+
+```typescript
+// Agregar limpieza de uploads E2E:
+const uploadPath = dateArg === 'all'
+  ? path.join(process.cwd(), 'public/uploads/e2e')
+  : path.join(process.cwd(), 'public/uploads/e2e', dateArg.replace(/-/g, ''))
+
+if (fs.existsSync(uploadPath)) {
+  fs.rmSync(uploadPath, { recursive: true, force: true })
+  console.log('Uploads E2E eliminados')
+}
+```
+
+### 6. Tests según Spec
+
+- **Si imagen obligatoria**: Probar que form NO se envía sin ella
+- **Si imagen opcional**: Probar flujo con y sin imagen
+- **Siempre**: Verificar que imagen se muestra después de guardar
