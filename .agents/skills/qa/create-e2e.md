@@ -15,6 +15,51 @@ Module Lead asigna tarea de crear tests (después de Frontend y Backend)
 
 ---
 
+## ⛔ PROHIBICIONES ABSOLUTAS - LEER PRIMERO
+
+### NO INSTALAR NADA
+
+```bash
+# ❌ PROHIBIDO - NO ejecutar ninguno de estos comandos:
+npm install playwright
+npm install @playwright/test
+npx playwright install
+pnpm add playwright
+pnpm add @playwright/test
+
+# ❌ PROHIBIDO - NO crear archivo playwright.config.ts
+```
+
+### NO USAR PLAYWRIGHT
+
+Este proyecto **YA TIENE** Puppeteer instalado y configurado. **NO usar Playwright**.
+
+```typescript
+// ❌ PROHIBIDO - NO importar de Playwright
+import { test, expect } from '@playwright/test'
+
+// ✅ CORRECTO - Usar las utilidades existentes de Puppeteer
+import { initBrowser, getPage, login } from '../../../../tests/e2e/utils'
+```
+
+### USAR INFRAESTRUCTURA EXISTENTE
+
+Antes de crear cualquier archivo, **LEER OBLIGATORIAMENTE**:
+1. `tests/e2e/E2E-MODULE-INIT.md` - Documentación completa
+2. `tests/e2e/utils/index.ts` - Funciones disponibles
+
+Las utilidades YA incluyen todo lo necesario:
+- `initBrowser()`, `closeBrowser()`, `getPage()`
+- `login(email, password)`
+- `goto(url)`, `wait(ms)`
+- `fillTextField()`, `submitForm()`
+- `openRowActionsMenu()`, `clickMenuAction()`
+- `confirmDeleteModal()`, `cancelDeleteModal()`
+- `itemExistsInTable()`
+- Y muchas más...
+
+---
+
 ## CONFIGURACIÓN CRÍTICA
 
 ### Credenciales Admin (OBLIGATORIO)
