@@ -4,41 +4,122 @@
 Project Owner
 
 ## Trigger
-Product Owner solicita nuevo módulo o mejora
+Usuario solicita nuevo módulo o funcionalidad
 
 ## Inputs
-- Nombre del módulo
-- Descripción de funcionalidad requerida
-- Prioridad (alta/media/baja)
-- Dependencias conocidas
+- Descripción de lo que el usuario quiere
+- Contexto del negocio (si lo proporciona)
 
 ---
 
-## ⚠️ PREGUNTAS OBLIGATORIAS A PRODUCT OWNER
+## 🧠 FASE 1: ANÁLISIS ESTRATÉGICO
 
-Antes de crear el spec, hacer estas preguntas al Product Owner:
+**El Project Owner NO es un tomador de pedidos. Es un consultor estratégico.**
 
-### Preguntas Admin (siempre)
-1. ¿Qué campos debe tener la entidad?
-2. ¿Cuáles son obligatorios?
-3. ¿Hay reglas de validación especiales?
-4. ¿Tiene imagen? ¿Múltiples imágenes?
-5. ¿Se requiere ordenamiento manual (drag & drop)?
+### 1.1 Analizar la Solicitud
 
-### Preguntas Ecommerce (OBLIGATORIAS)
-1. ¿Este módulo se muestra en el ecommerce público? (Sí/No)
-2. Si sí:
-   - ¿Tiene página de listado? (ej: `/[modulo]`)
-   - ¿Tiene página de detalle? (ej: `/[modulo]/[slug]`)
-   - ¿Aparece en el homepage? ¿Cómo? (sección destacada, grilla, etc.)
-   - ¿Qué campos se muestran en el card público? (nombre, imagen, descripción, etc.)
-   - ¿Qué campos se muestran en la página de detalle?
-3. Si no tiene ecommerce:
-   - Marcar `ecommerceEnabled: false` en el spec
+Antes de hacer preguntas, analizar:
+
+1. **Entender el propósito de negocio**
+   - ¿Qué problema resuelve este módulo?
+   - ¿Cómo encaja con los módulos existentes?
+   - ¿Hay módulos similares que ya existen? (categories, brands, banners)
+
+2. **Revisar el contexto del ecommerce**
+   - Leer `CLAUDE.md` para entender la arquitectura
+   - Ver qué módulos existen en `src/module/`
+   - Identificar patrones y convenciones del proyecto
+
+3. **Identificar dependencias**
+   - ¿Este módulo se relaciona con productos? ¿Categorías? ¿Órdenes?
+   - ¿Requiere tabla pivote (many-to-many)?
+
+### 1.2 Preparar Propuesta
+
+Basado en el análisis, preparar:
+
+```
+ANÁLISIS DE TU SOLICITUD: [nombre módulo]
+==========================================
+
+ENTENDIMIENTO:
+[Parafrasear lo que el usuario pidió para confirmar entendimiento]
+
+PROPÓSITO DE NEGOCIO:
+[Explicar cómo este módulo aporta valor al ecommerce]
+
+MÓDULOS RELACIONADOS:
+[Listar módulos existentes que se relacionan]
 
 ---
 
-## Steps
+MIS RECOMENDACIONES:
+
+1. CAMPOS SUGERIDOS:
+   - name (obligatorio) - Nombre del [entidad]
+   - slug (obligatorio) - URL amigable, auto-generado
+   - description (opcional) - Descripción para SEO
+   - image_url (opcional) - Imagen representativa
+   - is_active (default: true) - Control de visibilidad
+   - display_order (default: 0) - Ordenamiento manual
+
+2. FUNCIONALIDADES ADMIN:
+   - CRUD completo con validaciones
+   - Ordenamiento drag & drop (si display_order existe)
+   - Preview de imagen (si image_url existe)
+
+3. CONSIDERACIONES ECOMMERCE:
+   [Proponer si debería tener presencia pública o no, y por qué]
+
+4. RELACIONES CON OTROS MÓDULOS:
+   [Si aplica, proponer relaciones - ej: tags → productos]
+
+5. BUENAS PRÁCTICAS APLICADAS:
+   - Slug único para URLs SEO-friendly
+   - Soft delete con is_active (no borrado físico)
+   - Timestamps para auditoría
+
+---
+
+PREGUNTAS PARA DEFINIR MEJOR:
+```
+
+---
+
+## 💬 FASE 2: PREGUNTAS DE CLARIFICACIÓN
+
+Después de presentar el análisis, hacer preguntas específicas:
+
+### Preguntas Admin
+1. ¿Los campos que propongo son correctos? ¿Agregarías o quitarías alguno?
+2. ¿Hay validaciones especiales? (ej: nombre único, longitud máxima)
+3. ¿Necesitas múltiples imágenes o solo una?
+4. ¿El ordenamiento manual es importante para ti?
+
+### Preguntas Ecommerce
+1. ¿Este módulo debe ser visible en la tienda pública?
+   - Si SÍ:
+     - ¿Quieres una página dedicada? (ej: `/tags` con listado)
+     - ¿Cada item tiene su página de detalle? (ej: `/tags/ofertas`)
+     - ¿Debe aparecer en el homepage? ¿Cómo? (grilla, destacados, slider)
+   - Si NO:
+     - Solo existirá en el admin para gestión interna
+
+2. ¿Cómo se relaciona con productos?
+   - ¿Un producto puede tener múltiples [entidades]?
+   - ¿Se filtra por [entidad] en búsquedas?
+
+### Preguntas de Prioridad
+1. ¿Cuál es la urgencia? (alta/media/baja)
+2. ¿Hay fecha límite?
+
+---
+
+## 📝 FASE 3: CREAR SPEC
+
+Solo después de recibir respuestas, crear el spec.
+
+### Steps
 
 ### 1. Crear Testing Spec
 
