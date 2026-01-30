@@ -59,6 +59,9 @@ ESTO ELIMINARÁ:
   - .agents/specs/[modulo]-* (especificaciones)
   - .agents/active/[modulo]-* (estado)
   - Tabla [modulo] de la base de datos
+  - Tablas pivote relacionadas (ej: product_[modulo])
+  - Registro en sections (sidebar del admin)
+  - Registro en roles_sections (permisos)
   - Entrada en project.json
 
 ¿Continuar? (si/no)
@@ -96,19 +99,50 @@ rm -rf .agents/active/[modulo]-*
 echo "✅ Archivos del módulo eliminados"
 ```
 
-### 4. Eliminar Tabla de Base de Datos
+### 4. Eliminar Tablas de Base de Datos
 
 ```bash
-# Eliminar tabla
+# Primero eliminar tablas pivote que dependen del módulo (si existen)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DROP TABLE IF EXISTS product_[modulo];"
+
+# Eliminar tabla principal
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DROP TABLE IF EXISTS [modulo];"
 
-# Verificar que se eliminó
-docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]';"
+# Verificar que se eliminaron
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '%[modulo]%';"
 
-echo "✅ Tabla eliminada de la base de datos"
+echo "✅ Tablas eliminadas de la base de datos"
 ```
 
-### 5. Regenerar Types
+### 5. Eliminar del Sidebar (sections y roles_sections)
+
+**CRÍTICO**: El DBA agregó el módulo al sidebar al crearlo. Ahora hay que eliminarlo.
+
+```bash
+# 1. Buscar el ID de la sección del módulo
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+SELECT id, name, url FROM sections WHERE url LIKE '%[modulo]%';
+"
+
+# 2. Eliminar de roles_sections (permisos) usando el ID encontrado
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+DELETE FROM roles_sections WHERE id_section = (SELECT id FROM sections WHERE url = '/[modulo]');
+"
+
+# 3. Eliminar de sections (sidebar)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+DELETE FROM sections WHERE url = '/[modulo]';
+"
+
+# 4. Verificar que se eliminó
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+SELECT COUNT(*) as count FROM sections WHERE url LIKE '%[modulo]%';
+"
+
+echo "✅ Módulo eliminado del sidebar"
+```
+
+### 6. Regenerar Types
 
 ```bash
 pnpm generate
@@ -118,7 +152,7 @@ Esto actualiza:
 - `src/types/database/database.d.ts`
 - `src/types/domain/domain.d.ts`
 
-### 6. Actualizar project.json
+### 7. Actualizar project.json
 
 Editar `.agents/project.json`:
 - Eliminar entrada del módulo en `modules`
@@ -145,7 +179,7 @@ Editar `.agents/project.json`:
 }
 ```
 
-### 7. Limpiar Branch (si aplica)
+### 8. Limpiar Branch (si aplica)
 
 Si el branch tiene commits del módulo que se quieren eliminar:
 
@@ -157,7 +191,7 @@ git reset --hard main
 git revert <commit-hash>
 ```
 
-### 8. Verificar Estado Final
+### 9. Verificar Estado Final
 
 ```bash
 # Verificar que no hay archivos del módulo
@@ -167,6 +201,9 @@ ls src/app/api/admin/[modulo] 2>/dev/null && echo "ERROR: API aún existe" || ec
 
 # Verificar que no hay tabla
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]';" 2>/dev/null | grep -q "[modulo]" && echo "ERROR: Tabla aún existe" || echo "✅ No existe tabla [modulo]"
+
+# Verificar que no está en sections (sidebar)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SELECT COUNT(*) FROM sections WHERE url LIKE '%[modulo]%';" 2>/dev/null | grep -q "0" && echo "✅ No existe en sections" || echo "ERROR: Aún existe en sections"
 
 # Verificar git status
 git status --short
@@ -242,7 +279,10 @@ git rebase main
 [ ] src/app/api/admin/[modulo]/ eliminado
 [ ] .agents/specs/[modulo]-* eliminado
 [ ] .agents/active/[modulo]-* eliminado
+[ ] Tablas pivote eliminadas (product_[modulo], etc.)
 [ ] Tabla [modulo] eliminada de BD
+[ ] Registro en sections eliminado (sidebar)
+[ ] Registro en roles_sections eliminado (permisos)
 [ ] pnpm generate ejecutado
 [ ] project.json actualizado
 [ ] Branch limpio (reset o revert si necesario)
@@ -275,17 +315,23 @@ MODULO="tags"
 # 1. Eliminar archivos
 rm -rf src/module/$MODULO src/app/admin/$MODULO src/app/api/admin/$MODULO .agents/specs/$MODULO-* .agents/active/$MODULO-*
 
-# 2. Eliminar tabla
+# 2. Eliminar tablas (primero pivotes, luego principal)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DROP TABLE IF EXISTS product_$MODULO;"
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DROP TABLE IF EXISTS $MODULO;"
 
-# 3. Regenerar types
+# 3. Eliminar del sidebar (sections y roles_sections)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DELETE FROM roles_sections WHERE id_section = (SELECT id FROM sections WHERE url = '/$MODULO');"
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DELETE FROM sections WHERE url = '/$MODULO';"
+
+# 4. Regenerar types
 pnpm generate
 
-# 4. Verificar
+# 5. Verificar
 echo "=== Verificación ==="
 ls src/module/$MODULO 2>/dev/null || echo "✅ src/module/$MODULO no existe"
 ls src/app/admin/$MODULO 2>/dev/null || echo "✅ src/app/admin/$MODULO no existe"
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '$MODULO';" 2>/dev/null | grep -q "$MODULO" || echo "✅ Tabla $MODULO no existe"
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SELECT COUNT(*) FROM sections WHERE url = '/$MODULO';" 2>/dev/null | grep -q "0" && echo "✅ No existe en sections" || echo "❌ Aún existe en sections"
 ```
 
 ### Reset branch a main:
