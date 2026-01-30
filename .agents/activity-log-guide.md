@@ -27,7 +27,56 @@ Ejemplo:
 [TIMESTAMP] [AGENTE] Iniciando [descripción breve de la tarea]
 ```
 
-### Progreso significativo
+### 🔍 MICROTAREAS Y RAZONAMIENTO (NUEVO)
+
+**Los agentes deben registrar su proceso de pensamiento:**
+
+#### Análisis y preguntas
+```
+[TIMESTAMP] [AGENTE] 🔍 Analizando: [qué está revisando]
+[TIMESTAMP] [AGENTE] ❓ Pregunta: [qué necesita resolver]
+[TIMESTAMP] [AGENTE] 💡 Decisión: [qué decidió y por qué brevemente]
+```
+
+#### Microtareas (pasos pequeños)
+```
+[TIMESTAMP] [AGENTE] → Leyendo [archivo] para entender [qué]
+[TIMESTAMP] [AGENTE] → Buscando [patrón] en [ubicación]
+[TIMESTAMP] [AGENTE] → Comparando [A] con [B]
+[TIMESTAMP] [AGENTE] → Creando [archivo]: [propósito]
+[TIMESTAMP] [AGENTE] → Modificando [archivo]: [qué cambio]
+[TIMESTAMP] [AGENTE] → Ejecutando [comando]: [propósito]
+[TIMESTAMP] [AGENTE] → Validando [qué]
+```
+
+#### Descubrimientos y resoluciones
+```
+[TIMESTAMP] [AGENTE] ✓ Encontrado: [qué descubrió]
+[TIMESTAMP] [AGENTE] ⚠️ Problema: [qué encontró]
+[TIMESTAMP] [AGENTE] ✓ Resuelto: [cómo lo solucionó]
+```
+
+#### Ejemplo completo con microtareas
+```
+[2026-01-30 10:00:00] [BACKEND] Iniciando backend tags
+[2026-01-30 10:00:05] [BACKEND] 🔍 Analizando: spec de tags para identificar campos
+[2026-01-30 10:00:10] [BACKEND] → Leyendo .agents/specs/tags-testing-spec.md
+[2026-01-30 10:00:15] [BACKEND] ✓ Encontrado: 6 campos (name, slug, description, color, is_active, display_order)
+[2026-01-30 10:00:20] [BACKEND] ❓ Pregunta: ¿El modelo necesita métodos de búsqueda?
+[2026-01-30 10:00:25] [BACKEND] → Revisando spec sección "Campos Requeridos"
+[2026-01-30 10:00:30] [BACKEND] 💡 Decisión: Sí, agregar findBySlug para URLs amigables
+[2026-01-30 10:00:35] [BACKEND] → Creando src/module/tags/core/Tag.model.ts
+[2026-01-30 10:00:40] [BACKEND] → Creando src/module/tags/core/Tag.repository.ts
+[2026-01-30 10:00:45] [BACKEND] ⚠️ Problema: Tipo Tag no existe en database.d.ts
+[2026-01-30 10:00:50] [BACKEND] → Ejecutando pnpm generate para regenerar types
+[2026-01-30 10:00:55] [BACKEND] ✓ Resuelto: Types regenerados, Tag ahora disponible
+[2026-01-30 10:01:00] [BACKEND] → Creando API routes en /api/admin/tags
+[2026-01-30 10:01:05] [BACKEND] → Validando que importaciones funcionan
+[2026-01-30 10:01:10] [BACKEND] Core creado: Tag.model.ts, Tag.repository.ts, Tag.mapper.ts
+[2026-01-30 10:01:15] [BACKEND] TAREA COMPLETADA
+```
+
+### Progreso significativo (resumen)
 ```
 [TIMESTAMP] [AGENTE] [Hito completado]: [detalle breve]
 ```

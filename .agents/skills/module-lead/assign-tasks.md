@@ -62,6 +62,27 @@ Esto permite que trabajen sin interrupciones y puedan hacer preguntas al usuario
 ./.agents/scripts/log.sh "BACKEND" "ERROR: No se pudo crear endpoint - falta tipo en domain"
 ```
 
+### 🔍 MICROTAREAS Y RAZONAMIENTO (Obligatorio)
+
+**Los agentes DEBEN registrar su proceso de pensamiento, no solo inicio/fin.**
+
+```bash
+# Análisis y preguntas
+./.agents/scripts/log.sh "BACKEND" "🔍 Analizando: spec para identificar campos requeridos"
+./.agents/scripts/log.sh "BACKEND" "❓ Pregunta: ¿Necesito método findBySlug?"
+./.agents/scripts/log.sh "BACKEND" "💡 Decisión: Sí, para URLs amigables"
+
+# Microtareas (cada paso pequeño)
+./.agents/scripts/log.sh "BACKEND" "→ Leyendo .agents/specs/tags-testing-spec.md"
+./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/tags/core/Tag.model.ts"
+./.agents/scripts/log.sh "BACKEND" "→ Ejecutando pnpm generate"
+
+# Descubrimientos y resoluciones
+./.agents/scripts/log.sh "BACKEND" "✓ Encontrado: 6 campos en spec"
+./.agents/scripts/log.sh "BACKEND" "⚠️ Problema: Type Tag no existe"
+./.agents/scripts/log.sh "BACKEND" "✓ Resuelto: pnpm generate regeneró types"
+```
+
 ### En el prompt de cada agente, incluir
 
 Agregar al final de cada prompt de agente:
@@ -69,14 +90,20 @@ Agregar al final de cada prompt de agente:
 ```
 OBLIGATORIO - ACTIVITY LOG:
 - Registrar inicio: ./.agents/scripts/log.sh "[AGENTE]" "Iniciando [tarea]"
-- Registrar progreso significativo
+- Registrar MICROTAREAS con prefijo →
+- Registrar ANÁLISIS con 🔍
+- Registrar PREGUNTAS con ❓
+- Registrar DECISIONES con 💡
+- Registrar DESCUBRIMIENTOS con ✓
+- Registrar PROBLEMAS con ⚠️
+- Registrar RESOLUCIONES con ✓ Resuelto:
 - Registrar TAREA COMPLETADA al finalizar
-- Registrar ERROR si hay problemas
+- Registrar ERROR si hay problemas bloqueantes
 
 Referencia: .agents/activity-log-guide.md
 ```
 
-**Sin logs en activity.log, no se puede dar seguimiento al trabajo de los agentes.**
+**Sin logs detallados, no se puede entender cómo piensan y trabajan los agentes.**
 
 ---
 
