@@ -12,6 +12,52 @@ Después de `start-module.md`
 
 ---
 
+## ⛔ ADVERTENCIA CRÍTICA - LEER ANTES DE EMPEZAR
+
+**NUNCA declarar "MÓDULO COMPLETO" sin:**
+
+1. ✅ **QA ejecutó tests** y generó screenshots
+2. ✅ **Module Lead validó screenshots** vs spec (>= 90%)
+3. ✅ **Si requiereIntegracion: true** en spec:
+   - Module Expert analizó módulo existente
+   - Integration Lead completó integración
+   - QA creó tests en módulo EXISTENTE (no en el nuevo)
+   - Screenshots de ecommerce muestran badges/integración
+4. ✅ **Commit final realizado**
+
+**Ver sección "Checklist Pre-Completado" al final de este documento.**
+
+**Si declaras completo sin cumplir esto, el módulo será RECHAZADO.**
+
+---
+
+## 🔍 PASO 0: LEER SPEC Y VERIFICAR REQUISITOS
+
+**ANTES de asignar cualquier tarea, leer el spec completo:**
+
+```bash
+cat .agents/specs/[modulo]-testing-spec.md
+```
+
+**Identificar y registrar:**
+```bash
+./.agents/scripts/log.sh "MODULE-LEAD" "🔍 Analizando spec de [modulo]"
+./.agents/scripts/log.sh "MODULE-LEAD" "→ ecommerceEnabled: [true/false]"
+./.agents/scripts/log.sh "MODULE-LEAD" "→ requiereIntegracion: [true/false]"
+./.agents/scripts/log.sh "MODULE-LEAD" "→ moduloRelacionado: [nombre o ninguno]"
+./.agents/scripts/log.sh "MODULE-LEAD" "→ nivelAsociacion: [producto/variante/N/A]"
+```
+
+**Si requiereIntegracion: true:**
+- Habrá FASE 2 después de standalone
+- Necesitarás lanzar Module Expert
+- Necesitarás lanzar Integration Lead
+- QA de integración va en módulo EXISTENTE
+
+**Planificar el trabajo completo antes de empezar.**
+
+---
+
 ## 🔓 AUTONOMÍA DE AGENTES
 
 **Los agentes tienen AUTONOMÍA TOTAL** - no piden permiso para crear/editar archivos.
