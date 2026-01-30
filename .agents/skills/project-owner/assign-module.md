@@ -332,21 +332,43 @@ git checkout -b feature/[modulo]
 git push -u origin feature/[modulo]
 ```
 
-### 4. Enviar Asignación a Module Lead
+### 4. Lanzar Module Lead con Task Tool
 
-```
-ASIGNACION: [modulo]
-MODELO DE NEGOCIO: .agents/specs/[modulo]-testing-spec.md
-BRANCH: feature/[modulo]
-PRIORIDAD: [alta/media/baja]
-DEPENDENCIAS: [lista o "ninguna"]
+**⚠️ CRÍTICO: NO solo escribir el mensaje. DEBES usar Task() para lanzar al agente.**
 
-INSTRUCCIONES:
-1. Leer el modelo de negocio completo
-2. Crear .agents/active/[modulo]-status.md
-3. Dividir tareas para tu equipo
-4. Notificar si hay conflictos con shared/
+```typescript
+Task({
+  description: "Module Lead: Coordinate [modulo] module development",
+  prompt: `
+    ROL: Module Lead
+    ASIGNACIÓN: Módulo [modulo]
+
+    SPEC: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+    PRIORIDAD: [alta/media/baja]
+    DEPENDENCIAS: [lista o "ninguna"]
+
+    SKILLS A SEGUIR:
+    - .agents/skills/module-lead/start-module.md
+    - .agents/skills/module-lead/assign-tasks.md
+
+    INSTRUCCIONES:
+    1. Leer el spec completo
+    2. Crear .agents/active/[modulo]-status.md
+    3. Ejecutar FASE 1: DBA → Backend → Frontend → QA
+    4. Si requiereIntegracion: true, ejecutar FASE 2 con Integration Lead
+    5. Validar screenshots antes de declarar completo
+    6. Hacer commit final
+
+    ACTIVITY LOG:
+    ./.agents/scripts/log.sh "MODULE-LEAD" "Iniciando coordinación módulo [modulo]"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Task", "AskUserQuestion"]
+})
 ```
+
+**El Project Owner NO termina hasta que Module Lead sea lanzado con Task().**
 
 ---
 
@@ -354,8 +376,8 @@ INSTRUCCIONES:
 - `.agents/specs/[modulo]-testing-spec.md` creado
 - `.agents/project.json` actualizado
 - Branch `feature/[modulo]` creado
-- Mensaje de asignación enviado
+- **Module Lead lanzado con Task tool** (no solo mensaje)
 
 ## Next
-- Module Lead ejecuta `start-module.md`
+- Module Lead coordina el desarrollo
 - Monitorear progreso en `.agents/active/`
