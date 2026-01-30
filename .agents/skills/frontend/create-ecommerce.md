@@ -1,0 +1,481 @@
+# Skill: Crear Frontend Ecommerce del Módulo
+
+## Rol
+Frontend
+
+## Trigger
+Module Lead asigna tarea de crear frontend ecommerce (después de backend ecommerce)
+
+## Inputs
+- Nombre del módulo
+- `.agents/specs/[modulo]-testing-spec.md` (sección Ecommerce)
+- Services ecommerce ya creados (`src/module/[modulo]/services/`)
+- Branch de trabajo
+
+---
+
+## ⛔ AUTOSUFICIENCIA - NO REVISAR OTROS MÓDULOS
+
+**Este skill contiene TODOS los patrones que necesitas.**
+
+- ❌ NO leer código de otros módulos (banners, brands, categories, etc.)
+- ❌ NO buscar "ejemplos" en el codebase
+
+**Solo necesitas:**
+1. Leer el spec del módulo (sección Ecommerce)
+2. Seguir los templates de ESTE skill
+
+---
+
+## IMPORTANTE: Ecommerce usa SSR
+
+- Las páginas son Server Components (async)
+- Los servicios se llaman directamente (no fetch a APIs)
+- Los datos se pasan como props a componentes cliente
+
+---
+
+## Steps
+
+### 1. Verificar Prerequisitos
+
+```bash
+# Verificar que services existe
+ls src/module/[modulo]/services/
+
+# Debe tener: types.ts, hydrators.ts, [modulo].ts, index.ts
+
+# Cambiar a branch
+git checkout feature/[modulo]
+```
+
+### 2. Crear Estructura de Carpetas
+
+```bash
+mkdir -p src/module/[modulo]/components/ecommerce
+```
+
+### 3. Crear Componente Principal
+
+Componente que muestra grilla de items (para homepage u otras páginas).
+
+```typescript
+// src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx
+import { type [Entidad]Card } from '@/module/[modulo]/services/types'
+import Image from 'next/image'
+import Link from 'next/link'
+import { type FC } from 'react'
+
+interface [Entidad]GridProps {
+  items: [Entidad]Card[]
+  title?: string
+  columns?: 3 | 4 | 5 | 6
+}
+
+export const [Entidad]Grid: FC<[Entidad]GridProps> = ({
+  items,
+  title,
+  columns = 4
+}) => {
+  // No renderizar si no hay items
+  if (!items || items.length === 0) {
+    return null
+  }
+
+  const gridCols = {
+    3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+    4: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4',
+    5: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5',
+    6: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'
+  }
+
+  return (
+    <section className="py-8">
+      {title && (
+        <h2 className="mb-6 text-2xl font-bold text-gray-900">{title}</h2>
+      )}
+      <div className={`grid ${gridCols[columns]} gap-4`}>
+        {items.map((item) => (
+          <Link
+            key={item.id}
+            href={`/[modulo]/${item.slug}`}
+            className="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg"
+          >
+            {/* Imagen */}
+            <div className="relative aspect-square overflow-hidden bg-gray-100">
+              {item.imageUrl ? (
+                <Image
+                  src={item.imageUrl}
+                  alt={item.name}
+                  fill
+                  className="object-cover transition-transform group-hover:scale-105"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-gray-400">
+                  <svg
+                    className="h-12 w-12"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            {/* Contenido */}
+            <div className="p-4">
+              <h3 className="font-medium text-gray-900 group-hover:text-primary-600">
+                {item.name}
+              </h3>
+              {item.description && (
+                <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
+```
+
+### 4. Crear Componente Featured (Destacados)
+
+Para mostrar items destacados con diseño especial.
+
+```typescript
+// src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx
+import { type Featured[Entidad] } from '@/module/[modulo]/services/types'
+import Image from 'next/image'
+import Link from 'next/link'
+import { type FC } from 'react'
+
+interface Featured[Entidad]sProps {
+  items: Featured[Entidad][]
+}
+
+export const Featured[Entidad]s: FC<Featured[Entidad]sProps> = ({ items }) => {
+  // No renderizar si no hay items
+  if (!items || items.length === 0) {
+    return null
+  }
+
+  return (
+    <section className="py-8">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {items.map((item, index) => (
+          <Link
+            key={item.slug}
+            href={item.link}
+            className="group relative overflow-hidden rounded-xl"
+          >
+            {/* Imagen de fondo */}
+            <div className="relative aspect-[4/3] md:aspect-[3/4]">
+              {item.image ? (
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  priority={index < 2}
+                />
+              ) : (
+                <div className="h-full w-full bg-gradient-to-br from-gray-700 to-gray-900" />
+              )}
+
+              {/* Overlay gradiente */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+              {/* Contenido */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <h3 className="text-xl font-bold text-white md:text-2xl">
+                  {item.title}
+                </h3>
+                {item.subtitle && (
+                  <p className="mt-1 text-sm text-white/80">{item.subtitle}</p>
+                )}
+                <span className="mt-3 inline-flex items-center text-sm font-medium text-white group-hover:underline">
+                  Ver más
+                  <svg
+                    className="ml-1 h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
+```
+
+### 5. Crear Componente de Detalle (si aplica)
+
+Para página de detalle `/[modulo]/[slug]`.
+
+```typescript
+// src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx
+import { type [Entidad]Card } from '@/module/[modulo]/services/types'
+import Image from 'next/image'
+import { type FC } from 'react'
+
+interface [Entidad]DetailProps {
+  item: [Entidad]Card
+}
+
+export const [Entidad]Detail: FC<[Entidad]DetailProps> = ({ item }) => {
+  return (
+    <article className="py-8">
+      {/* Banner/Hero */}
+      {item.imageUrl && (
+        <div className="relative mb-8 aspect-[21/9] overflow-hidden rounded-xl">
+          <Image
+            src={item.imageUrl}
+            alt={item.name}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 p-8">
+            <h1 className="text-3xl font-bold text-white md:text-4xl">
+              {item.name}
+            </h1>
+          </div>
+        </div>
+      )}
+
+      {/* Contenido */}
+      <div className="mx-auto max-w-3xl">
+        {!item.imageUrl && (
+          <h1 className="mb-4 text-3xl font-bold text-gray-900">
+            {item.name}
+          </h1>
+        )}
+        {item.description && (
+          <p className="text-lg text-gray-600">{item.description}</p>
+        )}
+      </div>
+    </article>
+  )
+}
+```
+
+### 6. Crear index.ts para exportaciones
+
+```typescript
+// src/module/[modulo]/components/ecommerce/index.ts
+export { [Entidad]Grid } from './[Entidad]Grid'
+export { Featured[Entidad]s } from './Featured[Entidad]s'
+export { [Entidad]Detail } from './[Entidad]Detail'
+```
+
+### 7. Crear Página Pública (si se requiere)
+
+Solo si el spec indica página pública dedicada.
+
+```bash
+mkdir -p "src/app/[modulo]/[slug]"
+```
+
+**Página de listado:**
+
+```typescript
+// src/app/[modulo]/page.tsx
+import { [Entidad]Grid } from '@/module/[modulo]/components/ecommerce'
+import [Entidad]Service from '@/module/[modulo]/services'
+import { type Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '[Entidad]s | AJK Ecommerce',
+  description: 'Explora todos nuestros [modulo]s'
+}
+
+export default async function [Entidad]sPage() {
+  const items = await [Entidad]Service.getActive[Entidad]s()
+
+  return (
+    <main className="container mx-auto px-4">
+      <h1 className="mb-8 text-3xl font-bold">Nuestros [Entidad]s</h1>
+      <[Entidad]Grid items={items} columns={4} />
+    </main>
+  )
+}
+```
+
+**Página de detalle:**
+
+```typescript
+// src/app/[modulo]/[slug]/page.tsx
+import { [Entidad]Detail } from '@/module/[modulo]/components/ecommerce'
+import [Entidad]Service from '@/module/[modulo]/services'
+import { notFound } from 'next/navigation'
+import { type Metadata } from 'next'
+
+interface PageProps {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params
+  const item = await [Entidad]Service.get[Entidad]BySlug(slug)
+
+  if (!item) {
+    return { title: 'No encontrado' }
+  }
+
+  return {
+    title: `${item.name} | AJK Ecommerce`,
+    description: item.description ?? `Conoce más sobre ${item.name}`
+  }
+}
+
+export default async function [Entidad]Page({ params }: PageProps) {
+  const { slug } = await params
+  const item = await [Entidad]Service.get[Entidad]BySlug(slug)
+
+  if (!item) {
+    notFound()
+  }
+
+  return (
+    <main className="container mx-auto px-4">
+      <[Entidad]Detail item={item} />
+    </main>
+  )
+}
+```
+
+**Página 404:**
+
+```typescript
+// src/app/[modulo]/[slug]/not-found.tsx
+import Link from 'next/link'
+
+export default function NotFound() {
+  return (
+    <main className="container mx-auto flex min-h-[50vh] flex-col items-center justify-center px-4">
+      <h1 className="mb-4 text-4xl font-bold text-gray-900">No encontrado</h1>
+      <p className="mb-8 text-gray-600">
+        El [modulo] que buscas no existe o fue eliminado.
+      </p>
+      <Link
+        href="/[modulo]"
+        className="rounded-lg bg-primary-600 px-6 py-3 text-white hover:bg-primary-700"
+      >
+        Ver todos los [modulo]s
+      </Link>
+    </main>
+  )
+}
+```
+
+### 8. Integrar en Homepage (si aplica)
+
+Agregar sección al homepage.
+
+```typescript
+// En src/app/page.tsx, agregar:
+
+import { [Entidad]Grid } from '@/module/[modulo]/components/ecommerce'
+// o
+import { Featured[Entidad]s } from '@/module/[modulo]/components/ecommerce'
+import [Entidad]Service from '@/module/[modulo]/services'
+
+// En el componente:
+const [modulo]s = await [Entidad]Service.getActive[Entidad]s()
+// o
+const featured[Entidad]s = await [Entidad]Service.getFeatured[Entidad]s(3)
+
+// En el JSX:
+<[Entidad]Grid items={[modulo]s} title="[Entidad]s" />
+// o
+<Featured[Entidad]s items={featured[Entidad]s} />
+```
+
+### 9. Verificar Lint
+
+```bash
+pnpm lint
+```
+
+### 10. Commit
+
+```bash
+git add src/module/[modulo]/components/ecommerce/
+git add src/app/[modulo]/  # Si se crearon páginas
+
+git commit -m "feat([modulo]): FRONTEND add ecommerce components and pages"
+git push origin feature/[modulo]
+```
+
+### 11. Notificar al Module Lead
+
+```
+COMPLETADO: Frontend ecommerce para [modulo]
+COMMIT: feat([modulo]): FRONTEND add ecommerce components and pages
+
+COMPONENTES CREADOS:
+  - src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx
+  - src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx
+  - src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx
+  - src/module/[modulo]/components/ecommerce/index.ts
+
+PÁGINAS CREADAS (si aplica):
+  - src/app/[modulo]/page.tsx - Listado
+  - src/app/[modulo]/[slug]/page.tsx - Detalle
+  - src/app/[modulo]/[slug]/not-found.tsx - 404
+
+USO EN HOMEPAGE:
+  import { [Entidad]Grid } from '@/module/[modulo]/components/ecommerce'
+  const items = await [Entidad]Service.getActive[Entidad]s()
+  <[Entidad]Grid items={items} title="[Entidad]s" />
+
+FUNCIONALIDADES:
+  - Grilla responsive (2-6 columnas)
+  - Cards con imagen, nombre, descripción
+  - Links a páginas de detalle
+  - SEO dinámico con generateMetadata
+  - Página 404 personalizada
+
+NOTAS: Usa SSR - servicios llamados directamente, no APIs
+```
+
+---
+
+## Outputs
+- `src/module/[modulo]/components/ecommerce/` completo
+- Páginas públicas (si aplica)
+- Lint verificado
+- Commit realizado
+
+## Next
+- QA puede probar visualmente el ecommerce
+
+## NO Hacer
+- ❌ NO crear APIs REST
+- ❌ NO usar fetch para obtener datos (usar servicios directamente)
+- ❌ NO modificar componentes admin
+- ❌ NO modificar services/ del módulo
