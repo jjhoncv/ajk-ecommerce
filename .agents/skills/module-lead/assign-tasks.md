@@ -20,19 +20,19 @@ Al lanzar cada agente con Task tool, usar estos `allowed_tools`:
 
 ```typescript
 // DBA
-allowed_tools: ["Read", "Glob", "Grep", "Bash"]
+allowed_tools: ["Read", "Glob", "Grep", "Bash", "AskUserQuestion"]
 
 // Backend
-allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 
 // Frontend
-allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 
 // QA
-allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 ```
 
-Esto permite que trabajen sin interrupciones.
+Esto permite que trabajen sin interrupciones y puedan hacer preguntas al usuario cuando necesiten clarificación.
 
 ---
 
@@ -115,7 +115,7 @@ Task({
     3. Commit: feat([modulo]): DBA create table
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -155,7 +155,7 @@ Task({
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add core and API
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -182,7 +182,7 @@ Task({
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add admin components
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -225,7 +225,7 @@ Task({
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add ecommerce services
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -256,7 +256,7 @@ Task({
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add ecommerce components
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -296,7 +296,7 @@ Task({
     3. NO hacer commit - esperar validación de Module Lead
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -341,7 +341,7 @@ Task({
     3. Notificar: "ETAPA 1 - UI con mocks lista para validación"
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -483,7 +483,7 @@ Task({
     - Coordinar iteración Frontend + QA si es necesario
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
@@ -522,7 +522,7 @@ Task({
     3. Notificar: "ETAPA 2 - UI con datos reales lista para validación"
   `,
   subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
 })
 ```
 
