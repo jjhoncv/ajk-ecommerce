@@ -34,6 +34,34 @@ Module Lead asigna tarea de crear frontend (después de DBA)
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Mejorar la UX con feedback visual (loading states, transiciones)
+- Agregar tooltips útiles en campos complejos
+- Mejorar accesibilidad (aria-labels, focus states)
+- Agregar preview visual si hay campos de color/imagen
+
+**NO debes:**
+- Cambiar el diseño base del admin
+- Agregar features complejas no solicitadas
+- Modificar componentes compartidos sin consultar
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué mejora la UX]
+IMPACTO: [mínimo/bajo]
+```
+
+---
+
 ## Componentes Compartidos a Usar
 
 **IMPORTANTE**: El proyecto tiene componentes compartidos en `@/module/shared/`. SIEMPRE usarlos.

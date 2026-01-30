@@ -27,6 +27,34 @@ Module Lead asigna tarea de crear frontend ecommerce (después de backend ecomme
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Mejorar animaciones y transiciones sutiles
+- Optimizar imágenes con sizes/priority apropiados
+- Agregar estados empty/loading elegantes
+- Mejorar accesibilidad y SEO
+
+**NO debes:**
+- Cambiar la arquitectura SSR
+- Agregar features complejas no solicitadas
+- Crear APIs o endpoints
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué mejora la UX]
+IMPACTO: [mínimo/bajo]
+```
+
+---
+
 ## IMPORTANTE: Ecommerce usa SSR
 
 - Las páginas son Server Components (async)

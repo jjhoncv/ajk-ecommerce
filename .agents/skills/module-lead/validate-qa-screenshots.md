@@ -343,6 +343,118 @@ Nuevo resultado:
 
 ---
 
+## 🎯 FASE DE FEEDBACK (Solo si APROBADO)
+
+### 10. Detectar Mejoras del Equipo
+
+Antes de autorizar el commit, revisar si el equipo agregó mejoras (Factor de Imaginación 10%):
+
+```
+MEJORAS DETECTADAS (Factor 10%)
+===============================
+
+¿El equipo agregó algo que NO estaba en el spec original?
+
+1. [Mejora 1 - si existe]
+   - Agente: [quien lo hizo]
+   - Descripción: [qué agregó]
+   - Valor: [por qué es útil]
+
+2. [Mejora 2 - si existe]
+   ...
+
+Si no hay mejoras detectadas: OK, cumplió exactamente el spec.
+```
+
+### 11. Preguntar al Humano sobre Mejoras
+
+Si se detectaron mejoras, preguntar al humano:
+
+```
+PREGUNTA PARA TI (Feedback de Evolución)
+========================================
+
+MÓDULO: [modulo]
+CUMPLIMIENTO BASE: [X]%
+
+MEJORAS QUE EL EQUIPO AGREGÓ:
+1. [mejora 1]
+2. [mejora 2]
+
+PREGUNTA:
+¿Alguna de estas mejoras SUPERÓ tus expectativas?
+
+Opciones:
+- SÍ, [especificar cuál] fue mejor de lo esperado
+- NO, cumplió con lo esperado (está bien)
+- EXCESO, [especificar cuál] fue innecesario
+
+Tu feedback es CRUCIAL para la evolución del equipo.
+```
+
+### 12. Capturar Aprendizaje (Si responde SÍ)
+
+Si el humano dice que algo superó expectativas:
+
+```
+APRENDIZAJE CAPTURADO
+=====================
+
+FECHA: [YYYY-MM-DD]
+MÓDULO: [modulo]
+AGENTE: [rol que hizo la mejora]
+
+MEJORA QUE SUPERÓ EXPECTATIVAS:
+[descripción detallada]
+
+VALOR PERCIBIDO:
+[por qué el humano lo consideró mejor]
+
+ACCIÓN INMEDIATA:
+1. Actualizar .agents/team-evolution.md (historial)
+2. Actualizar skill del agente con este patrón
+3. Incrementar métricas de evolución
+```
+
+**Actualizar `.agents/team-evolution.md`:**
+
+Agregar fila al historial:
+```
+| [fecha] | [modulo] | [agente] | [mejora] | Superó expectativas | [skill actualizado] |
+```
+
+**Actualizar skill del agente:**
+
+Agregar al final del skill correspondiente:
+```markdown
+## Aprendizajes del Equipo
+
+### [Fecha] - Módulo [modulo]
+**Mejora**: [descripción]
+**Por qué funcionó**: [explicación del humano]
+**Aplicar cuando**: [contexto similar]
+```
+
+### 13. Manejar Feedback de EXCESO
+
+Si el humano dice que algo fue innecesario:
+
+```
+FEEDBACK DE EXCESO
+==================
+
+MÓDULO: [modulo]
+MEJORA INNECESARIA: [descripción]
+AGENTE: [rol]
+
+ACCIÓN:
+- NO agregar a skills como patrón positivo
+- Considerar si el Factor de Imaginación es muy alto
+- Documentar para evitar en futuros módulos
+```
+
+---
+
 ## Ejemplo de Rechazo con Iteración
 
 ```

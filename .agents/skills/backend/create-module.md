@@ -35,6 +35,35 @@ Module Lead asigna tarea de crear backend (después de DBA)
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Agregar una validación útil no especificada
+- Mejorar un mensaje de error para ser más claro
+- Optimizar una query si ves oportunidad obvia
+
+**NO debes:**
+- Cambiar la arquitectura
+- Agregar campos no solicitados
+- Crear funcionalidades complejas extra
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué es útil]
+IMPACTO: [mínimo/bajo]
+```
+
+El Module Lead evaluará si la mejora superó expectativas y actualizará este skill.
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos

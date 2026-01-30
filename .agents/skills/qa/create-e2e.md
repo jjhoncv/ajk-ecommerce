@@ -204,6 +204,34 @@ La carpeta `/tests/e2e/utils/` solo contiene utilidades COMPARTIDAS. Cada módul
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Agregar un test case extra que cubra un edge case obvio
+- Mejorar los mensajes de log para mejor debugging
+- Tomar screenshots adicionales que ayuden a validar
+- Agregar waits más inteligentes para estabilidad
+
+**NO debes:**
+- Instalar dependencias nuevas
+- Cambiar la arquitectura de tests
+- Crear tests para features no implementadas
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué mejora la cobertura/estabilidad]
+IMPACTO: [mínimo/bajo]
+```
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos

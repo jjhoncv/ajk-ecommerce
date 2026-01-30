@@ -27,6 +27,33 @@ Module Lead asigna tarea de crear backend ecommerce (después de crear backend a
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Agregar un hydrator adicional útil
+- Mejorar el tipado para mayor seguridad
+- Agregar manejo de edge cases obvios
+
+**NO debes:**
+- Crear APIs REST (ecommerce usa SSR)
+- Cambiar la arquitectura de services
+- Agregar funcionalidades complejas extra
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué es útil]
+IMPACTO: [mínimo/bajo]
+```
+
+---
+
 ## IMPORTANTE: Ecommerce NO usa APIs REST
 
 El ecommerce usa **Server-Side Rendering (SSR)**:

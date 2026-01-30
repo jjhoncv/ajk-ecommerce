@@ -43,6 +43,34 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
 
 ---
 
+## 🎯 FACTOR DE IMAGINACIÓN (10%)
+
+**Consultar:** `.agents/team-evolution.md` para ver el factor actual.
+
+Además de cumplir el spec, puedes agregar **pequeñas mejoras** que aporten valor:
+
+**SÍ puedes:**
+- Agregar verificaciones de accesibilidad básicas
+- Tomar screenshots en diferentes viewports
+- Verificar que imágenes cargan correctamente
+- Agregar tests de performance básicos (tiempo de carga)
+
+**NO debes:**
+- Instalar dependencias nuevas
+- Cambiar la arquitectura de tests
+- Crear tests para features no implementadas
+
+**Si tienes una propuesta de mejora**, documéntala:
+```
+PROPUESTA DE MEJORA (Factor 10%)
+================================
+MEJORA: [descripción]
+VALOR: [por qué mejora la cobertura/UX]
+IMPACTO: [mínimo/bajo]
+```
+
+---
+
 ## Steps
 
 ### 1. Verificar Prerequisitos
