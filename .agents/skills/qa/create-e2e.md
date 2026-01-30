@@ -15,6 +15,48 @@ Module Lead asigna tarea de crear tests (después de Frontend y Backend)
 
 ---
 
+## CONFIGURACIÓN CRÍTICA
+
+### Credenciales Admin (OBLIGATORIO)
+
+```typescript
+// Las credenciales REALES del admin son:
+export const adminCredentials = {
+  email: 'admin@ajk.com',
+  password: 'Admin123!'  // NOTA: Contraseña real, no placeholder
+}
+```
+
+**NO usar placeholders** como `admin/12345678` - esos son solo ejemplos visuales del formulario.
+
+### Detección de Puerto del Servidor
+
+El servidor de desarrollo puede correr en diferentes puertos (3000, 3001, 3002, etc.):
+
+```bash
+# Verificar en qué puerto está corriendo
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || \
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3001 || \
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3002
+
+# O usar variable de entorno
+BASE_URL=http://localhost:3002 npx tsx src/module/[modulo]/e2e/index.ts
+```
+
+### Selectores de Login Flexibles
+
+El formulario de login **NO tiene atributo `name`** en los inputs. Usar selectores flexibles:
+
+```typescript
+// ✅ CORRECTO - Selector flexible
+'input[name="email"], input[type="email"], form input[type="text"]:first-of-type'
+
+// ❌ INCORRECTO - El input no tiene name="email"
+'input[name="email"]'
+```
+
+---
+
 ## Prerequisitos
 
 Antes de crear tests, verificar que:
@@ -22,6 +64,7 @@ Antes de crear tests, verificar que:
 2. Páginas admin existen y funcionan
 3. API endpoints responden correctamente
 4. No hay errores de lint críticos
+5. **Puerto del servidor identificado** (3000, 3001, 3002, etc.)
 
 ---
 
@@ -858,3 +901,5 @@ Module Lead revisa screenshots vs spec
 - ❌ NO modificar código del módulo
 - ❌ NO continuar sin servidor corriendo
 - ❌ NO saltarse la validación de Module Lead
+- ❌ NO usar credenciales de placeholder (admin/12345678) - usar las reales
+- ❌ NO asumir que el servidor está en puerto 3000 - verificar primero

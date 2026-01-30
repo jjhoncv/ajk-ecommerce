@@ -510,6 +510,50 @@ NOTAS: [observaciones si las hay]
 ## Next
 - QA puede probar la UI
 
+## REGLAS CRÍTICAS - FormCreate
+
+### 1. SIEMPRE usar `withFiles: true`
+
+```typescript
+// ✅ CORRECTO
+api={{ url: '/api/admin/[modulo]', method: 'POST', withFiles: true }}
+
+// ❌ INCORRECTO - Causa bug: FormData se convierte a JSON vacío "{}"
+api={{ url: '/api/admin/[modulo]', method: 'POST', withFiles: false }}
+```
+
+**Razón**: FormCreate SIEMPRE construye FormData internamente. Si `withFiles: false`,
+FetchCustomBody hace `JSON.stringify(FormData)` que retorna `{}` (objeto vacío).
+
+### 2. FieldTypes VÁLIDOS
+
+Solo existen estos tipos de campo:
+
+| Tipo | Uso |
+|------|-----|
+| `'text'` | Input de texto, números, colores hex, etc. |
+| `'textarea'` | Área de texto multilínea |
+| `'file'` | Archivos/imágenes |
+| `'select'` | Dropdown con opciones |
+| `'checkbox-group'` | Grupo de checkboxes |
+| `'primary'` | Campo principal destacado |
+
+**NO EXISTEN**: `'color'`, `'number'`, `'date'`, `'email'`, `'password'`
+
+```typescript
+// ✅ CORRECTO - Para colores usar 'text'
+{ key: 'color', label: 'Color (hex)', type: 'text', placeholder: '#FF5733' }
+
+// ✅ CORRECTO - Para números usar 'text'
+{ key: 'display_order', label: 'Orden', type: 'text', placeholder: '0' }
+
+// ❌ INCORRECTO - Estos tipos NO existen
+{ key: 'color', type: 'color' }      // ERROR: 'color' no es FieldType válido
+{ key: 'order', type: 'number' }     // ERROR: 'number' no es FieldType válido
+```
+
+---
+
 ## NO Hacer
 - NO crear componentes custom de tabla/formulario - usar shared
 - NO usar fetch directo - usar FetchCustomBody
@@ -518,3 +562,5 @@ NOTAS: [observaciones si las hay]
 - NO crear core/ o service/
 - NO crear tests E2E
 - NO hacer commit sin pasar lint
+- NO usar `withFiles: false` en FormCreate
+- NO usar tipos de campo que no existan ('color', 'number', etc.)

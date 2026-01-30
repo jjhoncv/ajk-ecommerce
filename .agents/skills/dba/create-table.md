@@ -103,7 +103,46 @@ Verificar que ambos archivos tienen el tipo:
 - `src/types/database/database.d.ts` - con campos en snake_case
 - `src/types/domain/domain.d.ts` - con campos en camelCase
 
-### 8. Ejecutar Lint
+### 8. Agregar Módulo al Sidebar (OBLIGATORIO)
+
+**CRÍTICO**: Sin este paso, el módulo NO aparecerá en el menú del admin.
+
+```bash
+# 1. Insertar en tabla sections
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+INSERT INTO sections (name, url, image, display_order, section_group)
+VALUES ('[Entidad]s', '/[modulo]', '[icono]', [orden], '[grupo]');
+"
+
+# 2. Obtener el ID de la sección recién creada
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+SELECT id FROM sections WHERE url='/[modulo]';
+"
+
+# 3. Asignar al rol superadmin (role_id = 1)
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "
+INSERT INTO roles_sections (id_rol, id_section) VALUES (1, [ID_SECCION]);
+"
+```
+
+**Grupos válidos para section_group:**
+- `catalog` - Catálogo (Productos, Categorías, Atributos, Marcas)
+- `marketing` - Marketing (Banners, Cupones, Promociones, Ofertas)
+- `sales` - Ventas (Órdenes, Clientes, Valoraciones)
+- `config` - Configuración (Pagos, Envíos, Configuración)
+- `admin` - Administración (Usuarios, Roles, Perfil)
+
+**Iconos comunes (Lucide):**
+- `tag` - Etiquetas
+- `package` - Productos
+- `folder-tree` - Categorías
+- `badge` - Marcas
+- `image` - Banners/Imágenes
+- `shopping-cart` - Órdenes
+- `user` - Clientes/Usuarios
+- `settings` - Configuración
+
+### 9. Ejecutar Lint
 
 ```bash
 pnpm lint
@@ -111,22 +150,24 @@ pnpm lint
 
 Si hay errores, corregirlos antes de continuar.
 
-### 9. Commit
+### 10. Commit
 
 ```bash
 git add .
-git commit -m "feat([modulo]): create [modulo] table with audit fields"
+git commit -m "feat([modulo]): create [modulo] table and add to sidebar"
 git push origin feature/[modulo]
 ```
 
-### 10. Notificar al Module Lead
+### 11. Notificar al Module Lead
 
 ```
-COMPLETADO: Tabla [modulo] creada
-COMMIT: feat([modulo]): create [modulo] table with audit fields
+COMPLETADO: Tabla [modulo] creada + sidebar configurado
+COMMIT: feat([modulo]): create [modulo] table and add to sidebar
 
-ARCHIVOS MODIFICADOS:
+ARCHIVOS/BD MODIFICADOS:
   - MySQL: tabla [modulo] creada
+  - MySQL: INSERT en sections (id=[X], group=[grupo])
+  - MySQL: INSERT en roles_sections (superadmin)
   - src/types/database/database.d.ts (regenerado)
   - src/types/domain/domain.d.ts (regenerado)
 
@@ -141,6 +182,13 @@ ESTRUCTURA DE TABLA:
   - updated_at: TIMESTAMP
   - created_by: INT (FK -> users.id)
   - updated_by: INT (FK -> users.id)
+
+SIDEBAR CONFIGURADO:
+  - Sección: [Entidad]s
+  - URL: /[modulo]
+  - Icono: [icono]
+  - Grupo: [grupo]
+  - Visible para: superadmin
 
 TYPES GENERADOS:
   - [Entidad] en @/types/database (snake_case)
@@ -229,3 +277,4 @@ SIEMPRE incluir:
 - NO crear archivos TypeScript manualmente
 - NO modificar archivos de otros módulos
 - NO hacer commit sin pasar lint
+- NO olvidar agregar el módulo a `sections` y `roles_sections` (sidebar)
