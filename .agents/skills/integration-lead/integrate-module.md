@@ -15,101 +15,238 @@ Integration Lead
 
 ---
 
-## 🔍 FASE 1: ENTENDER MÓDULO EXISTENTE
+## 🎯 PRINCIPIO: Integración Dinámica basada en Análisis
 
-### 1.1 Leer Estructura Completa
+**NO asumir estructuras fijas.** Cada módulo es diferente:
+- Un módulo puede tener admin pero no ecommerce
+- Los componentes tienen nombres diferentes
+- Las rutas varían según el módulo
+
+**La integración se basa en el ANÁLISIS del módulo existente, no en templates.**
+
+---
+
+## 🔍 FASE 0: LANZAR MODULE EXPERT PARA ANALIZAR MÓDULO EXISTENTE
+
+**El Integration Lead NO analiza directamente.** Lanza un agente especialista.
+
+### 0.1 Lanzar Module Expert Agent
+
+```typescript
+Task({
+  description: "Module Expert: Analyze [moduloExistente] for integration",
+  prompt: `
+    ROL: Module Expert
+    TAREA: Analizar módulo [moduloExistente] y generar reporte de integración
+
+    OBJETIVO:
+    El módulo [nuevoModulo] necesita integrarse con [moduloExistente].
+    Tu trabajo es ENTENDER cómo funciona [moduloExistente] y REPORTAR
+    la estructura para que otro agente pueda integrarse.
+
+    PASO 1: EXPLORAR ESTRUCTURA
+    ===========================
+
+    # Estructura general
+    ls -la src/module/[moduloExistente]/
+    ls -la src/module/[moduloExistente]/core/
+    ls -la src/module/[moduloExistente]/components/
+    ls -la src/app/admin/[moduloExistente]/
+
+    # Buscar componentes ecommerce (pueden estar en varios lugares)
+    find src -name "*[moduloExistente]*" -type f
+    find src/components -name "*.tsx" | head -20
+    find src/app -path "*/[moduloExistente]/*" -name "*.tsx"
+
+    PASO 2: LEER Y ENTENDER BACKEND
+    ===============================
+
+    Leer archivos core:
+    - Model: ¿Qué métodos tiene? ¿Qué hace cada uno?
+    - Repository: ¿Qué queries hace? ¿Cómo obtiene datos?
+    - Mapper: ¿Cómo transforma los datos?
+
+    Leer servicios (si existen):
+    - ¿Hay services/? ¿Qué funciones exporta?
+    - ¿Hay hydrators? ¿Cómo enriquece los datos?
+
+    PASO 3: LEER Y ENTENDER ADMIN
+    =============================
+
+    Leer páginas admin:
+    - ¿Cómo es la página de listado?
+    - ¿Cómo es la página de edición?
+    - ¿Qué componentes usa?
+    - ¿Hay tabs o secciones?
+    - ¿Hay selectores de relaciones existentes?
+
+    PASO 4: LEER Y ENTENDER ECOMMERCE (si existe)
+    ==============================================
+
+    Buscar componentes públicos:
+    - ¿Hay componentes en src/module/[moduloExistente]/components/ecommerce/?
+    - ¿Hay componentes en src/components/ui/ relacionados?
+    - ¿Hay páginas públicas en src/app/[moduloExistente]/?
+    - ¿Hay páginas públicas en src/app/productos/ (si es products)?
+
+    Para cada componente encontrado:
+    - ¿Qué props recibe?
+    - ¿Qué datos muestra?
+    - ¿Dónde se podría agregar la nueva relación?
+
+    PASO 5: GENERAR REPORTE
+    =======================
+
+    Crear archivo: .agents/analysis/[moduloExistente]-structure.md
+
+    Con formato:
+
+    # Análisis de Módulo: [moduloExistente]
+
+    ## Estructura de Archivos
+    [Lista de archivos encontrados]
+
+    ## Backend (Core)
+
+    ### Model
+    - Archivo: [ruta]
+    - Métodos: [lista con descripción]
+
+    ### Repository
+    - Archivo: [ruta]
+    - Queries principales: [lista]
+    - Relaciones existentes: [lista de FKs o pivots]
+
+    ### Mapper
+    - Archivo: [ruta]
+    - Transformaciones: [descripción]
+
+    ### Services (si existen)
+    - Archivos: [rutas]
+    - Funciones exportadas: [lista]
+
+    ## Admin
+
+    ### Páginas
+    - Lista: [ruta] - [descripción de qué hace]
+    - Nuevo: [ruta] - [descripción]
+    - Editar: [ruta] - [descripción]
+
+    ### Componentes Admin
+    - [nombre]: [ruta] - [qué hace, qué props]
+
+    ### Punto de integración sugerido (Admin)
+    - [Dónde agregar selector de [nuevoModulo]]
+    - [Qué archivo modificar]
+    - [Cómo se vería]
+
+    ## Ecommerce
+
+    ### ¿Tiene presencia pública?
+    [Sí/No]
+
+    ### Páginas Públicas
+    - [ruta]: [descripción]
+
+    ### Componentes Ecommerce
+    - [nombre]: [ruta]
+      - Props: [lista]
+      - Datos mostrados: [lista]
+      - PUNTO DE INTEGRACIÓN: [dónde agregar relación]
+
+    ### Punto de integración sugerido (Ecommerce)
+    - [Dónde mostrar [nuevoModulo]]
+    - [Qué archivo modificar]
+    - [Cómo se vería]
+
+    ## Tests E2E Existentes
+    - [lista de archivos de test]
+    - [qué cubren]
+
+    ## Resumen para Integración
+
+    Para integrar [nuevoModulo] con [moduloExistente]:
+
+    1. BACKEND:
+       - Modificar: [archivo]
+       - Agregar: [qué métodos]
+
+    2. ADMIN:
+       - Modificar: [archivo]
+       - Agregar: [qué componente]
+
+    3. ECOMMERCE:
+       - Modificar: [archivo(s)]
+       - Agregar: [qué mostrar]
+
+    4. TESTS:
+       - Crear en: [ubicación]
+       - Cubrir: [qué casos]
+
+    ACTIVITY LOG:
+    ./.agents/scripts/log.sh "MODULE-EXPERT" "Analizando módulo [moduloExistente]"
+    ./.agents/scripts/log.sh "MODULE-EXPERT" "Reporte generado: .agents/analysis/[moduloExistente]-structure.md"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+})
+```
+
+### 0.2 Esperar y Leer el Reporte
+
+Una vez que Module Expert complete:
 
 ```bash
-# Ver estructura del módulo existente
-ls -la src/module/[moduloExistente]/
-
-# Core - entender el modelo
-cat src/module/[moduloExistente]/core/[Entidad].model.ts
-cat src/module/[moduloExistente]/core/[Entidad].repository.ts
-cat src/module/[moduloExistente]/core/[Entidad].mapper.ts
-
-# Service - entender lógica de negocio
-cat src/module/[moduloExistente]/service/[entidad]/index.ts
-
-# Types - campos disponibles
-grep -A 100 "interface [Entidad]" src/types/database/database.d.ts
-
-# UI Admin - donde agregar selector
-cat src/app/admin/[moduloExistente]/[id]/page.tsx
-
-# Componentes Admin
-cat src/module/[moduloExistente]/components/admin/[Entidad]Fields.tsx
+cat .agents/analysis/[moduloExistente]-structure.md
 ```
 
-### 1.2 Entender PROFUNDAMENTE el Módulo Existente
+Este reporte es la **FUENTE DE VERDAD** para la integración.
 
-**CRÍTICO**: No solo leer, sino ENTENDER cómo funciona el módulo existente.
+---
+
+## 🔍 FASE 1: USAR REPORTE PARA PLANIFICAR INTEGRACIÓN
+
+### 1.1 Leer Reporte del Module Expert
 
 ```bash
-# BACKEND: Entender el modelo de datos
-cat src/module/[moduloExistente]/core/[Entidad].model.ts
-cat src/module/[moduloExistente]/core/[Entidad].repository.ts
-cat src/module/[moduloExistente]/core/[Entidad].mapper.ts
-
-# BACKEND: Entender servicios y lógica de negocio
-cat src/module/[moduloExistente]/service/[entidad]/index.ts
-cat src/module/[moduloExistente]/services/types.ts
-cat src/module/[moduloExistente]/services/hydrators.ts
-
-# FRONTEND ADMIN: Entender componentes actuales
-cat src/module/[moduloExistente]/components/admin/[Entidad]Fields.tsx
-cat src/module/[moduloExistente]/components/admin/[Entidad]ListView.tsx
-cat src/app/admin/[moduloExistente]/[id]/page.tsx
-
-# FRONTEND ECOMMERCE: Entender componentes públicos
-cat src/module/[moduloExistente]/components/ecommerce/[Entidad]Card.tsx
-cat src/module/[moduloExistente]/components/ecommerce/[Entidad]Detail.tsx
-# O buscar componentes compartidos
-cat src/components/ui/ProductCard/ProductCard.tsx
-cat src/app/productos/[slug]/page.tsx
-
-# E2E EXISTENTES: Entender qué tests ya existen
-ls -la src/module/[moduloExistente]/e2e/
-cat src/module/[moduloExistente]/e2e/index.ts
+cat .agents/analysis/[moduloExistente]-structure.md
 ```
 
-**Preguntas a responder:**
-- ¿Qué relaciones ya tiene el módulo? (FKs, pivots)
-- ¿Cómo se muestran los datos relacionados en admin?
-- ¿Qué información se muestra en ProductCard?
-- ¿Qué información se muestra en página de detalle?
-- ¿Qué tests E2E ya existen que podrían romperse?
+### 1.2 Extraer Puntos de Integración
 
-### 1.3 Identificar Puntos de Integración
+Del reporte, identificar:
 
-Documentar:
 ```
-ANÁLISIS: [moduloExistente]
-===========================
+PUNTOS DE INTEGRACIÓN (del reporte)
+====================================
 
-CORE:
-- Model: [métodos existentes]
-- Repository: [queries existentes]
-- Mapper: [campos mapeados]
+BACKEND:
+- Archivo a modificar: [del reporte]
+- Métodos a agregar: [del reporte]
 
-RELACIONES EXISTENTES:
-- [Ya tiene FK a X]
-- [Ya tiene pivot table con Y]
+ADMIN:
+- Archivo a modificar: [del reporte]
+- Componente a agregar: [del reporte]
+- Ubicación en UI: [del reporte]
 
-UI ADMIN:
-- Edit page usa: [componentes]
-- Campos en formulario: [lista]
-- Tabs existentes: [lista o ninguno]
+ECOMMERCE (si aplica):
+- Archivos a modificar: [del reporte]
+- Qué mostrar: [del reporte]
+- Dónde mostrarlo: [del reporte]
 
-ECOMMERCE:
-- Rutas públicas: [/productos/[slug], etc]
-- Componentes: [ProductDetail, ProductCard, etc]
-- Datos mostrados: [campos visibles]
-
-PUNTO DE INTEGRACIÓN PROPUESTO:
-- Admin: [donde agregar selector]
-- Ecommerce: [donde mostrar relación]
+TESTS:
+- Ubicación: [del reporte]
+- Casos a cubrir: [del reporte]
 ```
+
+### 1.3 Validar Plan de Integración
+
+Antes de ejecutar, verificar:
+- ¿El reporte identificó correctamente los archivos?
+- ¿Los puntos de integración tienen sentido?
+- ¿Hay algo que el reporte no cubrió?
+
+Si hay dudas, relanzar Module Expert con preguntas específicas.
 
 ---
 
@@ -205,9 +342,20 @@ grep -A 10 "[ModuloExistente][NuevoModulo]" src/types/database/database.d.ts
 
 ## ⚙️ FASE 3: EXTENDER BACKEND DEL MÓDULO EXISTENTE
 
+### ⚠️ USAR REPORTE DEL MODULE EXPERT
+
+**Los archivos y métodos exactos vienen del reporte de FASE 0.**
+
+Del reporte, usar:
+- "BACKEND > Archivo a modificar" → archivo real del repository
+- "BACKEND > Métodos a agregar" → qué funcionalidad agregar
+- "BACKEND > Relaciones existentes" → cómo se manejan otras relaciones
+
+**Los ejemplos abajo son PATRONES de referencia. Adaptar según el reporte.**
+
 ### 3.1 Agregar al Repository
 
-En `src/module/[moduloExistente]/core/[Entidad].repository.ts`:
+En el archivo indicado por el reporte (ej: `src/module/[moduloExistente]/core/[Entidad].repository.ts`):
 
 ```typescript
 // Agregar método para obtener con relación
@@ -319,9 +467,20 @@ export async function PUT(
 
 ## 🎨 FASE 4: EXTENDER FRONTEND ADMIN
 
+### ⚠️ USAR REPORTE DEL MODULE EXPERT
+
+**Los archivos y componentes exactos vienen del reporte de FASE 0.**
+
+Del reporte, usar:
+- "ADMIN > Páginas > Editar" → archivo real de la página
+- "ADMIN > Componentes Admin" → componentes existentes y sus props
+- "ADMIN > Punto de integración sugerido" → dónde agregar el selector
+
+**Los ejemplos abajo son PATRONES de referencia. Adaptar según el reporte.**
+
 ### 4.1 Agregar Selector en Edit Page
 
-En `src/app/admin/[moduloExistente]/[id]/page.tsx`:
+En el archivo indicado por el reporte (ej: `src/app/admin/[moduloExistente]/[id]/page.tsx`):
 
 ```typescript
 // Imports adicionales
@@ -419,9 +578,32 @@ En `src/module/[moduloExistente]/components/admin/[Entidad]ListView.tsx`:
 
 ## 🛒 FASE 5: EXTENDER FRONTEND ECOMMERCE (Si aplica)
 
-### 5.1 Mostrar en Cards de Producto
+### ⚠️ USAR REPORTE DEL MODULE EXPERT
 
-En `src/components/ui/ProductCard/ProductCard.tsx` o similar:
+**CRÍTICO: Los componentes ecommerce varían por módulo.**
+
+Del reporte, usar:
+- "ECOMMERCE > ¿Tiene presencia pública?" → si no, saltar esta fase
+- "ECOMMERCE > Componentes Ecommerce" → lista REAL de componentes
+- "ECOMMERCE > Punto de integración sugerido" → dónde mostrar la relación
+
+**NO asumir nombres como "ProductCard" o "ProductDetail".**
+**El Module Expert identificó los componentes reales del módulo.**
+
+### 5.1 Identificar Componentes del Reporte
+
+Leer del reporte:
+```
+ECOMMERCE > Componentes Ecommerce:
+- [NombreReal1]: [ruta] - Props: [...] - PUNTO DE INTEGRACIÓN: [...]
+- [NombreReal2]: [ruta] - Props: [...] - PUNTO DE INTEGRACIÓN: [...]
+```
+
+### 5.2 Modificar Componentes Identificados
+
+Para CADA componente identificado en el reporte:
+
+En el archivo indicado por el reporte (ej: la ruta del componente ecommerce):
 
 ```typescript
 // Agregar badges de [nuevoModulo]s
