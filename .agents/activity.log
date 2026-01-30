@@ -179,3 +179,6 @@
 [2026-01-29 18:25:46] 🧪 QA: Iniciando verificación de lint para módulo tags
 [2026-01-29 18:28:19] 🧪 QA: ✅ Código compilado correctamente. Error pre-existente en módulo ratings (no relacionado)
 [2026-01-29 18:29:03] 🧪 QA: ✅ Tests E2E creados para módulo tags
+[2026-01-30 17:12:45] 📌 CLEANUP: Módulo tags eliminado completamente
+[2026-01-30 17:12:46] 📌 CLEANUP: Integración variant_tags eliminada
+[2026-01-30 17:12:47] 📌 CLEANUP: Archivos revertidos en products
