@@ -151,29 +151,62 @@ SI trabajo paralelo:
 ### Al completar desarrollo
 
 ```
-1. Todos los agentes completaron
+1. Todos los agentes completaron (DBA, Backend, Frontend)
           │
           ▼
-2. Ejecutar E2E tests completos:
+2. QA crea y ejecuta tests:
    npx tsx src/module/[modulo]/e2e/index.ts
           │
           ▼
-3. Revisar screenshots
+3. QA genera screenshots y notifica
+   (QA NO hace commit aún)
           │
           ▼
-4. Calcular cumplimiento:
-   - Comparar vs criterios de aceptacion
+4. Module Lead valida screenshots vs modelo de negocio:
+   - Leer cada screenshot
+   - Comparar con spec
+   - Evaluar cumplimiento
+   SKILL: validate-qa-screenshots.md
+          │
+          ▼
+5. Calcular cumplimiento:
+   - Screenshots que cumplen / Total
    - Debe ser >= 90%
           │
-          ▼
-5. Si < 90%:
-   - Identificar que falta
-   - Asignar tareas adicionales
-   - Volver a paso 1
-          │
-          ▼
-6. Si >= 90%:
-   - Proponer release al Project Owner
+          ├─── < 90% ────────────────────┐
+          │                              │
+          ▼                              ▼
+6. Si >= 90%:                    7. Si < 90%:
+   - Autorizar QA commit            - Identificar problemas
+   - QA hace commit                 - Asignar correcciones:
+   - Proponer release                 · UI → Frontend
+                                      · Lógica → Backend
+                                      · Datos → DBA
+                                    - Esperar correcciones
+                                    - QA re-ejecuta tests
+                                    - Volver a paso 4
+```
+
+### Flujo de Validación de Screenshots
+
+```
+QA ejecuta tests
+       │
+       ▼
+Screenshots generados
+       │
+       ▼
+Module Lead lee screenshots ◄────────────────┐
+       │                                      │
+       ▼                                      │
+Compara vs spec (.agents/specs/[modulo]...)   │
+       │                                      │
+       ▼                                      │
+Cumplimiento >= 90%?                          │
+       │                                      │
+       ├── SI ──► Autoriza commit ──► QA commit ──► Release
+       │                                      │
+       └── NO ──► Asigna correcciones ──► Fix ──► Re-test ─┘
 ```
 
 ---

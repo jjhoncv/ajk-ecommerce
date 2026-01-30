@@ -125,33 +125,93 @@ npx tsx src/module/[modulo]/e2e/index.ts
 SKILL: .agents/skills/qa/create-e2e.md
 ```
 
-### 6. Esperar QA y Validar
+### 6. Esperar QA - Recibir Screenshots
 
-Cuando QA notifica completado:
-- Revisar resultados de tests
-- Revisar screenshots
+Cuando QA notifica que ejecutó tests:
+
+```
+TESTS EJECUTADOS: [modulo]
+RESULTADOS: X passed, Y failed
+SCREENSHOTS: src/module/[modulo]/e2e/screenshots/
+```
+
+**IMPORTANTE: QA NO hace commit aún. Module Lead debe validar primero.**
+
+### 7. Validar Screenshots vs Modelo de Negocio
+
+Ejecutar: `.agents/skills/module-lead/validate-qa-screenshots.md`
+
+1. Leer cada screenshot (las imágenes son soportadas)
+2. Comparar con `.agents/specs/[modulo]-testing-spec.md`
+3. Evaluar cumplimiento por screenshot:
+   - ¿UI corresponde al modelo de negocio?
+   - ¿Campos correctos?
+   - ¿Flujo correcto?
+   - ¿Validaciones funcionan?
+
+### 8. Decisión de Aprobación
+
+#### Si cumplimiento >= 90%:
+
+```
+AUTORIZACIÓN QA COMMIT
+======================
+MÓDULO: [modulo]
+CUMPLIMIENTO: [Z]% (>= 90%)
+ESTADO: ✅ APROBADO
+
+QA: Proceder con commit
+```
+
+- QA hace commit
 - Actualizar status: `[x] QA`
 - Actualizar porcentaje: `100%`
+- Ejecutar `propose-release.md`
 
-### 7. Calcular Cumplimiento
+#### Si cumplimiento < 90%:
 
-Comparar vs testing-spec.md:
+```
+RECHAZO - ITERACIÓN REQUERIDA
+=============================
+MÓDULO: [modulo]
+CUMPLIMIENTO: [Z]% (< 90%)
+
+PROBLEMAS DETECTADOS:
+1. Screenshot [X]: [problema] → [Responsable] corrige
+2. Screenshot [Y]: [problema] → [Responsable] corrige
+```
+
+Asignar correcciones:
+- Si es UI/diseño → Frontend
+- Si es lógica/datos → Backend
+- Si es estructura BD → DBA
+
+Después de correcciones:
+- QA re-ejecuta tests
+- Volver a paso 7 (validar screenshots)
+
+**Este ciclo se repite hasta lograr >= 90%**
+
+### 9. Calcular Cumplimiento Final
+
+Solo cuando >= 90% aprobado:
 
 ```
 CHECKLIST DE CUMPLIMIENTO:
 
 Admin CRUD:
-[x] Listar - test passed, screenshot ok
-[x] Crear - test passed, screenshot ok
-[x] Editar - test passed, screenshot ok
-[x] Eliminar - test passed, screenshot ok
-[x] Validaciones - test passed, screenshot ok
+[x] Sidebar visible - screenshot validado
+[x] Listar - test passed, screenshot validado
+[x] Crear - test passed, screenshot validado
+[x] Editar - test passed, screenshot validado
+[x] Eliminar - test passed, screenshot validado
+[x] Validaciones - test passed, screenshot validado
 
-Total: 5/5 = 100%
+Total: 6/6 = 100%
+Iteraciones: [N]
 ```
 
-Si >= 90%: Ejecutar `propose-release.md`
-Si < 90%: Identificar faltantes, asignar tareas adicionales
+Ejecutar `propose-release.md`
 
 ---
 
