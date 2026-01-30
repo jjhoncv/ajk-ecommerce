@@ -52,6 +52,31 @@ Ejemplo:
 [TIMESTAMP] [QA] Re-ejecutando tests después de correcciones
 ```
 
+### Coordinación Project Owner ↔ Module Lead
+```
+[TIMESTAMP] [PROJECT-OWNER] Asignando módulo [nombre] a Module Lead
+[TIMESTAMP] [MODULE-LEAD] Módulo [nombre] recibido - iniciando trabajo
+[TIMESTAMP] [MODULE-LEAD] Reportando progreso: DBA ✓, Backend ✓, Frontend en curso
+[TIMESTAMP] [MODULE-LEAD] Propuesta release: [módulo] listo (95% cumplimiento)
+[TIMESTAMP] [PROJECT-OWNER] Release aprobado/rechazado: [razón breve]
+```
+
+### Coordinación Module Lead ↔ Module Lead (shared/)
+```
+[TIMESTAMP] [MODULE-LEAD-A] Notificando: voy a modificar shared/components/Table
+[TIMESTAMP] [MODULE-LEAD-B] Confirmado: mi módulo NO depende de Table
+[TIMESTAMP] [MODULE-LEAD-C] Confirmado: mi módulo SÍ depende - esperaré
+[TIMESTAMP] [MODULE-LEAD-A] shared/components/Table modificado - pueden continuar
+```
+
+### Bloqueadores entre agentes
+```
+[TIMESTAMP] [FRONTEND] BLOQUEADO: Necesito endpoint GET /api/admin/tags
+[TIMESTAMP] [MODULE-LEAD] Reasignando: BACKEND debe completar API primero
+[TIMESTAMP] [BACKEND] Endpoint GET /api/admin/tags creado
+[TIMESTAMP] [FRONTEND] Desbloqueado - continuando con componentes
+```
+
 ---
 
 ## ❌ QUÉ NO REGISTRAR
