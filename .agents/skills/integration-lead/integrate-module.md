@@ -475,6 +475,17 @@ const filteredProducts = products.filter(p =>
 
 ## 🧪 FASE 6: TESTS DE INTEGRACIÓN (QA)
 
+### ⚠️ IMPORTANTE: Tests van en el MÓDULO EXISTENTE
+
+**CRÍTICO**: Los tests de integración se crean en el **módulo existente** (ej: `products`), NO en el nuevo módulo (ej: `tags`).
+
+```
+❌ INCORRECTO: src/module/tags/e2e/admin/02-integration.ts
+✅ CORRECTO:   src/module/products/e2e/integration/tags.ts
+```
+
+**Razón**: El módulo existente es el que fue MODIFICADO para soportar la integración. Los tests deben validar que esa modificación funciona correctamente.
+
 ### 6.0 PRIMERO: Ejecutar Tests E2E EXISTENTES (Regression)
 
 **CRÍTICO**: Antes de agregar tests nuevos, verificar que no rompimos nada.
@@ -501,7 +512,87 @@ npx tsx src/module/[moduloExistente]/e2e/index-ecommerce.ts
 ./.agents/scripts/log.sh "QA" "Tests existentes de [moduloExistente]: X/Y pasaron"
 ```
 
-### 6.1 Crear Tests E2E de Integración
+### 6.1 Lanzar QA Agent para Tests de Integración
+
+**El Integration Lead NO crea los tests directamente.** Debe lanzar al QA Agent:
+
+```typescript
+Task({
+  description: "QA: Create integration E2E tests for [nuevoModulo] in [moduloExistente]",
+  prompt: `
+    TAREA: Crear tests E2E de integración
+    ROL: QA
+
+    INTEGRACIÓN: [nuevoModulo] integrado en [moduloExistente]
+
+    ⚠️ CRÍTICO - UBICACIÓN DE ARCHIVOS:
+    Los tests van en el MÓDULO EXISTENTE, no en el nuevo:
+
+    ARCHIVOS A CREAR:
+    - src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts
+    - src/module/[moduloExistente]/e2e/index-integration.ts
+
+    TESTS ADMIN A CREAR:
+    - TC-INT-01: Navegar a edit de [moduloExistente]
+    - TC-INT-02: Ver selector de [nuevoModulo]s
+    - TC-INT-03: Seleccionar [nuevoModulo]s y guardar
+    - TC-INT-04: Verificar [nuevoModulo]s guardados
+    - TC-INT-05: Ver badges de [nuevoModulo]s en lista
+
+    TESTS ECOMMERCE A CREAR:
+    - TC-INT-06: Ver ProductCard con [nuevoModulo] badge
+    - TC-INT-07: Ver ProductDetail con [nuevoModulo]s
+    - TC-INT-08: Ver en mobile (responsive)
+
+    SCREENSHOTS OBLIGATORIOS EN:
+    src/module/[moduloExistente]/e2e/screenshots/integration/
+
+    ADMIN:
+    - 01-admin-edit-selector.png
+    - 02-admin-edit-selected.png
+    - 03-admin-edit-saved.png
+    - 04-admin-list-badges.png
+
+    ECOMMERCE:
+    - 05-ecommerce-card-with-tag.png
+    - 06-ecommerce-detail-with-tags.png
+    - 07-ecommerce-mobile.png
+
+    AL COMPLETAR:
+    1. Ejecutar tests: npx tsx src/module/[moduloExistente]/e2e/index-integration.ts
+    2. Verificar screenshots generados
+    3. Notificar a Integration Lead con lista de screenshots
+
+    ACTIVITY LOG:
+    ./.agents/scripts/log.sh "QA" "Creando tests integración [nuevoModulo] en [moduloExistente]"
+    ./.agents/scripts/log.sh "QA" "Tests ejecutados: X/Y pasaron"
+    ./.agents/scripts/log.sh "QA" "Screenshots generados: [lista]"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
+})
+```
+
+### 6.2 Validar que QA Generó Screenshots
+
+**ANTES de continuar, verificar:**
+
+```bash
+# Verificar screenshots de integración existen
+ls -la src/module/[moduloExistente]/e2e/screenshots/integration/
+
+# Debe haber mínimo:
+# - Screenshots de admin (selector, guardado, lista)
+# - Screenshots de ecommerce (ProductCard, ProductDetail)
+# - Screenshots de mobile
+```
+
+**Si NO hay screenshots:**
+- QA no completó su trabajo
+- Relanzar QA agent
+- NO declarar integración completa
+
+### 6.3 Casos de Test de Integración
 
 En `src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts`:
 
@@ -573,6 +664,8 @@ SOLICITO: Validación de que visualización corresponde al modelo de negocio
 
 ## ✅ CHECKLIST FINAL
 
+### ⛔ NO DECLARAR COMPLETO SIN VERIFICAR TODOS ESTOS ITEMS
+
 ### Base de Datos
 - [ ] Verificado que tabla pivote no existía previamente
 - [ ] Tabla pivote creada (o usada existente)
@@ -603,16 +696,28 @@ SOLICITO: Validación de que visualización corresponde al modelo de negocio
 - [ ] Tests E2E EXISTENTES del módulo siguen pasando
 - [ ] No se rompió ninguna funcionalidad previa
 
-### QA - Integración
-- [ ] Tests de integración nuevos pasan
-- [ ] Screenshots de admin (selector, badges)
-- [ ] Screenshots de ecommerce (ProductCard, ProductDetail)
-- [ ] Screenshots de mobile
+### QA - Integración (EN MÓDULO EXISTENTE)
+- [ ] Tests creados en `src/module/[moduloExistente]/e2e/integration/`
+- [ ] Tests de integración ejecutados y pasaron
+- [ ] **Screenshots de admin EXISTEN** en `screenshots/integration/`:
+  - [ ] admin-edit-selector.png
+  - [ ] admin-edit-selected.png
+  - [ ] admin-list-badges.png
+- [ ] **Screenshots de ecommerce EXISTEN**:
+  - [ ] ecommerce-card-with-[nuevoModulo].png
+  - [ ] ecommerce-detail-with-[nuevoModulo]s.png
+  - [ ] ecommerce-mobile.png
 
-### Validación Module Lead
-- [ ] Screenshots admin validados
-- [ ] Screenshots ecommerce validados vs modelo de negocio
+### Validación Module Lead (OBLIGATORIO)
+- [ ] Module Lead revisó screenshots de admin
+- [ ] Module Lead revisó screenshots de ecommerce
+- [ ] Module Lead confirmó que visualización corresponde al modelo de negocio
 - [ ] Cumplimiento >= 90%
+
+### 🚨 SI FALTA ALGÚN SCREENSHOT:
+1. NO declarar integración completa
+2. Relanzar QA agent para generar screenshots faltantes
+3. Volver a validar
 
 ---
 
