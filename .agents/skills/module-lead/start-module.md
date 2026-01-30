@@ -59,11 +59,16 @@ feature/[modulo]
 ## Prioridad Asignada
 [alta/media/baja]
 
-## Progreso
+## Progreso Admin
 - [ ] DBA
-- [ ] Backend
-- [ ] Frontend
-- [ ] QA
+- [ ] Backend Admin
+- [ ] Frontend Admin
+- [ ] QA Admin
+
+## Progreso Ecommerce (si ecommerceEnabled: true)
+- [ ] Backend Ecommerce
+- [ ] Frontend Ecommerce
+- [ ] QA Ecommerce
 
 ## Porcentaje
 0%
@@ -103,26 +108,45 @@ git pull origin feature/[modulo]
 
 Basado en el testing-spec, dividir en tareas:
 
+**⚠️ IMPORTANTE: Verificar `ecommerceEnabled` en el spec**
+
 ```
 TAREAS IDENTIFICADAS:
+
+== ADMIN (siempre) ==
 
 1. DBA:
    - Crear tabla [modulo] con campos: [lista]
    - Ejecutar pnpm generate
 
-2. Backend:
+2. Backend Admin:
    - Crear core/: model, repository, mapper
    - Crear service/: [modulo].service
    - Crear API: routes CRUD
 
-3. Frontend:
+3. Frontend Admin:
    - Crear components/admin/: Fields, ListView
    - Crear pages: list, new, edit
 
-4. QA:
-   - Crear e2e/: tests CRUD
+4. QA Admin:
+   - Crear e2e/admin/: tests CRUD
    - Crear fixtures
-   - Generar screenshots
+   - Generar screenshots admin
+
+== ECOMMERCE (si ecommerceEnabled: true) ==
+
+5. Backend Ecommerce:
+   - Crear services/: types, hydrators, service
+   - NO crear APIs REST (usar SSR)
+
+6. Frontend Ecommerce:
+   - Crear components/ecommerce/: Grid, Featured, Detail
+   - Crear pages públicas: list, detail, 404
+   - Integrar en homepage (si spec lo indica)
+
+7. QA Ecommerce:
+   - Crear e2e/ecommerce/: tests públicos
+   - Generar screenshots ecommerce
 ```
 
 ### 6. Continuar con Asignación

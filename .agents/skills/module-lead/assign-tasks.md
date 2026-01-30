@@ -12,6 +12,25 @@ Después de `start-module.md`
 
 ---
 
+## ⚠️ IMPORTANTE: Verificar Sección Ecommerce del Spec
+
+**ANTES DE ASIGNAR TAREAS**, revisar el spec:
+
+```markdown
+## Ecommerce
+### Estado
+- **ecommerceEnabled**: [true/false]  ← ¡VERIFICAR!
+```
+
+Si `ecommerceEnabled: true`:
+- Hay tareas adicionales para Backend, Frontend y QA
+- Ver secciones 3b, 4b, 5b de este documento
+
+Si `ecommerceEnabled: false`:
+- Solo asignar tareas Admin (secciones 3, 4, 5)
+
+---
+
 ## Steps
 
 ### 1. Asignar a DBA (Primero)
@@ -95,34 +114,130 @@ REFERENCIA: docs/module-template.md
 SKILL: .agents/skills/frontend/create-admin.md
 ```
 
-### 4. Esperar Backend y Frontend
+### 4. Esperar Backend y Frontend (Admin)
 
 Cuando ambos notifican completado:
 - Verificar archivos creados
-- Actualizar status: `[x] Backend`, `[x] Frontend`
-- Actualizar porcentaje: `75%`
+- Actualizar status: `[x] Backend Admin`, `[x] Frontend Admin`
+- Actualizar porcentaje: `50%` (si hay ecommerce) o `75%` (si solo admin)
 
-### 5. Asignar a QA (Último)
+---
+
+## ECOMMERCE (Solo si ecommerceEnabled: true)
+
+### 3b. Asignar Backend Ecommerce (Después de Backend Admin)
 
 ```
-TAREA: Crear E2E tests para [modulo]
+TAREA: Crear backend ecommerce para [modulo]
+ROL: Backend
+MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+BRANCH: feature/[modulo]
+
+ARCHIVOS A CREAR:
+- src/module/[modulo]/services/types.ts
+- src/module/[modulo]/services/hydrators.ts
+- src/module/[modulo]/services/[modulo].ts
+- src/module/[modulo]/services/index.ts
+
+FUNCIONES REQUERIDAS:
+- get[Entidad]s() - Todos los items para listado
+- getActive[Entidad]s() - Solo items activos
+- getFeatured[Entidad]s(limit) - Items destacados para homepage
+- get[Entidad]BySlug(slug) - Un item por slug
+
+NOTA: NO crear APIs REST - usar SSR con servicios directos
+SKILL: .agents/skills/backend/create-ecommerce.md
+```
+
+### 4b. Asignar Frontend Ecommerce (Después de Backend Ecommerce)
+
+```
+TAREA: Crear frontend ecommerce para [modulo]
+ROL: Frontend
+MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+BRANCH: feature/[modulo]
+
+COMPONENTES A CREAR:
+- src/module/[modulo]/components/ecommerce/[Entidad]Grid.tsx
+- src/module/[modulo]/components/ecommerce/Featured[Entidad]s.tsx
+- src/module/[modulo]/components/ecommerce/[Entidad]Detail.tsx
+- src/module/[modulo]/components/ecommerce/index.ts
+
+PÁGINAS A CREAR (según spec):
+- src/app/[modulo]/page.tsx - Listado
+- src/app/[modulo]/[slug]/page.tsx - Detalle
+- src/app/[modulo]/[slug]/not-found.tsx - 404
+
+INTEGRACIÓN HOMEPAGE (si spec lo indica):
+- Agregar sección en src/app/page.tsx
+
+NOTA: Usar SSR - llamar servicios directamente, NO fetch a APIs
+SKILL: .agents/skills/frontend/create-ecommerce.md
+```
+
+### Esperar Backend y Frontend Ecommerce
+
+Cuando ambos notifican completado:
+- Verificar archivos creados
+- Actualizar porcentaje: `75%`
+
+---
+
+### 5. Asignar a QA - Admin (Después de Frontend Admin)
+
+```
+TAREA: Crear E2E tests ADMIN para [modulo]
 ROL: QA
 MODELO: .agents/specs/[modulo]-testing-spec.md
 BRANCH: feature/[modulo]
 
 ARCHIVOS A CREAR:
-- src/module/[modulo]/e2e/index.ts
-- src/module/[modulo]/e2e/admin.test.ts
+- src/module/[modulo]/e2e/admin/01-crud.ts
+- src/module/[modulo]/e2e/admin/02-validations.ts
 - src/module/[modulo]/e2e/fixtures/[modulo].fixture.ts
-- src/module/[modulo]/e2e/testing-spec.md
-- src/module/[modulo]/e2e/screenshots/
+- src/module/[modulo]/e2e/data-admin.ts
+- src/module/[modulo]/e2e/utils.ts
+- src/module/[modulo]/e2e/index-admin.ts
+- src/module/[modulo]/e2e/screenshots/admin/
 
-DEPENDENCIA: Frontend completado (necesita UI)
+DEPENDENCIA: Frontend Admin completado
 
 EJECUTAR AL COMPLETAR:
-npx tsx src/module/[modulo]/e2e/index.ts
+npx tsx src/module/[modulo]/e2e/index-admin.ts
 
 SKILL: .agents/skills/qa/create-e2e.md
+```
+
+### 5b. Asignar a QA - Ecommerce (Solo si ecommerceEnabled: true)
+
+```
+TAREA: Crear E2E tests ECOMMERCE para [modulo]
+ROL: QA
+MODELO: .agents/specs/[modulo]-testing-spec.md (sección Ecommerce)
+BRANCH: feature/[modulo]
+
+ARCHIVOS A CREAR:
+- src/module/[modulo]/e2e/ecommerce/01-public.ts
+- src/module/[modulo]/e2e/data-ecommerce.ts
+- src/module/[modulo]/e2e/index-ecommerce.ts
+- src/module/[modulo]/e2e/screenshots/ecommerce/
+
+CASOS A PROBAR:
+- TC-E01: Homepage muestra sección (si aplica)
+- TC-E02: Página de listado
+- TC-E03: Cards con información
+- TC-E04: Navegación a detalle
+- TC-E05: Contenido de detalle
+- TC-E06: Página 404
+- TC-E07: Responsive mobile
+
+NOTA: NO hacer login - son páginas públicas
+DEPENDENCIA: Frontend Ecommerce completado
+
+EJECUTAR AL COMPLETAR:
+npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+
+SKILL: .agents/skills/qa/create-ecommerce-e2e.md
 ```
 
 ### 6. Esperar QA - Recibir Screenshots
@@ -207,7 +322,19 @@ Admin CRUD:
 [x] Eliminar - test passed, screenshot validado
 [x] Validaciones - test passed, screenshot validado
 
-Total: 6/6 = 100%
+Subtotal Admin: 6/6 = 100%
+
+Ecommerce (si ecommerceEnabled: true):
+[x] Sección en homepage - screenshot validado
+[x] Página de listado - screenshot validado
+[x] Cards con información - screenshot validado
+[x] Página de detalle - screenshot validado
+[x] Página 404 - screenshot validado
+[x] Responsive mobile - screenshot validado
+
+Subtotal Ecommerce: 6/6 = 100%
+
+Total: [X]/[Y] = [Z]%
 Iteraciones: [N]
 ```
 

@@ -14,6 +14,30 @@ Product Owner solicita nuevo módulo o mejora
 
 ---
 
+## ⚠️ PREGUNTAS OBLIGATORIAS A PRODUCT OWNER
+
+Antes de crear el spec, hacer estas preguntas al Product Owner:
+
+### Preguntas Admin (siempre)
+1. ¿Qué campos debe tener la entidad?
+2. ¿Cuáles son obligatorios?
+3. ¿Hay reglas de validación especiales?
+4. ¿Tiene imagen? ¿Múltiples imágenes?
+5. ¿Se requiere ordenamiento manual (drag & drop)?
+
+### Preguntas Ecommerce (OBLIGATORIAS)
+1. ¿Este módulo se muestra en el ecommerce público? (Sí/No)
+2. Si sí:
+   - ¿Tiene página de listado? (ej: `/[modulo]`)
+   - ¿Tiene página de detalle? (ej: `/[modulo]/[slug]`)
+   - ¿Aparece en el homepage? ¿Cómo? (sección destacada, grilla, etc.)
+   - ¿Qué campos se muestran en el card público? (nombre, imagen, descripción, etc.)
+   - ¿Qué campos se muestran en la página de detalle?
+3. Si no tiene ecommerce:
+   - Marcar `ecommerceEnabled: false` en el spec
+
+---
+
 ## Steps
 
 ### 1. Crear Testing Spec
@@ -41,13 +65,42 @@ Crear archivo `.agents/specs/[modulo]-testing-spec.md`:
 | name | VARCHAR(255) | Sí | min:2, max:100 |
 | slug | VARCHAR(255) | Sí | pattern: ^[a-z0-9-]+$ |
 | description | TEXT | No | - |
-| isActive | BOOLEAN | No | default: true |
-| position | INT | No | default: 0 |
+| image_url | VARCHAR(500) | No | - |
+| is_active | BOOLEAN | No | default: true |
+| display_order | INT | No | default: 0 |
 
-### Ecommerce (si aplica)
-- [ ] Página pública de [modulo]
-- [ ] SEO dinámico
-- [ ] Página 404
+---
+
+## Ecommerce
+
+### Estado
+- **ecommerceEnabled**: [true/false]
+
+### Páginas Públicas (si ecommerceEnabled: true)
+| Página | URL | Descripción |
+|--------|-----|-------------|
+| Listado | `/[modulo]` | [Muestra todos los items activos] |
+| Detalle | `/[modulo]/[slug]` | [Muestra detalle de un item] |
+| 404 | `/[modulo]/[slug-inexistente]` | [Página de no encontrado] |
+
+### Integración en Homepage (si aplica)
+- [ ] Sección en homepage: [sí/no]
+- Tipo de visualización: [grilla / destacados / slider / ninguno]
+- Cantidad de items: [N]
+
+### Campos Visibles en Ecommerce
+| Ubicación | Campos |
+|-----------|--------|
+| Card (listado) | name, image, description |
+| Página detalle | name, image, description |
+| Homepage | name, image |
+
+### SEO
+- [ ] Meta title dinámico
+- [ ] Meta description dinámico
+- [ ] Open Graph tags
+
+---
 
 ## Dependencias
 - Depende de: [lista o "ninguna"]
