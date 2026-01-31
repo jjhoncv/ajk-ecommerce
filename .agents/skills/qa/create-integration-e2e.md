@@ -376,3 +376,27 @@ if (actionBtn) {
 - Flujo de navegación paso a paso
 
 Si el prompt NO incluye esta información, solicitar al Integration Lead que la proporcione.
+
+### 7. ⚠️ EJECUTAR SOLO TESTS DE INTEGRACIÓN, NO TODOS LOS E2E
+
+**Problema**: Al ejecutar tests de integración, se ejecutan TODOS los tests E2E del módulo, regenerando screenshots innecesariamente y aumentando el tiempo de ejecución.
+
+**Causa**: El comando ejecuta el runner principal en lugar del runner específico de integración.
+
+**Solución**: SIEMPRE ejecutar SOLO el archivo de tests de integración:
+
+```bash
+# ❌ INCORRECTO - Ejecuta todos los tests E2E
+npx tsx src/module/[existente]/e2e/index.ts
+
+# ❌ INCORRECTO - Ejecuta admin tests
+npx tsx src/module/[existente]/e2e/admin/index.ts
+
+# ✅ CORRECTO - Ejecuta SOLO tests de integración
+npx tsx src/module/[existente]/e2e/integration/[nuevo].ts
+
+# ✅ CORRECTO - Si existe runner de integración
+npx tsx src/module/[existente]/e2e/index-integration.ts
+```
+
+**Regla**: El QA de integración SOLO ejecuta tests de integración. Los tests de admin y ecommerce del módulo existente NO deben re-ejecutarse.
