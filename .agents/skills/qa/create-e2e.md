@@ -1070,6 +1070,72 @@ Module Lead revisa screenshots vs spec
 
 ---
 
+---
+
+## 🎯 APRENDIZAJE: Validar Screenshots vs Modelo de Negocio COMPLETO
+
+**CRÍTICO**: Los screenshots deben ser EVIDENCIA del modelo de negocio completo definido en el spec.
+
+### Antes de declarar tests completos, verificar:
+
+1. **Leer el spec COMPLETO**: `.agents/specs/[modulo]-testing-spec.md`
+2. **Identificar TODOS los criterios del modelo de negocio**:
+   - Campos requeridos
+   - Validaciones específicas
+   - Comportamientos especiales (rating, imágenes, límites)
+   - Integraciones (homepage, slider, etc.)
+
+3. **Cada criterio del spec DEBE tener un screenshot que lo evidencie**:
+   ```
+   Spec dice: "Rating de 1-5 estrellas"
+   → Screenshot mostrando selector de estrellas
+   → Screenshot mostrando rating guardado
+
+   Spec dice: "Máximo 4 testimonios en homepage"
+   → Screenshot del slider con máximo 4 items
+
+   Spec dice: "Campo imagen OBLIGATORIO"
+   → Screenshot mostrando validación si no hay imagen
+   → Screenshot mostrando imagen subida
+   ```
+
+### Si el módulo tiene Ecommerce (ecommerceEnabled: true):
+
+**DEBEN existir tests E2E para AMBOS:**
+
+```
+src/module/[modulo]/e2e/
+├── admin/          ← Tests CRUD del admin
+│   └── 01-crud.ts
+├── ecommerce/      ← Tests de visualización pública
+│   └── 01-public.ts
+├── index.ts        ← Runner para admin
+├── index-ecommerce.ts ← Runner para ecommerce
+└── screenshots/
+    ├── admin/      ← Screenshots de admin
+    └── ecommerce/  ← Screenshots de ecommerce
+```
+
+**NO declarar completo si:**
+- Solo hay tests de admin pero spec incluye ecommerce
+- Screenshots no evidencian TODOS los criterios del spec
+- Falta evidencia de integraciones (homepage slider, etc.)
+
+### Checklist antes de notificar a Module Lead:
+
+```
+[ ] Leí el spec COMPLETO
+[ ] Identifiqué TODOS los criterios del modelo de negocio
+[ ] Cada criterio tiene screenshot(s) que lo evidencia
+[ ] Si hay ecommerce: tests de admin Y ecommerce existen
+[ ] Si hay ecommerce: screenshots de admin Y ecommerce existen
+[ ] Screenshots muestran el flujo REAL, no solo pantallas vacías
+[ ] Si hay campo imagen: screenshot muestra upload funcionando
+[ ] Si hay validaciones especiales: screenshots las evidencian
+```
+
+---
+
 ## Outputs
 - `src/module/[modulo]/e2e/` completo con:
   - `data.ts` - Datos de prueba
@@ -1078,6 +1144,8 @@ Module Lead revisa screenshots vs spec
   - `admin/01-crud.ts` - Tests exploratorios
   - `cleanup.ts` - Script de limpieza
   - `screenshots/` - Evidencia visual
+  - `ecommerce/` - Tests ecommerce (si aplica)
+  - `index-ecommerce.ts` - Runner ecommerce (si aplica)
 
 ## Next
 - Module Lead valida screenshots (skill: validate-qa-screenshots.md)

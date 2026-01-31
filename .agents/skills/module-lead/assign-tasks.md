@@ -23,16 +23,29 @@ Después de `start-module.md`
 ### Verificación obligatoria antes de declarar completo:
 
 ```bash
-# Verificar que existen screenshots
-ls -la src/module/[modulo]/e2e/screenshots/
+# EJECUTAR ESTE COMANDO - debe retornar número > 0
+SCREENSHOTS=$(find src/module/[modulo]/e2e/screenshots -name "*.png" 2>/dev/null | wc -l)
+echo "Screenshots encontrados: $SCREENSHOTS"
 
-# Si NO hay screenshots → QA NO ejecutó tests → NO está completo
+# Si es 0, DETENERSE - QA NO ejecutó los tests
+if [ "$SCREENSHOTS" -eq 0 ]; then
+  echo "❌ ERROR: No hay screenshots. QA debe ejecutar: npx tsx src/module/[modulo]/e2e/index.ts"
+  # NO declarar completo - lanzar QA de nuevo
+fi
 ```
+
+**CRÍTICO:** Si el comando retorna 0 screenshots:
+1. NO declarar el módulo completo
+2. Lanzar agente QA para que EJECUTE los tests con `npx tsx`
+3. Esperar a que QA termine
+4. Volver a verificar screenshots
+5. Solo entonces continuar
 
 ### ❌ Casos que INVALIDAN el módulo:
 
 - Carpeta screenshots vacía o no existe
 - QA solo creó archivos .ts pero no ejecutó `npx tsx`
+- Module Lead no ejecutó el comando de verificación
 - Module Lead no revisó screenshots vs spec
 
 **Si no hay screenshots, el módulo NO está completo. Punto.**
