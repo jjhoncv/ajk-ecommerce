@@ -27,6 +27,53 @@ Module Lead asigna tarea de crear frontend ecommerce (después de backend ecomme
 
 ---
 
+## 🔄 OBLIGATORIO: REUTILIZAR COMPONENTES SHARED/UI
+
+**ANTES de crear cualquier componente, verificar si ya existe en shared:**
+
+```bash
+# Componentes UI disponibles
+ls src/module/shared/components/ui/
+ls src/components/ui/
+
+# Secciones de homepage disponibles
+ls src/module/shared/components/sections/
+```
+
+### Componentes disponibles que DEBES reutilizar:
+
+| Componente | Ubicación | Uso |
+|------------|-----------|-----|
+| `Card` | `src/module/shared/components/ui/Card.tsx` | Tarjetas de contenido |
+| `Badge` | `src/module/shared/components/ui/Badge.tsx` | Etiquetas/badges |
+| `Button` | `src/module/shared/components/ui/Button.tsx` | Botones |
+| `Input` | `src/module/shared/components/ui/Input.tsx` | Campos de entrada |
+| `Label` | `src/module/shared/components/ui/Label.tsx` | Etiquetas |
+| `ImageGalleryThumbs` | `src/module/shared/components/ui/ImageGalleryThumbs.tsx` | Galerías |
+| `ImageGalleryDots` | `src/module/shared/components/ui/ImageGalleryDots.tsx` | Indicadores de slider |
+| `CollapsibleSection` | `src/module/shared/components/ui/CollapsibleSection.tsx` | Secciones colapsables |
+| `Breadcrumb` | `src/module/shared/components/ui/Breadcrumb.tsx` | Navegación |
+
+### Secciones de homepage disponibles:
+
+| Sección | Ubicación | Referencia para |
+|---------|-----------|-----------------|
+| `DailyDeals` | `src/module/shared/components/sections/DailyDeals.tsx` | Sliders/carruseles |
+| `PopularProducts` | `src/module/shared/components/sections/PopularProducts.tsx` | Grids de productos |
+| `Features` | `src/module/shared/components/sections/Features.tsx` | Secciones de características |
+| `Newsletter` | `src/module/shared/components/sections/Newsletter.tsx` | Formularios de suscripción |
+
+### Regla:
+
+```
+SI existe componente en shared → IMPORTAR y usar
+SI NO existe → CREAR en src/module/[modulo]/components/ecommerce/
+```
+
+**NO duplicar componentes que ya existen. Reutilizar siempre.**
+
+---
+
 ## 🎯 FACTOR DE IMAGINACIÓN (10%)
 
 **Consultar:** `.agents/team-evolution.md` para ver el factor actual.

@@ -28,9 +28,44 @@ Module Lead asigna tarea de crear frontend (después de DBA)
 3. Seguir los templates de ESTE skill reemplazando los placeholders
 
 **Placeholders a reemplazar:**
-- `[modulo]` → nombre del módulo en minúsculas (ej: `tags`)
-- `[Entidad]` → nombre de la entidad en PascalCase (ej: `Tag`)
-- `[entidad]` → nombre de la entidad en camelCase (ej: `tag`)
+- `[modulo]` → nombre del módulo en minúsculas (ej: `brands`)
+- `[Entidad]` → nombre de la entidad en PascalCase (ej: `Brand`)
+- `[entidad]` → nombre de la entidad en camelCase (ej: `brand`)
+
+---
+
+## 🔄 OBLIGATORIO: REUTILIZAR COMPONENTES SHARED ADMIN
+
+**ANTES de crear cualquier componente, verificar si ya existe en shared:**
+
+```bash
+# Componentes de Admin disponibles
+ls src/module/shared/components/
+ls src/module/shared/components/Form/Input/
+ls src/module/shared/components/Page/
+```
+
+### Componentes de Admin que DEBES reutilizar:
+
+| Componente | Ubicación | Uso |
+|------------|-----------|-----|
+| `Page` | `src/module/shared/components/Page/Page.tsx` | Layout de página |
+| `PageTitle` | `src/module/shared/components/Page/PageTitle.tsx` | Título con icono |
+| `PageButton` | `src/module/shared/components/Page/PageButton.tsx` | Botón de acción |
+| `Input` | `src/module/shared/components/Form/Input/Input.tsx` | Campo de texto |
+| `Select` | `src/module/shared/components/Form/Input/Select.tsx` | Selector |
+| `Button` | `src/module/shared/components/Form/Input/Button.tsx` | Botones |
+| `CheckboxGroup` | `src/module/shared/components/Form/Input/CheckboxGroup.tsx` | Grupo de checkboxes |
+| `CardContent` | `src/module/shared/components/CardContent/` | Tarjetas de contenido |
+
+### Regla:
+
+```
+SI existe componente en shared → IMPORTAR y usar
+SI NO existe → Seguir el template de ESTE skill
+```
+
+**NO duplicar componentes que ya existen. Reutilizar siempre.**
 
 ---
 

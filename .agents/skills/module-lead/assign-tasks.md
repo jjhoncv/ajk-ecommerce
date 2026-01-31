@@ -12,49 +12,30 @@ Después de `start-module.md`
 
 ---
 
-## ⛔ ADVERTENCIA CRÍTICA - LEER ANTES DE EMPEZAR
+## ⛔ REGLA ABSOLUTA: NO DECLARAR COMPLETO SIN SCREENSHOTS
 
-**NUNCA declarar "MÓDULO COMPLETO" sin:**
+**NUNCA declarar un módulo como "COMPLETADO" o "100%" sin:**
 
-1. ✅ **QA ejecutó tests** y generó screenshots
-2. ✅ **Module Lead validó screenshots** vs spec (>= 90%)
-3. ✅ **Si requiereIntegracion: true** en spec:
-   - Module Expert analizó módulo existente
-   - Integration Lead completó integración
-   - QA creó tests en módulo EXISTENTE (no en el nuevo)
-   - Screenshots de ecommerce muestran badges/integración
-4. ✅ **Commit final realizado**
+1. **QA EJECUTÓ los tests E2E** (no solo creó los archivos)
+2. **Screenshots EXISTEN** en `src/module/[modulo]/e2e/screenshots/`
+3. **Module Lead REVISÓ** cada screenshot vs el spec
 
-**Ver sección "Checklist Pre-Completado" al final de este documento.**
-
-**Si declaras completo sin cumplir esto, el módulo será RECHAZADO.**
-
----
-
-## 🔍 PASO 0: LEER SPEC Y VERIFICAR REQUISITOS
-
-**ANTES de asignar cualquier tarea, leer el spec completo:**
+### Verificación obligatoria antes de declarar completo:
 
 ```bash
-cat .agents/specs/[modulo]-testing-spec.md
+# Verificar que existen screenshots
+ls -la src/module/[modulo]/e2e/screenshots/
+
+# Si NO hay screenshots → QA NO ejecutó tests → NO está completo
 ```
 
-**Identificar y registrar:**
-```bash
-./.agents/scripts/log.sh "MODULE-LEAD" "🔍 Analizando spec de [modulo]"
-./.agents/scripts/log.sh "MODULE-LEAD" "→ ecommerceEnabled: [true/false]"
-./.agents/scripts/log.sh "MODULE-LEAD" "→ requiereIntegracion: [true/false]"
-./.agents/scripts/log.sh "MODULE-LEAD" "→ moduloRelacionado: [nombre o ninguno]"
-./.agents/scripts/log.sh "MODULE-LEAD" "→ nivelAsociacion: [producto/variante/N/A]"
-```
+### ❌ Casos que INVALIDAN el módulo:
 
-**Si requiereIntegracion: true:**
-- Habrá FASE 2 después de standalone
-- Necesitarás lanzar Module Expert
-- Necesitarás lanzar Integration Lead
-- QA de integración va en módulo EXISTENTE
+- Carpeta screenshots vacía o no existe
+- QA solo creó archivos .ts pero no ejecutó `npx tsx`
+- Module Lead no revisó screenshots vs spec
 
-**Planificar el trabajo completo antes de empezar.**
+**Si no hay screenshots, el módulo NO está completo. Punto.**
 
 ---
 
@@ -82,77 +63,6 @@ Esto permite que trabajen sin interrupciones y puedan hacer preguntas al usuario
 
 ---
 
-## 📝 OBLIGATORIO: Activity Log
-
-**TODOS los agentes DEBEN registrar su progreso en `.agents/activity.log`**
-
-### Comando para registrar
-
-```bash
-./.agents/scripts/log.sh "AGENTE" "mensaje"
-```
-
-### Ejemplos de uso
-
-```bash
-# Al iniciar
-./.agents/scripts/log.sh "DBA" "Iniciando creación de tabla tags"
-
-# Progreso
-./.agents/scripts/log.sh "DBA" "Tabla tags creada con 11 campos"
-
-# Al completar
-./.agents/scripts/log.sh "DBA" "TAREA COMPLETADA - Siguiente agente: BACKEND"
-
-# Si hay error
-./.agents/scripts/log.sh "BACKEND" "ERROR: No se pudo crear endpoint - falta tipo en domain"
-```
-
-### 🔍 MICROTAREAS Y RAZONAMIENTO (Obligatorio)
-
-**Los agentes DEBEN registrar su proceso de pensamiento, no solo inicio/fin.**
-
-```bash
-# Análisis y preguntas
-./.agents/scripts/log.sh "BACKEND" "🔍 Analizando: spec para identificar campos requeridos"
-./.agents/scripts/log.sh "BACKEND" "❓ Pregunta: ¿Necesito método findBySlug?"
-./.agents/scripts/log.sh "BACKEND" "💡 Decisión: Sí, para URLs amigables"
-
-# Microtareas (cada paso pequeño)
-./.agents/scripts/log.sh "BACKEND" "→ Leyendo .agents/specs/tags-testing-spec.md"
-./.agents/scripts/log.sh "BACKEND" "→ Creando src/module/tags/core/Tag.model.ts"
-./.agents/scripts/log.sh "BACKEND" "→ Ejecutando pnpm generate"
-
-# Descubrimientos y resoluciones
-./.agents/scripts/log.sh "BACKEND" "✓ Encontrado: 6 campos en spec"
-./.agents/scripts/log.sh "BACKEND" "⚠️ Problema: Type Tag no existe"
-./.agents/scripts/log.sh "BACKEND" "✓ Resuelto: pnpm generate regeneró types"
-```
-
-### En el prompt de cada agente, incluir
-
-Agregar al final de cada prompt de agente:
-
-```
-OBLIGATORIO - ACTIVITY LOG:
-- Registrar inicio: ./.agents/scripts/log.sh "[AGENTE]" "Iniciando [tarea]"
-- Registrar MICROTAREAS con prefijo →
-- Registrar ANÁLISIS con 🔍
-- Registrar PREGUNTAS con ❓
-- Registrar DECISIONES con 💡
-- Registrar DESCUBRIMIENTOS con ✓
-- Registrar PROBLEMAS con ⚠️
-- Registrar RESOLUCIONES con ✓ Resuelto:
-- Registrar TAREA COMPLETADA al finalizar
-- Registrar ERROR si hay problemas bloqueantes
-
-Referencia: .agents/activity-log-guide.md
-```
-
-**Sin logs detallados, no se puede entender cómo piensan y trabajan los agentes.**
-
----
-
 ## ⚠️ IMPORTANTE: Verificar Sección Ecommerce del Spec
 
 **ANTES DE ASIGNAR TAREAS**, revisar el spec:
@@ -169,45 +79,6 @@ Si `ecommerceEnabled: true`:
 
 Si `ecommerceEnabled: false`:
 - Solo asignar tareas Admin (secciones 3, 4, 5)
-
----
-
-## 🔗 IMPORTANTE: Verificar Sección Integración del Spec
-
-**ANTES DE ASIGNAR TAREAS**, revisar si hay integración:
-
-```markdown
-## Integración con Módulos Existentes
-### Estado de Integración
-- **requiereIntegracion**: [true/false]  ← ¡VERIFICAR!
-- **moduloRelacionado**: [products/categories/etc]
-```
-
-Si `requiereIntegracion: true`:
-- Después de completar el módulo standalone, lanzar **Integration Lead**
-- El Integration Lead extenderá el módulo existente
-- Ver sección "14. Asignar Integration Lead" de este documento
-
-### Flujo con Integración
-
-```
-FASE 1: Módulo Standalone
-=========================
-DBA → Backend → Frontend → QA Admin
-         ↓
-    Módulo [nuevo] funciona solo
-         ↓
-FASE 2: Integración
-===================
-Integration Lead:
-  1. Crear tabla pivote
-  2. Extender backend de [moduloExistente]
-  3. Agregar selector en admin de [moduloExistente]
-  4. Mostrar en ecommerce de [moduloExistente]
-  5. QA de integración
-         ↓
-    [nuevo] integrado con [existente]
-```
 
 ---
 
@@ -269,17 +140,6 @@ Task({
     1. Ejecutar: pnpm generate
     2. Verificar types en src/types/
     3. Commit: feat([modulo]): DBA create table
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "DBA" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo/Creando/Ejecutando [archivo/comando]: [propósito]
-    - ✓ Encontrado/Resuelto: [qué descubrió/solucionó]
-    - ⚠️ Problema: [qué encontró]
-    - TAREA COMPLETADA - Siguiente: BACKEND
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -320,20 +180,6 @@ Task({
     - src/app/api/admin/[modulo]/[id]/route.ts
 
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add core and API
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "BACKEND" "mensaje":
-    - 🔍 Analizando: [qué está revisando en spec]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Creando [archivo]: [propósito]
-    - → Ejecutando [comando]: [propósito]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - TAREA COMPLETADA - Siguiente: FRONTEND
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -361,21 +207,6 @@ Task({
     - src/app/admin/[modulo]/[id]/page.tsx
 
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add admin components
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "FRONTEND" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Buscando [patrón] en [ubicación]
-    - → Creando [archivo]: [propósito]
-    - → Comparando con [componente existente]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - TAREA COMPLETADA - Siguiente: QA
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -419,19 +250,6 @@ Task({
 
     NOTA: NO crear APIs REST - usar SSR
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add ecommerce services
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "BACKEND" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Creando [archivo]: [propósito]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - TAREA COMPLETADA - ecommerce services
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -463,20 +281,6 @@ Task({
 
     NOTA: Usar SSR - NO fetch a APIs
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add ecommerce components
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "FRONTEND" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Buscando [patrón] en [ubicación]
-    - → Creando [archivo]: [propósito]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - TAREA COMPLETADA - ecommerce UI
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -517,24 +321,6 @@ Task({
     1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-admin.ts
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/admin/
     3. NO hacer commit - esperar validación de Module Lead
-    4. NO eliminar screenshots - mantener como evidencia
-    5. Detener servidor si lo iniciaste
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Creando [archivo de test]: [propósito]
-    - → Ejecutando [tests]: [qué valida]
-    - → Capturando screenshot: [qué muestra]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - Tests ejecutados: X/Y pasaron
-    - Esperando validación de Module Lead
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -580,24 +366,6 @@ Task({
     1. Ejecutar tests
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
     3. Notificar: "ETAPA 1 - UI con mocks lista para validación"
-    4. NO eliminar screenshots - mantener como evidencia
-    5. Detener servidor si lo iniciaste
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para entender [qué]
-    - → Creando [archivo de test]: [propósito]
-    - → Ejecutando [tests]: [qué valida]
-    - → Capturando screenshot: [qué muestra]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - Tests ejecutados: X/Y pasaron
-    - ETAPA 1 - Esperando validación Module Lead
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -740,20 +508,6 @@ Task({
     - Backend es FUENTE DE VERDAD
     - Si tipos cambiaron, Frontend debe ajustar
     - Coordinar iteración Frontend + QA si es necesario
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "INTEGRATOR" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Leyendo [archivo] para comparar tipos
-    - → Comparando tipos mock vs real
-    - → Modificando [archivo]: [qué cambio]
-    - ✓ Encontrado: [discrepancia/coincidencia]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - TAREA COMPLETADA - integración lista
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -793,23 +547,6 @@ Task({
     1. Ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
     2. Screenshots en: src/module/[modulo]/e2e/screenshots/ecommerce/
     3. Notificar: "ETAPA 2 - UI con datos reales lista para validación"
-    4. NO eliminar screenshots - mantener como evidencia
-    5. Detener servidor si lo iniciaste
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
-    - 🔍 Analizando: [qué está revisando]
-    - ❓ Pregunta: [qué necesita resolver]
-    - 💡 Decisión: [qué decidió y por qué]
-    - → Ejecutando [tests]: [qué valida]
-    - → Verificando datos reales en [página]
-    - → Capturando screenshot: [qué muestra]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - Tests con datos reales: X/Y pasaron
-    - ETAPA 2 - Esperando validación Module Lead
-
-    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -829,312 +566,11 @@ Si rechaza:
 
 ---
 
-## INTEGRACIÓN CON MÓDULOS EXISTENTES
-
-### 14. Verificar si requiere Integración
-
-**Después de completar el módulo standalone**, revisar spec:
-
-```markdown
-## Integración con Módulos Existentes
-- **requiereIntegracion**: true  ← Si es true, continuar
-- **moduloRelacionado**: products
-```
-
-Si `requiereIntegracion: true`, lanzar Integration Lead.
-
-### 15. Asignar Integration Lead (Si requiereIntegracion: true)
-
-```typescript
-Task({
-  description: "Integration Lead: Integrate [nuevoModulo] with [moduloExistente]",
-  prompt: `
-    TAREA: Integrar [nuevoModulo] con [moduloExistente]
-    ROL: Integration Lead
-    SKILL: .agents/skills/integration-lead/integrate-module.md
-
-    CONTEXTO:
-    - Módulo nuevo: [nuevoModulo] (standalone completado)
-    - Módulo existente: [moduloExistente]
-    - Spec: .agents/specs/[nuevoModulo]-testing-spec.md (sección Integración)
-    - Branch: feature/[nuevoModulo]
-
-    DEL SPEC:
-    - Tipo relación: [M:N / 1:N]
-    - Nivel asociación: [producto / variante]
-    - Tabla pivote: [moduloExistente]_[nuevoModulo]s
-
-    TU TRABAJO:
-    1. Leer y entender módulo existente:
-       - src/module/[moduloExistente]/core/
-       - src/module/[moduloExistente]/components/admin/
-       - src/app/admin/[moduloExistente]/
-
-    2. Crear tabla pivote (DBA):
-       - Ejecutar SQL según spec
-       - pnpm generate
-
-    3. Extender Backend de [moduloExistente]:
-       - Métodos en repository: get[NuevoModulo]s, set[NuevoModulo]s
-       - Hydrator para incluir relación
-       - API endpoint de asociación
-
-    4. Extender Frontend Admin de [moduloExistente]:
-       - Selector de [nuevoModulo] en edit page
-       - Badges en list view
-
-    5. Extender Frontend Ecommerce (si aplica):
-
-       ⚠️ PROCESO OBLIGATORIO:
-       a) LEER del spec la sección "Ubicaciones de Visualización" o "Integración Visual"
-       b) Para CADA ubicación listada:
-          - ANALIZAR el código del módulo existente
-          - BUSCAR qué componente/página renderiza esa vista
-          - MODIFICAR ese archivo para incluir el nuevo módulo
-       c) Si el componente hace fetch de datos:
-          - ANALIZAR si el endpoint requiere autenticación
-          - Si es ecommerce público, crear/usar endpoint público (NO /api/admin/)
-
-    6. QA de Integración:
-       - Tests de asociar/desasociar
-       - Screenshots de admin con selector
-       - Screenshots de ecommerce con badges
-
-    IMPORTANTE:
-    - NO modificar el módulo [nuevoModulo] (ya está completo)
-    - SOLO extender [moduloExistente] para usar [nuevoModulo]
-    - Commits: feat([moduloExistente]): integrate [nuevoModulo]
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "INTEGRATION-LEAD" "mensaje":
-    - 🔍 Analizando: [módulo existente - qué está revisando]
-    - ❓ Pregunta: [qué necesita entender del módulo]
-    - 💡 Decisión: [cómo va a integrar y por qué]
-    - → Leyendo [archivo] para entender [estructura existente]
-    - → Buscando [patrón] en [módulo existente]
-    - → Creando [tabla pivote/archivo]: [propósito]
-    - → Modificando [archivo existente]: [qué agrega]
-    - ✓ Encontrado: [patrón a seguir/estructura]
-    - ⚠️ Problema: [qué encontró]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - Tabla pivote creada
-    - Backend extendido
-    - Frontend Admin extendido
-    - INTEGRACIÓN COMPLETADA
-
-    Referencia: .agents/activity-log-guide.md
-  `,
-  subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Task", "AskUserQuestion"]
-})
-```
-
-### 16. Validar Integración
-
-Cuando Integration Lead complete:
-
-**Checklist de Integración:**
-- [ ] Tabla pivote existe y types regenerados
-- [ ] Repository de [moduloExistente] tiene métodos de relación
-- [ ] Edit page de [moduloExistente] tiene selector
-- [ ] List view de [moduloExistente] muestra badges
-- [ ] Tests existentes siguen pasando (regression)
-- [ ] Tests de integración nuevos pasan
-- [ ] Screenshots de integración validados (ver 16b)
-
-### 16b. Asignar QA Integration (OBLIGATORIO)
-
-**IMPORTANTE**: Usar el skill específico de QA Integration:
-→ `.agents/skills/qa/create-integration-e2e.md`
-
-```typescript
-Task({
-  description: "QA: Create [nuevoModulo] integration E2E tests in [moduloExistente]",
-  prompt: `
-    TAREA: Crear E2E tests de integración [nuevoModulo]-[moduloExistente]
-    ROL: QA
-    SKILL: .agents/skills/qa/create-integration-e2e.md
-
-    SPEC: .agents/specs/[nuevoModulo]-testing-spec.md
-    → LEER sección "Criterios de Validación Visual de Integración"
-
-    ARCHIVOS A CREAR EN MÓDULO EXISTENTE:
-    - src/module/[moduloExistente]/e2e/integration/[nuevoModulo].ts
-    - src/module/[moduloExistente]/e2e/index-integration.ts
-
-    FLUJO END-TO-END OBLIGATORIO (del spec):
-    1. CREAR item en /admin/[nuevoModulo]
-    2. VERIFICAR selector muestra items disponibles
-    3. SELECCIONAR y GUARDAR asociación
-    4. VALIDAR en ecommerce que se VE el componente/badge
-    5. Screenshot de CADA paso
-
-    ⚠️ NO APROBAR si:
-    - Selector dice "No hay [nuevoModulo] disponibles"
-    - Ecommerce NO muestra el componente/badge
-
-    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
-    - 🔍 Analizando: [spec y criterios de validación]
-    - ❓ Pregunta: [qué necesita verificar]
-    - 💡 Decisión: [qué flujo seguirá]
-    - → Creando item en admin/[nuevoModulo]
-    - → Navegando a admin/[moduloExistente]/edit
-    - → Verificando selector muestra items disponibles
-    - → Seleccionando y guardando asociación
-    - → Navegando a ecommerce para verificar badge/componente
-    - → Capturando screenshot: [qué muestra]
-    - ✓ Encontrado: [qué descubrió]
-    - ⚠️ Problema: [selector vacío/badge no visible/etc]
-    - ✓ Resuelto: [cómo lo solucionó]
-    - Tests integración: X/Y pasaron
-    - Esperando validación Module Lead
-
-    Referencia: .agents/activity-log-guide.md
-  `,
-  subagent_type: "general-purpose",
-  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
-})
-```
-
-### 16c. Validar Screenshots de Integración vs Spec
-
-**CRÍTICO**: Los screenshots DEBEN cumplir los criterios definidos en el spec.
-
-**Leer del spec:**
-```bash
-cat .agents/specs/[nuevoModulo]-testing-spec.md | grep -A 50 "Criterios de Validación Visual"
-```
-
-**Screenshots REQUERIDOS (según spec):**
-| # | Screenshot | Criterio de Aprobación |
-|---|------------|------------------------|
-| 1 | admin-[nuevoModulo]-created | Item VISIBLE con datos reales |
-| 2 | admin-[moduloExistente]-selector-available | Selector muestra items (NO "No hay disponibles") |
-| 3 | admin-[moduloExistente]-selector-selected | Item(s) seleccionado(s) visibles |
-| 4 | admin-[moduloExistente]-after-save | Asociación guardada/confirmada |
-| 5 | ecommerce-[moduloExistente]-with-[nuevoModulo] | Badge/componente VISIBLE en página |
-| 6 | ecommerce-[moduloExistente]-detail-with-[nuevoModulo] | Badge/componente VISIBLE en detalle |
-
-**❌ RECHAZAR AUTOMÁTICAMENTE si:**
-- Screenshot #2 muestra "No hay [X] disponibles" → Falta crear item (paso 1)
-- Screenshots #5 o #6 NO muestran el componente → Falta guardar asociación (paso 3)
-- Screenshots sin datos reales → NO valida modelo de negocio
-
-**Respuesta de validación:**
-```
-VALIDACIÓN INTEGRACIÓN [nuevoModulo] ↔ [moduloExistente]
-========================================================
-
-SCREENSHOTS vs SPEC:
-  1. admin-[nuevoModulo]-created: [✅/❌] Item creado con datos reales
-  2. admin-selector-available: [✅/❌] Selector muestra items (NO vacío)
-  3. admin-selector-selected: [✅/❌] Selección visible
-  4. admin-after-save: [✅/❌] Asociación confirmada
-  5. ecommerce-with-[nuevoModulo]: [✅/❌] Componente VISIBLE
-  6. ecommerce-detail-with-[nuevoModulo]: [✅/❌] Componente VISIBLE
-
-MODELO DE NEGOCIO:
-  - ¿La visualización cumple lo que el usuario pidió? [Sí/No]
-  - ¿El componente está donde debe estar? [Sí/No]
-
-RESULTADO: [APROBADO si 6/6 / RECHAZADO si falta alguno]
-
-[Si rechazado: qué screenshot falta y qué paso del flujo no se completó]
-```
-
-**Si falta algún screenshot crítico:**
-1. NO declarar completo
-2. Identificar qué paso del flujo falló
-3. QA debe re-ejecutar desde ese paso
-4. Volver a validar
-
-**Si >= 90% cumplimiento:**
-- Integración APROBADA
-- Módulo completamente funcional
-- Ejecutar `propose-release.md`
-
-**Si < 90%:**
-- Identificar problemas
-- Integration Lead corrige
-- Re-validar
-
----
-
-## 🚨 PASO FINAL OBLIGATORIO: COMMIT DE MÓDULO COMPLETO
-
-**CRÍTICO**: Después de que TODAS las fases estén completas (standalone + integración si aplica), el Module Lead DEBE hacer un commit final.
-
-### 17. Commit Final del Módulo
-
-```bash
-# 1. Verificar estado
-git status
-
-# 2. Si hay cambios sin commit
-git add .
-
-# 3. Commit con mensaje descriptivo
-git commit -m "$(cat <<'EOF'
-feat([modulo]): complete module with integration
-
-- Tables: [modulo], [pivote si aplica]
-- Backend: core, API routes, integration endpoints
-- Frontend Admin: Fields, ListView, pages, selector
-- Frontend Ecommerce: badges/components (if applicable)
-- E2E tests: admin CRUD + integration tests
-- Screenshots: validated by Module Lead
-
-Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-EOF
-)"
-
-# 4. Push al branch
-git push origin feature/[modulo]
-
-# 5. Registrar en activity log
-./.agents/scripts/log.sh "MODULE-LEAD" "COMMIT FINAL - Módulo [modulo] completo en feature/[modulo]"
-```
-
-**NUNCA declarar "MÓDULO COMPLETO" sin cumplir TODOS estos requisitos:**
-
-### Checklist Pre-Completado (OBLIGATORIO)
-
-**Para módulo standalone:**
-- [ ] QA Admin ejecutó tests y >= 90% pasaron
-- [ ] Screenshots de admin existen y fueron validados
-- [ ] Commit final realizado
-
-**Para módulo con integración (requiereIntegracion: true):**
-- [ ] Todo lo anterior de standalone
-- [ ] Module Expert generó reporte de análisis
-- [ ] Integration Lead completó la integración
-- [ ] **QA Integración creó tests en módulo EXISTENTE** (ej: `src/module/products/e2e/integration/tags.ts`)
-- [ ] **Screenshots de integración existen:**
-  - Admin: selector funcionando
-  - Ecommerce: badges/componentes visibles en ProductCard/Detail
-- [ ] Module Lead validó screenshots vs modelo de negocio
-- [ ] Commit final incluye TODOS los archivos
-
-### Si falla algún punto:
-1. NO declarar completo
-2. Identificar qué falta
-3. Lanzar agente correspondiente para completar
-4. Repetir validación
-
-### El commit debe incluir:
-- Todos los archivos creados por DBA, Backend, Frontend, QA
-- Todos los archivos de integración (si aplica)
-- Tests de integración en módulo existente (si aplica)
-- Screenshots de E2E como evidencia
-- Activity log actualizado
-
----
-
 ## Outputs
 - Tareas asignadas a cada agente
 - `.agents/active/[modulo]-status.md` actualizado
 - Progreso monitoreado
 - Ecommerce integrado con datos reales (si aplica)
-- **Commit final realizado en branch feature/[modulo]**
 
 ## Next
 - Monitorear completados
