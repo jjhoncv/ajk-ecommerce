@@ -276,6 +276,101 @@ Si hay dudas, relanzar Module Expert con instrucciones más específicas para an
 
 ---
 
+## 📤 FASE 1.5: DISTRIBUIR CONTEXTO A CADA AGENTE
+
+**CRÍTICO**: El Integration Lead es el PUENTE entre el análisis del módulo existente y los agentes que harán el trabajo.
+
+### Contexto para BACKEND
+
+```typescript
+Task({
+  description: "Backend: Extend [moduloExistente] for [nuevoModulo] integration",
+  prompt: `
+    TAREA: Extender backend de [moduloExistente] para integrar [nuevoModulo]
+    ROL: Backend
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    CONTEXTO DEL MÓDULO [moduloExistente] (del Module Expert):
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    ARCHIVOS EXISTENTES:
+    - Model: [ruta del reporte]
+    - Repository: [ruta del reporte]
+    - Métodos actuales: [lista del reporte]
+
+    RELACIONES EXISTENTES:
+    - [lista de FKs/pivotes del reporte]
+
+    PATRÓN DE CÓDIGO:
+    - [cómo se manejan relaciones en este módulo]
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    TU TRABAJO:
+    1. Agregar métodos al Repository: get[NuevoModulo]s(), set[NuevoModulo]s()
+    2. Extender Service/Hydrator si existe
+    3. Crear API endpoint: /api/admin/[moduloExistente]/[id]/[nuevoModulo]s
+
+    AL COMPLETAR: Notificar a Integration Lead
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+### Contexto para FRONTEND
+
+```typescript
+Task({
+  description: "Frontend: Add [nuevoModulo] selector to [moduloExistente] admin",
+  prompt: `
+    TAREA: Agregar selector de [nuevoModulo] en admin de [moduloExistente]
+    ROL: Frontend
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    CONTEXTO DEL MÓDULO [moduloExistente] (del Module Expert):
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    PÁGINAS ADMIN:
+    - Lista: [ruta del reporte]
+    - Editar: [ruta del reporte] ← AQUÍ agregar selector
+
+    COMPONENTES EXISTENTES:
+    - [lista de componentes del reporte]
+
+    PATRÓN DE UI:
+    - [cómo se manejan selectores en este módulo]
+    - [ejemplo de componente similar si existe]
+
+    NAVEGACIÓN:
+    - Tipo de tabla: [DynamicTable/custom]
+    - Action menus: [Sí/No, opciones]
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    TU TRABAJO:
+    1. Agregar selector de [nuevoModulo]s en página de edición
+    2. Agregar badges en lista (si aplica)
+    3. Conectar con API: /api/admin/[moduloExistente]/[id]/[nuevoModulo]s
+
+    ECOMMERCE (si aplica):
+    - Componentes a modificar: [del reporte]
+    - Agregar badges/sección de [nuevoModulo]s
+
+    AL COMPLETAR: Notificar a Integration Lead
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+### Contexto para QA (ver FASE 6.1)
+
+El contexto de QA se pasa cuando se lanzan los tests, incluyendo:
+- Navegación del módulo (action menus, selectores CSS)
+- Screenshots esperados
+- Criterios de validación
+
+---
+
 ## 🗄️ FASE 2: VERIFICAR Y CREAR TABLA PIVOTE (DBA)
 
 ### 2.0 PRIMERO: Verificar Tablas Existentes
@@ -885,6 +980,180 @@ SOLICITO: Validación de que visualización corresponde al modelo de negocio
 - ¿Los tags se ven donde deben verse?
 - ¿El diseño es apropiado (badges, colores, posición)?
 - ¿La información mostrada es correcta?
+```
+
+---
+
+## 🔄 FASE 7: MANEJO DE FALLOS DE TESTS
+
+### ⚠️ REGLA PRINCIPAL: NO borrar tests que fallan
+
+**Si un test falla:**
+1. **NO eliminar el test**
+2. **Analizar QUÉ falló** (leer output + screenshot)
+3. **Identificar QUIÉN debe corregir** (Frontend o Backend)
+4. **Enviar a corregir** con contexto específico
+5. **Re-ejecutar SOLO el test que falló**
+
+### 7.1 Analizar el Fallo
+
+```bash
+# Ver output del test
+cat /tmp/test-output.txt | grep -A 10 "FAILED"
+
+# Ver screenshot de error
+ls src/module/[moduloExistente]/e2e/screenshots/*ERROR*
+```
+
+### 7.2 Clasificar el Error
+
+| Síntoma | Responsable | Acción |
+|---------|-------------|--------|
+| "Element not found" / selector no existe | **Frontend** | Componente no renderiza o selector incorrecto |
+| "API returned 400/500" | **Backend** | Endpoint falla o validación incorrecta |
+| "No data" / lista vacía | **Backend** | Query no retorna datos o relación no guardada |
+| "Timeout waiting for element" | **Frontend** | Componente no carga o está oculto |
+| "Badge not visible" | **Frontend** | Estilos incorrectos o componente no incluido |
+| "Navigation failed" | **QA** | Selector de navegación incorrecto (action menu) |
+
+### 7.3 Enviar a Corregir
+
+**Si es error de FRONTEND:**
+
+```typescript
+Task({
+  description: "Frontend: Fix [descripción del error] in [moduloExistente]",
+  prompt: `
+    ERROR EN TEST DE INTEGRACIÓN
+    ============================
+
+    TEST QUE FALLÓ: TC-INT-[XX]: [nombre del test]
+
+    ERROR:
+    [pegar mensaje de error]
+
+    SCREENSHOT:
+    [ruta al screenshot de error]
+
+    ANÁLISIS:
+    - Elemento esperado: [qué debería existir]
+    - Elemento encontrado: [qué hay actualmente]
+    - Archivo probable: [ruta del componente]
+
+    TU TRABAJO:
+    1. Leer el componente indicado
+    2. Identificar por qué no renderiza/no es visible
+    3. Corregir
+    4. Notificar a Integration Lead cuando esté listo
+
+    NO modificar otros archivos. Solo corregir este error específico.
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+**Si es error de BACKEND:**
+
+```typescript
+Task({
+  description: "Backend: Fix [descripción del error] in [moduloExistente] API",
+  prompt: `
+    ERROR EN TEST DE INTEGRACIÓN
+    ============================
+
+    TEST QUE FALLÓ: TC-INT-[XX]: [nombre del test]
+
+    ERROR:
+    [pegar mensaje de error]
+
+    ANÁLISIS:
+    - Endpoint: [ruta de API]
+    - Request: [qué se envió]
+    - Response: [qué retornó]
+    - Esperado: [qué debería retornar]
+
+    TU TRABAJO:
+    1. Revisar el endpoint indicado
+    2. Identificar por qué falla
+    3. Corregir
+    4. Notificar a Integration Lead cuando esté listo
+
+    NO modificar otros archivos. Solo corregir este error específico.
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+### 7.4 Re-ejecutar Solo el Test que Falló
+
+**NO re-ejecutar todos los tests.** Solo el que falló:
+
+```typescript
+Task({
+  description: "QA: Re-run failed test TC-INT-[XX]",
+  prompt: `
+    RE-EJECUTAR TEST ESPECÍFICO
+    ===========================
+
+    TEST A EJECUTAR: TC-INT-[XX]: [nombre del test]
+    ARCHIVO: src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts
+
+    CONTEXTO:
+    - Este test falló anteriormente
+    - Frontend/Backend ya corrigió el problema
+    - Solo necesitas re-ejecutar ESTE test, no todos
+
+    INSTRUCCIONES:
+    1. Navegar al estado inicial del test
+    2. Ejecutar SOLO los pasos de TC-INT-[XX]
+    3. Tomar screenshot
+    4. Reportar: PASSED o FAILED con detalles
+
+    SI PASA: Notificar a Integration Lead "Test TC-INT-[XX] ahora pasa ✅"
+    SI FALLA: Notificar con nuevo error para análisis
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+### 7.5 Flujo de Iteración
+
+```
+Test falla
+    │
+    ▼
+Integration Lead analiza error
+    │
+    ├─── Error de Frontend ───► Lanzar Frontend agent
+    │                                    │
+    ├─── Error de Backend ────► Lanzar Backend agent
+    │                                    │
+    └─── Error de QA (selector) ► Corregir selector en test
+                                         │
+                                         ▼
+                              Agent corrige y notifica
+                                         │
+                                         ▼
+                              Integration Lead re-lanza QA
+                              para re-ejecutar SOLO ese test
+                                         │
+                                         ▼
+                              ¿Pasa? ──► Sí ──► Continuar
+                                  │
+                                  └──► No ──► Repetir ciclo
+```
+
+### 7.6 Log de Iteraciones
+
+```bash
+# Registrar cada iteración
+./.agents/scripts/log.sh "INTEGRATION-LEAD" "Test TC-INT-03 falló: selector no encontrado"
+./.agents/scripts/log.sh "INTEGRATION-LEAD" "→ Clasificado como: Error Frontend"
+./.agents/scripts/log.sh "INTEGRATION-LEAD" "→ Enviado a Frontend para corrección"
+
+# Después de corrección
+./.agents/scripts/log.sh "INTEGRATION-LEAD" "Frontend corrigió. Re-ejecutando TC-INT-03..."
+./.agents/scripts/log.sh "INTEGRATION-LEAD" "✓ TC-INT-03 ahora pasa"
 ```
 
 ---
