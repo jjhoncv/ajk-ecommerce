@@ -283,7 +283,147 @@ git push origin feature/[modulo]
 
 #### Si Module Lead RECHAZA (< 90% cumplimiento):
 
-Esperar correcciones de Frontend/Backend, luego re-ejecutar tests.
+Seguir el **proceso de iteración rápida** (ver siguiente sección).
+
+---
+
+## ITERACIÓN RÁPIDA - Proceso de Corrección
+
+**IMPORTANTE**: Cuando hay tests fallidos, NO borrar todos los screenshots ni re-ejecutar todos los tests. Seguir este proceso optimizado:
+
+### Flujo de Iteración
+
+```
+Tests fallan
+    │
+    ▼
+QA reporta SOLO los tests fallidos a Module Lead
+    │
+    ▼
+Module Lead asigna corrección a Frontend/Backend
+    │
+    ▼
+Frontend/Backend corrige SOLO lo indicado
+    │
+    ▼
+QA re-ejecuta SOLO los tests que fallaron
+    │
+    ▼
+¿Pasa? ───► NO ───► Repetir ciclo para ese test
+    │
+    YES
+    │
+    ▼
+¿Todos los tests individuales pasaron?
+    │
+    ├── NO ───► Siguiente test fallido
+    │
+    └── YES ───► PRUEBA TOTAL (ver abajo)
+```
+
+### 1. Reportar Solo Tests Fallidos
+
+Cuando hay fallos, notificar a Module Lead especificando:
+
+```
+ITERACIÓN REQUERIDA: [modulo]
+================================
+
+TESTS FALLIDOS (X de Y):
+
+1. Test: [nombre del test]
+   Screenshot: [nombre]-ERROR.png
+   Error: [descripción breve]
+   Responsable probable: [Frontend/Backend/DBA]
+
+2. Test: [nombre del test]
+   Screenshot: [nombre]-ERROR.png
+   Error: [descripción breve]
+   Responsable probable: [Frontend/Backend/DBA]
+
+TESTS EXITOSOS: [lista breve]
+(Screenshots guardados, NO se borran)
+
+SOLICITO: Asignación de correcciones específicas
+```
+
+### 2. Re-ejecutar Solo Tests Fallidos
+
+Después de recibir correcciones, **NO ejecutar toda la suite**. Ejecutar solo los tests específicos:
+
+```typescript
+// En index.ts, comentar temporalmente los tests que ya pasaron
+// O crear un archivo de re-test específico
+
+// Ejemplo: solo re-ejecutar test de creación
+await runTest('04-create', async () => {
+  // ... solo este test
+})
+```
+
+### 3. NO Borrar Screenshots Exitosos
+
+- Screenshots de tests que pasaron → **MANTENER**
+- Screenshots de tests fallidos → Se sobrescriben al re-ejecutar
+
+```bash
+# CORRECTO: Solo verificar los screenshots de tests fallidos
+ls src/module/[modulo]/e2e/screenshots/*ERROR*
+
+# INCORRECTO: NO hacer esto durante iteración
+rm -rf src/module/[modulo]/e2e/screenshots/*.png  # ❌ NO BORRAR TODO
+```
+
+### 4. PRUEBA TOTAL (Solo al Final)
+
+**Cuándo hacer prueba total:**
+- Todos los tests individuales pasaron
+- Antes de hacer commit final
+
+**Proceso de prueba total:**
+
+```bash
+# Ahora SÍ borrar todos los screenshots
+rm -rf src/module/[modulo]/e2e/screenshots/*.png
+
+# Ejecutar suite completa
+npx tsx src/module/[modulo]/e2e/index.ts
+
+# Verificar que TODOS pasen
+ls src/module/[modulo]/e2e/screenshots/
+# No debe haber archivos *ERROR*
+```
+
+### Beneficios de Iteración Rápida
+
+| Antes (ineficiente) | Ahora (optimizado) |
+|---------------------|---------------------|
+| Falla 1 test → borra todo → ejecuta 8 tests | Falla 1 test → ejecuta 1 test |
+| Frontend corrige → QA re-ejecuta 8 tests | Frontend corrige → QA re-ejecuta 1 test |
+| 5 ciclos × 8 tests = 40 ejecuciones | 5 ciclos × 1 test = 5 ejecuciones |
+
+### Activity Log para Iteraciones
+
+```bash
+# Primera ejecución
+./.agents/scripts/log.sh "QA" "Ejecutando suite completa: 8 tests"
+./.agents/scripts/log.sh "QA" "✗ 2 tests fallaron: 04-create, 06-delete"
+
+# Iteración 1
+./.agents/scripts/log.sh "QA" "→ Re-ejecutando test 04-create"
+./.agents/scripts/log.sh "QA" "✓ Test 04-create pasó"
+
+# Iteración 2
+./.agents/scripts/log.sh "QA" "→ Re-ejecutando test 06-delete"
+./.agents/scripts/log.sh "QA" "✗ Test 06-delete falló: Modal no apareció"
+
+# ... más iteraciones ...
+
+# Prueba total
+./.agents/scripts/log.sh "QA" "✓ Todos los tests individuales pasaron"
+./.agents/scripts/log.sh "QA" "→ Ejecutando PRUEBA TOTAL (borrando screenshots)"
+./.agents/scripts/log.sh "QA" "✓ Suite completa: 8/8 pasaron"
+```
 
 ---
 

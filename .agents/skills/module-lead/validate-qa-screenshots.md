@@ -96,23 +96,99 @@ Identificar responsable:
 - DBA: datos/tipos
 - QA: test mal escrito
 
-### 7. Asignar Correcciones
+### 7. Asignar Correcciones (ITERACIÓN RÁPIDA)
+
+**IMPORTANTE**: Asignar correcciones ESPECÍFICAS, no generales.
 
 Usar templates de corrección de `messages.template.md`:
 - **Corrección Requerida: Frontend**
 - **Corrección Requerida: Backend**
 
-### 8. Re-ejecutar Tests
+**Formato de asignación:**
 
-Después de correcciones, QA re-ejecuta:
+```
+CORRECCIÓN REQUERIDA: [rol]
+============================
 
-```bash
-npx tsx src/module/[modulo]/e2e/index.ts
+TEST FALLIDO: [nombre del test]
+SCREENSHOT: [nombre]-ERROR.png
+PROBLEMA: [descripción específica]
+
+ACCIÓN REQUERIDA:
+- [instrucción específica de qué corregir]
+
+DESPUÉS DE CORREGIR:
+- Notificar a QA para re-ejecutar SOLO este test
+- NO re-ejecutar toda la suite
 ```
 
-### 9. Iterar hasta >= 90%
+### 8. Re-ejecutar Solo Tests Fallidos (NO Toda la Suite)
 
-Repetir pasos 2-8 hasta lograr cumplimiento.
+**CRÍTICO**: Después de correcciones, QA re-ejecuta SOLO los tests que fallaron:
+
+```
+CORRECTO (iteración rápida):
+- Test 04-create falló → Frontend corrige → QA re-ejecuta solo 04-create
+- Test 06-delete falló → Backend corrige → QA re-ejecuta solo 06-delete
+
+INCORRECTO (ineficiente):
+- Test 04-create falló → QA borra TODO → QA re-ejecuta 8 tests ❌
+```
+
+### 9. Iterar hasta Todos los Tests Individuales Pasen
+
+```
+Test 04-create falló
+    │
+    ▼
+Module Lead → asigna a Frontend
+    │
+    ▼
+Frontend corrige
+    │
+    ▼
+QA re-ejecuta SOLO 04-create
+    │
+    ├── Pasa → Siguiente test fallido
+    │
+    └── Falla → Repetir ciclo
+```
+
+### 10. PRUEBA TOTAL (Obligatoria antes de Aprobar)
+
+**Solo cuando TODOS los tests individuales pasaron:**
+
+```bash
+# Ahora sí, borrar todos los screenshots
+rm -rf src/module/[modulo]/e2e/screenshots/*.png
+
+# Ejecutar suite completa
+npx tsx src/module/[modulo]/e2e/index.ts
+
+# Validar que no hay errores
+ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null
+# Debe devolver vacío
+```
+
+**Mensaje a QA para prueba total:**
+
+```
+TODOS LOS TESTS INDIVIDUALES PASARON
+=====================================
+
+SOLICITO: Ejecutar PRUEBA TOTAL
+
+Pasos:
+1. Borrar todos los screenshots
+2. Ejecutar suite completa
+3. Reportar resultados finales
+
+NOTA: Esta es la validación final antes de aprobar commit.
+```
+
+### 11. Aprobar (>= 90% en prueba total)
+
+Usar mensaje de `messages.template.md` sección **Autorización de Commit**.
 
 ---
 
@@ -170,8 +246,13 @@ Si el humano dice que algo superó expectativas:
 
 ## Next
 
-- Si APROBADO: QA hace commit → `propose-release.md`
-- Si RECHAZADO: Correcciones → Re-test → Re-evaluar
+- Si APROBADO (después de prueba total): QA hace commit → `propose-release.md`
+- Si RECHAZADO:
+  1. Asignar correcciones específicas a Frontend/Backend
+  2. QA re-ejecuta SOLO tests fallidos (iteración rápida)
+  3. Repetir hasta que todos los tests individuales pasen
+  4. Ejecutar PRUEBA TOTAL
+  5. Validar >= 90% → Aprobar
 
 ---
 
@@ -182,6 +263,8 @@ Si el humano dice que algo superó expectativas:
 - NO permitir commit de QA sin validación
 - NO aprobar Etapa 2 sin que Etapa 1 esté aprobada
 - NO aprobar ecommerce sin Header/Footer visibles
+- NO pedir a QA re-ejecutar TODA la suite cuando solo fallan algunos tests
+- NO aprobar sin PRUEBA TOTAL final (después de que todos los tests individuales pasen)
 
 ---
 
