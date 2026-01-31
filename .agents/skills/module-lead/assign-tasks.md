@@ -884,8 +884,16 @@ Task({
        - Badges en list view
 
     5. Extender Frontend Ecommerce (si aplica):
-       - Mostrar [nuevoModulo]s en cards de producto
-       - Mostrar en página de detalle
+
+       ⚠️ PROCESO OBLIGATORIO:
+       a) LEER del spec la sección "Ubicaciones de Visualización" o "Integración Visual"
+       b) Para CADA ubicación listada:
+          - ANALIZAR el código del módulo existente
+          - BUSCAR qué componente/página renderiza esa vista
+          - MODIFICAR ese archivo para incluir el nuevo módulo
+       c) Si el componente hace fetch de datos:
+          - ANALIZAR si el endpoint requiere autenticación
+          - Si es ecommerce público, crear/usar endpoint público (NO /api/admin/)
 
     6. QA de Integración:
        - Tests de asociar/desasociar

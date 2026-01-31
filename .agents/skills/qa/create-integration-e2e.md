@@ -183,3 +183,141 @@ src/module/[existente]/e2e/
 - ❌ NO aprobar si selector dice "No hay items disponibles"
 - ❌ NO aprobar si ecommerce no muestra el componente/badge
 - ❌ NO tomar screenshots sin datos reales
+
+---
+
+## ⛔ CRÍTICO: VALIDAR CRITERIOS, NO SOLO TOMAR SCREENSHOTS
+
+**El test debe FALLAR si el criterio de aceptación NO se cumple.**
+
+### Proceso obligatorio para cada screenshot del spec:
+
+1. **LEER** el criterio de aceptación del spec para ese screenshot
+2. **IMPLEMENTAR** validación programática que verifique el criterio
+3. **FALLAR** el test si el criterio no se cumple
+
+```typescript
+// ❌ INCORRECTO - Solo toma screenshot, siempre pasa
+await takeScreenshot('ecommerce-detail-with-tag')
+results.passed++
+
+// ✅ CORRECTO - Valida criterio antes de pasar
+const criterioDelSpec = "Badge(s) visible(s) junto al nombre"
+
+// Validar programáticamente
+const elementoVisible = await page.evaluate(() => {
+  // Buscar el elemento que debería existir según el criterio
+  // Retornar true/false
+})
+
+if (!elementoVisible) {
+  throw new Error(`Criterio NO cumplido: ${criterioDelSpec}`)
+}
+await takeScreenshot('ecommerce-detail-with-tag')
+results.passed++
+```
+
+### El agente QA DEBE:
+1. Leer CADA criterio de aceptación del spec
+2. Para cada criterio, escribir código que lo valide
+3. El test FALLA si el elemento esperado no existe/no es visible
+
+---
+
+## 🎓 APRENDIZAJES / ERRORES COMUNES
+
+### 1. URLs de Ecommerce - ANALIZAR antes de usar
+
+**Problema**: El test asume una URL que no existe.
+
+**Solución**: ANTES de escribir URLs en el test, ANALIZAR el código:
+
+```bash
+# Descubrir qué rutas existen
+ls src/app/
+
+# Buscar dónde se renderizan productos/cards
+grep -r "ProductCard\|ProductGrid" src/app/ --include="*.tsx"
+
+# Buscar la página de detalle
+find src/app -name "page.tsx" | xargs grep -l "ProductVariant\|ProductDetail"
+```
+
+El agente debe DESCUBRIR las URLs, no asumirlas.
+
+### 2. Endpoints públicos vs admin
+
+**Problema**: Componente de ecommerce usa `/api/admin/...` que requiere autenticación.
+
+**Solución**: ANALIZAR el código del componente:
+```bash
+# Buscar qué endpoints usa el componente
+grep -r "fetch\|api/" src/module/[modulo]/components/ecommerce/
+
+# Si usa /api/admin/, el componente NO funcionará para usuarios no autenticados
+```
+
+### 3. Validar que el criterio se cumple, no solo que la página carga
+
+**Problema**: Test navega a página, toma screenshot, y pasa - pero no valida que el elemento esperado esté visible.
+
+**Solución**: Para CADA criterio del spec, implementar validación:
+```typescript
+// Leer criterio del spec: "Badge visible con color correcto"
+const cumpleCriterio = await page.evaluate(() => {
+  // Implementar lógica que verifica el criterio específico
+  // Retornar true si cumple, false si no
+})
+if (!cumpleCriterio) throw new Error('Criterio no cumplido')
+```
+
+### 4. Navegación a páginas internas del admin
+
+**Problema**: Selectores CSS frágiles no encuentran elementos.
+
+**Solución**: ANALIZAR la estructura de URLs y navegar directamente:
+```typescript
+// En lugar de buscar links con selectores frágiles:
+// ❌ const link = await page.$('table a[href*="/products/"]')
+
+// Extraer IDs de URLs y navegar directamente:
+// ✅ const productId = await extractProductIdFromList()
+//    await goto(`/admin/products/${productId}/variants/${variantId}`)
+```
+
+El agente debe DESCUBRIR la estructura de navegación analizando el código.
+
+### 5. Conexión entre spec y código
+
+**El flujo correcto es:**
+```
+SPEC dice "Badge en página detalle"
+         ↓
+QA ANALIZA: ¿Qué componente renderiza la página de detalle?
+         ↓
+QA DESCUBRE: src/app/producto/[slug]/page.tsx usa ProductVariantView
+         ↓
+QA VERIFICA: ¿ProductVariantView tiene el badge?
+         ↓
+QA VALIDA: Navegar a /producto/[slug-real] y verificar badge visible
+```
+
+
+### 4. Screenshots deben mostrar datos REALES
+
+**Problema**: Screenshot de selector vacío o ecommerce sin badges no valida nada.
+
+**Solución**: El test debe FALLAR si:
+- Selector muestra "No hay items disponibles"
+- Ecommerce muestra 404
+- Badge/componente no es visible
+
+```typescript
+// Verificar que hay datos
+const hasItems = await page.evaluate(() => {
+  return document.querySelectorAll('button[style*="background"]').length > 0
+})
+if (!hasItems) {
+  throw new Error('Selector no muestra items disponibles')
+}
+```

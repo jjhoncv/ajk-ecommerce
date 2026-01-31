@@ -282,11 +282,33 @@ CREATE TABLE [modulo_existente]_[nuevo_modulo]s (
 ```
 
 ### Tareas de Integración
+
+**⚠️ REGLA: Cada ubicación de visualización en el spec genera UNA tarea.**
+
+El Project Owner DEBE:
+1. Definir en el spec TODAS las ubicaciones donde el nuevo módulo será visible
+2. Crear UNA tarea de Frontend por CADA ubicación
+3. Crear UNA validación de QA por CADA ubicación
+
+```markdown
 - [ ] DBA: Crear tabla pivote
 - [ ] Backend: Extender repository/service del módulo existente
+- [ ] Backend: Crear endpoint para ecommerce (analizar si requiere autenticación o es público)
 - [ ] Frontend Admin: Agregar selector en edit page del módulo existente
-- [ ] Frontend Ecommerce: Mostrar relación en cards/detalle (si aplica)
-- [ ] QA: Tests de asociación/desasociación
+- [ ] Frontend Ecommerce: Por CADA ubicación del spec, analizar código y modificar componente correspondiente
+- [ ] QA: Por CADA ubicación del spec, validar que el elemento sea VISIBLE (no solo tomar screenshot)
+```
+
+**El agente de Frontend DEBE:**
+1. Leer sección "Ubicaciones de Visualización" del spec
+2. Para cada ubicación, ANALIZAR el código del módulo existente
+3. DESCUBRIR qué archivo renderiza esa vista
+4. Modificar ese archivo
+
+**El agente de QA DEBE:**
+1. Leer sección "Criterios de Validación" del spec
+2. Para cada screenshot requerido, crear validación programática
+3. El test debe FALLAR si el elemento no está visible
 
 ### Ecommerce de Integración (diferente a ecommerce standalone)
 El "ecommerce" del nuevo módulo puede ser su visualización DENTRO del módulo existente:
