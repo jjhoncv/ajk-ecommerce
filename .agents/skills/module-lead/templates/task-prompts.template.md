@@ -268,6 +268,66 @@ Task({
 
 ---
 
+## QA Integración (cuando requiereIntegracion: true)
+
+```typescript
+Task({
+  description: "QA: Validate [modulo] integration E2E tests",
+  prompt: `
+    TAREA: Ejecutar E2E tests de INTEGRACIÓN para [modulo]
+    ROL: QA
+    MÓDULO: [modulo]
+    BRANCH: feature/[modulo]
+    SKILL: .agents/skills/qa/create-e2e.md
+
+    CONTEXTO:
+    - FASE 1 (Admin CRUD) ya está completa con screenshots
+    - FASE 2 (Backend + Frontend integración) ya está implementada
+    - AHORA debes ejecutar los tests de integración y generar screenshots
+
+    SPEC: .agents/specs/[modulo]-testing-spec.md
+    LEER SECCIÓN: "Criterios de Validación Visual de Integración"
+
+    SCREENSHOTS REQUERIDOS (del spec):
+    El spec lista los screenshots obligatorios. Ejemplo típico:
+    1. admin-[modulo]-selector-available - Selector visible con datos
+    2. admin-[modulo]-selector-selected - Items seleccionados
+    3. admin-[modulo]-after-save - Confirmación de guardado
+    4. ecommerce-[related]-with-[modulo] - Visualización en ecommerce
+
+    FLUJO E2E A PROBAR:
+    1. Verificar que existen datos del nuevo módulo (si no, crear uno)
+    2. Ir al admin del módulo relacionado (ej: variante, producto)
+    3. Encontrar el selector del nuevo módulo
+    4. Seleccionar items → Screenshot
+    5. Guardar → Screenshot
+    6. Ir al ecommerce → Screenshot de visualización
+
+    ARCHIVOS DE TEST:
+    - src/module/[modulo]/e2e/admin/02-integration.ts (si existe)
+    - src/module/[modulo]/e2e/ecommerce/01-*.ts (si existe)
+
+    INSTRUCCIONES:
+    1. Leer el spec para conocer screenshots requeridos
+    2. Verificar que tests de integración existen
+    3. Ejecutar: npx tsx src/module/[modulo]/e2e/index.ts (o el runner específico)
+    4. Verificar que TODOS los screenshots requeridos se generaron
+    5. Si algún screenshot falta, crear el test y ejecutar
+
+    IMPORTANTE:
+    - Screenshots deben tener DATOS REALES, no mocks
+    - Sin estos screenshots, la integración NO está validada
+    - NO hacer commit - esperar validación de Module Lead
+
+    AL COMPLETAR:
+    Notificar a Module Lead con lista de screenshots generados.
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+---
+
 ## Integrador
 
 ```typescript

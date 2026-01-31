@@ -180,23 +180,86 @@ Usar mensajes de `messages.template.md`:
 - Existe tabla pivote (ej: `variant_tags`, `product_collections`)
 - El nuevo módulo se muestra DENTRO de un módulo existente
 
-### Después de Admin aprobado, CONTINUAR AUTOMÁTICAMENTE con:
+### Después de Admin aprobado, CONTINUAR AUTOMÁTICAMENTE con Task():
 
-1. **Backend Integración**:
-   - Endpoints para gestionar la relación (assign/unassign)
-   - Extender repository/service del módulo existente
+**PASO 1: Lanzar Backend Integración**
+```typescript
+Task({
+  description: "Backend: Create [modulo] integration endpoints",
+  prompt: `
+    TAREA: Crear endpoints de integración para [modulo]
+    SPEC: .agents/specs/[modulo]-testing-spec.md (sección Integración)
+    BRANCH: feature/[modulo]
 
-2. **Frontend Admin Integración**:
-   - Selector del nuevo módulo en edit page del módulo existente
-   - Visualización de asociaciones guardadas
+    CREAR:
+    - Endpoints para gestionar la relación (assign/unassign)
+    - Extender repository/service del módulo relacionado
+    - Endpoint público para ecommerce (si aplica)
 
-3. **Frontend Ecommerce Integración** (si hay visualización pública):
-   - Mostrar el nuevo módulo en el componente del módulo existente
-   - Ejemplo: badges de tags en ProductCard
+    AL COMPLETAR: Commit y notificar
+  `,
+  subagent_type: "general-purpose"
+})
+```
 
-4. **QA Integración**:
-   - Tests E2E del flujo completo: crear → asociar → ver en ecommerce
-   - Screenshots que validen la integración visible
+**PASO 2: Lanzar Frontend Admin + Ecommerce Integración (en paralelo)**
+```typescript
+// Lanzar AMBOS en paralelo
+Task({
+  description: "Frontend Admin: Add [modulo] selector to related module",
+  prompt: `
+    TAREA: Agregar selector de [modulo] en admin del módulo relacionado
+    SPEC: .agents/specs/[modulo]-testing-spec.md
+    BRANCH: feature/[modulo]
+
+    CREAR:
+    - Selector/multiselect en edit page del módulo relacionado
+    - Visualización de asociaciones guardadas
+
+    AL COMPLETAR: Commit y notificar
+  `,
+  subagent_type: "general-purpose"
+})
+
+Task({
+  description: "Frontend Ecommerce: Show [modulo] in related module UI",
+  prompt: `
+    TAREA: Mostrar [modulo] en componentes del ecommerce
+    SPEC: .agents/specs/[modulo]-testing-spec.md (sección Ubicaciones)
+    BRANCH: feature/[modulo]
+
+    CREAR según spec:
+    - Badges/componentes en cards del módulo relacionado
+    - Visualización en página de detalle (si aplica)
+
+    AL COMPLETAR: Commit y notificar
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+**PASO 3: Lanzar QA Integración (OBLIGATORIO)**
+```typescript
+// Usar template de task-prompts.template.md sección "QA Integración"
+Task({
+  description: "QA: Execute [modulo] integration E2E tests",
+  prompt: `... copiar de task-prompts.template.md ...`,
+  subagent_type: "general-purpose"
+})
+```
+
+### ⚠️ REGLA CRÍTICA: NO OMITIR QA DE INTEGRACIÓN
+
+**El Module Lead DEBE lanzar QA Integración después de Frontend.**
+
+Sin los screenshots de integración:
+- ❌ NO se valida el modelo de negocio
+- ❌ NO se puede declarar el módulo completo
+- ❌ NO se puede proponer release
+
+### Screenshots de Integración REQUERIDOS (del spec):
+
+El spec lista los screenshots obligatorios en la sección "Criterios de Validación Visual de Integración". Verificar que QA los genere TODOS.
 
 ### Flujo de FASE 2 Integración:
 
@@ -213,13 +276,23 @@ FASE 2         Proponer
 Integración    Release
     │
     ▼
-Backend → Frontend → QA (integración)
+1. Backend Integración (Task)
+    │
+    ▼
+2. Frontend Admin + Ecommerce (Task en paralelo)
+    │
+    ▼
+3. QA Integración (Task) ← ⚠️ OBLIGATORIO
+    │
+    ▼
+4. Validar screenshots de integración
     │
     ▼
 Proponer Release
 ```
 
 **El Module Lead NO se detiene entre FASE 1 y FASE 2.**
+**El Module Lead NO omite QA de Integración.**
 
 ---
 
@@ -241,30 +314,58 @@ Proponer Release
 # 1. ¿Usé Task() para lanzar agentes? (NO TaskCreate)
 # TaskCreate solo anota, Task() ejecuta.
 
-# 2. ¿Existen screenshots?
+# 2. ¿Existen screenshots de ADMIN?
 SCREENSHOTS=$(find src/module/[modulo]/e2e/screenshots -name "*.png" 2>/dev/null | wc -l)
-echo "Screenshots encontrados: $SCREENSHOTS"
+echo "Screenshots admin encontrados: $SCREENSHOTS"
 # DEBE ser > 0
 
 # 3. ¿El spec tiene ecommerceEnabled: true?
 grep -i "ecommerceEnabled.*true" .agents/specs/[modulo]-testing-spec.md
+# Si sí, verificar screenshots de ecommerce
 
-# 4. ¿Comparé screenshots vs spec?
+# 4. ¿El spec tiene requiereIntegracion: true?
+grep -i "requiereIntegracion.*true" .agents/specs/[modulo]-testing-spec.md
+# Si sí, DEBEN existir screenshots de integración (ver paso 5)
+
+# 5. ¿Existen screenshots de INTEGRACIÓN? (si requiereIntegracion: true)
+# Buscar los screenshots listados en el spec sección "Criterios de Validación Visual"
+ls src/module/[modulo]/e2e/screenshots/ | grep -E "(selector|integration|with-)"
+# DEBE mostrar resultados si requiereIntegracion: true
+
+# 6. ¿Comparé screenshots vs spec?
 # DEBO haber leído cada screenshot
 ```
 
 ### Checklist Manual:
 
 ```
+FASE 1 - Admin CRUD:
 [ ] Lancé agentes con Task() (no TaskCreate)
 [ ] DBA completado Y verificado
 [ ] Backend completado Y verificado
 [ ] Frontend completado Y verificado
-[ ] QA EJECUTÓ tests (no solo creó archivos)
-[ ] Screenshots existen (verificado con find)
-[ ] Si ecommerceEnabled: screenshots de ecommerce también
-[ ] Comparé CADA screenshot vs spec (>= 90%)
+[ ] QA EJECUTÓ tests admin (no solo creó archivos)
+[ ] Screenshots admin existen (verificado con find)
+[ ] Comparé screenshots admin vs spec (>= 90%)
+
+FASE 2 - Ecommerce (si ecommerceEnabled: true):
+[ ] Backend ecommerce completado
+[ ] Frontend ecommerce completado
+[ ] QA ecommerce EJECUTÓ tests
+[ ] Screenshots ecommerce existen
+
+FASE 2 - Integración (si requiereIntegracion: true):
+[ ] Backend integración completado (endpoints)
+[ ] Frontend admin integración completado (selector)
+[ ] Frontend ecommerce integración completado (badges/visualización)
+[ ] QA integración EJECUTÓ tests ← ⚠️ NO OMITIR
+[ ] Screenshots de integración existen (según spec)
+[ ] Comparé screenshots integración vs "Criterios de Validación Visual"
+
+FINAL:
+[ ] TODOS los screenshots del spec existen
 [ ] Solo entonces declaré 100%
 ```
 
 **Si algún item falla, NO declarar completo.**
+**Si requiereIntegracion: true y no hay screenshots de integración → INCOMPLETO.**
