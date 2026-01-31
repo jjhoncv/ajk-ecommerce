@@ -59,6 +59,28 @@ Claude: Task({ description: "Project Owner...", prompt: "...", subagent_type: "g
 
 ---
 
+### ⚠️ LIMITACIÓN TÉCNICA ACTUAL
+
+```
+Los subagentes lanzados con Task() NO pueden usar AskUserQuestion
+directamente con el usuario. Los resultados vuelven a Claude principal.
+
+FLUJO ACTUAL (con limitación):
+1. Claude lanza Project Owner con Task()
+2. Project Owner devuelve preguntas como TEXTO (no AskUserQuestion)
+3. Claude muestra las preguntas al usuario
+4. Usuario responde
+5. Claude resume el agente con Task(resume: agentId) pasando las respuestas
+6. El agente continúa
+
+IMPLICACIÓN:
+- Claude DEBE actuar como "puente" entre agentes y usuario
+- El usuario debe ser EXPLÍCITO en sus respuestas (ej: "1B, 2A, 3C")
+- Claude NO debe "interpretar" ni "expandir" las respuestas del usuario
+```
+
+---
+
 ### Cómo Iniciar una Sesión (Para el Usuario)
 
 El usuario puede decir cualquiera de estas frases para activar el sistema de agentes:
