@@ -475,22 +475,26 @@ Task({
 
 ## 📚 Aprendizajes del Equipo
 
-### 2026-01-31 - Módulo Testimonials
-**Problema**: Project Owner usó `TaskCreate` en lugar de `Task()` para lanzar al Module Lead. Esto creó una tarea pendiente que NADIE ejecutó, causando que el flujo se detuviera.
+### Task() vs TaskCreate - Diferencia Crítica
+**Problema detectado**: Se usó `TaskCreate` en lugar de `Task()` para lanzar agentes, causando que el flujo se detenga.
 
-**Diferencia crítica**:
+**Diferencia fundamental**:
 ```
 ❌ TaskCreate({ subject: "...", description: "..." })
-   → Solo CREA una tarea en la lista
+   → Solo CREA una tarea en la lista de pendientes
    → NADIE la ejecuta automáticamente
-   → El módulo queda incompleto
+   → El flujo se detiene, el módulo queda incompleto
 
 ✅ Task({ description: "...", prompt: "...", subagent_type: "general-purpose" })
    → EJECUTA un agente inmediatamente
    → El agente trabaja de forma autónoma
-   → El flujo continúa
+   → El flujo continúa hasta completar
 ```
 
-**Síntoma**: Si después de "lanzar" al Module Lead no ves actividad del agente trabajando, probablemente usaste TaskCreate en lugar de Task().
+**Regla**:
+- `TaskCreate` = Anotar para después (tracking)
+- `Task()` = Ejecutar ahora (acción)
 
-**Aplicar cuando**: SIEMPRE que necesites que un agente EJECUTE algo, no solo que quede anotado.
+**Síntoma de uso incorrecto**: Si después de "lanzar" un agente no hay actividad visible, probablemente se usó TaskCreate.
+
+**Verificación**: Después de lanzar con Task(), DEBE verse output del agente trabajando. Si no hay output, revisar si se usó la herramienta correcta.

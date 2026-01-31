@@ -642,25 +642,27 @@ NOTAS: [observaciones si las hay]
 
 ## 📚 Aprendizajes del Equipo
 
-### 2026-01-31 - Módulo Testimonials
-**Problema**: El mapper y API routes incluían campos que NO existían en la tabla (`created_by`, `updated_by`). Esto causó errores en runtime que QA tuvo que corregir.
+### Validación de Campos del Mapper
+**Problema detectado**: Mapper y API routes incluían campos que NO existían en la tabla, causando errores en runtime.
 
-**Causa raíz**: Backend copió de un template sin verificar los campos reales de la tabla generados por DBA.
+**Causa raíz**: Se copiaron campos "estándar" del template sin verificar la estructura real de la tabla.
 
-**Mejora obligatoria**: Antes de crear el mapper, SIEMPRE verificar los campos reales:
+**Regla obligatoria**: Antes de crear el mapper, SIEMPRE verificar los campos reales:
 
 ```bash
-# 1. Ver los campos que realmente existen en la tabla
+# 1. Ver los campos que REALMENTE existen en la tabla
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE [modulo];"
 
-# 2. Ver los types generados (deben coincidir con la tabla)
+# 2. Ver los types generados (DEBEN coincidir con la tabla)
 grep -A 30 "export interface [Entidad]" src/types/database/database.d.ts
 ```
 
-**Regla**: El mapper SOLO debe incluir campos que:
-1. Existen en la tabla (verificado con DESCRIBE)
-2. Están en el type de database.d.ts
+**Regla del Mapper**: SOLO incluir campos que:
+1. ✅ Existen en la tabla (verificado con DESCRIBE)
+2. ✅ Están en el type de database.d.ts
+3. ❌ NO asumir campos "estándar" (created_by, updated_by, etc.) - verificar primero
 
-**NO incluir campos "estándar" como `created_by`/`updated_by` si la tabla no los tiene.
-
-**Aplicar cuando**: SIEMPRE, antes de escribir el mapper.
+**Checklist antes de commit**:
+- [ ] Ejecuté DESCRIBE [modulo] y comparé con mi mapper
+- [ ] Cada campo del mapper existe en database.d.ts
+- [ ] No hay campos inventados o asumidos

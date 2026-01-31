@@ -757,29 +757,31 @@ await FetchCustomBody({
 
 ## 📚 Aprendizajes del Equipo
 
-### 2026-01-31 - Módulo Testimonials
-**Problema**: El campo CheckboxGroup en `testimonialFields.ts` usaba estructura incorrecta `{label, value}` en lugar de `{id, name}`. Esto causó errores en runtime.
+### Estructura de Items para Checkbox/Select
+**Problema detectado**: Campos con opciones usaban estructura incorrecta `{label, value}` causando errores en runtime.
 
-**Causa raíz**: Se usó una estructura de opciones que no coincide con lo que espera el componente CheckboxGroup de shared.
+**Causa raíz**: Se asumió una estructura de opciones sin verificar la interfaz del componente shared.
 
-**Estructura correcta para items de checkbox/select**:
+**Estructura correcta para items**:
 ```typescript
-// ❌ INCORRECTO
+// ❌ INCORRECTO - NO usar esta estructura
 items: [
   { label: 'Opción 1', value: '1' },
   { label: 'Opción 2', value: '2' }
 ]
 
-// ✅ CORRECTO
+// ✅ CORRECTO - Usar siempre {id, name}
 items: [
   { id: 1, name: 'Opción 1' },
   { id: 2, name: 'Opción 2' }
 ]
 ```
 
-**Verificación**: Antes de usar items en checkbox/select, revisar la interfaz del componente en shared:
+**Regla obligatoria**: Antes de usar items en cualquier campo con opciones:
 ```bash
+# Verificar la interfaz que espera el componente
 grep -A 10 "interface.*Props" src/module/shared/components/Form/Input/CheckboxGroup.tsx
+grep -A 10 "interface.*Props" src/module/shared/components/Form/Input/Select.tsx
 ```
 
-**Aplicar cuando**: Siempre que se usen campos con opciones (checkbox, select, radio).
+**Aplica a**: CheckboxGroup, Select, Radio, y cualquier componente que reciba lista de opciones.

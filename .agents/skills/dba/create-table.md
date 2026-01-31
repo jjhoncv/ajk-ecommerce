@@ -370,23 +370,29 @@ SIEMPRE incluir:
 
 ## 📚 Aprendizajes del Equipo
 
-### 2026-01-31 - Módulo Testimonials
-**Problema**: DBA marcó tarea como "completada" pero la tabla NO existía en la base de datos. QA tuvo que crearla durante los tests.
+### Verificación Post-Creación de Tabla
+**Problema detectado**: Tarea marcada como "completada" pero la tabla NO existía en la base de datos.
 
-**Causa raíz**: No se verificó que el CREATE TABLE realmente se ejecutó exitosamente.
+**Causa raíz**: No se verificó que el CREATE TABLE se ejecutó exitosamente.
 
-**Mejora obligatoria**: Después de ejecutar CREATE TABLE, SIEMPRE verificar:
+**Regla obligatoria**: Después de ejecutar CREATE TABLE, SIEMPRE verificar:
 
 ```bash
 # 1. Confirmar que la tabla existe
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]';"
-# DEBE devolver el nombre de la tabla
+# DEBE devolver el nombre de la tabla - si está vacío, NO se creó
 
-# 2. Confirmar la estructura
+# 2. Confirmar la estructura completa
 docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE [modulo];"
-# DEBE mostrar todos los campos definidos
+# DEBE mostrar TODOS los campos definidos en el spec
 
-# 3. Si cualquiera de estos está vacío, la tabla NO se creó - investigar el error
+# 3. Contar campos
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_NAME='[modulo]';"
+# Comparar con la cantidad de campos en el spec
 ```
 
-**Aplicar cuando**: SIEMPRE, después de cada CREATE TABLE, antes de marcar como completado.
+**Criterio de completitud**: La tarea NO está completa hasta que:
+- [ ] SHOW TABLES devuelve el nombre de la tabla
+- [ ] DESCRIBE muestra todos los campos del spec
+- [ ] pnpm generate ejecutó sin errores
+- [ ] Los types aparecen en database.d.ts y domain.d.ts
