@@ -6,6 +6,89 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 
 ---
 
+## ⚠️ INSTRUCCIONES CRÍTICAS PARA NUEVAS SESIONES DE CLAUDE
+
+> **LEER PRIMERO**: Si eres una nueva sesión de Claude y el usuario te pide crear un módulo, sigue estas instrucciones.
+
+### Cómo Analizar el Proyecto
+
+1. **Leer este archivo completo** (`.agents/README.md`)
+2. **Leer el CLAUDE.md** en la raíz del proyecto
+3. **Revisar** `.agents/project.json` para ver módulos existentes
+4. **Entender** la jerarquía de agentes y el flujo de trabajo
+
+### Cuando el Usuario Pide Crear un Módulo
+
+```
+Usuario: "Quiero crear el módulo [nombre] que haga [descripción]"
+```
+
+**Tu rol es PROJECT OWNER.** Debes:
+
+1. **Leer** `.agents/skills/project-owner/assign-module.md` (flujo completo)
+2. **Hacer preguntas** usando `AskUserQuestion` para definir el modelo de negocio:
+   - ¿Qué campos necesita?
+   - ¿Debe verse en ecommerce público?
+   - ¿Se relaciona con productos u otro módulo existente?
+   - ¿A qué nivel (producto o variante)?
+3. **Crear el spec** en `.agents/specs/[modulo]-testing-spec.md`
+4. **Crear el branch** `feature/[modulo]`
+5. **Lanzar Module Lead** usando `Task()` tool (NO TaskCreate)
+
+### REGLAS DE ORO
+
+| Regla | Descripción |
+|-------|-------------|
+| **Autonomía** | Solo tú (Project Owner) preguntas al humano. Los demás agentes son 100% autónomos |
+| **Task() vs TaskCreate** | Usa `Task()` para ejecutar agentes. `TaskCreate` solo anota tareas, no las ejecuta |
+| **Branch** | Todo el código va en `feature/[modulo]`, NUNCA en main |
+| **Aprendizajes** | Las mejoras a la documentación de agentes van en branch `main` |
+| **Intervención mínima** | Deja que los agentes trabajen. Solo interviene si hay bloqueos |
+
+### Branch para Aprendizajes
+
+```
+⚠️ IMPORTANTE:
+- Código del módulo → feature/[modulo]
+- Mejoras a documentación de .agents/ → main (directamente)
+
+Si durante el desarrollo descubres algo que debe documentarse como aprendizaje:
+1. Cambiar a main: git checkout main
+2. Actualizar el skill correspondiente en .agents/skills/
+3. Hacer commit: git commit -m "docs(agents): add learning - [descripción]"
+4. Volver al branch: git checkout feature/[modulo]
+```
+
+### Flujo Rápido de Referencia
+
+```
+1. Usuario pide módulo
+2. TÚ (Project Owner):
+   - Preguntas para definir modelo de negocio
+   - Creas spec
+   - Creas branch
+   - Lanzas Module Lead con Task()
+3. Module Lead coordina: DBA → Backend → Frontend → QA
+4. Module Lead valida screenshots (>= 90%)
+5. TÚ creas release en .agents/releases/
+6. Usuario aprueba y hace merge
+```
+
+### Si los Agentes se Bloquean
+
+Solo interviene si:
+- Error de compilación no resoluble
+- Dependencia faltante crítica
+- Conflicto de merge no resoluble
+- Test que falla por problema de infraestructura
+
+**NO intervengas si:**
+- El agente está tomando decisiones autónomas (está bien)
+- El proceso es lento pero avanza (es normal)
+- Hay iteraciones entre QA y Frontend (es el flujo correcto)
+
+---
+
 ## LECTURA OBLIGATORIA POR ROL
 
 ### Project Owner
