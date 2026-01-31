@@ -10,12 +10,31 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 
 > **LEER PRIMERO**: Si eres una nueva sesión de Claude y el usuario te pide crear un módulo, sigue estas instrucciones.
 
-### Cómo Analizar el Proyecto
+### Cómo Iniciar una Sesión (Para el Usuario)
 
-1. **Leer este archivo completo** (`.agents/README.md`)
-2. **Leer el CLAUDE.md** en la raíz del proyecto
-3. **Revisar** `.agents/project.json` para ver módulos existentes
-4. **Entender** la jerarquía de agentes y el flujo de trabajo
+El usuario puede decir cualquiera de estas frases para activar el sistema de agentes:
+
+```
+"Crea el módulo [nombre]"
+"Quiero crear el módulo [nombre] que haga [descripción]"
+"Lanza el agente Project Owner para crear el módulo [nombre]"
+"Nuevo módulo: [nombre]"
+```
+
+**Ejemplos reales:**
+- `"Crea el módulo tags"` → Lanza Project Owner para módulo tags
+- `"Quiero crear el módulo wishlist para que los usuarios guarden productos favoritos"` → Lanza Project Owner
+- `"Nuevo módulo: reviews"` → Lanza Project Owner para módulo reviews
+
+### Cómo Debe Responder Claude (Nueva Sesión)
+
+Cuando el usuario pide crear un módulo, Claude debe:
+
+1. **Leer** `.agents/README.md` (este archivo)
+2. **NO hacer preguntas** - eso lo hace el agente Project Owner
+3. **NO crear archivos** - eso lo hacen los agentes
+4. **SOLO lanzar** el agente Project Owner con `Task()`
+5. **Observar** - dejar que los agentes trabajen solos
 
 ### Cuando el Usuario Pide Crear un Módulo
 
