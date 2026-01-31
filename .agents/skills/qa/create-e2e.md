@@ -522,6 +522,39 @@ src/module/[modulo]/e2e/
     └── ecommerce/  ← Screenshots de ecommerce
 ```
 
+### Si el módulo tiene Integración (requiereIntegracion: true):
+
+**CRÍTICO - Aprendizaje del módulo tags:**
+
+Cuando el spec tiene `requiereIntegracion: true`, el módulo se integra con otro módulo existente (ej: tags se integra con products). En este caso:
+
+1. **DEBEN existir screenshots de integración** que evidencien:
+   - Selector funcionando en admin del módulo relacionado
+   - Visualización en ecommerce (si aplica)
+
+2. **Verificar que el spec liste screenshots requeridos**:
+   ```markdown
+   ## Criterios de Validación Visual de Integración
+   | # | Screenshot | Descripción |
+   |---|------------|-------------|
+   | 1 | admin-variant-selector-available | Selector visible con datos |
+   | 2 | ecommerce-productcard-with-tags | Badge visible en card |
+   | 3 | ecommerce-productdetail-with-tags | Badge visible en detalle |
+   ```
+
+3. **Cada screenshot del spec DEBE existir**:
+   ```bash
+   # Verificar que screenshots de integración existen
+   ls src/module/[modulo]/e2e/screenshots/int-* 2>/dev/null | wc -l
+   # DEBE ser > 0 si requiereIntegracion: true
+   ```
+
+4. **NO marcar como completo si faltan screenshots de integración**:
+   - Admin CRUD OK pero sin ecommerce = **INCOMPLETO**
+   - Screenshots con -ERROR sin resolver = **INCOMPLETO**
+
+**Error común**: Marcar módulo como 100% cuando solo FASE 1 (Admin) tiene screenshots pero FASE 2 (Integración/Ecommerce) no fue validada visualmente.
+
 ---
 
 ## Manejo de Imágenes en E2E

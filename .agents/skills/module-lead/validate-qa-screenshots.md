@@ -220,6 +220,60 @@ Ver sección **Problemas Comunes Ecommerce** en `messages.template.md`.
 
 ---
 
+## INTEGRACIÓN (requiereIntegracion: true)
+
+### Aprendizaje del módulo tags
+
+**CRÍTICO**: Cuando el spec tiene `requiereIntegracion: true`, NO aprobar hasta verificar:
+
+1. **Screenshots de AMBAS fases existen**:
+   ```bash
+   # FASE 1: Admin CRUD
+   ls src/module/[modulo]/e2e/screenshots/0*.png | wc -l
+   # DEBE ser > 0
+
+   # FASE 2: Integración
+   ls src/module/[modulo]/e2e/screenshots/int-*.png | wc -l
+   # DEBE ser > 0 si requiereIntegracion: true
+   ```
+
+2. **No hay screenshots con -ERROR sin resolver**:
+   ```bash
+   ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null
+   # DEBE estar vacío
+   ```
+
+3. **Screenshots del spec existen**:
+   - Leer sección "Criterios de Validación Visual de Integración" del spec
+   - Cada screenshot listado DEBE existir físicamente
+   - Si falta alguno → **NO APROBAR**
+
+### Error común que NO debe repetirse
+
+```
+❌ INCORRECTO:
+   - Admin CRUD: 100% ✓
+   - Screenshots de ecommerce: NO EXISTEN
+   - Status: "100% completo" ← ERROR
+
+✓ CORRECTO:
+   - Admin CRUD: 100% ✓
+   - Screenshots de integración: NO EXISTEN
+   - Status: "50% - Falta validación visual de integración"
+```
+
+### Antes de aprobar módulo con integración
+
+```
+[ ] Screenshots de admin existen (0*.png)
+[ ] Screenshots de integración existen (int-*.png)
+[ ] No hay screenshots con -ERROR
+[ ] Cada screenshot del spec tiene evidencia física
+[ ] Si ecommerce → badges/visualización están en screenshots
+```
+
+---
+
 ## FASE DE FEEDBACK (Solo si APROBADO)
 
 ### 10. Detectar Mejoras del Equipo
