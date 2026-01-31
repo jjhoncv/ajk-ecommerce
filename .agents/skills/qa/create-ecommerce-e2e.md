@@ -888,3 +888,44 @@ Los screenshots sirven para:
 - Documentación del estado actual del ecommerce
 - Debugging de problemas futuros
 - Evidencia de cumplimiento del modelo de negocio
+
+---
+
+## ⛔ CHECKLIST FINAL - VERIFICAR ANTES DE NOTIFICAR A MODULE LEAD
+
+**EJECUTAR ESTOS COMANDOS antes de decir "tests ecommerce completados":**
+
+```bash
+# 1. ¿Ejecuté los tests? (NO solo crear archivos)
+ls -la src/module/[modulo]/e2e/screenshots/ecommerce/*.png 2>/dev/null | wc -l
+# DEBE ser > 0. Si es 0, ejecutar: npx tsx src/module/[modulo]/e2e/index-ecommerce.ts
+
+# 2. ¿Hay screenshots de error?
+ls src/module/[modulo]/e2e/screenshots/ecommerce/*ERROR* 2>/dev/null
+# Si hay archivos, investigar los errores antes de continuar
+
+# 3. ¿Verifiqué que el servidor está corriendo?
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
+# DEBE devolver 200 o 302
+
+# 4. ¿Probé todas las páginas del spec?
+grep -i "Páginas Públicas" .agents/specs/[modulo]-testing-spec.md -A 10
+# Cada página listada DEBE tener screenshots correspondientes
+```
+
+### Checklist Manual:
+
+```
+[ ] Ejecuté npx tsx index-ecommerce.ts (no solo creé archivos)
+[ ] Screenshots existen en carpeta ecommerce/ (verificado con ls)
+[ ] No hay screenshots con sufijo -ERROR
+[ ] Probé homepage section (si aplica según spec)
+[ ] Probé página de listado (si existe según spec)
+[ ] Probé página de detalle (si existe según spec)
+[ ] Probé página 404
+[ ] Probé responsive mobile
+[ ] NO hice login (páginas son públicas)
+[ ] Notifiqué a Module Lead SIN hacer commit
+```
+
+**Si algún item falla, NO notificar a Module Lead. Corregir primero.**

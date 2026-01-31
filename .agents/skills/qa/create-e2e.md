@@ -1308,3 +1308,41 @@ if (fs.existsSync(uploadPath)) {
 - **Si imagen obligatoria**: Probar que form NO se envía sin ella
 - **Si imagen opcional**: Probar flujo con y sin imagen
 - **Siempre**: Verificar que imagen se muestra después de guardar
+
+---
+
+## ⛔ CHECKLIST FINAL - VERIFICAR ANTES DE NOTIFICAR A MODULE LEAD
+
+**EJECUTAR ESTOS COMANDOS antes de decir "tests completados":**
+
+```bash
+# 1. ¿Ejecuté los tests? (NO solo crear archivos)
+ls -la src/module/[modulo]/e2e/screenshots/*.png 2>/dev/null | wc -l
+# DEBE ser > 0. Si es 0, ejecutar: npx tsx src/module/[modulo]/e2e/index.ts
+
+# 2. ¿Hay screenshots de error?
+ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null
+# Si hay archivos, investigar los errores antes de continuar
+
+# 3. ¿El spec tiene ecommerceEnabled: true?
+grep -i "ecommerceEnabled.*true" .agents/specs/[modulo]-testing-spec.md
+# Si devuelve resultado, DEBO tener también tests en e2e/ecommerce/
+
+# 4. Si ecommerceEnabled: true, ¿existen screenshots de ecommerce?
+ls -la src/module/[modulo]/e2e/screenshots/ecommerce/*.png 2>/dev/null | wc -l
+# DEBE ser > 0 si ecommerceEnabled: true
+```
+
+### Checklist Manual:
+
+```
+[ ] Ejecuté npx tsx (no solo creé archivos .ts)
+[ ] Screenshots existen en carpeta (verificado con ls)
+[ ] No hay screenshots con sufijo -ERROR
+[ ] Si ecommerceEnabled: true → tests de ecommerce también existen
+[ ] Usé credenciales reales (admin@ajk.com / Admin123!)
+[ ] Verifiqué puerto del servidor antes de ejecutar
+[ ] Notifiqué a Module Lead SIN hacer commit
+```
+
+**Si algún item falla, NO notificar a Module Lead. Corregir primero.**

@@ -589,3 +589,46 @@ Si rechaza:
 - Monitorear completados
 - Resolver bloqueadores
 - Cuando todo complete: `propose-release.md`
+
+---
+
+## ⛔ CHECKLIST FINAL - VERIFICAR ANTES DE DECLARAR MÓDULO COMPLETO
+
+**EJECUTAR ESTOS COMANDOS antes de decir "módulo 100% completo":**
+
+```bash
+# 1. ¿Usé Task() para lanzar agentes? (NO TaskCreate)
+# TaskCreate solo anota, Task() ejecuta. Si el agente no trabajó, usaste mal la herramienta.
+
+# 2. ¿Existen screenshots? (QA ejecutó tests, no solo creó archivos)
+SCREENSHOTS=$(find src/module/[modulo]/e2e/screenshots -name "*.png" 2>/dev/null | wc -l)
+echo "Screenshots encontrados: $SCREENSHOTS"
+# DEBE ser > 0. Si es 0, QA NO ejecutó los tests.
+
+# 3. ¿El spec tiene ecommerceEnabled: true?
+grep -i "ecommerceEnabled.*true" .agents/specs/[modulo]-testing-spec.md
+# Si devuelve resultado, verificar que existen screenshots de ecommerce también
+
+# 4. ¿Comparé screenshots vs spec?
+# DEBO haber leído cada screenshot y verificado que cumple el modelo de negocio
+
+# 5. ¿El status está actualizado?
+cat .agents/active/[modulo]-status.md | grep -E "Porcentaje|Progreso"
+# Debe mostrar 100% solo si TODO está verificado
+```
+
+### Checklist Manual:
+
+```
+[ ] Lancé agentes con Task() (no TaskCreate)
+[ ] DBA completado Y verificado (tabla existe)
+[ ] Backend completado Y verificado (API responde)
+[ ] Frontend completado Y verificado (páginas cargan)
+[ ] QA EJECUTÓ tests (no solo creó archivos)
+[ ] Screenshots existen (verificado con find)
+[ ] Si ecommerceEnabled: screenshots de ecommerce también
+[ ] Comparé CADA screenshot vs spec (>= 90%)
+[ ] Solo entonces declaré 100%
+```
+
+**Si algún item falla, NO declarar completo. El módulo NO está listo.**

@@ -631,3 +631,46 @@ CORRECCIÓN: Verificar grid-cols responsive
 - NO saltarse la comparación con el spec
 - NO aprobar Etapa 2 sin que Etapa 1 esté aprobada
 - NO aprobar ecommerce sin Header/Footer visibles
+
+---
+
+## ⛔ CHECKLIST FINAL - VERIFICAR ANTES DE APROBAR
+
+**EJECUTAR ESTOS COMANDOS antes de decir "APROBADO":**
+
+```bash
+# 1. ¿Existen screenshots realmente?
+ls -la src/module/[modulo]/e2e/screenshots/*.png 2>/dev/null | head -20
+# DEBE mostrar archivos .png. Si está vacío, QA no ejecutó tests.
+
+# 2. ¿Cuántos screenshots hay?
+find src/module/[modulo]/e2e/screenshots -name "*.png" | wc -l
+# Comparar con la cantidad esperada según spec
+
+# 3. ¿Hay screenshots de error?
+ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null
+# Si hay archivos ERROR, investigar antes de aprobar
+
+# 4. ¿El spec tiene ecommerceEnabled: true?
+grep -i "ecommerceEnabled.*true" .agents/specs/[modulo]-testing-spec.md
+# Si sí, DEBEN existir screenshots en carpeta ecommerce/
+
+# 5. Si ecommerce, ¿existen esos screenshots?
+ls src/module/[modulo]/e2e/screenshots/ecommerce/*.png 2>/dev/null | wc -l
+# DEBE ser > 0 si ecommerceEnabled: true
+```
+
+### Checklist Manual:
+
+```
+[ ] Screenshots existen (no carpeta vacía)
+[ ] Leí CADA screenshot (usando herramienta Read)
+[ ] Comparé cada uno vs spec del módulo
+[ ] Calculé cumplimiento: X/Y = Z%
+[ ] Z >= 90% para aprobar
+[ ] Si ecommerceEnabled: validé screenshots de ecommerce
+[ ] No hay screenshots con -ERROR sin resolver
+[ ] Documenté la evaluación antes de aprobar/rechazar
+```
+
+**Si algún item falla, NO aprobar. Asignar correcciones primero.**
