@@ -289,17 +289,34 @@
 │  │                     │         │              │                         │  │
 │  │ Identifica problemas│         │              │ QA puede hacer commit   │  │
 │  │ Asigna correcciones │         │              │ Admin ✅ COMPLETO       │  │
-│  │ a Frontend/Backend  │         │              │                         │  │
+│  │ ESPECÍFICAS         │         │              │                         │  │
 │  └─────────┬───────────┘         │              └───────────┬─────────────┘  │
 │            │                     │                          │                │
 │            ▼                     │                          │                │
-│  ┌─────────────────────┐         │                          │                │
-│  │ Corrección →        │         │                          │                │
-│  │ QA re-ejecuta →     │─────────┘                          │                │
-│  │ Nuevos screenshots  │                                    │                │
-│  └─────────────────────┘                                    │                │
-│                                                             │                │
-└─────────────────────────────────────────────────────────────┼────────────────┘
+│  ┌─────────────────────────────────────────────────────┐    │                │
+│  │           ITERACIÓN RÁPIDA (Optimizada)             │    │                │
+│  │                                                     │    │                │
+│  │  1. Module Lead asigna corrección ESPECÍFICA        │    │                │
+│  │     a Frontend/Backend (solo lo que falló)          │    │                │
+│  │                                                     │    │                │
+│  │  2. Frontend/Backend corrige SOLO lo indicado       │    │                │
+│  │                                                     │    │                │
+│  │  3. QA re-ejecuta SOLO el test que falló            │    │                │
+│  │     (NO borra screenshots exitosos)                 │    │                │
+│  │                                                     │    │                │
+│  │  4. ¿Pasa? ─── NO ──► Repetir desde paso 1          │    │                │
+│  │       │                                             │    │                │
+│  │      YES                                            │    │                │
+│  │       │                                             │    │                │
+│  │  5. ¿Todos los tests individuales pasaron?          │    │                │
+│  │       │                                             │    │                │
+│  │      YES ──► PRUEBA TOTAL (borrar todo, re-run)     │    │                │
+│  │               │                                     │    │                │
+│  │               ▼                                     │    │                │
+│  │          >= 90% ─────────────────────────────────────────┘                │
+│  └─────────────────────────────────────────────────────┘                     │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
                                                               │
 ══════════════════════════════════════════════════════════════╪═════════════════
                                                               │
@@ -449,7 +466,14 @@
                                  │                    │    mostrar badges      │
                                  │                    │                        │
                                  │                    │ 6. QA: tests integrac. │
-                                 │                    │    en módulo existente │
+                                 │                    │    Screenshots int-*   │
+                                 │                    │    DEBEN existir:      │
+                                 │                    │    - int-*-selector    │
+                                 │                    │    - int-*-ecommerce   │
+                                 │                    │                        │
+                                 │                    │ ⚠️ APRENDIZAJE:        │
+                                 │                    │ NO aprobar si faltan   │
+                                 │                    │ screenshots int-*      │
                                  │                    │                        │
                                  │                    └──────────┬─────────────┘
                                  │                               │

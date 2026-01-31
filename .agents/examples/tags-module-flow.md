@@ -323,6 +323,39 @@ USUARIO: "Quiero crear el módulo tags, que se vea en el ecommerce
 │                                                                              │
 │  RESULTADOS: 8/8 passed                                                      │
 │                                                                              │
+│  ═══════════════════════════════════════════════════════════════════════════ │
+│  FLUJO ALTERNATIVO: Si hay tests fallidos (ITERACIÓN RÁPIDA)                 │
+│  ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│  Si RESULTADOS fueran: 6/8 passed, 2/8 failed:                               │
+│                                                                              │
+│  ┌────────────────────────────────────────────────────────────────────────┐  │
+│  │ ITERACIÓN REQUERIDA: tags                                             │  │
+│  │                                                                        │  │
+│  │ TESTS FALLIDOS (2 de 8):                                              │  │
+│  │                                                                        │  │
+│  │ 1. Test: 04-create                                                    │  │
+│  │    Screenshot: 04-create-ERROR.png                                    │  │
+│  │    Error: Formulario no envía                                         │  │
+│  │    Responsable probable: Frontend                                     │  │
+│  │                                                                        │  │
+│  │ 2. Test: 06-delete                                                    │  │
+│  │    Screenshot: 06-delete-ERROR.png                                    │  │
+│  │    Error: Modal no aparece                                            │  │
+│  │    Responsable probable: Frontend                                     │  │
+│  │                                                                        │  │
+│  │ TESTS EXITOSOS: 00, 01, 02, 03, 05, 07, 08                            │  │
+│  │ (Screenshots guardados, NO se borran)                                 │  │
+│  └────────────────────────────────────────────────────────────────────────┘  │
+│                                                                              │
+│  → Module Lead asigna corrección ESPECÍFICA a Frontend                       │
+│  → Frontend corrige SOLO 04-create y 06-delete                               │
+│  → QA re-ejecuta SOLO esos 2 tests (NO toda la suite)                        │
+│  → Cuando pasen → PRUEBA TOTAL (borrar todo, ejecutar 8 tests)               │
+│  → Si PRUEBA TOTAL >= 90% → Aprobar                                          │
+│                                                                              │
+│  ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
 │  NOTIFICA A MODULE LEAD (NO COMMIT AÚN):                                     │
 │  ┌────────────────────────────────────────────────────────────────────────┐  │
 │  │ TESTS EJECUTADOS: tags                                                 │  │
@@ -735,6 +768,17 @@ USUARIO: "Quiero crear el módulo tags, que se vea en el ecommerce
 │  └────────────────────────────────────────────────────────────────────────┘  │
 │                                                                              │
 │  RESULTADOS: 7/7 passed                                                      │
+│                                                                              │
+│  ⚠️ VERIFICACIÓN OBLIGATORIA antes de notificar:                             │
+│  ┌────────────────────────────────────────────────────────────────────────┐  │
+│  │ # Verificar que screenshots de integración existen                     │  │
+│  │ ls src/module/tags/e2e/screenshots/int-*.png | wc -l                   │  │
+│  │ # DEBE ser > 0                                                         │  │
+│  │                                                                        │  │
+│  │ # Verificar que no hay errores sin resolver                            │  │
+│  │ ls src/module/tags/e2e/screenshots/*ERROR* 2>/dev/null                 │  │
+│  │ # DEBE estar vacío                                                     │  │
+│  └────────────────────────────────────────────────────────────────────────┘  │
 │                                                                              │
 │  NOTIFICA A MODULE LEAD:                                                     │
 │  ┌────────────────────────────────────────────────────────────────────────┐  │
