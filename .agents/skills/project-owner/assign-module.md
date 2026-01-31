@@ -293,6 +293,41 @@ El "ecommerce" del nuevo módulo puede ser su visualización DENTRO del módulo 
 - **Ejemplo tags**: No tiene `/tags` público, pero se muestra como badges en `/productos/[slug]`
 - **Ejemplo reviews**: No tiene `/reviews` público, pero se muestra en página de producto
 
+### ⚠️ CRÍTICO: Criterios de Validación Visual de Integración
+
+**Esta sección define QUÉ debe verse en los screenshots para validar el modelo de negocio.**
+
+QA NO puede aprobar la integración sin estos screenshots:
+
+#### Screenshots REQUERIDOS para validar integración:
+| # | Screenshot | Descripción | Criterio de Aprobación |
+|---|------------|-------------|------------------------|
+| 1 | `admin-[nuevo]-created` | Item del nuevo módulo creado en su admin | Item visible en lista con datos correctos |
+| 2 | `admin-[existente]-selector-available` | Página editar de [existente] mostrando selector con items disponibles | Selector visible Y muestra items del nuevo módulo |
+| 3 | `admin-[existente]-selector-selected` | Selector con item(s) seleccionado(s) | Item(s) marcado(s) como seleccionado(s) |
+| 4 | `admin-[existente]-after-save` | Después de guardar la asociación | Mensaje de éxito O asociación visible |
+| 5 | `ecommerce-[existente]-with-[nuevo]` | Página pública de [existente] mostrando [nuevo] | Badge/componente del nuevo módulo VISIBLE |
+| 6 | `ecommerce-[existente]-detail-with-[nuevo]` | Página detalle mostrando [nuevo] | Nuevo módulo visible en detalle |
+
+#### Flujo End-to-End que QA DEBE probar:
+```
+1. CREAR: Ir a /admin/[nuevo] → Crear item con datos de prueba
+2. VERIFICAR CREACIÓN: Screenshot del item creado en lista
+3. ASOCIAR: Ir a /admin/[existente]/[id]/edit → Buscar selector de [nuevo]
+4. SELECCIONAR: Elegir item(s) del nuevo módulo → Screenshot
+5. GUARDAR: Guardar cambios → Screenshot de confirmación
+6. VALIDAR ADMIN: Verificar asociación guardada en lista/detalle admin
+7. VALIDAR ECOMMERCE: Ir a página pública de [existente] → Screenshot con [nuevo] visible
+8. VALIDAR DETALLE: Ir a detalle de [existente] → Screenshot con [nuevo] visible
+```
+
+#### ❌ Casos que INVALIDAN la integración:
+- Selector dice "No hay [nuevo] disponibles" → Falta paso 1 (crear item)
+- Ecommerce no muestra [nuevo] → Falta paso 5 (guardar asociación)
+- Screenshots sin datos reales → NO valida el modelo de negocio
+
+**Sin estos screenshots con datos reales, la integración NO está validada.**
+
 ---
 
 ## Dependencias

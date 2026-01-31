@@ -841,54 +841,96 @@ Cuando Integration Lead complete:
 - [ ] Tests de integración nuevos pasan
 - [ ] Screenshots de integración validados (ver 16b)
 
-### 16b. Validar Screenshots de Integración Ecommerce
+### 16b. Asignar QA Integration (OBLIGATORIO)
 
-**CRÍTICO**: Validar que la integración cumple el MODELO DE NEGOCIO visual.
+**IMPORTANTE**: Usar el skill específico de QA Integration:
+→ `.agents/skills/qa/create-integration-e2e.md`
 
-**Screenshots Admin a validar:**
-| Screenshot | Validar |
-|------------|---------|
-| admin-edit-selector | ¿Selector de [nuevoModulo] visible y funcional? |
-| admin-edit-selected | ¿Se pueden seleccionar múltiples? |
-| admin-list-badges | ¿Badges visibles en la lista? |
+```typescript
+Task({
+  description: "QA: Create [nuevoModulo] integration E2E tests in [moduloExistente]",
+  prompt: `
+    TAREA: Crear E2E tests de integración [nuevoModulo]-[moduloExistente]
+    ROL: QA
+    SKILL: .agents/skills/qa/create-integration-e2e.md
 
-**Screenshots Ecommerce a validar (MODELO DE NEGOCIO):**
-| Screenshot | Validar |
-|------------|---------|
-| ProductCard con tag | ¿El badge está en posición correcta? ¿Color visible? |
-| ProductDetail con tags | ¿Los tags se muestran donde deben? |
-| Mobile responsive | ¿Tags visibles en mobile? |
+    SPEC: .agents/specs/[nuevoModulo]-testing-spec.md
+    → LEER sección "Criterios de Validación Visual de Integración"
 
-**Preguntas de validación:**
-1. ¿La visualización de [nuevoModulo] corresponde al modelo de negocio?
-2. ¿Los badges/tags están donde el usuario los espera ver?
-3. ¿El diseño es consistente con el resto del sitio?
-4. ¿La información mostrada es útil para el cliente final?
+    ARCHIVOS A CREAR EN MÓDULO EXISTENTE:
+    - src/module/[moduloExistente]/e2e/integration/[nuevoModulo].ts
+    - src/module/[moduloExistente]/e2e/index-integration.ts
+
+    FLUJO END-TO-END OBLIGATORIO (del spec):
+    1. CREAR item en /admin/[nuevoModulo]
+    2. VERIFICAR selector muestra items disponibles
+    3. SELECCIONAR y GUARDAR asociación
+    4. VALIDAR en ecommerce que se VE el componente/badge
+    5. Screenshot de CADA paso
+
+    ⚠️ NO APROBAR si:
+    - Selector dice "No hay [nuevoModulo] disponibles"
+    - Ecommerce NO muestra el componente/badge
+
+    ACTIVITY LOG:
+    ./.agents/scripts/log.sh "QA" "Iniciando E2E integración [nuevoModulo]-[moduloExistente]"
+  `,
+  subagent_type: "general-purpose",
+  allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
+})
+```
+
+### 16c. Validar Screenshots de Integración vs Spec
+
+**CRÍTICO**: Los screenshots DEBEN cumplir los criterios definidos en el spec.
+
+**Leer del spec:**
+```bash
+cat .agents/specs/[nuevoModulo]-testing-spec.md | grep -A 50 "Criterios de Validación Visual"
+```
+
+**Screenshots REQUERIDOS (según spec):**
+| # | Screenshot | Criterio de Aprobación |
+|---|------------|------------------------|
+| 1 | admin-[nuevoModulo]-created | Item VISIBLE con datos reales |
+| 2 | admin-[moduloExistente]-selector-available | Selector muestra items (NO "No hay disponibles") |
+| 3 | admin-[moduloExistente]-selector-selected | Item(s) seleccionado(s) visibles |
+| 4 | admin-[moduloExistente]-after-save | Asociación guardada/confirmada |
+| 5 | ecommerce-[moduloExistente]-with-[nuevoModulo] | Badge/componente VISIBLE en página |
+| 6 | ecommerce-[moduloExistente]-detail-with-[nuevoModulo] | Badge/componente VISIBLE en detalle |
+
+**❌ RECHAZAR AUTOMÁTICAMENTE si:**
+- Screenshot #2 muestra "No hay [X] disponibles" → Falta crear item (paso 1)
+- Screenshots #5 o #6 NO muestran el componente → Falta guardar asociación (paso 3)
+- Screenshots sin datos reales → NO valida modelo de negocio
 
 **Respuesta de validación:**
 ```
 VALIDACIÓN INTEGRACIÓN [nuevoModulo] ↔ [moduloExistente]
 ========================================================
 
-ADMIN:
-  - Selector: [✅/❌] [comentario]
-  - Guardado: [✅/❌] [comentario]
-  - Lista badges: [✅/❌] [comentario]
-
-ECOMMERCE:
-  - ProductCard: [✅/❌] [comentario sobre posición, diseño]
-  - ProductDetail: [✅/❌] [comentario]
-  - Mobile: [✅/❌] [comentario]
+SCREENSHOTS vs SPEC:
+  1. admin-[nuevoModulo]-created: [✅/❌] Item creado con datos reales
+  2. admin-selector-available: [✅/❌] Selector muestra items (NO vacío)
+  3. admin-selector-selected: [✅/❌] Selección visible
+  4. admin-after-save: [✅/❌] Asociación confirmada
+  5. ecommerce-with-[nuevoModulo]: [✅/❌] Componente VISIBLE
+  6. ecommerce-detail-with-[nuevoModulo]: [✅/❌] Componente VISIBLE
 
 MODELO DE NEGOCIO:
-  - ¿Tags ayudan al cliente a encontrar productos? [Sí/No]
-  - ¿Visualización es apropiada? [Sí/No]
+  - ¿La visualización cumple lo que el usuario pidió? [Sí/No]
+  - ¿El componente está donde debe estar? [Sí/No]
 
-RESULTADO: [APROBADO >= 90% / RECHAZADO < 90%]
-CUMPLIMIENTO: [X]%
+RESULTADO: [APROBADO si 6/6 / RECHAZADO si falta alguno]
 
-[Si rechazado, lista de correcciones necesarias]
+[Si rechazado: qué screenshot falta y qué paso del flujo no se completó]
 ```
+
+**Si falta algún screenshot crítico:**
+1. NO declarar completo
+2. Identificar qué paso del flujo falló
+3. QA debe re-ejecutar desde ese paso
+4. Volver a validar
 
 **Si >= 90% cumplimiento:**
 - Integración APROBADA
