@@ -330,3 +330,49 @@ if (!hasItems) {
   throw new Error('Selector no muestra items disponibles')
 }
 ```
+
+### 5. Navegación: DynamicTable usa Action Menus
+
+**Problema**: Test busca links directos en tablas, pero el admin usa action menus (tres puntos).
+
+**Síntoma**: Test falla con "No se encontró link" o navega a página incorrecta.
+
+**Causa**: Muchos módulos usan `DynamicTable` que NO tiene links directos en las filas. En su lugar, tiene un botón de acciones (tres puntos) que abre un menú dropdown.
+
+**Solución**: Usar el patrón de action menu:
+```typescript
+// ❌ INCORRECTO - Buscar links directos
+const link = await page.$('table tbody tr td a')
+
+// ✅ CORRECTO - Usar action menu
+const actionBtn = await page.$('table tbody tr button')
+if (actionBtn) {
+  await actionBtn.click()
+  await wait(500)
+
+  // Buscar opción en el menú
+  const menuClicked = await page.evaluate(() => {
+    const items = document.querySelectorAll('[role="menuitem"], button, a')
+    for (const item of items) {
+      if (item.textContent?.toLowerCase().includes('variantes')) {
+        (item as HTMLElement).click()
+        return true
+      }
+    }
+    return false
+  })
+}
+```
+
+**Prevención**: El Integration Lead DEBE pasar contexto de navegación del módulo existente al lanzar el QA agent. Este contexto viene del reporte del Module Expert.
+
+### 6. Obtener contexto del módulo existente ANTES de escribir tests
+
+**Problema**: QA escribe tests sin saber cómo funciona el módulo existente.
+
+**Solución**: El prompt del Integration Lead a QA DEBE incluir:
+- Tipo de navegación (links directos vs action menus)
+- Selectores CSS correctos
+- Flujo de navegación paso a paso
+
+Si el prompt NO incluye esta información, solicitar al Integration Lead que la proporcione.

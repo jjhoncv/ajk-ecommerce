@@ -145,6 +145,22 @@ Task({
     ### Componentes Admin
     - [nombre]: [ruta] - [qué hace, qué props]
 
+    ### ⚠️ NAVEGACIÓN EN ADMIN (CRÍTICO PARA QA)
+
+    **DOCUMENTAR CÓMO se navega entre páginas:**
+
+    ¿Cómo acceder a sub-recursos (ej: variantes de un producto)?
+    - Tipo: [Link directo / Action menu / Tabs / etc.]
+    - Selector CSS: [ej: 'table tbody tr button' para action menu]
+    - Flujo: [ej: Click en tres puntos → Menu aparece → Click "Variantes"]
+
+    ¿Cómo se estructura la tabla de listado?
+    - Componente: [ej: DynamicTable]
+    - Tiene action menu: [Sí/No]
+    - Opciones del menu: [ej: Editar, Variantes, Eliminar]
+
+    **ESTO ES ESENCIAL PARA QUE QA ESCRIBA TESTS CORRECTOS**
+
     ### Punto de integración sugerido (Admin)
     - [Dónde agregar selector de [nuevoModulo]]
     - [Qué archivo modificar]
@@ -706,7 +722,11 @@ npx tsx src/module/[moduloExistente]/e2e/index-ecommerce.ts
 
 ### 6.1 Lanzar QA Agent para Tests de Integración
 
-**El Integration Lead NO crea los tests directamente.** Debe lanzar al QA Agent:
+**El Integration Lead NO crea los tests directamente.** Debe lanzar al QA Agent.
+
+**⚠️ CRÍTICO: Incluir contexto de navegación del módulo existente**
+
+El QA Agent necesita saber CÓMO navegar en el módulo existente. Esta información viene del reporte del Module Expert (FASE 0).
 
 ```typescript
 Task({
@@ -723,6 +743,21 @@ Task({
     ARCHIVOS A CREAR:
     - src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts
     - src/module/[moduloExistente]/e2e/index-integration.ts
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ⚠️ CONTEXTO DE NAVEGACIÓN DEL MÓDULO [moduloExistente] (del Module Expert):
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    [PEGAR AQUÍ LA SECCIÓN "ADMIN > Navegación" DEL REPORTE DEL MODULE EXPERT]
+
+    Ejemplo para products:
+    - La lista usa DynamicTable con action menu (tres puntos)
+    - Para acceder a variantes: click botón acciones → click "Variantes"
+    - NO hay links directos en las filas de la tabla
+    - Selector correcto: 'table tbody tr button' (no 'table tbody tr td a')
+
+    [FIN DEL CONTEXTO DE NAVEGACIÓN]
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     TESTS ADMIN A CREAR:
     - TC-INT-01: Navegar a edit de [moduloExistente]
