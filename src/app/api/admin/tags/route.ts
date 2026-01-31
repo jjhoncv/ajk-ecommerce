@@ -35,13 +35,18 @@ const processRequestData = async (req: NextRequest) => {
 
   if (contentType.includes('application/json')) {
     const json = await req.json()
+    const name = json.name || ''
+    const slugInput = json.slug
     return {
       id: json.id,
-      name: json.name,
-      slug: json.slug,
+      name,
+      slug:
+        slugInput && slugInput.trim() !== ''
+          ? generateSlug(slugInput)
+          : generateSlug(name),
       description: json.description || '',
       color: json.color || '#6B7280',
-      is_active: json.is_active ?? true,
+      is_active: json.is_active ?? 1,
       display_order: json.display_order ?? 0
     }
   } else {
