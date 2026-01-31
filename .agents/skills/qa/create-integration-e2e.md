@@ -119,7 +119,7 @@ src/module/[existente]/e2e/
 ├── integration/
 │   └── [nuevo].ts          # Tests de integración
 ├── screenshots/
-│   └── integration/        # Screenshots de integración
+│   └── [nuevo]/            # Screenshots de integración con [nuevo]
 │       ├── admin-[nuevo]-created.png
 │       ├── admin-[existente]-selector-available.png
 │       ├── admin-[existente]-selector-selected.png
@@ -128,6 +128,23 @@ src/module/[existente]/e2e/
 │       └── ecommerce-[existente]-detail-with-[nuevo].png
 └── index-integration.ts    # Runner de tests integración
 ```
+
+**Ejemplo concreto** (tags integrado con products):
+```
+src/module/products/e2e/
+├── integration/
+│   └── tags.ts
+├── screenshots/
+│   ├── admin/              # Screenshots del CRUD de products
+│   ├── ecommerce/          # Screenshots del ecommerce de products
+│   └── tags/               # Screenshots de integración con tags
+│       ├── admin-tag-created.png
+│       ├── admin-variant-selector-available.png
+│       └── ecommerce-product-with-tag.png
+└── index-integration.ts
+```
+
+**Beneficio**: Fácil identificar qué módulo generó cada set de screenshots de integración.
 
 ---
 
