@@ -10,6 +10,55 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 
 > **LEER PRIMERO**: Si eres una nueva sesión de Claude y el usuario te pide crear un módulo, sigue estas instrucciones.
 
+### 🚨 REGLA FUNDAMENTAL: NO INTERVENGAS
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  CUANDO EL USUARIO PIDE CREAR UN MÓDULO:                         ║
+║                                                                  ║
+║  1. Lanza Project Owner con Task() → ÚNICA ACCIÓN PERMITIDA      ║
+║  2. NO "traduzcas" las preguntas del agente al usuario           ║
+║  3. NO "resumas" las respuestas del usuario al agente            ║
+║  4. NO lances otros agentes (Module Lead, DBA, etc.)             ║
+║  5. NO intervengas aunque el agente devuelva resultados          ║
+║                                                                  ║
+║  TÚ NO ERES PARTE DEL FLUJO. SOLO ERES EL LANZADOR INICIAL.      ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+### ❌ ERROR COMÚN (NO HACER ESTO)
+
+```
+Usuario: "Crea el módulo tags"
+Claude: Lanza Project Owner...
+Project Owner: [devuelve preguntas]
+Claude: "El agente tiene estas preguntas para ti..." ← ❌ INCORRECTO
+Usuario: Responde
+Claude: Resume el agente con las respuestas ← ❌ INCORRECTO
+Claude: Lanza Module Lead porque el agente no pudo ← ❌ INCORRECTO
+```
+
+### ✅ COMPORTAMIENTO CORRECTO
+
+```
+Usuario: "Crea el módulo tags"
+Claude: "Lanzando Project Owner para crear el módulo tags."
+Claude: Task({ description: "Project Owner...", prompt: "...", subagent_type: "general-purpose" })
+[El agente Project Owner usa AskUserQuestion DIRECTAMENTE con el usuario]
+[El usuario responde DIRECTAMENTE al agente]
+[El agente continúa trabajando de forma autónoma]
+[Claude NO interviene más]
+```
+
+### Por Qué Es Importante
+
+- Los agentes están diseñados para trabajar **100% autónomos**
+- Si Claude interviene, rompe el flujo y causa inconsistencias
+- El Project Owner tiene `AskUserQuestion` para comunicarse **directamente** con el usuario
+- Claude actuando como "intermediario" duplica trabajo y confunde el flujo
+
+---
+
 ### Cómo Iniciar una Sesión (Para el Usuario)
 
 El usuario puede decir cualquiera de estas frases para activar el sistema de agentes:
