@@ -850,6 +850,20 @@ export interface StoreFeatures {
   updated_at: Scalars['Timestamp']['output'];
 }
 
+export interface Tags {
+  color: Scalars['String']['output'];
+  created_at: Scalars['Timestamp']['output'];
+  created_by?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  display_order?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  is_active?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+  updated_at: Scalars['Timestamp']['output'];
+  updated_by?: Maybe<Scalars['Int']['output']>;
+}
+
 export interface Users {
   created_at: Scalars['Timestamp']['output'];
   email: Scalars['String']['output'];
@@ -954,6 +968,14 @@ export interface VariantRatings {
   updated_at: Scalars['Timestamp']['output'];
   variant_id: Scalars['Int']['output'];
   verified_purchase: Scalars['Int']['output'];
+}
+
+export interface VariantTags {
+  created_at: Scalars['Timestamp']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  tag_id: Scalars['Int']['output'];
+  variant_id: Scalars['Int']['output'];
 }
 
 export interface VerificationCodes {
