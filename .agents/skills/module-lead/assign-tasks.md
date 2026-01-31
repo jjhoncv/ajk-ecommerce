@@ -270,10 +270,16 @@ Task({
     2. Verificar types en src/types/
     3. Commit: feat([modulo]): DBA create table
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "DBA" "Iniciando creación tabla [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "DBA" "Tabla creada con X campos"
-    - Final: ./.agents/scripts/log.sh "DBA" "TAREA COMPLETADA - Siguiente: BACKEND"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "DBA" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo/Creando/Ejecutando [archivo/comando]: [propósito]
+    - ✓ Encontrado/Resuelto: [qué descubrió/solucionó]
+    - ⚠️ Problema: [qué encontró]
+    - TAREA COMPLETADA - Siguiente: BACKEND
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -315,11 +321,19 @@ Task({
 
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add core and API
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "BACKEND" "Iniciando backend [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "BACKEND" "Core creado: model, repository, mapper"
-    - Progreso: ./.agents/scripts/log.sh "BACKEND" "API Routes creadas"
-    - Final: ./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA - Siguiente: FRONTEND"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "BACKEND" "mensaje":
+    - 🔍 Analizando: [qué está revisando en spec]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Creando [archivo]: [propósito]
+    - → Ejecutando [comando]: [propósito]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - TAREA COMPLETADA - Siguiente: FRONTEND
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -348,11 +362,20 @@ Task({
 
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add admin components
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend admin [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Componentes creados: Fields, ListView"
-    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Páginas creadas: list, new, edit"
-    - Final: ./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA - Siguiente: QA"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "FRONTEND" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Buscando [patrón] en [ubicación]
+    - → Creando [archivo]: [propósito]
+    - → Comparando con [componente existente]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - TAREA COMPLETADA - Siguiente: QA
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -397,9 +420,18 @@ Task({
     NOTA: NO crear APIs REST - usar SSR
     AL COMPLETAR: Commit con feat([modulo]): BACKEND add ecommerce services
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "BACKEND" "Iniciando backend ecommerce [modulo]"
-    - Final: ./.agents/scripts/log.sh "BACKEND" "TAREA COMPLETADA ecommerce services"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "BACKEND" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Creando [archivo]: [propósito]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - TAREA COMPLETADA - ecommerce services
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -432,11 +464,19 @@ Task({
     NOTA: Usar SSR - NO fetch a APIs
     AL COMPLETAR: Commit con feat([modulo]): FRONTEND add ecommerce components
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "FRONTEND" "Iniciando frontend ecommerce [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Componentes ecommerce creados"
-    - Progreso: ./.agents/scripts/log.sh "FRONTEND" "Páginas públicas creadas"
-    - Final: ./.agents/scripts/log.sh "FRONTEND" "TAREA COMPLETADA ecommerce UI"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "FRONTEND" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Buscando [patrón] en [ubicación]
+    - → Creando [archivo]: [propósito]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - TAREA COMPLETADA - ecommerce UI
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -480,10 +520,21 @@ Task({
     4. NO eliminar screenshots - mantener como evidencia
     5. Detener servidor si lo iniciaste
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E tests admin [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "QA" "Tests ejecutados: X/Y pasaron"
-    - Final: ./.agents/scripts/log.sh "QA" "Esperando validación de Module Lead"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Creando [archivo de test]: [propósito]
+    - → Ejecutando [tests]: [qué valida]
+    - → Capturando screenshot: [qué muestra]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - Tests ejecutados: X/Y pasaron
+    - Esperando validación de Module Lead
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -532,10 +583,21 @@ Task({
     4. NO eliminar screenshots - mantener como evidencia
     5. Detener servidor si lo iniciaste
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E ecommerce ETAPA 1 [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "QA" "Tests ejecutados: X/Y pasaron"
-    - Final: ./.agents/scripts/log.sh "QA" "ETAPA 1 - Esperando validación Module Lead"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para entender [qué]
+    - → Creando [archivo de test]: [propósito]
+    - → Ejecutando [tests]: [qué valida]
+    - → Capturando screenshot: [qué muestra]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - Tests ejecutados: X/Y pasaron
+    - ETAPA 1 - Esperando validación Module Lead
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -679,10 +741,19 @@ Task({
     - Si tipos cambiaron, Frontend debe ajustar
     - Coordinar iteración Frontend + QA si es necesario
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "INTEGRATOR" "Iniciando integración ecommerce [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "INTEGRATOR" "Comparando tipos mock vs real"
-    - Final: ./.agents/scripts/log.sh "INTEGRATOR" "TAREA COMPLETADA - integración lista"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "INTEGRATOR" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Leyendo [archivo] para comparar tipos
+    - → Comparando tipos mock vs real
+    - → Modificando [archivo]: [qué cambio]
+    - ✓ Encontrado: [discrepancia/coincidencia]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - TAREA COMPLETADA - integración lista
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -725,10 +796,20 @@ Task({
     4. NO eliminar screenshots - mantener como evidencia
     5. Detener servidor si lo iniciaste
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "QA" "Iniciando E2E ecommerce ETAPA 2 [modulo]"
-    - Progreso: ./.agents/scripts/log.sh "QA" "Tests con datos reales: X/Y pasaron"
-    - Final: ./.agents/scripts/log.sh "QA" "ETAPA 2 - Esperando validación Module Lead"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
+    - 🔍 Analizando: [qué está revisando]
+    - ❓ Pregunta: [qué necesita resolver]
+    - 💡 Decisión: [qué decidió y por qué]
+    - → Ejecutando [tests]: [qué valida]
+    - → Verificando datos reales en [página]
+    - → Capturando screenshot: [qué muestra]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - Tests con datos reales: X/Y pasaron
+    - ETAPA 2 - Esperando validación Module Lead
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
@@ -816,12 +897,23 @@ Task({
     - SOLO extender [moduloExistente] para usar [nuevoModulo]
     - Commits: feat([moduloExistente]): integrate [nuevoModulo]
 
-    ACTIVITY LOG (OBLIGATORIO):
-    - Inicio: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Iniciando integración [nuevoModulo] con [moduloExistente]"
-    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Tabla pivote creada"
-    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Backend extendido"
-    - Progreso: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "Frontend Admin extendido"
-    - Final: ./.agents/scripts/log.sh "INTEGRATION-LEAD" "INTEGRACIÓN COMPLETADA"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "INTEGRATION-LEAD" "mensaje":
+    - 🔍 Analizando: [módulo existente - qué está revisando]
+    - ❓ Pregunta: [qué necesita entender del módulo]
+    - 💡 Decisión: [cómo va a integrar y por qué]
+    - → Leyendo [archivo] para entender [estructura existente]
+    - → Buscando [patrón] en [módulo existente]
+    - → Creando [tabla pivote/archivo]: [propósito]
+    - → Modificando [archivo existente]: [qué agrega]
+    - ✓ Encontrado: [patrón a seguir/estructura]
+    - ⚠️ Problema: [qué encontró]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - Tabla pivote creada
+    - Backend extendido
+    - Frontend Admin extendido
+    - INTEGRACIÓN COMPLETADA
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Task", "AskUserQuestion"]
@@ -872,8 +964,23 @@ Task({
     - Selector dice "No hay [nuevoModulo] disponibles"
     - Ecommerce NO muestra el componente/badge
 
-    ACTIVITY LOG:
-    ./.agents/scripts/log.sh "QA" "Iniciando E2E integración [nuevoModulo]-[moduloExistente]"
+    ACTIVITY LOG (OBLIGATORIO) - Usar ./.agents/scripts/log.sh "QA" "mensaje":
+    - 🔍 Analizando: [spec y criterios de validación]
+    - ❓ Pregunta: [qué necesita verificar]
+    - 💡 Decisión: [qué flujo seguirá]
+    - → Creando item en admin/[nuevoModulo]
+    - → Navegando a admin/[moduloExistente]/edit
+    - → Verificando selector muestra items disponibles
+    - → Seleccionando y guardando asociación
+    - → Navegando a ecommerce para verificar badge/componente
+    - → Capturando screenshot: [qué muestra]
+    - ✓ Encontrado: [qué descubrió]
+    - ⚠️ Problema: [selector vacío/badge no visible/etc]
+    - ✓ Resuelto: [cómo lo solucionó]
+    - Tests integración: X/Y pasaron
+    - Esperando validación Module Lead
+
+    Referencia: .agents/activity-log-guide.md
   `,
   subagent_type: "general-purpose",
   allowed_tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
