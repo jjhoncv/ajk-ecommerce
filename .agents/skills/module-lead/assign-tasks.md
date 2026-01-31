@@ -59,7 +59,7 @@ Los agentes tienen **AUTONOMÍA TOTAL** - no piden permiso para crear/editar arc
 
 ---
 
-## VERIFICAR ECOMMERCE EN SPEC
+## VERIFICAR ECOMMERCE E INTEGRACIÓN EN SPEC
 
 **ANTES DE ASIGNAR TAREAS**, revisar el spec:
 
@@ -67,9 +67,17 @@ Los agentes tienen **AUTONOMÍA TOTAL** - no piden permiso para crear/editar arc
 ## Ecommerce
 ### Estado
 - **ecommerceEnabled**: [true/false]  ← ¡VERIFICAR!
+
+## Integración con Módulos Existentes
+### Estado de Integración
+- **requiereIntegracion**: [true/false]  ← ¡VERIFICAR!
 ```
 
-Si `ecommerceEnabled: true`: Hay tareas adicionales para Backend, Frontend y QA.
+**REGLA CRÍTICA DE AUTONOMÍA:**
+- Si `ecommerceEnabled: true` → Continuar automáticamente con FASE 2 Ecommerce
+- Si `requiereIntegracion: true` → Continuar automáticamente con FASE 2 Integración
+- **NUNCA detenerse a preguntar** si debe continuar con FASE 2
+- El flujo es 100% autónomo: FASE 1 → FASE 2 (si aplica) → Proponer release
 
 ---
 
@@ -160,6 +168,58 @@ Usar mensajes de `messages.template.md`:
 3. **QA Ecommerce Etapa 1**: Validar UI con mocks
 4. **Integrador**: Conectar con datos reales
 5. **QA Ecommerce Etapa 2**: Validar con datos reales
+
+---
+
+## INTEGRACIÓN (Solo si requiereIntegracion: true)
+
+**⚠️ CRÍTICO: Esta fase es AUTOMÁTICA. NO preguntar al humano si debe continuar.**
+
+### Cuándo aplica:
+- El spec tiene `requiereIntegracion: true`
+- Existe tabla pivote (ej: `variant_tags`, `product_collections`)
+- El nuevo módulo se muestra DENTRO de un módulo existente
+
+### Después de Admin aprobado, CONTINUAR AUTOMÁTICAMENTE con:
+
+1. **Backend Integración**:
+   - Endpoints para gestionar la relación (assign/unassign)
+   - Extender repository/service del módulo existente
+
+2. **Frontend Admin Integración**:
+   - Selector del nuevo módulo en edit page del módulo existente
+   - Visualización de asociaciones guardadas
+
+3. **Frontend Ecommerce Integración** (si hay visualización pública):
+   - Mostrar el nuevo módulo en el componente del módulo existente
+   - Ejemplo: badges de tags en ProductCard
+
+4. **QA Integración**:
+   - Tests E2E del flujo completo: crear → asociar → ver en ecommerce
+   - Screenshots que validen la integración visible
+
+### Flujo de FASE 2 Integración:
+
+```
+FASE 1 COMPLETA (Admin >= 90%)
+            │
+            ▼
+   ¿requiereIntegracion: true?
+            │
+    SÍ ─────┴───── NO
+    │              │
+    ▼              ▼
+FASE 2         Proponer
+Integración    Release
+    │
+    ▼
+Backend → Frontend → QA (integración)
+    │
+    ▼
+Proponer Release
+```
+
+**El Module Lead NO se detiene entre FASE 1 y FASE 2.**
 
 ---
 
