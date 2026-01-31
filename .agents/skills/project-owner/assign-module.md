@@ -389,6 +389,28 @@ git checkout -b feature/[modulo]
 git push -u origin feature/[modulo]
 ```
 
+### ⛔ VERIFICACIÓN OBLIGATORIA: Confirmar Branch Antes de Continuar
+
+**ANTES de lanzar Module Lead, VERIFICAR que el branch existe y estás en él:**
+
+```bash
+# Verificar branch actual
+git branch --show-current
+# DEBE mostrar: feature/[modulo]
+
+# Si NO estás en el branch correcto, DETENERSE
+# Todo el trabajo del Module Lead DEBE estar en feature/[modulo], NO en main
+```
+
+**❌ NUNCA lanzar Module Lead si `git branch --show-current` muestra `main`**
+
+Si el branch no se creó correctamente:
+1. NO continuar
+2. Crear el branch primero
+3. Verificar de nuevo
+
+**Si se lanza Module Lead en main, TODO el código irá a main directamente, causando incongruencias.**
+
 ### 4. Lanzar Module Lead con Task Tool
 
 **⛔ OBLIGATORIO: USAR Task() TOOL - NO TaskCreate**
