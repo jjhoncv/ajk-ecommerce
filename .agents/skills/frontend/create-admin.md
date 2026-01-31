@@ -34,38 +34,38 @@ Module Lead asigna tarea de crear frontend (después de DBA)
 
 ---
 
-## 🔄 OBLIGATORIO: REUTILIZAR COMPONENTES SHARED ADMIN
+## 🔄 OBLIGATORIO: USAR COMPONENTES SHARED
 
-**ANTES de crear cualquier componente, verificar si ya existe en shared:**
+> **⚠️ CATÁLOGO OBLIGATORIO**: `.agents/shared-catalog.md`
+>
+> Este catálogo contiene TODOS los componentes disponibles con sus interfaces exactas.
+> DEBES leerlo ANTES de empezar cualquier tarea de Frontend.
 
-```bash
-# Componentes de Admin disponibles
-ls src/module/shared/components/
-ls src/module/shared/components/Form/Input/
-ls src/module/shared/components/Page/
-```
-
-### Componentes de Admin que DEBES reutilizar:
-
-| Componente | Ubicación | Uso |
-|------------|-----------|-----|
-| `Page` | `src/module/shared/components/Page/Page.tsx` | Layout de página |
-| `PageTitle` | `src/module/shared/components/Page/PageTitle.tsx` | Título con icono |
-| `PageButton` | `src/module/shared/components/Page/PageButton.tsx` | Botón de acción |
-| `Input` | `src/module/shared/components/Form/Input/Input.tsx` | Campo de texto |
-| `Select` | `src/module/shared/components/Form/Input/Select.tsx` | Selector |
-| `Button` | `src/module/shared/components/Form/Input/Button.tsx` | Botones |
-| `CheckboxGroup` | `src/module/shared/components/Form/Input/CheckboxGroup.tsx` | Grupo de checkboxes |
-| `CardContent` | `src/module/shared/components/CardContent/` | Tarjetas de contenido |
-
-### Regla:
+### Regla Absoluta
 
 ```
-SI existe componente en shared → IMPORTAR y usar
-SI NO existe → Seguir el template de ESTE skill
+SIEMPRE leer .agents/shared-catalog.md PRIMERO
+NUNCA crear componentes que ya existen en shared
+USAR exactamente las interfaces documentadas
 ```
 
-**NO duplicar componentes que ya existen. Reutilizar siempre.**
+### Componentes Principales (ver catálogo para detalles)
+
+| Componente | Propósito |
+|------------|-----------|
+| `FormCreate` | Formularios completos con archivos |
+| `DynamicTable` | Tabla con paginación, búsqueda, drag & drop |
+| `PageUI` | Layout de página admin |
+| `Input/Select/CheckboxGroup` | Campos de formulario |
+
+### Imports Estándar
+
+```typescript
+import { PageUI } from '@/module/shared/components/Page/Page'
+import { FormCreate } from '@/module/shared/components/FormCreate/FormCreate'
+import { DynamicTable } from '@/module/shared/components/Table/DynamicTable'
+import { type Field } from '@/module/shared/components/FormCreate/types/fileManagement'
+```
 
 ---
 

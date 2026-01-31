@@ -50,6 +50,7 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 | `project.json` | Estado actual del proyecto y modulos |
 | `roles/` | Definicion de cada rol y sus responsabilidades |
 | `releases/` | Historial de releases aprobados |
+| **`shared-catalog.md`** | **Catálogo de componentes shared (OBLIGATORIO para Frontend)** |
 
 ---
 
