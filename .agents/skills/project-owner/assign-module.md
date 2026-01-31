@@ -470,3 +470,27 @@ Task({
 ## Next
 - Module Lead coordina el desarrollo
 - Monitorear progreso en `.agents/active/`
+
+---
+
+## 📚 Aprendizajes del Equipo
+
+### 2026-01-31 - Módulo Testimonials
+**Problema**: Project Owner usó `TaskCreate` en lugar de `Task()` para lanzar al Module Lead. Esto creó una tarea pendiente que NADIE ejecutó, causando que el flujo se detuviera.
+
+**Diferencia crítica**:
+```
+❌ TaskCreate({ subject: "...", description: "..." })
+   → Solo CREA una tarea en la lista
+   → NADIE la ejecuta automáticamente
+   → El módulo queda incompleto
+
+✅ Task({ description: "...", prompt: "...", subagent_type: "general-purpose" })
+   → EJECUTA un agente inmediatamente
+   → El agente trabaja de forma autónoma
+   → El flujo continúa
+```
+
+**Síntoma**: Si después de "lanzar" al Module Lead no ves actividad del agente trabajando, probablemente usaste TaskCreate en lugar de Task().
+
+**Aplicar cuando**: SIEMPRE que necesites que un agente EJECUTE algo, no solo que quede anotado.

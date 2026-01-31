@@ -752,3 +752,34 @@ await FetchCustomBody({
 - NO hacer commit sin pasar lint
 - NO usar `withFiles: false` en FormCreate
 - NO usar tipos de campo que no existan ('color', 'number', etc.)
+
+---
+
+## 📚 Aprendizajes del Equipo
+
+### 2026-01-31 - Módulo Testimonials
+**Problema**: El campo CheckboxGroup en `testimonialFields.ts` usaba estructura incorrecta `{label, value}` en lugar de `{id, name}`. Esto causó errores en runtime.
+
+**Causa raíz**: Se usó una estructura de opciones que no coincide con lo que espera el componente CheckboxGroup de shared.
+
+**Estructura correcta para items de checkbox/select**:
+```typescript
+// ❌ INCORRECTO
+items: [
+  { label: 'Opción 1', value: '1' },
+  { label: 'Opción 2', value: '2' }
+]
+
+// ✅ CORRECTO
+items: [
+  { id: 1, name: 'Opción 1' },
+  { id: 2, name: 'Opción 2' }
+]
+```
+
+**Verificación**: Antes de usar items en checkbox/select, revisar la interfaz del componente en shared:
+```bash
+grep -A 10 "interface.*Props" src/module/shared/components/Form/Input/CheckboxGroup.tsx
+```
+
+**Aplicar cuando**: Siempre que se usen campos con opciones (checkbox, select, radio).

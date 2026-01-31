@@ -365,3 +365,28 @@ SIEMPRE incluir:
 - NO modificar archivos de otros módulos
 - NO hacer commit sin pasar lint
 - NO olvidar agregar el módulo a `sections` y `roles_sections` (sidebar)
+
+---
+
+## 📚 Aprendizajes del Equipo
+
+### 2026-01-31 - Módulo Testimonials
+**Problema**: DBA marcó tarea como "completada" pero la tabla NO existía en la base de datos. QA tuvo que crearla durante los tests.
+
+**Causa raíz**: No se verificó que el CREATE TABLE realmente se ejecutó exitosamente.
+
+**Mejora obligatoria**: Después de ejecutar CREATE TABLE, SIEMPRE verificar:
+
+```bash
+# 1. Confirmar que la tabla existe
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SHOW TABLES LIKE '[modulo]';"
+# DEBE devolver el nombre de la tabla
+
+# 2. Confirmar la estructura
+docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "DESCRIBE [modulo];"
+# DEBE mostrar todos los campos definidos
+
+# 3. Si cualquiera de estos está vacío, la tabla NO se creó - investigar el error
+```
+
+**Aplicar cuando**: SIEMPRE, después de cada CREATE TABLE, antes de marcar como completado.
