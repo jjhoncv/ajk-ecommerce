@@ -43,10 +43,36 @@ Task({
     4. Crear el branch feature/[modulo]
     5. Lanzar Module Lead con Task()
     6. NO terminar hasta que Module Lead esté ejecutándose
+
+    PERMISOS: Los agentes tienen autonomía total para:
+    - Crear/editar/eliminar archivos y carpetas
+    - Ejecutar comandos en terminal (git, pnpm, docker, npx, etc.)
+    - Ejecutar queries SQL en la base de datos
+    - Generar tipos con pnpm generate
+    - Ejecutar tests E2E
+    - Hacer commits en el branch del módulo
   `,
   subagent_type: "general-purpose"
 })
 ```
+
+### Permisos de los Agentes
+
+Los agentes son **100% autónomos** y tienen permisos para:
+
+| Permiso | Descripción | Usado por |
+|---------|-------------|-----------|
+| **Crear archivos/carpetas** | Crear estructura de módulo en src/ | Todos |
+| **Editar archivos** | Modificar código existente | Todos |
+| **Eliminar archivos** | Limpiar código obsoleto | Todos |
+| **Ejecutar Bash** | git, pnpm, docker, npx, etc. | Todos |
+| **SQL en Docker** | CREATE TABLE, INSERT, DROP | DBA |
+| **pnpm generate** | Regenerar tipos TypeScript | DBA |
+| **Ejecutar tests** | npx tsx para E2E con Puppeteer | QA |
+| **Git commits** | Commits en branch feature/[modulo] | Todos |
+| **AskUserQuestion** | Preguntar al usuario | Solo Project Owner |
+
+**NO requieren confirmación** para estas acciones. Si un agente necesita hacer algo, lo hace.
 
 **El agente Project Owner se encarga de TODO:**
 - Hacer preguntas al usuario
