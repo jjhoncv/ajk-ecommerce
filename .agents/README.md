@@ -80,11 +80,22 @@ DEBE LEER:
 
 | Documento | Propósito | Quién lo usa |
 |-----------|-----------|--------------|
+| `autonomy.md` | Reglas de autonomía (quién pregunta al humano) | TODOS |
 | `governance.md` | Flujo de trabajo, branches, commits, PRs | TODOS |
 | `communication.md` | Protocolo entre Module Leads | Module Leads |
 | `activity-log-guide.md` | Formato del activity.log | TODOS |
 | `shared-catalog.md` | Componentes shared disponibles | Frontend |
 | `team-evolution.md` | Factor de imaginación y métricas | TODOS |
+| `architecture-diagram.md` | Diagrama de arquitectura y flujos | Documentación |
+
+## Roles vs Skills
+
+| Carpeta | Propósito | Contenido |
+|---------|-----------|-----------|
+| `roles/` | Definiciones generales | QUÉ hace cada agente, límites, referencias a skills |
+| `skills/` | Instrucciones operativas | CÓMO hacer cada tarea, templates, aprendizajes |
+
+**Regla**: Los roles son estáticos (definiciones). Los skills se actualizan con aprendizajes del equipo.
 
 ## Carpetas Operativas
 
@@ -99,7 +110,6 @@ DEBE LEER:
 | Script | Propósito | Cómo usar |
 |--------|-----------|-----------|
 | `scripts/log.sh` | Registrar progreso | `./.agents/scripts/log.sh "ROL" "mensaje"` |
-| `scripts/dashboard.sh` | Ver estado del proyecto | `./.agents/scripts/dashboard.sh` |
 | `scripts/cleanup-module.sh` | Limpiar módulo fallido | `./.agents/scripts/cleanup-module.sh [modulo]` |
 
 ---

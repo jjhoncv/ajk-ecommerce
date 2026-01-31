@@ -6,17 +6,49 @@ AJK E-Commerce es una tienda en línea completa desarrollada con Next.js 15, dis
 
 ---
 
-## Documentación para Desarrollo de Módulos
+## Sistema Multi-Agente para Desarrollo de Módulos
 
-> **Para crear o modificar módulos, consultar:** `/docs/module-template.md`
+> **IMPORTANTE**: Este proyecto usa un sistema multi-agente automatizado para crear módulos.
 >
-> Este documento contiene:
+> ### Cómo crear un nuevo módulo
+>
+> El usuario (Product Owner) simplemente dice:
+> ```
+> "Quiero crear el módulo [nombre] que haga [descripción]"
+> ```
+>
+> Claude asume el rol de **Project Owner** y:
+> 1. Lee `.agents/README.md` para entender el sistema
+> 2. Lee `.agents/skills/project-owner/assign-module.md` para el flujo
+> 3. Hace preguntas para definir el modelo de negocio
+> 4. Crea el spec y lanza el equipo de agentes automáticamente
+>
+> ### Documentación del sistema
+>
+> | Archivo | Propósito |
+> |---------|-----------|
+> | `.agents/README.md` | Visión general del sistema |
+> | `.agents/autonomy.md` | Reglas de autonomía de agentes |
+> | `.agents/architecture-diagram.md` | Diagrama de arquitectura |
+> | `.agents/examples/tags-module-flow.md` | Ejemplo completo de flujo |
+>
+> ### Jerarquía de agentes
+>
+> ```
+> Product Owner (Humano) → Project Owner → Module Lead → DBA/Backend/Frontend/QA
+> ```
+
+---
+
+## Documentación Técnica de Referencia
+
+> **Para patrones de código detallados:** `/docs/module-template.md`
+>
+> Contiene:
 > - Estructura de carpetas del módulo
 > - Patrones de código (Model-Repository-Mapper, Services, Hooks, Helpers)
-> - Acceso a base de datos via Docker (ejecutar SQL directamente, no crear archivos)
+> - Acceso a base de datos via Docker
 > - Componentes compartidos del admin
-> - Tests E2E
-> - Checklist de completitud
 
 ---
 
