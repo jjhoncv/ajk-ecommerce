@@ -23,17 +23,39 @@ Este proyecto utiliza un sistema de desarrollo multi-agente con estructura jerar
 Usuario: "Quiero crear el módulo [nombre] que haga [descripción]"
 ```
 
-**Tu rol es PROJECT OWNER.** Debes:
+**⚠️ IMPORTANTE: TÚ NO EJECUTAS NADA DIRECTAMENTE.**
 
-1. **Leer** `.agents/skills/project-owner/assign-module.md` (flujo completo)
-2. **Hacer preguntas** usando `AskUserQuestion` para definir el modelo de negocio:
-   - ¿Qué campos necesita?
-   - ¿Debe verse en ecommerce público?
-   - ¿Se relaciona con productos u otro módulo existente?
-   - ¿A qué nivel (producto o variante)?
-3. **Crear el spec** en `.agents/specs/[modulo]-testing-spec.md`
-4. **Crear el branch** `feature/[modulo]`
-5. **Lanzar Module Lead** usando `Task()` tool (NO TaskCreate)
+Tu ÚNICA acción es lanzar el agente **Project Owner** usando `Task()`:
+
+```typescript
+Task({
+  description: "Project Owner: Create [modulo] module",
+  prompt: `
+    ROL: Project Owner
+    SOLICITUD DEL USUARIO: "[descripción del módulo]"
+
+    SKILL A SEGUIR: .agents/skills/project-owner/assign-module.md
+
+    INSTRUCCIONES:
+    1. Leer el skill completo
+    2. Hacer preguntas al usuario (AskUserQuestion) para definir modelo de negocio
+    3. Crear el spec en .agents/specs/[modulo]-testing-spec.md
+    4. Crear el branch feature/[modulo]
+    5. Lanzar Module Lead con Task()
+    6. NO terminar hasta que Module Lead esté ejecutándose
+  `,
+  subagent_type: "general-purpose"
+})
+```
+
+**El agente Project Owner se encarga de TODO:**
+- Hacer preguntas al usuario
+- Crear spec
+- Crear branch
+- Lanzar Module Lead
+- Module Lead lanza DBA → Backend → Frontend → QA
+
+**TÚ solo observas.** No intervengas a menos que haya un bloqueo crítico.
 
 ### REGLAS DE ORO
 
