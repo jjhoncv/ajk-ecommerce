@@ -391,7 +391,17 @@ git push -u origin feature/[modulo]
 
 ### 4. Lanzar Module Lead con Task Tool
 
-**⚠️ CRÍTICO: NO solo escribir el mensaje. DEBES usar Task() para lanzar al agente.**
+**⛔ OBLIGATORIO: USAR Task() TOOL - NO TaskCreate**
+
+```
+❌ INCORRECTO - TaskCreate solo crea tarea pendiente, NADIE la ejecuta:
+   TaskCreate({ subject: "Module Lead...", description: "..." })
+
+✅ CORRECTO - Task() EJECUTA el agente inmediatamente:
+   Task({ description: "Module Lead...", prompt: "...", subagent_type: "general-purpose" })
+```
+
+**Si usas TaskCreate, el módulo quedará incompleto porque Module Lead nunca se ejecutará.**
 
 ```typescript
 Task({
