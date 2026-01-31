@@ -12,6 +12,14 @@ Usuario solicita nuevo módulo o funcionalidad
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Flujo de trabajo, branches, commits, PRs
+
+---
+
 ## 🧠 FASE 1: ANÁLISIS ESTRATÉGICO
 
 **El Project Owner NO es un tomador de pedidos. Es un consultor estratégico.**

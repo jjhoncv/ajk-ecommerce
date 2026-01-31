@@ -14,6 +14,15 @@ Module Lead asigna tarea de crear frontend (después de DBA)
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Convenciones de commits y branches
+- `.agents/shared-catalog.md` - Componentes shared disponibles
+
+---
+
 ## ⛔ AUTOSUFICIENCIA - NO REVISAR OTROS MÓDULOS
 
 **Este skill contiene TODOS los patrones que necesitas.**

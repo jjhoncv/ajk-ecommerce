@@ -14,6 +14,14 @@ Module Lead asigna tarea de crear backend ecommerce (después de crear backend a
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Convenciones de commits y branches
+
+---
+
 ## ⛔ AUTOSUFICIENCIA - NO REVISAR OTROS MÓDULOS
 
 **Este skill contiene TODOS los patrones que necesitas.**

@@ -14,6 +14,14 @@ Module Lead indica que Admin UI y Ecommerce UI están aprobados (ambos >= 90%)
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Convenciones de commits y branches
+
+---
+
 ## Prerequisitos
 
 Antes de ejecutar este skill, verificar:

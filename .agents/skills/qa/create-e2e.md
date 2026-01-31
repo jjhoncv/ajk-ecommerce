@@ -15,6 +15,14 @@ Module Lead asigna tarea de crear tests (después de Frontend y Backend)
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Convenciones de commits y branches
+
+---
+
 ## PROHIBICIONES ABSOLUTAS - LEER PRIMERO
 
 ### NO INSTALAR NADA

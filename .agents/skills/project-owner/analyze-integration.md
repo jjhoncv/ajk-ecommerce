@@ -13,6 +13,14 @@ Cuando un nuevo módulo tiene relación con módulos existentes en el sistema.
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Flujo de trabajo, branches, commits, PRs
+
+---
+
 ## 🔍 FASE 1: DETECTAR INTEGRACIONES NECESARIAS
 
 ### 1.1 Leer Módulos Existentes
