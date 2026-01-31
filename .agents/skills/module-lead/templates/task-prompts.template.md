@@ -272,52 +272,56 @@ Task({
 
 ```typescript
 Task({
-  description: "QA: Validate [modulo] integration E2E tests",
+  description: "QA: Create and run [modulo] integration E2E tests in [moduloExistente]",
   prompt: `
-    TAREA: Ejecutar E2E tests de INTEGRACIÓN para [modulo]
+    TAREA: Crear y ejecutar E2E tests de INTEGRACIÓN para [modulo]
     ROL: QA
-    MÓDULO: [modulo]
+    MÓDULO NUEVO: [modulo]
+    MÓDULO EXISTENTE: [moduloExistente]
     BRANCH: feature/[modulo]
-    SKILL: .agents/skills/qa/create-e2e.md
+
+    ⚠️ SKILL OBLIGATORIO:
+    .agents/skills/qa/create-integration-e2e.md
+
+    LEER EL SKILL COMPLETO ANTES DE EMPEZAR.
 
     CONTEXTO:
     - FASE 1 (Admin CRUD) ya está completa con screenshots
     - FASE 2 (Backend + Frontend integración) ya está implementada
-    - AHORA debes ejecutar los tests de integración y generar screenshots
+    - AHORA debes crear y ejecutar los tests de integración
 
     SPEC: .agents/specs/[modulo]-testing-spec.md
     LEER SECCIÓN: "Criterios de Validación Visual de Integración"
 
+    ⚠️ UBICACIÓN DE ARCHIVOS (en módulo EXISTENTE, no en el nuevo):
+    - Tests: src/module/[moduloExistente]/e2e/integration/[modulo].ts
+    - Screenshots: src/module/[moduloExistente]/e2e/screenshots/[modulo]/
+
     SCREENSHOTS REQUERIDOS (del spec):
     El spec lista los screenshots obligatorios. Ejemplo típico:
-    1. admin-[modulo]-selector-available - Selector visible con datos
-    2. admin-[modulo]-selector-selected - Items seleccionados
-    3. admin-[modulo]-after-save - Confirmación de guardado
-    4. ecommerce-[related]-with-[modulo] - Visualización en ecommerce
+    1. admin-[modulo]-created - Item creado en admin del módulo nuevo
+    2. admin-[moduloExistente]-selector-available - Selector visible con datos
+    3. admin-[moduloExistente]-selector-selected - Items seleccionados
+    4. admin-[moduloExistente]-after-save - Confirmación de guardado
+    5. ecommerce-[moduloExistente]-with-[modulo] - Visualización en ecommerce
 
     FLUJO E2E A PROBAR:
-    1. Verificar que existen datos del nuevo módulo (si no, crear uno)
-    2. Ir al admin del módulo relacionado (ej: variante, producto)
+    1. Crear item en el módulo nuevo (/admin/[modulo]/new)
+    2. Ir al admin del módulo existente (/admin/[moduloExistente]/[id]/edit)
     3. Encontrar el selector del nuevo módulo
     4. Seleccionar items → Screenshot
     5. Guardar → Screenshot
     6. Ir al ecommerce → Screenshot de visualización
 
-    ARCHIVOS DE TEST:
-    - src/module/[modulo]/e2e/admin/02-integration.ts (si existe)
-    - src/module/[modulo]/e2e/ecommerce/01-*.ts (si existe)
+    ⚠️ EJECUTAR SOLO TESTS DE INTEGRACIÓN:
+    npx tsx src/module/[moduloExistente]/e2e/integration/[modulo].ts
 
-    INSTRUCCIONES:
-    1. Leer el spec para conocer screenshots requeridos
-    2. Verificar que tests de integración existen
-    3. Ejecutar: npx tsx src/module/[modulo]/e2e/index.ts (o el runner específico)
-    4. Verificar que TODOS los screenshots requeridos se generaron
-    5. Si algún screenshot falta, crear el test y ejecutar
+    ❌ NO ejecutar el runner principal (index.ts) - regenera todos los screenshots
 
     IMPORTANTE:
     - Screenshots deben tener DATOS REALES, no mocks
     - Sin estos screenshots, la integración NO está validada
-    - NO hacer commit - esperar validación de Module Lead
+    - Los tests DEBEN FALLAR si el elemento esperado no es visible
 
     AL COMPLETAR:
     Notificar a Module Lead con lista de screenshots generados.

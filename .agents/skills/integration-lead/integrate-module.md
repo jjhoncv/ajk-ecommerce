@@ -866,8 +866,11 @@ Task({
     - TC-INT-07: Ver ProductDetail con [nuevoModulo]s
     - TC-INT-08: Ver en mobile (responsive)
 
+    SKILL A SEGUIR:
+    .agents/skills/qa/create-integration-e2e.md
+
     SCREENSHOTS OBLIGATORIOS EN:
-    src/module/[moduloExistente]/e2e/screenshots/integration/
+    src/module/[moduloExistente]/e2e/screenshots/[nuevoModulo]/
 
     ADMIN:
     - 01-admin-edit-selector.png
@@ -879,6 +882,10 @@ Task({
     - 05-ecommerce-card-with-tag.png
     - 06-ecommerce-detail-with-tags.png
     - 07-ecommerce-mobile.png
+
+    ⚠️ EJECUTAR SOLO TESTS DE INTEGRACIÓN:
+    npx tsx src/module/[moduloExistente]/e2e/integration/[nuevoModulo].ts
+    NO ejecutar el runner principal (index.ts) que regenera todos los screenshots.
 
     AL COMPLETAR:
     1. Ejecutar tests: npx tsx src/module/[moduloExistente]/e2e/index-integration.ts
