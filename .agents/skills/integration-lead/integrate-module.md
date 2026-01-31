@@ -18,6 +18,7 @@ Integration Lead
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches
 - `.agents/communication.md` - Protocolo de coordinación con otros Module Leads
@@ -255,7 +256,7 @@ Antes de ejecutar, verificar:
 - ¿Los puntos de integración tienen sentido?
 - ¿Hay algo que el reporte no cubrió?
 
-Si hay dudas, relanzar Module Expert con preguntas específicas.
+Si hay dudas, relanzar Module Expert con instrucciones más específicas para analizar.
 
 ---
 
@@ -306,7 +307,7 @@ docker exec ajk-ecommerce mysql -uroot -p12345678 ajkecommerce -e "SELECT COUNT(
 
 **Si existe pero con estructura diferente:**
 - Analizar diferencias
-- Preguntar antes de modificar
+- Tomar decisión autónoma y documentar en activity.log
 - Posiblemente solo agregar índices faltantes
 
 ### 2.1 Crear Tabla (SOLO si no existe)

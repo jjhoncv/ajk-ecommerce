@@ -17,6 +17,7 @@ Module Lead asigna tarea de crear frontend ecommerce (después de backend ecomme
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches
 - `.agents/shared-catalog.md` - Componentes shared disponibles

@@ -13,6 +13,14 @@ QA notifica que ejecutó tests y tomó screenshots
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+
+---
+
 ## Objetivo
 
 Validar que los screenshots correspondan al **modelo de negocio** del spec. Cumplimiento >= 90% para autorizar commit.

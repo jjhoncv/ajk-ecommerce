@@ -16,6 +16,7 @@ Recibe ASIGNACION del Project Owner
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches
 - `.agents/communication.md` - Protocolo de coordinación con otros Module Leads

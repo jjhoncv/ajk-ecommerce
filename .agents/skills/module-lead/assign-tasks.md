@@ -12,6 +12,15 @@ Después de `start-module.md`
 
 ---
 
+## 📚 DOCUMENTACIÓN OBLIGATORIA
+
+**ANTES de empezar, leer:**
+- `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
+- `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
+- `.agents/governance.md` - Convenciones de commits y branches
+
+---
+
 ## REGLA ABSOLUTA: NO DECLARAR COMPLETO SIN SCREENSHOTS
 
 **NUNCA declarar un módulo como "COMPLETADO" o "100%" sin:**
