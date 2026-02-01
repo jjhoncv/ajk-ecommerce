@@ -9,7 +9,6 @@ import { attributeModel } from '@/module/attributes/core'
 import { brandModel } from '@/module/brands/core'
 import { categoryModel } from '@/module/categories/core'
 import { productVariantModel } from '@/module/products/core'
-import { tagModel } from '@/module/tags/core'
 
 import { type AvailableFilters } from './Filters.interfaces'
 import {
@@ -28,10 +27,6 @@ export class SearchModel {
 
     // Mapear los resultados
     const mappedResults = VariantSearchResultsMapper(results)
-
-    // Obtener tags para todas las variantes en batch (mas eficiente)
-    const variantIds = mappedResults.map((v) => v.variantId)
-    const tagsMap = await tagModel.getTagsByVariantIds(variantIds)
 
     // Procesar cada variante como un producto individual
     const productSearchItems = await Promise.all(
@@ -81,15 +76,6 @@ export class SearchModel {
             : imagesToUse[0]?.imageUrlNormal
         }
 
-        // Obtener tags de la variante desde el mapa batch y mapear a VariantTag
-        const rawTags = tagsMap.get(variantResult.variantId) || []
-        const variantTags = rawTags.map((tag) => ({
-          id: tag.id,
-          name: tag.name,
-          slug: tag.slug,
-          color: tag.color || '#6B7280'
-        }))
-
         // Crear ProductSearchItem usando el mapper
         const mappedItem = ProductSearchItemMapper(
           variantResult,
@@ -99,8 +85,7 @@ export class SearchModel {
             id: cat.id,
             name: cat.name
           })) || [],
-          mainImage,
-          variantTags
+          mainImage
         )
 
         return mappedItem

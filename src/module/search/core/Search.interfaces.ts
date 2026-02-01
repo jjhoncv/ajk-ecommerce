@@ -1,5 +1,5 @@
 import { type AvailableFilters } from './Filters.interfaces'
-import { type ProductVariantComplete, type VariantTag } from '@/module/products/core'
+import { type ProductVariantComplete } from '@/module/products/core'
 
 export interface ProductSearchFilters {
   query?: string
@@ -50,8 +50,6 @@ export interface ProductSearchItem {
   variantSku?: string
   variantPrice: number
   variantStock?: number
-  // Tags asociados a la variante
-  tags?: VariantTag[]
 }
 
 export interface CategorySummary {

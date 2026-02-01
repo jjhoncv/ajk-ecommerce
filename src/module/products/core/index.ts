@@ -2,7 +2,7 @@
 export { default as productModel } from './Product.model'
 export { ProductMapper, ProductsMapper } from './Product.mapper'
 export { default as productRepository } from './Product.repository'
-export { type ProductComplete, type ProductVariantComplete, type VariantTag } from './Product.interfaces'
+export { type ProductComplete, type ProductVariantComplete } from './Product.interfaces'
 
 // ProductVariant exports
 export { default as productVariantModel } from './ProductVariant.model'
