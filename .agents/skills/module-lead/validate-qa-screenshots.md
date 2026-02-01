@@ -222,55 +222,104 @@ Ver sección **Problemas Comunes Ecommerce** en `messages.template.md`.
 
 ## INTEGRACIÓN (requiereIntegracion: true)
 
-### Aprendizaje del módulo tags
+### ⚠️ CRÍTICO: Validar que elementos sean VISIBLES, no solo que screenshots existan
 
-**CRÍTICO**: Cuando el spec tiene `requiereIntegracion: true`, NO aprobar hasta verificar:
+**El Module Lead NO debe aprobar screenshots solo porque "existen" o "la página carga".**
+
+**DEBE verificar visualmente** que los elementos del modelo de negocio sean visibles en cada screenshot:
+
+```
+SPEC DICE: "Badge visible en página de listado"
+                    ↓
+Module Lead LEE el screenshot (usando Read tool)
+                    ↓
+VERIFICAR: ¿El badge ES VISIBLE en la imagen?
+                    ↓
+    SÍ → Aprobar          NO → RECHAZAR
+```
+
+### Proceso de validación visual OBLIGATORIO:
+
+1. **Leer el spec**: Sección "Criterios de Validación Visual"
+2. **Para CADA criterio**, leer el screenshot correspondiente
+3. **Verificar VISUALMENTE** que el elemento descrito esté presente:
+   - ¿El badge/componente/lista es VISIBLE?
+   - ¿Tiene DATOS reales (no vacío)?
+   - ¿El color/estilo es el esperado?
+
+### Señales de alerta (NO aprobar si):
+
+| Screenshot muestra | Problema | Causa probable |
+|--------------------|----------|----------------|
+| Página sin el elemento esperado | Componente no renderiza | Datos no llegan desde backend |
+| Componente vacío | Sin datos | Backend no incluye datos en query |
+| Placeholder genérico | Sin datos reales | Integración incompleta |
+| Error en consola visible | Fallo de carga | API o datos faltantes |
+
+### Preguntas de validación para cada screenshot de ecommerce:
+
+```
+[ ] ¿El elemento del módulo nuevo es VISIBLE en el screenshot?
+[ ] ¿Tiene datos REALES (no placeholder, no vacío)?
+[ ] ¿Cumple el criterio del spec (color, posición, formato)?
+```
+
+**Si alguna respuesta es NO → RECHAZAR y pedir corrección.**
+
+### Verificaciones técnicas:
 
 1. **Screenshots de AMBAS fases existen**:
    ```bash
    # FASE 1: Admin CRUD
-   ls src/module/[modulo]/e2e/screenshots/0*.png | wc -l
+   ls src/module/[modulo]/e2e/screenshots/admin/*.png | wc -l
    # DEBE ser > 0
 
-   # FASE 2: Integración
-   ls src/module/[modulo]/e2e/screenshots/int-*.png | wc -l
-   # DEBE ser > 0 si requiereIntegracion: true
+   # FASE 2: Integración (si requiereIntegracion: true)
+   ls src/module/[existente]/e2e/screenshots/[nuevo]/*.png | wc -l
+   # DEBE ser > 0
    ```
 
 2. **No hay screenshots con -ERROR sin resolver**:
    ```bash
-   ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null
+   ls src/module/*/e2e/screenshots/*/*ERROR* 2>/dev/null
    # DEBE estar vacío
    ```
 
-3. **Screenshots del spec existen**:
-   - Leer sección "Criterios de Validación Visual de Integración" del spec
+3. **Screenshots del spec existen Y muestran elementos visibles**:
+   - Leer sección "Criterios de Validación Visual" del spec
    - Cada screenshot listado DEBE existir físicamente
-   - Si falta alguno → **NO APROBAR**
+   - Cada screenshot DEBE mostrar el elemento esperado VISIBLE
+   - Si falta alguno O elemento no visible → **NO APROBAR**
 
 ### Error común que NO debe repetirse
 
 ```
 ❌ INCORRECTO:
-   - Admin CRUD: 100% ✓
-   - Screenshots de ecommerce: NO EXISTEN
-   - Status: "100% completo" ← ERROR
+   - Screenshot existe ✓
+   - Página carga sin errores ✓
+   - Elemento del módulo nuevo NO visible en screenshot
+   - Status: "Aprobado" ← ERROR GRAVE
 
 ✓ CORRECTO:
-   - Admin CRUD: 100% ✓
-   - Screenshots de integración: NO EXISTEN
-   - Status: "50% - Falta validación visual de integración"
+   - Screenshot existe ✓
+   - Página carga sin errores ✓
+   - Elemento del módulo nuevo NO visible en screenshot
+   - Status: "RECHAZADO - Elemento no visible, verificar que datos llegan al componente"
 ```
 
-### Antes de aprobar módulo con integración
+### Checklist antes de aprobar módulo con integración ecommerce
 
 ```
-[ ] Screenshots de admin existen (0*.png)
-[ ] Screenshots de integración existen (int-*.png)
+[ ] Screenshots de admin existen
+[ ] Screenshots de integración existen
 [ ] No hay screenshots con -ERROR
-[ ] Cada screenshot del spec tiene evidencia física
-[ ] Si ecommerce → badges/visualización están en screenshots
+[ ] LEÍ cada screenshot (usando Read tool)
+[ ] El elemento del módulo nuevo ES VISIBLE en screenshots de ecommerce
+[ ] El elemento tiene DATOS reales (no vacío, no placeholder)
+[ ] Cada criterio del spec tiene evidencia visual que lo cumple
 ```
+
+**Si algún item falla → NO aprobar. Pedir a QA que investigue por qué el elemento no es visible.**
 
 ---
 

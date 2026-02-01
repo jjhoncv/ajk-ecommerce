@@ -104,6 +104,45 @@ Task({
     - ¿Qué datos muestra?
     - ¿Dónde se podría agregar la nueva relación?
 
+    ⚠️ CRÍTICO: RASTREAR FLUJO COMPLETO DE DATOS
+    ============================================
+
+    NO basta con identificar el componente. Debes rastrear DE DÓNDE vienen los datos:
+
+    1. Identificar componente que mostrará datos del módulo nuevo
+       Ejemplo: ProductCard muestra productos
+
+    2. ¿Qué página/sección usa ese componente?
+       Ejemplo: PopularProducts en homepage usa ProductCard
+
+    3. ¿Qué service/function obtiene los datos para esa página?
+       Buscar en el archivo de la página:
+       grep -r "getPopularProducts\|searchModel\|get.*Products" src/app/
+       grep -r "import.*service" src/app/page.tsx
+       Ejemplo: getPopularProducts() en src/module/products/services/popularProducts/
+
+    4. ¿Qué hydrator transforma esos datos?
+       Leer el service encontrado y buscar hydrators:
+       Ejemplo: hydratePopularProducts() en hydrators.ts
+
+    5. ¿El hydrator incluye el campo para el módulo nuevo?
+       Ejemplo: ¿hydratePopularProducts retorna { ...producto, tags: [...] }?
+       Si NO lo incluye → ESTE ES EL PUNTO QUE DEBE MODIFICARSE
+
+    DOCUMENTAR EN EL REPORTE:
+
+    ## ⚠️ FLUJO DE DATOS ECOMMERCE (CRÍTICO PARA INTEGRACIÓN)
+
+    | Componente | Página/Sección | Service | Hydrator | ¿Incluye campo nuevo? |
+    |------------|----------------|---------|----------|----------------------|
+    | ProductCard | PopularProducts (homepage) | getPopularProducts | hydratePopularProducts | NO - DEBE MODIFICARSE |
+    | ProductCard | Search results | searchModel.searchProducts | ProductSearchItemMapper | NO - DEBE MODIFICARSE |
+
+    ### Archivos que Backend DEBE modificar para incluir datos del módulo nuevo:
+    - src/module/[existente]/services/popularProducts/hydrators.ts → agregar campo [nuevo]
+    - src/module/search/core/Search.mapper.ts → agregar campo [nuevo]
+    - [otros services que cargan datos para ecommerce]
+
     PASO 5: GENERAR REPORTE
     =======================
 
@@ -179,6 +218,19 @@ Task({
       - Props: [lista]
       - Datos mostrados: [lista]
       - PUNTO DE INTEGRACIÓN: [dónde agregar relación]
+
+    ### ⚠️ FLUJO DE DATOS ECOMMERCE (CRÍTICO)
+
+    Para cada componente ecommerce, documentar DE DÓNDE vienen los datos:
+
+    | Componente | Usado en | Service que carga datos | Hydrator | ¿Incluye [nuevoModulo]? |
+    |------------|----------|------------------------|----------|------------------------|
+    | [nombre] | [página/sección] | [ruta del service] | [nombre hydrator] | [SÍ/NO] |
+
+    ### Archivos que Backend DEBE modificar para integración:
+    - [ruta/hydrator1.ts] → agregar campo [nuevoModulo]s al retorno
+    - [ruta/hydrator2.ts] → agregar campo [nuevoModulo]s al retorno
+    - [ruta/mapper.ts] → incluir [nuevoModulo]s en el mapeo
 
     ### Punto de integración sugerido (Ecommerce)
     - [Dónde mostrar [nuevoModulo]]
@@ -308,8 +360,31 @@ Task({
 
     TU TRABAJO:
     1. Agregar métodos al Repository: get[NuevoModulo]s(), set[NuevoModulo]s()
-    2. Extender Service/Hydrator si existe
-    3. Crear API endpoint: /api/admin/[moduloExistente]/[id]/[nuevoModulo]s
+    2. Crear API endpoint: /api/admin/[moduloExistente]/[id]/[nuevoModulo]s
+
+    ⚠️ CRÍTICO PARA ECOMMERCE (si el módulo nuevo se muestra en ecommerce):
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    El reporte del Module Expert identifica DÓNDE vienen los datos para ecommerce.
+
+    FLUJO DE DATOS ECOMMERCE (del reporte):
+    [PEGAR AQUÍ LA TABLA "FLUJO DE DATOS ECOMMERCE" DEL REPORTE]
+
+    Ejemplo:
+    | Componente | Service | Hydrator | ¿Incluye [nuevo]? |
+    |------------|---------|----------|-------------------|
+    | ProductCard | getPopularProducts | hydratePopularProducts | NO - MODIFICAR |
+    | SearchResults | searchModel | ProductSearchItemMapper | NO - MODIFICAR |
+
+    ARCHIVOS QUE DEBES MODIFICAR PARA QUE DATOS LLEGUEN A ECOMMERCE:
+    [PEGAR AQUÍ LA LISTA "Archivos que Backend DEBE modificar" DEL REPORTE]
+
+    Ejemplo:
+    - src/module/products/services/popularProducts/hydrators.ts → agregar campo [nuevo]s
+    - src/module/search/core/Search.mapper.ts → incluir [nuevo]s en el mapeo
+
+    SI ESTA SECCIÓN ESTÁ VACÍA O NO EXISTE EN EL REPORTE:
+    → El Integration Lead debe relanzar Module Expert para obtener el flujo de datos
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
     AL COMPLETAR: Notificar a Integration Lead
   `,

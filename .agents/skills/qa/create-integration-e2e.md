@@ -418,6 +418,133 @@ npx tsx src/module/[existente]/e2e/index-integration.ts
 
 **Regla**: El QA de integración SOLO ejecuta tests de integración. Los tests de admin y ecommerce del módulo existente NO deben re-ejecutarse.
 
+### 8. ⚠️ CRÍTICO: Validar que los DATOS llegan al componente, no solo que la página carga
+
+**Problema**: El test navega a una página de ecommerce, la página carga sin errores, el test toma screenshot y "pasa" - pero el elemento visual esperado (badge, card, lista, visualización) NO aparece porque los datos no llegaron al componente.
+
+**Síntomas**:
+- Screenshot muestra la página pero SIN el elemento esperado
+- El componente existe en el código pero renderiza vacío
+- El test "pasa" pero el modelo de negocio NO se valida visualmente
+
+**Causa raíz**: El backend puede no estar incluyendo los datos del módulo nuevo en los queries existentes. Por ejemplo:
+- El query que obtiene items para mostrar no incluye los datos relacionados del módulo nuevo
+- El hydrator no pasa los datos al tipo que usa el componente
+- El componente busca `item.datosRelacionados` pero el array está vacío
+
+**Solución**: El test de integración ecommerce DEBE verificar que el elemento visual EXISTE y tiene contenido.
+
+**⚠️ IMPORTANTE**: Los selectores CSS y estructura de navegación vienen del **reporte del Module Expert**, pasados por el **Integration Lead** en el prompt. NO inventar selectores.
+
+```typescript
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// CONTEXTO QUE DEBE VENIR DEL INTEGRATION LEAD (vía Module Expert):
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SELECTOR_ELEMENTO_NUEVO: '[data-testid="badges-container"]'
+// RUTA_PAGINA_ECOMMERCE: '/producto/[slug-real]'
+// DESCRIPCION: "Badges del módulo nuevo junto al título del producto"
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// ❌ INCORRECTO - Solo verifica que la página carga
+await goto('/ruta-ecommerce')
+await takeScreenshot('ecommerce-page')
+results.passed++ // Pasa aunque el elemento esperado no aparece
+
+// ✅ CORRECTO - Usa selector del contexto del Module Expert
+// El Integration Lead DEBE pasar este selector en el prompt
+const SELECTOR_ELEMENTO = contexto.selectorElementoNuevo // Del Module Expert
+
+await goto(contexto.rutaPaginaEcommerce)
+await wait(2000)
+
+const elementoVisible = await page.evaluate((selector) => {
+  // Usar el selector que vino del análisis del Module Expert
+  const elemento = document.querySelector(selector)
+
+  if (!elemento) return { existe: false, tieneContenido: false, detalle: 'No encontrado en DOM' }
+
+  // Verificar que tiene contenido real, no está vacío
+  const tieneContenido = elemento.children.length > 0
+                      || (elemento.textContent?.trim() ?? '') !== ''
+
+  return {
+    existe: true,
+    tieneContenido,
+    detalle: tieneContenido ? 'OK' : 'Elemento vacío'
+  }
+}, SELECTOR_ELEMENTO)
+
+if (!elementoVisible.existe) {
+  await takeScreenshot('ecommerce-ELEMENTO-NO-EXISTE')
+  throw new Error('FALLA: Elemento visual del módulo nuevo no existe en el DOM')
+}
+
+if (!elementoVisible.tieneContenido) {
+  await takeScreenshot('ecommerce-ELEMENTO-VACIO')
+  throw new Error('FALLA: Elemento existe pero está VACÍO - los datos NO llegan desde el backend')
+}
+
+await takeScreenshot('ecommerce-page-con-elemento')
+results.passed++
+```
+
+**Si el prompt del Integration Lead NO incluye selectores:**
+```
+⚠️ FALTA CONTEXTO DEL MODULE EXPERT
+====================================
+El Integration Lead debe incluir en el prompt:
+- SELECTOR_ELEMENTO_NUEVO: selector CSS del componente a validar
+- RUTA_PAGINA_ECOMMERCE: URL real donde se muestra el elemento
+- DESCRIPCION: qué debería verse
+
+ACCIÓN: Solicitar al Integration Lead que proporcione el contexto
+del Module Expert antes de escribir tests de validación visual.
+```
+
+**Si el elemento no aparece, INVESTIGAR antes de declarar falla**:
+
+```bash
+# 1. ¿El componente del módulo nuevo está importado en la página?
+grep -r "ComponenteModuloNuevo\|moduloNuevo" src/app/ruta-ecommerce/ --include="*.tsx"
+
+# 2. ¿El componente recibe los datos?
+grep -r "datosModuloNuevo\|moduloNuevo" src/module/existente/components/ --include="*.tsx"
+
+# 3. ¿El service/hydrator incluye los datos del módulo nuevo?
+grep -r "moduloNuevo" src/module/existente/services/ --include="*.ts"
+
+# 4. ¿El tipo incluye la propiedad del módulo nuevo?
+grep -r "moduloNuevo" src/module/existente/core/*.interfaces.ts
+```
+
+**Diagnóstico por resultado**:
+
+| Resultado | Causa probable | Responsable |
+|-----------|----------------|-------------|
+| Componente no importado | Frontend no agregó el componente | Frontend |
+| Componente importado pero no renderiza | Datos no llegan al componente | Backend |
+| Tipo no tiene la propiedad | Hydrator no incluye los datos | Backend |
+| Query no incluye datos | Backend no extendió el query existente | Backend |
+
+**Reporte si falla**:
+
+```
+FALLA EN INTEGRACIÓN ECOMMERCE
+==============================
+SPEC DICE: "[elemento] visible en [página]"
+RESULTADO: Elemento NO visible / Vacío
+
+DIAGNÓSTICO:
+  - Componente existe en código: [SÍ/NO]
+  - Componente importado en página: [SÍ/NO]
+  - Datos llegan al componente: [SÍ/NO]
+
+CAUSA PROBABLE: [Backend no incluyó datos en query / Frontend no renderiza / etc.]
+ACCIÓN REQUERIDA: [Descripción específica]
+```
+
+**Regla de oro**: Un screenshot de ecommerce donde el elemento del modelo de negocio NO es visible = **TEST FALLIDO**, no importa si la página carga correctamente sin errores.
+
 ---
 
 ## ⛔ VALIDACIÓN FINAL OBLIGATORIA (ANTES DE TERMINAR)
