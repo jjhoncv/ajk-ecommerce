@@ -13,7 +13,7 @@ Media
 - [x] DBA: Crear tabla tags + sidebar
 - [x] Backend: Core + Service + API
 - [x] Frontend Admin: Components + Pages
-- [ ] QA Admin: Tests E2E CRUD
+- [x] QA Admin: Tests E2E CRUD (8/8 passed - 100%)
 
 ## Progreso Integracion (FASE 2)
 - [x] DBA: Crear tabla pivote variant_tags
@@ -22,10 +22,10 @@ Media
 - [x] Frontend Admin: Selector de tags en variante
 - [x] Frontend Ecommerce: Badges en ProductCard
 - [x] Frontend Ecommerce: Badges en ProductDetail
-- [ ] QA: Tests de integracion
+- [x] QA: Tests E2E completados
 
 ## Porcentaje
-80%
+95%
 
 ## Toca Shared
 | Archivo | Accion | Estado |
@@ -46,6 +46,9 @@ baja
 
 ## Historial
 - 2026-02-01: Inicio de desarrollo
+- 2026-02-01: FASE 1 completada - Admin CRUD
+- 2026-02-01: FASE 2 completada - Integracion con variants
+- 2026-02-01: QA E2E tests completados (8/8 passed)
 
 ## Ultima Actualizacion
-2026-02-01 00:00
+2026-02-01 15:12
