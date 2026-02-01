@@ -172,30 +172,119 @@ PREGUNTAS PARA AFINAR:
 
 ## 💬 FASE 2: PREGUNTAS DE CLARIFICACIÓN
 
-Después de presentar el análisis, hacer preguntas específicas:
+**⚠️ OBLIGATORIO: Usar AskUserQuestion con opciones seleccionables**
 
-### Preguntas Admin
-1. ¿Los campos que propongo son correctos? ¿Agregarías o quitarías alguno?
-2. ¿Hay validaciones especiales? (ej: nombre único, longitud máxima)
-3. ¿Necesitas múltiples imágenes o solo una?
-4. ¿El ordenamiento manual es importante para ti?
+Las preguntas DEBEN hacerse usando el tool `AskUserQuestion` para que el usuario pueda seleccionar opciones fácilmente en lugar de escribir texto libre.
 
-### Preguntas Ecommerce
-1. ¿Este módulo debe ser visible en la tienda pública?
-   - Si SÍ:
-     - ¿Quieres una página dedicada? (ej: `/tags` con listado)
-     - ¿Cada item tiene su página de detalle? (ej: `/tags/ofertas`)
-     - ¿Debe aparecer en el homepage? ¿Cómo? (grilla, destacados, slider)
-   - Si NO:
-     - Solo existirá en el admin para gestión interna
+### Formato de Preguntas
 
-2. ¿Cómo se relaciona con productos?
-   - ¿Un producto puede tener múltiples [entidades]?
-   - ¿Se filtra por [entidad] en búsquedas?
+```typescript
+AskUserQuestion({
+  questions: [
+    {
+      question: "¿A qué nivel se asocian los tags con productos?",
+      header: "Asociación",
+      options: [
+        { label: "Nivel Producto", description: "Todos los variantes comparten los mismos tags" },
+        { label: "Nivel Variante", description: "Cada variante puede tener tags diferentes" }
+      ],
+      multiSelect: false
+    },
+    {
+      question: "¿Dónde mostrar los tags en ecommerce?",
+      header: "Ecommerce",
+      options: [
+        { label: "Card + Detalle (Recomendado)", description: "Mostrar en tarjeta de producto y página de detalle" },
+        { label: "Solo Card", description: "Solo en tarjeta de producto en listados" },
+        { label: "Solo Detalle", description: "Solo en página de detalle del producto" },
+        { label: "No mostrar", description: "Solo uso interno en admin" }
+      ],
+      multiSelect: false
+    },
+    {
+      question: "¿Qué prioridad tiene este módulo?",
+      header: "Prioridad",
+      options: [
+        { label: "Alta", description: "Urgente, empezar inmediatamente" },
+        { label: "Media", description: "Importante pero no urgente" },
+        { label: "Baja", description: "Puede esperar" }
+      ],
+      multiSelect: false
+    }
+  ]
+})
+```
 
-### Preguntas de Prioridad
-1. ¿Cuál es la urgencia? (alta/media/baja)
-2. ¿Hay fecha límite?
+### Preguntas Típicas por Tipo de Módulo
+
+#### Si el módulo se relaciona con productos (tags, reviews, etc.):
+1. **Nivel de asociación**: Producto vs Variante
+2. **Visualización ecommerce**: Card, Detalle, Ambos, Ninguno
+3. **Límite**: Sin límite, Máximo 3, Máximo 5
+4. **Filtrado**: Permitir filtrar por este campo o solo visual
+
+#### Si el módulo es standalone (banners, páginas, etc.):
+1. **Presencia pública**: Tiene página propia o solo admin
+2. **Homepage**: Aparece en homepage o no
+3. **SEO**: Requiere meta tags dinámicos
+
+#### Siempre preguntar:
+1. **Prioridad**: Alta, Media, Baja
+2. **Campos adicionales**: Si necesita campos especiales además de los estándar
+
+### Ejemplo Completo para Tags
+
+```typescript
+AskUserQuestion({
+  questions: [
+    {
+      question: "¿A qué nivel se asocian los tags?",
+      header: "Asociación",
+      options: [
+        { label: "Nivel Variante (Recomendado)", description: "Cada variante puede tener tags diferentes" },
+        { label: "Nivel Producto", description: "Todos los variantes comparten los mismos tags" }
+      ],
+      multiSelect: false
+    },
+    {
+      question: "¿Dónde mostrar los tags en ecommerce?",
+      header: "Ecommerce",
+      options: [
+        { label: "Card + Detalle (Recomendado)", description: "Badges visibles en listados y página de detalle" },
+        { label: "Solo Card", description: "Solo en tarjetas de producto" },
+        { label: "Solo Detalle", description: "Solo en página de detalle" },
+        { label: "No mostrar", description: "Solo uso interno admin" }
+      ],
+      multiSelect: false
+    },
+    {
+      question: "¿Los clientes pueden filtrar productos por tag?",
+      header: "Filtrado",
+      options: [
+        { label: "Solo visual", description: "Tags decorativos, sin filtrado" },
+        { label: "Con filtrado", description: "Permitir filtrar productos por tag" }
+      ],
+      multiSelect: false
+    },
+    {
+      question: "¿Qué prioridad tiene este módulo?",
+      header: "Prioridad",
+      options: [
+        { label: "Alta", description: "Urgente" },
+        { label: "Media", description: "Normal" },
+        { label: "Baja", description: "Puede esperar" }
+      ],
+      multiSelect: false
+    }
+  ]
+})
+```
+
+**IMPORTANTE**:
+- Máximo 4 preguntas por llamada a AskUserQuestion
+- Máximo 4 opciones por pregunta
+- Siempre incluir "(Recomendado)" en la opción sugerida
+- Las descripciones deben ser cortas y claras
 
 ---
 
