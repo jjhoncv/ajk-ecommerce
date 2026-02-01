@@ -180,88 +180,61 @@ Usar mensajes de `messages.template.md`:
 - Existe tabla pivote (ej: `variant_tags`, `product_collections`)
 - El nuevo módulo se muestra DENTRO de un módulo existente
 
-### Después de Admin aprobado, CONTINUAR AUTOMÁTICAMENTE con Task():
+### Después de Admin aprobado, LANZAR INTEGRATION LEAD:
 
-**PASO 1: Lanzar Backend Integración**
+**⛔ IMPORTANTE: El Module Lead NO hace la integración directamente.**
+
+El Module Lead SOLO lanza al Integration Lead, quien coordina todo el proceso de integración.
+
 ```typescript
 Task({
-  description: "Backend: Create [modulo] integration endpoints",
+  description: "Integration Lead: Integrate [modulo] with [moduloExistente]",
   prompt: `
-    TAREA: Crear endpoints de integración para [modulo]
-    SPEC: .agents/specs/[modulo]-testing-spec.md (sección Integración)
+    ROL: Integration Lead
+    MÓDULO NUEVO: [modulo]
+    MÓDULO EXISTENTE: [moduloExistente]
     BRANCH: feature/[modulo]
 
-    CREAR:
-    - Endpoints para gestionar la relación (assign/unassign)
-    - Extender repository/service del módulo relacionado
-    - Endpoint público para ecommerce (si aplica)
+    SKILL A SEGUIR: .agents/skills/integration-lead/integrate-module.md
 
-    AL COMPLETAR: Commit y notificar
-  `,
-  subagent_type: "general-purpose"
-})
-```
-
-**PASO 2: Lanzar Frontend Admin + Ecommerce Integración (en paralelo)**
-```typescript
-// Lanzar AMBOS en paralelo
-Task({
-  description: "Frontend Admin: Add [modulo] selector to related module",
-  prompt: `
-    TAREA: Agregar selector de [modulo] en admin del módulo relacionado
     SPEC: .agents/specs/[modulo]-testing-spec.md
-    BRANCH: feature/[modulo]
 
-    CREAR:
-    - Selector/multiselect en edit page del módulo relacionado
-    - Visualización de asociaciones guardadas
+    INSTRUCCIONES:
+    1. Leer el skill completo
+    2. FASE 0: Lanzar Module Expert para analizar [moduloExistente]
+    3. FASE 1: Usar reporte del Module Expert para planificar
+    4. FASE 2: Lanzar DBA para tabla pivote
+    5. FASE 3: Lanzar Backend para extender repository/service
+    6. FASE 4: Lanzar Frontend Admin para selector en edit page
+    7. FASE 5: Lanzar Frontend Ecommerce para badges
+    8. FASE 6: Lanzar QA para tests de integración
+    9. Validar screenshots de integración existen
+    10. Reportar a Module Lead cuando esté completo
 
-    AL COMPLETAR: Commit y notificar
-  `,
-  subagent_type: "general-purpose"
-})
+    UBICACIÓN DE SCREENSHOTS DE INTEGRACIÓN:
+    src/module/[moduloExistente]/e2e/screenshots/[modulo]/
 
-Task({
-  description: "Frontend Ecommerce: Show [modulo] in related module UI",
-  prompt: `
-    TAREA: Mostrar [modulo] en componentes del ecommerce
-    SPEC: .agents/specs/[modulo]-testing-spec.md (sección Ubicaciones)
-    BRANCH: feature/[modulo]
-
-    CREAR según spec:
-    - Badges/componentes en cards del módulo relacionado
-    - Visualización en página de detalle (si aplica)
-
-    AL COMPLETAR: Commit y notificar
+    PERMISOS: Autonomía total para crear/editar archivos, ejecutar Bash, SQL, etc.
   `,
   subagent_type: "general-purpose"
 })
 ```
 
-**PASO 3: Lanzar QA Integración (OBLIGATORIO)**
-```typescript
-// Usar template de task-prompts.template.md sección "QA Integración"
-Task({
-  description: "QA: Execute [modulo] integration E2E tests",
-  prompt: `... copiar de task-prompts.template.md ...`,
-  subagent_type: "general-purpose"
-})
-```
+### ¿Por qué lanzar Integration Lead en lugar de hacer directamente?
 
-### ⚠️ REGLA CRÍTICA: NO OMITIR QA DE INTEGRACIÓN
+1. **Module Expert**: Integration Lead primero lanza un análisis del módulo existente
+   - Descubre la estructura real (no asume)
+   - Identifica puntos de integración
+   - Genera reporte con selectores CSS, rutas, etc.
 
-**El Module Lead DEBE lanzar QA Integración después de Frontend.**
+2. **Contexto rico**: Los agentes Backend/Frontend/QA reciben contexto del reporte
+   - Saben DÓNDE modificar
+   - Saben QUÉ selectores usar
+   - Saben CÓMO navegar en tests
 
-Sin los screenshots de integración:
-- ❌ NO se valida el modelo de negocio
-- ❌ NO se puede declarar el módulo completo
-- ❌ NO se puede proponer release
+3. **Screenshots correctos**: QA sabe exactamente qué validar porque tiene el reporte
 
-### Screenshots de Integración REQUERIDOS (del spec):
-
-El spec lista los screenshots obligatorios en la sección "Criterios de Validación Visual de Integración". Verificar que QA los genere TODOS.
-
-### Flujo de FASE 2 Integración:
+### Flujo de Integración (via Integration Lead):
 
 ```
 FASE 1 COMPLETA (Admin >= 90%)
@@ -272,27 +245,31 @@ FASE 1 COMPLETA (Admin >= 90%)
     SÍ ─────┴───── NO
     │              │
     ▼              ▼
-FASE 2         Proponer
-Integración    Release
+Lanzar         Proponer
+Integration    Release
+Lead
     │
     ▼
-1. Backend Integración (Task)
+Integration Lead coordina:
+1. Module Expert (analiza módulo existente)
+2. DBA (tabla pivote)
+3. Backend (extender repository/service)
+4. Frontend Admin (selector en edit)
+5. Frontend Ecommerce (badges)
+6. QA (tests + screenshots en [existente]/screenshots/[nuevo]/)
     │
     ▼
-2. Frontend Admin + Ecommerce (Task en paralelo)
+Integration Lead reporta a Module Lead
     │
     ▼
-3. QA Integración (Task) ← ⚠️ OBLIGATORIO
-    │
-    ▼
-4. Validar screenshots de integración
+Module Lead valida screenshots
     │
     ▼
 Proponer Release
 ```
 
-**El Module Lead NO se detiene entre FASE 1 y FASE 2.**
-**El Module Lead NO omite QA de Integración.**
+**El Module Lead NO se detiene entre FASE 1 y Integración.**
+**El Module Lead SIEMPRE lanza Integration Lead cuando requiereIntegracion: true.**
 
 ---
 
