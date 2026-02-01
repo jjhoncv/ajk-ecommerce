@@ -6,11 +6,18 @@ import { ProductVariantPromotion } from './ProductVariantPromotion'
 import { ProductVariantRating } from './ProductVariantRating'
 import { useOffer } from '@/module/offers/hooks/useOffer'
 import { getVariantTitle } from '@/module/products/helpers/productVariant.helpers'
+import { TagBadges } from '@/module/tags/components/ecommerce'
 import {
   type Products as Product,
   type ProductVariants as ProductVariant
 } from '@/types/domain'
-import { type FC, useCallback } from 'react'
+import { type FC, useCallback, useEffect, useState } from 'react'
+
+interface VariantTag {
+  id: number
+  name: string
+  color: string
+}
 
 interface ProductVariantInfoProps {
   product: Product
@@ -22,6 +29,28 @@ export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({
   variant
 }) => {
   const { offer, loading } = useOffer(variant.id)
+  const [tags, setTags] = useState<VariantTag[]>([])
+
+  // Fetch tags for this variant
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const res = await fetch(`/api/ecommerce/variants/${variant.id}/tags`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.success && data.data) {
+            setTags(data.data)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching variant tags:', error)
+      }
+    }
+
+    if (variant.id) {
+      fetchTags()
+    }
+  }, [variant.id])
 
   const handleOfferExpire = useCallback(() => {
     window.location.reload()
@@ -33,6 +62,13 @@ export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({
   return (
     <>
       <div className="flex flex-col gap-2.5">
+        {/* Tags de la variante */}
+        {tags.length > 0 && (
+          <div className="mb-1">
+            <TagBadges tags={tags} maxDisplay={4} size="md" />
+          </div>
+        )}
+
         {/* Si hay oferta activa, mostrar solo la oferta */}
         {/* Si no hay oferta, mostrar promoción (si existe) */}
         {!hasActiveOffer && <ProductVariantPromotion variant={variant} />}

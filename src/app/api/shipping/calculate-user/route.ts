@@ -48,10 +48,12 @@ export async function POST(request: NextRequest) {
     const addressesWithShipping = []
 
     for (const address of userAddresses) {
+      // Note: address.district is typed as Districts object but at runtime it's a string
+      const districtName = address.district as unknown as string
       // Usar tu modelo existente para calcular opciones
       const shippingOptions =
         await shippingZoneMethodModel.calculateShippingOptions(
-          address.district,
+          districtName,
           address.province,
           address.department,
           orderValue

@@ -108,7 +108,8 @@ export async function POST(
                 streetName: shippingAddress.streetName,
                 streetNumber: shippingAddress.streetNumber,
                 apartment: shippingAddress.apartment,
-                district: shippingAddress.district,
+                // Note: district is typed as Districts object but at runtime it's a string
+                district: shippingAddress.district as unknown as string,
                 province: shippingAddress.province,
                 department: shippingAddress.department
               },

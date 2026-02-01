@@ -8,6 +8,7 @@ export const hydratePopularProducts = (
     name: item.name,
     variantId: item.variantId,
     variantPrice: item.variantPrice,
-    variants: item.variants
+    variants: item.variants,
+    tags: item.tags
   }))
 }

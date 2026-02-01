@@ -1,9 +1,11 @@
 // app/api/admin/ratings/[ratingId]/route.ts
 import variantRatingModel from '@/module/products/core/VariantRating.model'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
-import { type RatingStatus } from '@/types/domain'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
+
+// Rating status type (pending, approved, rejected)
+type RatingStatus = 'pending' | 'approved' | 'rejected'
 
 interface RouteParams {
   params: Promise<{ ratingId: string }>

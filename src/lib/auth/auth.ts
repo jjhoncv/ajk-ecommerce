@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
             return {
               id: customer.id.toString(),
               email: customer.email,
-              name: customer.name,
+              name: customer.name || '',
               type: 'customer'
             }
           }

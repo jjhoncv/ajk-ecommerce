@@ -1,4 +1,4 @@
-import { type ProductVariantComplete } from '@/module/products/core'
+import { type ProductVariantComplete, type VariantTag } from '@/module/products/core'
 import { type VariantSearchResultRaw } from './Search.repository'
 import {
   type ProductSearchItem,
@@ -32,7 +32,8 @@ export const ProductSearchItemMapper = (
   variant: ProductVariantComplete,
   brandName: string,
   categories: Array<{ id: number, name: string }>,
-  mainImage?: string
+  mainImage?: string,
+  tags?: VariantTag[]
 ): ProductSearchItem => {
   return {
     id: variantResult.productId,
@@ -48,6 +49,7 @@ export const ProductSearchItemMapper = (
     variantId: variantResult.variantId,
     variantSku: variantResult.sku,
     variantPrice: Number(variantResult.price),
-    variantStock: Number(variantResult.stock)
+    variantStock: Number(variantResult.stock),
+    tags
   }
 }

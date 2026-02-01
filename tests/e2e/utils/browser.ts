@@ -100,11 +100,26 @@ export async function clearAndType(selector: string, text: string): Promise<void
 
 export async function login(email: string, password: string): Promise<void> {
   await goto('/admin')
-  await waitAndType('input[name="email"], input[type="email"]', email)
-  await waitAndType('input[name="password"], input[type="password"]', password)
+  const p = getPage()
+
+  // Wait for the page to load
+  await new Promise(resolve => setTimeout(resolve, 1000))
+
+  // Admin login uses simple text inputs without name attributes
+  // Find first input (username/email) and second input (password)
+  const inputs = await p.$$('input')
+  if (inputs.length >= 2) {
+    await inputs[0].type(email)
+    await inputs[1].type(password)
+  } else {
+    // Fallback to selectors
+    await waitAndType('input[name="email"], input[type="email"], input[type="text"]', email)
+    await waitAndType('input[name="password"], input[type="password"]', password)
+  }
+
   await waitAndClick('button[type="submit"]')
   // Wait for redirect to dashboard
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  await new Promise(resolve => setTimeout(resolve, 3000))
 }
 
 export async function waitForText(text: string, timeout = 10000): Promise<void> {
