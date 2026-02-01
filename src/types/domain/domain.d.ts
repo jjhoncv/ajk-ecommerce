@@ -916,6 +916,21 @@ export interface StoreFeatures {
 
 }
 
+export interface Tags {
+  color: Scalars['String']['output'];
+
+  createdBy?: Maybe<Scalars['Int']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  isActive?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+
+  updatedBy?: Maybe<Scalars['Int']['output']>;
+  user?: Maybe<Users>;
+}
+
 export interface Users {
   attribute?: Maybe<Attributes>;
   banner?: Maybe<Array<Maybe<Banner>>>;
@@ -935,6 +950,7 @@ export interface Users {
   promotion?: Maybe<Promotions>;
   role?: Maybe<Roles>;
   roleId?: Maybe<Scalars['Int']['output']>;
+  tags?: Maybe<Array<Maybe<Tags>>>;
 
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
 }
