@@ -18,6 +18,7 @@ Module Lead asigna tarea de crear tests (después de Frontend y Backend)
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/learnings/qa-screenshot-validation-logging.md` - **CRÍTICO**: Logging granular por screenshot
 - `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches

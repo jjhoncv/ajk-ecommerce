@@ -316,6 +316,7 @@ DEBE LEER:
 | Documento | Propósito | Lectura Obligatoria |
 |-----------|-----------|---------------------|
 | `learnings/ecommerce-data-flow.md` | Flujo de datos en integraciones ecommerce | Integration Lead, Backend, QA |
+| `learnings/qa-screenshot-validation-logging.md` | Logging granular para validación de screenshots | QA, Module Lead |
 
 **Los aprendizajes son conocimiento acumulado de errores pasados. LEER ANTES de integrar.**
 

@@ -101,6 +101,60 @@ Ejemplo:
 [TIMESTAMP] [QA] Re-ejecutando tests después de correcciones
 ```
 
+### 📸 VALIDACIÓN DE SCREENSHOTS (OBLIGATORIO PARA QA)
+
+**Ver detalle completo:** `.agents/learnings/qa-screenshot-validation-logging.md`
+
+Cuando QA analiza screenshots, DEBE registrar por cada imagen:
+
+```bash
+# Formato por screenshot
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → ⏳ Analizando..."
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → 🔍 Buscando: [qué elemento esperado]"
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → ✓/❌ Resultado: [qué se encontró]"
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → 💭 Análisis: [interpretación]"
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → 🎯 Diagnóstico: [BACKEND/FRONTEND/QA/DATOS]"
+./.agents/scripts/log.sh "QA" "📸 [nombre.png] → 📋 Acción: [quién debe hacer qué]"
+```
+
+#### Ejemplo: Screenshot aprobado
+```
+[12:30:00] 🧪 QA: 📸 01-admin-list.png → ⏳ Analizando...
+[12:30:01] 🧪 QA: 📸 01-admin-list.png → 🔍 Buscando: tabla con tags, columnas name/color/actions
+[12:30:02] 🧪 QA: 📸 01-admin-list.png → ✓ Encontrado: tabla visible, 3 filas de datos
+[12:30:03] 🧪 QA: 📸 01-admin-list.png → ✅ APROBADO
+```
+
+#### Ejemplo: Screenshot fallido - Datos no llegan
+```
+[12:35:00] 🧪 QA: 📸 05-ecommerce-card.png → ⏳ Analizando...
+[12:35:01] 🧪 QA: 📸 05-ecommerce-card.png → 🔍 Buscando: TagBadge visible en ProductCard
+[12:35:02] 🧪 QA: 📸 05-ecommerce-card.png → ❌ NO visible: Badge no aparece
+[12:35:03] 🧪 QA: 📸 05-ecommerce-card.png → 💭 Análisis: Elemento existe pero está VACÍO
+[12:35:04] 🧪 QA: 📸 05-ecommerce-card.png → 🎯 Diagnóstico: BACKEND - Hydrator no incluye tags
+[12:35:05] 🧪 QA: 📸 05-ecommerce-card.png → 📋 Acción: Backend modificar hydrators.ts línea 45
+```
+
+#### Ejemplo: Screenshot fallido - Selector incorrecto
+```
+[12:40:00] 🧪 QA: 📸 02-admin-new.png → ⏳ Analizando...
+[12:40:01] 🧪 QA: 📸 02-admin-new.png → 🔍 Buscando: input[name=color]
+[12:40:02] 🧪 QA: 📸 02-admin-new.png → ❌ NO encontrado en DOM
+[12:40:03] 🧪 QA: 📸 02-admin-new.png → 🔍 Investigando: buscando inputs similares...
+[12:40:04] 🧪 QA: 📸 02-admin-new.png → 💡 Encontrado: Campo usa input[type=color]
+[12:40:05] 🧪 QA: 📸 02-admin-new.png → 🎯 Diagnóstico: QA - Selector incorrecto
+[12:40:06] 🧪 QA: 📸 02-admin-new.png → 📋 Acción: QA corregir selector en 01-crud.ts:45
+```
+
+#### Diagnósticos por responsable
+
+| Diagnóstico | Cuándo usar |
+|-------------|-------------|
+| `🎯 BACKEND` | Datos no llegan, hydrator no modificado, API error |
+| `🎯 FRONTEND` | Componente no importado, props faltantes, estilos rotos |
+| `🎯 QA` | Selector incorrecto, navegación incorrecta, timeout |
+| `🎯 DATOS` | No hay datos de prueba, is_active=0, relaciones vacías |
+
 ### Coordinación Project Owner ↔ Module Lead
 ```
 [TIMESTAMP] [PROJECT-OWNER] Asignando módulo [nombre] a Module Lead
