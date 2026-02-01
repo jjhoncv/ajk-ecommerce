@@ -499,6 +499,77 @@ Task({
    → El flujo continúa hasta completar
 ```
 
+### Project Owner NO hace el trabajo de otros roles
+
+**Problema detectado**: El Project Owner ejecutó código de DBA, Backend, Frontend directamente en lugar de lanzar Module Lead.
+
+**Regla fundamental**:
+```
+Project Owner SOLO hace:
+1. Hacer preguntas al usuario (definir modelo de negocio)
+2. Crear el spec
+3. Crear el branch
+4. Lanzar Module Lead con Task()
+5. FIN - El Project Owner TERMINA aquí
+
+Project Owner NO hace:
+❌ Crear tablas SQL
+❌ Escribir código de Backend/Frontend
+❌ Crear componentes
+❌ Ejecutar tests
+❌ Hacer commits de código
+
+Eso lo hacen: Module Lead → DBA → Backend → Frontend → QA
+```
+
+### Flujo AUTÓNOMO hasta completar al 90%
+
+**Problema detectado**: El agente reportó estado parcial (80%) y preguntó "¿quieres que continúe?".
+
+**Regla fundamental**:
+```
+❌ INCORRECTO:
+   - Reportar estado parcial al usuario
+   - Preguntar "¿quieres que continúe?"
+   - Esperar confirmación para cada fase
+
+✅ CORRECTO:
+   - Ejecutar TODO el flujo de forma autónoma
+   - SOLO reportar cuando el módulo esté >= 90% completo
+   - NUNCA preguntar si continuar - simplemente continuar
+   - El usuario SOLO ve el resultado final
+
+El flujo es:
+Project Owner → Module Lead → DBA → Backend → Frontend → QA
+                    ↓
+              (todo autónomo)
+                    ↓
+            Reporte final al usuario (>= 90%)
+```
+
+### Cada agente lanza al siguiente con Task()
+
+**Regla fundamental**:
+```
+Project Owner:
+  → Lanza Module Lead con Task()
+  → TERMINA (no espera, no hace más)
+
+Module Lead:
+  → Lanza DBA con Task()
+  → Cuando DBA termina, lanza Backend con Task()
+  → Cuando Backend termina, lanza Frontend con Task()
+  → Cuando Frontend termina, lanza QA con Task()
+  → Valida screenshots >= 90%
+  → Reporta a Project Owner
+
+NUNCA:
+  → Un agente hace el trabajo de otro
+  → Un agente pregunta al usuario (excepto Project Owner)
+  → Un agente reporta estado parcial
+```
+```
+
 **Regla**:
 - `TaskCreate` = Anotar para después (tracking)
 - `Task()` = Ejecutar ahora (acción)

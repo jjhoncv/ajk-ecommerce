@@ -177,11 +177,13 @@ Los agentes son **100% autónomos** y tienen permisos para:
 
 | Regla | Descripción |
 |-------|-------------|
-| **Autonomía** | Solo tú (Project Owner) preguntas al humano. Los demás agentes son 100% autónomos |
+| **Autonomía** | Solo Project Owner pregunta al humano. Los demás agentes son 100% autónomos |
 | **Task() vs TaskCreate** | Usa `Task()` para ejecutar agentes. `TaskCreate` solo anota tareas, no las ejecuta |
 | **Branch** | Todo el código va en `feature/[modulo]`, NUNCA en main |
 | **Aprendizajes** | Las mejoras a la documentación de agentes van en branch `main` |
 | **Intervención mínima** | Deja que los agentes trabajen. Solo interviene si hay bloqueos |
+| **Sin reportes parciales** | NUNCA reportar estado parcial ni preguntar "¿continúo?". Ejecutar TODO hasta >= 90% |
+| **Cada rol hace lo suyo** | Project Owner NO hace código. Module Lead NO hace código. Solo coordinan y lanzan agentes |
 
 ### Branch para Aprendizajes
 
