@@ -908,7 +908,7 @@ Task({
 
 ```bash
 # Verificar screenshots de integración existen
-ls -la src/module/[moduloExistente]/e2e/screenshots/integration/
+ls -la src/module/[moduloExistente]/e2e/screenshots/[nuevoModulo]/
 
 # Debe haber mínimo:
 # - Screenshots de admin (selector, guardado, lista)
@@ -938,7 +938,7 @@ En `src/module/[moduloExistente]/e2e/integration/[nuevoModulo]s.ts`:
 
 **Admin (validar selector funciona):**
 ```
-screenshots/integration/admin/
+screenshots/[nuevoModulo]/admin/
 ├── admin-edit-without-[nuevoModulo]s.png      # Estado inicial
 ├── admin-edit-[nuevoModulo]-selector.png      # Selector visible
 ├── admin-edit-[nuevoModulo]s-selected.png     # Tags seleccionados
@@ -948,7 +948,7 @@ screenshots/integration/admin/
 
 **Ecommerce (validar modelo de negocio visual):**
 ```
-screenshots/integration/ecommerce/
+screenshots/[nuevoModulo]/ecommerce/
 ├── ecommerce-product-card-with-[nuevoModulo].png    # Card con tag badge
 ├── ecommerce-product-card-multiple-[nuevoModulo]s.png # Card con varios tags
 ├── ecommerce-product-detail-[nuevoModulo]s.png      # Detalle con tags
@@ -981,7 +981,7 @@ SCREENSHOTS ECOMMERCE:
   📸 ProductDetail con [nuevoModulo]s
   📸 Vista mobile
 
-UBICACIÓN: src/module/[moduloExistente]/e2e/screenshots/integration/
+UBICACIÓN: src/module/[moduloExistente]/e2e/screenshots/[nuevoModulo]/
 
 SOLICITO: Validación de que visualización corresponde al modelo de negocio
 - ¿Los tags se ven donde deben verse?
@@ -1202,7 +1202,7 @@ Integration Lead analiza error
 ### QA - Integración (EN MÓDULO EXISTENTE)
 - [ ] Tests creados en `src/module/[moduloExistente]/e2e/integration/`
 - [ ] Tests de integración ejecutados y pasaron
-- [ ] **Screenshots de admin EXISTEN** en `screenshots/integration/`:
+- [ ] **Screenshots de admin EXISTEN** en `screenshots/[nuevoModulo]/`:
   - [ ] admin-edit-selector.png
   - [ ] admin-edit-selected.png
   - [ ] admin-list-badges.png
