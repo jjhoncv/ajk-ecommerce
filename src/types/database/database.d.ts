@@ -970,6 +970,14 @@ export interface VariantRatings {
   verified_purchase: Scalars['Int']['output'];
 }
 
+export interface VariantTags {
+  created_at: Scalars['Timestamp']['output'];
+  display_order?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  tag_id: Scalars['Int']['output'];
+  variant_id: Scalars['Int']['output'];
+}
+
 export interface VerificationCodes {
   code: Scalars['String']['output'];
   created_at: Scalars['Timestamp']['output'];

@@ -2,6 +2,9 @@ import { productModel, productAttributeOptionModel, productVariantModel, variant
 import { VariantForm } from '@/module/products/components/admin/variants/VariantForm'
 import { VariantImageManager } from '@/module/products/components/admin/variants/VariantImageManager'
 import { VariantFields } from '@/module/products/components/admin/variants/variantFields'
+import { VariantTagSelector } from '@/module/tags/components/admin/VariantTagSelector'
+import tagService from '@/module/tags/service/tags'
+import variantTagService from '@/module/tags/service/variantTags'
 import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/mergeFieldsWithData'
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
@@ -95,6 +98,12 @@ export default async function EditVariantPage({
     ? selectedAttributes[variant.imageAttributeId]
     : undefined
 
+  // Obtener tags disponibles y seleccionados para esta variante
+  const [availableTags, selectedTagIds] = await Promise.all([
+    tagService.getActiveTags(),
+    variantTagService.getTagIdsByVariantId(Number(variantId))
+  ])
+
   return (
     <LayoutPageAdmin>
       <PageUI
@@ -130,6 +139,13 @@ export default async function EditVariantPage({
               imageAttributeOptionId={imageAttributeOptionId}
             />
           </div>
+
+          {/* Selector de Tags */}
+          <VariantTagSelector
+            variantId={Number(variantId)}
+            availableTags={availableTags}
+            selectedTagIds={selectedTagIds}
+          />
         </div>
       </PageUI>
     </LayoutPageAdmin>

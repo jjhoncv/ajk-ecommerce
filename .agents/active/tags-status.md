@@ -10,22 +10,22 @@ feature/tags
 Media
 
 ## Progreso Admin (FASE 1)
-- [ ] DBA: Crear tabla tags + sidebar
-- [ ] Backend: Core + Service + API
-- [ ] Frontend Admin: Components + Pages
+- [x] DBA: Crear tabla tags + sidebar
+- [x] Backend: Core + Service + API
+- [x] Frontend Admin: Components + Pages
 - [ ] QA Admin: Tests E2E CRUD
 
 ## Progreso Integracion (FASE 2)
-- [ ] DBA: Crear tabla pivote variant_tags
-- [ ] Backend: Extender variant repository
-- [ ] Backend: Endpoint asignar tags
-- [ ] Frontend Admin: Selector de tags en variante
-- [ ] Frontend Ecommerce: Badges en ProductCard
-- [ ] Frontend Ecommerce: Badges en ProductDetail
+- [x] DBA: Crear tabla pivote variant_tags
+- [x] Backend: Extender variant repository
+- [x] Backend: Endpoint asignar tags
+- [x] Frontend Admin: Selector de tags en variante
+- [x] Frontend Ecommerce: Badges en ProductCard
+- [x] Frontend Ecommerce: Badges en ProductDetail
 - [ ] QA: Tests de integracion
 
 ## Porcentaje
-0%
+80%
 
 ## Toca Shared
 | Archivo | Accion | Estado |

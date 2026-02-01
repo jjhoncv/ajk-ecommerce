@@ -6,6 +6,7 @@ import { OfferBadge } from '@/module/offers/components/ui'
 import { useOffer } from '@/module/offers/hooks/useOffer'
 import { getVariantImages } from '@/module/products/helpers/image.helpers'
 import { getVariantTitle } from '@/module/products/helpers/productVariant.helpers'
+import { TagBadges } from '@/module/tags/components/ecommerce/TagBadges'
 import Link from 'next/link'
 import React from 'react'
 import { hasPromotion } from './ProductCard.helpers'
@@ -64,6 +65,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) 
         {!offer && hasDiscount && (
           <div className="absolute left-2 top-2 z-10">
             <PromotionBadge type={type} name={type} />
+          </div>
+        )}
+        {/* Tag badges - mostrar en esquina opuesta si hay oferta/promocion */}
+        {variant.tags && variant.tags.length > 0 && (
+          <div className={`absolute ${offer || hasDiscount ? 'right-2' : 'left-2'} top-2 z-10`}>
+            <TagBadges tags={variant.tags} size="sm" maxDisplay={2} />
           </div>
         )}
 

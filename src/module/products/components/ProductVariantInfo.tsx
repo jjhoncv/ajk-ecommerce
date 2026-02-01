@@ -4,6 +4,7 @@ import { ProductVariantOfferPrice } from './ProductVariantOfferPrice'
 import { ProductVariantPrice } from './ProductVariantPrice'
 import { ProductVariantPromotion } from './ProductVariantPromotion'
 import { ProductVariantRating } from './ProductVariantRating'
+import { VariantTagBadges } from '@/module/tags/components/ecommerce/VariantTagBadges'
 import { useOffer } from '@/module/offers/hooks/useOffer'
 import { getVariantTitle } from '@/module/products/helpers/productVariant.helpers'
 import {
@@ -61,6 +62,10 @@ export const ProductVariantInfo: FC<ProductVariantInfoProps> = ({
             </p>
           )}
         </div>
+
+        {/* Tags de la variante */}
+        <VariantTagBadges variantId={variant.id} size="md" maxDisplay={5} />
+
         <ProductVariantRating variant={variant} />
       </div>
     </>

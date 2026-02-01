@@ -718,6 +718,7 @@ export interface ProductVariants {
   variantAttributeOptions?: Maybe<Array<Maybe<VariantAttributeOptions>>>;
   variantImages?: Maybe<Array<Maybe<VariantImages>>>;
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
+  variantTags?: Maybe<Array<Maybe<VariantTags>>>;
 }
 
 export interface Products {
@@ -929,6 +930,7 @@ export interface Tags {
 
   updatedBy?: Maybe<Scalars['Int']['output']>;
   user?: Maybe<Users>;
+  variantTags?: Maybe<Array<Maybe<VariantTags>>>;
 }
 
 export interface Users {
@@ -950,7 +952,7 @@ export interface Users {
   promotion?: Maybe<Promotions>;
   role?: Maybe<Roles>;
   roleId?: Maybe<Scalars['Int']['output']>;
-  tags?: Maybe<Array<Maybe<Tags>>>;
+  tag?: Maybe<Tags>;
 
   variantRatings?: Maybe<Array<Maybe<VariantRatings>>>;
 }
@@ -1076,6 +1078,16 @@ export interface VariantRatings {
   user?: Maybe<Users>;
   variantId: Scalars['Int']['output'];
   verifiedPurchase: Scalars['Int']['output'];
+}
+
+export interface VariantTags {
+
+  displayOrder?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  productVariants?: Maybe<Array<Maybe<ProductVariants>>>;
+  tag?: Maybe<Tags>;
+  tagId: Scalars['Int']['output'];
+  variantId: Scalars['Int']['output'];
 }
 
 export interface VerificationCodes {

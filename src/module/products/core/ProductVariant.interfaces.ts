@@ -2,7 +2,8 @@ import {
   type ProductVariants as ProductVariant,
   type VariantAttributeOptions as VariantAttributeOption,
   type VariantImages as VariantImage,
-  type VariantRatingSummary
+  type VariantRatingSummary,
+  type Tags
 } from '@/types/domain'
 
 export interface ProductVariantWithAttributeOptions extends ProductVariant {
@@ -14,4 +15,5 @@ export interface ProductVariantWithImages extends ProductVariant {
 }
 export interface ProductVariantComplete extends ProductVariant {
   variantRatingSummary?: VariantRatingSummary
+  tags?: Tags[]
 }
