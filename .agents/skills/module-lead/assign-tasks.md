@@ -323,6 +323,49 @@ El Module Lead DEBE:
 
 ---
 
+## ⛔ CHECKLIST OBLIGATORIO ANTES DE TERMINAR
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  VERIFICAR ANTES DE TERMINAR (Module Lead):                      ║
+╠══════════════════════════════════════════════════════════════════╣
+║  FASE 1 - Admin CRUD:                                            ║
+║  [ ] DBA lanzado con Task() y COMPLETADO                         ║
+║  [ ] Backend lanzado con Task() y COMPLETADO                     ║
+║  [ ] Frontend lanzado con Task() y COMPLETADO                    ║
+║  [ ] QA lanzado con Task() y EJECUTÓ tests (no solo creó)        ║
+║  [ ] Screenshots EXISTEN en e2e/screenshots/ (verificar con ls)  ║
+║  [ ] Screenshots revisados vs spec (>= 90% cumplimiento)         ║
+╠══════════════════════════════════════════════════════════════════╣
+║  FASE 2 - Ecommerce/Integración (si aplica según spec):          ║
+║  [ ] Backend ecommerce/integración COMPLETADO                    ║
+║  [ ] Frontend ecommerce/integración COMPLETADO                   ║
+║  [ ] QA ecommerce/integración EJECUTÓ tests                      ║
+║  [ ] Screenshots de FASE 2 EXISTEN y muestran DATOS REALES       ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ⚠️  Si CUALQUIER agente NO fue lanzado → NO TERMINAR            ║
+║      Lanzarlo AHORA con Task() antes de finalizar                ║
+║                                                                  ║
+║  ⚠️  Si QA NO ejecutó tests (0 screenshots) → NO TERMINAR        ║
+║      Relanzar QA con Task() para que ejecute                     ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+**Síntomas de flujo incompleto:**
+- Si no hay output de DBA/Backend/Frontend/QA trabajando → INCORRECTO
+- Si usaste TaskCreate en lugar de Task() → INCORRECTO
+- Si hay 0 screenshots → QA no ejecutó, relanzar
+- Si spec dice ecommerceEnabled:true pero no hay FASE 2 → INCOMPLETO
+
+**Verificación de screenshots:**
+```bash
+# Ejecutar ANTES de declarar completo:
+find src/module/[modulo]/e2e/screenshots -name "*.png" | wc -l
+# Si es 0, QA NO ejecutó - relanzar con Task()
+```
+
+---
+
 ## Outputs
 - Tareas asignadas a cada agente
 - `.agents/active/[modulo]-status.md` actualizado
