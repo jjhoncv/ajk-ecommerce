@@ -311,6 +311,14 @@ DEBE LEER:
 | `team-evolution.md` | Factor de imaginación y métricas | TODOS |
 | `architecture-diagram.md` | Diagrama de arquitectura y flujos | Documentación |
 
+## Aprendizajes Críticos
+
+| Documento | Propósito | Lectura Obligatoria |
+|-----------|-----------|---------------------|
+| `learnings/ecommerce-data-flow.md` | Flujo de datos en integraciones ecommerce | Integration Lead, Backend, QA |
+
+**Los aprendizajes son conocimiento acumulado de errores pasados. LEER ANTES de integrar.**
+
 ## Roles vs Skills
 
 | Carpeta | Propósito | Contenido |

@@ -15,9 +15,39 @@ Integration Lead
 
 ---
 
+## ⛔⛔⛔ APRENDIZAJE CRÍTICO: FLUJO DE DATOS ECOMMERCE ⛔⛔⛔
+
+**LEER OBLIGATORIAMENTE ANTES DE CUALQUIER INTEGRACIÓN:**
+`.agents/learnings/ecommerce-data-flow.md`
+
+### Resumen del Problema
+
+Cuando se integra un módulo nuevo con ecommerce, el componente se crea pero **los datos nunca llegan** porque no se modificó el flujo de datos del módulo existente.
+
+### Regla de Oro
+
+**NO basta con crear `nuevoModuloService.getDatos()`.**
+**DEBES modificar DÓNDE el módulo existente obtiene sus datos para ecommerce.**
+
+Típicamente:
+- `src/module/[existente]/services/*/hydrators.ts`
+- `src/module/[existente]/core/*.model.ts`
+- `src/module/search/core/Search.model.ts` (si hay búsqueda)
+
+### Validación Obligatoria
+
+Antes de declarar FASE 2 Ecommerce completa:
+1. Module Expert identificó archivos de flujo de datos
+2. Backend modificó CADA archivo identificado
+3. QA verificó que elemento tiene CONTENIDO (no solo que existe)
+4. Screenshot muestra elemento con datos reales
+
+---
+
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/learnings/ecommerce-data-flow.md` - **CRÍTICO**: Flujo de datos ecommerce
 - `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches
@@ -341,6 +371,8 @@ Task({
     TAREA: Extender backend de [moduloExistente] para integrar [nuevoModulo]
     ROL: Backend
 
+    ⛔⛔⛔ LEER PRIMERO: .agents/learnings/ecommerce-data-flow.md ⛔⛔⛔
+
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     CONTEXTO DEL MÓDULO [moduloExistente] (del Module Expert):
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -358,12 +390,16 @@ Task({
 
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    TU TRABAJO:
+    TU TRABAJO (ADMIN):
     1. Agregar métodos al Repository: get[NuevoModulo]s(), set[NuevoModulo]s()
     2. Crear API endpoint: /api/admin/[moduloExistente]/[id]/[nuevoModulo]s
 
-    ⚠️ CRÍTICO PARA ECOMMERCE (si el módulo nuevo se muestra en ecommerce):
+    ⛔⛔⛔ CRÍTICO PARA ECOMMERCE - ESTO ES OBLIGATORIO ⛔⛔⛔
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    NO BASTA CON CREAR [nuevoModulo]Service.get[NuevoModulo]s().
+    DEBES MODIFICAR DÓNDE EL MÓDULO EXISTENTE OBTIENE SUS DATOS.
+
     El reporte del Module Expert identifica DÓNDE vienen los datos para ecommerce.
 
     FLUJO DE DATOS ECOMMERCE (del reporte):
@@ -375,18 +411,34 @@ Task({
     | ProductCard | getPopularProducts | hydratePopularProducts | NO - MODIFICAR |
     | SearchResults | searchModel | ProductSearchItemMapper | NO - MODIFICAR |
 
-    ARCHIVOS QUE DEBES MODIFICAR PARA QUE DATOS LLEGUEN A ECOMMERCE:
+    ⚠️ ARCHIVOS QUE DEBES MODIFICAR (OBLIGATORIO):
     [PEGAR AQUÍ LA LISTA "Archivos que Backend DEBE modificar" DEL REPORTE]
 
     Ejemplo:
     - src/module/products/services/popularProducts/hydrators.ts → agregar campo [nuevo]s
+    - src/module/search/core/Search.model.ts → agregar fetch de [nuevo]s por variant IDs
     - src/module/search/core/Search.mapper.ts → incluir [nuevo]s en el mapeo
 
+    TU TRABAJO (ECOMMERCE) - PASOS OBLIGATORIOS:
+    1. Crear método en [nuevoModulo]Model: get[NuevoModulo]sByVariantIds(ids[])
+       - Este método hace bulk fetch de [nuevo]s para múltiples variantes
+    2. Modificar CADA archivo listado arriba para:
+       - Llamar a [nuevoModulo]Model.get[NuevoModulo]sByVariantIds()
+       - Incluir [nuevo]s en el objeto retornado por el hydrator/mapper
+    3. Verificar que el tipo de retorno incluye el campo [nuevo]s
+
     SI ESTA SECCIÓN ESTÁ VACÍA O NO EXISTE EN EL REPORTE:
-    → El Integration Lead debe relanzar Module Expert para obtener el flujo de datos
+    → DETENTE. El Integration Lead debe relanzar Module Expert para obtener el flujo.
+    → NO continúes sin saber qué archivos modificar.
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-    AL COMPLETAR: Notificar a Integration Lead
+    VERIFICACIÓN ANTES DE COMPLETAR:
+    □ Creé método bulk fetch en [nuevoModulo]Model
+    □ Modifiqué CADA hydrator/mapper listado en el reporte
+    □ Cada hydrator ahora retorna { ...datos, [nuevo]s: [...] }
+    □ Los tipos incluyen el campo [nuevo]s
+
+    AL COMPLETAR: Notificar a Integration Lead CON LISTA de archivos modificados
   `,
   subagent_type: "general-purpose"
 })

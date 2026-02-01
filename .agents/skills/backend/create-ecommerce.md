@@ -17,6 +17,7 @@ Module Lead asigna tarea de crear backend ecommerce (después de crear backend a
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/learnings/ecommerce-data-flow.md` - **CRÍTICO**: Flujo de datos en ecommerce
 - `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches
@@ -364,6 +365,54 @@ NOTAS: NO se crean APIs REST - usar SSR con servicios directos
 
 ## NO Hacer
 - ❌ NO crear APIs REST (`/api/[modulo]/`)
-- ❌ NO modificar core/ existente
+- ❌ NO modificar core/ existente (excepto para integración - ver abajo)
 - ❌ NO crear componentes React
 - ❌ NO modificar base de datos
+
+---
+
+## ⚠️ CASO ESPECIAL: Backend para INTEGRACIÓN
+
+**Cuando este módulo se integra con un módulo existente que tiene ecommerce:**
+
+El skill normal de arriba crea services para TU módulo. Pero si tu módulo se muestra DENTRO de otro módulo existente (ej: tags dentro de products), debes TAMBIÉN modificar el módulo existente.
+
+**LEER**: `.agents/learnings/ecommerce-data-flow.md`
+
+### Pasos Adicionales para Integración:
+
+1. **Crear método bulk fetch** en tu Model:
+   ```typescript
+   // src/module/[tuModulo]/core/[Entidad].model.ts
+   static async getByVariantIds(variantIds: number[]): Promise<Map<number, [Entidad][]>> {
+     // Obtiene [entidad]s para múltiples variantes de una vez
+   }
+   ```
+
+2. **Modificar hydrators del módulo EXISTENTE**:
+   - Identificar dónde el módulo existente obtiene datos para ecommerce
+   - Agregar llamada a tu método bulk fetch
+   - Incluir tus datos en el objeto retornado
+
+   Ejemplo:
+   ```typescript
+   // src/module/products/services/popularProducts/hydrators.ts
+   // ANTES:
+   return { id, name, price, ... }
+
+   // DESPUÉS:
+   return { id, name, price, ..., [tuModulo]s: datosDelNuevoModulo }
+   ```
+
+3. **Verificar tipos**:
+   - El tipo de retorno del hydrator debe incluir el nuevo campo
+   - Los componentes esperan este campo
+
+### Si el Integration Lead No Te Da Lista de Archivos
+
+Si recibes una tarea de integración pero NO te dicen qué archivos modificar del módulo existente:
+1. **NO continúes**
+2. Solicita al Integration Lead que ejecute Module Expert
+3. El Module Expert genera la lista de archivos a modificar
+
+**Sin esa lista, es imposible saber dónde va el flujo de datos.**

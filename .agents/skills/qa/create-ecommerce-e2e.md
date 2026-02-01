@@ -17,6 +17,7 @@ Module Lead asigna tarea de crear tests ecommerce (después de tests admin)
 ## 📚 DOCUMENTACIÓN OBLIGATORIA
 
 **ANTES de empezar, leer:**
+- `.agents/learnings/ecommerce-data-flow.md` - **CRÍTICO**: Cómo validar que datos llegan
 - `.agents/autonomy.md` - **CRÍTICO**: Este agente es 100% autónomo, NO pregunta al humano
 - `.agents/activity-log-guide.md` - Formato de mensajes para activity.log
 - `.agents/governance.md` - Convenciones de commits y branches

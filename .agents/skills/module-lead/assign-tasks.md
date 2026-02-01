@@ -175,6 +175,9 @@ Usar mensajes de `messages.template.md`:
 
 **⚠️ CRÍTICO: Esta fase es AUTOMÁTICA. NO preguntar al humano si debe continuar.**
 
+### ⛔ LEER ANTES DE INTEGRACIÓN
+`.agents/learnings/ecommerce-data-flow.md`
+
 ### Cuándo aplica:
 - El spec tiene `requiereIntegracion: true`
 - Existe tabla pivote (ej: `variant_tags`, `product_collections`)
@@ -380,10 +383,13 @@ FASE 2 - Ecommerce (si ecommerceEnabled: true):
 
 FASE 2 - Integración (si requiereIntegracion: true):
 [ ] Backend integración completado (endpoints)
+[ ] Backend modificó hydrators/models del módulo EXISTENTE ← ⚠️ CRÍTICO
+    (Ver .agents/learnings/ecommerce-data-flow.md)
 [ ] Frontend admin integración completado (selector)
 [ ] Frontend ecommerce integración completado (badges/visualización)
 [ ] QA integración EJECUTÓ tests ← ⚠️ NO OMITIR
 [ ] Screenshots de integración existen (según spec)
+[ ] Screenshots muestran DATOS REALES (no elementos vacíos) ← ⚠️ CRÍTICO
 [ ] Comparé screenshots integración vs "Criterios de Validación Visual"
 
 FINAL:
