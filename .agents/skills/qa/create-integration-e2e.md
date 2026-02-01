@@ -178,7 +178,7 @@ src/module/products/e2e/
 
 # Resultado
 ./.agents/scripts/log.sh "QA" "Tests integración: X/Y pasaron"
-./.agents/scripts/log.sh "QA" "Screenshots en: src/module/[existente]/e2e/screenshots/integration/"
+./.agents/scripts/log.sh "QA" "Screenshots en: src/module/[existente]/e2e/screenshots/[nuevo]/"
 
 # Si falla
 ./.agents/scripts/log.sh "QA" "⚠️ FALLA: [descripción del problema]"

@@ -528,9 +528,32 @@ src/module/[modulo]/e2e/
 
 Cuando el spec tiene `requiereIntegracion: true`, el módulo se integra con otro módulo existente (ej: tags se integra con products). En este caso:
 
-1. **DEBEN existir screenshots de integración** que evidencien:
-   - Selector funcionando en admin del módulo relacionado
-   - Visualización en ecommerce (si aplica)
+**⚠️ IMPORTANTE: Los screenshots de integración van en el MÓDULO EXISTENTE, no en el nuevo.**
+
+```
+ESTRUCTURA DE SCREENSHOTS:
+==========================
+
+Módulo NUEVO (tags) - sus propios tests:
+src/module/tags/e2e/screenshots/
+├── admin/           ← CRUD de tags (standalone)
+└── ecommerce/       ← (si tiene ecommerce propio)
+
+Módulo EXISTENTE (products) - tests de integración:
+src/module/products/e2e/screenshots/
+├── admin/           ← CRUD de products (ya existía)
+├── ecommerce/       ← Ecommerce de products (ya existía)
+└── tags/            ← INTEGRACIÓN con tags (nuevo)
+    ├── admin-tag-created.png
+    ├── admin-variant-selector-available.png
+    └── ecommerce-product-with-tag.png
+```
+
+1. **Los screenshots de integración van en:**
+   ```
+   src/module/[moduloExistente]/e2e/screenshots/[moduloNuevo]/
+   ```
+   Ejemplo: `src/module/products/e2e/screenshots/tags/`
 
 2. **Verificar que el spec liste screenshots requeridos**:
    ```markdown
@@ -544,13 +567,13 @@ Cuando el spec tiene `requiereIntegracion: true`, el módulo se integra con otro
 
 3. **Cada screenshot del spec DEBE existir**:
    ```bash
-   # Verificar que screenshots de integración existen
-   ls src/module/[modulo]/e2e/screenshots/int-* 2>/dev/null | wc -l
-   # DEBE ser > 0 si requiereIntegracion: true
+   # Verificar que screenshots de integración existen en el módulo EXISTENTE
+   ls src/module/[moduloExistente]/e2e/screenshots/[moduloNuevo]/*.png 2>/dev/null | wc -l
+   # Ejemplo: ls src/module/products/e2e/screenshots/tags/*.png
    ```
 
 4. **NO marcar como completo si faltan screenshots de integración**:
-   - Admin CRUD OK pero sin ecommerce = **INCOMPLETO**
+   - Admin CRUD OK pero sin integración = **INCOMPLETO**
    - Screenshots con -ERROR sin resolver = **INCOMPLETO**
 
 **Error común**: Marcar módulo como 100% cuando solo FASE 1 (Admin) tiene screenshots pero FASE 2 (Integración/Ecommerce) no fue validada visualmente.
