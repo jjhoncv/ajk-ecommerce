@@ -296,6 +296,53 @@ Proponer Release
 
 ---
 
+## ⛔ VALIDACIÓN OBLIGATORIA: SCREENSHOTS EXISTEN
+
+### Antes de declarar FASE 1 completa:
+
+```bash
+# Verificar que existen screenshots del admin CRUD
+ls src/module/[modulo]/e2e/screenshots/admin/*.png 2>/dev/null | wc -l
+# DEBE ser > 0
+
+# Si es 0, QA NO se ejecutó correctamente
+# NO continuar a FASE 2 sin estos screenshots
+```
+
+### Antes de declarar FASE 2 completa (si requiereIntegracion: true):
+
+```bash
+# Verificar screenshots de integración en el módulo EXISTENTE
+ls src/module/[moduloExistente]/e2e/screenshots/[moduloNuevo]/*.png 2>/dev/null | wc -l
+# DEBE ser > 0
+
+# Ejemplo para tags integrado con products:
+ls src/module/products/e2e/screenshots/tags/*.png 2>/dev/null | wc -l
+```
+
+### Regla de oro:
+
+```
+SIN SCREENSHOTS = MÓDULO INCOMPLETO
+
+No importa si:
+- El código compila ✓
+- Los tests pasan ✓
+- El frontend se ve bien ✓
+
+Si NO hay screenshots:
+- NO se puede validar el modelo de negocio
+- NO se puede proponer release
+- El módulo está INCOMPLETO
+
+El Module Lead DEBE:
+1. Verificar que QA generó screenshots
+2. Si no hay screenshots, relanzar QA
+3. NUNCA declarar completo sin screenshots
+```
+
+---
+
 ## Outputs
 - Tareas asignadas a cada agente
 - `.agents/active/[modulo]-status.md` actualizado

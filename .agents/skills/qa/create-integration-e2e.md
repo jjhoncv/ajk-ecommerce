@@ -417,3 +417,67 @@ npx tsx src/module/[existente]/e2e/index-integration.ts
 ```
 
 **Regla**: El QA de integración SOLO ejecuta tests de integración. Los tests de admin y ecommerce del módulo existente NO deben re-ejecutarse.
+
+---
+
+## ⛔ VALIDACIÓN FINAL OBLIGATORIA (ANTES DE TERMINAR)
+
+**El agente QA de integración NO puede terminar sin ejecutar esta validación:**
+
+```bash
+# =====================================================
+# VALIDACIÓN FINAL INTEGRACIÓN - EJECUTAR ANTES DE REPORTAR
+# =====================================================
+
+echo "=== VALIDACIÓN DE SCREENSHOTS INTEGRACIÓN ==="
+
+# Screenshots de integración van en el módulo EXISTENTE
+# Ejemplo: products/e2e/screenshots/tags/
+
+SCREENSHOT_COUNT=$(ls src/module/[existente]/e2e/screenshots/[nuevo]/*.png 2>/dev/null | wc -l)
+echo "Screenshots integración: $SCREENSHOT_COUNT"
+
+ERROR_COUNT=$(ls src/module/[existente]/e2e/screenshots/[nuevo]/*ERROR* 2>/dev/null | wc -l)
+echo "Screenshots con ERROR: $ERROR_COUNT"
+
+echo "=================================="
+```
+
+### Criterios de éxito:
+
+| Condición | Valor esperado | Si falla |
+|-----------|----------------|----------|
+| Screenshots existen | `SCREENSHOT_COUNT > 0` | Ejecutar: `npx tsx src/module/[existente]/e2e/integration/[nuevo].ts` |
+| Sin errores | `ERROR_COUNT = 0` | Investigar y corregir errores |
+| Ubicación correcta | En `[existente]/e2e/screenshots/[nuevo]/` | NO en `[nuevo]/e2e/screenshots/` |
+
+### SI LA VALIDACIÓN FALLA:
+
+```
+⛔ NO reportar a Module Lead
+⛔ NO declarar integración completa
+
+El módulo NO está completo sin screenshots de integración.
+Sin estos screenshots no se puede validar el modelo de negocio.
+```
+
+### Mensaje de reporte OBLIGATORIO:
+
+```
+REPORTE QA INTEGRACIÓN - [nuevo] en [existente]
+===============================================
+
+Screenshots generados: [X] archivos
+Ubicación: src/module/[existente]/e2e/screenshots/[nuevo]/
+Errores: [Y] archivos
+
+Lista de screenshots:
+- admin-[nuevo]-created.png
+- admin-[existente]-selector-available.png
+- admin-[existente]-selector-selected.png
+- admin-[existente]-after-save.png
+- ecommerce-[existente]-with-[nuevo].png
+- ecommerce-[existente]-detail-with-[nuevo].png
+
+Estado: [LISTO PARA VALIDACIÓN / PENDIENTE]
+```

@@ -654,3 +654,74 @@ await submitForm()
 - NO saltarse la validación de Module Lead
 - NO usar credenciales de placeholder
 - NO eliminar screenshots - mantenerlos como evidencia y commitearlos
+
+---
+
+## ⛔ VALIDACIÓN FINAL OBLIGATORIA (ANTES DE TERMINAR)
+
+**El agente QA NO puede terminar sin ejecutar esta validación:**
+
+```bash
+# =====================================================
+# VALIDACIÓN FINAL - EJECUTAR ANTES DE REPORTAR
+# =====================================================
+
+echo "=== VALIDACIÓN DE SCREENSHOTS ==="
+
+# 1. Contar screenshots de admin
+ADMIN_COUNT=$(ls src/module/[modulo]/e2e/screenshots/admin/*.png 2>/dev/null | wc -l)
+echo "Screenshots admin: $ADMIN_COUNT"
+
+# 2. Si hay integración, contar screenshots de integración
+# (estos van en el módulo EXISTENTE, no en el nuevo)
+INTEGRATION_COUNT=$(ls src/module/[moduloExistente]/e2e/screenshots/[modulo]/*.png 2>/dev/null | wc -l)
+echo "Screenshots integración: $INTEGRATION_COUNT"
+
+# 3. Verificar errores
+ERROR_COUNT=$(ls src/module/[modulo]/e2e/screenshots/*ERROR* 2>/dev/null | wc -l)
+echo "Screenshots con ERROR: $ERROR_COUNT"
+
+echo "=================================="
+```
+
+### Criterios de éxito:
+
+| Tipo | Condición | Si falla |
+|------|-----------|----------|
+| Admin CRUD | `ADMIN_COUNT > 0` | Ejecutar tests: `npx tsx src/module/[modulo]/e2e/index.ts` |
+| Integración | `INTEGRATION_COUNT > 0` | Ejecutar tests: `npx tsx src/module/[moduloExistente]/e2e/integration/[modulo].ts` |
+| Sin errores | `ERROR_COUNT = 0` | Investigar y corregir errores antes de continuar |
+
+### SI ALGUNA VALIDACIÓN FALLA:
+
+```
+⛔ NO reportar a Module Lead
+⛔ NO declarar tests completos
+⛔ NO hacer commit
+
+En su lugar:
+1. Identificar qué falta
+2. Ejecutar los tests que generan los screenshots faltantes
+3. Volver a validar
+4. SOLO cuando todas las validaciones pasen, reportar a Module Lead
+```
+
+### Mensaje de reporte OBLIGATORIO:
+
+Al reportar a Module Lead, SIEMPRE incluir el conteo:
+
+```
+REPORTE QA - [modulo]
+=====================
+
+Screenshots generados:
+- Admin: [X] archivos
+- Integración: [Y] archivos (en [moduloExistente]/e2e/screenshots/[modulo]/)
+- Errores: [Z] archivos
+
+Ubicaciones:
+- src/module/[modulo]/e2e/screenshots/admin/
+- src/module/[moduloExistente]/e2e/screenshots/[modulo]/
+
+Estado: [LISTO PARA VALIDACIÓN / PENDIENTE - faltan screenshots]
+```
