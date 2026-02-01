@@ -172,9 +172,21 @@ PREGUNTAS PARA AFINAR:
 
 ## 💬 FASE 2: PREGUNTAS DE CLARIFICACIÓN
 
-**⚠️ OBLIGATORIO: Usar AskUserQuestion con opciones seleccionables**
+**⛔ CRÍTICO: LLAMAR al tool AskUserQuestion - NO escribir preguntas como texto**
 
-Las preguntas DEBEN hacerse usando el tool `AskUserQuestion` para que el usuario pueda seleccionar opciones fácilmente en lugar de escribir texto libre.
+```
+❌ INCORRECTO - Escribir preguntas como texto:
+   "Por favor responde: 1A, 2B, 3C..."
+   "Selecciona una opción:"
+   "Pregunta 1: ..."
+
+✅ CORRECTO - LLAMAR al tool AskUserQuestion:
+   El tool genera una UI interactiva donde el usuario
+   selecciona con flechas del teclado (↑↓) y Enter.
+   NO escribir las preguntas, INVOCAR el tool.
+```
+
+**El usuario quiere seleccionar con el teclado, NO escribir respuestas.**
 
 ### Formato de Preguntas
 
