@@ -570,6 +570,34 @@ Task({
 
 ---
 
+## ⛔ CHECKLIST OBLIGATORIO ANTES DE TERMINAR
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  VERIFICAR ANTES DE TERMINAR (Project Owner):                    ║
+╠══════════════════════════════════════════════════════════════════╣
+║  [ ] Spec creado en .agents/specs/[modulo]-testing-spec.md       ║
+║  [ ] Branch feature/[modulo] creado y activo (git branch)        ║
+║  [ ] Module Lead LANZADO con Task() (NO TaskCreate)              ║
+║  [ ] Output del Module Lead VISIBLE en la respuesta              ║
+╠══════════════════════════════════════════════════════════════════╣
+║  ⚠️  Si Module Lead NO fue lanzado → NO TERMINAR                 ║
+║      Lanzarlo AHORA con Task() antes de finalizar                ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+**Síntomas de flujo incompleto:**
+- Si tu respuesta termina con "Spec creado, listo para Module Lead" → INCORRECTO
+- Si no hay output de Module Lead trabajando → INCORRECTO
+- Si usaste TaskCreate en lugar de Task() → INCORRECTO
+
+**Flujo correcto:**
+```
+Project Owner ejecuta → ... → Task(Module Lead) → Output de Module Lead visible → FIN
+```
+
+---
+
 ## Outputs
 - `.agents/specs/[modulo]-testing-spec.md` creado
 - `.agents/project.json` actualizado
