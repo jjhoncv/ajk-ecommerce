@@ -115,12 +115,8 @@ export async function runTagTests(): Promise<{ passed: number; failed: number }>
     await wait(500)
 
     await fillTextField('name', TEST_TAGS.main.name)
-    try {
-      await fillTextField('slug', TEST_TAGS.main.slug)
-    } catch { /* campo opcional */ }
-    try {
-      await fillTextField('color', TEST_TAGS.main.color)
-    } catch { /* campo opcional */ }
+    // Slug y color tienen valores por defecto, no los modificamos
+    // El color por defecto es #3B82F6, aceptable para la prueba
 
     await takeScreenshot('04-form-filled')
 

@@ -1,8 +1,7 @@
 'use client'
 
 import { Button, Input } from '@/module/shared/components/ui'
-import { type RatingForAdmin } from '@/module/products/core/VariantRating.interfaces'
-import { type RatingStatus } from '@/types/domain'
+import { type RatingForAdmin, type RatingStatus } from '@/module/products/core/VariantRating.interfaces'
 import {
   Check,
   ChevronLeft,

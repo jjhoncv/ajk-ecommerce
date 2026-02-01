@@ -39,7 +39,7 @@ export default async function CheckoutPage() {
   const checkoutUser: CheckoutUser = {
     id: customer.id,
     name: customer.name || '',
-    lastname: customer.lastname,
+    lastname: customer.lastname || '',
     email: customer.email,
     phone: customer.phone ?? '',
     addresses,

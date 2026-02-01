@@ -37,8 +37,8 @@ export const TagFields: Field[] = [
     type: 'select',
     value: '1',
     selectOptions: [
-      { id: '1', name: 'Activo' },
-      { id: '0', name: 'Inactivo' }
+      { value: '1', label: 'Activo' },
+      { value: '0', label: 'Inactivo' }
     ]
   },
   {

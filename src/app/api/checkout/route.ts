@@ -236,9 +236,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Note: address.district is typed as Districts object but at runtime it's a string
+    const districtName = address.district as unknown as string
     const shippingCost = await shippingZoneMethodModel.getShippingCost(
       orderData.shippingMethodId,
-      address.district,
+      districtName,
       address.province,
       address.department,
       orderData.items.reduce(

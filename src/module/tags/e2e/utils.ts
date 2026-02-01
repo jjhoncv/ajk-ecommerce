@@ -4,7 +4,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { getPage } from '../../../../tests/e2e/utils'
+import { getPage } from '../../../../tests/e2e/utils/index'
 
 // Paths del modulo
 const MODULE_DIR = path.join(__dirname)
@@ -39,4 +39,4 @@ export {
   // Form helpers
   fillTextField, fillTextArea, submitForm, hasValidationError,
   clearAndFillField, selectOption
-} from '../../../../tests/e2e/utils'
+} from '../../../../tests/e2e/utils/index'

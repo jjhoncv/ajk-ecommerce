@@ -39,7 +39,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <Header navigationType="mini">
           <Navigation type="mini" />
         </Header>
-        <LayoutContent className="px-0 py-0" />
+        <LayoutContent className="px-0 py-0">
+          <div className="flex items-center justify-center py-12">
+            <p className="text-gray-500">No se encontraron resultados.</p>
+          </div>
+        </LayoutContent>
       </Layout>
     )
   }

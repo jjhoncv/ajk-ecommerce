@@ -249,7 +249,7 @@ export default async function OrderConfirmationPage({
                     `, ${shippingAddress.apartment}`}
                 </p>
                 <p className="text-gray-700">
-                  {shippingAddress.district}, {shippingAddress.province}
+                  {shippingAddress.district as unknown as string}, {shippingAddress.province}
                 </p>
                 <p className="text-gray-700">{shippingAddress.department}</p>
               </div>

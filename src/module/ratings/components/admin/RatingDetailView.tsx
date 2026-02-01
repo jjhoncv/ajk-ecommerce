@@ -1,8 +1,7 @@
 'use client'
 
-import { type RatingForAdmin } from '@/module/products/core/VariantRating.interfaces'
+import { type RatingForAdmin, type RatingStatus } from '@/module/products/core/VariantRating.interfaces'
 import { RatingImageModal } from '@/module/products/components/ProductVariantRating/ProductVariantRatings/RatingImageModal'
-import { type RatingStatus } from '@/types/domain'
 import {
   ArrowLeft,
   Check,

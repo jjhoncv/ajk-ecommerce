@@ -1,7 +1,7 @@
 // app/api/admin/ratings/route.ts
 import variantRatingModel from '@/module/products/core/VariantRating.model'
+import { type RatingStatus } from '@/module/products/core/VariantRating.interfaces'
 import { adminAuthOptions } from '@/module/shared/lib/auth/authAdmin'
-import { type RatingStatus } from '@/types/domain'
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 

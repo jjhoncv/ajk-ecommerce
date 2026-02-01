@@ -1,19 +1,23 @@
 'use client'
-import { getPriceIfHasPromotion } from '@/module/products/components/ProductVariant.helpers'
-import ProductCardButtonView from './ProductCardButtonView'
-import { PromotionBadge } from './PromotionBadge'
 import { OfferBadge } from '@/module/offers/components/ui'
 import { useOffer } from '@/module/offers/hooks/useOffer'
+import { getPriceIfHasPromotion } from '@/module/products/components/ProductVariant.helpers'
 import { getVariantImages } from '@/module/products/helpers/image.helpers'
 import { getVariantTitle } from '@/module/products/helpers/productVariant.helpers'
+import { TagBadges } from '@/module/tags/components/ecommerce'
 import Link from 'next/link'
 import React from 'react'
 import { hasPromotion } from './ProductCard.helpers'
 import { type ProductCardProps } from './ProductCard.interfaces'
+import ProductCardButtonView from './ProductCardButtonView'
 import ProductCardPrice from './ProductCardPrice'
 import ProductCardSlider from './ProductCardSlider'
+import { PromotionBadge } from './PromotionBadge'
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  offer: offerProp
+}) => {
   // Verificar que el producto y sus variantes existan
   if (
     !product?.variants ||
@@ -34,7 +38,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) 
   }
 
   // Obtener oferta si no se pasó como prop
-  const { offer: fetchedOffer } = useOffer(offerProp === undefined ? variant.id : null)
+  const { offer: fetchedOffer } = useOffer(
+    offerProp === undefined ? variant.id : null
+  )
   const offer = offerProp ?? fetchedOffer
 
   const hasDiscount = hasPromotion(variant)
@@ -45,6 +51,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) 
 
   const { originalPrice, currentPromotion, type, name } =
     getPriceIfHasPromotion(variant)
+
+  // Get tags from variant or product
+  const variantTags = variant.tags || product.tags || []
 
   return (
     <div className={'relative bg-white pb-2 transition-shadow hover:shadow-lg'}>
@@ -66,11 +75,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, offer: offerProp }) 
             <PromotionBadge type={type} name={type} />
           </div>
         )}
+        {/* Badges de tags si no hay oferta ni promoción */}
+        {!offer && !hasDiscount && variantTags.length > 0 && (
+          <div className="absolute left-2 top-2 z-10">
+            <TagBadges tags={variantTags} maxDisplay={2} size="sm" />
+          </div>
+        )}
 
-        <Link href={`/producto/${variant.slug || variant.id}`} className={'block'}>
+        <Link
+          href={`/producto/${variant.slug || variant.id}`}
+          className={'block'}
+        >
           <ProductCardSlider images={images} productName={product.name} />
         </Link>
-        <ProductCardButtonView variantId={product.variantId} variantSlug={variant.slug} />
+        <ProductCardButtonView
+          variantId={product.variantId}
+          variantSlug={variant.slug}
+        />
       </div>
 
       <div className="px-2 pt-2">

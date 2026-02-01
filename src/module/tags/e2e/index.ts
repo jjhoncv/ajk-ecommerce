@@ -4,6 +4,7 @@
  *
  * EJECUCION:
  *   npx tsx src/module/tags/e2e/index.ts
+ *   npx tsx src/module/tags/e2e/index.ts --integration  # Run only integration tests
  */
 
 import fs from 'fs'
@@ -12,6 +13,7 @@ import {
   takeScreenshot, SCREENSHOTS_DIR, login
 } from './utils'
 import { runTagTests } from './admin/01-crud'
+import { runIntegrationTests } from './admin/02-integration'
 
 /**
  * Preparar carpeta de screenshots
@@ -47,24 +49,43 @@ async function main(): Promise<void> {
     // Screenshot del dashboard
     await takeScreenshot('00-dashboard-after-login')
 
-    // Ejecutar tests exploratorios
-    const results = await runTagTests()
+    // Check for --integration flag
+    const runOnlyIntegration = process.argv.includes('--integration')
+
+    let adminResults = { passed: 0, failed: 0 }
+    let integrationResults = { passed: 0, failed: 0 }
+
+    if (!runOnlyIntegration) {
+      // Ejecutar tests de admin CRUD (FASE 1)
+      adminResults = await runTagTests()
+    }
+
+    // Ejecutar tests de integracion (FASE 2)
+    integrationResults = await runIntegrationTests()
+
+    // Resumen total
+    const totalPassed = adminResults.passed + integrationResults.passed
+    const totalFailed = adminResults.failed + integrationResults.failed
 
     // Resumen
     console.log('\n' + '='.repeat(50))
-    console.log('RESUMEN DE PRUEBAS EXPLORATORIAS')
+    console.log('RESUMEN DE PRUEBAS')
     console.log('='.repeat(50))
-    console.log(`  Passed: ${results.passed}`)
-    console.log(`  Failed: ${results.failed}`)
+    if (!runOnlyIntegration) {
+      console.log(`  FASE 1 (Admin CRUD): ${adminResults.passed}/${adminResults.passed + adminResults.failed}`)
+    }
+    console.log(`  FASE 2 (Integration): ${integrationResults.passed}/${integrationResults.passed + integrationResults.failed}`)
+    console.log(`  Total Passed: ${totalPassed}`)
+    console.log(`  Total Failed: ${totalFailed}`)
     console.log(`  Screenshots: ${SCREENSHOTS_DIR}`)
 
-    if (results.failed > 0) {
+    if (totalFailed > 0) {
       console.log('\nHAY FALLAS - Revisar screenshots para diagnostico')
     } else {
       console.log('\nTODAS LAS PRUEBAS PASARON')
     }
 
-    process.exit(results.failed > 0 ? 1 : 0)
+    process.exit(totalFailed > 0 ? 1 : 0)
   } catch (error: any) {
     log(`Error fatal: ${error.message}`)
     await takeScreenshot('ERROR-fatal')

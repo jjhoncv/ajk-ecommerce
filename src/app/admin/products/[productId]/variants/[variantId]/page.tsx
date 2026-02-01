@@ -6,6 +6,7 @@ import { mergeFieldsWithData } from '@/module/shared/components/FormCreate/merge
 import { LayoutPageAdmin } from '@/module/shared/components/LayoutPageAdmin'
 import { PageUI } from '@/module/shared/components/Page/Page'
 import { PageTitle } from '@/module/shared/components/Page/PageTitle'
+import { VariantTagsSelector } from '@/module/tags/components/admin/VariantTagsSelector'
 import { type JSX } from 'react'
 
 export const revalidate = 0 // Deshabilitar cache estático
@@ -130,6 +131,9 @@ export default async function EditVariantPage({
               imageAttributeOptionId={imageAttributeOptionId}
             />
           </div>
+
+          {/* Selector de Tags */}
+          <VariantTagsSelector variantId={Number(variantId)} />
         </div>
       </PageUI>
     </LayoutPageAdmin>

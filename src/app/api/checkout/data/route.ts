@@ -123,13 +123,18 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Obtener opciones de envío
+    // Note: selectedAddress.district is typed as Districts object but at runtime it's a string
+    // This is a type mismatch between domain types and the actual mapper output
+    const districtName = selectedAddress.district as unknown as string
     const shippingCalculations =
-      await shippingZoneMethodModel.calculateShippingOptions(
-        selectedAddress.district,
-        selectedAddress.province,
-        selectedAddress.department,
-        subtotal
-      )
+      districtName && selectedAddress.province && selectedAddress.department
+        ? await shippingZoneMethodModel.calculateShippingOptions(
+            districtName,
+            selectedAddress.province,
+            selectedAddress.department,
+            subtotal
+          )
+        : undefined
 
     const shippingOptions: ShippingOption[] =
       shippingCalculations?.map((calc) => ({
@@ -187,7 +192,7 @@ export async function POST(request: NextRequest) {
     const checkoutUser: CheckoutUser = {
       id: user.id,
       name: user.name || '',
-      lastname: user.lastname,
+      lastname: user.lastname || '',
       email: user.email,
       phone: user.phone ?? '',
       addresses,
@@ -238,7 +243,7 @@ export async function GET() {
     const checkoutUser: CheckoutUser = {
       id: user.id,
       name: user.name || '',
-      lastname: user.lastname,
+      lastname: user.lastname || '',
       email: user.email,
       phone: user.phone ?? '',
       addresses: addresses || [],

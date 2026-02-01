@@ -1,4 +1,7 @@
-import { type RatingStatus, type VariantRatings as VariantRating } from '@/types/domain'
+import { type VariantRatings as VariantRating } from '@/types/domain'
+
+// Rating status type - defined locally since it's not in the generated types
+export type RatingStatus = 'pending' | 'approved' | 'rejected'
 
 export interface VariantRatingSummary {
   variantId: number
